@@ -1,0 +1,19 @@
+commit	tree	authored_at	author	subject
+8d9ea9fa2375cfea738680ab8d7a4ee3bcc30be5	1a94c971c4cd035879dffa43a52fdca1d668a9d4	2026-08-27T09:18:59+01:00	Codex	docs: define P0 takeoff foundation
+8e55ccc4e68792f6bb9a617fd6b6f24fee2bc784	08527431e41a5df44b412ec70d388db119254a4a	2026-08-27T09:23:07+01:00	Codex	feat: add immutable document baseline
+cc2328680c036f57893dc5a850b4d8d92286422e	135dade45ae71c7b28eb977e755bf33f3bb6931b	2026-08-27T09:29:48+01:00	Codex	feat: add evidence and quantity controls
+26c607457af66a906a59eedec0e5232dc8caa090	7e262668a5fe90233e3000ff5399362e2073608a	2026-08-27T09:33:55+01:00	Codex	feat: add takeoff snapshots and revision impacts
+47623f4ea6a11a1ecad120ed0d2b00e48fa45bb0	b0e2413d2f065eb93cae3533e677fc7f301f053a	2026-08-27T09:38:01+01:00	Codex	feat: add quote and bid release controls
+10b24420accaee357717bceb65b40c5fc4d720f6	5b26bdd2a1bc4cae435659b379fe2312342e3a80	2026-08-27T09:47:03+01:00	Codex	feat: expose local P0 API and demo
+aa98477c801358bef6a5bf5124da9c2efb03601b	a78c2e3a22a3f240a10b1c42982a27eba2b1d2a8	2026-08-27T10:17:03+01:00	Codex	fix: harden P0 command and snapshot integrity
+539f913dff5be3c7cc36a47cee0ff111f92cc5c5	1610949342c1d13c4e209d3bfdd1b626efd8380b	2026-08-27T10:46:52+01:00	Codex	docs: define P1A execution spine
+b7315e32e481b77c3a6aad512c38b77cab6d1766	3f1dd5aee1b388af3fa1b986e390f7e83cfcfd04	2026-08-27T11:00:51+01:00	Codex	feat: add immutable agent execution schema
+e5f6df55c38678703884976c2d328b3437455da4	a878e73e1e5995eb08ece60ccf21a453b637e1e6	2026-08-27T11:09:52+01:00	Codex	docs: tighten P1A preflight lineage
+8ad203880377d0abc6d0dcc6b874c5245b5c82d7	85c660e348e1dde2004c016c6aa0d7d920cc6e08	2026-08-27T11:13:05+01:00	Codex	feat: add content-addressed agent artifacts
+4d5c0ed359a0bf337c0428befc8e282048615b34	4b289fd64adfa2e56573a8f3990c2614980ebb56	2026-08-27T11:26:36+01:00	Codex	fix: harden artifact store filesystem safety
+1ffe2eaa918b804fdccf9b55ebddc8a55d894911	57e4709e9a2cec003e766fc78d07f08988303acb	2026-08-27T11:33:26+01:00	Codex	fix: guard secure artifacts on unsupported platforms
+3c0e9a37ac539bc5b0651aa5a2f2a986bfc0893d	e889a8ed80cdd670f1f609edf29b8426267bb639	2026-08-27T11:49:41+01:00	Codex	Implement durable agent job lifecycle
+c752ab3eecff86926825de8b582ccf4963925913	e5e913fe6efc55345a116e8fb7c93b8e010819fa	2026-08-27T12:13:35+01:00	Codex	Harden agent lifecycle invariants
+12966836def5bf8363296206c6808b3b94f03eca	69e7bde6aed878f8aa8212de92cac9b2e87e5457	2026-08-27T12:28:56+01:00	Codex	Enforce agent attempt ordering
+21fd6d5976b529ce994ed76172caa5675a4e3a86	bf0a11ce02d438abdc27b1e3ba5d3c0dedf55bc8	2026-08-27T12:47:00+01:00	Codex	Harden SQLite agent ledger storage
+
