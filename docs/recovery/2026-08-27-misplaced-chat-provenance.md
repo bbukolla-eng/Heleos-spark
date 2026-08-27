@@ -136,9 +136,10 @@ Independent read-only verification produced:
   references resolved.
 
 These results prove only the implemented and tested surfaces. They do not establish
-production readiness or an operating HVAC takeoff engine. The detailed limitations
-and adversarial findings are recorded in
-`docs/recovery/2026-08-27-p0-p1a-audit.md`.
+production readiness or an operating HVAC takeoff engine. The release-blocking
+findings are converted into regression and architecture requirements in
+`docs/superpowers/plans/2026-08-27-recovery-reconciliation.md`; the separate detailed
+security audit is intentionally not published to the repository.
 
 ## Package identity collision
 
