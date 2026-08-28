@@ -62,23 +62,31 @@ fn open_permission_handle(path: &Path, _: PermissionAccess, _: bool) -> Result<F
 }
 
 #[cfg(windows)]
+fn windows_permission_access_mask(access: PermissionAccess) -> u32 {
+    use windows_permissions::constants::AccessRights;
+
+    const FILE_READ_ATTRIBUTES: u32 = 0x0000_0080;
+
+    let mut rights = AccessRights::ReadControl.bits() | FILE_READ_ATTRIBUTES;
+    if matches!(access, PermissionAccess::Apply) {
+        rights |= AccessRights::WriteDac.bits();
+    }
+    rights
+}
+
+#[cfg(windows)]
 fn open_permission_handle(
     path: &Path,
     access: PermissionAccess,
     is_directory: bool,
 ) -> Result<File> {
     use std::os::windows::fs::OpenOptionsExt;
-    use windows_permissions::constants::AccessRights;
 
     const FILE_SHARE_READ: u32 = 0x0000_0001;
     const FILE_SHARE_WRITE: u32 = 0x0000_0002;
     const FILE_FLAG_OPEN_REPARSE_POINT: u32 = 0x0020_0000;
     const FILE_FLAG_BACKUP_SEMANTICS: u32 = 0x0200_0000;
 
-    let mut rights = AccessRights::ReadControl;
-    if matches!(access, PermissionAccess::Apply) {
-        rights |= AccessRights::WriteDac;
-    }
     let flags = FILE_FLAG_OPEN_REPARSE_POINT
         | if is_directory {
             FILE_FLAG_BACKUP_SEMANTICS
@@ -87,7 +95,7 @@ fn open_permission_handle(
         };
     let mut options = OpenOptions::new();
     options
-        .access_mode(rights.bits())
+        .access_mode(windows_permission_access_mask(access))
         .share_mode(FILE_SHARE_READ | FILE_SHARE_WRITE)
         .custom_flags(flags);
     options.open(path).map_err(HeleosError::Io)
@@ -325,6 +333,18 @@ mod windows_tests {
         ConvertStringSecurityDescriptorToSecurityDescriptor, GetSecurityDescriptorDacl,
         SetSecurityInfo,
     };
+
+    #[test]
+    fn standalone_permission_handles_request_exact_metadata_and_policy_access() {
+        assert_eq!(
+            windows_permission_access_mask(PermissionAccess::Verify),
+            0x0002_0080
+        );
+        assert_eq!(
+            windows_permission_access_mask(PermissionAccess::Apply),
+            0x0006_0080
+        );
+    }
 
     fn fixture_file(label: &str) -> (tempfile::TempDir, File) {
         let root = tempfile::Builder::new()
