@@ -241,6 +241,7 @@ Commit: `git commit -m "feat: establish typed Rust foundation"`
 - Modify: `Cargo.lock`
 - Modify: `crates/heleos-core/Cargo.toml`
 - Modify: `crates/heleos-core/src/lib.rs`
+- Modify: `crates/heleos-core/src/error.rs`
 - Create: `crates/heleos-core/migrations/0001_foundation.sql`
 - Create: `crates/heleos-core/src/store/mod.rs`
 - Create: `crates/heleos-core/src/store/migration.rs`
@@ -252,7 +253,7 @@ Commit: `git commit -m "feat: establish typed Rust foundation"`
 
 **Interfaces:**
 - Consumes: Task 2 IDs, states, clock, and typed errors.
-- Produces: `Store::open_writer`, `Store::open_read_only`, `Store::open_in_memory`, `Store::migrate`, `Store::schema_version`, `Store::verify_integrity`, `Store::with_immediate_transaction`, `apply_private_permissions`, `verify_private_permissions`, `WriterLock`, `MigrationReport`, and schema version `1`.
+- Produces: `Store::open_writer`, `Store::open_read_only`, `Store::open_in_memory`, `Store::migrate`, `Store::schema_version`, `Store::verify_integrity`, `Store::with_immediate_transaction`, `apply_private_permissions`, `verify_private_permissions`, `WriterLock`, `MigrationReport`, the distinct `HeleosError::WriterBusy` variant, and schema version `1`.
 
 - [ ] **Step 1: Add exact storage dependencies without implementation**
 
@@ -260,7 +261,7 @@ Add `rusqlite = { version = "=0.40.2", features = ["bundled", "backup"] }` and `
 
 - [ ] **Step 2: Write failing migration and invariant tests**
 
-Tests must prove: an empty database reaches version 1; reopening is idempotent; `foreign_keys` is `1`, journal mode is `wal` for a file database, `synchronous` is `2`, trusted schema is off, and defensive mode is on; every table below exists; SQL-injection payloads in names, actors, idempotency keys, paths, and JSON remain inert data; invalid foreign keys and enums fail; immutable tables reject update/delete; audit and ingest-event rows reject update/delete; a deliberately failing second migration leaves version 1 and schema unchanged; a stored version newer than the binary fails closed; two independent processes cannot both obtain a writer lock; read-only verification cannot mutate; and both SQLite integrity checks report clean.
+Tests must prove: an empty database reaches version 1; reopening is idempotent; `foreign_keys` is `1`, journal mode is `wal` for a file database, `synchronous` is `2`, trusted schema is off, and defensive mode is on; every table below exists; SQL-injection payloads in names, actors, idempotency keys, paths, and JSON remain inert data; invalid foreign keys and enums fail; immutable tables reject update/delete; audit and ingest-event rows reject update/delete; a deliberately failing second migration leaves version 1 and schema unchanged; a stored version newer than the binary fails closed; two independent processes cannot both obtain a writer lock and the denied caller receives exactly `HeleosError::WriterBusy`; read-only verification cannot mutate; and both SQLite integrity checks report clean.
 
 Run: `cargo test -p heleos-core --test migrations`
 
@@ -284,7 +285,7 @@ audit_events.sequence and audit_events.event_hash
 
 - [ ] **Step 4: Implement connection and migration policy**
 
-`Store::open_writer` creates or opens `<database>.writer.lock`, rejects symlinks/reparse points and non-regular files, obtains an exclusive `fs2` lock before opening SQLite, rechecks the database identity after open, and keeps the lock handle for the `Store` lifetime. A second process receives a typed busy error. `Store::open_read_only` uses SQLite read-only/query-only mode and never obtains mutation capability. Both apply safe connection settings; every value-bearing SQL statement uses rusqlite bound parameters, while only compile-time SQL supplies identifiers. `apply_private_permissions` sets Unix file/directory modes to `0600`/`0700`; on Windows it disables inherited access and admits only the current user and `SYSTEM`, then `verify_private_permissions` reads the DACL back. Permission-hardening failure aborts creation/open. `migrate` checks embedded SQL SHA-256, applies one migration per immediate transaction, and rejects an unknown newer version. `verify_integrity` runs both SQLite checks and returns all violations in an `IntegrityReport`. Faulty migration injection remains owner-task-only test support and is not claimed by later black-box verifiers.
+`Store::open_writer` creates or opens `<database>.writer.lock`, rejects symlinks/reparse points and non-regular files, obtains an exclusive `fs2` lock before opening SQLite, rechecks the database identity after open, and keeps the lock handle for the `Store` lifetime. A second process receives exactly `HeleosError::WriterBusy`; it must not be collapsed into `Database`, `PolicyDenied`, or a string-matched I/O error. `Store::open_read_only` uses SQLite read-only/query-only mode and never obtains mutation capability. Both apply safe connection settings; every value-bearing SQL statement uses rusqlite bound parameters, while only compile-time SQL supplies identifiers. `apply_private_permissions` sets Unix file/directory modes to `0600`/`0700`; on Windows it disables inherited access and admits only the current user and `SYSTEM`, then `verify_private_permissions` reads the DACL back. Permission-hardening failure aborts creation/open. `migrate` checks embedded SQL SHA-256, applies one migration per immediate transaction, and rejects an unknown newer version. `verify_integrity` runs both SQLite checks and returns all violations in an `IntegrityReport`. Faulty migration injection remains owner-task-only test support and is not claimed by later black-box verifiers.
 
 - [ ] **Step 5: Document and test recovery**
 
@@ -296,7 +297,7 @@ Expected: all pass without warnings.
 
 - [ ] **Step 6: Commit**
 
-Stage only the twelve files declared by this task, run the staged checks, then commit.
+Stage only the thirteen files declared by this task, run the staged checks, then commit.
 
 Commit: `git commit -m "feat: add durable foundation schema"`
 
