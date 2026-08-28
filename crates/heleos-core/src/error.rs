@@ -14,6 +14,8 @@ pub enum HeleosError {
     InvalidId,
     #[error("database operation failed")]
     Database,
+    #[error("database writer is busy")]
+    WriterBusy,
     #[error("migration failed")]
     Migration,
     #[error("integrity verification failed")]

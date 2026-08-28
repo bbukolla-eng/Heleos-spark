@@ -2,6 +2,7 @@
 
 pub mod domain;
 mod error;
+pub mod store;
 
 pub use crate::domain::{
     ActorId, Clock, DataClass, DocumentId, EvidenceId, IdGenerator, IngestEventId, IngestOutcome,
@@ -9,3 +10,7 @@ pub use crate::domain::{
     canonical_document_ids, canonical_json, page_id,
 };
 pub use crate::error::{HeleosError, Result};
+pub use crate::store::{
+    FOUNDATION_SCHEMA_VERSION, IntegrityReport, MigrationReport, Store, WriterLock,
+    apply_private_permissions, verify_private_permissions,
+};
