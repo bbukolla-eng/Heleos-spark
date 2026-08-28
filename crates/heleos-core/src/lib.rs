@@ -11,6 +11,6 @@ pub use crate::domain::{
 };
 pub use crate::error::{HeleosError, Result};
 pub use crate::store::{
-    FOUNDATION_SCHEMA_VERSION, IntegrityReport, MigrationReport, Store, WriterLock,
-    apply_private_permissions, verify_private_permissions,
+    FOUNDATION_SCHEMA_VERSION, INTEGRITY_VIOLATION_LIMIT, IntegrityReport, MigrationReport, Store,
+    WriterLock, apply_private_permissions, verify_private_permissions,
 };

@@ -9,11 +9,13 @@ license = "LicenseRef-Proprietary"
 
 [workspace.dependencies]
 fs2 = "=0.4.3"
-rusqlite = { version = "=0.40.2", features = ["bundled", "backup"] }
+rusqlite = { version = "=0.40.2", features = ["bundled", "backup", "functions"] }
 serde = { version = "=1.0.229", features = ["derive"] }
 serde_json = "=1.0.151"
 serde_jcs = "=0.2.0"
 sha2 = "=0.11.0"
 thiserror = "=2.0.20"
+tempfile = "=3.27.0"
 uuid = { version = "=1.26.0", features = ["serde", "v4"] }
 windows-acl = "=0.3.0"
+windows-permissions = "=0.2.4"

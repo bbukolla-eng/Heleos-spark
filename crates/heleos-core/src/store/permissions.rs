@@ -71,14 +71,18 @@ pub fn apply_private_permissions(path: &Path) -> Result<()> {
         .map_err(|_| HeleosError::PolicyDenied)?;
 
     for entry in acl.all().map_err(|_| HeleosError::PolicyDenied)? {
-        if !allowed.contains(&entry.string_sid) {
+        if !allowed.contains(&entry.string_sid)
+            || entry.entry_type != AceType::AccessAllow
+            || entry.flags != 0
+            || entry.mask != FILE_ALL_ACCESS
+        {
             let sid = string_to_sid(&entry.string_sid).map_err(|_| HeleosError::PolicyDenied)?;
-            acl.remove(sid.as_ptr() as *mut _, None, None)
-                .map_err(|_| HeleosError::PolicyDenied)?;
-        } else if entry.entry_type != AceType::AccessAllow {
-            let sid = string_to_sid(&entry.string_sid).map_err(|_| HeleosError::PolicyDenied)?;
-            acl.remove(sid.as_ptr() as *mut _, Some(entry.entry_type), None)
-                .map_err(|_| HeleosError::PolicyDenied)?;
+            acl.remove(
+                sid.as_ptr() as *mut _,
+                Some(entry.entry_type),
+                Some(entry.flags),
+            )
+            .map_err(|_| HeleosError::PolicyDenied)?;
         }
     }
 
@@ -91,32 +95,115 @@ pub fn apply_private_permissions(path: &Path) -> Result<()> {
 
 #[cfg(windows)]
 pub fn verify_private_permissions(path: &Path) -> Result<()> {
+    use std::os::windows::io::AsRawHandle;
     use windows_acl::acl::{ACL, AceType};
     use windows_acl::helper::{current_user, name_to_sid};
 
+    const FILE_ALL_ACCESS: u32 = 0x001f_01ff;
+
     checked_metadata(path)?;
-    let path_text = path.to_str().ok_or(HeleosError::PolicyDenied)?;
+    let retained_file = open_windows_permission_handle(path)?;
     let user_name = current_user().ok_or(HeleosError::PolicyDenied)?;
     let user_sid = name_to_sid(&user_name, None).map_err(|_| HeleosError::PolicyDenied)?;
     let allowed = [sid_string(&user_sid)?, "S-1-5-18".to_owned()];
-    let entries = ACL::from_file_path(path_text, false)
+    let entries = ACL::from_file_handle(retained_file.as_raw_handle() as *mut _, false)
         .map_err(|_| HeleosError::PolicyDenied)?
         .all()
         .map_err(|_| HeleosError::PolicyDenied)?;
 
+    if entries.len() != allowed.len() {
+        return Err(HeleosError::PolicyDenied);
+    }
     for expected_sid in &allowed {
-        if !entries.iter().any(|entry| {
-            entry.string_sid == *expected_sid && entry.entry_type == AceType::AccessAllow
-        }) {
+        let mut matching = entries
+            .iter()
+            .filter(|entry| entry.string_sid == *expected_sid);
+        let Some(entry) = matching.next() else {
+            return Err(HeleosError::PolicyDenied);
+        };
+        if matching.next().is_some() {
+            return Err(HeleosError::PolicyDenied);
+        }
+        if entry.entry_type != AceType::AccessAllow
+            || entry.flags != 0
+            || entry.mask != FILE_ALL_ACCESS
+        {
             return Err(HeleosError::PolicyDenied);
         }
     }
-    if entries.iter().any(|entry| {
-        !allowed.contains(&entry.string_sid) || entry.entry_type != AceType::AccessAllow
-    }) {
+    verify_windows_dacl_is_protected(&retained_file)?;
+    Ok(())
+}
+
+#[cfg(windows)]
+fn open_windows_permission_handle(path: &Path) -> Result<fs::File> {
+    use std::os::windows::fs::OpenOptionsExt;
+
+    const FILE_SHARE_READ: u32 = 0x0000_0001;
+    const FILE_SHARE_WRITE: u32 = 0x0000_0002;
+    const FILE_FLAG_BACKUP_SEMANTICS: u32 = 0x0200_0000;
+    let mut options = fs::OpenOptions::new();
+    options
+        .read(true)
+        .share_mode(FILE_SHARE_READ | FILE_SHARE_WRITE)
+        .custom_flags(FILE_FLAG_BACKUP_SEMANTICS);
+    options.open(path).map_err(HeleosError::Io)
+}
+
+#[cfg(windows)]
+fn verify_windows_dacl_is_protected(file: &fs::File) -> Result<()> {
+    use std::panic::{AssertUnwindSafe, catch_unwind};
+    use windows_permissions::constants::{SeObjectType, SecurityInformation};
+    use windows_permissions::wrappers::{
+        ConvertSecurityDescriptorToStringSecurityDescriptor, GetSecurityInfo,
+    };
+
+    let descriptor = catch_unwind(AssertUnwindSafe(|| {
+        GetSecurityInfo(
+            file,
+            SeObjectType::SE_FILE_OBJECT,
+            SecurityInformation::Dacl,
+        )
+    }))
+    .map_err(|_| HeleosError::PolicyDenied)?
+    .map_err(|_| HeleosError::PolicyDenied)?;
+    let sddl = catch_unwind(AssertUnwindSafe(|| {
+        ConvertSecurityDescriptorToStringSecurityDescriptor(&descriptor, SecurityInformation::Dacl)
+    }))
+    .map_err(|_| HeleosError::PolicyDenied)?
+    .map_err(|_| HeleosError::PolicyDenied)?;
+    let sddl = sddl.to_str().ok_or(HeleosError::PolicyDenied)?;
+    if !sddl_dacl_has_protected_control_flag(sddl) {
         return Err(HeleosError::PolicyDenied);
     }
     Ok(())
+}
+
+#[cfg(windows)]
+fn sddl_dacl_has_protected_control_flag(sddl: &str) -> bool {
+    let Some(dacl) = sddl.strip_prefix("D:") else {
+        return false;
+    };
+    let Some((mut flags, aces)) = dacl.split_once('(') else {
+        return false;
+    };
+    if aces.is_empty() {
+        return false;
+    }
+    let mut protected = false;
+    while !flags.is_empty() {
+        if let Some(rest) = flags.strip_prefix('P') {
+            protected = true;
+            flags = rest;
+        } else if let Some(rest) = flags.strip_prefix("AR") {
+            flags = rest;
+        } else if let Some(rest) = flags.strip_prefix("AI") {
+            flags = rest;
+        } else {
+            return false;
+        }
+    }
+    protected
 }
 
 #[cfg(windows)]

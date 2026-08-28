@@ -6,6 +6,16 @@ use crate::{HeleosError, Result, Sha256Digest};
 
 const FOUNDATION_MIGRATION_SQL: &str = include_str!("../../migrations/0001_foundation.sql");
 
+/// Production callers cannot inject migration SQL.
+///
+/// ```compile_fail
+/// #![forbid(unsafe_code)]
+/// use heleos_core::Store;
+///
+/// fn inject(store: &mut Store) {
+///     let _ = store.migrate_with_test_migration(2, "SELECT 1");
+/// }
+/// ```
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct MigrationReport {
     pub from_version: i64,
@@ -42,6 +52,8 @@ impl Store {
         if self.read_only {
             return Err(HeleosError::PolicyDenied);
         }
+        self.recheck_writer_lock_identity()?;
+        self.recheck_database_identity()?;
         let from_version = self.schema_version()?;
         validate_applied_migrations(self, from_version)?;
         if from_version > FOUNDATION_SCHEMA_VERSION {
@@ -50,6 +62,8 @@ impl Store {
 
         let mut applied_versions = Vec::new();
         if from_version < FOUNDATION_SCHEMA_VERSION {
+            self.recheck_writer_lock_identity()?;
+            self.recheck_database_identity()?;
             let migration_hash = migration_hash(FOUNDATION_MIGRATION_SQL)?;
             let transaction = self
                 .connection
@@ -61,6 +75,7 @@ impl Store {
                 FOUNDATION_MIGRATION_SQL,
                 &migration_hash,
             )?;
+            self.recheck_writer_lock_identity()?;
             self.harden_sqlite_sidecars()?;
             self.recheck_database_identity()?;
             applied_versions.push(FOUNDATION_SCHEMA_VERSION);
@@ -71,20 +86,6 @@ impl Store {
             to_version: self.schema_version()?,
             applied_versions,
         })
-    }
-
-    #[doc(hidden)]
-    #[cfg(debug_assertions)]
-    pub fn migrate_with_test_migration(&mut self, version: i64, sql: &'static str) -> Result<()> {
-        if self.read_only || version != self.schema_version()? + 1 {
-            return Err(HeleosError::Migration);
-        }
-        let hash = migration_hash(sql)?;
-        let transaction = self
-            .connection
-            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)
-            .map_err(|_| HeleosError::Migration)?;
-        apply_migration(transaction, version, sql, &hash).map(|_| ())
     }
 }
 
@@ -131,4 +132,37 @@ fn validate_applied_migrations(store: &Store, current_version: i64) -> Result<()
 
 fn migration_hash(sql: &str) -> Result<String> {
     Ok(Sha256Digest::hash_reader(sql.as_bytes())?.to_string())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn a_failing_private_second_migration_rolls_back_schema_and_version() {
+        let mut store = Store::open_in_memory().expect("open private migration test store");
+        store.migrate().expect("apply foundation migration");
+        let sql = "CREATE TABLE must_rollback (id TEXT PRIMARY KEY);
+                   INSERT INTO table_that_does_not_exist (id) VALUES ('failure');";
+        let hash = migration_hash(sql).expect("hash faulty test migration");
+        let transaction = store
+            .connection
+            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)
+            .expect("begin private migration transaction");
+
+        assert!(matches!(
+            apply_migration(transaction, 2, sql, &hash),
+            Err(HeleosError::Migration)
+        ));
+        assert_eq!(store.schema_version().expect("schema version"), 1);
+        let exists = store
+            .connection
+            .query_row(
+                "SELECT count(*) FROM sqlite_schema WHERE type = 'table' AND name = ?1",
+                ["must_rollback"],
+                |row| row.get::<_, i64>(0),
+            )
+            .expect("query rolled-back table");
+        assert_eq!(exists, 0);
+    }
 }
