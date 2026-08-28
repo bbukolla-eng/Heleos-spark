@@ -1,0 +1,53 @@
+# Account-level apps are recorded here; this registry does not configure them.
+
+[[github_app]]
+name = "Azure Pipelines"
+origin = "account-level auto-install observed during repository creation"
+version_or_digest = "not inventoried"
+license_or_rights = "third-party service terms; no use admitted"
+data_class = "PROJECT_CONFIDENTIAL"
+owner = "repository owner"
+permissions = "not inventoried; no repository use authorized"
+egress = "prohibited pending owner decision"
+evaluation = "not evaluated"
+rollback = "owner may restrict, suspend, or remove after inventory"
+disposition = "owner_decision_required"
+
+[[github_app]]
+name = "AWS Connector for GitHub"
+origin = "account-level auto-install observed during repository creation"
+version_or_digest = "not inventoried"
+license_or_rights = "third-party service terms; no use admitted"
+data_class = "PROJECT_CONFIDENTIAL"
+owner = "repository owner"
+permissions = "not inventoried; no repository use authorized"
+egress = "prohibited pending owner decision"
+evaluation = "not evaluated"
+rollback = "owner may restrict, suspend, or remove after inventory"
+disposition = "owner_decision_required"
+
+[[github_app]]
+name = "Amazon Q Developer"
+origin = "account-level auto-install observed during repository creation"
+version_or_digest = "not inventoried"
+license_or_rights = "third-party service terms; no use admitted"
+data_class = "PROJECT_CONFIDENTIAL"
+owner = "repository owner"
+permissions = "not inventoried; no repository use authorized"
+egress = "prohibited pending owner decision"
+evaluation = "not evaluated"
+rollback = "owner may restrict, suspend, or remove after inventory"
+disposition = "owner_decision_required"
+
+[[github_app]]
+name = "ECC Tools"
+origin = "account-level auto-install observed during repository creation"
+version_or_digest = "not inventoried"
+license_or_rights = "third-party service terms; no use admitted"
+data_class = "PROJECT_CONFIDENTIAL"
+owner = "repository owner"
+permissions = "not inventoried; no repository use authorized"
+egress = "prohibited pending owner decision"
+evaluation = "not evaluated"
+rollback = "owner may restrict, suspend, or remove after inventory"
+disposition = "owner_decision_required"

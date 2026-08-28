@@ -1,0 +1,61 @@
+# Admission registry. Entries are append-only records; a replacement is a new entry.
+
+[[tool]]
+name = "Rust"
+origin = "https://www.rust-lang.org/tools/install"
+version_or_digest = "1.96.1"
+license_or_rights = "Apache-2.0 OR MIT"
+data_class = "PUBLIC"
+owner = "Heleos engineering"
+permissions = "local compiler execution for declared workspace tasks"
+egress = "no runtime egress; installation/bootstrap is separately authorized"
+evaluation = "approved Foundation 0.1 runtime"
+rollback = "revert the dependent task and restore the previously admitted toolchain"
+
+[[tool]]
+name = "Cargo"
+origin = "https://github.com/rust-lang/cargo"
+version_or_digest = "1.96.1"
+license_or_rights = "Apache-2.0 OR MIT"
+data_class = "PUBLIC"
+owner = "Heleos engineering"
+permissions = "local build and test execution for declared workspace tasks"
+egress = "no runtime egress; dependency bootstrap is separately authorized"
+evaluation = "approved Foundation 0.1 build tool"
+rollback = "revert the dependent task and restore the previously admitted toolchain"
+
+[[tool]]
+name = "SQLite"
+origin = "https://www.sqlite.org/"
+version_or_digest = "version selected by the pinned rusqlite bundled dependency in Task 3"
+license_or_rights = "public domain"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "local embedded metadata storage only"
+egress = "none"
+evaluation = "approved Foundation 0.1 metadata engine; exact bundled version is recorded before Task 3 use"
+rollback = "revert the dependent Task 3 commit and restore a verified encrypted backup"
+
+[[tool]]
+name = "Superpowers"
+origin = "local reviewed Superpowers skill package"
+version_or_digest = "6.3.0"
+license_or_rights = "package license and rights reviewed before use"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "task-scoped local planning, implementation, and verification guidance"
+egress = "none from local skill use"
+evaluation = "admitted for Foundation 0.1 engineering workflow"
+rollback = "stop using the package and revert the dependent task changes"
+
+[[tool]]
+name = "graph-engineering"
+origin = "local reviewed graph-engineering skill package"
+version_or_digest = "cfacb56a05a31ba69bf84d0b8b00f5ce463127ef"
+license_or_rights = "package license and rights reviewed before use"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "task-scoped local architecture guidance"
+egress = "none from local skill use"
+evaluation = "admitted for Foundation 0.1 engineering workflow"
+rollback = "stop using the package and revert the dependent task changes"

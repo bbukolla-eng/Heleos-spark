@@ -6,7 +6,7 @@ This repository is private and starts from a new history. No code, configuration
 
 ## Current phase
 
-The repository is in foundation design. Production implementation begins only after the owner approves the written design in [`docs/superpowers/specs/2026-08-26-heleos-spark-foundation-design.md`](docs/superpowers/specs/2026-08-26-heleos-spark-foundation-design.md).
+Foundation 0.1 implementation on the foundation-0.1 branch
 
 The first implementation milestone will establish the operational database, immutable evidence vault, deterministic PDF intake, and tests before broader AI, research, or interface work.
 
