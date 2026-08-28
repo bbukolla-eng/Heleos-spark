@@ -1,1 +1,4 @@
 .worktrees/
+/target/
+/.heleos/
+/research-cache/

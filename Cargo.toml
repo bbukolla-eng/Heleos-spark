@@ -1,0 +1,16 @@
+[workspace]
+resolver = "3"
+members = ["crates/heleos-core"]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.96.1"
+license = "LicenseRef-Proprietary"
+
+[workspace.dependencies]
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.151"
+serde_jcs = "=0.2.0"
+sha2 = "=0.11.0"
+thiserror = "=2.0.20"
+uuid = { version = "=1.26.0", features = ["serde", "v4"] }
