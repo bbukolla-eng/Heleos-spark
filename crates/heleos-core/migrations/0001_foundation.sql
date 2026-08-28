@@ -221,6 +221,39 @@ BEGIN
     SELECT RAISE(ABORT, 'document revisions require accepted content');
 END;
 
+CREATE TRIGGER sheets_require_accepted_revision_content
+BEFORE INSERT ON sheets
+WHEN NOT EXISTS (
+    SELECT 1
+    FROM document_revisions AS revision
+    JOIN content_objects AS content
+      ON content.sha256 = revision.content_sha256
+    WHERE revision.id = NEW.revision_id
+      AND revision.content_sha256 = NEW.parent_content_sha256
+      AND content.admission_state = 'accepted'
+)
+BEGIN
+    SELECT RAISE(ABORT, 'sheets require their accepted revision content');
+END;
+
+CREATE TRIGGER accepted_evidence_requires_accepted_revision_lineage
+BEFORE INSERT ON evidence_objects
+WHEN NEW.review_state = 'accepted' AND NOT EXISTS (
+    SELECT 1
+    FROM document_revisions AS revision
+    JOIN content_objects AS derivative
+      ON derivative.sha256 = NEW.content_sha256
+    JOIN content_objects AS parent
+      ON parent.sha256 = NEW.parent_content_sha256
+    WHERE revision.id = NEW.document_revision_id
+      AND revision.content_sha256 = NEW.parent_content_sha256
+      AND derivative.admission_state = 'accepted'
+      AND parent.admission_state = 'accepted'
+)
+BEGIN
+    SELECT RAISE(ABORT, 'accepted evidence requires accepted revision lineage');
+END;
+
 CREATE TRIGGER content_objects_no_update
 BEFORE UPDATE ON content_objects BEGIN
     SELECT RAISE(ABORT, 'content_objects rows are immutable');

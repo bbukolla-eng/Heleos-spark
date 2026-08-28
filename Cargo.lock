@@ -213,11 +213,13 @@ name = "heleos-core"
 version = "0.1.0"
 dependencies = [
  "fs2",
+ "libc",
  "rusqlite",
  "serde",
  "serde_jcs",
  "serde_json",
  "sha2",
+ "stellar-agent-windows-identity",
  "tempfile",
  "thiserror",
  "uuid",
@@ -489,6 +491,16 @@ dependencies = [
  "js-sys",
  "rsqlite-vfs",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "stellar-agent-windows-identity"
+version = "0.1.0-alpha.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "229e3f1b7dbf81dbf5a321f8e1f9abb1aff1947d8b2d89eeda28d1d501d7ffbe"
+dependencies = [
+ "thiserror",
+ "windows-sys",
 ]
 
 [[package]]

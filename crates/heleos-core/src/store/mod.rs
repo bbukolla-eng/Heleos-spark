@@ -41,13 +41,18 @@ pub struct WriterLock {
 impl WriterLock {
     fn acquire(database_path: &Path) -> Result<Self> {
         let path = sidecar_path(database_path, ".writer.lock");
-        let (file, identity) =
-            open_checked_regular_file(&path, true, true, PermissionPolicy::ApplyAndVerify)?;
+        let (mut file, identity) = open_checked_regular_file_without_permissions(
+            &path,
+            true,
+            true,
+            PermissionPolicy::ApplyAndVerify,
+        )?;
         match FileExt::try_lock_exclusive(&file) {
             Ok(()) => {}
             Err(error) if lock_is_busy(&error) => return Err(HeleosError::WriterBusy),
             Err(error) => return Err(HeleosError::Io(error)),
         }
+        enforce_permission_policy_on_handle(&mut file, PermissionPolicy::ApplyAndVerify)?;
         recheck_file_identity(&path, &file, &identity)?;
         Ok(Self {
             file,
@@ -81,13 +86,18 @@ struct ReaderLock {
 impl ReaderLock {
     fn acquire(database_path: &Path) -> Result<Self> {
         let path = sidecar_path(database_path, ".writer.lock");
-        let (file, identity) =
-            open_checked_regular_file(&path, false, false, PermissionPolicy::VerifyOnly)?;
+        let (mut file, identity) = open_checked_regular_file_without_permissions(
+            &path,
+            false,
+            false,
+            PermissionPolicy::VerifyOnly,
+        )?;
         match FileExt::try_lock_shared(&file) {
             Ok(()) => {}
             Err(error) if lock_is_busy(&error) => return Err(HeleosError::WriterBusy),
             Err(error) => return Err(HeleosError::Io(error)),
         }
+        enforce_permission_policy_on_handle(&mut file, PermissionPolicy::VerifyOnly)?;
         recheck_file_identity(&path, &file, &identity)?;
         Ok(Self {
             file,
@@ -124,9 +134,9 @@ impl Store {
     pub fn open_writer(path: impl AsRef<Path>) -> Result<Self> {
         let path = path.as_ref();
         check_parent(path, PermissionPolicy::ApplyAndVerify)?;
+        let writer_lock = WriterLock::acquire(path)?;
         reject_invalid_existing_path(path)?;
         check_sqlite_sidecars(path, PermissionPolicy::ApplyAndVerify)?;
-        let writer_lock = WriterLock::acquire(path)?;
         let (database_file, identity) =
             open_checked_regular_file(path, true, true, PermissionPolicy::ApplyAndVerify)?;
         writer_lock.recheck_identity()?;
@@ -158,10 +168,9 @@ impl Store {
     pub fn open_read_only(path: impl AsRef<Path>) -> Result<Self> {
         let path = path.as_ref();
         check_parent(path, PermissionPolicy::VerifyOnly)?;
-        reject_invalid_existing_path(path)?;
-        verify_private_permissions(path)?;
-        check_sqlite_sidecars(path, PermissionPolicy::VerifyOnly)?;
         let reader_lock = ReaderLock::acquire(path)?;
+        reject_invalid_existing_path(path)?;
+        check_sqlite_sidecars(path, PermissionPolicy::VerifyOnly)?;
         check_parent(path, PermissionPolicy::VerifyOnly)?;
         reject_invalid_existing_path(path)?;
         check_sqlite_sidecars(path, PermissionPolicy::VerifyOnly)?;
@@ -314,13 +323,9 @@ impl Store {
         };
         for suffix in ["-wal", "-shm"] {
             let path = sidecar_path(database_path, suffix);
-            match fs::symlink_metadata(&path) {
-                Ok(_) => {
-                    apply_private_permissions(&path)?;
-                    verify_private_permissions(&path)?;
-                }
-                Err(error) if error.kind() == io::ErrorKind::NotFound => {}
-                Err(error) => return Err(HeleosError::Io(error)),
+            match open_checked_regular_file(&path, false, true, PermissionPolicy::ApplyAndVerify) {
+                Ok(_) | Err(HeleosError::NotFound) => {}
+                Err(error) => return Err(error),
             }
         }
         Ok(())
@@ -392,12 +397,10 @@ fn recheck_optional_file(path: &Path, opened: Option<&CheckedSourceFile>) -> Res
 fn copy_snapshot_file(source: &File, destination: &Path, expected_bytes: u64) -> Result<()> {
     let mut source = source.try_clone().map_err(HeleosError::Io)?;
     source.seek(SeekFrom::Start(0)).map_err(HeleosError::Io)?;
-    let mut destination_file = OpenOptions::new()
-        .read(true)
-        .write(true)
-        .create_new(true)
-        .open(destination)
-        .map_err(HeleosError::Io)?;
+    let mut options = OpenOptions::new();
+    options.read(true).write(true).create_new(true);
+    configure_retained_file_sharing(&mut options, true, PermissionPolicy::ApplyAndVerify);
+    let mut destination_file = options.open(destination).map_err(HeleosError::Io)?;
     stream_and_sync_snapshot(
         &mut source,
         &mut destination_file,
@@ -405,7 +408,7 @@ fn copy_snapshot_file(source: &File, destination: &Path, expected_bytes: u64) ->
         File::sync_all,
     )
     .map_err(HeleosError::Io)?;
-    apply_private_permissions(destination)
+    permissions::apply_private_permissions_to_handle(&mut destination_file)
 }
 
 #[derive(Clone, Copy)]
@@ -798,6 +801,13 @@ fn enforce_permission_policy(path: &Path, policy: PermissionPolicy) -> Result<()
     }
 }
 
+fn enforce_permission_policy_on_handle(file: &mut File, policy: PermissionPolicy) -> Result<()> {
+    match policy {
+        PermissionPolicy::ApplyAndVerify => permissions::apply_private_permissions_to_handle(file),
+        PermissionPolicy::VerifyOnly => permissions::verify_private_permissions_on_handle(file),
+    }
+}
+
 fn reject_invalid_existing_path(path: &Path) -> Result<()> {
     match fs::symlink_metadata(path) {
         Ok(metadata) => validate_regular_metadata(&metadata),
@@ -812,48 +822,136 @@ fn open_checked_regular_file(
     writable: bool,
     permission_policy: PermissionPolicy,
 ) -> Result<(File, FileMarker)> {
-    let before = match fs::symlink_metadata(path) {
-        Ok(metadata) => {
-            validate_regular_metadata(&metadata)?;
-            Some(FileMarker::from_metadata(&metadata))
-        }
-        Err(error) if error.kind() == io::ErrorKind::NotFound => None,
-        Err(error) => return Err(HeleosError::Io(error)),
-    };
-
-    let mut options = OpenOptions::new();
-    options.read(true).write(writable);
-    configure_retained_file_sharing(&mut options);
-    if before.is_none() {
-        if !create_if_missing {
-            return Err(HeleosError::NotFound);
-        }
-        options.create_new(true);
-    }
-    let file = options.open(path).map_err(HeleosError::Io)?;
-    let identity = FileMarker::from_metadata(&file.metadata().map_err(HeleosError::Io)?);
-    if let Some(before) = before
-        && before != identity
-    {
-        return Err(HeleosError::PolicyDenied);
-    }
-    recheck_file_identity(path, &file, &identity)?;
-    enforce_permission_policy(path, permission_policy)?;
+    let (mut file, identity) = open_checked_regular_file_without_permissions(
+        path,
+        create_if_missing,
+        writable,
+        permission_policy,
+    )?;
+    enforce_permission_policy_on_handle(&mut file, permission_policy)?;
     recheck_file_identity(path, &file, &identity)?;
     Ok((file, identity))
 }
 
+fn open_checked_regular_file_without_permissions(
+    path: &Path,
+    create_if_missing: bool,
+    writable: bool,
+    permission_policy: PermissionPolicy,
+) -> Result<(File, FileMarker)> {
+    for _ in 0..8 {
+        let before = match fs::symlink_metadata(path) {
+            Ok(metadata) => {
+                validate_regular_metadata(&metadata)?;
+                Some(FileMarker::from_metadata(&metadata))
+            }
+            Err(error) if error.kind() == io::ErrorKind::NotFound => None,
+            Err(error) => return Err(HeleosError::Io(error)),
+        };
+        if before.is_none() && !create_if_missing {
+            return Err(HeleosError::NotFound);
+        }
+
+        let mut options = OpenOptions::new();
+        options.read(true).write(writable);
+        configure_retained_file_sharing(&mut options, writable, permission_policy);
+        if before.is_none() {
+            #[cfg(test)]
+            first_create_test_barrier(path)?;
+            options.create_new(true);
+        }
+        let file = match options.open(path) {
+            Ok(file) => file,
+            Err(error)
+                if create_if_missing
+                    && matches!(
+                        error.kind(),
+                        io::ErrorKind::AlreadyExists | io::ErrorKind::NotFound
+                    ) =>
+            {
+                continue;
+            }
+            Err(error) => return Err(HeleosError::Io(error)),
+        };
+        let metadata = file.metadata().map_err(HeleosError::Io)?;
+        validate_regular_metadata(&metadata)?;
+        let identity = FileMarker::from_metadata(&metadata);
+        if let Some(before) = before
+            && before != identity
+        {
+            return Err(HeleosError::PolicyDenied);
+        }
+        recheck_file_identity(path, &file, &identity)?;
+        return Ok((file, identity));
+    }
+    Err(HeleosError::PolicyDenied)
+}
+
+#[cfg(test)]
+fn first_create_test_barrier(path: &Path) -> Result<()> {
+    use std::time::Instant;
+
+    let Some(expected_path) = std::env::var_os("HELEOS_TEST_FIRST_CREATE_DATABASE") else {
+        return Ok(());
+    };
+    let expected_lock = sidecar_path(Path::new(&expected_path), ".writer.lock");
+    if path != expected_lock {
+        return Ok(());
+    }
+    let barrier = PathBuf::from(
+        std::env::var_os("HELEOS_TEST_FIRST_CREATE_BARRIER").ok_or(HeleosError::PolicyDenied)?,
+    );
+    let role =
+        std::env::var_os("HELEOS_TEST_FIRST_CREATE_ROLE").ok_or(HeleosError::PolicyDenied)?;
+    fs::write(barrier.join(role), b"ready").map_err(HeleosError::Io)?;
+    let deadline = Instant::now() + Duration::from_secs(15);
+    while !barrier.join("release").is_file() {
+        if Instant::now() >= deadline {
+            return Err(HeleosError::Io(io::Error::new(
+                io::ErrorKind::TimedOut,
+                "first-create test barrier timed out",
+            )));
+        }
+        std::thread::sleep(Duration::from_millis(10));
+    }
+    Ok(())
+}
+
 #[cfg(windows)]
-fn configure_retained_file_sharing(options: &mut OpenOptions) {
+fn configure_retained_file_sharing(
+    options: &mut OpenOptions,
+    writable: bool,
+    permission_policy: PermissionPolicy,
+) {
     use std::os::windows::fs::OpenOptionsExt;
+    use windows_permissions::constants::AccessRights;
 
     const FILE_SHARE_READ: u32 = 0x0000_0001;
     const FILE_SHARE_WRITE: u32 = 0x0000_0002;
-    options.share_mode(FILE_SHARE_READ | FILE_SHARE_WRITE);
+    const FILE_FLAG_OPEN_REPARSE_POINT: u32 = 0x0020_0000;
+
+    let mut rights = AccessRights::GenericRead | AccessRights::ReadControl;
+    if writable {
+        rights |= AccessRights::GenericWrite;
+    }
+    if matches!(permission_policy, PermissionPolicy::ApplyAndVerify) {
+        rights |= AccessRights::WriteDac;
+    }
+    options
+        .access_mode(rights.bits())
+        .share_mode(FILE_SHARE_READ | FILE_SHARE_WRITE)
+        .custom_flags(FILE_FLAG_OPEN_REPARSE_POINT);
 }
 
-#[cfg(not(windows))]
-const fn configure_retained_file_sharing(_: &mut OpenOptions) {}
+#[cfg(unix)]
+fn configure_retained_file_sharing(options: &mut OpenOptions, _: bool, _: PermissionPolicy) {
+    use std::os::unix::fs::OpenOptionsExt;
+
+    options.custom_flags(libc::O_NOFOLLOW | libc::O_NONBLOCK);
+}
+
+#[cfg(not(any(unix, windows)))]
+const fn configure_retained_file_sharing(_: &mut OpenOptions, _: bool, _: PermissionPolicy) {}
 
 fn recheck_file_identity(path: &Path, file: &File, expected: &FileMarker) -> Result<()> {
     let handle_metadata = file.metadata().map_err(HeleosError::Io)?;
@@ -962,6 +1060,248 @@ fn database_error(_: rusqlite::Error) -> HeleosError {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn simultaneous_first_use_process_helper() {
+        let Some(database) = std::env::var_os("HELEOS_TEST_FIRST_CREATE_DATABASE") else {
+            return;
+        };
+        let barrier = PathBuf::from(
+            std::env::var_os("HELEOS_TEST_FIRST_CREATE_BARRIER")
+                .expect("first-create barrier directory is configured"),
+        );
+        let mut outcome_name = PathBuf::from(
+            std::env::var_os("HELEOS_TEST_FIRST_CREATE_ROLE")
+                .expect("first-create role is configured"),
+        );
+        outcome_name.set_extension("outcome");
+        let outcome_path = barrier.join(outcome_name);
+        match WriterLock::acquire(Path::new(&database)) {
+            Ok(lock) => {
+                fs::write(outcome_path, b"winner").expect("record first-create winner");
+                let mut release = [0_u8; 1];
+                let _ = io::stdin().read(&mut release);
+                drop(lock);
+            }
+            Err(HeleosError::WriterBusy) => {
+                fs::write(outcome_path, b"busy").expect("record first-create loser");
+            }
+            Err(error) => panic!("first-create caller returned unexpected error: {error:?}"),
+        }
+    }
+
+    #[test]
+    fn simultaneous_first_use_restarts_after_create_race() {
+        use std::process::{Command, Stdio};
+        use std::time::Instant;
+
+        fn wait_for_file(path: &Path) {
+            let deadline = Instant::now() + Duration::from_secs(15);
+            while !path.is_file() {
+                assert!(Instant::now() < deadline, "timed out waiting for {path:?}");
+                std::thread::sleep(Duration::from_millis(10));
+            }
+        }
+
+        let root = tempfile::Builder::new()
+            .prefix("heleos-first-create-source-")
+            .tempdir()
+            .expect("create first-create source directory");
+        apply_private_permissions(root.path()).expect("harden first-create source directory");
+        let database = root.path().join("foundation.sqlite3");
+        let barrier = tempfile::Builder::new()
+            .prefix("heleos-first-create-barrier-")
+            .tempdir()
+            .expect("create first-create barrier directory");
+
+        let mut children = ["caller-a", "caller-b"].map(|role| {
+            Command::new(std::env::current_exe().expect("locate unit test executable"))
+                .arg("--exact")
+                .arg("store::tests::simultaneous_first_use_process_helper")
+                .arg("--nocapture")
+                .env("HELEOS_TEST_FIRST_CREATE_DATABASE", &database)
+                .env("HELEOS_TEST_FIRST_CREATE_BARRIER", barrier.path())
+                .env("HELEOS_TEST_FIRST_CREATE_ROLE", role)
+                .stdin(Stdio::piped())
+                .stdout(Stdio::null())
+                .spawn()
+                .expect("spawn first-create caller")
+        });
+        wait_for_file(&barrier.path().join("caller-a"));
+        wait_for_file(&barrier.path().join("caller-b"));
+        fs::write(barrier.path().join("release"), b"release").expect("release first-create race");
+
+        let outcome_paths =
+            ["caller-a.outcome", "caller-b.outcome"].map(|name| barrier.path().join(name));
+        for path in &outcome_paths {
+            wait_for_file(path);
+        }
+        let outcomes = outcome_paths.map(|path| fs::read_to_string(path).expect("read outcome"));
+        assert_eq!(
+            outcomes
+                .iter()
+                .filter(|outcome| outcome.as_str() == "winner")
+                .count(),
+            1
+        );
+        assert_eq!(
+            outcomes
+                .iter()
+                .filter(|outcome| outcome.as_str() == "busy")
+                .count(),
+            1
+        );
+
+        for child in &mut children {
+            drop(child.stdin.take());
+        }
+        for child in &mut children {
+            assert!(
+                child
+                    .wait()
+                    .expect("wait for first-create caller")
+                    .success()
+            );
+        }
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn retained_open_options_reject_a_final_symlink_at_the_os_boundary() {
+        use std::os::unix::fs::symlink;
+
+        let root = tempfile::Builder::new()
+            .prefix("heleos-retained-nofollow-")
+            .tempdir()
+            .expect("create no-follow fixture directory");
+        apply_private_permissions(root.path()).expect("harden no-follow fixture directory");
+        let target = root.path().join("target");
+        let link = root.path().join("link");
+        fs::write(&target, b"target").expect("write no-follow target");
+        symlink(&target, &link).expect("create final symlink");
+
+        let mut options = OpenOptions::new();
+        options.read(true);
+        configure_retained_file_sharing(&mut options, false, PermissionPolicy::VerifyOnly);
+        assert!(
+            options.open(&link).is_err(),
+            "retained open followed a final symlink"
+        );
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn permission_mutation_targets_the_retained_handle_after_path_replacement() {
+        use std::os::unix::fs::PermissionsExt;
+
+        let root = tempfile::Builder::new()
+            .prefix("heleos-retained-permission-")
+            .tempdir()
+            .expect("create retained-permission fixture directory");
+        apply_private_permissions(root.path()).expect("harden retained-permission directory");
+        let path = root.path().join("target");
+        let retained_path = root.path().join("retained");
+        fs::write(&path, b"retained").expect("write retained-permission target");
+        fs::set_permissions(&path, fs::Permissions::from_mode(0o640))
+            .expect("broaden original permissions");
+        let mut retained = File::open(&path).expect("open retained-permission handle");
+        fs::rename(&path, &retained_path).expect("move retained object away from pathname");
+        fs::write(&path, b"replacement").expect("replace retained pathname");
+        fs::set_permissions(&path, fs::Permissions::from_mode(0o640))
+            .expect("broaden replacement permissions");
+
+        permissions::apply_private_permissions_to_handle(&mut retained)
+            .expect("harden retained object by handle");
+
+        assert_eq!(
+            fs::metadata(retained_path)
+                .expect("retained object metadata")
+                .permissions()
+                .mode()
+                & 0o777,
+            0o600
+        );
+        assert_eq!(
+            fs::metadata(path)
+                .expect("replacement metadata")
+                .permissions()
+                .mode()
+                & 0o777,
+            0o640
+        );
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn retained_database_and_lock_handles_deny_delete_and_rename_until_store_drop() {
+        let root = tempfile::Builder::new()
+            .prefix("heleos-windows-no-delete-share-")
+            .tempdir()
+            .expect("create Windows no-delete fixture directory");
+        apply_private_permissions(root.path()).expect("harden Windows no-delete fixture directory");
+        let database = root.path().join("foundation.sqlite3");
+        let lock = sidecar_path(&database, ".writer.lock");
+        let mut store = Store::open_writer(&database).expect("open Windows no-delete writer");
+        store.migrate().expect("migrate Windows no-delete fixture");
+
+        let database_moved = root.path().join("database-moved");
+        let lock_moved = root.path().join("lock-moved");
+        assert!(fs::rename(&database, &database_moved).is_err());
+        assert!(fs::remove_file(&database).is_err());
+        assert!(fs::rename(&lock, &lock_moved).is_err());
+        assert!(fs::remove_file(&lock).is_err());
+
+        drop(store);
+        fs::rename(&database, &database_moved).expect("rename database after retained handle drop");
+        fs::write(&database, b"replacement").expect("replace database after retained handle drop");
+        fs::remove_file(&database).expect("delete replacement database after handle drop");
+        fs::rename(&database_moved, &database).expect("restore database after replacement proof");
+        fs::remove_file(&database).expect("delete database after retained handle drop");
+
+        fs::rename(&lock, &lock_moved).expect("rename lock after retained handle drop");
+        fs::write(&lock, b"replacement").expect("replace lock after retained handle drop");
+        fs::remove_file(&lock).expect("delete replacement lock after handle drop");
+        fs::rename(&lock_moved, &lock).expect("restore lock after replacement proof");
+        fs::remove_file(&lock).expect("delete lock after retained handle drop");
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn retained_opens_reject_file_reparse_points_and_nonregular_paths() {
+        use std::os::windows::fs::symlink_file;
+
+        let root = tempfile::Builder::new()
+            .prefix("heleos-windows-reparse-")
+            .tempdir()
+            .expect("create Windows reparse fixture directory");
+        apply_private_permissions(root.path()).expect("harden Windows reparse fixture directory");
+        let target = root.path().join("target");
+        fs::write(&target, b"target").expect("write Windows reparse target");
+        apply_private_permissions(&target).expect("harden Windows reparse target");
+        let reparse = root.path().join("reparse");
+        symlink_file(&target, &reparse).expect("create Windows file reparse point");
+
+        assert!(matches!(
+            open_checked_regular_file(&reparse, false, false, PermissionPolicy::VerifyOnly),
+            Err(HeleosError::PolicyDenied)
+        ));
+
+        let directory = root.path().join("not-regular");
+        fs::create_dir(&directory).expect("create Windows nonregular fixture");
+        apply_private_permissions(&directory).expect("harden Windows nonregular fixture");
+        assert!(matches!(
+            open_checked_regular_file(&directory, false, false, PermissionPolicy::VerifyOnly),
+            Err(HeleosError::PolicyDenied)
+        ));
+
+        let database = root.path().join("foundation.sqlite3");
+        let lock = sidecar_path(&database, ".writer.lock");
+        symlink_file(&target, &lock).expect("create Windows lock-file reparse point");
+        assert!(matches!(
+            WriterLock::acquire(&database),
+            Err(HeleosError::PolicyDenied)
+        ));
+    }
 
     #[test]
     fn file_reader_enables_sqlite_query_only() {

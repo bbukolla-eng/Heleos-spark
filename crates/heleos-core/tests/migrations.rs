@@ -6,12 +6,15 @@ use std::io::{BufRead, BufReader, Read, Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
 
+use fs2::FileExt;
 use heleos_core::{
     HeleosError, INTEGRITY_VIOLATION_LIMIT, Store, apply_private_permissions,
     verify_private_permissions,
 };
+#[cfg(unix)]
+use rusqlite::OpenFlags;
 use rusqlite::config::DbConfig;
-use rusqlite::{Connection, OpenFlags, params};
+use rusqlite::{Connection, params};
 use uuid::Uuid;
 
 const TABLES: [&str; 14] = [
@@ -612,6 +615,15 @@ fn declared_uniqueness_foreign_keys_and_delete_actions_are_independently_enforce
     store
         .with_immediate_transaction(|tx| {
             let uniqueness_collisions = [
+                (
+                    "content object sha256",
+                    "INSERT INTO content_objects
+                        (sha256, byte_length, admission_state, vault_key, created_at_ms,
+                         created_by, quarantine_reason)
+                     VALUES (
+                        'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+                        99, 'accepted', 'different-vault-key', 1, 'actor', NULL)",
+                ),
                 (
                     "document revision content",
                     "INSERT INTO document_revisions
@@ -1239,6 +1251,146 @@ fn quarantined_content_cannot_create_a_revision_or_sheet() {
 }
 
 #[test]
+fn raw_transactions_enforce_sheet_scale_and_accepted_evidence_lineage() {
+    let database = TestDatabase::new("raw-lineage-boundary");
+    let mut store = migrated_store(&database);
+    insert_complete_fixture(&mut store, "lineage");
+
+    store
+        .with_immediate_transaction(|tx| {
+            for (digest, state, reason) in [
+                ("d".repeat(64), "accepted", None),
+                ("f".repeat(64), "quarantined", Some("suspicious")),
+            ] {
+                tx.execute(
+                    "INSERT INTO content_objects
+                        (sha256, byte_length, admission_state, vault_key, created_at_ms,
+                         created_by, quarantine_reason)
+                     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
+                    params![
+                        digest,
+                        1_i64,
+                        state,
+                        format!("vault-{state}"),
+                        1_i64,
+                        "actor",
+                        reason
+                    ],
+                )
+                .expect("insert lineage fixture content");
+            }
+
+            for (sheet_id, parent_hash) in [
+                ("sheet-quarantined-parent", "f".repeat(64)),
+                ("sheet-mismatched-accepted-parent", "d".repeat(64)),
+            ] {
+                assert!(
+                    tx.execute(
+                        "INSERT INTO sheets
+                            (id, revision_id, zero_based_page_index, width_micropoints,
+                             height_micropoints, rotation_degrees, unit, parent_content_sha256,
+                             transform_json)
+                         VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)",
+                        params![
+                            sheet_id,
+                            "revision-1",
+                            1_i64,
+                            1_i64,
+                            1_i64,
+                            0_i64,
+                            "pt",
+                            parent_hash,
+                            "{}"
+                        ],
+                    )
+                    .is_err(),
+                    "raw SQL attached invalid parent content to a sheet"
+                );
+                assert!(
+                    tx.execute(
+                        "INSERT INTO scales
+                            (id, sheet_id, numerator, denominator, source, created_at_ms,
+                             created_by)
+                         VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
+                        params![
+                            format!("scale-{sheet_id}"),
+                            sheet_id,
+                            1_i64,
+                            1_i64,
+                            "fixture",
+                            1_i64,
+                            "actor"
+                        ],
+                    )
+                    .is_err(),
+                    "raw SQL attached a scale to an invalid sheet"
+                );
+            }
+
+            for (id, derivative, parent) in [
+                (
+                    "accepted-quarantined-derivative",
+                    "f".repeat(64),
+                    "a".repeat(64),
+                ),
+                (
+                    "accepted-quarantined-parent",
+                    "d".repeat(64),
+                    "f".repeat(64),
+                ),
+                ("accepted-mismatched-parent", "d".repeat(64), "d".repeat(64)),
+            ] {
+                assert!(
+                    tx.execute(
+                        "INSERT INTO evidence_objects
+                            (id, project_id, job_id, document_revision_id, content_sha256,
+                             parent_content_sha256, extraction_method, parameters_json,
+                             review_state, created_at_ms)
+                         VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)",
+                        params![
+                            id,
+                            "project-1",
+                            "job-1",
+                            "revision-1",
+                            derivative,
+                            parent,
+                            "fixture",
+                            "{}",
+                            "accepted",
+                            1_i64
+                        ],
+                    )
+                    .is_err(),
+                    "raw SQL admitted invalid accepted evidence lineage: {id}"
+                );
+            }
+
+            tx.execute(
+                "INSERT INTO evidence_objects
+                    (id, project_id, job_id, document_revision_id, content_sha256,
+                     parent_content_sha256, extraction_method, parameters_json, review_state,
+                     created_at_ms)
+                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)",
+                params![
+                    "unreviewed-quarantined-evidence",
+                    "project-1",
+                    "job-1",
+                    "revision-1",
+                    "f".repeat(64),
+                    "f".repeat(64),
+                    "fixture",
+                    "{}",
+                    "unreviewed",
+                    1_i64
+                ],
+            )
+            .expect("non-accepted review state preserves quarantined evidence");
+            Ok(())
+        })
+        .expect("complete raw lineage boundary checks");
+}
+
+#[test]
 fn a_schema_newer_than_the_binary_fails_closed() {
     let database = TestDatabase::new("future-version");
     let mut store = migrated_store(&database);
@@ -1282,6 +1434,30 @@ fn writer_lock_process_helper() {
     let _store = Store::open_writer(database).expect("child obtains writer lock");
     println!("HELEOS_WRITER_LOCKED");
     std::io::stdout().flush().expect("flush child readiness");
+    let mut release = [0_u8; 1];
+    let _ = std::io::stdin().read(&mut release);
+}
+
+#[test]
+fn paused_writer_lock_process_helper() {
+    let Some(database) = env::var_os("HELEOS_TEST_PAUSED_WRITER_DATABASE") else {
+        return;
+    };
+    let database = PathBuf::from(database);
+    let lock_path = database_sidecar(&database, ".writer.lock");
+    let lock = OpenOptions::new()
+        .read(true)
+        .write(true)
+        .create_new(true)
+        .open(&lock_path)
+        .expect("create paused-writer application lock");
+    apply_private_permissions(&lock_path).expect("harden paused-writer application lock");
+    lock.lock_exclusive()
+        .expect("acquire paused-writer exclusive lock");
+    println!("HELEOS_PAUSED_WRITER_LOCKED");
+    std::io::stdout()
+        .flush()
+        .expect("flush paused-writer signal");
     let mut release = [0_u8; 1];
     let _ = std::io::stdin().read(&mut release);
 }
@@ -1338,6 +1514,78 @@ fn independent_processes_cannot_both_hold_the_writer_lock() {
     ));
     drop(child.stdin.take());
     assert!(child.wait().expect("wait for lock holder").success());
+}
+
+#[test]
+fn reader_contends_on_existing_lock_before_database_or_sidecar_inspection() {
+    let database = TestDatabase::new("reader-lock-first");
+    apply_private_permissions(&database.root).expect("harden paused-writer parent");
+    let mut child = Command::new(env::current_exe().expect("locate test executable"))
+        .arg("--exact")
+        .arg("paused_writer_lock_process_helper")
+        .arg("--nocapture")
+        .env("HELEOS_TEST_PAUSED_WRITER_DATABASE", &database.path)
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .spawn()
+        .expect("spawn paused writer");
+    let stdout = child.stdout.take().expect("capture paused-writer stdout");
+    let mut reader = BufReader::new(stdout);
+    let mut line = String::new();
+    loop {
+        let bytes = reader
+            .read_line(&mut line)
+            .expect("read paused-writer readiness");
+        assert_ne!(bytes, 0, "paused writer exited before locking");
+        if line.contains("HELEOS_PAUSED_WRITER_LOCKED") {
+            break;
+        }
+        line.clear();
+    }
+    assert!(!database.path.exists());
+
+    match Store::open_read_only(&database.path) {
+        Err(HeleosError::WriterBusy) => {}
+        Err(error) => panic!("reader returned {error:?} instead of exact WriterBusy"),
+        Ok(_) => panic!("reader opened while the exclusive application lock was held"),
+    }
+
+    drop(child.stdin.take());
+    assert!(child.wait().expect("wait for paused writer").success());
+}
+
+#[cfg(unix)]
+#[test]
+fn writer_denied_by_live_reader_does_not_mutate_authoritative_metadata() {
+    use std::os::unix::fs::PermissionsExt;
+
+    let database = TestDatabase::new("denied-writer-no-mutation");
+    spawn_crash_left_writer(&database);
+    let wal = database_sidecar(&database.path, "-wal");
+    let shm = database_sidecar(&database.path, "-shm");
+    let reader = Store::open_read_only(&database.path).expect("hold shared reader lock");
+
+    for path in [&database.path, &wal, &shm] {
+        fs::set_permissions(path, fs::Permissions::from_mode(0o640))
+            .expect("make authoritative source metadata detectably broad");
+    }
+    let paths = [&database.root, &database.path, &wal, &shm];
+    let before = paths
+        .iter()
+        .map(|path| UnixMetadataSnapshot::read(path))
+        .collect::<Vec<_>>();
+
+    assert!(matches!(
+        Store::open_writer(&database.path),
+        Err(HeleosError::WriterBusy)
+    ));
+    let after = paths
+        .iter()
+        .map(|path| UnixMetadataSnapshot::read(path))
+        .collect::<Vec<_>>();
+    assert_eq!(after, before);
+
+    drop(reader);
 }
 
 #[test]
@@ -1528,10 +1776,7 @@ fn read_only_open_rejects_broad_permissions_without_repairing_them() {
     use std::os::unix::fs::{PermissionsExt, symlink};
 
     let database = TestDatabase::new("read-only-permissions");
-    let mut writer = migrated_store(&database);
-    writer
-        .with_immediate_transaction(|_| Ok(()))
-        .expect("materialize SQLite sidecars");
+    spawn_crash_left_writer(&database);
     let wal = database_sidecar(&database.path, "-wal");
     let shm = database_sidecar(&database.path, "-shm");
 
@@ -1599,9 +1844,9 @@ fn read_only_open_rejects_broad_permissions_without_repairing_them() {
     );
     fs::set_permissions(&shm, fs::Permissions::from_mode(0o600)).expect("restore SHM mode");
 
-    drop(writer);
     let target = database.root.join("hostile-sidecar-target");
     File::create(&target).expect("create hostile target");
+    fs::remove_file(&wal).expect("remove real WAL before hostile replacement");
     symlink(&target, &wal).expect("create WAL symlink");
     assert!(matches!(
         Store::open_read_only(&database.path),
@@ -1609,6 +1854,7 @@ fn read_only_open_rejects_broad_permissions_without_repairing_them() {
     ));
     fs::remove_file(&wal).expect("remove WAL symlink");
 
+    fs::remove_file(&shm).expect("remove real SHM before hostile replacement");
     fs::create_dir(&shm).expect("create nonregular SHM");
     assert!(matches!(
         Store::open_read_only(&database.path),
@@ -1861,7 +2107,6 @@ fn unix_private_permissions_have_exact_modes_and_reject_hostile_readback() {
 #[cfg(unix)]
 #[test]
 fn symlink_and_non_regular_database_or_lock_paths_are_rejected() {
-    use std::ffi::OsString;
     use std::os::unix::fs::symlink;
 
     let database = TestDatabase::new("path-types");
@@ -1873,6 +2118,8 @@ fn symlink_and_non_regular_database_or_lock_paths_are_rejected() {
         Err(HeleosError::PolicyDenied)
     ));
     fs::remove_file(&database.path).expect("remove database symlink");
+    let lock_path = database_sidecar(&database.path, ".writer.lock");
+    fs::remove_file(&lock_path).expect("remove lock created before database inspection");
 
     let directory_database = database.root.join("directory.sqlite3");
     fs::create_dir(&directory_database).expect("create non-regular database path");
@@ -1881,9 +2128,6 @@ fn symlink_and_non_regular_database_or_lock_paths_are_rejected() {
         Err(HeleosError::PolicyDenied)
     ));
 
-    let mut lock_name = OsString::from(database.path.as_os_str());
-    lock_name.push(".writer.lock");
-    let lock_path = PathBuf::from(lock_name);
     let lock_target = database.root.join("lock-target");
     File::create(&lock_target).expect("create lock target");
     symlink(&lock_target, &lock_path).expect("create lock symlink");
