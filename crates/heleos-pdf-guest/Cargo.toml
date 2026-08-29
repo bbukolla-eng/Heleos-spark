@@ -1,0 +1,26 @@
+[package]
+name = "heleos-pdf-guest"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "heleos_pdf_guest"
+path = "src/main.rs"
+
+[dependencies]
+heleos-pdf-protocol = { path = "../heleos-pdf-protocol" }
+lopdf.workspace = true
+
+[dev-dependencies]
+heleos-test-fixtures = { path = "../heleos-test-fixtures" }

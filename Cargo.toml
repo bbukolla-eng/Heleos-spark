@@ -1,6 +1,11 @@
 [workspace]
 resolver = "3"
-members = ["crates/heleos-core"]
+members = [
+    "crates/heleos-core",
+    "crates/heleos-pdf-guest",
+    "crates/heleos-pdf-protocol",
+    "crates/heleos-test-fixtures",
+]
 
 [workspace.package]
 edition = "2024"
@@ -8,10 +13,12 @@ rust-version = "1.96.1"
 license = "LicenseRef-Proprietary"
 
 [workspace.dependencies]
+bytes = "=1.12.1"
 cap-fs-ext = { version = "=4.0.3", default-features = false, features = ["std"] }
 cap-std = { version = "=4.0.3", default-features = false }
 fs2 = "=0.4.3"
 libc = "=0.2.189"
+lopdf = { version = "=0.44.0", default-features = false }
 proptest = { version = "=1.11.0", default-features = false, features = ["std"] }
 rusqlite = { version = "=0.40.2", features = ["bundled", "backup", "functions"] }
 serde = { version = "=1.0.229", features = ["derive"] }
@@ -20,7 +27,13 @@ serde_jcs = "=0.2.0"
 sha2 = "=0.11.0"
 thiserror = "=2.0.20"
 tempfile = "=3.27.0"
+tokio = { version = "=1.51.1", features = ["rt-multi-thread", "sync", "time"] }
+toml = { version = "=1.1.4", default-features = false, features = ["parse", "serde", "std"] }
 uuid = { version = "=1.26.0", features = ["serde", "v4"] }
+wasmparser = { version = "=0.254.0", default-features = false }
+wasmtime = { version = "=48.0.1", default-features = false, features = ["async", "call-hook", "cranelift", "runtime", "std"] }
+wasmtime-wasi = { version = "=48.0.1", default-features = false, features = ["p1"] }
+wat = { version = "=1.254.0", default-features = false }
 stellar-agent-windows-identity = "=0.1.0-alpha.6"
 windows-acl = "=0.3.0"
 windows-permissions = "=0.2.4"

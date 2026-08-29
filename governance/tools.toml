@@ -286,6 +286,317 @@ evaluation = "admitted for Foundation 0.1 only in the reviewed local-only mode w
 rollback = "stop using the package and revert the dependent task changes"
 
 [[tool]]
+name = "lopdf"
+origin = "https://crates.io/crates/lopdf; source repository https://github.com/J-F-Liu/lopdf"
+version_or_digest = "0.44.0"
+registry_checksum = "5e2ec995d822e05cabc3f06d196ee43650af3fe4fe38012cacb35e0c3d113b68"
+license_or_rights = "MIT"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "PDF parsing and deterministic synthetic-fixture generation only in heleos-pdf-guest and heleos-test-fixtures; default features disabled; absent from heleos-core normal edges; no text extraction, rendering, action execution, link following, external fetch, or unbounded stream decoding"
+egress = "none; the WASIp1 guest receives no network capability"
+evaluation = "admitted for the bounded inert Foundation 0.1 PDF guest after strict object-stream preflight, xref/object bijection audit, complete object scan, and capability-sandbox enforcement"
+msrv = "1.88"
+resolved_features = "none"
+build_script = "none"
+unsafe_surface = "the crate is Rust but its cryptography, compression, random-state, encoding, and platform transitives include upstream unsafe implementations; all Heleos-authored crates remain forbid(unsafe_code)"
+rollback = "revert Task 5, remove the guest and fixture parser edges, and regenerate Cargo.lock; quarantine PDF intake rather than parse outside the sandbox"
+
+[[tool]]
+name = "bytes"
+origin = "https://crates.io/crates/bytes; source repository https://github.com/tokio-rs/bytes"
+version_or_digest = "1.12.1"
+registry_checksum = "fc652a48c352aef3ea3aed32080501cf3ef6ed5da78602a020c991775b0aff04"
+license_or_rights = "MIT"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "type-only direct access to bytes::Bytes required by Wasmtime-WASI 48.0.1's public OutputStream::write signature for Heleos recording closed stderr and bounded-output wrappers; no buffer pooling, I/O, network, or parser authority"
+egress = "none"
+evaluation = "explicitly admitted after exact cached-source review showed wasmtime-wasi reexports OutputStream but not its bytes::Bytes parameter type; package identity was already present transitively and the direct edge adds no package to Cargo.lock"
+msrv = "1.57"
+resolved_features = "default,std already active in the frozen Wasmtime-WASI/Tokio graph"
+build_script = "none"
+unsafe_surface = "upstream Bytes storage internals only; no native code and no Heleos-authored unsafe code"
+rollback = "revert Task 5 and remove the custom WASI stream implementation; never replace typed recording with error-display parsing"
+
+[[tool]]
+name = "wasmtime"
+origin = "https://crates.io/crates/wasmtime; source repository https://github.com/bytecodealliance/wasmtime"
+version_or_digest = "48.0.1"
+registry_checksum = "1bd39f78fe9bc82cee4025ec9d52118269e9a1498016cc60119b14f2e1d86a8d"
+license_or_rights = "Apache-2.0 WITH LLVM-exception"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "trusted local core-Wasm compilation and async execution only through Module::from_binary with exact features async, call-hook, cranelift, runtime, and std; file loading, WAT parsing in production, native artifact deserialization, cache APIs, component model, threads, multi-memory, and memory64 are prohibited"
+egress = "none; no network import or host capability is linked"
+evaluation = "admitted for one manifest-bound WASIp1 PDF guest with fuel, epoch, static and dynamic resource admission, typed traps, and no ambient authority"
+msrv = "1.95.0"
+resolved_features = "async,call-hook,cranelift,runtime,std"
+build_script = "upstream Wasmtime/Cranelift build scripts generate local compiler tables and cfg/versioned bindings; no network access"
+unsafe_surface = "upstream runtime, JIT, fibers, unwinders, object loading, executable-memory, platform ABI, and Cranelift code generation contain unsafe/native surface; Heleos uses only safe APIs and forbids authored unsafe code"
+rollback = "revert Task 5, remove the Wasmtime host, and disable PDF acceptance until a separately governed sandbox is admitted"
+
+[[tool]]
+name = "wasmtime-wasi"
+origin = "https://crates.io/crates/wasmtime-wasi; source repository https://github.com/bytecodealliance/wasmtime"
+version_or_digest = "48.0.1"
+registry_checksum = "85dd81ee95792682ea5b279c9ed352f6b8a2cba084c2f8abdb225e6933323fed"
+license_or_rights = "Apache-2.0 WITH LLVM-exception"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "WASIp1 linker/context only with feature p1; one read-only /input preopen, finite canonical stdin, bounded stdout, recording closed stderr, deterministic random_get capped at 32 bytes, and no args, environment, inherited stdio, clocks, sockets, poll_oneoff, proc_raise, or other preopen"
+egress = "none at runtime; the p1 feature compiles P2/Tokio URL/socket-capable transitive code, but the verified module import set and host construction expose no network capability"
+evaluation = "admitted for the exact Foundation 0.1 capability contract; unavoidable builder default host entropy is overwritten for secure RNG, insecure RNG, and insecure seed before build_p1 and is not guest-visible"
+msrv = "1.95.0"
+resolved_features = "p1"
+build_script = "upstream wiggle/WIT build and procedural-macro generation runs locally without network access"
+unsafe_surface = "inherits Wasmtime runtime/platform unsafe plus cap-std, rustix, Tokio, URL/ICU, and WASI I/O upstream surfaces; Heleos-authored code remains forbid(unsafe_code)"
+rollback = "revert Task 5 and remove the WASI host; never replace it with inherited ambient WASI defaults"
+
+[[tool]]
+name = "tokio"
+origin = "https://crates.io/crates/tokio; source repository https://github.com/tokio-rs/tokio"
+version_or_digest = "1.51.1"
+registry_checksum = "f66bf9585cda4b724d3e78ab34b73fb2bbaba9011b9bfdf69dc836382ea13b8c"
+license_or_rights = "MIT"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "one dedicated PDF runtime-owner thread using only rt-multi-thread, sync, and time; exactly two workers and timer-driven timeout; no Tokio network client, filesystem, process, macros, signal, or inherited runtime authority"
+egress = "none; socket2/mio platform code is transitive but no socket is opened or supplied"
+evaluation = "admitted for bounded async Wasmtime execution while the public API remains synchronous and safe inside unrelated Tokio runtimes"
+msrv = "1.71"
+resolved_features = "rt,rt-multi-thread,sync,time"
+build_script = "none"
+unsafe_surface = "upstream scheduler, I/O driver, synchronization, mio, socket2, libc, and Windows platform implementations contain unsafe/FFI; Heleos-authored code remains forbid(unsafe_code)"
+rollback = "revert Task 5 and remove the runtime-owner thread; do not block_on or drop a runtime in caller contexts"
+
+[[tool]]
+name = "toml"
+origin = "https://crates.io/crates/toml; source repository https://github.com/toml-rs/toml"
+version_or_digest = "1.1.4+spec-1.1.0"
+registry_checksum = "3aace63f4bbcdfc2c965b059de67119c89c4017a70d633be6c104910f67056f5"
+license_or_rights = "MIT OR Apache-2.0"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "parse only the embedded, size-bounded, deny-unknown-fields PDF guest manifest with exact features parse, serde, and std and default features disabled"
+egress = "none"
+evaluation = "admitted for the tracked artifact trust root; callers cannot provide a manifest or path override"
+msrv = "1.85"
+resolved_features = "parse,serde,std"
+build_script = "none"
+unsafe_surface = "parser transitives are upstream Rust; no new Heleos unsafe code or native surface"
+rollback = "revert Task 5 and reject guest loading until a pinned manifest parser is readmitted"
+
+[[tool]]
+name = "wasmparser"
+origin = "https://crates.io/crates/wasmparser; source repository https://github.com/bytecodealliance/wasm-tools"
+version_or_digest = "0.254.0"
+registry_checksum = "d5769a29f799fbab136aaf65b4fe5384cd7d93fe6fc9ba0dcb6c8382a1f16e27"
+license_or_rights = "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "optional artifact-host feature in the parser-free protocol crate for pure in-memory import/export/start-section extraction and binary-shape validation; absent from the PDF guest graph; no file or process launch"
+egress = "none"
+evaluation = "admitted as the single shared Task 5/Task 7 artifact-normalization implementation"
+msrv = "1.85.0"
+resolved_features = "validate via the host graph; default features disabled"
+build_script = "none"
+unsafe_surface = "upstream parser and collection implementations only; no Heleos-authored unsafe code"
+rollback = "revert Task 5 and reject all unverified guest artifacts"
+
+[[tool]]
+name = "wat"
+origin = "https://crates.io/crates/wat; source repository https://github.com/bytecodealliance/wasm-tools"
+version_or_digest = "1.254.0"
+registry_checksum = "7127f7f9b8f127c879991cecd35f494e4628bae1b0874c681414d8d8831e952c"
+license_or_rights = "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
+data_class = "PUBLIC"
+owner = "Heleos engineering"
+permissions = "dev-only in-memory construction of malicious core-Wasm test modules inside wasi_host unit tests; default features disabled; never enabled in Wasmtime production or accepted by ApprovedPdfGuest"
+egress = "none"
+evaluation = "admitted only for deterministic sandbox negative tests"
+msrv = "1.85.0"
+resolved_features = "none"
+build_script = "none"
+unsafe_surface = "upstream WAT/WAST parser dependencies only; no runtime/native authority"
+rollback = "revert Task 5 test modules and remove the dev dependency"
+
+[[tool]]
+name = "Task 5 deterministic PDF sandbox transitive dependency graph"
+origin = "https://crates.io via the pinned Cargo.lock; direct source repositories named in the preceding Task 5 records"
+version_or_digest = "exact Task 5 lock additions rooted at lopdf 0.44.0, wasmtime 48.0.1, wasmtime-wasi 48.0.1, tokio 1.51.1, toml 1.1.4+spec-1.1.0, optional wasmparser 0.254.0, and dev-only wat 1.254.0"
+license_or_rights = "per-package SPDX expressions recorded in transitive_packages; all are recorded before behavior and remain subject to Task 10 cargo-deny/advisory review"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "local PDF parsing in the capability guest; trusted core-Wasm compilation/execution; deterministic WASIp1 I/O/random shim; canonical protocol/artifact parsing; dev-only malicious-module assembly. No production file loader, WAT parser, native artifact deserialization, cache, network import, socket, clock, process, or shell authority"
+egress = "none at runtime; network-capable P2/Tokio/URL/socket transitives are compiled but unreachable without an imported and instantiated host capability, which Task 5 denies"
+evaluation = "complete 156-package Task 5 addition inventory with registry checksum, declared license, declared MSRV or unspecified, build-script presence, and Cargo-resolved feature set"
+transitive_packages = """
+addr2line@0.26.1 59317f77929f0e679d39364702289274de2f0f0b22cbf50b2b8cff2169a0b27a [Apache-2.0 OR MIT] msrv=1.88 no-build features=std
+adler2@2.0.1 320119579fcad9c21884f5c4861d16174d0e06250625266f50fe6898340abefa [0BSD OR MIT OR Apache-2.0] msrv=unspecified no-build features=none
+aes@0.9.3 35f0f96ce78e38c3dc6d8948aa8163d06385be74000f3c7a95bf1eef35d3ea32 [MIT OR Apache-2.0] msrv=1.89 no-build features=none
+allocator-api2@0.2.21 683d7910e743518b0e34f1186f92494becacb047c7b6bf616c96772180fef923 [MIT OR Apache-2.0] msrv=1.63 no-build features=alloc
+anyhow@1.0.104 330a5ed07fa54e4702c9d6c4174f74427fc0ef6e214bbd677ae50a5099946470 [MIT OR Apache-2.0] msrv=1.68 build.rs features=default,std
+arbitrary@1.4.2 c3d036a3c4ab069c7b410a2ce876bd74808d2d0888a82667669f8e783a898bf1 [MIT OR Apache-2.0] msrv=1.63.0 no-build features=none
+async-trait@0.1.92 82f6aeea286b8eb4dd3431a1be1b59d290ace00f5bfd8e2a159bc2a05e2c1667 [MIT OR Apache-2.0] msrv=1.71 no-build features=none
+block-buffer@0.10.4 3078c7629b62d3f0439517fa394996acacc5cbc91c5a20d8c658e77abd503a71 [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+block-padding@0.4.2 710f1dd022ef4e93f8a438b4ba958de7f64308434fa6a87104481645cc30068b [MIT OR Apache-2.0] msrv=1.85 no-build features=none
+bytes@1.12.1 fc652a48c352aef3ea3aed32080501cf3ef6ed5da78602a020c991775b0aff04 [MIT] msrv=1.57 no-build features=default,std
+cbc@0.2.1 ce2dc9ee5f88d11e0beb842c88b33c8a5cf0d1329c4b19494af42b07dbfe8896 [MIT OR Apache-2.0] msrv=1.85 no-build features=block-padding,default
+chacha20@0.10.2 65c35e4b699c7e15ccbe7ee35c005e4fc0a278d22238a2857e6ce2dadeda1b06 [MIT OR Apache-2.0] msrv=1.85 no-build features=rng
+cipher@0.5.2 e8cf2a2c93cd704877c0858356ed03480ff301ee950b43f1cbe4573b088bfa6c [MIT OR Apache-2.0] msrv=1.85 no-build features=block-padding
+cobs@0.3.0 0fa961b519f0b462e3a3b4a34b64d119eeaca1d59af726fe450bbba07a9fc0a1 [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+cpp_demangle@0.5.1 0667304c32ea56cb4cd6d2d7c0cfe9a2f8041229db8c033af7f8d69492429def [MIT OR Apache-2.0] msrv=unspecified build.rs features=alloc,std
+cpubits@0.1.1 15b85f9c39137c3a891689859392b1bd49812121d0d61c9caf00d46ed5ce06ae [MIT OR Apache-2.0] msrv=1.85 no-build features=none
+cpufeatures@0.2.17 59ed5838eebb26a2bb2e58f6d5b5316989ae9d08bab10e0e6d103e656d1b0280 [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+cranelift-assembler-x64-meta@0.135.1 e777252ea3ec9daffa71408fbfe0793ab0a7b7bc3b2cf0f417dd0fa33964b8ef [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=none
+cranelift-assembler-x64@0.135.1 9903e767cc0a95a59950de099a6b1d61e1476f774be1cdfa06d7ccdc9bfae56f [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 build.rs features=none
+cranelift-bforest@0.135.1 7828208a36e6627481cea61bd24c6234e31411d5c58b48e80ca094a1d593b944 [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=none
+cranelift-bitset@0.135.1 a58c8447cc59ef98c49096679f81392ad0acec2224cea2bef52011f5169f9d02 [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=enable-serde
+cranelift-codegen-meta@0.135.1 8d8ab23e63d78ea6bbda18ae1ed9c958bc1cb88d90fb5e95f5ba62e9c019474b [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=pulley
+cranelift-codegen-shared@0.135.1 24319a996b1ef40ebf8af69b39c868c790b35a42cfe38edacfd8c9deb75ea712 [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=none
+cranelift-codegen@0.135.1 ce520e899df1de583e7b564eafd66760fbc147d72894d2278ddac57a1489fcc0 [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 build.rs features=enable-serde,gimli,host-arch,incremental-cache,postcard,pulley,serde,serde_derive,sha2,std,timing,unwind
+cranelift-control@0.135.1 cf9856d68cc2cefb83229cb2c55b620dd38427555c2fe87d73f8a4421616f628 [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=fuzz
+cranelift-entity@0.135.1 e0ec225d6b79c5d61358cb5ea081a1384ec541dbf8c1a8c618d187875af326ad [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=enable-serde,serde,serde_derive
+cranelift-frontend@0.135.1 7d3a96a09bd9bd3cf6df2de2ea15d7418f493e946a8eaa1acfe39297a67ed3f3 [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=default,std
+cranelift-isle@0.135.1 bd28f593c36afbdc9aa17305c0bb66c39ce0530e1caffcf389fbec053950083e [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 build.rs features=default
+cranelift-native@0.135.1 2987ca47affc261aa31ac643fb80dd7f8274cebf878003ba9f50cd6ff2c1055f [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=default,std
+cranelift-srcgen@0.135.1 b7431dd8c9def94aca43b27915dee0d42103d9b13922cfb044febcd975547d68 [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=none
+crc32fast@1.5.1 8498c871161e1742aaa9d52551b2d6ebdd4c3d45a3be423e3728f33b955be550 [MIT OR Apache-2.0] msrv=1.63 build.rs features=std
+crypto-common@0.1.7 78c8292055d1c1df0cce5d180393dc8cce0abec0a7102adb6c7b1eef6016d60a [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+digest@0.10.7 9ed9a281f7bc9b7576e61468ba615a66a5c8cfdff42420a70aa82701a3b1e292 [MIT OR Apache-2.0] msrv=unspecified no-build features=block-buffer,core-api,default
+displaydoc@0.2.7 c6232dd377dcc64799954cbd3a9bb882e9cdc1308ccd87b1c098f1fb2eaf82a8 [MIT OR Apache-2.0] msrv=1.71.0 no-build features=none
+ecb@0.2.1 26f2a8b3e564eba0877223dc343703ad0385794e882e6d13f3a4dd5c6b1f41ac [MIT OR Apache-2.0] msrv=1.85 no-build features=block-padding,default
+either@1.18.0 252afb9ae5eaa683babdc6a068b3f5726eb19e05070c731f9b2a23a7c3e8ed34 [MIT OR Apache-2.0] msrv=1.63.0 no-build features=std,use_std
+embedded-io@0.4.0 ef1a6892d9eef45c8fa6b9e0086428a2cca8491aca8f787c534a3d6d0bcb3ced [MIT OR Apache-2.0] msrv=unspecified no-build features=alloc
+embedded-io@0.6.1 edd0f118536f44f5ccd48bcb8b111bdc3de888b58c74639dfb034a357d0f206d [MIT OR Apache-2.0] msrv=unspecified no-build features=alloc
+encoding_rs@0.8.35 75030f3c4f45dafd7586dd6780965a8c7e8e285a5ecb86713e63a79c5b2766f3 [(Apache-2.0 OR MIT) AND BSD-3-Clause] msrv=1.36 no-build features=alloc,default
+equivalent@1.0.2 877a4ace8713b0bcf2a4e7eec82529c029f1d0619886d18145fea96c3ffe5c0f [Apache-2.0 OR MIT] msrv=1.6 no-build features=none
+flate2@1.1.10 6e634e2e0ebac1ee034020da1ca582e17ffe4e0f5e985823721e168928136dcb [MIT OR Apache-2.0] msrv=1.67.0 no-build features=any_impl,default,miniz_oxide,runtime_detection,rust_backend
+fnv@1.0.7 3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1 [Apache-2.0 / MIT] msrv=unspecified no-build features=none
+form_urlencoded@1.2.2 cb4cb245038516f5f85277875cdaa4f7d2c9a0fa0468de06ed190163b1581fcf [MIT OR Apache-2.0] msrv=1.51 no-build features=alloc,std
+futures-channel@0.3.34 b1f9e3d69d39e4862ffed03ed071a76f9a13ba1d9109d355b0f0aa6b15e393c4 [MIT OR Apache-2.0] msrv=1.71 no-build features=alloc,futures-sink,sink,std
+futures-io@0.3.34 53c0fa8157de1303bfffdaa1cc2a673bfffb60102f76b0ef4441659124373fed [MIT OR Apache-2.0] msrv=1.36 no-build features=std
+futures-sink@0.3.34 1944426bf7d03f1d14f708785e4b33efd750b36d48a157b836b3efc15ede8e1d [MIT OR Apache-2.0] msrv=1.36 no-build features=alloc,std
+futures@0.3.34 9a31d2a3fbaaeb2af2368bbdd904aa8e812d3c04a1ee10d3171f52d556e5d0a3 [MIT OR Apache-2.0] msrv=1.71 no-build features=alloc,std
+generic-array@0.14.7 85649ca51fd72272d7821adaf274ad91c288277713d9c18820d8499a7ff69e9a [MIT] msrv=unspecified build.rs features=more_lengths
+gimli@0.33.0 0bf7f043f89559805f8c7cacc432749b2fa0d0a0a9ee46ce47164ed5ba7f126c [MIT OR Apache-2.0] msrv=1.88 no-build features=read,read-core,std,write
+heck@0.5.0 2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea [MIT OR Apache-2.0] msrv=1.56 no-build features=none
+icu_collections@2.3.0 fa68d21081c4a05d5a901a1c62add574c77048b6a1c67be3b50ce0b60d4ca513 [Unicode-3.0] msrv=1.88 no-build features=none
+icu_locale_core@2.3.0 d56e28588da92eee5c3201a6eff33fabdd49b62269c8938d4ff050ce4d900deb [Unicode-3.0] msrv=1.88 no-build features=zerovec
+icu_normalizer@2.3.0 12f9cf5f235641ed274641dd81c3f28d870e276763d0797aeeab72317b1c646f [Unicode-3.0] msrv=1.88 no-build features=compiled_data
+icu_normalizer_data@2.3.0 1563da1ed3e0b3bf3d74c9b85917ac9c56464d2f57242270c09c9e752f8021a0 [Unicode-3.0] msrv=1.88 build.rs features=none
+icu_properties@2.3.0 7e7ca276ad3145661a65914e6daf131ca5120cd3dcee8f8f3214b8875184a148 [Unicode-3.0] msrv=1.88 no-build features=compiled_data
+icu_properties_data@2.3.0 e590f038c1464a96894fd6d10127e90a8be4509f56ff7ecef851b15cee0b7caa [Unicode-3.0] msrv=1.88 build.rs features=none
+icu_provider@2.3.1 d27bbb9d3abbefac45d55f647c9de1d44aafcd1186eb91879afef17c396c3e73 [Unicode-3.0] msrv=1.88 no-build features=baked
+id-arena@2.3.0 3d3067d79b975e8844ca9eb072e16b31c3c1c36928edf9c6789548c524d0d954 [MIT/Apache-2.0] msrv=unspecified no-build features=none
+idna@1.1.0 3b0875f23caa03898994f6ddc501886a45c7d3d62d04d2d90788d47be1b1e4de [MIT OR Apache-2.0] msrv=1.57 no-build features=alloc,compiled_data,std
+idna_adapter@1.2.2 cb68373c0d6620ef8105e855e7745e18b0d00d3bdb07fb532e434244cdb9a714 [Apache-2.0 OR MIT] msrv=1.86 no-build features=compiled_data
+indexmap@2.14.1 07aa2048142242915a31d35844fb311e0e53fcca590c3a0a40dcf1b841fa09eb [Apache-2.0 OR MIT] msrv=1.85 no-build features=default,serde,std
+inout@0.2.2 4250ce6452e92010fdf7268ccc5d14faa80bb12fc741938534c58f16804e03c7 [MIT OR Apache-2.0] msrv=1.85 no-build features=block-padding
+itertools@0.14.0 2b192c782037fadd9cfa75548310488aabdbf3d2da73885b31bd0abd03351285 [MIT OR Apache-2.0] msrv=1.63.0 no-build features=default,use_alloc,use_std
+leb128@0.2.7 c83bff1d572d6b9aeef67ddfc8448e4a3737909cb28e81f97c791b9018703e52 [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+leb128fmt@0.1.0 09edd9e8b54e49e587e4f6295a7d29c3ea94d469cb40ab8ca70b288248a81db2 [MIT OR Apache-2.0] msrv=1.56.0 no-build features=none
+libm@0.2.16 b6d2cec3eae94f9f509c767b45932f1ada8350c4bdb85af2fcab4a3c14807981 [MIT] msrv=1.63 build.rs features=arch,default
+litemap@0.8.3 47d9d19d1d6efa0109d2f65ff4c85cddd50bd572e5a00127ab10987290bcefae [Unicode-3.0] msrv=1.82 no-build features=none
+log@0.4.34 f9f8bd3e56ce4dfc153cf470fffbfa98c7620958b312ca5c3a4b8d5181fd13c6 [MIT OR Apache-2.0] msrv=1.71.0 no-build features=none
+lopdf@0.44.0 5e2ec995d822e05cabc3f06d196ee43650af3fe4fe38012cacb35e0c3d113b68 [MIT] msrv=1.88 no-build features=none
+mach2@0.6.0 dae608c151f68243f2b000364e1f7b186d9c29845f7d2d85bd31b9ad77ad552b [BSD-2-Clause OR MIT OR Apache-2.0] msrv=unspecified no-build features=default
+md-5@0.11.0 69b6441f590336821bb897fb28fc622898ccceb1d6cea3fde5ea86b090c4de98 [MIT OR Apache-2.0] msrv=1.85 no-build features=alloc,default,oid
+memfd@0.6.5 ad38eb12aea514a0466ea40a80fd8cc83637065948eb4a426e4aa46261175227 [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+miniz_oxide@0.9.1 b63fbc4a50860e98e7b2aa7804ded1db5cbc3aff9193adaff57a6931bf7c4b4c [MIT OR Zlib OR Apache-2.0] msrv=unspecified no-build features=default,simd,simd-adler32,with-alloc
+mio@1.2.2 30d65c71f1ce40ab09135ce117d742b9f8a19ff91a41a8b57ed50bc2de59c427 [MIT] msrv=1.71 no-build features=net,os-ext,os-poll
+nom@8.0.0 df9761775871bdef83bee530e60050f7e54b1105350d6884eb0fb4f46c2f9405 [MIT] msrv=1.65.0 no-build features=alloc,default,std
+object@0.39.1 2e5a6c098c7a3b6547378093f5cc30bc54fd361ce711e05293a5cc589562739b [Apache-2.0 OR MIT] msrv=1.65 build.rs features=coff,elf,macho,pe,read_core,std,unaligned,write,write_core,write_std,xcoff
+percent-encoding@2.3.2 9b4f627cb1b25917193a259e49bdad08f671f8d9708acfd5fe0a8c1455d87220 [MIT OR Apache-2.0] msrv=1.51 no-build features=alloc,std
+postcard@1.1.3 6764c3b5dd454e283a30e6dfe78e9b31096d9e32036b5d1eaac7a6119ccb9a24 [MIT OR Apache-2.0] msrv=unspecified no-build features=alloc,use-std
+potential_utf@0.1.6 d83eb9bc6d8e5cf568e7a1101d60ee05e81ed50ea106026f3d18deeb046d7661 [Unicode-3.0] msrv=1.82 no-build features=zerovec
+pulley-interpreter@48.0.1 f755d75e0809a4738a3e4880eeeb852fadbe1de5a437505b84f09c381657012a [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=decode,disas,encode,interp,std
+pulley-macros@48.0.1 c7e69fa1c4a555946f82e7894a7df88b0e9ee03b4266829b4811467c616ce51d [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=none
+rand@0.10.1 d2e8e8bcc7961af1fdac401278c6a831614941f6164ee3bf4ce61b7edb162207 [MIT OR Apache-2.0] msrv=1.85 no-build features=alloc,default,std,std_rng,sys_rng,thread_rng
+rand_core@0.10.1 63b8176103e19a2643978565ca18b50549f6101881c443590420e4dc998a3c69 [MIT OR Apache-2.0] msrv=1.85 no-build features=none
+rangemap@1.8.0 a611d15b50743feb4c76b7d03edcb0e64f399c26961e4efe6975bc398be6aa3d [MIT/Apache-2.0] msrv=1.81.0 no-build features=none
+regalloc2@0.15.2 757712e8e61590d6d4f5d563483755538b5aa13467837a3b41cd9832509a7f85 [Apache-2.0 WITH LLVM-exception] msrv=unspecified no-build features=checker,default,enable-serde,serde,std
+rustc-demangle@0.1.28 b74b56ffa8bb2830709a538c2cbcae9aa062db0d2a42563bfb09bdaae44020eb [MIT/Apache-2.0] msrv=unspecified no-build features=std
+rustc-hash@2.1.3 6b1e7f9a428571be2dc5bc0505c13fb6bf936822b894ec87abf8a08a4e51742d [Apache-2.0 OR MIT] msrv=1.77 no-build features=std
+serde_spanned@1.1.1 6662b5879511e06e8999a8a235d848113e942c9124f211511b16466ee2995f26 [MIT OR Apache-2.0] msrv=1.85 no-build features=alloc,serde,std
+sha2@0.10.9 a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283 [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+simd-adler32@0.3.10 3a219298ac11a56ea9a6d2120044824d6f01aeb034955e7af7bc16858527deea [MIT] msrv=unspecified no-build features=none
+socket2@0.6.5 c3d1e2c7f27f8d4cb10542a02c49005dbd6e93095799d6f3be745fae9f8fedd4 [MIT OR Apache-2.0] msrv=1.70 no-build features=all
+stable_deref_trait@1.2.1 6ce2be8dc25455e1f91df71bfa12ad37d7af1092ae736f3a6cd0e37bc7810596 [MIT OR Apache-2.0] msrv=unspecified no-build features=alloc,std
+stringprep@0.1.5 7b4df3d392d81bd458a8a621b8bffbd2302a12ffe288a9d931670948749463b1 [MIT/Apache-2.0] msrv=unspecified no-build features=none
+synstructure@0.13.2 728a70f3dbaf5bab7f0c4b1ac8d7ae5ea60a4b5549c8a5914361c99147a709d2 [MIT] msrv=unspecified no-build features=default,proc-macro
+target-lexicon@0.13.5 adb6935a6f5c20170eeceb1a3835a49e12e19d792f6dd344ccc76a985ca5a6ca [Apache-2.0 WITH LLVM-exception] msrv=unspecified build.rs features=default
+termcolor@1.4.1 06794f8f6c5c898b3275aebefa6b8a1cb24cd2c6c79397ab15774837a0bc5755 [Unlicense OR MIT] msrv=unspecified no-build features=none
+thiserror-impl@1.0.69 4fee6c4efc90059e10f81e6d42c60a18f76588c3d74cb83a0b242a2b6c7504c1 [MIT OR Apache-2.0] msrv=1.61 no-build features=none
+thiserror@1.0.69 b6aaf5339b578ea85b50e080feb250a3e8ae8cfcdff9a461c9ec2904bc923f52 [MIT OR Apache-2.0] msrv=1.61 build.rs features=none
+tinystr@0.8.4 b1e27c91459209c2986af3dcf603a5a74a4368754ce37414f59acc971167f643 [Unicode-3.0] msrv=1.82 no-build features=zerovec
+tinyvec@1.12.0 bb4ebadaa0af04fab11ae01eb5f9fdb5f9c5b875506e210e71c07873528baa7f [Zlib OR Apache-2.0 OR MIT] msrv=unspecified no-build features=alloc,default,tinyvec_macros
+tinyvec_macros@0.1.1 1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20 [MIT OR Apache-2.0 OR Zlib] msrv=unspecified no-build features=none
+tokio@1.51.1 f66bf9585cda4b724d3e78ab34b73fb2bbaba9011b9bfdf69dc836382ea13b8c [MIT] msrv=1.71 no-build features=bytes,default,io-std,io-util,libc,mio,net,rt,rt-multi-thread,socket2,sync,time,windows-sys
+toml@1.1.4+spec-1.1.0 3aace63f4bbcdfc2c965b059de67119c89c4017a70d633be6c104910f67056f5 [MIT OR Apache-2.0] msrv=1.85 no-build features=parse,serde,std
+toml_datetime@1.1.1+spec-1.1.0 3165f65f62e28e0115a00b2ebdd37eb6f3b641855f9d636d3cd4103767159ad7 [MIT OR Apache-2.0] msrv=1.85 no-build features=alloc,serde,std
+toml_parser@1.1.3+spec-1.1.0 1d38ac1cf9b95face32296c0a3ede1fdc270627c9d9c02a7274dd6d960dc4d56 [MIT OR Apache-2.0] msrv=1.85 no-build features=alloc,std
+toml_writer@1.1.2+spec-1.1.0 7d56353a2a665ad0f41a421187180aab746c8c325620617ad883a99a1cbe66d2 [MIT OR Apache-2.0] msrv=1.85 no-build features=alloc,std
+tracing-attributes@0.1.31 7490cfa5ec963746568740651ac6781f701c9c5ea257c58e057f3ba8cf69e8da [MIT] msrv=1.65.0 no-build features=none
+tracing-core@0.1.36 db97caf9d906fbde555dd62fa95ddba9eecfd14cb388e4f491a66d74cd5fb79a [MIT] msrv=1.65.0 no-build features=once_cell,std
+tracing@0.1.44 63e71662fa4b2a2c3a26f570f037eb95bb1f85397f3cd8076caed2f026a6d100 [MIT] msrv=1.65.0 no-build features=attributes,std,tracing-attributes
+unicode-bidi@0.3.18 5c1cb5db39152898a79168971543b1cb5020dff7fe43c8dc468b0885f5e29df5 [MIT OR Apache-2.0] msrv=1.47.0 no-build features=default,hardcoded-data,std
+unicode-normalization@0.1.25 5fd4f6878c9cb28d874b009da9e8d183b5abc80117c40bbd187a1fde336be6e8 [MIT OR Apache-2.0] msrv=1.36 no-build features=default,std
+unicode-properties@0.1.4 7df058c713841ad818f1dc5d3fd88063241cc61f49f5fbea4b951e8cf5a8d71d [MIT/Apache-2.0] msrv=unspecified no-build features=default,emoji,general-category
+unicode-width@0.2.2 b4ac048d71ede7ee76d585517add45da530660ef4390e49b098733c6e897f254 [MIT OR Apache-2.0] msrv=1.66 no-build features=cjk,default
+url@2.5.8 ff67a8a4397373c3ef660812acab3268222035010ab8680ec4215f38ba3d0eed [MIT OR Apache-2.0] msrv=1.63 no-build features=default,std
+utf8_iter@1.0.4 b6c140620e7ffbb22c2dee59cafe6084a59b5ffc27a8859a5f0d494b5d52b6be [Apache-2.0 OR MIT] msrv=unspecified no-build features=none
+version_check@0.9.5 0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a [MIT/Apache-2.0] msrv=unspecified no-build features=none
+wasi@0.11.1+wasi-snapshot-preview1 ccf3ec651a847eb01de73ccad15eb7d99f80485de043efb2f370cd654f4ea44b [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] msrv=unspecified no-build features=default,std
+wasm-encoder@0.254.0 09480d646178e5fdd12bb06e812d0af9a3a191dbc9cd697fdc86687beade7393 [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] msrv=1.85.0 no-build features=component-model,default,std,wasmparser
+wasm-metadata@0.254.0 b01df5f3b4ca7881e843f3bc0fb8a3905d79c68692250dcb8e33e698705ccdb6 [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] msrv=1.85.0 no-build features=none
+wasmparser@0.254.0 d5769a29f799fbab136aaf65b4fe5384cd7d93fe6fc9ba0dcb6c8382a1f16e27 [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] msrv=1.85.0 no-build features=component-model,features,hash-collections,serde,simd,std,validate
+wasmprinter@0.254.0 64e3ba11e024f504698f87b629b2b66c22a1231758de7607754963f7d198be39 [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] msrv=1.85.0 no-build features=component-model,default,validate
+wasmtime-environ@48.0.1 00c1070d95484d048994ec109cd42c4932ac07e6ee3cc1886fb90c7a18ec29da [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=compile,component-model,gc,gc-copying,gc-drc,gc-null,stack-switching,std,threads
+wasmtime-internal-component-macro@48.0.1 f3d2b2f9f89a65bb2277d82fbdd49263d27d8233bc717d750c4b13a23d57721c [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 build.rs features=async
+wasmtime-internal-component-util@48.0.1 2c0fe8292115fda08875f29064ae9f7f0b2c1ffbb323146eae538ae34b8a613f [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=none
+wasmtime-internal-core@48.0.1 821385794cf44baf2967fd2515368429ed2bff9b9b256f62d09a0f1301474fd8 [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 build.rs features=serde,std
+wasmtime-internal-cranelift@48.0.1 0238b4a52773457ad1b8a1a26be90486e0ca0108cf46b9be16cc1d8d8cabdfa1 [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 build.rs features=pulley
+wasmtime-internal-fiber@48.0.1 596f1d85e06cbf9c9add9c78ea135171c5753264ffe94a83dcc082a1ff49fc9b [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 build.rs features=std
+wasmtime-internal-jit-debug@48.0.1 365faed74827bb0116785bab5872372df1baaec9ec0003c83bc99ccdc595f689 [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 build.rs features=std
+wasmtime-internal-jit-icache-coherence@48.0.1 3cce25afd9e7ac4957292a5c6a219951dd0f140b8417e7378a97f50b67c3b96f [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=none
+wasmtime-internal-unwinder@48.0.1 a1fdea09d51e39c774984ca68a7d7486767e5b2935f5e686fa654aabcfc3c42d [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 build.rs features=cranelift,default
+wasmtime-internal-versioned-export-macros@48.0.1 97e48a5f514c38c2f74249724cb3501e45548d3311ca9e3881694859fd6ba116 [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=none
+wasmtime-internal-wit-bindgen@48.0.1 07429ab53576255be2d298e04b2e1f381e39645465adbaebd69314b5430165c0 [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=async
+wasmtime-wasi-io@48.0.1 6a557bc8a7232cd079f6b423a9bb385f3ff9148824f3c26c07a028b499fab2bf [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=std
+wasmtime-wasi@48.0.1 85dd81ee95792682ea5b279c9ed352f6b8a2cba084c2f8abdb225e6933323fed [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=p1,p2
+wasmtime@48.0.1 1bd39f78fe9bc82cee4025ec9d52118269e9a1498016cc60119b14f2e1d86a8d [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 build.rs features=async,call-hook,component-model,cranelift,once_cell,runtime,std,wasmtime-jit-icache-coherence
+wast@254.0.0 e7ed4dfc8f6b9fc38b231065e2cdfbf7359af5ab945990abf09658dcc63c3e32 [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] msrv=1.85.0 no-build features=wasm-module
+wast@35.0.2 2ef140f1b49946586078353a453a1d28ba90adfc54dde75710bc1931de204d68 [Apache-2.0 WITH LLVM-exception] msrv=unspecified no-build features=none
+wat@1.254.0 7127f7f9b8f127c879991cecd35f494e4628bae1b0874c681414d8d8831e952c [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] msrv=1.85.0 no-build features=none
+weezl@0.2.1 d4ca08e5ef825b65b056d9efbd95c8750683f0a6d0466d02e96dc2e4e360f3d2 [MIT OR Apache-2.0] msrv=1.88.0 no-build features=alloc,default,std
+wiggle-generate@48.0.1 ed981675756e748a4725286a4059c9be006749a8db4120d54e2021d0f167bac3 [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=none
+wiggle-macro@48.0.1 7f3927729af874585c58b85710128e40d459a7064bb9aea9b0b420fb5eafd555 [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 build.rs features=none
+wiggle@48.0.1 b871ea219ad85c1e59ee7d013563814e86d2e6aa094d3bc66b7675ec4ca58bb7 [Apache-2.0 WITH LLVM-exception] msrv=1.95.0 no-build features=wasmtime
+winapi-util@0.1.11 c2a7b1c03c876122aa43f3020e6c3c3ee5c05081c9a00739faf7503aeba10d22 [Unlicense OR MIT] msrv=unspecified no-build features=none
+winnow@1.0.4 23b97319f7b8343df12cc98938e5c3eb436064524c8d2b4e30a1d3a36eecdf81 [MIT] msrv=1.65.0 no-build features=none
+wit-component@0.254.0 b0e65bb94c369b3c4741ce3d1d2704b1fec93db7c540df0e521a097e7ceeb5be [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] msrv=1.85.0 no-build features=none
+wit-parser@0.254.0 1655131e4f7d3f0cb141f6eca71315ca40eff0f3d4de7cff0a82bacedd8c89b4 [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] msrv=1.85.0 no-build features=decoding,default,serde,serde_json,std
+witx@0.9.1 e366f27a5cabcddb2706a78296a40b8fcc451e1a6aba2fc1d94b4a01bdaaef4b [Apache-2.0] msrv=unspecified no-build features=none
+writeable@0.6.4 3ad82d2a33cdc9674dc7465672f271e096168fcdbe0f799d9e6db8c5892679dc [Unicode-3.0] msrv=1.82 no-build features=none
+yoke-derive@0.8.2 de844c262c8848816172cef550288e7dc6c7b7814b4ee56b3e1553f275f1858e [Unicode-3.0] msrv=unspecified no-build features=none
+yoke@0.8.3 709fe23a0424b6a435d82152b1bd3fdfb0833487d5fa90d05d42762a9891fef5 [Unicode-3.0] msrv=1.82 no-build features=derive,zerofrom
+zerofrom-derive@0.1.7 11532158c46691caf0f2593ea8358fed6bbf68a0315e80aae9bd41fbade684a1 [Unicode-3.0] msrv=1.71.1 no-build features=none
+zerofrom@0.1.8 0ec05a11813ea801ff6d75110ad09cd0824ddba17dfe17128ea0d5f68e6c5272 [Unicode-3.0] msrv=1.71.1 no-build features=derive
+zerotrie@0.2.5 4ea269c3bd32f0a32c321907a2ae912ba6f4649bb0fc764a15627e99a7095a3f [Unicode-3.0] msrv=1.82 no-build features=yoke,zerofrom
+zerovec-derive@0.11.6 34df6fc39dbd26ddc9c10e6a2984476e13acce22e64e4487636ef494369225da [Unicode-3.0] msrv=unspecified no-build features=none
+zerovec@0.11.8 bb0464e17806c1d976d5cba29399c7f08e516e279e2ba493f63123b5fca67dd8 [Unicode-3.0] msrv=1.83 no-build features=derive,yoke
+zlib-rs@0.6.7 34b31d188d9d685a4f9c7b46d6e36631b07058d2cfe190267adce54dc230bf12 [Zlib] msrv=1.75 no-build features=rust-allocator,std
+"""
+reused_locked_packages = "all pre-Task-5 package identities in controller-base Cargo.lock remain present unchanged; shared serde/sha2/thiserror/cap/rusqlite/tempfile/uuid/platform packages reuse their previously governed checksums"
+build_script_surface = "inventory marks every package containing a custom-build target. Scripts are limited to Wasmtime/Cranelift table and binding generation, compiler/cfg probes, proc-macro/build metadata, platform selection, compression/native runtime compilation where marked, and target artifact linkage; they run locally and have no admitted egress"
+native_compiler_surface = "Wasmtime/Cranelift JIT, fibers, unwinders, object parsing, executable memory, pulley interpreter, compression/cryptography, libc/rustix/mio/socket2, Windows bindings, and bundled SQLite C are upstream/transitive. The new runtime surface is bounded by Module::from_binary, static imports, typed resources, fuel, epochs, timeout, and capability-only filesystem construction"
+unsafe_surface = "Wasmtime/Cranelift runtime and platform layers, cap/rustix/libc/Windows bindings, Tokio/mio/socket2, cryptography/compression/random implementations, object/unwind support, and generated FFI contain upstream unsafe. Every Heleos-authored Rust crate/test root forbids unsafe_code"
+random_resolution = "no direct RNG crate is added. Cargo.lock pins rand 0.10.1 checksum d2e8e8bcc7961af1fdac401278c6a831614941f6164ee3bf4ce61b7edb162207 for lopdf/Wasmtime-WASI compatibility; guest-visible randomness is only wasmtime_wasi::random::Deterministic after all builder defaults are overwritten"
+rollback = "revert Task 5, restore controller-base Cargo.lock/manifests, remove the guest/protocol/fixture crates, and refuse PDF acceptance"
+
+[[tool]]
 name = "serde"
 origin = "https://crates.io/crates/serde"
 version_or_digest = "1.0.229"
