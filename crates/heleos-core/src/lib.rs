@@ -3,6 +3,7 @@
 pub mod domain;
 mod error;
 pub mod store;
+pub mod vault;
 
 pub use crate::domain::{
     ActorId, Clock, DataClass, DocumentId, EvidenceId, IdGenerator, IngestEventId, IngestOutcome,
@@ -13,4 +14,9 @@ pub use crate::error::{HeleosError, Result};
 pub use crate::store::{
     FOUNDATION_SCHEMA_VERSION, INTEGRITY_VIOLATION_LIMIT, IntegrityReport, MigrationReport, Store,
     WriterLock, apply_private_permissions, verify_private_permissions,
+};
+pub use crate::vault::{
+    EncodedVaultPath, PutOutcome, ReconciliationFinding, ReconciliationReport, StoredObject, Vault,
+    VaultConfig, VaultInventory, VaultInventoryEntry, VaultOpenMode, VaultVerification,
+    VaultWriteBudget, VerifiedObject,
 };

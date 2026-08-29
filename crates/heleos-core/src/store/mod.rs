@@ -17,6 +17,9 @@ use crate::{HeleosError, Result};
 
 pub use migration::MigrationReport;
 pub use permissions::{apply_private_permissions, verify_private_permissions};
+pub(crate) use permissions::{
+    apply_private_permissions_to_handle, verify_private_permissions_on_handle,
+};
 pub use schema::{FOUNDATION_SCHEMA_VERSION, INTEGRITY_VIOLATION_LIMIT, IntegrityReport};
 
 const BUSY_TIMEOUT: Duration = Duration::from_secs(5);

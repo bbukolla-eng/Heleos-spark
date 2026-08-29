@@ -152,6 +152,128 @@ unsafe_surface = "upstream Windows implementation and transitive rustix/windows-
 rollback = "revert Task 3 commit and regenerate Cargo.lock; remove abandoned staging directories only after owner verification"
 
 [[tool]]
+name = "cap-std"
+origin = "https://crates.io/crates/cap-std; source repository https://github.com/bytecodealliance/cap-std"
+version_or_digest = "4.0.3"
+registry_checksum = "c1ec78e242cfa2cfe276807ac2ecc00315a6c97786977414bcd1c3963b6c91b8"
+license_or_rights = "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "local capability-relative filesystem access beneath one already validated retained vault root; approved APIs are Dir::from_std_file, one-component open/create/read_dir/hard_link/remove operations, Dir::symlink_metadata for no-follow candidate classification, and retained File read/write/seek/metadata/sync/set_len/try_clone needed by Task 4. Windows classification may use a capability-relative minimal READ_CONTROL|FILE_READ_ATTRIBUTES handle before a data open; Windows link counts remain restricted to metadata from a retained opened cap_std::fs::File. Ambient open/create APIs, network APIs, multi-component convenience traversal, and Dir::rename publication are prohibited"
+egress = "none; no cap-std network API is used"
+evaluation = "admitted with default features disabled for the Foundation 0.1 immutable evidence vault; capability-relative hard_link is the only publication primitive"
+build_script = "upstream build.rs invokes the pinned rustc locally to probe stable compiler features and emits cfg values; it performs no network or native-code build"
+unsafe_surface = "upstream cap-std and cap-primitives contain unsafe file-descriptor/handle conversions and platform filesystem implementations; io-extras/io-lifetimes/rustix/windows-sys transitively contain unsafe platform code. All unsafe remains upstream; every Heleos crate and test root forbids unsafe_code"
+rollback = "revert Task 4 commit, regenerate Cargo.lock, and retain vault bytes for owner-reviewed recovery; never fall back to ambient-path publication"
+
+[[tool]]
+name = "cap-fs-ext"
+origin = "https://crates.io/crates/cap-fs-ext; source repository https://github.com/bytecodealliance/cap-std"
+version_or_digest = "4.0.3"
+registry_checksum = "56ff379b70af8e08307a8f65e7040c7301cb4a572538ade16b4984f0da77847f"
+license_or_rights = "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "local capability filesystem extensions only: OpenOptionsFollowExt with FollowSymlinks::No, OpenOptionsMaybeDirExt for Windows directory handles, DirExt::open_dir_nofollow for one component, and MetadataExt::nlink only on metadata from a retained opened cap_std::fs::File. Symlink creation, path-only or DirEntry Windows nlink inspection, and unrelated extension APIs are prohibited in production"
+egress = "none"
+evaluation = "admitted with default features disabled and only feature std enabled for Task 4 no-follow and by-handle link-count enforcement"
+build_script = "upstream build.rs invokes the pinned rustc locally to probe windows_by_handle support and emits cfg values; it performs no network or native-code build"
+unsafe_surface = "cap-fs-ext itself contains no unsafe blocks in the admitted source, but delegates to cap-primitives and upstream platform handle/FFI layers that contain unsafe; Heleos-authored code remains forbid(unsafe_code)"
+rollback = "revert Task 4 commit and regenerate Cargo.lock; refuse vault access rather than follow a final symlink/reparse point or weaken link-count checks"
+
+[[tool]]
+name = "proptest"
+origin = "https://crates.io/crates/proptest; source repository https://github.com/proptest-rs/proptest"
+version_or_digest = "1.11.0"
+registry_checksum = "4b45fcc2344c680f5025fe57779faef368840d0bd1f42f216291f0dc4ace4744"
+license_or_rights = "MIT OR Apache-2.0"
+data_class = "PUBLIC"
+owner = "Heleos engineering"
+permissions = "dev-only local generation of bounded byte vectors for immutable-vault property tests; default features are disabled and only std is enabled. fork, timeout, bit-set, rusty-fork, and optional tempfile features/graphs are prohibited"
+egress = "none"
+evaluation = "admitted only for deterministic local Task 4 test generation, never as a runtime dependency"
+build_script = "none in proptest; transitive num-traits/autocfg, getrandom, zerocopy, and platform artifact crates contain build scripts as enumerated in the frozen Task 4 graph"
+unsafe_surface = "upstream proptest and its rand/getrandom/zerocopy transitives contain limited unsafe and platform entropy code; tests use only bounded in-process strategies and Heleos-authored tests forbid unsafe_code"
+rollback = "revert Task 4 commit, remove the dev dependency, and regenerate Cargo.lock"
+
+[[tool]]
+name = "Task 4 capability-vault transitive dependency graph"
+origin = "https://crates.io via the pinned Cargo.lock; cap family source https://github.com/bytecodealliance/cap-std and proptest source https://github.com/proptest-rs/proptest"
+version_or_digest = "exact Task 4 lock graph rooted at cap-std 4.0.3, cap-fs-ext 4.0.3, and dev-only proptest 1.11.0"
+license_or_rights = "per-package SPDX expressions recorded in transitive_packages; all are permissive Apache/MIT/LLVM-exception/BSD except r-efi also offers LGPL-2.1-or-later as an alternative"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "upstream-only capability path resolution, filesystem times/handles, local entropy/property generation, regex parsing, and target bindings; no network egress, process forking, timeout subprocesses, ambient publication, or additional Heleos API authority"
+egress = "none"
+evaluation = "complete newly introduced Task 4 package identity/checksum/license inventory; target artifact crates are compiled only for their declared targets"
+transitive_packages = """
+ambient-authority 0.0.2 e9d4ee0d472d1cd2e28c97dfa124b3d8d992e10eb0a035f33f5d12e3a177ba3b [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] no-build
+cap-fs-ext 4.0.3 56ff379b70af8e08307a8f65e7040c7301cb4a572538ade16b4984f0da77847f [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] build.rs-rustc-cfg-probe
+cap-primitives 4.0.3 8b5f74729fd2f44701d1a8eb47e906cdb3ccd9ec0f02baad85a744b791940b18 [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] build.rs-rustc-cfg-probe
+cap-std 4.0.3 c1ec78e242cfa2cfe276807ac2ecc00315a6c97786977414bcd1c3963b6c91b8 [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] build.rs-rustc-cfg-probe
+fs-set-times 0.20.3 94e7099f6313ecacbe1256e8ff9d617b75d1bcb16a6fddef94866d225a01a14a [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] no-build
+getrandom 0.3.4 899def5c37c4fd7b2664648c28120ecec138e4d395b459e5ca34f9cce2dd77fd [MIT OR Apache-2.0] build.rs-platform-cfg
+io-extras 0.19.0 20fd6de4ccfcc187e38bc21cfa543cb5a302cb86a8b114eb7f0bf0dc9f8ac00f [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] build.rs-rustc-cfg-probe
+io-lifetimes 2.0.4 06432fb54d3be7964ecd3649233cddf80db2832f47fec34c01f65b3d9d774983 [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] build.rs-rustc-cfg-probe
+io-lifetimes 3.0.1 2f0fb0570afe1fed943c5c3d4102d5358592d8625fda6a0007fdbe65a92fba96 [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] build.rs-rustc-cfg-probe
+ipnet 2.12.1 6a756c3fac73139e83f14c2d742155dd2b78d3ee56597b419a0579b7bdd6dd78 [MIT OR Apache-2.0] no-build
+maybe-owned 0.3.4 4facc753ae494aeb6e3c22f839b158aebd4f9270f55cd3c79906c45476c47ab4 [MIT OR Apache-2.0] no-build
+num-traits 0.2.19 071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841 [MIT OR Apache-2.0] build.rs-autocfg
+ppv-lite86 0.2.21 85eae3c4ed2f50dcfe72643da4befc30deadb458a9b590d720cde2f2b1e97da9 [MIT OR Apache-2.0] no-build
+proptest 1.11.0 4b45fcc2344c680f5025fe57779faef368840d0bd1f42f216291f0dc4ace4744 [MIT OR Apache-2.0] no-build
+r-efi 5.3.0 69cdb34c158ceb288df11e18b4bd39de994f6657d83847bdffdbd7f346754b0f [MIT OR Apache-2.0 OR LGPL-2.1-or-later] no-build
+rand 0.9.5 b9ef1d0d795eb7d84685bca4f72f3649f064e6641543d3a8c415898726a57b41 [MIT OR Apache-2.0] no-build
+rand_chacha 0.9.0 d3022b5f1df60f26e1ffddd6c66e8aa15de382ae63b3a0c1bfc0e4d3e3f325cb [MIT OR Apache-2.0] no-build
+rand_core 0.9.5 76afc826de14238e6e8c374ddcc1fa19e374fd8dd986b0d2af0d02377261d83c [MIT OR Apache-2.0] no-build
+rand_xorshift 0.4.0 513962919efc330f829edb2535844d1b912b0fbe2ca165d613e4e8788bb05a5a [MIT OR Apache-2.0] no-build
+regex-syntax 0.8.11 d6f6ff9a378485b298a5286656da665ba74413d36db0979633275d2e708145d4 [MIT OR Apache-2.0] no-build
+rustix-linux-procfs 0.1.1 2fc84bf7e9aa16c4f2c758f27412dc9841341e16aa682d9c7ac308fe3ee12056 [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] no-build
+unarray 0.1.4 eaea85b334db583fe3274d12b4cd1880032beab409c0d774be044d4480ab9a94 [MIT OR Apache-2.0] no-build
+wasip2 1.0.4+wasi-0.2.12 b67efb37e106e55ce722a510d6b5f9c17f083e5fc79afc2badeb12cc313d9487 [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] no-build
+windows-sys 0.59.0 1e38bc4d79ed67fd075bcc251a1c39b32a1776bbe92e5bef1f0bf1f8c531853b [MIT OR Apache-2.0] no-build
+windows-sys 0.60.2 f2f500e4d28234f72040990ec9d39e3a6b950f9f22d3dba18416c35882612bcb [MIT OR Apache-2.0] no-build
+windows-targets 0.52.6 9b724f72796e036ab90c1021d4780d4d3d648aca59e491e6b98e725b84e99973 [MIT OR Apache-2.0] no-build
+windows-targets 0.53.5 4945f9f551b88e0d65f3db0bc25c33b8acea4d9e41163edf90dcd0b19f9069f3 [MIT OR Apache-2.0] no-build
+windows_aarch64_gnullvm 0.52.6 32a4622180e7a0ec044bb555404c800bc9fd9ec262ec147edd5989ccd0c02cd3 [MIT OR Apache-2.0] build.rs-target-artifact
+windows_aarch64_gnullvm 0.53.1 a9d8416fa8b42f5c947f8482c43e7d89e73a173cead56d044f6a56104a6d1b53 [MIT OR Apache-2.0] build.rs-target-artifact
+windows_aarch64_msvc 0.52.6 09ec2a7bb152e2252b53fa7803150007879548bc709c039df7627cabbd05d469 [MIT OR Apache-2.0] build.rs-target-artifact
+windows_aarch64_msvc 0.53.1 b9d782e804c2f632e395708e99a94275910eb9100b2114651e04744e9b125006 [MIT OR Apache-2.0] build.rs-target-artifact
+windows_i686_gnu 0.52.6 8e9b5ad5ab802e97eb8e295ac6720e509ee4c243f69d781394014ebfe8bbfa0b [MIT OR Apache-2.0] build.rs-target-artifact
+windows_i686_gnu 0.53.1 960e6da069d81e09becb0ca57a65220ddff016ff2d6af6a223cf372a506593a3 [MIT OR Apache-2.0] build.rs-target-artifact
+windows_i686_gnullvm 0.52.6 0eee52d38c090b3caa76c563b86c3a4bd71ef1a819287c19d586d7334ae8ed66 [MIT OR Apache-2.0] build.rs-target-artifact
+windows_i686_gnullvm 0.53.1 fa7359d10048f68ab8b09fa71c3daccfb0e9b559aed648a8f95469c27057180c [MIT OR Apache-2.0] build.rs-target-artifact
+windows_i686_msvc 0.52.6 240948bc05c5e7c6dabba28bf89d89ffce3e303022809e73deaefe4f6ec56c66 [MIT OR Apache-2.0] build.rs-target-artifact
+windows_i686_msvc 0.53.1 1e7ac75179f18232fe9c285163565a57ef8d3c89254a30685b57d83a38d326c2 [MIT OR Apache-2.0] build.rs-target-artifact
+windows_x86_64_gnu 0.52.6 147a5c80aabfbf0c7d901cb5895d1de30ef2907eb21fbbab29ca94c5b08b1a78 [MIT OR Apache-2.0] build.rs-target-artifact
+windows_x86_64_gnu 0.53.1 9c3842cdd74a865a8066ab39c8a7a473c0778a3f29370b5fd6b4b9aa7df4a499 [MIT OR Apache-2.0] build.rs-target-artifact
+windows_x86_64_gnullvm 0.52.6 24d5b23dc417412679681396f2b49f3de8c1473deb516bd34410872eff51ed0d [MIT OR Apache-2.0] build.rs-target-artifact
+windows_x86_64_gnullvm 0.53.1 0ffa179e2d07eee8ad8f57493436566c7cc30ac536a3379fdf008f47f6bb7ae1 [MIT OR Apache-2.0] build.rs-target-artifact
+windows_x86_64_msvc 0.52.6 589f6da84c646204747d1270a2a5661ea66ed1cced2631d546fdfb155959f9ec [MIT OR Apache-2.0] build.rs-target-artifact
+windows_x86_64_msvc 0.53.1 d6bbff5f0aada427a1e5a6da5f1f98158182f26556f345ac9e04d36d0ebed650 [MIT OR Apache-2.0] build.rs-target-artifact
+winx 0.36.4 3f3fd376f71958b862e7afb20cfe5a22830e1963462f3a17f49d82a6c1d1f42d [Apache-2.0 WITH LLVM-exception] no-build
+wit-bindgen 0.57.1 1ebf944e87a7c253233ad6766e082e3cd714b5d03812acc24c318f549614536e [Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT] build.rs-generated-bindings
+zerocopy 0.8.56 556764e583adb45a9f8d413c2a147fa7e8d821e48e12b14fd560b607998b75eb [BSD-2-Clause OR Apache-2.0 OR MIT] build.rs-rustc-cfg-probe
+zerocopy-derive 0.8.56 f2ab42fc20575779bd240faa45f94a74256f755c0fa9e89f0ede20d91d0cdfc1 [BSD-2-Clause OR Apache-2.0 OR MIT] no-build
+"""
+reused_locked_packages = "cap graph additionally reuses rustix 1.1.4, bitflags 2.13.1, errno 0.3.14, libc 0.2.189, linux-raw-sys 0.12.1, once_cell 1.21.4, windows-sys 0.61.2, and windows-link 0.2.1; proptest graph additionally reuses autocfg 1.5.1, cfg-if 1.0.4, proc-macro2 1.0.107, quote 1.0.47, syn 2.0.119, and unicode-ident 1.0.24 at the exact checksums already frozen in Cargo.lock"
+unsafe_surface = "cap-std/cap-primitives, fs-set-times, io-extras/io-lifetimes, rustix/rustix-linux-procfs, windows-sys/winx, proptest/rand/getrandom/zerocopy, and target binding crates contain upstream unsafe or FFI/platform code; build scripts are limited to rustc cfg probes, autocfg, platform selection, generated bindings, and target-artifact linking. No script has runtime egress and no Heleos-authored unsafe code is admitted"
+rollback = "revert Task 4 commit and regenerate Cargo.lock; preserve any existing vault for owner-reviewed export/recovery"
+
+[[tool]]
+name = "fs2 Task 4 authority extension"
+origin = "https://crates.io/crates/fs2; source repository https://github.com/danburkert/fs2-rs"
+version_or_digest = "0.4.3"
+registry_checksum = "9564fc758e15025b46aa6643b1b77d047d1a56a1aea6e01002ac0c7026876213"
+license_or_rights = "MIT OR Apache-2.0"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "extends the existing Task 3 admission to shared/exclusive .vault.lock coordination; FileExt::allocate for mandatory retained staging-handle preallocation; and bracketed total_space, available_space, and allocation_granularity inspection against only the initially configured absolute vault-root path after retained root/parent identity, no-follow, reparse, and permission checks before and after every pathname query; no pathname is used for content open/list/create/read/write/link/delete"
+egress = "none"
+evaluation = "admitted for Foundation 0.1 same-root vault serialization, checked allocation-unit overhead, reserved writes, and advisory local-capacity enforcement before staging and immediately before final hard-link publication; allocation failures use bounded hash/quota fallback and never unreserved writes"
+unsafe_surface = "unchanged upstream libc/WinAPI platform surface already governed by the Task 3 fs2 entry"
+rollback = "revert Task 4 commit and regenerate Cargo.lock; refuse vault writes rather than use unreserved fallback I/O"
+
+[[tool]]
 name = "Superpowers"
 origin = "https://github.com/obra/superpowers; installed curated cache package"
 version_or_digest = "6.3.0"

@@ -110,7 +110,7 @@ fn open_permission_handle(path: &Path, _: PermissionAccess, _: bool) -> Result<F
 }
 
 #[cfg(unix)]
-pub(super) fn apply_private_permissions_to_handle(file: &mut File) -> Result<()> {
+pub(crate) fn apply_private_permissions_to_handle(file: &mut File) -> Result<()> {
     use std::os::unix::fs::PermissionsExt;
 
     let metadata = file.metadata().map_err(HeleosError::Io)?;
@@ -124,7 +124,7 @@ pub(super) fn apply_private_permissions_to_handle(file: &mut File) -> Result<()>
 }
 
 #[cfg(unix)]
-pub(super) fn verify_private_permissions_on_handle(file: &File) -> Result<()> {
+pub(crate) fn verify_private_permissions_on_handle(file: &File) -> Result<()> {
     use std::os::unix::fs::PermissionsExt;
 
     let metadata = file.metadata().map_err(HeleosError::Io)?;
@@ -137,7 +137,7 @@ pub(super) fn verify_private_permissions_on_handle(file: &File) -> Result<()> {
 }
 
 #[cfg(windows)]
-pub(super) fn apply_private_permissions_to_handle(file: &mut File) -> Result<()> {
+pub(crate) fn apply_private_permissions_to_handle(file: &mut File) -> Result<()> {
     use windows_permissions::constants::{SeObjectType, SecurityInformation};
     use windows_permissions::wrappers::{
         ConvertStringSecurityDescriptorToSecurityDescriptor, GetSecurityDescriptorDacl,
@@ -170,7 +170,7 @@ pub(super) fn apply_private_permissions_to_handle(file: &mut File) -> Result<()>
 }
 
 #[cfg(windows)]
-pub(super) fn verify_private_permissions_on_handle(file: &File) -> Result<()> {
+pub(crate) fn verify_private_permissions_on_handle(file: &File) -> Result<()> {
     let metadata = file.metadata().map_err(HeleosError::Io)?;
     validate_permission_metadata(&metadata)?;
     let allowed = allowed_windows_sids()?;
@@ -312,14 +312,14 @@ fn windows_dacl_policy_accepts_sddl(dacl_present: bool, sddl: &str) -> bool {
 }
 
 #[cfg(not(any(unix, windows)))]
-pub(super) fn apply_private_permissions_to_handle(file: &mut File) -> Result<()> {
+pub(crate) fn apply_private_permissions_to_handle(file: &mut File) -> Result<()> {
     let metadata = file.metadata().map_err(HeleosError::Io)?;
     validate_permission_metadata(&metadata)?;
     Err(HeleosError::PolicyDenied)
 }
 
 #[cfg(not(any(unix, windows)))]
-pub(super) fn verify_private_permissions_on_handle(file: &File) -> Result<()> {
+pub(crate) fn verify_private_permissions_on_handle(file: &File) -> Result<()> {
     let metadata = file.metadata().map_err(HeleosError::Io)?;
     validate_permission_metadata(&metadata)?;
     Err(HeleosError::PolicyDenied)
