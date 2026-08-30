@@ -285,6 +285,324 @@ egress = "local guidance has no egress; optional visual companion otherwise requ
 evaluation = "admitted for Foundation 0.1 only in the reviewed local-only mode with the optional visual companion disabled or telemetry opt-out set"
 rollback = "stop using the package and revert the dependent task changes"
 
+
+[[tool]]
+name = "age"
+origin = "https://crates.io/crates/age; source repository https://github.com/str4d/rage"
+version_or_digest = "0.12.1"
+registry_checksum = "fd290633c2482479f70f6d1d96ae0e9f52c6a26cd5859edd47ee1fe33fc89f26"
+license_or_rights = "MIT OR Apache-2.0"
+data_class = "PROJECT_CONFIDENTIAL"
+owner = "Heleos engineering"
+permissions = "local streaming encryption and decryption of the versioned Task 7 backup container through typed age recipients and identities only; default feature set only. SSH recipients, plugins, passphrase prompting, CLI helpers, network access, and ambient identity discovery are prohibited"
+egress = "none; recipient strings and encrypted backup bytes remain caller-selected local data"
+evaluation = "admitted for Foundation 0.1 authenticated encrypted backup/restore with fail-closed recipient and identity parsing"
+msrv = "1.74"
+resolved_features = "default (the pinned crate declares an empty default feature); no ssh, plugin, cli-common, armor, or async feature"
+build_script = "none"
+unsafe_surface = "upstream cryptography, entropy, zeroization, curve arithmetic, and platform transitives contain unsafe implementations; Heleos-authored code remains forbid(unsafe_code)"
+rollback = "revert Task 7, remove the age edges, regenerate Cargo.lock, and preserve existing encrypted backups for owner-directed recovery"
+
+[[tool]]
+name = "ed25519-dalek"
+origin = "https://crates.io/crates/ed25519-dalek; source repository https://github.com/dalek-cryptography/curve25519-dalek"
+version_or_digest = "3.0.0"
+registry_checksum = "6ebaa1a2bf1290ab3bfe5a7b771d050ebffab2711c19a81691c683a5144a25de"
+license_or_rights = "BSD-3-Clause"
+data_class = "PROJECT_CONFIDENTIAL"
+owner = "Heleos engineering"
+permissions = "local Ed25519 signing and strict verification of canonical Task 7 backup manifests using no-follow raw 32-byte signing-key and trusted-verifying-key inputs; key generation, batch verification, alternate signature encodings, and network key discovery are prohibited"
+egress = "none"
+evaluation = "admitted for Foundation 0.1 signed encrypted-backup authenticity with exact key length/type and canonical manifest bytes"
+msrv = "1.85"
+resolved_features = "default,fast,zeroize"
+build_script = "none in ed25519-dalek; curve25519-dalek 5.0.0 uses a local cfg/backend build script"
+unsafe_surface = "upstream curve arithmetic, constant-time primitives, zeroization, and platform/compiler backends contain unsafe implementation details; no Heleos-authored unsafe code"
+rollback = "revert Task 7, remove the signing edges, regenerate Cargo.lock, and refuse unsigned or unverifiable restore"
+
+[[tool]]
+name = "clap"
+origin = "https://crates.io/crates/clap; source repository https://github.com/clap-rs/clap"
+version_or_digest = "4.6.6"
+registry_checksum = "473c7e07f409a8d772161724aa8db6a765a2532a70f9667eeb7b49d3d02fbdca"
+license_or_rights = "MIT OR Apache-2.0"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "typed parsing of the explicit heleos command grammar and generation of local usage/help text only; derive is enabled. Shell execution, completion-script installation, environment-derived guest overrides, and external command dispatch are prohibited"
+egress = "none"
+evaluation = "admitted for Foundation 0.1 stable CLI spelling, typed conflicts, and Cargo-standard usage exit 2"
+msrv = "1.85"
+resolved_features = "color,default,derive,error-context,help,std,suggestions,usage"
+build_script = "none; clap_derive is a procedural macro"
+unsafe_surface = "upstream parser and terminal-color/platform transitives only; no Heleos-authored unsafe code"
+rollback = "revert Task 7, remove the CLI package, and regenerate Cargo.lock"
+
+[[tool]]
+name = "tracing-subscriber"
+origin = "https://crates.io/crates/tracing-subscriber; source repository https://github.com/tokio-rs/tracing"
+version_or_digest = "0.3.23"
+registry_checksum = "cb7f578e5945fb242538965c2d0b04418d38ec25c79d160cd279bf0731c8d319"
+license_or_rights = "MIT"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "local process-wide formatting and filtering of explicitly non-secret CLI diagnostics only; no telemetry exporter, network layer, dynamic reload authority, or backup plaintext/key material in fields"
+egress = "none; output is caller-visible local stderr only"
+evaluation = "admitted for Foundation 0.1 structured CLI diagnostics with stable JSON command results kept separate"
+msrv = "1.65.0"
+resolved_features = "alloc,ansi,default,fmt,nu-ansi-term,registry,sharded-slab,smallvec,std,thread_local,tracing-log"
+build_script = "none"
+unsafe_surface = "upstream synchronization, thread-local, terminal, and platform transitives may contain unsafe implementation details; no Heleos-authored unsafe code"
+rollback = "revert Task 7, remove the subscriber edge, and regenerate Cargo.lock"
+
+[[tool]]
+name = "tracing Task 7 direct-edge extension"
+origin = "https://crates.io/crates/tracing; source repository https://github.com/tokio-rs/tracing"
+version_or_digest = "0.1.44; checksum 63e71662fa4b2a2c3a26f570f037eb95bb1f85397f3cd8076caed2f026a6d100"
+license_or_rights = "MIT"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "extends the already governed Task 5 transitive identity to a direct CLI edge for non-secret local operation lifecycle diagnostics only; spans and events must not contain key bytes, plaintext backup content, recipient identity secrets, or untrusted document bytes"
+egress = "none; no exporter is admitted"
+evaluation = "admitted as the typed diagnostics facade paired only with the local tracing-subscriber formatter"
+resolved_features = "attributes,default,std,tracing-attributes"
+build_script = "none"
+unsafe_surface = "unchanged upstream tracing implementation; no Heleos-authored unsafe code"
+rollback = "revert Task 7 and remove the direct tracing edge"
+
+[[tool]]
+name = "rustix Task 7 macOS publication authority"
+origin = "https://crates.io/crates/rustix; source repository https://github.com/bytecodealliance/rustix"
+version_or_digest = "1.1.4"
+registry_checksum = "b6fe4565b9518b83ef4f91bb47ce29620ca828bd32cb7e408f0062e9930ba190"
+license_or_rights = "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "macOS-only direct renameat_with on the borrowed retained parent directory descriptor for regular-file and directory subjects with one-component staged/final names and exactly RenameFlags::NOREPLACE. All ambient opens, replacement-capable rename flags, copy fallback, path traversal, network, process, and unrelated rustix APIs are prohibited"
+egress = "none"
+evaluation = "admitted for Task 7 one-syscall absent-destination regular-file and directory publication after retained-handle type, identity, non-reparse, name-binding, and file-only single-link validation; EEXIST is collision, NOSYS/INVAL/NOTSUP/OPNOTSUPP unsupported, XDEV/NOENT identity mismatch, and every other error I/O"
+resolved_features = "std,fs plus features already unified by the locked workspace graph"
+build_script = "upstream local compiler/platform cfg probe only; no network or native-code build"
+unsafe_surface = "rustix contains upstream descriptor/syscall unsafe internals; the Heleos macOS helper calls only its safe retained-fd API and contains no authored unsafe block"
+rollback = "revert Task 7 and refuse restore publication rather than fall back to replacement-capable or ambient-path operations"
+
+[[tool]]
+name = "windows-sys Task 7 publication authority"
+origin = "https://crates.io/crates/windows-sys; source repository https://github.com/microsoft/windows-rs"
+version_or_digest = "0.61.2"
+registry_checksum = "ae137229bcbd6cdf0f7b80a31df61766145077ddf49416a728b02cb3921ff3fc"
+license_or_rights = "MIT OR Apache-2.0"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "Windows-only SetFileInformationByHandle(FileRenameInfo) using borrowed retained source and parent handles. The regular-file subject has exact GENERIC_READ|GENERIC_WRITE|DELETE|READ_CONTROL|WRITE_DAC|FILE_READ_ATTRIBUTES access, share READ|WRITE (0x3), and OPEN_REPARSE_POINT only. The directory subject has exact DELETE|READ_CONTROL|FILE_READ_ATTRIBUTES access, share 0x3, and BACKUP_SEMANTICS|OPEN_REPARSE_POINT. The parent has exact GENERIC_READ|READ_CONTROL|FILE_READ_ATTRIBUTES access, share 0x3, and BACKUP_SEMANTICS|OPEN_REPARSE_POINT. The capability-relative pre-syscall name binding requests exact GENERIC_READ|READ_CONTROL|FILE_READ_ATTRIBUTES access, share READ|WRITE|DELETE (0x7), the subject-specific flags, no-follow, and maybe-dir false. No replace/POSIX flag is set. Other Win32 publication, identity, copy, ambient pathname, network, and process APIs are prohibited"
+egress = "none"
+evaluation = "conditionally admitted for Task 7 atomic absent-destination regular-file and directory publication after safe retained-handle type/reparse/identity/name-binding and file-only single-link checks; raw 80/183 collision, 1/50 unsupported, all other syscall errors I/O. The live DELETE-bearing subject requires the binding/final verifier to share delete, while its own 0x3 share still denies third-party delete/rebind opens. Native Windows/NTFS acceptance remains owned by Task 10 at the release-candidate SHA"
+resolved_features = "Win32_Foundation,Win32_Storage_FileSystem; reuses windows-link 0.2.1 checksum f0805222e57f7521d6a62e36fa9163bc891acd422f971defe97d64e70d0a4fe5"
+build_script = "none; windows-link supplies target linkage metadata without a build script"
+unsafe_surface = "one narrowly scoped Heleos-authored cfg(windows) block initializes the aligned variable-length FILE_RENAME_INFO buffer and calls SetFileInformationByHandle; no unsafe function, pointer, buffer, or constructor escapes. windows-sys bindings are upstream unsafe FFI"
+abi_invariant = "allocate exactly one suitably aligned checked buffer of offset_of!(FILE_RENAME_INFO, FileName) + (utf16_len + 1) * 2 bytes; FileNameLength is checked utf16_len * 2 excluding exactly one trailing UTF-16 NUL; RootDirectory is the live borrowed parent handle; strong identity requires concrete volume serial plus file index before syscall"
+rollback = "revert Task 7 and refuse Windows restore publication; never broaden raw-code mapping or fall back to MoveFileExW, std::fs::rename, copy, reserve-and-replace, or child-by-child rename"
+
+[[tool]]
+name = "cap-primitives Task 7 Windows by-handle metadata compatibility"
+origin = "registry+https://github.com/rust-lang/crates.io-index; upstream repository https://github.com/bytecodealliance/cap-std"
+version_or_digest = "4.0.3"
+registry_checksum = "8b5f74729fd2f44701d1a8eb47e906cdb3ccd9ec0f02baad85a744b791940b18"
+license_or_rights = "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
+data_class = "INTERNAL"
+owner = "Heleos engineering; native Windows behavior and source/build-probe verification are owned by Task 10"
+permissions = "sole direct Heleos edge is heleos-platform-fs under cfg(windows), with default features disabled and no requested features. Safe local retained-handle inspection is limited exactly to Metadata::from_file followed by _WindowsByHandle::file_attributes, volume_serial_number, number_of_links, and file_index on that returned metadata. It has no egress, ambient-path, open, create, remove, link, rename, copy, metadata-mutation, or publication authority; Metadata::from_just_metadata and every other cap-primitives API are prohibited"
+egress = "none; the admitted helper calls inspect only caller-retained local handles"
+evaluation = "exact compatibility edge for Rust 1.96.1, whose upstream build probe declares windows_by_handle as check-cfg without enabling it. Metadata query failure, absent or partial identity, missing/non-single file link count, and immediate type/identity/file-link drift fail closed as the corresponding pre-syscall IdentityMismatch without panic. Task 10 freezes the package source/checksum, optional getter signatures, build-probe output, exact helper allowlist, and native NTFS behavior"
+resolved_features = "the direct helper edge requests none; the pre-existing locked cap-std/cap-fs-ext feature unification and complete cap-primitives package/closure remain unchanged"
+build_script = "upstream local compiler feature probe spawns only Cargo's pinned RUSTC (or configured wrapper), declares windows_by_handle with rustc-check-cfg, and does not enable it on stable Rust 1.96.1; it performs no network or native-code build"
+unsafe_surface = "the upstream crate, build process, and Windows/platform implementations contain governed upstream process/unsafe/FFI code. Heleos uses only the safe five-call metadata allowlist and adds no metadata unsafe site; the separate one-block windows-sys publication call remains the sole Heleos-authored unsafe site"
+rollback = "remove the helper cfg(windows) edge, root workspace pin, this dedicated record, and dependent Task 7 helper implementation; never fall back to panicking cap-fs-ext metadata adapters, stable-std unavailable getters, direct Windows identity FFI, another package, or weaker identity"
+
+[[tool]]
+name = "heleos-platform-fs"
+origin = "local workspace crate crates/heleos-platform-fs"
+version_or_digest = "0.1.0; Task 7 source"
+license_or_rights = "LicenseRef-Proprietary"
+data_class = "INTERNAL"
+owner = "Heleos engineering; native Windows release-gate owner is Task 10"
+permissions = "private handle-only publish_file_noreplace and publish_directory_noreplace authority with exact OneComponentName validation and typed Collision, Unsupported, Io, or IdentityMismatch results. Both perform retained parent/source type, non-reparse, strong-identity, and relative name-binding checks; the file path additionally requires available exact nlink 1 and rejects drift. macOS uses rustix NOREPLACE; Windows uses the single governed FILE_RENAME_INFO unsafe block and the exact file/directory/parent/binding masks recorded above; other targets return Unsupported without mutation. The helper has no private-permission-policy or post-publication final-reopen authority"
+egress = "none; no network dependency or API"
+evaluation = "local separation boundary that keeps heleos-core forbid(unsafe_code), denies unsafe_code crate-wide, and permits unsafe only on the one documented Windows block; no ambient/path overload, replacement API, fallback, public fault hook, or additional mutation primitive"
+unsafe_surface = "exactly one narrowly scoped cfg(windows) allow(unsafe_code) block; every pointer, length, alignment, ABI, borrowed-handle, and terminator invariant is documented locally; native Windows/NTFS evidence is supplemental until Task 10"
+rollback = "revert Task 7, remove the helper crate/edge, and refuse restore publication"
+
+[[tool]]
+name = "cap-std Task 7 retained restore-parent extension"
+origin = "https://crates.io/crates/cap-std; source repository https://github.com/bytecodealliance/cap-std"
+version_or_digest = "4.0.3; checksum c1ec78e242cfa2cfe276807ac2ecc00315a6c97786977414bcd1c3963b6c91b8"
+license_or_rights = "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
+data_class = "PROJECT_CONFIDENTIAL"
+owner = "Heleos engineering"
+permissions = "extends existing admission only to retained restore-parent handling and one-component relative staging create/open/read/remove/final-reopen, retained File sync/metadata/identity, and no-follow directory operations required by backup restore. Dir::rename and every replacement-capable or ambient publication API remain prohibited; final publication is exclusively heleos-platform-fs"
+egress = "none; no cap-std network API"
+evaluation = "admitted for Task 7 staged complete-store construction, verification, cleanup before publication, and retained winning-destination verification"
+unsafe_surface = "unchanged upstream capability/platform implementation; no new Heleos-authored unsafe code"
+rollback = "revert Task 7 and refuse restore rather than broaden path authority or use replacement publication"
+
+[[tool]]
+name = "cap-fs-ext Task 7 retained restore-parent extension"
+origin = "https://crates.io/crates/cap-fs-ext; source repository https://github.com/bytecodealliance/cap-std"
+version_or_digest = "4.0.3; checksum 56ff379b70af8e08307a8f65e7040c7301cb4a572538ade16b4984f0da77847f"
+license_or_rights = "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
+data_class = "PROJECT_CONFIDENTIAL"
+owner = "Heleos engineering"
+permissions = "extends existing admission only to open_dir_nofollow, FollowSymlinks::No final-component opens, maybe-directory Windows retained handles, and core-owned retained metadata dev/ino/nlink inspection for restore staging/final verification. It does not authorize heleos-platform-fs to call the panicking Windows MetadataExt dev/ino/nlink adapters; that helper uses only the separately governed safe cap-primitives compatibility allowlist. Symlink creation, path-only identity, rename extensions, and replacement publication remain prohibited"
+egress = "none"
+evaluation = "admitted for Task 7 no-follow/non-reparse one-component restore operations and strong retained-handle identity checks"
+unsafe_surface = "unchanged upstream platform/cap-primitives surface; no Heleos-authored unsafe code"
+rollback = "revert Task 7 and refuse restore rather than follow a final symlink/reparse point or weaken identity checks"
+
+[[tool]]
+name = "Task 7 CLI and guest-acceptance direct-edge extension"
+origin = "local workspace and previously governed crates.io identities pinned by Cargo.lock"
+version_or_digest = "Task 7 direct runtime/build edges to heleos-core, heleos-pdf-protocol/artifact-host, cap-std 4.0.3, cap-fs-ext 4.0.3, serde 1.0.229, serde_json 1.0.151, sha2 0.11.0, tempfile 3.27.0, toml 1.1.4+spec-1.1.0, uuid 1.26.0, plus the direct records above"
+license_or_rights = "local LicenseRef-Proprietary; registry licenses are recorded in their existing admissions"
+data_class = "INTERNAL"
+owner = "Heleos engineering"
+permissions = "CLI composition plus build-time bounded no-follow source/lock/manifest/WASM reads; shell-free locked/offline Cargo metadata in fresh targets; independent pruned cache materialization/validation; shared protocol source-closure, lock projection, cache plan, graph/module/hash/remap/prefix policy; and copying only an already approved canonical guest/manifest into OUT_DIR. No guest compilation, GuestBuildEvidenceV1 manufacture, guest override, policy reimplementation, shell, network, or production path override"
+egress = "none; dependency bootstrap is the separately recorded one-time Cargo operation and all build-script Cargo operations are offline"
+evaluation = "extends only previously admitted local/capability/serialization/hash/temp/TOML/protocol APIs for Task 7's fail-closed build gate and stable CLI"
+build_script_surface = "crates/heleos-cli/build.rs is Heleos-authored policy orchestration, not a new authority: it concurrently bounds stdout/stderr, clears build authority, uses the shared protocol functions, does not execute the returned guest build policy, does not compile the guest, explicitly removes resolution/cache children, and fails the outer build on any mismatch"
+unsafe_surface = "all local crates except the separately governed helper block forbid unsafe_code; reused upstream surfaces are unchanged"
+rollback = "revert Task 7 and restore the pre-Task-7 manifest/lock graph"
+
+[[tool]]
+name = "Task 7 encrypted backup and CLI transitive dependency graph"
+origin = "https://crates.io via the pinned Cargo.lock; direct source repositories named in the preceding Task 7 records"
+version_or_digest = "exact 115 new registry identities introduced by Task 7 lock normalization, rooted at age 0.12.1, ed25519-dalek 3.0.0, clap 4.6.6, and tracing-subscriber 0.3.23; rustix 1.1.4, windows-sys 0.61.2, windows-link 0.2.1, tracing 0.1.44, and capability/build dependencies reuse pre-existing identities"
+license_or_rights = "per-package SPDX expressions recorded in transitive_packages; self_cell 1.3.0 offers Apache-2.0 OR GPL-2.0-only and is used under the Apache-2.0 option; all other expressions are recorded exactly"
+data_class = "PROJECT_CONFIDENTIAL"
+owner = "Heleos engineering"
+permissions = "local encrypted-container cryptography, signatures, recipient/identity encoding, internationalized parser messages, typed CLI parsing, local diagnostic formatting, and target/runtime support only. No SSH/plugin recipient, password prompt, shell, network, telemetry, ambient credential discovery, or unrelated filesystem authority"
+egress = "none"
+evaluation = "complete Task 7 new-package identity/checksum/license/MSRV/build-script/resolved-feature inventory; includes resolver-only optional and target packages even when unreachable from production commands"
+transitive_packages = """
+aead@0.5.2 d122413f284cf2d62fb1b7db97e02edb8cda96d769b16e443a4f6195e35662b0 [MIT OR Apache-2.0] msrv=1.56 no-build features=alloc,default,getrandom,rand_core
+aes-gcm@0.10.3 831010a0f742e1209b3bcea8fab6a8e149051ba6099432c8cb2cc117dec3ead1 [Apache-2.0 OR MIT] msrv=1.56 no-build features=aes,alloc,default,getrandom,rand_core
+aes@0.8.4 b169f7a6d4742236a0a00c541b845991d0ac43e546831af1249753ab4c3aa3a0 [MIT OR Apache-2.0] msrv=1.56 no-build features=none
+age-core@0.12.0 01d4375964d1501e5f1b32aef2ead573913893ff238448d4e9fdf1522d828656 [MIT OR Apache-2.0] msrv=1.74 no-build features=none
+age@0.12.1 fd290633c2482479f70f6d1d96ae0e9f52c6a26cd5859edd47ee1fe33fc89f26 [MIT OR Apache-2.0] msrv=1.74 no-build features=default
+anstream@1.0.0 824a212faf96e9acacdbd09febd34438f8f711fb84e09a8916013cd7815ca28d [MIT OR Apache-2.0] msrv=1.66.0 no-build features=auto,default,wincon
+anstyle-parse@1.0.0 52ce7f38b242319f7cabaa6813055467063ecdc9d355bbb4ce0c68908cd8130e [MIT OR Apache-2.0] msrv=1.66.0 no-build features=default,utf8
+anstyle-query@1.1.5 40c48f72fd53cd289104fc64099abca73db4166ad86ea0b4341abe65af83dadc [MIT OR Apache-2.0] msrv=1.66.0 no-build features=none
+anstyle-wincon@3.0.11 291e6a250ff86cd4a820112fb8898808a366d8f9f58ce16d1f538353ad55747d [MIT OR Apache-2.0] msrv=1.66.0 no-build features=none
+anstyle@1.0.14 940b3a0ca603d1eade50a4846a2afffd5ef57a9feac2c0e2ec2e14f9ead76000 [MIT OR Apache-2.0] msrv=1.66.0 no-build features=default,std
+arc-swap@1.9.2 c049c0be4daef0b145cb3555416b3b8ef5b7888a38aea1a3a155801fe7b0810b [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+base16ct@0.2.0 4c7f02d4ea65f2c1853089ffd8d2787bdbc63de2f0d29dedbcf8ccdfa0ccd4cf [Apache-2.0 OR MIT] msrv=1.60 no-build features=none
+base64@0.22.1 72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6 [MIT OR Apache-2.0] msrv=1.48.0 no-build features=alloc,default,std
+basic-toml@0.1.10 ba62675e8242a4c4e806d12f11d136e626e6c8361d6b829310732241652a178a [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+bech32@0.11.1 32637268377fc7b10a8c6d51de3e7fba1ce5dd371a96e342b34e6078db558e7f [MIT] msrv=unspecified no-build features=alloc,default,std
+chacha20@0.9.1 c3613f74bd2eac03dad61bd53dbe620703d4371614fe0bc3b9f04dd36fe4e818 [Apache-2.0 OR MIT] msrv=1.56 no-build features=zeroize
+chacha20poly1305@0.10.1 10cd79432192d1c0f4e1a0fef9527696cc039165d729fb41b3f4f4f354c2dc35 [Apache-2.0 OR MIT] msrv=unspecified no-build features=alloc,default,getrandom,rand_core
+cipher@0.4.4 773f3b9af64447d2ce9850330c473515014aa235e6a783b02db81ff39e4a3dad [MIT OR Apache-2.0] msrv=1.56 no-build features=alloc,zeroize
+clap@4.6.6 473c7e07f409a8d772161724aa8db6a765a2532a70f9667eeb7b49d3d02fbdca [MIT OR Apache-2.0] msrv=1.85 no-build features=color,default,derive,error-context,help,std,suggestions,usage
+clap_builder@4.6.6 7b48fea5a88e9ae728a2dcbedbfc0e730f7d60da42e1cb049a83c9fb8b789889 [MIT OR Apache-2.0] msrv=1.85 no-build features=color,error-context,help,std,suggestions,usage
+clap_derive@4.6.4 d012d2b9d65aca7f18f4d9878a045bc17899bba951561ba5ec3c2ba1eed9a061 [MIT OR Apache-2.0] msrv=1.85 no-build features=default
+clap_lex@1.1.0 c8d4a3bb8b1e0c1050499d1815f5ab16d04f0959b233085fb31653fbfc9d98f9 [MIT OR Apache-2.0] msrv=1.85 no-build features=none
+colorchoice@1.0.5 1d07550c9036bf2ae0c684c4297d503f838287c83c53686d05370d0e139ae570 [MIT OR Apache-2.0] msrv=1.66.0 no-build features=none
+const-oid@0.9.6 c2459377285ad874054d797f3ccebf984978aa39129f6eafde5cdc8315b612f8 [Apache-2.0 OR MIT] msrv=1.57 no-build features=none
+cookie-factory@0.3.3 9885fa71e26b8ab7855e2ec7cae6e9b380edff76cd052e07c683a0319d51b3a2 [MIT] msrv=unspecified no-build features=async,default,futures,std
+crypto-bigint@0.5.5 0dc92fb57ca44df6db8059111ab3af99a63d5d0f8375d9972e319a379c6bab76 [Apache-2.0 OR MIT] msrv=1.65 no-build features=generic-array,rand_core,zeroize
+ctr@0.9.2 0369ee1ad671834580515889b80f2ea915f23b8be8d0daa4bbaf2ac5c7590835 [MIT OR Apache-2.0] msrv=1.56 no-build features=none
+curve25519-dalek-derive@0.1.1 f46882e17999c6cc590af592290432be3bce0428cb0d5f8b6715e4dc7b383eb3 [MIT/Apache-2.0] msrv=unspecified no-build features=none
+curve25519-dalek@4.1.3 97fb8b7c4503de7d6ae7b42ab72a5a59857b4c937ec27a3d4539dba95b5ab2be [BSD-3-Clause] msrv=1.60.0 build.rs features=alloc,precomputed-tables,zeroize
+curve25519-dalek@5.0.0 b5eed333089e2e1c1ac8c6c0398e5e2497b4c9926ca6d0365ed1e099afa5bc23 [BSD-3-Clause] msrv=1.85.0 build.rs features=digest,precomputed-tables,zeroize
+der@0.7.10 e7c1832837b905bbfb5101e07cc24c8deddf52f93225eee6ead5f4d63d53ddcb [Apache-2.0 OR MIT] msrv=1.65 no-build features=oid,zeroize
+ed25519-dalek@3.0.0 6ebaa1a2bf1290ab3bfe5a7b771d050ebffab2711c19a81691c683a5144a25de [BSD-3-Clause] msrv=1.85 no-build features=default,fast,zeroize
+ed25519@3.0.0 29fcf32e6c73d1079f83ab4d782de2d81620346a5f38c6237a86a22f8368980a [Apache-2.0 OR MIT] msrv=1.85 no-build features=none
+elliptic-curve@0.13.8 b5e6043086bf7973472e0c7dff2142ea0b680d30e18d9cc40f267efbf222bd47 [Apache-2.0 OR MIT] msrv=1.65 no-build features=arithmetic,digest,ecdh,ff,group,hazmat,sec1
+ff@0.13.1 c0b50bfb653653f9ca9095b427bed08ab8d75a137839d9ad64eb11810d5b6393 [MIT/Apache-2.0] msrv=1.56 no-build features=none
+fiat-crypto@0.2.9 28dea519a9695b9977216879a3ebfddf92f1c08c05d984f8996aecd6ecdc811d [MIT OR Apache-2.0 OR BSD-1-Clause] msrv=unspecified no-build features=none
+fiat-crypto@0.3.0 64cd1e32ddd350061ae6edb1b082d7c54915b5c672c389143b9a63403a109f24 [MIT OR Apache-2.0 OR BSD-1-Clause] msrv=1.83.0 no-build features=none
+find-crate@0.6.3 59a98bbaacea1c0eb6a0876280051b892eb73594fd90cf3b20e9c817029c57d2 [Apache-2.0 OR MIT] msrv=unspecified no-build features=none
+fluent-bundle@0.16.0 01203cb8918f5711e73891b347816d932046f95f54207710bda99beaeb423bf4 [Apache-2.0 OR MIT] msrv=1.67.0 no-build features=default
+fluent-langneg@0.13.1 7eebbe59450baee8282d71676f3bfed5689aeab00b27545e83e5f14b1195e8b0 [Apache-2.0 OR MIT] msrv=unspecified no-build features=default
+fluent-syntax@0.12.0 54f0d287c53ffd184d04d8677f590f4ac5379785529e5e08b1c8083acdd5c198 [Apache-2.0 OR MIT] msrv=1.64.0 no-build features=default
+fluent@0.17.0 8137a6d5a2c50d6b0ebfcb9aaa91a28154e0a70605f112d30cb0cd4a78670477 [Apache-2.0 OR MIT] msrv=1.67.0 no-build features=none
+futures-executor@0.3.34 031b47cf1a3c6cc8bc2fc76cd437f521619387907d469316e7c0bc278f1f5432 [MIT OR Apache-2.0] msrv=1.71 no-build features=std
+futures-macro@0.3.34 9fb9654ba8355388abeb8dcb4fc62f511300867002afc858860463bdd9fe0c44 [MIT OR Apache-2.0] msrv=1.71 no-build features=none
+getrandom@0.2.17 ff2abc00be7fca6ebc474524697ae276ad847ad0a6b3faa4bcb027e9a4614ad0 [MIT OR Apache-2.0] msrv=unspecified no-build features=std
+ghash@0.5.1 f0d8a4362ccb29cb0b265253fb0a2728f592895ee6854fd9bc13f2ffda266ff1 [Apache-2.0 OR MIT] msrv=1.56 no-build features=none
+group@0.13.0 f0f9ef7462f7c099f518d754361858f86d8a07af53ba9af0fe635bbccb151a63 [MIT/Apache-2.0] msrv=unspecified no-build features=none
+hkdf@0.12.4 7b5f8eb2ad728638ea2c7d47a21db23b7b58a72ed6a38256b8a1849f15fbbdf7 [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+hmac@0.12.1 6c49c37c09c17a53d937dfbb742eb3a961d65a994e6bcdcf37e7399d0cc8ab5e [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+hpke@0.12.0 4917627a14198c3603282c5158b815ad5534795451d3c074b53cf3cee0960b11 [MIT/Apache-2.0] msrv=unspecified no-build features=alloc,p256
+hybrid-array@0.2.3 f2d35805454dc9f8662a98d6d61886ffe26bd465f5960e0e55345c70d5c0d2a9 [MIT OR Apache-2.0] msrv=1.81 no-build features=extra-sizes
+i18n-config@0.4.8 3e06b90c8a0d252e203c94344b21e35a30f3a3a85dc7db5af8f8df9f3e0c63ef [MIT] msrv=unspecified no-build features=none
+i18n-embed-fl@0.10.1 602e6bd30c3db2749e13e38b363a3d98d9d41de1d8de7a79c31bb69e45b47cda [MIT] msrv=unspecified no-build features=none
+i18n-embed-impl@0.8.4 0f2cc0e0523d1fe6fc2c6f66e5038624ea8091b3e7748b5e8e0c84b1698db6c2 [MIT] msrv=unspecified no-build features=default,find-crate,fluent-system,i18n-config,quote
+i18n-embed@0.16.0 a217bbb075dcaefb292efa78897fc0678245ca67f265d12c351e42268fcb0305 [MIT] msrv=unspecified no-build features=arc-swap,default,filesystem-assets,fluent,fluent-syntax,fluent-system,i18n-embed-impl,parking_lot,rust-embed,walkdir
+inout@0.1.4 879f10e63c20629ecabbb64a8010319738c66a5cd0c29b02d63d272b03751d01 [MIT OR Apache-2.0] msrv=1.56 no-build features=none
+intl-memoizer@0.5.3 310da2e345f5eb861e7a07ee182262e94975051db9e4223e909ba90f392f163f [Apache-2.0 OR MIT] msrv=1.67.0 no-build features=none
+intl_pluralrules@7.0.2 078ea7b7c29a2b4df841a7f6ac8775ff6074020c6776d48491ce2268e068f972 [Apache-2.0/MIT] msrv=unspecified no-build features=none
+io_tee@0.1.1 4b3f7cef34251886990511df1c61443aa928499d598a9473929ab5a90a527304 [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+is_terminal_polyfill@1.70.2 a6cb138bb79a146c1bd460005623e142ef0181e3d0219cb493e02f7d08a35695 [MIT OR Apache-2.0] msrv=1.70.0 no-build features=default
+keccak@0.1.6 cb26cec98cce3a3d96cbb7bced3c4b16e3d13f27ec56dbd62cbc8f39cfb9d653 [Apache-2.0 OR MIT] msrv=unspecified no-build features=none
+kem@0.3.0-pre.0 2b8645470337db67b01a7f966decf7d0bafedbae74147d33e641c67a91df239f [Apache-2.0 OR MIT] msrv=1.66 no-build features=none
+lazy_static@1.5.0 bbd2bcb4c963f2ddae06a2efc7e9f3591312473c50c6685e1f298068316e66fe [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+lock_api@0.4.14 224399e74b87b5f3557511d98dff8b14089b3dadafcab6bb93eab67d3aace965 [MIT OR Apache-2.0] msrv=1.71.0 no-build features=atomic_usize,default
+mime@0.3.17 6877bb514081ee2a7ff5ef9de3281f14a4dd4bceac4c09388074a6b5df8a139a [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+mime_guess@2.0.5 f7c44f8e672c00fe5308fa235f821cb4198414e1c77935c1ab6948d3fd78550e [MIT] msrv=unspecified build.rs features=default,rev-mappings
+ml-kem@0.2.3 8de49b3df74c35498c0232031bb7e85f9389f913e2796169c8ab47a53993a18f [Apache-2.0 OR MIT] msrv=1.74 no-build features=default,deterministic,std
+nu-ansi-term@0.50.3 7957b9740744892f114936ab4a57b3f487491bbeafaf8083688b16841a4240e5 [MIT] msrv=1.62.1 no-build features=default,std
+once_cell_polyfill@1.70.2 384b8ab6d37215f3c5301a95a4accb5d64aa607f1fcb26a11b5303878451b4fe [MIT OR Apache-2.0] msrv=1.70.0 no-build features=default
+opaque-debug@0.3.1 c08d65885ee38876c4f86fa503fb49d7b507c2b62552df7c70b2fce627e06381 [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+p256@0.13.2 c9863ad85fa8f4460f9c48cb909d38a0d689dba1f6f6988a5e3e0d31071bcd4b [Apache-2.0 OR MIT] msrv=1.65 no-build features=arithmetic,ecdh
+parking_lot@0.12.5 93857453250e3077bd71ff98b6a65ea6621a19bb0f559a85248955ac12c45a1a [MIT OR Apache-2.0] msrv=1.71 no-build features=default
+parking_lot_core@0.9.12 2621685985a2ebf1c516881c026032ac7deafcda1a2c9b7850dc81e3dfcb64c1 [MIT OR Apache-2.0] msrv=1.71.0 build.rs features=none
+pbkdf2@0.12.2 f8ed6a7761f76e3b9f92dfb0a60a6a6477c61024b775147ff0973a02653abaf2 [MIT OR Apache-2.0] msrv=1.60 no-build features=default,hmac
+pin-project-internal@1.1.13 c96395f0a926bc13b1c17622aaddda1ecb55d49c8f1bf9777e4d877800a43f8b [Apache-2.0 OR MIT] msrv=1.71 no-build features=none
+pin-project@1.1.13 2466b2336ed02bcdca6b294417127b90ec92038d1d5c4fbeac971a922e0e0924 [Apache-2.0 OR MIT] msrv=1.71 no-build features=none
+poly1305@0.8.0 8159bd90725d2df49889a078b54f4f79e87f1f8a8444194cdca81d38f5393abf [Apache-2.0 OR MIT] msrv=1.56 no-build features=none
+polyval@0.6.2 9d1fe60d06143b2430aa532c94cfe9e29783047f06c0d7fd359a9a51b729fa25 [Apache-2.0 OR MIT] msrv=1.56 no-build features=none
+primeorder@0.13.6 353e1ca18966c16d9deb1c69278edbc5f194139612772bd9537af60ac231e1e6 [Apache-2.0 OR MIT] msrv=1.65 no-build features=none
+proc-macro-error-attr3@3.1.0 b0084e6206a967a2dad822180626b2f6b07a3b379325e8f1ec0438e33a469ba7 [MIT OR Apache-2.0] msrv=1.61 no-build features=none
+proc-macro-error3@3.1.0 0cf066225f2373bc711684792b69bdeac0356019b007e721090c24d92d5d5a50 [MIT OR Apache-2.0] msrv=1.61 no-build features=default,syn3-error
+rand@0.8.8 e058c7de0b26af77780c769414d6257830bb240f3c38477dbc2c16e5f54d6d4c [MIT OR Apache-2.0] msrv=unspecified no-build features=alloc,default,getrandom,libc,rand_chacha,std,std_rng
+rand_chacha@0.3.1 e6c10a63a0fa32252be49d21e7709d4d4baf8d231c2dbce1eaa8141b9b127d88 [MIT OR Apache-2.0] msrv=unspecified no-build features=std
+rand_core@0.6.4 ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c [MIT OR Apache-2.0] msrv=unspecified no-build features=alloc,getrandom,std
+redox_syscall@0.5.18 ed2bf2547551a7053d6fdfafda3f938979645c44812fbfcda098faae3f1a362d [MIT] msrv=unspecified no-build features=default,userspace
+rust-embed-impl@8.12.0 3bcfc4d6f53af43755f7a723e4b6b8794fcce052a178dd8c6c1dadc5f5343097 [MIT] msrv=unspecified no-build features=none
+rust-embed-utils@8.12.0 42ffa149f6aa81b58a5b3011d01a857c4ed12c7a732d2c51947a4c7c692185f0 [MIT] msrv=unspecified no-build features=none
+rust-embed@8.12.0 e9e7760e252aaba7b09f4be00e36476cf585bdb68a53552ac954cdf504ab4bc9 [MIT] msrv=1.80.0 no-build features=none
+salsa20@0.10.2 97a22f5af31f73a954c10289c93e8a50cc23d971e80ee446f1f6f7137a088213 [MIT OR Apache-2.0] msrv=1.56 no-build features=none
+same-file@1.0.6 93fc1dc3aaa9bfed95e02e6eadabb4baf7e3078b0bd1b4d7b6b0b68378900502 [Unlicense/MIT] msrv=unspecified no-build features=none
+scopeguard@1.2.0 94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49 [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+scrypt@0.11.0 0516a385866c09368f0b5bcd1caff3366aace790fcd46e2bb032697bb172fd1f [MIT OR Apache-2.0] msrv=1.60 no-build features=none
+sec1@0.7.3 d3e97a565f76233a6003f9f5c54be1d9c5bdfa3eccfb189469f11ec4901c47dc [Apache-2.0 OR MIT] msrv=1.65 no-build features=default,der,point,subtle,zeroize
+secrecy@0.10.3 e891af845473308773346dc847b2c23ee78fe442e0472ac50e22a18a93d3ae5a [Apache-2.0 OR MIT] msrv=1.60 no-build features=none
+self_cell@1.3.0 2ab42ca02749e120097e328d91d415325bdf43b1c72c4c8badf37375fe40a813 [Apache-2.0 OR GPL-2.0-only] msrv=unspecified no-build features=none
+sha3@0.10.9 77fd7028345d415a4034cf8777cd4f8ab1851274233b45f84e3d955502d93874 [MIT OR Apache-2.0] msrv=unspecified no-build features=default,std
+sharded-slab@0.1.7 f40ca3c46823713e0d4209592e8d6e826aa57e928f09752619fc696c499637f6 [MIT] msrv=1.42.0 no-build features=none
+signature@3.0.0 28d567dcbaf0049cb8ac2608a76cd95ff9e4412e1899d389ee400918ca7537f5 [Apache-2.0 OR MIT] msrv=1.85 no-build features=none
+strsim@0.11.1 7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f [MIT] msrv=1.56 no-build features=none
+subtle@2.6.1 13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292 [BSD-3-Clause] msrv=unspecified no-build features=const-generics,default,i128,std
+thread_local@1.1.10 1ad99c4c6d32803332c548b1af0540b357b3f5fc0be8f6c6bfe8b2e6ae784070 [MIT OR Apache-2.0] msrv=1.63 no-build features=none
+toml@0.5.11 f4f7f0dd8d50a853a531c426359045b1998f04219d88799810762cd4ad314234 [MIT/Apache-2.0] msrv=1.48.0 no-build features=default
+tracing-log@0.2.0 ee855f1f400bd0e5c02d150ae5de3840039a3f54b025156404e34c23c03f47c3 [MIT] msrv=1.56.0 no-build features=log-tracer,std
+tracing-subscriber@0.3.23 cb7f578e5945fb242538965c2d0b04418d38ec25c79d160cd279bf0731c8d319 [MIT] msrv=1.65.0 no-build features=alloc,ansi,default,fmt,nu-ansi-term,registry,sharded-slab,smallvec,std,thread_local,tracing-log
+type-map@0.5.1 cb30dbbd9036155e74adad6812e9898d03ec374946234fbcebd5dfc7b9187b90 [MIT/Apache-2.0] msrv=unspecified no-build features=none
+unic-langid-impl@0.9.6 dce1bf08044d4b7a94028c93786f8566047edc11110595914de93362559bc658 [MIT OR Apache-2.0] msrv=unspecified no-build features=serde
+unic-langid@0.9.6 a28ba52c9b05311f4f6e62d5d9d46f094bd6e84cb8df7b3ef952748d752a7d05 [MIT OR Apache-2.0] msrv=unspecified no-build features=default,serde
+unicase@2.9.0 dbc4bc3a9f746d862c45cb89d705aa10f187bb96c76001afab07a0d35ce60142 [MIT OR Apache-2.0] msrv=unspecified no-build features=none
+universal-hash@0.5.1 fc1de2c688dc15305988b563c3854064043356019f97a4b46276fe734c4f07ea [MIT OR Apache-2.0] msrv=1.56 no-build features=none
+utf8parse@0.2.2 06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821 [Apache-2.0 OR MIT] msrv=unspecified no-build features=default
+valuable@0.1.1 ba73ea9cf16a25df0c8caa16c51acb937d5712a8429db78a3ee29d5dcacd3a65 [MIT] msrv=1.56 build.rs features=alloc,std
+walkdir@2.5.0 29790946404f91d9c5d06f9874efddea1dc06c5efe94541a7d6863108e3a5e4b [Unlicense/MIT] msrv=unspecified no-build features=none
+x25519-dalek@2.0.1 c7e468321c81fb07fa7f4c636c3972b9100f0346e5b6a9f2bd0603a52f7ed277 [BSD-3-Clause] msrv=1.60 no-build features=alloc,default,precomputed-tables,static_secrets,zeroize
+zeroize@1.9.0 e13c156562582aa81c60cb29407084cdb54c4164760106ab78e6c5b0858cf64e [Apache-2.0 OR MIT] msrv=1.85 no-build features=alloc,default,zeroize_derive
+zeroize_derive@1.5.0 3c50655cbb0fe3fc43170059e702f1ce5e19b84cec58dc87b037a09935c2f328 [Apache-2.0 OR MIT] msrv=1.85 no-build features=none
+"""
+reused_locked_packages = "tracing 0.1.44, rustix 1.1.4, windows-sys 0.61.2, windows-link 0.2.1, cap-std/cap-fs-ext 4.0.3, serde/serde_json/sha2/tempfile/toml/uuid, and their previously governed closure retain exact pre-Task-7 identities/checksums; new local packages are heleos-cli 0.1.0 and heleos-platform-fs 0.1.0"
+build_script_surface = "only curve25519-dalek 4.1.3 and 5.0.0 local backend/cfg generation, mime_guess 2.0.5 generated media mappings, parking_lot_core 0.9.12 platform cfg, and valuable 0.1.1 cfg probing declare custom-build targets in the new graph; procedural macros remain compiler plugins and no admitted script performs egress"
+unsafe_surface = "upstream cryptographic primitives, curve/field arithmetic, entropy, zeroization, parking/thread-local synchronization, terminal/OS bindings, and generated target support contain unsafe implementation details. The sole Heleos-authored unsafe block is separately bounded in heleos-platform-fs; every other authored crate/test remains forbid(unsafe_code)"
+rollback = "revert Task 7, restore the pre-Task-7 Cargo.toml/Cargo.lock, remove local Task 7 crates, and preserve existing encrypted backup bytes for owner-directed recovery"
+
 [[tool]]
 name = "lopdf"
 origin = "https://crates.io/crates/lopdf; source repository https://github.com/J-F-Liu/lopdf"
