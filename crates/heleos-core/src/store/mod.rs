@@ -1,3 +1,4 @@
+pub(crate) mod ingest_repository;
 mod migration;
 mod permissions;
 mod schema;
@@ -131,6 +132,8 @@ pub struct Store {
     database_path: Option<PathBuf>,
     _snapshot_directory: Option<tempfile::TempDir>,
     pub(super) read_only: bool,
+    #[cfg(test)]
+    commit_outcome_unknown_after: Option<usize>,
 }
 
 impl Store {
@@ -162,6 +165,8 @@ impl Store {
             database_path: Some(path.to_owned()),
             _snapshot_directory: None,
             read_only: false,
+            #[cfg(test)]
+            commit_outcome_unknown_after: None,
         };
         store.harden_sqlite_sidecars()?;
 
@@ -235,6 +240,8 @@ impl Store {
             database_path: Some(path.to_owned()),
             _snapshot_directory: Some(snapshot_directory),
             read_only: true,
+            #[cfg(test)]
+            commit_outcome_unknown_after: None,
         })
     }
 
@@ -250,10 +257,27 @@ impl Store {
             database_path: None,
             _snapshot_directory: None,
             read_only: false,
+            #[cfg(test)]
+            commit_outcome_unknown_after: None,
         })
     }
 
-    pub fn with_immediate_transaction<T>(
+    /// Runs one crate-owned immediate transaction.
+    ///
+    /// Normal consumers cannot use this primitive to bypass audited repositories.
+    ///
+    /// ```compile_fail
+    /// #![forbid(unsafe_code)]
+    /// use heleos_core::Store;
+    ///
+    /// fn raw_write(store: &mut Store) {
+    ///     let _ = store.with_immediate_transaction(|transaction| {
+    ///         transaction.execute("DELETE FROM projects", []).unwrap();
+    ///         Ok(())
+    ///     });
+    /// }
+    /// ```
+    pub(crate) fn with_immediate_transaction<T>(
         &mut self,
         operation: impl FnOnce(&Transaction<'_>) -> Result<T>,
     ) -> Result<T> {
@@ -267,11 +291,37 @@ impl Store {
             .transaction_with_behavior(TransactionBehavior::Immediate)
             .map_err(database_error)?;
         let value = operation(&transaction)?;
-        transaction.commit().map_err(database_error)?;
-        self.recheck_writer_lock_identity()?;
-        self.harden_sqlite_sidecars()?;
-        self.recheck_database_identity()?;
+        transaction
+            .commit()
+            .map_err(|_| HeleosError::CommitOutcomeUnknown)?;
+        #[cfg(test)]
+        if let Some(remaining) = self.commit_outcome_unknown_after.take() {
+            if remaining == 0 {
+                return Err(HeleosError::CommitOutcomeUnknown);
+            }
+            self.commit_outcome_unknown_after = Some(remaining - 1);
+        }
+        self.recheck_writer_lock_identity()
+            .and_then(|()| self.harden_sqlite_sidecars())
+            .and_then(|()| self.recheck_database_identity())
+            .map_err(|_| HeleosError::CommitOutcomeUnknown)?;
         Ok(value)
+    }
+
+    #[cfg(test)]
+    pub(crate) fn inject_commit_outcome_unknown_after_for_test(
+        &mut self,
+        successful_commits_before_failure: usize,
+    ) {
+        self.commit_outcome_unknown_after = Some(successful_commits_before_failure);
+    }
+
+    pub(crate) fn require_writer_capability(&self) -> Result<()> {
+        if self.read_only {
+            return Err(HeleosError::PolicyDenied);
+        }
+        self.recheck_writer_lock_identity()?;
+        self.recheck_database_identity()
     }
 
     pub fn verify_integrity(&self) -> Result<IntegrityReport> {
@@ -734,6 +784,31 @@ fn register_jcs_validator(connection: &Connection) -> Result<()> {
             };
             Ok(canonical == text)
         })
+        .map_err(database_error)?;
+    connection
+        .create_scalar_function("heleos_is_uuid", 1, flags, |context| {
+            let text = context.get::<String>(0)?;
+            let valid = uuid::Uuid::parse_str(&text)
+                .is_ok_and(|value| value.hyphenated().to_string() == text);
+            Ok(valid)
+        })
+        .map_err(database_error)?;
+    connection
+        .create_scalar_function("heleos_valid_text", 3, flags, |context| {
+            let text = context.get::<String>(0)?;
+            let max_bytes = context.get::<i64>(1)?;
+            let allow_ordinary_whitespace = context.get::<i64>(2)? != 0;
+            let valid_control = |character: char| {
+                allow_ordinary_whitespace && matches!(character, '\n' | '\r' | '\t')
+            };
+            let valid = max_bytes >= 0
+                && !text.is_empty()
+                && u64::try_from(text.len()).is_ok_and(|length| length <= max_bytes as u64)
+                && !text
+                    .chars()
+                    .any(|character| character.is_control() && !valid_control(character));
+            Ok(valid)
+        })
         .map_err(database_error)
 }
 
@@ -1063,6 +1138,100 @@ fn database_error(_: rusqlite::Error) -> HeleosError {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn crate_owned_connections_enforce_foundation_settings_and_raw_boundary() {
+        let root = tempfile::Builder::new()
+            .prefix("heleos-connection-settings-")
+            .tempdir()
+            .expect("create settings fixture directory");
+        apply_private_permissions(root.path()).expect("harden settings fixture directory");
+        let canonical_root = fs::canonicalize(root.path()).expect("canonical settings fixture");
+        let database = canonical_root.join("foundation.sqlite3");
+        let mut store = Store::open_writer(&database).expect("open settings writer");
+
+        let settings = (
+            store
+                .connection
+                .pragma_query_value(None, "foreign_keys", |row| row.get::<_, i64>(0))
+                .expect("query foreign keys"),
+            store
+                .connection
+                .pragma_query_value(None, "journal_mode", |row| row.get::<_, String>(0))
+                .expect("query journal mode"),
+            store
+                .connection
+                .pragma_query_value(None, "synchronous", |row| row.get::<_, i64>(0))
+                .expect("query synchronous"),
+            store
+                .connection
+                .pragma_query_value(None, "busy_timeout", |row| row.get::<_, i64>(0))
+                .expect("query busy timeout"),
+            store
+                .connection
+                .pragma_query_value(None, "query_only", |row| row.get::<_, i64>(0))
+                .expect("query writer query-only"),
+            store
+                .connection
+                .pragma_query_value(None, "temp_store", |row| row.get::<_, i64>(0))
+                .expect("query temp store"),
+            store
+                .connection
+                .db_config(DbConfig::SQLITE_DBCONFIG_TRUSTED_SCHEMA)
+                .expect("query trusted schema"),
+            store
+                .connection
+                .db_config(DbConfig::SQLITE_DBCONFIG_DEFENSIVE)
+                .expect("query defensive mode"),
+            store
+                .connection
+                .db_config(DbConfig::SQLITE_DBCONFIG_DQS_DDL)
+                .expect("query DQS DDL"),
+            store
+                .connection
+                .db_config(DbConfig::SQLITE_DBCONFIG_DQS_DML)
+                .expect("query DQS DML"),
+            store
+                .connection
+                .db_config(DbConfig::SQLITE_DBCONFIG_ENABLE_ATTACH_CREATE)
+                .expect("query attach-create"),
+            store
+                .connection
+                .db_config(DbConfig::SQLITE_DBCONFIG_ENABLE_ATTACH_WRITE)
+                .expect("query attach-write"),
+        );
+        assert_eq!(
+            settings,
+            (
+                1,
+                "wal".to_owned(),
+                2,
+                5_000,
+                0,
+                2,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false
+            )
+        );
+
+        store.read_only = true;
+        assert!(matches!(
+            store.with_immediate_transaction(|_| Ok(())),
+            Err(HeleosError::PolicyDenied)
+        ));
+
+        let memory = Store::open_in_memory().expect("open in-memory settings store");
+        assert!(
+            memory
+                .connection
+                .db_config(DbConfig::SQLITE_DBCONFIG_DEFENSIVE)
+                .expect("query in-memory defensive mode")
+        );
+    }
 
     #[test]
     fn simultaneous_first_use_process_helper() {

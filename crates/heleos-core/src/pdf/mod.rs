@@ -1,15 +1,19 @@
-mod geometry;
+pub(crate) mod geometry;
 mod wasi_host;
 
 use std::path::PathBuf;
 
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize, de};
 
-use crate::{IngestOutcome, PdfLimits, Result, RevisionId, Sha256Digest, VerifiedObject};
+use crate::{
+    HeleosError, IngestOutcome, PdfLimits, Result, RevisionId, Sha256Digest, VerifiedObject,
+};
 
 pub use geometry::{PageMetadata, PageTransform, PageUnit};
 
 pub trait PdfProbe: Send + Sync {
+    fn provenance(&self) -> Result<PdfProbeProvenance>;
+
     fn probe(
         &self,
         input: VerifiedObject,
@@ -65,8 +69,7 @@ impl PdfQuarantine {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(deny_unknown_fields)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct PdfProbeProvenance {
     pub parser_name: String,
     pub parser_version: String,
@@ -76,8 +79,72 @@ pub struct PdfProbeProvenance {
     pub protocol_version: String,
 }
 
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct RawPdfProbeProvenance {
+    #[serde(deserialize_with = "deserialize_provenance_text")]
+    parser_name: String,
+    #[serde(deserialize_with = "deserialize_provenance_text")]
+    parser_version: String,
+    guest_wasm_sha256: Sha256Digest,
+    guest_source_tree_sha256: Sha256Digest,
+    guest_dependency_graph_sha256: Sha256Digest,
+    #[serde(deserialize_with = "deserialize_provenance_text")]
+    protocol_version: String,
+}
+
+fn deserialize_provenance_text<'de, D: Deserializer<'de>>(
+    deserializer: D,
+) -> std::result::Result<String, D::Error> {
+    crate::ingest::deserialize_bounded_string::<D, 256>(deserializer)
+}
+
+impl TryFrom<RawPdfProbeProvenance> for PdfProbeProvenance {
+    type Error = HeleosError;
+
+    fn try_from(raw: RawPdfProbeProvenance) -> Result<Self> {
+        let value = Self {
+            parser_name: raw.parser_name,
+            parser_version: raw.parser_version,
+            guest_wasm_sha256: raw.guest_wasm_sha256,
+            guest_source_tree_sha256: raw.guest_source_tree_sha256,
+            guest_dependency_graph_sha256: raw.guest_dependency_graph_sha256,
+            protocol_version: raw.protocol_version,
+        };
+        value.validate()?;
+        Ok(value)
+    }
+}
+
+impl<'de> Deserialize<'de> for PdfProbeProvenance {
+    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> std::result::Result<Self, D::Error> {
+        Self::try_from(RawPdfProbeProvenance::deserialize(deserializer)?).map_err(de::Error::custom)
+    }
+}
+
+impl PdfProbeProvenance {
+    pub(crate) fn validate(&self) -> Result<()> {
+        if [
+            self.parser_name.as_str(),
+            self.parser_version.as_str(),
+            self.protocol_version.as_str(),
+        ]
+        .iter()
+        .any(|field| field.is_empty() || field.len() > 256 || field.chars().any(char::is_control))
+        {
+            return Err(HeleosError::Integrity);
+        }
+        Ok(())
+    }
+}
+
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(tag = "kind", content = "detail", rename_all = "snake_case")]
+#[serde(
+    tag = "kind",
+    content = "detail",
+    rename_all = "snake_case",
+    deny_unknown_fields
+)]
 pub enum PdfQuarantineReason {
     BadMagic,
     Corrupt,

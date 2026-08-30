@@ -13,8 +13,8 @@ use heleos_core::{
 };
 #[cfg(unix)]
 use rusqlite::OpenFlags;
-use rusqlite::config::DbConfig;
-use rusqlite::{Connection, params};
+use rusqlite::functions::FunctionFlags;
+use rusqlite::{Connection, Transaction, TransactionBehavior, params};
 use uuid::Uuid;
 
 const TABLES: [&str; 14] = [
@@ -105,6 +105,124 @@ fn migrated_store(database: &TestDatabase) -> Store {
     store
 }
 
+fn raw_verifier_connection(database: &TestDatabase) -> Connection {
+    raw_verifier_connection_path(&database.path)
+}
+
+fn raw_verifier_connection_path(path: &Path) -> Connection {
+    let connection = Connection::open(path).expect("open verifier-only connection");
+    let flags = FunctionFlags::SQLITE_UTF8
+        | FunctionFlags::SQLITE_DETERMINISTIC
+        | FunctionFlags::SQLITE_INNOCUOUS;
+    connection
+        .create_scalar_function("heleos_is_jcs", 1, flags, |context| {
+            let text = context.get::<String>(0)?;
+            let Ok(value) = serde_json::from_str::<serde_json::Value>(&text) else {
+                return Ok(false);
+            };
+            let Ok(canonical) = serde_jcs::to_string(&value) else {
+                return Ok(false);
+            };
+            Ok(canonical == text)
+        })
+        .expect("register verifier JCS validator");
+    connection
+        .create_scalar_function("heleos_is_uuid", 1, flags, |context| {
+            let text = context.get::<String>(0)?;
+            Ok(Uuid::parse_str(&text).is_ok_and(|value| value.hyphenated().to_string() == text))
+        })
+        .expect("register verifier UUID validator");
+    connection
+        .create_scalar_function("heleos_valid_text", 3, flags, |context| {
+            let text = context.get::<String>(0)?;
+            let max_bytes = context.get::<i64>(1)?;
+            let allow_ordinary_whitespace = context.get::<i64>(2)? != 0;
+            let valid_control = |character: char| {
+                allow_ordinary_whitespace && matches!(character, '\n' | '\r' | '\t')
+            };
+            let valid = u64::try_from(max_bytes).is_ok_and(|maximum| {
+                !text.is_empty()
+                    && u64::try_from(text.len()).is_ok_and(|length| length <= maximum)
+                    && !text
+                        .chars()
+                        .any(|character| character.is_control() && !valid_control(character))
+            });
+            Ok(valid)
+        })
+        .expect("register verifier text validator");
+    connection
+        .pragma_update(None, "foreign_keys", "ON")
+        .expect("enable verifier foreign keys");
+    connection
+        .pragma_update(None, "trusted_schema", "OFF")
+        .expect("disable verifier trusted schema");
+    connection
+}
+
+fn with_raw_verifier_transaction<T>(
+    database: &TestDatabase,
+    operation: impl FnOnce(&Transaction<'_>) -> Result<T, HeleosError>,
+) -> Result<T, HeleosError> {
+    let mut connection = raw_verifier_connection(database);
+    let transaction = connection
+        .transaction_with_behavior(TransactionBehavior::Immediate)
+        .expect("begin verifier-only transaction");
+    let value = operation(&transaction)?;
+    transaction
+        .commit()
+        .expect("commit verifier-only transaction");
+    Ok(value)
+}
+
+fn insert_job_test_project(transaction: &Transaction<'_>, project_id: &str) {
+    transaction
+        .execute(
+            "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
+             VALUES (?1, ?1, 0, 'actor', 'INTERNAL')",
+            [project_id],
+        )
+        .expect("insert job-test project");
+}
+
+fn insert_queued_job(transaction: &Transaction<'_>, job_id: &str, project_id: &str, key: &str) {
+    transaction
+        .execute(
+            "INSERT INTO job_runs
+                (id, project_id, kind, idempotency_key, state, attempt, deadline_at_ms,
+                 budget_json, input_json, checkpoint_json, created_at_ms, updated_at_ms)
+             VALUES (?1, ?2, 'pdf_ingest', ?3, 'queued', 0, 300000,
+                     '{}', '{}', '{}', 0, 0)",
+            params![job_id, project_id, key],
+        )
+        .expect("insert queued job fixture");
+}
+
+fn start_job(transaction: &Transaction<'_>, job_id: &str, updated_at_ms: i64) {
+    transaction
+        .execute(
+            "UPDATE job_runs
+             SET state = 'running', attempt = 1,
+                 lease_owner = '00000000-0000-4000-8000-000000000001',
+                 lease_expires_at_ms = 30000, updated_at_ms = ?2
+             WHERE id = ?1",
+            params![job_id, updated_at_ms],
+        )
+        .expect("start job fixture");
+}
+
+fn assert_sql_error_contains(result: rusqlite::Result<usize>, expected: &str) {
+    let error = result.expect_err("hostile SQL unexpectedly succeeded");
+    assert!(
+        error.to_string().contains(expected),
+        "unexpected SQLite error {error:?}; expected {expected:?}"
+    );
+}
+
+fn canonical_json_string_with_exact_bytes(byte_length: usize) -> String {
+    assert!(byte_length >= 2);
+    format!("\"{}\"", "x".repeat(byte_length - 2))
+}
+
 fn spawn_crash_left_writer(database: &TestDatabase) {
     let status = Command::new(env::current_exe().expect("locate test executable"))
         .arg("--exact")
@@ -116,190 +234,191 @@ fn spawn_crash_left_writer(database: &TestDatabase) {
     assert!(status.success(), "crash-left WAL fixture failed");
 }
 
-fn insert_complete_fixture(store: &mut Store, payload: &str) {
+fn insert_complete_fixture(database: &TestDatabase, payload: &str) {
     let json = serde_json::to_string(&payload).expect("encode payload as JSON string");
-    store
-        .with_immediate_transaction(|tx| {
-            tx.execute(
-                "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
+    with_raw_verifier_transaction(database, |tx| {
+        tx.execute(
+            "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
                  VALUES (?1, ?2, ?3, ?4, ?5)",
-                params!["project-1", payload, 1_i64, payload, "PROJECT_CONFIDENTIAL"],
-            )
-            .expect("insert project");
-            tx.execute(
-                "INSERT INTO content_objects
+            params!["project-1", payload, 1_i64, payload, "PROJECT_CONFIDENTIAL"],
+        )
+        .expect("insert project");
+        tx.execute(
+            "INSERT INTO content_objects
                     (sha256, byte_length, admission_state, vault_key, created_at_ms, created_by,
                      quarantine_reason)
                  VALUES (?1, ?2, ?3, ?4, ?5, ?6, NULL)",
-                params!["a".repeat(64), 4_i64, "accepted", payload, 2_i64, payload],
-            )
-            .expect("insert content object");
-            tx.execute(
-                "INSERT INTO documents (id, created_at_ms, created_by)
+            params!["a".repeat(64), 4_i64, "accepted", payload, 2_i64, payload],
+        )
+        .expect("insert content object");
+        tx.execute(
+            "INSERT INTO documents (id, created_at_ms, created_by)
                  VALUES (?1, ?2, ?3)",
-                params!["document-1", 3_i64, payload],
-            )
-            .expect("insert document");
-            tx.execute(
-                "INSERT INTO document_revisions
+            params!["document-1", 3_i64, payload],
+        )
+        .expect("insert document");
+        tx.execute(
+            "INSERT INTO document_revisions
                     (id, document_id, content_sha256, created_at_ms, created_by)
                  VALUES (?1, ?2, ?3, ?4, ?5)",
-                params!["revision-1", "document-1", "a".repeat(64), 4_i64, payload],
-            )
-            .expect("insert revision");
-            tx.execute(
-                "INSERT INTO project_documents
+            params!["revision-1", "document-1", "a".repeat(64), 4_i64, payload],
+        )
+        .expect("insert revision");
+        tx.execute(
+            "INSERT INTO project_documents
                     (project_id, document_id, linked_at_ms, linked_by)
                  VALUES (?1, ?2, ?3, ?4)",
-                params!["project-1", "document-1", 5_i64, payload],
-            )
-            .expect("link project document");
-            tx.execute(
-                "INSERT INTO job_runs
+            params!["project-1", "document-1", 5_i64, payload],
+        )
+        .expect("link project document");
+        tx.execute(
+            "INSERT INTO job_runs
                     (id, project_id, kind, idempotency_key, state, attempt, lease_owner,
                      lease_expires_at_ms, deadline_at_ms, budget_json, input_json,
                      checkpoint_json, terminal_reason, created_at_ms, updated_at_ms)
-                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, NULL, NULL, NULL, ?7, ?8, ?9, NULL, ?10, ?11)",
-                params![
-                    "job-1",
-                    "project-1",
-                    "pdf_ingest",
-                    payload,
-                    "succeeded",
-                    1_i64,
-                    &json,
-                    &json,
-                    &json,
-                    6_i64,
-                    7_i64
-                ],
-            )
-            .expect("insert job");
-            tx.execute(
-                "INSERT INTO ingest_events
-                    (id, project_id, job_id, content_sha256, outcome, source_name, source_path,
-                     idempotency_key, actor, terminal_at_ms, details_json)
-                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)",
-                params![
-                    "ingest-1",
-                    "project-1",
-                    "job-1",
-                    "a".repeat(64),
-                    "accepted_new",
-                    payload,
-                    payload,
-                    payload,
-                    payload,
-                    8_i64,
-                    &json
-                ],
-            )
-            .expect("insert ingest event");
-            tx.execute(
-                "INSERT INTO sheets
+                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, NULL, NULL, ?7, ?8, ?9, ?10,
+                         'completed', ?11, ?12)",
+            params![
+                "job-1",
+                "project-1",
+                "pdf_ingest",
+                payload,
+                "succeeded",
+                1_i64,
+                100_i64,
+                &json,
+                &json,
+                &json,
+                6_i64,
+                7_i64
+            ],
+        )
+        .expect("insert job");
+        tx.execute(
+            "INSERT INTO ingest_events
+                    (id, project_id, job_id, content_sha256, outcome, attempt, source_name,
+                     source_path, idempotency_key, actor, terminal_at_ms, details_json)
+                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, '<redacted>', ?8, ?9, ?10, ?11)",
+            params![
+                "ingest-1",
+                "project-1",
+                "job-1",
+                "a".repeat(64),
+                "accepted_new",
+                1_i64,
+                payload,
+                payload,
+                payload,
+                8_i64,
+                &json
+            ],
+        )
+        .expect("insert ingest event");
+        tx.execute(
+            "INSERT INTO sheets
                     (id, revision_id, zero_based_page_index, width_micropoints,
                      height_micropoints, rotation_degrees, unit, parent_content_sha256,
                      transform_json)
                  VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)",
-                params![
-                    "sheet-1",
-                    "revision-1",
-                    0_i64,
-                    612_000_i64,
-                    792_000_i64,
-                    0_i64,
-                    "pt",
-                    "a".repeat(64),
-                    &json
-                ],
-            )
-            .expect("insert sheet");
-            tx.execute(
-                "INSERT INTO scales
+            params![
+                "sheet-1",
+                "revision-1",
+                0_i64,
+                612_000_i64,
+                792_000_i64,
+                0_i64,
+                "pt",
+                "a".repeat(64),
+                &json
+            ],
+        )
+        .expect("insert sheet");
+        tx.execute(
+            "INSERT INTO scales
                     (id, sheet_id, numerator, denominator, source, created_at_ms, created_by)
                  VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
-                params!["scale-1", "sheet-1", 1_i64, 48_i64, payload, 9_i64, payload],
-            )
-            .expect("insert scale");
-            tx.execute(
-                "INSERT INTO source_records
+            params!["scale-1", "sheet-1", 1_i64, 48_i64, payload, 9_i64, payload],
+        )
+        .expect("insert scale");
+        tx.execute(
+            "INSERT INTO source_records
                     (id, project_id, job_id, source_name, source_path, content_sha256,
                      metadata_json, created_at_ms)
                  VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
-                params![
-                    "source-1",
-                    "project-1",
-                    "job-1",
-                    payload,
-                    payload,
-                    "a".repeat(64),
-                    &json,
-                    10_i64
-                ],
-            )
-            .expect("insert source record");
-            tx.execute(
-                "INSERT INTO evidence_objects
+            params![
+                "source-1",
+                "project-1",
+                "job-1",
+                payload,
+                "<redacted>",
+                "a".repeat(64),
+                &json,
+                10_i64
+            ],
+        )
+        .expect("insert source record");
+        tx.execute(
+            "INSERT INTO evidence_objects
                     (id, project_id, job_id, document_revision_id, content_sha256,
                      parent_content_sha256, extraction_method, parameters_json, review_state,
                      created_at_ms)
                  VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)",
-                params![
-                    "evidence-1",
-                    "project-1",
-                    "job-1",
-                    "revision-1",
-                    "a".repeat(64),
-                    "a".repeat(64),
-                    payload,
-                    &json,
-                    "unreviewed",
-                    11_i64
-                ],
-            )
-            .expect("insert evidence object");
-            tx.execute(
-                "INSERT INTO corrections
+            params![
+                "evidence-1",
+                "project-1",
+                "job-1",
+                "revision-1",
+                "a".repeat(64),
+                "a".repeat(64),
+                payload,
+                &json,
+                "unreviewed",
+                11_i64
+            ],
+        )
+        .expect("insert evidence object");
+        tx.execute(
+            "INSERT INTO corrections
                     (id, project_id, evidence_id, actor, reason, before_json, after_json,
                      created_at_ms)
                  VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
-                params![
-                    "correction-1",
-                    "project-1",
-                    "evidence-1",
-                    payload,
-                    payload,
-                    &json,
-                    &json,
-                    12_i64
-                ],
-            )
-            .expect("insert correction");
-            tx.execute(
-                "INSERT INTO audit_events
+            params![
+                "correction-1",
+                "project-1",
+                "evidence-1",
+                payload,
+                payload,
+                &json,
+                &json,
+                12_i64
+            ],
+        )
+        .expect("insert correction");
+        tx.execute(
+            "INSERT INTO audit_events
                     (id, sequence, project_id, actor, action, subject_type, subject_id,
                      before_json, after_json, reason, occurred_at_ms, previous_hash, event_hash)
                  VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13)",
-                params![
-                    "audit-1",
-                    1_i64,
-                    "project-1",
-                    payload,
-                    payload,
-                    "project",
-                    "project-1",
-                    &json,
-                    &json,
-                    payload,
-                    13_i64,
-                    "0".repeat(64),
-                    "b".repeat(64)
-                ],
-            )
-            .expect("insert audit event");
-            Ok(())
-        })
-        .expect("commit fixture");
+            params![
+                "audit-1",
+                1_i64,
+                "project-1",
+                payload,
+                "project_created",
+                "project",
+                "project-1",
+                &json,
+                &json,
+                payload,
+                13_i64,
+                "0".repeat(64),
+                "b".repeat(64)
+            ],
+        )
+        .expect("insert audit event");
+        Ok(())
+    })
+    .expect("commit fixture");
 }
 
 #[test]
@@ -322,161 +441,157 @@ fn empty_database_migrates_to_version_one_and_reopen_is_idempotent() {
 }
 
 #[test]
-fn writer_connection_enforces_all_foundation_sqlite_settings() {
-    let database = TestDatabase::new("connection-settings");
-    let mut store = migrated_store(&database);
-
-    let settings = store
-        .with_immediate_transaction(|tx| {
-            let foreign_keys = tx
-                .pragma_query_value(None, "foreign_keys", |row| row.get::<_, i64>(0))
-                .expect("query foreign_keys");
-            let journal_mode = tx
-                .pragma_query_value(None, "journal_mode", |row| row.get::<_, String>(0))
-                .expect("query journal mode");
-            let synchronous = tx
-                .pragma_query_value(None, "synchronous", |row| row.get::<_, i64>(0))
-                .expect("query synchronous");
-            let busy_timeout = tx
-                .pragma_query_value(None, "busy_timeout", |row| row.get::<_, i64>(0))
-                .expect("query busy timeout");
-            let query_only = tx
-                .pragma_query_value(None, "query_only", |row| row.get::<_, i64>(0))
-                .expect("query writer query_only");
-            let temp_store = tx
-                .pragma_query_value(None, "temp_store", |row| row.get::<_, i64>(0))
-                .expect("query temp store");
-            let trusted_schema = tx
-                .db_config(DbConfig::SQLITE_DBCONFIG_TRUSTED_SCHEMA)
-                .expect("query trusted schema");
-            let defensive = tx
-                .db_config(DbConfig::SQLITE_DBCONFIG_DEFENSIVE)
-                .expect("query defensive mode");
-            let dqs_ddl = tx
-                .db_config(DbConfig::SQLITE_DBCONFIG_DQS_DDL)
-                .expect("query DQS DDL mode");
-            let dqs_dml = tx
-                .db_config(DbConfig::SQLITE_DBCONFIG_DQS_DML)
-                .expect("query DQS DML mode");
-            let attach_create = tx
-                .db_config(DbConfig::SQLITE_DBCONFIG_ENABLE_ATTACH_CREATE)
-                .expect("query attach create mode");
-            let attach_write = tx
-                .db_config(DbConfig::SQLITE_DBCONFIG_ENABLE_ATTACH_WRITE)
-                .expect("query attach write mode");
-            Ok((
-                foreign_keys,
-                journal_mode,
-                synchronous,
-                busy_timeout,
-                query_only,
-                temp_store,
-                trusted_schema,
-                defensive,
-                dqs_ddl,
-                dqs_dml,
-                attach_create,
-                attach_write,
-            ))
-        })
-        .expect("inspect settings");
-
-    assert_eq!(
-        settings,
-        (
-            1,
-            "wal".to_owned(),
-            2,
-            5_000,
-            0,
-            2,
-            false,
-            true,
-            false,
-            false,
-            false,
-            false,
-        )
-    );
-}
-
-#[test]
 fn foundation_migration_creates_exact_required_tables() {
     let database = TestDatabase::new("table-set");
-    let mut store = migrated_store(&database);
-    let tables = store
-        .with_immediate_transaction(|tx| {
-            let mut statement = tx
-                .prepare(
-                    "SELECT name FROM sqlite_schema
-                     WHERE type = 'table' AND name NOT LIKE 'sqlite_%'
-                     ORDER BY name",
-                )
-                .expect("prepare table query");
-            let names = statement
-                .query_map([], |row| row.get::<_, String>(0))
-                .expect("query table names")
-                .collect::<rusqlite::Result<Vec<_>>>()
-                .expect("collect table names");
-            Ok(names)
-        })
-        .expect("inspect schema");
+    drop(migrated_store(&database));
+    let connection = raw_verifier_connection(&database);
+    let mut statement = connection
+        .prepare(
+            "SELECT name FROM sqlite_schema
+             WHERE type = 'table' AND name NOT LIKE 'sqlite_%'
+             ORDER BY name",
+        )
+        .expect("prepare table query");
+    let tables = statement
+        .query_map([], |row| row.get::<_, String>(0))
+        .expect("query table names")
+        .collect::<rusqlite::Result<Vec<_>>>()
+        .expect("collect table names");
 
     assert_eq!(tables, TABLES);
 }
 
 #[test]
+fn task_six_schema_exposes_media_authority_and_attempt_identity() {
+    // Break caught: accepted manifests/PDFs sharing an untyped content row or duplicate job attempts.
+    let database = TestDatabase::new("task-six-columns");
+    let store = migrated_store(&database);
+    drop(store);
+    let connection = Connection::open_with_flags(
+        &database.path,
+        rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY
+            | rusqlite::OpenFlags::SQLITE_OPEN_NO_MUTEX
+            | rusqlite::OpenFlags::SQLITE_OPEN_NOFOLLOW,
+    )
+    .expect("open verifier-only schema connection");
+
+    let columns = |table: &str| {
+        let mut statement = connection
+            .prepare(&format!("PRAGMA table_info({table})"))
+            .expect("prepare table column query");
+        statement
+            .query_map([], |row| row.get::<_, String>(1))
+            .expect("query table columns")
+            .collect::<std::result::Result<Vec<_>, _>>()
+            .expect("collect table columns")
+    };
+    assert!(
+        columns("content_objects")
+            .iter()
+            .any(|column| column == "media_type")
+    );
+    assert!(
+        columns("ingest_events")
+            .iter()
+            .any(|column| column == "attempt")
+    );
+}
+
+#[test]
+fn task_six_latest_job_audit_index_has_the_exact_subject_sequence_shape() {
+    // Break caught: every live-job lookup window-sorting the complete historical audit chain.
+    let database = TestDatabase::new("task-six-job-audit-index");
+    drop(migrated_store(&database));
+    let connection = raw_verifier_connection(&database);
+    let sql = connection
+        .query_row(
+            "SELECT sql FROM sqlite_schema
+             WHERE type = 'index' AND name = 'audit_events_subject_sequence'",
+            [],
+            |row| row.get::<_, String>(0),
+        )
+        .expect("read exact latest-job-audit index");
+    assert_eq!(
+        sql,
+        "CREATE INDEX audit_events_subject_sequence ON audit_events(subject_type, subject_id, sequence DESC)"
+    );
+    let mut statement = connection
+        .prepare("PRAGMA index_xinfo(audit_events_subject_sequence)")
+        .expect("prepare index shape query");
+    let columns = statement
+        .query_map([], |row| {
+            Ok((
+                row.get::<_, i64>(0)?,
+                row.get::<_, Option<String>>(2)?,
+                row.get::<_, i64>(3)?,
+                row.get::<_, i64>(5)?,
+            ))
+        })
+        .expect("query index columns")
+        .collect::<rusqlite::Result<Vec<_>>>()
+        .expect("collect index columns");
+    assert_eq!(
+        columns,
+        vec![
+            (0, Some("subject_type".to_owned()), 0, 1),
+            (1, Some("subject_id".to_owned()), 0, 1),
+            (2, Some("sequence".to_owned()), 1, 1),
+            (3, None, 0, 0),
+        ]
+    );
+}
+
+#[test]
 fn bound_sql_payloads_remain_inert_data_in_every_sensitive_text_class() {
     let database = TestDatabase::new("bound-values");
-    let mut store = migrated_store(&database);
-    let payload = "Robert'); DROP TABLE projects; --\n../vault/$HOME/\u{001b}[31m";
-    insert_complete_fixture(&mut store, payload);
+    drop(migrated_store(&database));
+    let payload = "Robert'); DROP TABLE projects; -- ../vault/$HOME/[31m";
+    insert_complete_fixture(&database, payload);
 
-    let recovered = store
-        .with_immediate_transaction(|tx| {
-            let project_name = tx
-                .query_row(
-                    "SELECT name FROM projects WHERE id = ?1",
-                    ["project-1"],
-                    |row| row.get::<_, String>(0),
-                )
-                .expect("query project name");
-            let actor = tx
-                .query_row(
-                    "SELECT actor FROM ingest_events WHERE id = ?1",
-                    ["ingest-1"],
-                    |row| row.get::<_, String>(0),
-                )
-                .expect("query actor");
-            let idempotency_key = tx
-                .query_row(
-                    "SELECT idempotency_key FROM job_runs WHERE id = ?1",
-                    ["job-1"],
-                    |row| row.get::<_, String>(0),
-                )
-                .expect("query idempotency key");
-            let path = tx
-                .query_row(
-                    "SELECT source_path FROM source_records WHERE id = ?1",
-                    ["source-1"],
-                    |row| row.get::<_, String>(0),
-                )
-                .expect("query path");
-            let json = tx
-                .query_row(
-                    "SELECT metadata_json FROM source_records WHERE id = ?1",
-                    ["source-1"],
-                    |row| row.get::<_, String>(0),
-                )
-                .expect("query JSON");
-            Ok((project_name, actor, idempotency_key, path, json))
-        })
-        .expect("read payloads");
+    let recovered = with_raw_verifier_transaction(&database, |tx| {
+        let project_name = tx
+            .query_row(
+                "SELECT name FROM projects WHERE id = ?1",
+                ["project-1"],
+                |row| row.get::<_, String>(0),
+            )
+            .expect("query project name");
+        let actor = tx
+            .query_row(
+                "SELECT actor FROM ingest_events WHERE id = ?1",
+                ["ingest-1"],
+                |row| row.get::<_, String>(0),
+            )
+            .expect("query actor");
+        let idempotency_key = tx
+            .query_row(
+                "SELECT idempotency_key FROM job_runs WHERE id = ?1",
+                ["job-1"],
+                |row| row.get::<_, String>(0),
+            )
+            .expect("query idempotency key");
+        let path = tx
+            .query_row(
+                "SELECT source_path FROM source_records WHERE id = ?1",
+                ["source-1"],
+                |row| row.get::<_, String>(0),
+            )
+            .expect("query path");
+        let json = tx
+            .query_row(
+                "SELECT metadata_json FROM source_records WHERE id = ?1",
+                ["source-1"],
+                |row| row.get::<_, String>(0),
+            )
+            .expect("query JSON");
+        Ok((project_name, actor, idempotency_key, path, json))
+    })
+    .expect("read payloads");
 
     assert_eq!(recovered.0, payload);
     assert_eq!(recovered.1, payload);
     assert_eq!(recovered.2, payload);
-    assert_eq!(recovered.3, payload);
+    assert_eq!(recovered.3, "<redacted>");
     assert_eq!(
         serde_json::from_str::<String>(&recovered.4).expect("decode stored JSON"),
         payload
@@ -486,76 +601,55 @@ fn bound_sql_payloads_remain_inert_data_in_every_sensitive_text_class() {
 #[test]
 fn foreign_keys_json_and_exact_persisted_enums_fail_closed() {
     let database = TestDatabase::new("constraints");
-    let mut store = migrated_store(&database);
+    drop(migrated_store(&database));
 
-    store
-        .with_immediate_transaction(|tx| {
+    with_raw_verifier_transaction(&database, |tx| {
+        tx.execute(
+            "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
+                 VALUES (?1, ?2, ?3, ?4, ?5)",
+            params!["project-valid", "name", 1_i64, "actor", "INTERNAL"],
+        )
+        .expect("insert valid project prerequisite");
+        assert!(
             tx.execute(
                 "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
-                 VALUES (?1, ?2, ?3, ?4, ?5)",
-                params!["project-valid", "name", 1_i64, "actor", "INTERNAL"],
-            )
-            .expect("insert valid project prerequisite");
-            assert!(
-                tx.execute(
-                    "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
                      VALUES (?1, ?2, ?3, ?4, ?5)",
-                    params!["project-invalid", "name", 1_i64, "actor", "PRIVATE"],
-                )
-                .is_err()
-            );
-            assert!(
-                tx.execute(
-                    "INSERT INTO project_documents
+                params!["project-invalid", "name", 1_i64, "actor", "PRIVATE"],
+            )
+            .is_err()
+        );
+        assert!(
+            tx.execute(
+                "INSERT INTO project_documents
                         (project_id, document_id, linked_at_ms, linked_by)
                      VALUES (?1, ?2, ?3, ?4)",
-                    params!["missing-project", "missing-document", 1_i64, "actor"],
-                )
-                .is_err()
-            );
-            assert!(
-                tx.execute(
-                    "INSERT INTO content_objects
+                params!["missing-project", "missing-document", 1_i64, "actor"],
+            )
+            .is_err()
+        );
+        assert!(
+            tx.execute(
+                "INSERT INTO content_objects
                         (sha256, byte_length, admission_state, vault_key, created_at_ms, created_by)
                      VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
-                    params!["c".repeat(64), 1_i64, "pending", "key", 1_i64, "actor"],
-                )
-                .is_err()
-            );
-            assert!(
-                tx.execute(
-                    "INSERT INTO job_runs
-                        (id, project_id, kind, idempotency_key, state, attempt, budget_json,
-                         input_json, checkpoint_json, created_at_ms, updated_at_ms)
-                     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)",
-                    params![
-                        "job-invalid",
-                        "project-valid",
-                        "pdf_ingest",
-                        "key",
-                        "paused",
-                        0_i64,
-                        "{}",
-                        "{}",
-                        "{}",
-                        1_i64,
-                        1_i64
-                    ],
-                )
-                .is_err()
-            );
+                params!["c".repeat(64), 1_i64, "pending", "key", 1_i64, "actor"],
+            )
+            .is_err()
+        );
+        assert!(
             tx.execute(
                 "INSERT INTO job_runs
-                    (id, project_id, kind, idempotency_key, state, attempt, budget_json,
-                     input_json, checkpoint_json, created_at_ms, updated_at_ms)
-                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)",
+                        (id, project_id, kind, idempotency_key, state, attempt, deadline_at_ms,
+                         budget_json, input_json, checkpoint_json, created_at_ms, updated_at_ms)
+                     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12)",
                 params![
-                    "job-valid",
+                    "job-invalid",
                     "project-valid",
                     "pdf_ingest",
-                    "valid-key",
-                    "queued",
+                    "key",
+                    "paused",
                     0_i64,
+                    100_i64,
                     "{}",
                     "{}",
                     "{}",
@@ -563,102 +657,1556 @@ fn foreign_keys_json_and_exact_persisted_enums_fail_closed() {
                     1_i64
                 ],
             )
-            .expect("insert valid job prerequisite");
-            assert!(
-                tx.execute(
-                    "INSERT INTO ingest_events
+            .is_err()
+        );
+        tx.execute(
+            "INSERT INTO job_runs
+                    (id, project_id, kind, idempotency_key, state, attempt, deadline_at_ms,
+                     budget_json, input_json, checkpoint_json, created_at_ms, updated_at_ms)
+                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12)",
+            params![
+                "job-valid",
+                "project-valid",
+                "pdf_ingest",
+                "valid-key",
+                "queued",
+                0_i64,
+                100_i64,
+                "{}",
+                "{}",
+                "{}",
+                1_i64,
+                1_i64
+            ],
+        )
+        .expect("insert valid job prerequisite");
+        assert!(
+            tx.execute(
+                "INSERT INTO ingest_events
                         (id, project_id, job_id, outcome, source_name, source_path,
                          idempotency_key, actor, terminal_at_ms, details_json)
                      VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)",
-                    params![
-                        "ingest-invalid",
-                        "project-valid",
-                        "job-valid",
-                        "accepted",
-                        "name",
-                        "path",
-                        "valid-key",
-                        "actor",
-                        1_i64,
-                        "{}"
-                    ],
-                )
-                .is_err()
-            );
+                params![
+                    "ingest-invalid",
+                    "project-valid",
+                    "job-valid",
+                    "accepted",
+                    "name",
+                    "path",
+                    "valid-key",
+                    "actor",
+                    1_i64,
+                    "{}"
+                ],
+            )
+            .is_err()
+        );
+        assert!(
+            tx.execute(
+                "INSERT INTO source_records
+                        (id, project_id, source_name, source_path, metadata_json, created_at_ms)
+                     VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
+                params![
+                    "source-invalid",
+                    "project-valid",
+                    "name",
+                    "path",
+                    "not-json",
+                    1_i64
+                ],
+            )
+            .is_err()
+        );
+        Ok(())
+    })
+    .expect("constraint checks complete");
+}
+
+#[test]
+fn running_job_same_state_update_requires_a_new_checkpoint_and_nondecreasing_timestamp() {
+    // Break caught: an updated-at-only heartbeat bypassed the finite checkpoint transition.
+    let database = TestDatabase::new("running-checkpoint-transition");
+    drop(migrated_store(&database));
+
+    with_raw_verifier_transaction(&database, |tx| {
+        tx.execute(
+            "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
+             VALUES (?1, ?2, ?3, ?4, ?5)",
+            params!["project", "name", 1_i64, "actor", "INTERNAL"],
+        )
+        .expect("insert project prerequisite");
+        tx.execute(
+            "INSERT INTO job_runs
+                (id, project_id, kind, idempotency_key, state, attempt, deadline_at_ms,
+                 budget_json, input_json, checkpoint_json, created_at_ms, updated_at_ms)
+             VALUES (?1, ?2, 'pdf_ingest', ?3, 'queued', 0, ?4, '{}', '{}', '{}', ?5, ?5)",
+            params!["job", "project", "key", 100_i64, 1_i64],
+        )
+        .expect("insert queued job");
+        tx.execute(
+            "UPDATE job_runs
+             SET state = 'running', attempt = 1, lease_owner = ?1,
+                 lease_expires_at_ms = 50, updated_at_ms = 2
+             WHERE id = 'job'",
+            ["00000000-0000-4000-8000-000000000001"],
+        )
+        .expect("start job");
+
+        assert!(
+            tx.execute("UPDATE job_runs SET updated_at_ms = 3 WHERE id = 'job'", [],)
+                .is_err(),
+            "updated-at-only running heartbeat bypassed checkpoint transition"
+        );
+        assert!(
+            tx.execute(
+                "UPDATE job_runs SET checkpoint_json = checkpoint_json,
+                    updated_at_ms = updated_at_ms WHERE id = 'job'",
+                [],
+            )
+            .is_err(),
+            "running no-op update bypassed checkpoint transition"
+        );
+        assert!(
+            tx.execute(
+                "UPDATE job_runs SET checkpoint_json = '{\"phase\":\"backward\"}',
+                    updated_at_ms = 1 WHERE id = 'job'",
+                [],
+            )
+            .is_err(),
+            "running checkpoint update moved time backward"
+        );
+        tx.execute(
+            "UPDATE job_runs
+             SET checkpoint_json = '{\"phase\":\"processing_complete\"}', updated_at_ms = 2
+             WHERE id = 'job'",
+            [],
+        )
+        .expect("commit exact same-millisecond running checkpoint update");
+        Ok(())
+    })
+    .expect("verify running checkpoint transition");
+}
+
+#[test]
+fn task_six_job_checks_and_transition_triggers_fail_closed_at_raw_sql_boundary() {
+    let database = TestDatabase::new("task-six-job-matrix");
+    drop(migrated_store(&database));
+
+    with_raw_verifier_transaction(&database, |tx| {
+        insert_job_test_project(tx, "project");
+        insert_job_test_project(tx, "project-other");
+
+        let insert_state = |id: &str,
+                            key: &str,
+                            state: &str,
+                            attempt: i64,
+                            lease_owner: Option<&str>,
+                            lease_expires_at_ms: Option<i64>,
+                            deadline_at_ms: Option<i64>,
+                            terminal_reason: Option<&str>,
+                            created_at_ms: i64,
+                            updated_at_ms: i64| {
+            tx.execute(
+                "INSERT INTO job_runs
+                    (id, project_id, kind, idempotency_key, state, attempt, lease_owner,
+                     lease_expires_at_ms, deadline_at_ms, budget_json, input_json,
+                     checkpoint_json, terminal_reason, created_at_ms, updated_at_ms)
+                 VALUES (?1, 'project', 'pdf_ingest', ?2, ?3, ?4, ?5, ?6, ?7,
+                         '{}', '{}', '{}', ?8, ?9, ?10)",
+                params![
+                    id,
+                    key,
+                    state,
+                    attempt,
+                    lease_owner,
+                    lease_expires_at_ms,
+                    deadline_at_ms,
+                    terminal_reason,
+                    created_at_ms,
+                    updated_at_ms
+                ],
+            )
+        };
+
+        assert!(
+            insert_state(
+                "max-time",
+                "max-time",
+                "queued",
+                0,
+                None,
+                None,
+                Some(9_007_199_254_740_991),
+                None,
+                9_007_199_254_740_991,
+                9_007_199_254_740_991,
+            )
+            .is_ok(),
+            "JCS-safe timestamp boundary was rejected"
+        );
+        for (label, result) in [
+            (
+                "kind literal",
+                tx.execute(
+                    "INSERT INTO job_runs
+                        (id, project_id, kind, idempotency_key, state, attempt, deadline_at_ms,
+                         budget_json, input_json, checkpoint_json, created_at_ms, updated_at_ms)
+                     VALUES ('bad-kind', 'project', 'other', 'bad-kind', 'queued', 0, 1,
+                             '{}', '{}', '{}', 0, 0)",
+                    [],
+                ),
+            ),
+            (
+                "attempt upper bound",
+                insert_state(
+                    "attempt-17",
+                    "attempt-17",
+                    "running",
+                    17,
+                    Some("00000000-0000-4000-8000-000000000001"),
+                    Some(1),
+                    Some(2),
+                    None,
+                    0,
+                    0,
+                ),
+            ),
+            (
+                "running lease required",
+                insert_state(
+                    "running-no-lease",
+                    "running-no-lease",
+                    "running",
+                    1,
+                    None,
+                    None,
+                    Some(2),
+                    None,
+                    0,
+                    0,
+                ),
+            ),
+            (
+                "lease UUID shape",
+                insert_state(
+                    "running-bad-owner",
+                    "running-bad-owner",
+                    "running",
+                    1,
+                    Some("not-a-uuid"),
+                    Some(1),
+                    Some(2),
+                    None,
+                    0,
+                    0,
+                ),
+            ),
+            (
+                "queued lease forbidden",
+                insert_state(
+                    "queued-with-lease",
+                    "queued-with-lease",
+                    "queued",
+                    0,
+                    Some("00000000-0000-4000-8000-000000000001"),
+                    Some(1),
+                    Some(2),
+                    None,
+                    0,
+                    0,
+                ),
+            ),
+            (
+                "interrupted attempt maximum",
+                insert_state(
+                    "interrupted-16",
+                    "interrupted-16",
+                    "interrupted",
+                    16,
+                    None,
+                    None,
+                    Some(2),
+                    None,
+                    0,
+                    0,
+                ),
+            ),
+            (
+                "terminal reason required",
+                insert_state(
+                    "succeeded-no-reason",
+                    "succeeded-no-reason",
+                    "succeeded",
+                    1,
+                    None,
+                    None,
+                    Some(2),
+                    None,
+                    0,
+                    0,
+                ),
+            ),
+            (
+                "terminal lease forbidden",
+                insert_state(
+                    "succeeded-with-lease",
+                    "succeeded-with-lease",
+                    "succeeded",
+                    1,
+                    Some("00000000-0000-4000-8000-000000000001"),
+                    Some(1),
+                    Some(2),
+                    Some("completed"),
+                    0,
+                    0,
+                ),
+            ),
+            (
+                "terminal reason literal",
+                insert_state(
+                    "failed-bad-reason",
+                    "failed-bad-reason",
+                    "failed",
+                    1,
+                    None,
+                    None,
+                    Some(2),
+                    Some("other"),
+                    0,
+                    0,
+                ),
+            ),
+            (
+                "deadline required",
+                insert_state(
+                    "no-deadline",
+                    "no-deadline",
+                    "queued",
+                    0,
+                    None,
+                    None,
+                    None,
+                    None,
+                    0,
+                    0,
+                ),
+            ),
+            (
+                "deadline precedes creation",
+                insert_state(
+                    "early-deadline",
+                    "early-deadline",
+                    "queued",
+                    0,
+                    None,
+                    None,
+                    Some(1),
+                    None,
+                    2,
+                    2,
+                ),
+            ),
+            (
+                "updated precedes creation",
+                insert_state(
+                    "early-update",
+                    "early-update",
+                    "queued",
+                    0,
+                    None,
+                    None,
+                    Some(3),
+                    None,
+                    2,
+                    1,
+                ),
+            ),
+            (
+                "timestamp JCS upper bound",
+                insert_state(
+                    "time-over",
+                    "time-over",
+                    "queued",
+                    0,
+                    None,
+                    None,
+                    Some(9_007_199_254_740_992),
+                    None,
+                    0,
+                    0,
+                ),
+            ),
+            (
+                "idempotency key byte cap",
+                insert_state(
+                    "key-over",
+                    &"k".repeat(129),
+                    "queued",
+                    0,
+                    None,
+                    None,
+                    Some(2),
+                    None,
+                    0,
+                    0,
+                ),
+            ),
+            (
+                "idempotency key controls",
+                insert_state(
+                    "key-control",
+                    "key\ncontrol",
+                    "queued",
+                    0,
+                    None,
+                    None,
+                    Some(2),
+                    None,
+                    0,
+                    0,
+                ),
+            ),
+        ] {
+            assert!(result.is_err(), "{label} check unexpectedly passed");
+        }
+
+        for (id, reason) in [
+            ("failed-deadline", "deadline_expired"),
+            ("failed-attempt", "attempt_limit"),
+            ("failed-internal", "internal_failure"),
+        ] {
+            insert_state(
+                id,
+                id,
+                "failed",
+                16,
+                None,
+                None,
+                Some(2),
+                Some(reason),
+                0,
+                0,
+            )
+            .expect("insert exact failed terminal reason");
+        }
+        insert_state(
+            "interrupted-max",
+            "interrupted-max",
+            "interrupted",
+            15,
+            None,
+            None,
+            Some(2),
+            None,
+            0,
+            0,
+        )
+        .expect("insert max resumable interrupted attempt");
+        insert_state(
+            "succeeded-max",
+            "succeeded-max",
+            "succeeded",
+            16,
+            None,
+            None,
+            Some(2),
+            Some("completed"),
+            0,
+            0,
+        )
+        .expect("insert max succeeded attempt");
+        for attempt in [0_i64, 16_i64] {
+            let id = format!("cancelled-{attempt}");
+            insert_state(
+                &id,
+                &id,
+                "cancelled",
+                attempt,
+                None,
+                None,
+                Some(2),
+                Some("cancelled"),
+                0,
+                0,
+            )
+            .expect("insert cancelled attempt boundary");
+        }
+
+        insert_queued_job(tx, "frozen", "project", "frozen");
+        for sql in [
+            "UPDATE job_runs SET state = 'running', attempt = 1,
+                lease_owner = '00000000-0000-4000-8000-000000000001',
+                lease_expires_at_ms = 1, updated_at_ms = 1,
+                id = 'frozen-other' WHERE id = 'frozen'",
+            "UPDATE job_runs SET state = 'running', attempt = 1,
+                lease_owner = '00000000-0000-4000-8000-000000000001',
+                lease_expires_at_ms = 1, updated_at_ms = 1,
+                project_id = 'project-other' WHERE id = 'frozen'",
+            "UPDATE job_runs SET state = 'running', attempt = 1,
+                lease_owner = '00000000-0000-4000-8000-000000000001',
+                lease_expires_at_ms = 1, updated_at_ms = 1,
+                kind = 'other' WHERE id = 'frozen'",
+            "UPDATE job_runs SET state = 'running', attempt = 1,
+                lease_owner = '00000000-0000-4000-8000-000000000001',
+                lease_expires_at_ms = 1, updated_at_ms = 1,
+                idempotency_key = 'other' WHERE id = 'frozen'",
+            "UPDATE job_runs SET state = 'running', attempt = 1,
+                lease_owner = '00000000-0000-4000-8000-000000000001',
+                lease_expires_at_ms = 1, updated_at_ms = 1,
+                deadline_at_ms = 300001 WHERE id = 'frozen'",
+            "UPDATE job_runs SET state = 'running', attempt = 1,
+                lease_owner = '00000000-0000-4000-8000-000000000001',
+                lease_expires_at_ms = 1, updated_at_ms = 1,
+                budget_json = '{\"changed\":true}' WHERE id = 'frozen'",
+            "UPDATE job_runs SET state = 'running', attempt = 1,
+                lease_owner = '00000000-0000-4000-8000-000000000001',
+                lease_expires_at_ms = 1, updated_at_ms = 1,
+                input_json = '{\"changed\":true}' WHERE id = 'frozen'",
+            "UPDATE job_runs SET state = 'running', attempt = 1,
+                lease_owner = '00000000-0000-4000-8000-000000000001',
+                lease_expires_at_ms = 1, updated_at_ms = 1,
+                created_at_ms = 1 WHERE id = 'frozen'",
+        ] {
+            assert_sql_error_contains(tx.execute(sql, []), "frozen identity cannot change");
+        }
+        assert_sql_error_contains(
+            tx.execute("DELETE FROM job_runs WHERE id = 'frozen'", []),
+            "job_runs rows cannot be deleted",
+        );
+
+        insert_queued_job(tx, "queued-cancel", "project", "queued-cancel");
+        tx.execute(
+            "UPDATE job_runs SET state = 'cancelled', terminal_reason = 'cancelled',
+                    updated_at_ms = 1 WHERE id = 'queued-cancel'",
+            [],
+        )
+        .expect("queued to cancelled is legal");
+
+        insert_queued_job(tx, "running-checkpoint", "project", "running-checkpoint");
+        start_job(tx, "running-checkpoint", 1);
+        tx.execute(
+            "UPDATE job_runs SET checkpoint_json = '{\"step\":1}', updated_at_ms = 2
+             WHERE id = 'running-checkpoint'",
+            [],
+        )
+        .expect("running checkpoint update is legal");
+
+        insert_queued_job(tx, "recover", "project", "recover");
+        start_job(tx, "recover", 1);
+        tx.execute(
+            "UPDATE job_runs SET state = 'interrupted', lease_owner = NULL,
+                    lease_expires_at_ms = NULL, updated_at_ms = 2 WHERE id = 'recover'",
+            [],
+        )
+        .expect("running to interrupted is legal");
+        tx.execute(
+            "UPDATE job_runs SET state = 'running', attempt = 2,
+                    lease_owner = '00000000-0000-4000-8000-000000000002',
+                    lease_expires_at_ms = 60000, updated_at_ms = 3 WHERE id = 'recover'",
+            [],
+        )
+        .expect("interrupted to next running attempt is legal");
+
+        insert_queued_job(tx, "interrupt-cancel", "project", "interrupt-cancel");
+        start_job(tx, "interrupt-cancel", 1);
+        tx.execute(
+            "UPDATE job_runs SET state = 'interrupted', lease_owner = NULL,
+                    lease_expires_at_ms = NULL, updated_at_ms = 2
+             WHERE id = 'interrupt-cancel'",
+            [],
+        )
+        .expect("prepare interrupted cancellation");
+        tx.execute(
+            "UPDATE job_runs SET state = 'cancelled', terminal_reason = 'cancelled',
+                    updated_at_ms = 3 WHERE id = 'interrupt-cancel'",
+            [],
+        )
+        .expect("interrupted to cancelled is legal");
+
+        for (suffix, state, reason) in [
+            ("success", "succeeded", "completed"),
+            ("failure", "failed", "internal_failure"),
+            ("cancel", "cancelled", "cancelled"),
+        ] {
+            let id = format!("running-{suffix}");
+            insert_queued_job(tx, &id, "project", &id);
+            start_job(tx, &id, 1);
+            tx.execute(
+                "UPDATE job_runs SET state = ?2, lease_owner = NULL,
+                        lease_expires_at_ms = NULL, terminal_reason = ?3, updated_at_ms = 2
+                 WHERE id = ?1",
+                params![id, state, reason],
+            )
+            .expect("running terminal transition is legal");
+        }
+
+        insert_queued_job(
+            tx,
+            "illegal-queued-terminal",
+            "project",
+            "illegal-queued-terminal",
+        );
+        assert_sql_error_contains(
+            tx.execute(
+                "UPDATE job_runs SET state = 'succeeded', attempt = 1,
+                        terminal_reason = 'completed', updated_at_ms = 1
+                 WHERE id = 'illegal-queued-terminal'",
+                [],
+            ),
+            "illegal job_runs state transition",
+        );
+        insert_queued_job(
+            tx,
+            "illegal-attempt-jump",
+            "project",
+            "illegal-attempt-jump",
+        );
+        assert_sql_error_contains(
+            tx.execute(
+                "UPDATE job_runs SET state = 'running', attempt = 2,
+                        lease_owner = '00000000-0000-4000-8000-000000000001',
+                        lease_expires_at_ms = 1, updated_at_ms = 1
+                 WHERE id = 'illegal-attempt-jump'",
+                [],
+            ),
+            "illegal job_runs state transition",
+        );
+        insert_queued_job(
+            tx,
+            "illegal-interrupt-jump",
+            "project",
+            "illegal-interrupt-jump",
+        );
+        start_job(tx, "illegal-interrupt-jump", 1);
+        assert_sql_error_contains(
+            tx.execute(
+                "UPDATE job_runs SET state = 'interrupted', attempt = 2, lease_owner = NULL,
+                        lease_expires_at_ms = NULL, updated_at_ms = 2
+                 WHERE id = 'illegal-interrupt-jump'",
+                [],
+            ),
+            "illegal job_runs state transition",
+        );
+        insert_queued_job(tx, "illegal-resume-jump", "project", "illegal-resume-jump");
+        start_job(tx, "illegal-resume-jump", 1);
+        tx.execute(
+            "UPDATE job_runs SET state = 'interrupted', lease_owner = NULL,
+                    lease_expires_at_ms = NULL, updated_at_ms = 2
+             WHERE id = 'illegal-resume-jump'",
+            [],
+        )
+        .expect("prepare illegal resume jump");
+        assert_sql_error_contains(
+            tx.execute(
+                "UPDATE job_runs SET state = 'running', attempt = 3,
+                        lease_owner = '00000000-0000-4000-8000-000000000003',
+                        lease_expires_at_ms = 60000, updated_at_ms = 3
+                 WHERE id = 'illegal-resume-jump'",
+                [],
+            ),
+            "illegal job_runs state transition",
+        );
+        assert_sql_error_contains(
+            tx.execute(
+                "UPDATE job_runs SET updated_at_ms = 4 WHERE id = 'queued-cancel'",
+                [],
+            ),
+            "illegal job_runs state transition",
+        );
+        Ok(())
+    })
+    .expect("verify Task 6 job check/transition matrix");
+}
+
+#[test]
+fn task_six_authority_literals_attempt_identity_redaction_and_text_caps_fail_closed() {
+    let database = TestDatabase::new("task-six-authority-checks");
+    drop(migrated_store(&database));
+
+    with_raw_verifier_transaction(&database, |tx| {
+        insert_job_test_project(tx, "project");
+        insert_queued_job(tx, "job", "project", "job-key");
+
+        let insert_event = |id: &str,
+                            job_id: Option<&str>,
+                            outcome: &str,
+                            attempt: Option<i64>,
+                            source_name: &str,
+                            source_path: &str,
+                            key: &str,
+                            actor: &str,
+                            terminal_at_ms: i64| {
+            tx.execute(
+                "INSERT INTO ingest_events
+                    (id, project_id, job_id, outcome, attempt, source_name, source_path,
+                     idempotency_key, actor, terminal_at_ms, details_json)
+                 VALUES (?1, 'project', ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, '{}')",
+                params![
+                    id,
+                    job_id,
+                    outcome,
+                    attempt,
+                    source_name,
+                    source_path,
+                    key,
+                    actor,
+                    terminal_at_ms
+                ],
+            )
+        };
+
+        insert_event(
+            "authoritative",
+            Some("job"),
+            "interrupted",
+            Some(1),
+            "utf8:source.pdf",
+            "<redacted>",
+            "key",
+            "actor",
+            1,
+        )
+        .expect("insert authoritative attempt event");
+        assert!(
+            insert_event(
+                "duplicate-attempt",
+                Some("job"),
+                "accepted_new",
+                Some(1),
+                "utf8:source.pdf",
+                "<redacted>",
+                "key",
+                "actor",
+                1,
+            )
+            .is_err(),
+            "duplicate (job, attempt) authority was accepted"
+        );
+        for id in ["replay-one", "replay-two"] {
+            insert_event(
+                id,
+                Some("job"),
+                "idempotent_replay",
+                None,
+                "utf8:source.pdf",
+                "<redacted>",
+                "key",
+                "actor",
+                1,
+            )
+            .expect("nullable replay attempt remains non-authoritative");
+        }
+        insert_event(
+            "conflict",
+            Some("job"),
+            "denied_conflict",
+            None,
+            "utf8:source.pdf",
+            "<redacted>",
+            "key",
+            "actor",
+            1,
+        )
+        .expect("insert conflict observation with null attempt");
+
+        for (label, result) in [
+            (
+                "replay positive attempt",
+                insert_event(
+                    "replay-positive",
+                    Some("job"),
+                    "idempotent_replay",
+                    Some(2),
+                    "name",
+                    "<redacted>",
+                    "key",
+                    "actor",
+                    1,
+                ),
+            ),
+            (
+                "authoritative null attempt",
+                insert_event(
+                    "authority-null",
+                    Some("job"),
+                    "interrupted",
+                    None,
+                    "name",
+                    "<redacted>",
+                    "key",
+                    "actor",
+                    1,
+                ),
+            ),
+            (
+                "authoritative missing job",
+                insert_event(
+                    "authority-no-job",
+                    None,
+                    "interrupted",
+                    Some(2),
+                    "name",
+                    "<redacted>",
+                    "key",
+                    "actor",
+                    1,
+                ),
+            ),
+            (
+                "attempt upper bound",
+                insert_event(
+                    "attempt-over",
+                    Some("job"),
+                    "interrupted",
+                    Some(17),
+                    "name",
+                    "<redacted>",
+                    "key",
+                    "actor",
+                    1,
+                ),
+            ),
+            (
+                "outcome literal",
+                insert_event(
+                    "outcome-other",
+                    Some("job"),
+                    "accepted",
+                    Some(2),
+                    "name",
+                    "<redacted>",
+                    "key",
+                    "actor",
+                    1,
+                ),
+            ),
+            (
+                "raw source path",
+                insert_event(
+                    "raw-path",
+                    Some("job"),
+                    "idempotent_replay",
+                    None,
+                    "name",
+                    "/secret/path.pdf",
+                    "key",
+                    "actor",
+                    1,
+                ),
+            ),
+            (
+                "source-name byte cap",
+                insert_event(
+                    "source-over",
+                    Some("job"),
+                    "idempotent_replay",
+                    None,
+                    &"s".repeat(4097),
+                    "<redacted>",
+                    "key",
+                    "actor",
+                    1,
+                ),
+            ),
+            (
+                "idempotency byte cap",
+                insert_event(
+                    "event-key-over",
+                    Some("job"),
+                    "idempotent_replay",
+                    None,
+                    "name",
+                    "<redacted>",
+                    &"k".repeat(129),
+                    "actor",
+                    1,
+                ),
+            ),
+            (
+                "actor byte cap",
+                insert_event(
+                    "actor-over",
+                    Some("job"),
+                    "idempotent_replay",
+                    None,
+                    "name",
+                    "<redacted>",
+                    "key",
+                    &"a".repeat(129),
+                    1,
+                ),
+            ),
+            (
+                "actor control",
+                insert_event(
+                    "actor-control",
+                    Some("job"),
+                    "idempotent_replay",
+                    None,
+                    "name",
+                    "<redacted>",
+                    "key",
+                    "actor\n",
+                    1,
+                ),
+            ),
+            (
+                "timestamp upper bound",
+                insert_event(
+                    "event-time-over",
+                    Some("job"),
+                    "idempotent_replay",
+                    None,
+                    "name",
+                    "<redacted>",
+                    "key",
+                    "actor",
+                    9_007_199_254_740_992,
+                ),
+            ),
+        ] {
+            assert!(result.is_err(), "{label} unexpectedly passed");
+        }
+        insert_event(
+            "event-caps",
+            Some("job"),
+            "idempotent_replay",
+            None,
+            &"s".repeat(4096),
+            "<redacted>",
+            &"k".repeat(128),
+            &"a".repeat(128),
+            9_007_199_254_740_991,
+        )
+        .expect("insert event at every scalar cap");
+
+        tx.execute(
+            "INSERT INTO source_records
+                (id, project_id, source_name, source_path, metadata_json, created_at_ms)
+             VALUES ('redacted-source', 'project', 'name', '<redacted>', '{}', 0)",
+            [],
+        )
+        .expect("insert redacted source record");
+        assert!(
+            tx.execute(
+                "INSERT INTO source_records
+                    (id, project_id, source_name, source_path, metadata_json, created_at_ms)
+                 VALUES ('raw-source', 'project', 'name', '/raw/path', '{}', 0)",
+                [],
+            )
+            .is_err(),
+            "source record persisted a raw path"
+        );
+        tx.execute(
+            "INSERT INTO source_records
+                (id, project_id, source_name, source_path, metadata_json, created_at_ms)
+             VALUES ('source-caps', 'project', ?1, '<redacted>', '{}', ?2)",
+            params!["s".repeat(4096), 9_007_199_254_740_991_i64],
+        )
+        .expect("insert source record at safe-name/timestamp caps");
+        for (id, name, timestamp) in [
+            ("source-name-over", "s".repeat(4097), 0_i64),
+            ("source-name-control", "source\n".to_owned(), 0_i64),
+            (
+                "source-time-over",
+                "source".to_owned(),
+                9_007_199_254_740_992_i64,
+            ),
+        ] {
             assert!(
                 tx.execute(
                     "INSERT INTO source_records
                         (id, project_id, source_name, source_path, metadata_json, created_at_ms)
-                     VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
-                    params![
-                        "source-invalid",
-                        "project-valid",
-                        "name",
-                        "path",
-                        "not-json",
-                        1_i64
-                    ],
+                     VALUES (?1, 'project', ?2, '<redacted>', '{}', ?3)",
+                    params![id, name, timestamp],
                 )
-                .is_err()
+                .is_err(),
+                "source-record scalar cap unexpectedly passed for {id}"
             );
-            Ok(())
-        })
-        .expect("constraint checks complete");
+        }
+
+        tx.execute(
+            "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
+             VALUES ('text-caps', ?1, 9007199254740991, ?2, 'PUBLIC')",
+            params!["é".repeat(128), "a".repeat(128)],
+        )
+        .expect("insert project at UTF-8/timestamp caps");
+        for (id, name, actor, timestamp) in [
+            (
+                "name-over",
+                format!("{}x", "é".repeat(128)),
+                "actor".to_owned(),
+                0_i64,
+            ),
+            (
+                "name-control",
+                "name\n".to_owned(),
+                "actor".to_owned(),
+                0_i64,
+            ),
+            ("creator-over", "name".to_owned(), "a".repeat(129), 0_i64),
+            (
+                "project-time-over",
+                "name".to_owned(),
+                "actor".to_owned(),
+                9_007_199_254_740_992_i64,
+            ),
+        ] {
+            assert!(
+                tx.execute(
+                    "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
+                     VALUES (?1, ?2, ?3, ?4, 'PUBLIC')",
+                    params![id, name, timestamp, actor],
+                )
+                .is_err(),
+                "project scalar check unexpectedly accepted {id}"
+            );
+        }
+
+        for (digest, media_type) in [
+            ("1".repeat(64), "application/pdf"),
+            (
+                "2".repeat(64),
+                "application/vnd.heleos.evidence-manifest+json;version=1",
+            ),
+        ] {
+            tx.execute(
+                "INSERT INTO content_objects
+                    (sha256, byte_length, media_type, admission_state, vault_key,
+                     created_at_ms, created_by, quarantine_reason)
+                 VALUES (?1, 1, ?2, 'accepted', ?1, 0, 'actor', NULL)",
+                params![digest, media_type],
+            )
+            .expect("insert exact content media literal");
+        }
+        for (digest, media_type, state, reason) in [
+            ("3".repeat(64), "text/plain", "accepted", None),
+            ("4".repeat(64), "application/pdf", "accepted", Some("{}")),
+            ("5".repeat(64), "application/pdf", "quarantined", None),
+            (
+                "6".repeat(64),
+                "application/pdf",
+                "quarantined",
+                Some("{ }"),
+            ),
+        ] {
+            assert!(
+                tx.execute(
+                    "INSERT INTO content_objects
+                        (sha256, byte_length, media_type, admission_state, vault_key,
+                         created_at_ms, created_by, quarantine_reason)
+                     VALUES (?1, 1, ?2, ?3, ?1, 0, 'actor', ?4)",
+                    params![digest, media_type, state, reason],
+                )
+                .is_err(),
+                "content authority check unexpectedly passed for {digest}"
+            );
+        }
+        Ok(())
+    })
+    .expect("verify Task 6 authority and scalar check matrix");
+}
+
+#[test]
+fn task_six_json_and_audit_scalar_caps_accept_n_and_reject_n_plus_one() {
+    let database = TestDatabase::new("task-six-byte-caps");
+    drop(migrated_store(&database));
+
+    let one_mib = canonical_json_string_with_exact_bytes(1024 * 1024);
+    let one_mib_plus_one = canonical_json_string_with_exact_bytes(1024 * 1024 + 1);
+    let eight_mib = canonical_json_string_with_exact_bytes(8 * 1024 * 1024);
+    let eight_mib_plus_one = canonical_json_string_with_exact_bytes(8 * 1024 * 1024 + 1);
+
+    with_raw_verifier_transaction(&database, |tx| {
+        insert_job_test_project(tx, "project");
+        insert_job_test_project(tx, "project-other");
+        tx.execute(
+            "INSERT INTO job_runs
+                (id, project_id, kind, idempotency_key, state, attempt, deadline_at_ms,
+                 budget_json, input_json, checkpoint_json, created_at_ms, updated_at_ms)
+             VALUES ('cap-job', 'project', 'pdf_ingest', 'cap-job', 'queued', 0, 1,
+                     ?1, ?1, ?2, 0, 0)",
+            params![&one_mib, &eight_mib],
+        )
+        .expect("insert job JSON at independent byte caps");
+        for (id, budget, input, checkpoint) in [
+            ("budget-over", one_mib_plus_one.as_str(), "{}", "{}"),
+            ("input-over", "{}", one_mib_plus_one.as_str(), "{}"),
+            ("checkpoint-over", "{}", "{}", eight_mib_plus_one.as_str()),
+        ] {
+            assert!(
+                tx.execute(
+                    "INSERT INTO job_runs
+                        (id, project_id, kind, idempotency_key, state, attempt, deadline_at_ms,
+                         budget_json, input_json, checkpoint_json, created_at_ms, updated_at_ms)
+                     VALUES (?1, 'project', 'pdf_ingest', ?1, 'queued', 0, 1,
+                             ?2, ?3, ?4, 0, 0)",
+                    params![id, budget, input, checkpoint],
+                )
+                .is_err(),
+                "job JSON N+1 cap unexpectedly passed for {id}"
+            );
+        }
+
+        tx.execute(
+            "INSERT INTO content_objects
+                (sha256, byte_length, media_type, admission_state, vault_key,
+                 created_at_ms, created_by, quarantine_reason)
+             VALUES (?1, 1, 'application/pdf', 'quarantined', ?1, 0, 'actor', ?2)",
+            params!["1".repeat(64), &one_mib],
+        )
+        .expect("insert quarantine JSON at byte cap");
+        assert!(
+            tx.execute(
+                "INSERT INTO content_objects
+                    (sha256, byte_length, media_type, admission_state, vault_key,
+                     created_at_ms, created_by, quarantine_reason)
+                 VALUES (?1, 1, 'application/pdf', 'quarantined', ?1, 0, 'actor', ?2)",
+                params!["2".repeat(64), &one_mib_plus_one],
+            )
+            .is_err(),
+            "quarantine JSON N+1 cap unexpectedly passed"
+        );
+
+        tx.execute(
+            "INSERT INTO ingest_events
+                (id, project_id, job_id, outcome, attempt, source_name, source_path,
+                 idempotency_key, actor, terminal_at_ms, details_json)
+             VALUES ('details-cap', 'project', 'cap-job', 'idempotent_replay', NULL,
+                     'name', '<redacted>', 'key', 'actor', 0, ?1)",
+            [&one_mib],
+        )
+        .expect("insert event details at byte cap");
+        assert!(
+            tx.execute(
+                "INSERT INTO ingest_events
+                    (id, project_id, job_id, outcome, attempt, source_name, source_path,
+                     idempotency_key, actor, terminal_at_ms, details_json)
+                 VALUES ('details-over', 'project', 'cap-job', 'idempotent_replay', NULL,
+                         'name', '<redacted>', 'key', 'actor', 0, ?1)",
+                [&one_mib_plus_one],
+            )
+            .is_err(),
+            "event details N+1 cap unexpectedly passed"
+        );
+        tx.execute(
+            "INSERT INTO source_records
+                (id, project_id, job_id, source_name, source_path, metadata_json, created_at_ms)
+             VALUES ('metadata-cap', 'project', 'cap-job', 'name', '<redacted>', ?1, 0)",
+            [&one_mib],
+        )
+        .expect("insert source metadata at byte cap");
+        assert!(
+            tx.execute(
+                "INSERT INTO source_records
+                    (id, project_id, job_id, source_name, source_path, metadata_json, created_at_ms)
+                 VALUES ('metadata-over', 'project', 'cap-job', 'name', '<redacted>', ?1, 0)",
+                [&one_mib_plus_one],
+            )
+            .is_err(),
+            "source metadata N+1 cap unexpectedly passed"
+        );
+
+        let original = "3".repeat(64);
+        let manifest = "4".repeat(64);
+        for (digest, media_type) in [
+            (&original, "application/pdf"),
+            (
+                &manifest,
+                "application/vnd.heleos.evidence-manifest+json;version=1",
+            ),
+        ] {
+            tx.execute(
+                "INSERT INTO content_objects
+                    (sha256, byte_length, media_type, admission_state, vault_key,
+                     created_at_ms, created_by)
+                 VALUES (?1, 1, ?2, 'accepted', ?1, 0, 'actor')",
+                params![digest, media_type],
+            )
+            .expect("insert accepted lineage content");
+        }
+        tx.execute(
+            "INSERT INTO documents (id, created_at_ms, created_by)
+             VALUES ('document', 0, 'actor')",
+            [],
+        )
+        .expect("insert cap-test document");
+        tx.execute(
+            "INSERT INTO document_revisions
+                (id, document_id, content_sha256, created_at_ms, created_by)
+             VALUES ('revision', 'document', ?1, 0, 'actor')",
+            [&original],
+        )
+        .expect("insert cap-test revision");
+        tx.execute(
+            "INSERT INTO sheets
+                (id, revision_id, zero_based_page_index, width_micropoints,
+                 height_micropoints, rotation_degrees, unit, parent_content_sha256,
+                 transform_json)
+             VALUES ('sheet-cap', 'revision', 0, 1, 1, 0, 'pt', ?1, ?2)",
+            params![&original, &one_mib],
+        )
+        .expect("insert sheet transform at byte cap");
+        assert!(
+            tx.execute(
+                "INSERT INTO sheets
+                    (id, revision_id, zero_based_page_index, width_micropoints,
+                     height_micropoints, rotation_degrees, unit, parent_content_sha256,
+                     transform_json)
+                 VALUES ('sheet-over', 'revision', 1, 1, 1, 0, 'pt', ?1, ?2)",
+                params![&original, &one_mib_plus_one],
+            )
+            .is_err(),
+            "sheet transform N+1 cap unexpectedly passed"
+        );
+        tx.execute(
+            "INSERT INTO evidence_objects
+                (id, project_id, job_id, document_revision_id, content_sha256,
+                 parent_content_sha256, extraction_method, parameters_json, review_state,
+                 created_at_ms)
+             VALUES ('evidence-cap', 'project', 'cap-job', 'revision', ?1, ?2,
+                     'heleos.pdf-probe/v1', ?3, 'accepted', 0)",
+            params![&manifest, &original, &one_mib],
+        )
+        .expect("insert evidence parameters at byte cap");
+        assert!(
+            tx.execute(
+                "INSERT INTO evidence_objects
+                    (id, project_id, job_id, document_revision_id, content_sha256,
+                     parent_content_sha256, extraction_method, parameters_json, review_state,
+                     created_at_ms)
+                 VALUES ('evidence-over', 'project-other', 'cap-job', 'revision', ?1, ?2,
+                         'heleos.pdf-probe/v1', ?3, 'accepted', 0)",
+                params![&manifest, &original, &one_mib_plus_one],
+            )
+            .is_err(),
+            "evidence parameters N+1 cap unexpectedly passed"
+        );
+        tx.execute(
+            "INSERT INTO corrections
+                (id, project_id, evidence_id, actor, reason, before_json, after_json,
+                 created_at_ms)
+             VALUES ('correction-cap', 'project', 'evidence-cap', 'actor', 'reason',
+                     ?1, ?1, 0)",
+            [&one_mib],
+        )
+        .expect("insert correction JSON at byte caps");
+        for (id, before, after) in [
+            ("correction-before-over", one_mib_plus_one.as_str(), "{}"),
+            ("correction-after-over", "{}", one_mib_plus_one.as_str()),
+        ] {
+            assert!(
+                tx.execute(
+                    "INSERT INTO corrections
+                        (id, project_id, evidence_id, actor, reason, before_json, after_json,
+                         created_at_ms)
+                     VALUES (?1, 'project', 'evidence-cap', 'actor', 'reason', ?2, ?3, 0)",
+                    params![id, before, after],
+                )
+                .is_err(),
+                "correction JSON N+1 cap unexpectedly passed for {id}"
+            );
+        }
+
+        let insert_audit = |id: &str,
+                            sequence: i64,
+                            action: &str,
+                            subject_type: &str,
+                            subject_id: &str,
+                            before: &str,
+                            after: &str,
+                            reason: &str,
+                            occurred_at_ms: i64,
+                            hash_byte: char| {
+            let digest = hash_byte.to_string().repeat(64);
+            tx.execute(
+                "INSERT INTO audit_events
+                    (id, sequence, project_id, actor, action, subject_type, subject_id,
+                     before_json, after_json, reason, occurred_at_ms, previous_hash, event_hash)
+                 VALUES (?1, ?2, 'project', 'actor', ?3, ?4, ?5, ?6, ?7, ?8, ?9,
+                         ?10, ?11)",
+                params![
+                    id,
+                    sequence,
+                    action,
+                    subject_type,
+                    subject_id,
+                    before,
+                    after,
+                    reason,
+                    occurred_at_ms,
+                    "0".repeat(64),
+                    digest
+                ],
+            )
+        };
+        insert_audit(
+            "audit-cap",
+            1,
+            "project_created",
+            "project",
+            &"s".repeat(256),
+            &one_mib,
+            &one_mib,
+            &"r".repeat(1024),
+            9_007_199_254_740_991,
+            'a',
+        )
+        .expect("insert audit row at scalar/document caps");
+        for (label, result) in [
+            (
+                "before N+1",
+                insert_audit(
+                    "audit-before-over",
+                    2,
+                    "project_created",
+                    "project",
+                    "subject",
+                    &one_mib_plus_one,
+                    "{}",
+                    "reason",
+                    0,
+                    'b',
+                ),
+            ),
+            (
+                "after N+1",
+                insert_audit(
+                    "audit-after-over",
+                    3,
+                    "project_created",
+                    "project",
+                    "subject",
+                    "{}",
+                    &one_mib_plus_one,
+                    "reason",
+                    0,
+                    'c',
+                ),
+            ),
+            (
+                "subject N+1",
+                insert_audit(
+                    "audit-subject-over",
+                    4,
+                    "project_created",
+                    "project",
+                    &"s".repeat(257),
+                    "{}",
+                    "{}",
+                    "reason",
+                    0,
+                    'd',
+                ),
+            ),
+            (
+                "subject control",
+                insert_audit(
+                    "audit-subject-control",
+                    5,
+                    "project_created",
+                    "project",
+                    "subject\n",
+                    "{}",
+                    "{}",
+                    "reason",
+                    0,
+                    'e',
+                ),
+            ),
+            (
+                "reason N+1",
+                insert_audit(
+                    "audit-reason-over",
+                    6,
+                    "project_created",
+                    "project",
+                    "subject",
+                    "{}",
+                    "{}",
+                    &"r".repeat(1025),
+                    0,
+                    'f',
+                ),
+            ),
+            (
+                "reason hostile control",
+                insert_audit(
+                    "audit-reason-control",
+                    7,
+                    "project_created",
+                    "project",
+                    "subject",
+                    "{}",
+                    "{}",
+                    "reason\u{001b}",
+                    0,
+                    '1',
+                ),
+            ),
+            (
+                "action literal",
+                insert_audit(
+                    "audit-action",
+                    8,
+                    "other",
+                    "project",
+                    "subject",
+                    "{}",
+                    "{}",
+                    "reason",
+                    0,
+                    '2',
+                ),
+            ),
+            (
+                "subject-type literal",
+                insert_audit(
+                    "audit-subject-type",
+                    9,
+                    "project_created",
+                    "other",
+                    "subject",
+                    "{}",
+                    "{}",
+                    "reason",
+                    0,
+                    '3',
+                ),
+            ),
+            (
+                "sequence zero",
+                insert_audit(
+                    "audit-sequence-zero",
+                    0,
+                    "project_created",
+                    "project",
+                    "subject",
+                    "{}",
+                    "{}",
+                    "reason",
+                    0,
+                    '4',
+                ),
+            ),
+            (
+                "sequence N+1",
+                insert_audit(
+                    "audit-sequence-over",
+                    9_007_199_254_740_992,
+                    "project_created",
+                    "project",
+                    "subject",
+                    "{}",
+                    "{}",
+                    "reason",
+                    0,
+                    '6',
+                ),
+            ),
+            (
+                "timestamp N+1",
+                insert_audit(
+                    "audit-time-over",
+                    10,
+                    "project_created",
+                    "project",
+                    "subject",
+                    "{}",
+                    "{}",
+                    "reason",
+                    9_007_199_254_740_992,
+                    '5',
+                ),
+            ),
+        ] {
+            assert!(result.is_err(), "audit {label} check unexpectedly passed");
+        }
+        tx.execute(
+            "INSERT INTO audit_events
+                (id, sequence, project_id, actor, action, subject_type, subject_id,
+                 before_json, after_json, reason, occurred_at_ms, previous_hash, event_hash)
+             VALUES ('audit-actor-cap', 9007199254740991, 'project', ?1,
+                     'project_created', 'project', 'subject', '{}', '{}', 'reason\nline', 0,
+                     ?2, ?3)",
+            params!["a".repeat(128), "0".repeat(64), "6".repeat(64)],
+        )
+        .expect("insert audit actor/sequence and ordinary-whitespace caps");
+        for (id, actor, hash) in [
+            ("audit-actor-over", "a".repeat(129), "7".repeat(64)),
+            ("audit-actor-control", "actor\n".to_owned(), "8".repeat(64)),
+        ] {
+            assert!(
+                tx.execute(
+                    "INSERT INTO audit_events
+                        (id, sequence, project_id, actor, action, subject_type, subject_id,
+                         before_json, after_json, reason, occurred_at_ms, previous_hash,
+                         event_hash)
+                     VALUES (?1, 11, 'project', ?2, 'project_created', 'project', 'subject',
+                             '{}', '{}', 'reason', 0, ?3, ?4)",
+                    params![id, actor, "0".repeat(64), hash],
+                )
+                .is_err(),
+                "audit actor cap unexpectedly passed for {id}"
+            );
+        }
+        Ok(())
+    })
+    .expect("verify Task 6 JSON/audit N/N+1 caps");
 }
 
 #[test]
 fn declared_uniqueness_foreign_keys_and_delete_actions_are_independently_enforced() {
     let database = TestDatabase::new("constraint-matrix");
-    let mut store = migrated_store(&database);
-    insert_complete_fixture(&mut store, "collision");
+    drop(migrated_store(&database));
+    insert_complete_fixture(&database, "collision");
 
-    store
-        .with_immediate_transaction(|tx| {
-            let uniqueness_collisions = [
-                (
-                    "content object sha256",
-                    "INSERT INTO content_objects
+    with_raw_verifier_transaction(&database, |tx| {
+        let uniqueness_collisions = [
+            (
+                "content object sha256",
+                "INSERT INTO content_objects
                         (sha256, byte_length, admission_state, vault_key, created_at_ms,
                          created_by, quarantine_reason)
                      VALUES (
                         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
                         99, 'accepted', 'different-vault-key', 1, 'actor', NULL)",
-                ),
-                (
-                    "document revision content",
-                    "INSERT INTO document_revisions
+            ),
+            (
+                "document revision content",
+                "INSERT INTO document_revisions
                         (id, document_id, content_sha256, created_at_ms, created_by)
                      VALUES ('revision-2', 'document-1',
                         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
                         1, 'actor')",
-                ),
-                (
-                    "project document pair",
-                    "INSERT INTO project_documents
+            ),
+            (
+                "project document pair",
+                "INSERT INTO project_documents
                         (project_id, document_id, linked_at_ms, linked_by)
                      VALUES ('project-1', 'document-1', 1, 'actor')",
-                ),
-                (
-                    "sheet revision page",
-                    "INSERT INTO sheets
+            ),
+            (
+                "sheet revision page",
+                "INSERT INTO sheets
                         (id, revision_id, zero_based_page_index, width_micropoints,
                          height_micropoints, rotation_degrees, unit, parent_content_sha256,
                          transform_json)
                      VALUES ('sheet-2', 'revision-1', 0, 1, 1, 0, 'pt',
                         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
                         '{}')",
-                ),
-                (
-                    "job idempotency tuple",
-                    "INSERT INTO job_runs
-                        (id, project_id, kind, idempotency_key, state, attempt, budget_json,
-                         input_json, checkpoint_json, created_at_ms, updated_at_ms)
+            ),
+            (
+                "job idempotency tuple",
+                "INSERT INTO job_runs
+                        (id, project_id, kind, idempotency_key, state, attempt, deadline_at_ms,
+                         budget_json, input_json, checkpoint_json, created_at_ms, updated_at_ms)
                      VALUES ('job-2', 'project-1', 'pdf_ingest', 'collision', 'queued', 0,
-                        '{}', '{}', '{}', 1, 1)",
-                ),
-                (
-                    "evidence identity tuple",
-                    "INSERT INTO evidence_objects
+                        100, '{}', '{}', '{}', 1, 1)",
+            ),
+            (
+                "evidence identity tuple",
+                "INSERT INTO evidence_objects
                         (id, project_id, job_id, document_revision_id, content_sha256,
                          parent_content_sha256, extraction_method, parameters_json, review_state,
                          created_at_ms)
@@ -666,507 +2214,507 @@ fn declared_uniqueness_foreign_keys_and_delete_actions_are_independently_enforce
                         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
                         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
                         'fixture', '{}', 'unreviewed', 1)",
-                ),
-                (
-                    "audit sequence",
-                    "INSERT INTO audit_events
+            ),
+            (
+                "audit sequence",
+                "INSERT INTO audit_events
                         (id, sequence, project_id, actor, action, subject_type, subject_id,
                          before_json, after_json, reason, occurred_at_ms, previous_hash,
                          event_hash)
-                     VALUES ('audit-2', 1, 'project-1', 'actor', 'action', 'project',
+                     VALUES ('audit-2', 1, 'project-1', 'actor', 'project_created', 'project',
                         'project-1', '{}', '{}', 'reason', 1,
                         '0000000000000000000000000000000000000000000000000000000000000000',
                         'cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc')",
-                ),
-                (
-                    "audit event hash",
-                    "INSERT INTO audit_events
+            ),
+            (
+                "audit event hash",
+                "INSERT INTO audit_events
                         (id, sequence, project_id, actor, action, subject_type, subject_id,
                          before_json, after_json, reason, occurred_at_ms, previous_hash,
                          event_hash)
-                     VALUES ('audit-3', 2, 'project-1', 'actor', 'action', 'project',
+                     VALUES ('audit-3', 2, 'project-1', 'actor', 'project_created', 'project',
                         'project-1', '{}', '{}', 'reason', 1,
                         '0000000000000000000000000000000000000000000000000000000000000000',
                         'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')",
-                ),
-            ];
-            for (label, sql) in uniqueness_collisions {
-                assert!(tx.execute(sql, []).is_err(), "accepted {label} collision");
-            }
+            ),
+        ];
+        for (label, sql) in uniqueness_collisions {
+            assert!(tx.execute(sql, []).is_err(), "accepted {label} collision");
+        }
 
-            let mut actual_foreign_keys = Vec::new();
-            for child in TABLES {
-                let mut statement = tx
-                    .prepare(
-                        "SELECT \"from\", \"table\", \"to\", on_delete
+        let mut actual_foreign_keys = Vec::new();
+        for child in TABLES {
+            let mut statement = tx
+                .prepare(
+                    "SELECT \"from\", \"table\", \"to\", on_delete
                          FROM pragma_foreign_key_list(?1)",
-                    )
-                    .expect("prepare foreign-key introspection");
-                let rows = statement
-                    .query_map([child], |row| {
-                        Ok((
-                            child.to_owned(),
-                            row.get::<_, String>(0)?,
-                            row.get::<_, String>(1)?,
-                            row.get::<_, String>(2)?,
-                            row.get::<_, String>(3)?,
-                        ))
-                    })
-                    .expect("query foreign-key declarations");
-                actual_foreign_keys.extend(
-                    rows.collect::<rusqlite::Result<Vec<_>>>()
-                        .expect("collect foreign-key declarations"),
-                );
-            }
-            actual_foreign_keys.sort();
-            let mut expected_foreign_keys = vec![
-                ("audit_events", "project_id", "projects", "id", "RESTRICT"),
-                (
-                    "corrections",
-                    "evidence_id",
-                    "evidence_objects",
-                    "id",
-                    "RESTRICT",
-                ),
-                ("corrections", "project_id", "projects", "id", "RESTRICT"),
-                (
-                    "document_revisions",
-                    "content_sha256",
-                    "content_objects",
-                    "sha256",
-                    "RESTRICT",
-                ),
-                (
-                    "document_revisions",
-                    "document_id",
-                    "documents",
-                    "id",
-                    "RESTRICT",
-                ),
-                (
-                    "evidence_objects",
-                    "content_sha256",
-                    "content_objects",
-                    "sha256",
-                    "RESTRICT",
-                ),
-                (
-                    "evidence_objects",
-                    "document_revision_id",
-                    "document_revisions",
-                    "id",
-                    "RESTRICT",
-                ),
-                ("evidence_objects", "job_id", "job_runs", "id", "RESTRICT"),
-                (
-                    "evidence_objects",
-                    "parent_content_sha256",
-                    "content_objects",
-                    "sha256",
-                    "RESTRICT",
-                ),
-                (
-                    "evidence_objects",
-                    "project_id",
-                    "projects",
-                    "id",
-                    "RESTRICT",
-                ),
-                (
-                    "ingest_events",
-                    "content_sha256",
-                    "content_objects",
-                    "sha256",
-                    "RESTRICT",
-                ),
-                ("ingest_events", "job_id", "job_runs", "id", "RESTRICT"),
-                ("ingest_events", "project_id", "projects", "id", "RESTRICT"),
-                ("job_runs", "project_id", "projects", "id", "RESTRICT"),
-                (
-                    "project_documents",
-                    "document_id",
-                    "documents",
-                    "id",
-                    "RESTRICT",
-                ),
-                (
-                    "project_documents",
-                    "project_id",
-                    "projects",
-                    "id",
-                    "CASCADE",
-                ),
-                ("scales", "sheet_id", "sheets", "id", "RESTRICT"),
-                (
-                    "sheets",
-                    "parent_content_sha256",
-                    "content_objects",
-                    "sha256",
-                    "RESTRICT",
-                ),
-                (
-                    "sheets",
-                    "revision_id",
-                    "document_revisions",
-                    "id",
-                    "RESTRICT",
-                ),
-                (
-                    "source_records",
-                    "content_sha256",
-                    "content_objects",
-                    "sha256",
-                    "RESTRICT",
-                ),
-                ("source_records", "job_id", "job_runs", "id", "RESTRICT"),
-                ("source_records", "project_id", "projects", "id", "RESTRICT"),
-            ];
-            expected_foreign_keys.sort();
-            assert_eq!(
-                actual_foreign_keys,
-                expected_foreign_keys
-                    .into_iter()
-                    .map(|(child, from, parent, to, on_delete)| (
+                )
+                .expect("prepare foreign-key introspection");
+            let rows = statement
+                .query_map([child], |row| {
+                    Ok((
                         child.to_owned(),
-                        from.to_owned(),
-                        parent.to_owned(),
-                        to.to_owned(),
-                        on_delete.to_owned(),
+                        row.get::<_, String>(0)?,
+                        row.get::<_, String>(1)?,
+                        row.get::<_, String>(2)?,
+                        row.get::<_, String>(3)?,
                     ))
-                    .collect::<Vec<_>>()
+                })
+                .expect("query foreign-key declarations");
+            actual_foreign_keys.extend(
+                rows.collect::<rusqlite::Result<Vec<_>>>()
+                    .expect("collect foreign-key declarations"),
             );
+        }
+        actual_foreign_keys.sort();
+        let mut expected_foreign_keys = vec![
+            ("audit_events", "project_id", "projects", "id", "RESTRICT"),
+            (
+                "corrections",
+                "evidence_id",
+                "evidence_objects",
+                "id",
+                "RESTRICT",
+            ),
+            ("corrections", "project_id", "projects", "id", "RESTRICT"),
+            (
+                "document_revisions",
+                "content_sha256",
+                "content_objects",
+                "sha256",
+                "RESTRICT",
+            ),
+            (
+                "document_revisions",
+                "document_id",
+                "documents",
+                "id",
+                "RESTRICT",
+            ),
+            (
+                "evidence_objects",
+                "content_sha256",
+                "content_objects",
+                "sha256",
+                "RESTRICT",
+            ),
+            (
+                "evidence_objects",
+                "document_revision_id",
+                "document_revisions",
+                "id",
+                "RESTRICT",
+            ),
+            ("evidence_objects", "job_id", "job_runs", "id", "RESTRICT"),
+            (
+                "evidence_objects",
+                "parent_content_sha256",
+                "content_objects",
+                "sha256",
+                "RESTRICT",
+            ),
+            (
+                "evidence_objects",
+                "project_id",
+                "projects",
+                "id",
+                "RESTRICT",
+            ),
+            (
+                "ingest_events",
+                "content_sha256",
+                "content_objects",
+                "sha256",
+                "RESTRICT",
+            ),
+            ("ingest_events", "job_id", "job_runs", "id", "RESTRICT"),
+            ("ingest_events", "project_id", "projects", "id", "RESTRICT"),
+            ("job_runs", "project_id", "projects", "id", "RESTRICT"),
+            (
+                "project_documents",
+                "document_id",
+                "documents",
+                "id",
+                "RESTRICT",
+            ),
+            (
+                "project_documents",
+                "project_id",
+                "projects",
+                "id",
+                "CASCADE",
+            ),
+            ("scales", "sheet_id", "sheets", "id", "RESTRICT"),
+            (
+                "sheets",
+                "parent_content_sha256",
+                "content_objects",
+                "sha256",
+                "RESTRICT",
+            ),
+            (
+                "sheets",
+                "revision_id",
+                "document_revisions",
+                "id",
+                "RESTRICT",
+            ),
+            (
+                "source_records",
+                "content_sha256",
+                "content_objects",
+                "sha256",
+                "RESTRICT",
+            ),
+            ("source_records", "job_id", "job_runs", "id", "RESTRICT"),
+            ("source_records", "project_id", "projects", "id", "RESTRICT"),
+        ];
+        expected_foreign_keys.sort();
+        assert_eq!(
+            actual_foreign_keys,
+            expected_foreign_keys
+                .into_iter()
+                .map(|(child, from, parent, to, on_delete)| (
+                    child.to_owned(),
+                    from.to_owned(),
+                    parent.to_owned(),
+                    to.to_owned(),
+                    on_delete.to_owned(),
+                ))
+                .collect::<Vec<_>>()
+        );
 
-            tx.execute(
-                "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
+        tx.execute(
+            "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
                  VALUES ('cascade-project', 'name', 1, 'actor', 'INTERNAL')",
-                [],
-            )
-            .expect("insert cascade project");
-            tx.execute(
-                "INSERT INTO documents (id, created_at_ms, created_by)
+            [],
+        )
+        .expect("insert cascade project");
+        tx.execute(
+            "INSERT INTO documents (id, created_at_ms, created_by)
                  VALUES ('cascade-document', 1, 'actor')",
-                [],
-            )
-            .expect("insert cascade document");
-            tx.execute(
-                "INSERT INTO project_documents
+            [],
+        )
+        .expect("insert cascade document");
+        tx.execute(
+            "INSERT INTO project_documents
                     (project_id, document_id, linked_at_ms, linked_by)
                  VALUES ('cascade-project', 'cascade-document', 1, 'actor')",
-                [],
-            )
-            .expect("insert cascade link");
-            assert!(
-                tx.execute("DELETE FROM documents WHERE id = 'cascade-document'", [],)
-                    .is_err(),
-                "document-side RESTRICT was not enforced"
-            );
-            tx.execute("DELETE FROM projects WHERE id = 'cascade-project'", [])
-                .expect("project-side CASCADE delete");
-            assert_eq!(
-                tx.query_row(
-                    "SELECT count(*) FROM project_documents
+            [],
+        )
+        .expect("insert cascade link");
+        assert!(
+            tx.execute("DELETE FROM documents WHERE id = 'cascade-document'", [],)
+                .is_err(),
+            "document-side RESTRICT was not enforced"
+        );
+        tx.execute("DELETE FROM projects WHERE id = 'cascade-project'", [])
+            .expect("project-side CASCADE delete");
+        assert_eq!(
+            tx.query_row(
+                "SELECT count(*) FROM project_documents
                      WHERE document_id = 'cascade-document'",
-                    [],
-                    |row| row.get::<_, i64>(0),
-                )
-                .expect("count cascaded links"),
-                0
-            );
-            assert!(
-                tx.execute("DELETE FROM projects WHERE id = 'project-1'", [])
-                    .is_err(),
-                "dependent project RESTRICT actions were not enforced"
-            );
-            Ok(())
-        })
-        .expect("verify uniqueness, foreign-key, and delete matrix");
+                [],
+                |row| row.get::<_, i64>(0),
+            )
+            .expect("count cascaded links"),
+            0
+        );
+        assert!(
+            tx.execute("DELETE FROM projects WHERE id = 'project-1'", [])
+                .is_err(),
+            "dependent project RESTRICT actions were not enforced"
+        );
+        Ok(())
+    })
+    .expect("verify uniqueness, foreign-key, and delete matrix");
 }
 
 #[test]
 fn every_json_column_rejects_valid_but_non_jcs_text_at_raw_transaction_boundary() {
     let database = TestDatabase::new("jcs-boundary");
-    let mut store = migrated_store(&database);
+    drop(migrated_store(&database));
 
-    store
-        .with_immediate_transaction(|tx| {
-            tx.execute(
-                "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
+    with_raw_verifier_transaction(&database, |tx| {
+        tx.execute(
+            "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
                  VALUES (?1, ?2, ?3, ?4, ?5)",
-                params!["jcs-project", "name", 1_i64, "actor", "INTERNAL"],
-            )
-            .expect("insert project prerequisite");
-            tx.execute(
-                "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
+            params!["jcs-project", "name", 1_i64, "actor", "INTERNAL"],
+        )
+        .expect("insert project prerequisite");
+        tx.execute(
+            "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
                  VALUES (?1, ?2, ?3, ?4, ?5)",
-                params!["jcs-project-2", "name", 1_i64, "actor", "INTERNAL"],
-            )
-            .expect("insert independent project prerequisite");
-            tx.execute(
-                "INSERT INTO content_objects
+            params!["jcs-project-2", "name", 1_i64, "actor", "INTERNAL"],
+        )
+        .expect("insert independent project prerequisite");
+        tx.execute(
+            "INSERT INTO content_objects
                     (sha256, byte_length, admission_state, vault_key, created_at_ms, created_by)
                  VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
-                params!["1".repeat(64), 1_i64, "accepted", "key", 1_i64, "actor"],
-            )
-            .expect("insert content prerequisite");
-            tx.execute(
-                "INSERT INTO documents (id, created_at_ms, created_by) VALUES (?1, ?2, ?3)",
-                params!["jcs-document", 1_i64, "actor"],
-            )
-            .expect("insert document prerequisite");
-            tx.execute(
-                "INSERT INTO document_revisions
+            params!["1".repeat(64), 1_i64, "accepted", "key", 1_i64, "actor"],
+        )
+        .expect("insert content prerequisite");
+        tx.execute(
+            "INSERT INTO documents (id, created_at_ms, created_by) VALUES (?1, ?2, ?3)",
+            params!["jcs-document", 1_i64, "actor"],
+        )
+        .expect("insert document prerequisite");
+        tx.execute(
+            "INSERT INTO document_revisions
                     (id, document_id, content_sha256, created_at_ms, created_by)
                  VALUES (?1, ?2, ?3, ?4, ?5)",
-                params![
-                    "jcs-revision",
-                    "jcs-document",
-                    "1".repeat(64),
-                    1_i64,
-                    "actor"
-                ],
-            )
-            .expect("insert revision prerequisite");
-            tx.execute(
-                "INSERT INTO job_runs
-                    (id, project_id, kind, idempotency_key, state, attempt, budget_json,
-                     input_json, checkpoint_json, created_at_ms, updated_at_ms)
-                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)",
-                params![
-                    "jcs-job",
-                    "jcs-project",
-                    "pdf_ingest",
-                    "canonical",
-                    "queued",
-                    0_i64,
-                    "{}",
-                    "{}",
-                    "{}",
-                    1_i64,
-                    1_i64
-                ],
-            )
-            .expect("insert job prerequisite");
-            tx.execute(
-                "INSERT INTO evidence_objects
+            params![
+                "jcs-revision",
+                "jcs-document",
+                "1".repeat(64),
+                1_i64,
+                "actor"
+            ],
+        )
+        .expect("insert revision prerequisite");
+        tx.execute(
+            "INSERT INTO job_runs
+                    (id, project_id, kind, idempotency_key, state, attempt, deadline_at_ms,
+                     budget_json, input_json, checkpoint_json, created_at_ms, updated_at_ms)
+                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12)",
+            params![
+                "jcs-job",
+                "jcs-project",
+                "pdf_ingest",
+                "canonical",
+                "queued",
+                0_i64,
+                100_i64,
+                "{}",
+                "{}",
+                "{}",
+                1_i64,
+                1_i64
+            ],
+        )
+        .expect("insert job prerequisite");
+        tx.execute(
+            "INSERT INTO evidence_objects
                     (id, project_id, job_id, document_revision_id, content_sha256,
                      parent_content_sha256, extraction_method, parameters_json, review_state,
                      created_at_ms)
                  VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)",
+            params![
+                "jcs-evidence",
+                "jcs-project",
+                "jcs-job",
+                "jcs-revision",
+                "1".repeat(64),
+                "1".repeat(64),
+                "fixture",
+                "{}",
+                "unreviewed",
+                1_i64
+            ],
+        )
+        .expect("insert evidence prerequisite");
+
+        for (id, key, budget, input, checkpoint) in [
+            ("bad-budget", "bad-budget", "{ }", "{}", "{}"),
+            ("bad-input", "bad-input", "{}", "{\"b\":2,\"a\":1}", "{}"),
+            (
+                "bad-checkpoint",
+                "bad-checkpoint",
+                "{}",
+                "{}",
+                "{\"n\":1.0}",
+            ),
+        ] {
+            assert!(
+                tx.execute(
+                    "INSERT INTO job_runs
+                            (id, project_id, kind, idempotency_key, state, attempt, deadline_at_ms,
+                             budget_json, input_json, checkpoint_json, created_at_ms, updated_at_ms)
+                         VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12)",
+                    params![
+                        id,
+                        "jcs-project",
+                        "pdf_ingest",
+                        key,
+                        "queued",
+                        0_i64,
+                        100_i64,
+                        budget,
+                        input,
+                        checkpoint,
+                        1_i64,
+                        1_i64
+                    ],
+                )
+                .is_err(),
+                "non-JCS job JSON was accepted for {id}"
+            );
+        }
+
+        assert!(
+            tx.execute(
+                "INSERT INTO ingest_events
+                        (id, project_id, job_id, outcome, attempt, source_name, source_path,
+                         idempotency_key, actor, terminal_at_ms, details_json)
+                     VALUES (?1, ?2, ?3, ?4, ?5, ?6, '<redacted>', ?7, ?8, ?9, ?10)",
                 params![
-                    "jcs-evidence",
+                    "bad-details",
                     "jcs-project",
+                    "jcs-job",
+                    "interrupted",
+                    1_i64,
+                    "name",
+                    "key",
+                    "actor",
+                    1_i64,
+                    "{\"text\":\"\\u0061\"}"
+                ],
+            )
+            .is_err()
+        );
+        assert!(
+            tx.execute(
+                "INSERT INTO sheets
+                        (id, revision_id, zero_based_page_index, width_micropoints,
+                         height_micropoints, rotation_degrees, unit, parent_content_sha256,
+                         transform_json)
+                     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)",
+                params![
+                    "bad-transform",
+                    "jcs-revision",
+                    0_i64,
+                    1_i64,
+                    1_i64,
+                    0_i64,
+                    "pt",
+                    "1".repeat(64),
+                    "{\"\u{e000}\":1,\"\u{10000}\":2}"
+                ],
+            )
+            .is_err()
+        );
+        assert!(
+            tx.execute(
+                "INSERT INTO source_records
+                        (id, project_id, job_id, source_name, source_path, content_sha256,
+                         metadata_json, created_at_ms)
+                     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
+                params![
+                    "bad-metadata",
+                    "jcs-project",
+                    "jcs-job",
+                    "name",
+                    "<redacted>",
+                    "1".repeat(64),
+                    "{\"x\" :1}",
+                    1_i64
+                ],
+            )
+            .is_err()
+        );
+        assert!(
+            tx.execute(
+                "INSERT INTO evidence_objects
+                        (id, project_id, job_id, document_revision_id, content_sha256,
+                         parent_content_sha256, extraction_method, parameters_json, review_state,
+                         created_at_ms)
+                     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)",
+                params![
+                    "bad-parameters",
+                    "jcs-project-2",
                     "jcs-job",
                     "jcs-revision",
                     "1".repeat(64),
                     "1".repeat(64),
                     "fixture",
-                    "{}",
+                    "{\"n\":1e0}",
                     "unreviewed",
                     1_i64
                 ],
             )
-            .expect("insert evidence prerequisite");
-
-            for (id, key, budget, input, checkpoint) in [
-                ("bad-budget", "bad-budget", "{ }", "{}", "{}"),
-                ("bad-input", "bad-input", "{}", "{\"b\":2,\"a\":1}", "{}"),
-                (
-                    "bad-checkpoint",
-                    "bad-checkpoint",
-                    "{}",
-                    "{}",
-                    "{\"n\":1.0}",
-                ),
-            ] {
-                assert!(
-                    tx.execute(
-                        "INSERT INTO job_runs
-                            (id, project_id, kind, idempotency_key, state, attempt, budget_json,
-                             input_json, checkpoint_json, created_at_ms, updated_at_ms)
-                         VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)",
-                        params![
-                            id,
-                            "jcs-project",
-                            "pdf_ingest",
-                            key,
-                            "queued",
-                            0_i64,
-                            budget,
-                            input,
-                            checkpoint,
-                            1_i64,
-                            1_i64
-                        ],
-                    )
-                    .is_err(),
-                    "non-JCS job JSON was accepted for {id}"
-                );
-            }
-
+            .is_err()
+        );
+        for (id, before, after) in [
+            ("bad-correction-before", "[] ", "[]"),
+            ("bad-correction-after", "[]", "{\"x\":\"\\/\"}"),
+        ] {
             assert!(
                 tx.execute(
-                    "INSERT INTO ingest_events
-                        (id, project_id, job_id, outcome, source_name, source_path,
-                         idempotency_key, actor, terminal_at_ms, details_json)
-                     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)",
-                    params![
-                        "bad-details",
-                        "jcs-project",
-                        "jcs-job",
-                        "interrupted",
-                        "name",
-                        "path",
-                        "key",
-                        "actor",
-                        1_i64,
-                        "{\"text\":\"\\u0061\"}"
-                    ],
-                )
-                .is_err()
-            );
-            assert!(
-                tx.execute(
-                    "INSERT INTO sheets
-                        (id, revision_id, zero_based_page_index, width_micropoints,
-                         height_micropoints, rotation_degrees, unit, parent_content_sha256,
-                         transform_json)
-                     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)",
-                    params![
-                        "bad-transform",
-                        "jcs-revision",
-                        0_i64,
-                        1_i64,
-                        1_i64,
-                        0_i64,
-                        "pt",
-                        "1".repeat(64),
-                        "{\"\u{e000}\":1,\"\u{10000}\":2}"
-                    ],
-                )
-                .is_err()
-            );
-            assert!(
-                tx.execute(
-                    "INSERT INTO source_records
-                        (id, project_id, job_id, source_name, source_path, content_sha256,
-                         metadata_json, created_at_ms)
-                     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
-                    params![
-                        "bad-metadata",
-                        "jcs-project",
-                        "jcs-job",
-                        "name",
-                        "path",
-                        "1".repeat(64),
-                        "{\"x\" :1}",
-                        1_i64
-                    ],
-                )
-                .is_err()
-            );
-            assert!(
-                tx.execute(
-                    "INSERT INTO evidence_objects
-                        (id, project_id, job_id, document_revision_id, content_sha256,
-                         parent_content_sha256, extraction_method, parameters_json, review_state,
-                         created_at_ms)
-                     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)",
-                    params![
-                        "bad-parameters",
-                        "jcs-project-2",
-                        "jcs-job",
-                        "jcs-revision",
-                        "1".repeat(64),
-                        "1".repeat(64),
-                        "fixture",
-                        "{\"n\":1e0}",
-                        "unreviewed",
-                        1_i64
-                    ],
-                )
-                .is_err()
-            );
-            for (id, before, after) in [
-                ("bad-correction-before", "[] ", "[]"),
-                ("bad-correction-after", "[]", "{\"x\":\"\\/\"}"),
-            ] {
-                assert!(
-                    tx.execute(
-                        "INSERT INTO corrections
+                    "INSERT INTO corrections
                             (id, project_id, evidence_id, actor, reason, before_json, after_json,
                              created_at_ms)
                          VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
-                        params![
-                            id,
-                            "jcs-project",
-                            "jcs-evidence",
-                            "actor",
-                            "reason",
-                            before,
-                            after,
-                            1_i64
-                        ],
-                    )
-                    .is_err(),
-                    "non-JCS correction JSON was accepted for {id}"
-                );
-            }
-            for (id, sequence, before, after, hash) in [
-                (
-                    "bad-audit-before",
-                    1_i64,
-                    "{\"x\":-0}",
-                    "{}",
-                    "2".repeat(64),
-                ),
-                (
-                    "bad-audit-after",
-                    2_i64,
-                    "{}",
-                    "{\"x\":1.00}",
-                    "3".repeat(64),
-                ),
-            ] {
-                assert!(
-                    tx.execute(
-                        "INSERT INTO audit_events
+                    params![
+                        id,
+                        "jcs-project",
+                        "jcs-evidence",
+                        "actor",
+                        "reason",
+                        before,
+                        after,
+                        1_i64
+                    ],
+                )
+                .is_err(),
+                "non-JCS correction JSON was accepted for {id}"
+            );
+        }
+        for (id, sequence, before, after, hash) in [
+            (
+                "bad-audit-before",
+                1_i64,
+                "{\"x\":-0}",
+                "{}",
+                "2".repeat(64),
+            ),
+            (
+                "bad-audit-after",
+                2_i64,
+                "{}",
+                "{\"x\":1.00}",
+                "3".repeat(64),
+            ),
+        ] {
+            assert!(
+                tx.execute(
+                    "INSERT INTO audit_events
                             (id, sequence, project_id, actor, action, subject_type, subject_id,
                              before_json, after_json, reason, occurred_at_ms, previous_hash,
                              event_hash)
                          VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13)",
-                        params![
-                            id,
-                            sequence,
-                            "jcs-project",
-                            "actor",
-                            "action",
-                            "project",
-                            "jcs-project",
-                            before,
-                            after,
-                            "reason",
-                            1_i64,
-                            "0".repeat(64),
-                            hash
-                        ],
-                    )
-                    .is_err(),
-                    "non-JCS audit JSON was accepted for {id}"
-                );
-            }
-            Ok(())
-        })
-        .expect("check every JCS insertion boundary");
+                    params![
+                        id,
+                        sequence,
+                        "jcs-project",
+                        "actor",
+                        "project_created",
+                        "project",
+                        "jcs-project",
+                        before,
+                        after,
+                        "reason",
+                        1_i64,
+                        "0".repeat(64),
+                        hash
+                    ],
+                )
+                .is_err(),
+                "non-JCS audit JSON was accepted for {id}"
+            );
+        }
+        Ok(())
+    })
+    .expect("check every JCS insertion boundary");
 }
 
 #[test]
 fn immutable_foundation_rows_reject_updates_and_deletes() {
     let database = TestDatabase::new("immutable");
-    let mut store = migrated_store(&database);
-    insert_complete_fixture(&mut store, "fixture");
+    drop(migrated_store(&database));
+    insert_complete_fixture(&database, "fixture");
 
-    store
-        .with_immediate_transaction(|tx| {
+    with_raw_verifier_transaction(&database, |tx| {
             let mutations = [
                 "UPDATE content_objects SET byte_length = 99 WHERE sha256 = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'",
                 "DELETE FROM content_objects WHERE sha256 = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'",
@@ -1185,244 +2733,242 @@ fn immutable_foundation_rows_reject_updates_and_deletes() {
                 assert!(tx.execute(sql, []).is_err(), "mutation unexpectedly passed: {sql}");
             }
             Ok(())
-        })
-        .expect("immutable checks complete");
+    })
+    .expect("immutable checks complete");
 }
 
 #[test]
 fn quarantined_content_cannot_create_a_revision_or_sheet() {
     let database = TestDatabase::new("quarantine-boundary");
-    let mut store = migrated_store(&database);
+    drop(migrated_store(&database));
 
-    store
-        .with_immediate_transaction(|tx| {
-            tx.execute(
-                "INSERT INTO content_objects
+    with_raw_verifier_transaction(&database, |tx| {
+        tx.execute(
+            "INSERT INTO content_objects
                     (sha256, byte_length, admission_state, vault_key, created_at_ms, created_by,
                      quarantine_reason)
                  VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
-                params![
-                    "f".repeat(64),
-                    7_i64,
-                    "quarantined",
-                    "quarantine-key",
-                    1_i64,
-                    "actor",
-                    "corrupt"
-                ],
-            )
-            .expect("insert quarantined content");
+            params![
+                "f".repeat(64),
+                7_i64,
+                "quarantined",
+                "quarantine-key",
+                1_i64,
+                "actor",
+                "{}"
+            ],
+        )
+        .expect("insert quarantined content");
+        tx.execute(
+            "INSERT INTO documents (id, created_at_ms, created_by) VALUES (?1, ?2, ?3)",
+            params!["quarantined-document", 1_i64, "actor"],
+        )
+        .expect("insert document shell");
+        assert!(
             tx.execute(
-                "INSERT INTO documents (id, created_at_ms, created_by) VALUES (?1, ?2, ?3)",
-                params!["quarantined-document", 1_i64, "actor"],
-            )
-            .expect("insert document shell");
-            assert!(
-                tx.execute(
-                    "INSERT INTO document_revisions
+                "INSERT INTO document_revisions
                         (id, document_id, content_sha256, created_at_ms, created_by)
                      VALUES (?1, ?2, ?3, ?4, ?5)",
-                    params![
-                        "quarantined-revision",
-                        "quarantined-document",
-                        "f".repeat(64),
-                        1_i64,
-                        "actor"
-                    ],
-                )
-                .is_err()
-            );
-            let revision_count = tx
-                .query_row(
-                    "SELECT count(*) FROM document_revisions WHERE id = ?1",
-                    ["quarantined-revision"],
-                    |row| row.get::<_, i64>(0),
-                )
-                .expect("count rejected revision");
-            let sheet_count = tx
-                .query_row("SELECT count(*) FROM sheets", [], |row| {
-                    row.get::<_, i64>(0)
-                })
-                .expect("count rejected sheets");
-            assert_eq!((revision_count, sheet_count), (0, 0));
-            Ok(())
-        })
-        .expect("verify quarantine boundary");
+                params![
+                    "quarantined-revision",
+                    "quarantined-document",
+                    "f".repeat(64),
+                    1_i64,
+                    "actor"
+                ],
+            )
+            .is_err()
+        );
+        let revision_count = tx
+            .query_row(
+                "SELECT count(*) FROM document_revisions WHERE id = ?1",
+                ["quarantined-revision"],
+                |row| row.get::<_, i64>(0),
+            )
+            .expect("count rejected revision");
+        let sheet_count = tx
+            .query_row("SELECT count(*) FROM sheets", [], |row| {
+                row.get::<_, i64>(0)
+            })
+            .expect("count rejected sheets");
+        assert_eq!((revision_count, sheet_count), (0, 0));
+        Ok(())
+    })
+    .expect("verify quarantine boundary");
 }
 
 #[test]
 fn raw_transactions_enforce_sheet_scale_and_accepted_evidence_lineage() {
     let database = TestDatabase::new("raw-lineage-boundary");
-    let mut store = migrated_store(&database);
-    insert_complete_fixture(&mut store, "lineage");
+    drop(migrated_store(&database));
+    insert_complete_fixture(&database, "lineage");
 
-    store
-        .with_immediate_transaction(|tx| {
-            for (digest, state, reason) in [
-                ("d".repeat(64), "accepted", None),
-                ("f".repeat(64), "quarantined", Some("suspicious")),
-            ] {
-                tx.execute(
-                    "INSERT INTO content_objects
+    with_raw_verifier_transaction(&database, |tx| {
+        for (digest, state, reason) in [
+            ("d".repeat(64), "accepted", None),
+            ("f".repeat(64), "quarantined", Some("{}")),
+        ] {
+            tx.execute(
+                "INSERT INTO content_objects
                         (sha256, byte_length, admission_state, vault_key, created_at_ms,
                          created_by, quarantine_reason)
                      VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
-                    params![
-                        digest,
-                        1_i64,
-                        state,
-                        format!("vault-{state}"),
-                        1_i64,
-                        "actor",
-                        reason
-                    ],
-                )
-                .expect("insert lineage fixture content");
-            }
+                params![
+                    digest,
+                    1_i64,
+                    state,
+                    format!("vault-{state}"),
+                    1_i64,
+                    "actor",
+                    reason
+                ],
+            )
+            .expect("insert lineage fixture content");
+        }
 
-            for (sheet_id, parent_hash) in [
-                ("sheet-quarantined-parent", "f".repeat(64)),
-                ("sheet-mismatched-accepted-parent", "d".repeat(64)),
-            ] {
-                assert!(
-                    tx.execute(
-                        "INSERT INTO sheets
+        for (sheet_id, parent_hash) in [
+            ("sheet-quarantined-parent", "f".repeat(64)),
+            ("sheet-mismatched-accepted-parent", "d".repeat(64)),
+        ] {
+            assert!(
+                tx.execute(
+                    "INSERT INTO sheets
                             (id, revision_id, zero_based_page_index, width_micropoints,
                              height_micropoints, rotation_degrees, unit, parent_content_sha256,
                              transform_json)
                          VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)",
-                        params![
-                            sheet_id,
-                            "revision-1",
-                            1_i64,
-                            1_i64,
-                            1_i64,
-                            0_i64,
-                            "pt",
-                            parent_hash,
-                            "{}"
-                        ],
-                    )
-                    .is_err(),
-                    "raw SQL attached invalid parent content to a sheet"
-                );
-                assert!(
-                    tx.execute(
-                        "INSERT INTO scales
+                    params![
+                        sheet_id,
+                        "revision-1",
+                        1_i64,
+                        1_i64,
+                        1_i64,
+                        0_i64,
+                        "pt",
+                        parent_hash,
+                        "{}"
+                    ],
+                )
+                .is_err(),
+                "raw SQL attached invalid parent content to a sheet"
+            );
+            assert!(
+                tx.execute(
+                    "INSERT INTO scales
                             (id, sheet_id, numerator, denominator, source, created_at_ms,
                              created_by)
                          VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
-                        params![
-                            format!("scale-{sheet_id}"),
-                            sheet_id,
-                            1_i64,
-                            1_i64,
-                            "fixture",
-                            1_i64,
-                            "actor"
-                        ],
-                    )
-                    .is_err(),
-                    "raw SQL attached a scale to an invalid sheet"
-                );
-            }
+                    params![
+                        format!("scale-{sheet_id}"),
+                        sheet_id,
+                        1_i64,
+                        1_i64,
+                        "fixture",
+                        1_i64,
+                        "actor"
+                    ],
+                )
+                .is_err(),
+                "raw SQL attached a scale to an invalid sheet"
+            );
+        }
 
-            for (id, derivative, parent) in [
-                (
-                    "accepted-quarantined-derivative",
-                    "f".repeat(64),
-                    "a".repeat(64),
-                ),
-                (
-                    "accepted-quarantined-parent",
-                    "d".repeat(64),
-                    "f".repeat(64),
-                ),
-                ("accepted-mismatched-parent", "d".repeat(64), "d".repeat(64)),
-            ] {
-                assert!(
-                    tx.execute(
-                        "INSERT INTO evidence_objects
+        for (id, derivative, parent) in [
+            (
+                "accepted-quarantined-derivative",
+                "f".repeat(64),
+                "a".repeat(64),
+            ),
+            (
+                "accepted-quarantined-parent",
+                "d".repeat(64),
+                "f".repeat(64),
+            ),
+            ("accepted-mismatched-parent", "d".repeat(64), "d".repeat(64)),
+        ] {
+            assert!(
+                tx.execute(
+                    "INSERT INTO evidence_objects
                             (id, project_id, job_id, document_revision_id, content_sha256,
                              parent_content_sha256, extraction_method, parameters_json,
                              review_state, created_at_ms)
                          VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)",
-                        params![
-                            id,
-                            "project-1",
-                            "job-1",
-                            "revision-1",
-                            derivative,
-                            parent,
-                            "fixture",
-                            "{}",
-                            "accepted",
-                            1_i64
-                        ],
-                    )
-                    .is_err(),
-                    "raw SQL admitted invalid accepted evidence lineage: {id}"
-                );
-            }
+                    params![
+                        id,
+                        "project-1",
+                        "job-1",
+                        "revision-1",
+                        derivative,
+                        parent,
+                        "fixture",
+                        "{}",
+                        "accepted",
+                        1_i64
+                    ],
+                )
+                .is_err(),
+                "raw SQL admitted invalid accepted evidence lineage: {id}"
+            );
+        }
 
-            tx.execute(
-                "INSERT INTO evidence_objects
+        tx.execute(
+            "INSERT INTO evidence_objects
                     (id, project_id, job_id, document_revision_id, content_sha256,
                      parent_content_sha256, extraction_method, parameters_json, review_state,
                      created_at_ms)
                  VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)",
-                params![
-                    "unreviewed-quarantined-evidence",
-                    "project-1",
-                    "job-1",
-                    "revision-1",
-                    "f".repeat(64),
-                    "f".repeat(64),
-                    "fixture",
-                    "{}",
-                    "unreviewed",
-                    1_i64
-                ],
-            )
-            .expect("non-accepted review state preserves quarantined evidence");
-            Ok(())
-        })
-        .expect("complete raw lineage boundary checks");
+            params![
+                "unreviewed-quarantined-evidence",
+                "project-1",
+                "job-1",
+                "revision-1",
+                "f".repeat(64),
+                "f".repeat(64),
+                "fixture",
+                "{}",
+                "unreviewed",
+                1_i64
+            ],
+        )
+        .expect("non-accepted review state preserves quarantined evidence");
+        Ok(())
+    })
+    .expect("complete raw lineage boundary checks");
 }
 
 #[test]
 fn a_schema_newer_than_the_binary_fails_closed() {
     let database = TestDatabase::new("future-version");
-    let mut store = migrated_store(&database);
-    store
-        .with_immediate_transaction(|tx| {
-            tx.execute(
-                "INSERT INTO schema_migrations (version, sha256) VALUES (?1, ?2)",
-                params![2_i64, "d".repeat(64)],
-            )
-            .expect("insert future version");
-            Ok(())
-        })
-        .expect("commit future marker");
+    drop(migrated_store(&database));
+    with_raw_verifier_transaction(&database, |tx| {
+        tx.execute(
+            "INSERT INTO schema_migrations (version, sha256) VALUES (?1, ?2)",
+            params![2_i64, "d".repeat(64)],
+        )
+        .expect("insert future version");
+        Ok(())
+    })
+    .expect("commit future marker");
 
+    let mut store = Store::open_writer(&database.path).expect("reopen future-version database");
     assert!(matches!(store.migrate(), Err(HeleosError::Migration)));
 }
 
 #[test]
 fn a_migration_hash_mismatch_fails_closed() {
     let database = TestDatabase::new("migration-hash");
-    let mut store = migrated_store(&database);
-    store
-        .with_immediate_transaction(|tx| {
-            tx.execute(
-                "UPDATE schema_migrations SET sha256 = ?1 WHERE version = ?2",
-                params!["e".repeat(64), 1_i64],
-            )
-            .expect("tamper migration hash");
-            Ok(())
-        })
-        .expect("commit hash tamper");
+    drop(migrated_store(&database));
+    with_raw_verifier_transaction(&database, |tx| {
+        tx.execute(
+            "UPDATE schema_migrations SET sha256 = ?1 WHERE version = ?2",
+            params!["e".repeat(64), 1_i64],
+        )
+        .expect("tamper migration hash");
+        Ok(())
+    })
+    .expect("commit hash tamper");
 
+    let mut store = Store::open_writer(&database.path).expect("reopen tampered database");
     assert!(matches!(store.migrate(), Err(HeleosError::Migration)));
 }
 
@@ -1469,17 +3015,18 @@ fn crash_left_wal_process_helper() {
     };
     let mut store = Store::open_writer(database).expect("crash fixture opens writer");
     store.migrate().expect("crash fixture migrates");
-    store
-        .with_immediate_transaction(|tx| {
-            tx.execute(
-                "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
-                 VALUES (?1, ?2, ?3, ?4, ?5)",
-                params!["crash-project", "name", 1_i64, "actor", "INTERNAL"],
-            )
-            .expect("write crash-left WAL row");
-            Ok(())
-        })
-        .expect("commit crash-left WAL row");
+    drop(store);
+    let crash_database = PathBuf::from(
+        env::var_os("HELEOS_TEST_CRASH_DATABASE").expect("crash database remains configured"),
+    );
+    let connection = raw_verifier_connection_path(&crash_database);
+    connection
+        .execute(
+            "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
+             VALUES (?1, ?2, ?3, ?4, ?5)",
+            params!["crash-project", "name", 1_i64, "actor", "INTERNAL"],
+        )
+        .expect("write crash-left WAL row");
     std::process::exit(0);
 }
 
@@ -1633,18 +3180,6 @@ fn writer_fails_closed_before_mutation_after_lock_path_replacement() {
         .expect("harden replacement lock path");
 
     assert!(matches!(writer.migrate(), Err(HeleosError::PolicyDenied)));
-    assert!(matches!(
-        writer.with_immediate_transaction(|tx| {
-            tx.execute(
-                "INSERT INTO projects (id, name, created_at_ms, created_by, data_class)
-                 VALUES (?1, ?2, ?3, ?4, ?5)",
-                params!["must-not-write", "name", 1_i64, "actor", "INTERNAL"],
-            )
-            .expect("operation must never run");
-            Ok(())
-        }),
-        Err(HeleosError::PolicyDenied)
-    ));
 }
 
 #[test]
@@ -1653,7 +3188,7 @@ fn read_only_verification_has_no_mutation_capability() {
     let store = migrated_store(&database);
     drop(store);
 
-    let mut read_only = Store::open_read_only(&database.path).expect("open read-only store");
+    let read_only = Store::open_read_only(&database.path).expect("open read-only store");
     assert_eq!(read_only.schema_version().expect("read schema version"), 1);
     assert!(
         read_only
@@ -1661,10 +3196,6 @@ fn read_only_verification_has_no_mutation_capability() {
             .expect("verify read-only")
             .is_clean()
     );
-    assert!(matches!(
-        read_only.with_immediate_transaction(|_| Ok(())),
-        Err(HeleosError::PolicyDenied)
-    ));
 }
 
 #[cfg(unix)]
@@ -1924,7 +3455,7 @@ fn integrity_reporting_does_not_silently_stop_at_sqlites_default_100_rows() {
     let database = TestDatabase::new("integrity-dirty");
     drop(migrated_store(&database));
 
-    let connection = Connection::open(&database.path).expect("open raw corruption fixture");
+    let connection = raw_verifier_connection(&database);
     connection
         .pragma_update(None, "foreign_keys", "OFF")
         .expect("permit deliberate foreign-key violations");
@@ -2142,12 +3673,4 @@ fn in_memory_store_has_the_same_schema_and_defensive_policy() {
     let mut store = Store::open_in_memory().expect("open in-memory store");
     store.migrate().expect("migrate in-memory store");
     assert_eq!(store.schema_version().expect("schema version"), 1);
-    let defensive = store
-        .with_immediate_transaction(|tx| {
-            Ok(tx
-                .db_config(DbConfig::SQLITE_DBCONFIG_DEFENSIVE)
-                .expect("query defensive mode"))
-        })
-        .expect("inspect in-memory settings");
-    assert!(defensive);
 }

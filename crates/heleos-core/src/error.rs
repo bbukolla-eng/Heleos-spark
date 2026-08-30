@@ -38,6 +38,12 @@ pub enum HeleosError {
     InvalidStateTransition,
     #[error("idempotency conflict")]
     IdempotencyConflict,
+    #[error("job lease is unavailable")]
+    LeaseUnavailable,
+    #[error("fault injected")]
+    FaultInjected,
+    #[error("transaction commit outcome is unknown")]
+    CommitOutcomeUnknown,
     #[error("content quarantined")]
     Quarantine,
     #[error("requested item was not found")]

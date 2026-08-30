@@ -27,6 +27,7 @@ use crate::{
 };
 
 use super::PdfSandboxConfig;
+use super::geometry::validate_page_metadata;
 
 const MANIFEST_SCHEMA: &str = "heleos.pdf-guest-manifest/v1";
 const MANIFEST_MAX_BYTES: usize = 1024 * 1024;
@@ -1953,16 +1954,6 @@ fn map_guest_reason(reason: PdfGuestReasonV1) -> PdfQuarantineReason {
     }
 }
 
-fn expected_matrix(rotation: u16) -> Option<(i8, i8, i8, i8)> {
-    match rotation {
-        0 => Some((1, 0, 0, -1)),
-        90 => Some((0, 1, 1, 0)),
-        180 => Some((-1, 0, 0, 1)),
-        270 => Some((0, -1, -1, 0)),
-        _ => None,
-    }
-}
-
 fn response_pages(
     pages: Vec<heleos_pdf_protocol::PdfPageV1>,
     content_sha256: Sha256Digest,
@@ -1971,34 +1962,12 @@ fn response_pages(
     if pages.len() > usize::try_from(limits.public.max_pages).map_err(|_| ())? {
         return Err(());
     }
-    let axis_cap = u64::from(limits.public.max_page_axis_points)
-        .checked_mul(1_000_000)
-        .ok_or(())?;
     let mut result = Vec::with_capacity(pages.len());
     for (expected, page) in pages.into_iter().enumerate() {
         let index = u32::try_from(expected).map_err(|_| ())?;
         let page_id = crate::page_id(content_sha256, index);
         let expected_page_id = page_id.as_digest().to_string();
-        let matrix = expected_matrix(page.rotation_degrees).ok_or(())?;
-        if page.index != index
-            || page.page_id != expected_page_id
-            || page.width_micropoints == 0
-            || page.height_micropoints == 0
-            || page.width_micropoints > axis_cap
-            || page.height_micropoints > axis_cap
-            || page.width_micropoints > heleos_pdf_protocol::JCS_SAFE_INTEGER_MAX
-            || page.height_micropoints > heleos_pdf_protocol::JCS_SAFE_INTEGER_MAX
-            || page.transform.tx_micropoints < heleos_pdf_protocol::JCS_SAFE_INTEGER_MIN
-            || page.transform.tx_micropoints > heleos_pdf_protocol::JCS_SAFE_INTEGER_MAX as i64
-            || page.transform.ty_micropoints < heleos_pdf_protocol::JCS_SAFE_INTEGER_MIN
-            || page.transform.ty_micropoints > heleos_pdf_protocol::JCS_SAFE_INTEGER_MAX as i64
-            || (
-                page.transform.m11,
-                page.transform.m12,
-                page.transform.m21,
-                page.transform.m22,
-            ) != matrix
-        {
+        if page.index != index || page.page_id != expected_page_id {
             return Err(());
         }
         let unit = match page.unit {
@@ -2021,6 +1990,7 @@ fn response_pages(
             },
         });
     }
+    validate_page_metadata(&result, content_sha256, limits.public).map_err(|_| ())?;
     Ok(result)
 }
 
@@ -2215,6 +2185,10 @@ impl WasiPdfProbe {
 }
 
 impl PdfProbe for WasiPdfProbe {
+    fn provenance(&self) -> Result<PdfProbeProvenance> {
+        manifest_provenance(&self.manifest)
+    }
+
     fn probe(
         &self,
         mut input: VerifiedObject,
@@ -2228,7 +2202,7 @@ impl PdfProbe for WasiPdfProbe {
         verify_source_object(&mut input)?;
         let content_sha256 = input.digest();
         let byte_length = input.byte_length();
-        let provenance = manifest_provenance(&self.manifest)?;
+        let provenance = self.provenance()?;
         if byte_length > limits.public.max_input_bytes {
             return Ok(quarantine_outcome(
                 content_sha256,
