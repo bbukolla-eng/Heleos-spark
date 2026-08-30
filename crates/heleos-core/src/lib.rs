@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+pub mod backup;
 pub mod domain;
 mod error;
 pub mod ingest;

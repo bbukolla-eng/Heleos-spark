@@ -1,0 +1,1 @@
+//! Signed backup-manifest representation.
