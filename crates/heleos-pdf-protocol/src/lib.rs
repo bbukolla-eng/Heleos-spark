@@ -3509,6 +3509,7 @@ struct ClassifiedCargoDependency<'a> {
 struct ClassifiedCargoMetadata<'a> {
     package_by_id: std::collections::BTreeMap<&'a str, &'a CargoPackage>,
     node_by_id: std::collections::BTreeMap<&'a str, &'a CargoNode>,
+    dependency_target_by_id: std::collections::BTreeMap<&'a str, Option<&'a str>>,
     dependencies_by_parent: std::collections::BTreeMap<&'a str, Vec<ClassifiedCargoDependency<'a>>>,
 }
 
@@ -3552,20 +3553,42 @@ fn classify_cargo_metadata_v1(metadata: &CargoMetadata) -> Result<ClassifiedCarg
 
     let mut dependency_target_by_id = BTreeMap::new();
     for package in &metadata.packages {
-        let dependency_targets = package
-            .targets
-            .iter()
-            .filter(|target| dependency_capable_target_kind(target).is_some())
-            .collect::<Vec<_>>();
-        let [target] = dependency_targets.as_slice() else {
-            return Err(ProtocolError::InvalidDocument);
-        };
-        if target.name.is_empty()
-            || normalize_cargo_external_name(&target.name).as_deref() != Some(target.name.as_str())
-        {
+        let mut dependency_target = None;
+        let mut multiple_dependency_targets = false;
+        let mut has_bin_target = false;
+        for target in &package.targets {
+            match declared_target_kind(target)? {
+                Some(CargoTargetKindV1::Lib | CargoTargetKindV1::ProcMacro) => {
+                    if dependency_target.replace(target).is_some() {
+                        multiple_dependency_targets = true;
+                    }
+                }
+                Some(CargoTargetKindV1::Bin) => has_bin_target = true,
+                Some(CargoTargetKindV1::CustomBuild) | None => {}
+            }
+        }
+        if multiple_dependency_targets {
             return Err(ProtocolError::InvalidDocument);
         }
-        dependency_target_by_id.insert(package.id.as_str(), target.name.as_str());
+        let dependency_target_name = if let Some(target) = dependency_target {
+            if normalize_cargo_external_name(&target.name).as_deref() != Some(target.name.as_str())
+            {
+                return Err(ProtocolError::InvalidDocument);
+            }
+            Some(target.name.as_str())
+        } else if package.source.is_none()
+            && workspace_manifest(
+                &metadata.workspace_root,
+                &package.manifest_path,
+                &package.name,
+            )
+            && has_bin_target
+        {
+            None
+        } else {
+            return Err(ProtocolError::InvalidDocument);
+        };
+        dependency_target_by_id.insert(package.id.as_str(), dependency_target_name);
     }
 
     let mut strong_dependency_keys_by_parent = BTreeMap::new();
@@ -3727,6 +3750,7 @@ fn classify_cargo_metadata_v1(metadata: &CargoMetadata) -> Result<ClassifiedCarg
             let child_target_name = dependency_target_by_id
                 .get(dependency.pkg.as_str())
                 .copied()
+                .flatten()
                 .ok_or(ProtocolError::InvalidDocument)?;
             for dep_kind in &dependency.dep_kinds {
                 let kind = classify_cargo_dependency_kind(dep_kind.kind.as_deref())?;
@@ -3784,6 +3808,7 @@ fn classify_cargo_metadata_v1(metadata: &CargoMetadata) -> Result<ClassifiedCarg
     Ok(ClassifiedCargoMetadata {
         package_by_id,
         node_by_id,
+        dependency_target_by_id,
         dependencies_by_parent,
     })
 }
@@ -4003,6 +4028,15 @@ pub fn normalize_dependency_graph_v1(
     let [root] = roots.as_slice() else {
         return Err(ProtocolError::InvalidDocument);
     };
+    if guest_classification
+        .dependency_target_by_id
+        .get(root.id.as_str())
+        .copied()
+        .flatten()
+        .is_none()
+    {
+        return Err(ProtocolError::InvalidDocument);
+    }
 
     let mut normalized_by_id = BTreeMap::new();
     let mut guest_id_by_normalized = BTreeMap::new();
@@ -4419,6 +4453,15 @@ fn require_guest_graph_subset_of_full(
     let [root] = roots.as_slice() else {
         return Err(ProtocolError::InvalidDocument);
     };
+    if full_classification
+        .dependency_target_by_id
+        .get(root.id.as_str())
+        .copied()
+        .flatten()
+        .is_none()
+    {
+        return Err(ProtocolError::InvalidDocument);
+    }
     let mut reached = BTreeSet::new();
     let mut pending = VecDeque::from([root.id.as_str()]);
     while let Some(id) = pending.pop_front() {
@@ -6221,6 +6264,285 @@ checksum = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
             lock.as_bytes(),
             "heleos-pdf-guest",
         )
+    }
+
+    #[cfg(feature = "artifact-host")]
+    fn add_unrelated_bin_package(metadata: &mut serde_json::Value) {
+        let cli_id = "path+file:///repo/crates/heleos-cli#heleos-cli@0.1.0";
+        let protocol_id = "path+file:///repo/crates/heleos-pdf-protocol#heleos-pdf-protocol@0.1.0";
+        metadata["packages"]
+            .as_array_mut()
+            .expect("packages are an array")
+            .push(serde_json::json!({
+                "id": cli_id,
+                "name": "heleos-cli",
+                "version": "0.1.0",
+                "source": null,
+                "checksum": null,
+                "manifest_path": "/repo/crates/heleos-cli/Cargo.toml",
+                "targets": [
+                    {
+                        "kind": ["bin"],
+                        "crate_types": ["bin"],
+                        "name": "heleos",
+                        "src_path": "/repo/crates/heleos-cli/src/main.rs",
+                        "edition": "2024",
+                        "doc": true,
+                        "doctest": false,
+                        "test": true,
+                        "required-features": []
+                    },
+                    {
+                        "kind": ["custom-build"],
+                        "crate_types": ["bin"],
+                        "name": "build-script-build",
+                        "src_path": "/repo/crates/heleos-cli/build.rs",
+                        "edition": "2024",
+                        "doc": false,
+                        "doctest": false,
+                        "test": false,
+                        "required-features": []
+                    }
+                ],
+                "dependencies": [{
+                    "name": "heleos-pdf-protocol",
+                    "source": null,
+                    "req": "*",
+                    "kind": null,
+                    "rename": null,
+                    "optional": false,
+                    "uses_default_features": true,
+                    "features": [],
+                    "target": null,
+                    "registry": null,
+                    "path": "/repo/crates/heleos-pdf-protocol"
+                }],
+                "features": {"default": []}
+            }));
+        metadata["resolve"]["nodes"]
+            .as_array_mut()
+            .expect("resolve nodes are an array")
+            .push(serde_json::json!({
+                "id": cli_id,
+                "features": ["default"],
+                "deps": [{
+                    "name": "heleos_pdf_protocol",
+                    "pkg": protocol_id,
+                    "dep_kinds": [{"kind": null, "target": null}]
+                }]
+            }));
+    }
+
+    #[cfg(feature = "artifact-host")]
+    fn lock_with_unrelated_bin_package(lock: &str, guest_depends_on_cli: bool) -> String {
+        let lock = if guest_depends_on_cli {
+            lock.replace(
+                "dependencies = [\"flate2 1.1.10\", \"heleos-pdf-protocol\"]",
+                "dependencies = [\"flate2 1.1.10\", \"heleos-cli\", \"heleos-pdf-protocol\"]",
+            )
+        } else {
+            lock.to_owned()
+        };
+        format!(
+            "{lock}\n[[package]]\nname = \"heleos-cli\"\nversion = \"0.1.0\"\ndependencies = [\"heleos-pdf-protocol\"]\n"
+        )
+    }
+
+    #[cfg(feature = "artifact-host")]
+    fn make_guest_depend_on_bin_package(metadata: &mut serde_json::Value, kind: Option<&str>) {
+        let cli_id = "path+file:///repo/crates/heleos-cli#heleos-cli@0.1.0";
+        metadata["packages"][0]["dependencies"]
+            .as_array_mut()
+            .expect("guest dependencies are an array")
+            .push(serde_json::json!({
+                "name": "heleos-cli",
+                "source": null,
+                "req": "*",
+                "kind": kind,
+                "rename": null,
+                "optional": false,
+                "uses_default_features": true,
+                "features": [],
+                "target": null,
+                "registry": null,
+                "path": "/repo/crates/heleos-cli"
+            }));
+        metadata["resolve"]["nodes"][0]["deps"]
+            .as_array_mut()
+            .expect("guest resolve dependencies are an array")
+            .push(serde_json::json!({
+                "name": "heleos_cli",
+                "pkg": cli_id,
+                "dep_kinds": [{"kind": kind, "target": null}]
+            }));
+    }
+
+    #[cfg(feature = "artifact-host")]
+    #[test]
+    fn unrelated_canonical_bin_and_custom_build_leave_guest_graph_bytes_unchanged() {
+        let (guest, lock) = weak_optional_metadata_fixture();
+        let baseline = normalize_feature_fixture(&guest, &guest, &lock)
+            .expect("baseline guest graph is valid");
+        let baseline_bytes = serde_jcs::to_vec(&baseline).expect("encode baseline graph as JCS");
+        let baseline_digest =
+            dependency_graph_sha256(&baseline).expect("hash baseline dependency graph");
+
+        let mut full = guest.clone();
+        add_unrelated_bin_package(&mut full);
+        let with_unrelated = normalize_feature_fixture(&guest, &full, &lock)
+            .expect("an unrelated canonical workspace binary is admissible");
+
+        assert_eq!(
+            serde_jcs::to_vec(&with_unrelated).expect("encode graph with unrelated binary as JCS"),
+            baseline_bytes
+        );
+        assert_eq!(
+            dependency_graph_sha256(&with_unrelated).expect("hash graph with unrelated binary"),
+            baseline_digest
+        );
+    }
+
+    #[cfg(feature = "artifact-host")]
+    #[test]
+    fn requested_bin_only_root_is_rejected_in_each_metadata_document() {
+        let (base, lock) = weak_optional_metadata_fixture();
+        let mut with_cli = base.clone();
+        add_unrelated_bin_package(&mut with_cli);
+        let lock = lock_with_unrelated_bin_package(&lock, false);
+        let encoded = serde_json::to_vec(&with_cli).expect("serialize metadata with CLI");
+        assert!(
+            normalize_dependency_records(
+                &encoded,
+                &encoded,
+                lock.as_bytes(),
+                lock.as_bytes(),
+                "heleos-cli",
+            )
+            .is_err(),
+            "a requested bin-only root was accepted"
+        );
+
+        for document in ["guest", "full"] {
+            let mut guest = base.clone();
+            let mut full = base.clone();
+            let selected = if document == "guest" {
+                &mut guest
+            } else {
+                &mut full
+            };
+            selected["packages"][0]["targets"] = serde_json::json!([{
+                "kind": ["bin"],
+                "crate_types": ["bin"],
+                "name": "heleos_pdf_guest",
+                "src_path": "/repo/crates/heleos-pdf-guest/src/main.rs",
+                "edition": "2024",
+                "doc": true,
+                "doctest": false,
+                "test": true,
+                "required-features": []
+            }]);
+            assert!(
+                normalize_feature_fixture(&guest, &full, &lock).is_err(),
+                "a bin-only {document} root was accepted"
+            );
+        }
+    }
+
+    #[cfg(feature = "artifact-host")]
+    #[test]
+    fn bin_only_dependency_child_is_rejected_for_every_dependency_kind() {
+        let (base, lock) = weak_optional_metadata_fixture();
+        let lock = lock_with_unrelated_bin_package(&lock, true);
+        for kind in [None, Some("build"), Some("dev")] {
+            let mut metadata = base.clone();
+            add_unrelated_bin_package(&mut metadata);
+            make_guest_depend_on_bin_package(&mut metadata, kind);
+            let encoded = serde_json::to_vec(&metadata).expect("serialize bin-child metadata");
+            assert!(
+                normalize_dependency_records(
+                    &encoded,
+                    &encoded,
+                    lock.as_bytes(),
+                    lock.as_bytes(),
+                    "heleos-pdf-guest",
+                )
+                .is_err(),
+                "a bin-only child was accepted for dependency kind {kind:?}"
+            );
+        }
+    }
+
+    #[cfg(feature = "artifact-host")]
+    #[test]
+    fn unrelated_zero_dependency_target_exception_is_narrow_and_target_validated() {
+        let (guest, lock) = weak_optional_metadata_fixture();
+        for case in [
+            "empty",
+            "custom-only",
+            "external-bin",
+            "noncanonical-manifest",
+            "malformed-custom-build",
+            "multiple-dependency-targets",
+        ] {
+            let mut full = guest.clone();
+            add_unrelated_bin_package(&mut full);
+            let package = full["packages"]
+                .as_array_mut()
+                .expect("packages are an array")
+                .last_mut()
+                .expect("CLI package was appended");
+            match case {
+                "empty" => package["targets"] = serde_json::json!([]),
+                "custom-only" => {
+                    package["targets"] =
+                        serde_json::Value::Array(vec![package["targets"][1].clone()]);
+                }
+                "external-bin" => {
+                    package["source"] =
+                        serde_json::json!("registry+https://github.com/rust-lang/crates.io-index");
+                    package["manifest_path"] = serde_json::json!("/cargo/heleos-cli/Cargo.toml");
+                }
+                "noncanonical-manifest" => {
+                    package["manifest_path"] =
+                        serde_json::json!("/repo/tools/heleos-cli/Cargo.toml");
+                }
+                "malformed-custom-build" => {
+                    package["targets"][1]["crate_types"] = serde_json::json!(["lib"]);
+                }
+                "multiple-dependency-targets" => {
+                    let targets = package["targets"]
+                        .as_array_mut()
+                        .expect("targets are an array");
+                    targets.push(serde_json::json!({
+                        "kind": ["lib"],
+                        "crate_types": ["lib"],
+                        "name": "heleos_cli_support",
+                        "src_path": "/repo/crates/heleos-cli/src/lib.rs",
+                        "edition": "2024",
+                        "doc": true,
+                        "doctest": true,
+                        "test": true,
+                        "required-features": []
+                    }));
+                    targets.push(serde_json::json!({
+                        "kind": ["proc-macro"],
+                        "crate_types": ["proc-macro"],
+                        "name": "heleos_cli_macros",
+                        "src_path": "/repo/crates/heleos-cli/src/macros.rs",
+                        "edition": "2024",
+                        "doc": true,
+                        "doctest": true,
+                        "test": true,
+                        "required-features": []
+                    }));
+                }
+                _ => unreachable!("all cases are enumerated"),
+            }
+            assert!(
+                normalize_feature_fixture(&guest, &full, &lock).is_err(),
+                "classifier accepted unrelated invalid zero-target case {case}"
+            );
+        }
     }
 
     #[cfg(feature = "artifact-host")]
