@@ -1,6 +1,14 @@
-# HELIOS Takeoff Core
+# Heleos-spark
 
-Local-first, evidence-bound P0 foundation with a bounded P1A execution spine for an auditable Division 23 takeoff system.
+Heleos-spark is the canonical clean-room repository for HELIOS, a local-first, evidence-bound Division 23 takeoff, estimating, pricing, bidding, procurement, and project-management system. The current deterministic Python distribution is `helios-takeoff-core`.
+
+No predecessor repository, code, configuration, data, tests, prompt, artifact, or Git history is imported, preserved, or consulted. The clean-room foundation design is [documented here](docs/superpowers/specs/2026-08-26-heleos-spark-foundation-design.md).
+
+## Current phase
+
+P0, P1A, and the first P1B engine foundation are implemented on the current feature history. The enriched multi-builder, ATHENA/NotebookLM, Division 23 v2, Hugging Face/Kaggle, API/SDK, native-app, and operational-bot architecture is defined in [the current design](docs/superpowers/specs/2026-09-01-enriched-build-fabric-design.md). That implementation begins only after the owner approves the written successor design and its implementation plan.
+
+The current installed package contains the P0 foundation, bounded P1A execution spine, and P1B domain-pack/evaluation foundation for an auditable Division 23 system.
 
 It preserves the path from immutable bid documents to evidence, quantity assertions, reviewer decisions, approved takeoffs, quote inputs, estimates, and as-bid releases. It does **not** yet perform PDF/CAD extraction, AI vision, topology inference, labor assemblies, or live vendor integration.
 
