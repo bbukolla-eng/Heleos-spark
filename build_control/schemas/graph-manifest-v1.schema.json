@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/graph-manifest-v1.schema.json",
+  "title": "HELIOS Build Fabric graph manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "graph_id", "nodes", "edges", "created_at", "created_by_profile_id"],
+  "properties": {
+    "protocol": { "const": "helios.build.graph-manifest/v1" },
+    "graph_id": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+    "nodes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/node" },
+      "uniqueItems": true
+    },
+    "edges": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/edge" },
+      "uniqueItems": true
+    },
+    "created_at": { "$ref": "common-v1.schema.json#/$defs/rfc3339Utc" },
+    "created_by_profile_id": { "$ref": "common-v1.schema.json#/$defs/identifier" }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_id", "node_type", "manifest_sha256"],
+      "properties": {
+        "node_id": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+        "node_type": { "enum": ["ResearchRequest", "SourcePacket", "InterfaceFreeze", "BuildTask", "Attempt", "Checkpoint", "Artifact", "Patch", "Review", "Integration", "Capability"] },
+        "manifest_sha256": { "$ref": "common-v1.schema.json#/$defs/digest" }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["edge_type", "from_node_id", "to_node_id"],
+      "properties": {
+        "edge_type": { "enum": ["DEPENDS_ON", "PRODUCES", "CONSUMES", "REVIEWS", "TOUCHES_INTERFACE", "BLOCKS"] },
+        "from_node_id": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+        "to_node_id": { "$ref": "common-v1.schema.json#/$defs/identifier" }
+      }
+    }
+  }
+}

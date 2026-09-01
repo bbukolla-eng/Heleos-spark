@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/preflight-receipt-v1.schema.json",
+  "title": "HELIOS Build Fabric preflight receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "worker_profile_sha256", "adapter_configuration_sha256", "executable_sha256", "host_id_sha256", "availability", "reason_code", "returncode", "timed_out", "stdout_sha256", "stderr_sha256", "started_at", "duration_ms"],
+  "properties": {
+    "protocol": {"const": "helios.build.preflight-receipt/v1"},
+    "worker_profile_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "adapter_configuration_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "executable_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "host_id_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "availability": {"enum": ["AVAILABLE", "UNAVAILABLE"]},
+    "reason_code": {"$ref": "common-v1.schema.json#/$defs/identifier"},
+    "returncode": {"anyOf": [{"type": "integer"}, {"type": "null"}]},
+    "timed_out": {"type": "boolean"},
+    "stdout_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "stderr_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "started_at": {"$ref": "common-v1.schema.json#/$defs/rfc3339Utc"},
+    "duration_ms": {"$ref": "common-v1.schema.json#/$defs/nonNegativeInteger"}
+  }
+}

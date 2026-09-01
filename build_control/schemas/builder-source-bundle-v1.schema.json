@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json",
+  "title": "Task-scoped builder source bundle v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "task_manifest_sha256", "task_id", "packet_dependencies", "packets", "sources", "citations", "findings", "conflicts", "limitations", "gaps"],
+  "properties": {
+    "protocol": {"const": "helios.build.builder-source-bundle/v1"},
+    "task_manifest_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "task_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
+    "packet_dependencies": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json#/$defs/dependency"}},
+    "packets": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json#/$defs/packet"}},
+    "sources": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json#/$defs/source"}},
+    "citations": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json#/$defs/citation"}},
+    "findings": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json#/$defs/finding"}},
+    "conflicts": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json#/$defs/conflict"}},
+    "limitations": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json#/$defs/limitation"}},
+    "gaps": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json#/$defs/gap"}}
+  },
+  "$defs": {
+    "dependency": {"type": "object", "additionalProperties": false, "required": ["dependency_node_id", "packet_id", "packet_sha256"], "properties": {"dependency_node_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "packet_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "packet_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"}}},
+    "packet": {"type": "object", "additionalProperties": false, "required": ["packet_id", "packet_sha256", "request_id", "request_sha256", "notebook_id"], "properties": {"packet_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "packet_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"}, "request_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "request_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"}, "notebook_id": {"type": "string", "pattern": "^N[0-9]{2}$"}}},
+    "source": {"type": "object", "additionalProperties": false, "required": ["source_record_sha256", "source", "packet_ids", "notebook_ids"], "properties": {"source_record_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"}, "source": {"$ref": "source-record-v1.schema.json"}, "packet_ids": {"$ref": "common-v1.schema.json#/$defs/stringArray"}, "notebook_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^N[0-9]{2}$"}}}},
+    "citation": {"type": "object", "additionalProperties": false, "required": ["packet_id", "notebook_id", "citation"], "properties": {"packet_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "notebook_id": {"type": "string", "pattern": "^N[0-9]{2}$"}, "citation": {"$ref": "source-packet-v1.schema.json#/$defs/citation"}}},
+    "finding": {"type": "object", "additionalProperties": false, "required": ["packet_id", "notebook_id", "finding"], "properties": {"packet_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "notebook_id": {"type": "string", "pattern": "^N[0-9]{2}$"}, "finding": {"$ref": "source-packet-v1.schema.json#/$defs/finding"}}},
+    "conflict": {"type": "object", "additionalProperties": false, "required": ["packet_id", "notebook_id", "conflict"], "properties": {"packet_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "notebook_id": {"type": "string", "pattern": "^N[0-9]{2}$"}, "conflict": {"$ref": "source-packet-v1.schema.json#/$defs/conflict"}}},
+    "limitation": {"type": "object", "additionalProperties": false, "required": ["packet_id", "notebook_id", "text"], "properties": {"packet_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "notebook_id": {"type": "string", "pattern": "^N[0-9]{2}$"}, "text": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"}}},
+    "gap": {"type": "object", "additionalProperties": false, "required": ["packet_id", "notebook_id", "question"], "properties": {"packet_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "notebook_id": {"type": "string", "pattern": "^N[0-9]{2}$"}, "question": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"}}}
+  }
+}

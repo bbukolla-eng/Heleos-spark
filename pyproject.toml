@@ -8,6 +8,9 @@ version = "0.1.0"
 description = "Local-first evidence, approval, and bounded worker core for HELIOS Division 23 takeoff."
 requires-python = ">=3.12"
 
+[project.optional-dependencies]
+build-fabric = ["jsonschema>=4.23,<5"]
+
 [project.scripts]
 helios-p0 = "helios_takeoff_core.cli:main"
 helios-p1a = "helios_takeoff_core.p1a_cli:main"
@@ -20,7 +23,11 @@ package-dir = {"" = "src"}
 where = ["src"]
 
 [tool.setuptools.package-data]
-helios_takeoff_core = ["migrations/*.sql"]
+helios_takeoff_core = [
+    "migrations/*.sql",
+    "engine/v2/migrations/*.sql",
+    "engine/v2/schemas/*.json",
+]
 
 [tool.helios]
 database_schema_version = "17"

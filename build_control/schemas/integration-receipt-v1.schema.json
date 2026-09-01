@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/integration-receipt-v1.schema.json",
+  "title": "HELIOS Build Fabric integration receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "task_manifest_sha256", "handoff_sha256", "review_receipt_sha256", "integrator_profile_id", "canonical_parent_sha", "integrated_commit_sha", "changed_paths", "command_receipt_sha256s", "recorded_at"],
+  "properties": {
+    "protocol": {"const": "helios.build.integration-receipt/v1"},
+    "task_manifest_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "handoff_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "review_receipt_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "integrator_profile_id": {"const": "codex-control-v1"},
+    "canonical_parent_sha": {"$ref": "common-v1.schema.json#/$defs/gitCommit"},
+    "integrated_commit_sha": {"$ref": "common-v1.schema.json#/$defs/gitCommit"},
+    "changed_paths": {"type": "array", "items": {"$ref": "common-v1.schema.json#/$defs/repoPath"}, "uniqueItems": true},
+    "command_receipt_sha256s": {"type": "array", "items": {"$ref": "common-v1.schema.json#/$defs/digest"}, "uniqueItems": true},
+    "recorded_at": {"$ref": "common-v1.schema.json#/$defs/rfc3339Utc"}
+  }
+}

@@ -1,0 +1,934 @@
+diff --git a/build_control/README.md b/build_control/README.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..18766138614e78e266b74bedd1d50c8b931e8dea
+--- /dev/null
++++ b/build_control/README.md
+@@ -0,0 +1,124 @@
++# HELIOS Build Fabric
++
++The Build Fabric is the repository-only control plane that gives Codex a finite,
++auditable way to assign, collect, review, and integrate bounded build work. It
++is not part of the `helios-takeoff-core` runtime wheel and has no P0 or P1A
++database authority.
++
++## Custody and ownership
++
++Committed policy and sanitized evidence live below `build_control/`:
++
++- `schemas/` contains closed local contracts.
++- `worker_profiles/` contains command-free capability and authority policy.
++- `tasks/sha256/` contains immutable task manifests.
++- `graph/` contains graph manifests, hash-chained lifecycle/routing ledgers,
++  sanitized receipts, canonical patches, attempts, and assignments.
++
++Mutable and sensitive execution data lives outside the repository at
++`HELIOS_BUILD_STATE_ROOT` (or `--state-root`). That external root holds local
++adapter configuration, worktrees, bounded attempt data, checkpoints, raw
++stdout/stderr, and raw external-session evidence. Raw evidence never enters the
++sanitized repository receipts. Adapter configuration names exact executable
++hashes and environment-variable names; it contains no secret values and is not
++committed.
++
++The Build Fabric may read Git, manifests, and its external state. It may not
++import the runtime package, open P0/P1A databases, write projects, evidence,
++quantities, pricing, approvals, estimates, or bids, or claim runtime authority.
++
++## Finite operation
++
++Run from a checkout with the optional Build Fabric dependency available:
++
++```bash
++python -m tools.helios_build --state-root /safe/external/state doctor
++python -m tools.helios_build --state-root /safe/external/state graph status
++python -m tools.helios_build task validate build_control/tasks/draft.json
++python -m tools.helios_build report
++```
++
++All successful output is one compact, sorted JSON object on stdout. Errors are
++one compact JSON object on stderr. Exit codes are `0` success, `2` contract or
++usage, `3` blocked or unavailable, `4` failed, and `5` outcome unknown. Each
++invocation is finite. There is no daemon, polling loop, hidden retry, implicit
++provider discovery, autonomous merge, or bid/takeoff authority.
++
++### Exact local adapter
++
++`LOCAL_ADAPTER` is allowed only after `doctor` proves the exact committed
++profile plus exact host configuration and executable hash. One dispatch creates
++one detached worktree and at most one bounded attempt; collection derives the
++patch and changed paths from Git, not worker claims.
++
++```bash
++python -m tools.helios_build doctor --adapter-config /safe/adapters.json
++python -m tools.helios_build dispatch TASK --adapter-config /safe/adapters.json
++python -m tools.helios_build collect TASK
++python -m tools.helios_build review TASK --adapter-config /safe/adapters.json
++```
++
++### Identified external session
++
++Codex, Claude, Kimi, Grok, Cursor, or Copilot may instead be assigned as an
++identified `EXTERNAL_SESSION`. The provider, session ID, profile revision,
++routing reason, task, and base commit are frozen before work begins. Import
++validates the exact handoff/review, raw-evidence digest, canonical Git patch,
++scope, and lineage.
++
++```bash
++python -m tools.helios_build external-session begin TASK \
++  --worker-profile codex-builder-v1 --provider CODEX --session-id SESSION \
++  --role BUILDER --routing-reason EXTERNAL_SESSION_SELECTED
++python -m tools.helios_build external-session import-handoff TASK \
++  --assignment SHA --handoff /safe/handoff.json --patch /safe/change.patch \
++  --raw-evidence /safe/raw-evidence.json
++python -m tools.helios_build external-session import-review TASK \
++  --assignment SHA --review /safe/review.json --raw-evidence /safe/raw-review.json
++```
++
++Imported external sessions are always `target_host_eligible=false`; they cannot
++prove target-host execution. A distinct reviewer must accept the exact patch.
++Codex creates the canonical commit separately and only then records it:
++
++```bash
++python -m tools.helios_build integrate TASK --commit-sha COMMIT
++```
++
++## Recovery, successors, and limits
++
++Lifecycle and routing ledgers are append-only, hash-chained event streams.
++Recovery replays those streams and content-addressed receipts; it never invents
++success. A crash may leave an outcome unknown. Before reconciling a stale lock
++or started attempt, the operator must positively prove the recorded process is
++dead. Checkpoints are immutable and may be resumed only by an explicitly linked
++successor task.
++
++Task manifests freeze ownership, interfaces, dependencies, acceptance gates,
++time/cost limits, checkpoint boundaries, and correction budgets. Overlapping
++active writers are a collision and block dispatch. Failures or requested
++changes create immutable higher-round successors; manifests and receipts are
++never edited in place. When a budget is exhausted, the task escalates instead
++of looping.
++
++## Extension seam and research ownership
++
++Every top-level command registers through
++`tools.helios_build.cli.register_command`. Duplicate names fail during parser
++construction. This seam is frozen so a later serialized task can add research
++commands without replacing core handlers.
++
++ATHENA research is a separate plan and exclusive owner of:
++
++- research-request, source-registry, source-packet, research-outcome, and
++  research-receipt schemas;
++- `build_control/worker_profiles/athena-research-v1.json` and ATHENA
++  instructions;
++- `build_control/source_registry/`, `build_control/source_packets/`, and
++  `build_control/outcomes/`;
++- `tools/helios_build/research.py`, `source_registry.py`, and
++  `research_receipts.py`, plus their tests.
++
++Those paths and research CLI registrations are implemented only by the
++dedicated ATHENA plan after this CLI task releases ownership. Core Build Fabric
++tasks do not write them or register placeholder research commands.
+diff --git a/tests/test_build_authority_boundary.py b/tests/test_build_authority_boundary.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..01966b01b7af91e0150e50dfefd6978b1f5ac3c7
+--- /dev/null
++++ b/tests/test_build_authority_boundary.py
+@@ -0,0 +1,72 @@
++"""Static proof that Build Fabric cannot acquire runtime database authority."""
++
++from __future__ import annotations
++
++import ast
++import re
++import unittest
++from pathlib import Path
++
++
++def _import_roots(path: Path) -> set[str]:
++    tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
++    roots: set[str] = set()
++    for node in ast.walk(tree):
++        if isinstance(node, ast.Import):
++            roots.update(alias.name.split(".", 1)[0] for alias in node.names)
++        elif isinstance(node, ast.ImportFrom) and node.module:
++            roots.add(node.module.split(".", 1)[0])
++    return roots
++
++
++class BuildAuthorityBoundaryTests(unittest.TestCase):
++    def test_build_tools_never_import_runtime_or_database_authority(self) -> None:
++        """Adding a runtime/DB import to a Build Fabric module fails immediately."""
++        repo = Path(__file__).resolve().parents[1]
++        forbidden = {"helios_takeoff_core", "sqlite3", "sqlalchemy"}
++        violations: dict[str, list[str]] = {}
++        for source in sorted((repo / "tools" / "helios_build").glob("*.py")):
++            found = sorted(_import_roots(source) & forbidden)
++            if found:
++                violations[source.relative_to(repo).as_posix()] = found
++        self.assertEqual(violations, {})
++
++    def test_build_tools_contain_no_p0_or_p1a_table_access(self) -> None:
++        """Quoting or issuing SQL against a runtime table fails this boundary."""
++        repo = Path(__file__).resolve().parents[1]
++        table_names: set[str] = set()
++        for migration in (repo / "src" / "helios_takeoff_core" / "migrations").glob("*.sql"):
++            table_names.update(
++                name.lower()
++                for name in re.findall(
++                    r"\bCREATE\s+TABLE\s+([A-Za-z_][A-Za-z0-9_]*)",
++                    migration.read_text(encoding="utf-8"),
++                    flags=re.IGNORECASE,
++                )
++            )
++        violations: list[str] = []
++        for source in sorted((repo / "tools" / "helios_build").glob("*.py")):
++            text = source.read_text(encoding="utf-8")
++            for table in sorted(table_names):
++                quoted = re.search(rf"[\"']{re.escape(table)}[\"']", text, re.IGNORECASE)
++                sql = re.search(
++                    rf"\b(?:FROM|INTO|JOIN|UPDATE|TABLE)\s+[\"`\[]?{re.escape(table)}\b",
++                    text,
++                    re.IGNORECASE,
++                )
++                if quoted or sql:
++                    violations.append(f"{source.relative_to(repo).as_posix()}:{table}")
++        self.assertEqual(violations, [])
++
++    def test_runtime_never_imports_repository_build_tools(self) -> None:
++        """Making runtime code depend on tools.helios_build fails package separation."""
++        repo = Path(__file__).resolve().parents[1]
++        violations: list[str] = []
++        for source in sorted((repo / "src" / "helios_takeoff_core").rglob("*.py")):
++            if "tools" in _import_roots(source):
++                violations.append(source.relative_to(repo).as_posix())
++        self.assertEqual(violations, [])
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/tests/test_build_cli.py b/tests/test_build_cli.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..ede831850a510405bf59ee3087b02da4a6718bba
+--- /dev/null
++++ b/tests/test_build_cli.py
+@@ -0,0 +1,217 @@
++"""Finite operator CLI grammar, routing, and public result contracts."""
++
++from __future__ import annotations
++
++import argparse
++import contextlib
++import io
++import json
++import tempfile
++import unittest
++from pathlib import Path
++from types import SimpleNamespace
++from unittest.mock import patch
++
++from tests.build_fabric_support import valid_task_manifest
++from tools.helios_build.canonical import canonical_json_bytes, sha256_hex
++from tools.helios_build.dispatch import DispatchResult
++from tools.helios_build.errors import ContractError, TransitionError
++from tools.helios_build.types import AttemptOutcome
++
++
++class BuildCliTests(unittest.TestCase):
++    def setUp(self) -> None:
++        self.repo = Path(__file__).resolve().parents[1]
++        self.temporary = tempfile.TemporaryDirectory()
++        self.state_root = Path(self.temporary.name) / "state"
++
++    def tearDown(self) -> None:
++        self.temporary.cleanup()
++
++    def _run(self, argv: list[str]) -> tuple[int, str, str]:
++        from tools.helios_build.cli import main
++
++        stdout = io.StringIO()
++        stderr = io.StringIO()
++        complete = [
++            "--repo-root",
++            str(self.repo),
++            "--state-root",
++            str(self.state_root),
++            *argv,
++        ]
++        with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
++            code = main(complete)
++        return code, stdout.getvalue(), stderr.getvalue()
++
++    def test_all_frozen_commands_parse_and_reach_their_registered_handlers(self) -> None:
++        """A removed/wrong registration breaks the command's unique output marker."""
++        task = "a" * 64
++        adapter = Path(self.temporary.name) / "adapters.json"
++        handoff = Path(self.temporary.name) / "handoff.json"
++        patch_path = Path(self.temporary.name) / "change.patch"
++        raw = Path(self.temporary.name) / "raw.bin"
++        review = Path(self.temporary.name) / "review.json"
++        routes = (
++            (["doctor"], "doctor"),
++            (["graph", "status"], "graph-status"),
++            (["task", "validate", str(self.repo / "build_control" / "tasks" / "draft.json")], "task-validate"),
++            (["dispatch", task, "--adapter-config", str(adapter)], "dispatch"),
++            (["collect", task], "collect"),
++            (["review", task, "--adapter-config", str(adapter)], "review"),
++            (["integrate", task, "--commit-sha", "a" * 40], "integrate"),
++            ([
++                "external-session", "begin", task,
++                "--worker-profile", "codex-builder-v1",
++                "--provider", "CODEX",
++                "--session-id", "session-a",
++                "--role", "BUILDER",
++                "--routing-reason", "EXTERNAL_SESSION_SELECTED",
++            ], "external-begin"),
++            ([
++                "external-session", "import-handoff", task,
++                "--assignment", "b" * 64,
++                "--handoff", str(handoff),
++                "--patch", str(patch_path),
++                "--raw-evidence", str(raw),
++            ], "external-handoff"),
++            ([
++                "external-session", "import-review", task,
++                "--assignment", "c" * 64,
++                "--review", str(review),
++                "--raw-evidence", str(raw),
++            ], "external-review"),
++            (["report"], "report"),
++        )
++        replacements = {
++            "build_doctor_report": lambda *_: {"marker": "doctor"},
++            "graph_status": lambda *_: {"marker": "graph-status"},
++            "_validate_task_reference": lambda *_: {"marker": "task-validate"},
++            "dispatch_task": lambda *_: {"marker": "dispatch"},
++            "collect_task": lambda *_: {"marker": "collect"},
++            "review_task": lambda *_: {"marker": "review"},
++            "record_integration": lambda *_: {"marker": "integrate"},
++            "begin_external_session": lambda *_: {"marker": "external-begin"},
++            "import_external_handoff": lambda *_: {"marker": "external-handoff"},
++            "import_external_review": lambda *_: {"marker": "external-review"},
++            "build_report": lambda *_: {"marker": "report"},
++        }
++        with contextlib.ExitStack() as stack:
++            for name, replacement in replacements.items():
++                stack.enter_context(
++                    patch(f"tools.helios_build.cli.{name}", replacement)
++                )
++            for argv, marker in routes:
++                with self.subTest(argv=argv):
++                    code, stdout, stderr = self._run(argv)
++                    self.assertEqual(code, 0)
++                    self.assertEqual(json.loads(stdout), {"marker": marker})
++                    self.assertEqual(stderr, "")
++
++    def test_duplicate_core_registration_fails_before_dispatch(self) -> None:
++        """A later extension cannot silently replace an existing command."""
++        from tools.helios_build.cli import register_command
++
++        parser = argparse.ArgumentParser()
++        subparsers = parser.add_subparsers(dest="command")
++        handlers: dict[str, object] = {}
++
++        register_command(subparsers, handlers, "same", lambda _: None, lambda *_: {})
++        with self.assertRaisesRegex(ContractError, "duplicate command"):
++            register_command(
++                subparsers, handlers, "same", lambda _: None, lambda *_: {}
++            )
++
++    def test_task_validation_publishes_the_exact_content_addressed_manifest(self) -> None:
++        """Changing canonicalization or publishing outside tasks breaks the digest proof."""
++        task = valid_task_manifest()
++        digest = sha256_hex(canonical_json_bytes(task))
++        source_directory = Path(
++            tempfile.mkdtemp(prefix="cli-task-", dir=self.repo / "build_control" / "tasks")
++        )
++        source = source_directory / "draft.json"
++        source.write_bytes(canonical_json_bytes(task))
++        published = (
++            self.repo
++            / "build_control"
++            / "tasks"
++            / "sha256"
++            / digest[:2]
++            / f"{digest}.json"
++        )
++        try:
++            code, stdout, stderr = self._run(["task", "validate", str(source)])
++            self.assertEqual(code, 0)
++            self.assertEqual(stderr, "")
++            payload = json.loads(stdout)
++            self.assertEqual(payload["task_manifest_sha256"], digest)
++            self.assertEqual(published.read_bytes(), canonical_json_bytes(task))
++        finally:
++            source.unlink(missing_ok=True)
++            source_directory.rmdir()
++            published.unlink(missing_ok=True)
++            for directory in (published.parent, published.parent.parent):
++                try:
++                    directory.rmdir()
++                except OSError:
++                    pass
++
++    def test_output_and_exit_codes_are_stable_and_structured(self) -> None:
++        """Contract, blocked, failed, and unknown outcomes remain distinguishable."""
++        with patch(
++            "tools.helios_build.cli.build_doctor_report",
++            side_effect=ContractError("bad contract"),
++        ):
++            code, stdout, stderr = self._run(["doctor"])
++        self.assertEqual((code, stdout), (2, ""))
++        self.assertEqual(
++            stderr,
++            '{"error":{"code":"CONTRACT_ERROR","message":"bad contract"}}\n',
++        )
++
++        with patch(
++            "tools.helios_build.cli.graph_status",
++            side_effect=TransitionError("not ready"),
++        ):
++            code, stdout, stderr = self._run(["graph", "status"])
++        self.assertEqual((code, stdout), (3, ""))
++        self.assertEqual(json.loads(stderr)["error"]["code"], "BLOCKED")
++
++        with patch(
++            "tools.helios_build.cli.build_report",
++            side_effect=RuntimeError("unexpected"),
++        ):
++            code, stdout, stderr = self._run(["report"])
++        self.assertEqual((code, stdout), (4, ""))
++        self.assertEqual(json.loads(stderr)["error"]["code"], "FAILED")
++
++        unknown = DispatchResult(
++            run_identity_sha256="d" * 64,
++            replayed=False,
++            outcome=AttemptOutcome.OUTCOME_UNKNOWN,
++            state="FAILED",
++            reason_code="PROCESS_OUTCOME_UNKNOWN",
++            attempt=None,
++        )
++        with patch("tools.helios_build.cli.dispatch_task", return_value=unknown):
++            code, stdout, stderr = self._run(
++                ["dispatch", "a" * 64, "--adapter-config", str(Path(self.temporary.name) / "a.json")]
++            )
++        self.assertEqual(code, 5)
++        self.assertEqual(stderr, "")
++        self.assertEqual(json.loads(stdout)["outcome"], "OUTCOME_UNKNOWN")
++
++        blocked = SimpleNamespace(
++            state="BLOCKED",
++            outcome=AttemptOutcome.FAILED,
++            reason_code="ADAPTER_NOT_CONFIGURED",
++        )
++        with patch("tools.helios_build.cli.dispatch_task", return_value=blocked):
++            code, _, _ = self._run(
++                ["dispatch", "a" * 64, "--adapter-config", str(Path(self.temporary.name) / "a.json")]
++            )
++        self.assertEqual(code, 3)
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/tests/test_build_dispatch.py b/tests/test_build_dispatch.py
+index dde933b6a0a04eaaf04d26a12db3e5974adf4135..da42ef15062b5d960f491853d531eb191673b6cf 100644
+--- a/tests/test_build_dispatch.py
++++ b/tests/test_build_dispatch.py
+@@ -26,6 +26,8 @@ from tools.helios_build.types import AttemptOutcome
+ 
+ class BuildDispatchTests(unittest.TestCase):
+     def setUp(self) -> None:
++        prior_umask = os.umask(0o022)
++        self.addCleanup(os.umask, prior_umask)
+         self.source_root = Path(__file__).resolve().parents[1]
+         self.tempdir = tempfile.TemporaryDirectory()
+         self.root = Path(self.tempdir.name)
+@@ -42,6 +44,13 @@ class BuildDispatchTests(unittest.TestCase):
+         (self.repo / "build_control" / "graph" / "receipts").mkdir(parents=True)
+         (self.repo / "build_control" / "graph" / "events.jsonl").write_bytes(b"")
+         (self.repo / "build_control" / "graph" / "routing.jsonl").write_bytes(b"")
++        for directory in (
++            self.repo,
++            self.repo / "build_control",
++            self.repo / "build_control" / "graph",
++            self.repo / "build_control" / "graph" / "receipts",
++        ):
++            directory.chmod(0o755)
+         (self.repo / "owned.txt").write_text("base\n", encoding="utf-8")
+         self._git("init")
+         self._git("config", "user.email", "fixture@example.invalid")
+diff --git a/tests/test_build_graph.py b/tests/test_build_graph.py
+index 00100ffa7038d0ebe6fb69a2cee44dcf1b5b8164..e148c774ddd5c79c7120dc60d8b83c8cd7635b47 100644
+--- a/tests/test_build_graph.py
++++ b/tests/test_build_graph.py
+@@ -50,6 +50,8 @@ class BuildGraphTests(unittest.TestCase):
+         (self.root / "build_control" / "graph").mkdir(parents=True)
+         (self.root / "build_control" / "graph" / "events.jsonl").touch()
+         self.paths = BuildPaths(self.root, self.root.parent / f"{self.root.name}-state")
++        self.paths.state_root.mkdir(mode=0o700)
++        self.paths.state_root.chmod(0o700)
+ 
+     def tearDown(self) -> None:
+         self.tempdir.cleanup()
+@@ -228,7 +230,15 @@ class BuildGraphTests(unittest.TestCase):
+         self._write_task(successor)
+         manifest = graph_manifest([("predecessor", "BuildTask", predecessor_digest)], [])
+         self._write_graph(manifest)
+-        transition_node(self.paths, "predecessor", NodeState.DRAFT, NodeState.SUPERSEDED, "REROUTE", "codex-control-v1")
++        with self.assertRaisesRegex(TransitionError, "routing"):
++            transition_node(
++                self.paths,
++                "predecessor",
++                NodeState.DRAFT,
++                NodeState.SUPERSEDED,
++                "REROUTE",
++                "codex-control-v1",
++            )
+         with self.assertRaisesRegex(ContractError, "successor"):
+             BuildGraph.load(manifest, [{"node_id": "predecessor", "prior_state": "DRAFT", "new_state": "SUPERSEDED"}])
+         self.assertEqual(
+diff --git a/tests/test_build_package_boundary.py b/tests/test_build_package_boundary.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..89202bf00a56562d54b85264c9aaa919b88a4eba
+--- /dev/null
++++ b/tests/test_build_package_boundary.py
+@@ -0,0 +1,68 @@
++"""The repository Build Fabric must never ship inside the runtime wheel."""
++
++from __future__ import annotations
++
++import subprocess
++import sys
++import tempfile
++import tomllib
++import unittest
++import zipfile
++from pathlib import Path
++
++
++class BuildPackageBoundaryTests(unittest.TestCase):
++    def test_clean_wheel_excludes_build_fabric_and_preserves_runtime_entries(self) -> None:
++        """Including repository tools/state or changing runtime scripts fails the gate."""
++        repo = Path(__file__).resolve().parents[1]
++        with tempfile.TemporaryDirectory() as temporary:
++            result = subprocess.run(
++                [
++                    sys.executable,
++                    "-m",
++                    "pip",
++                    "wheel",
++                    ".",
++                    "--no-deps",
++                    "--no-build-isolation",
++                    "--wheel-dir",
++                    temporary,
++                ],
++                cwd=repo,
++                stdout=subprocess.PIPE,
++                stderr=subprocess.PIPE,
++                text=True,
++                timeout=300,
++            )
++            self.assertEqual(result.returncode, 0, result.stderr)
++            wheels = list(Path(temporary).glob("*.whl"))
++            self.assertEqual(len(wheels), 1)
++            with zipfile.ZipFile(wheels[0]) as archive:
++                names = tuple(archive.namelist())
++                self.assertFalse(any(name.startswith("tools/") for name in names))
++                self.assertFalse(any(name.startswith("build_control/") for name in names))
++                self.assertFalse(any("browser" in name.lower() for name in names))
++                self.assertFalse(any("provider" in name.lower() for name in names))
++                entry_points = [
++                    name for name in names if name.endswith(".dist-info/entry_points.txt")
++                ]
++                self.assertEqual(len(entry_points), 1)
++                entries = archive.read(entry_points[0]).decode("utf-8")
++
++        project = tomllib.loads((repo / "pyproject.toml").read_text(encoding="utf-8"))
++        self.assertEqual(
++            project["project"]["scripts"],
++            {
++                "helios-p0": "helios_takeoff_core.cli:main",
++                "helios-p1a": "helios_takeoff_core.p1a_cli:main",
++                "helios-engine": "helios_takeoff_core.engine_cli:main",
++            },
++        )
++        self.assertNotIn("helios-build", entries)
++        self.assertIn("helios-p0 = helios_takeoff_core.cli:main", entries)
++        self.assertIn("helios-p1a = helios_takeoff_core.p1a_cli:main", entries)
++        self.assertIn("helios-engine = helios_takeoff_core.engine_cli:main", entries)
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/tools/helios_build/__main__.py b/tools/helios_build/__main__.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..a477af86f976bd323a6dfdbf991ad47cddef9069
+--- /dev/null
++++ b/tools/helios_build/__main__.py
+@@ -0,0 +1,6 @@
++"""Run the repository-local Build Fabric without installing an entry point."""
++
++from tools.helios_build.cli import main
++
++
++raise SystemExit(main())
+diff --git a/tools/helios_build/cli.py b/tools/helios_build/cli.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..6e0cd048a35fa6dd084d4f25f40270f281dca623
+--- /dev/null
++++ b/tools/helios_build/cli.py
+@@ -0,0 +1,354 @@
++"""Finite repository-local operator CLI for the HELIOS Build Fabric."""
++
++from __future__ import annotations
++
++import argparse
++import json
++import re
++import sys
++from collections.abc import Callable, MutableMapping, Sequence
++from dataclasses import asdict, is_dataclass
++from enum import Enum
++from pathlib import Path
++from typing import Any, TypeAlias
++
++from tools.helios_build.canonical import load_strict_json, sha256_hex
++from tools.helios_build.collect import collect_task
++from tools.helios_build.dispatch import dispatch_task
++from tools.helios_build.doctor import build_doctor_report
++from tools.helios_build.errors import (
++    BuildFabricError,
++    CollisionError,
++    ContractError,
++    StateRootError,
++    TransitionError,
++)
++from tools.helios_build.external_sessions import (
++    begin_external_session,
++    import_external_handoff,
++)
++from tools.helios_build.integrate import record_integration
++from tools.helios_build.paths import BuildPaths
++from tools.helios_build.review import import_external_review, review_task
++from tools.helios_build.schemas import SchemaRegistry
++from tools.helios_build.status import build_report, graph_status
++from tools.helios_build.store import ContentAddressedStore
++from tools.helios_build.types import AttemptOutcome, ExternalProvider
++
++
++CommandHandler: TypeAlias = Callable[[BuildPaths, argparse.Namespace], dict[str, Any]]
++CommandConfigurer: TypeAlias = Callable[[argparse.ArgumentParser], None]
++
++_DIGEST = re.compile(r"^[0-9a-f]{64}$")
++_ROUTING_REASONS = (
++    "EXTERNAL_SESSION_SELECTED",
++    "LOCAL_ADAPTER_UNAVAILABLE",
++    "LOCAL_ADAPTER_BLOCKED_SUCCESSOR",
++)
++
++
++class _UsageError(Exception):
++    """An argparse failure that can be rendered as structured JSON."""
++
++
++class _ArgumentParser(argparse.ArgumentParser):
++    def error(self, message: str) -> None:
++        raise _UsageError(message)
++
++
++def register_command(
++    subparsers: argparse._SubParsersAction[argparse.ArgumentParser],
++    handlers: MutableMapping[str, CommandHandler],
++    name: str,
++    configure: CommandConfigurer,
++    handler: CommandHandler,
++) -> None:
++    """Register one command without permitting silent handler replacement."""
++    if not isinstance(name, str) or not name:
++        raise ContractError("command name must be non-empty")
++    if name in handlers:
++        raise ContractError(f"duplicate command registration: {name}")
++    if not callable(configure) or not callable(handler):
++        raise ContractError("command configure and handler values must be callable")
++    command = subparsers.add_parser(name)
++    configure(command)
++    handlers[name] = handler
++
++
++def main(argv: Sequence[str] | None = None) -> int:
++    """Parse one command, invoke one handler, emit one JSON result, and stop."""
++    try:
++        parser, handlers = _build_parser()
++        arguments = parser.parse_args(list(argv) if argv is not None else None)
++        paths = BuildPaths.discover(
++            Path(arguments.repo_root) if arguments.repo_root else Path.cwd(),
++            Path(arguments.state_root) if arguments.state_root else None,
++        )
++        result = handlers[arguments.command](paths, arguments)
++        _write_json(sys.stdout, _json_ready(result))
++        return _result_exit_code(result)
++    except (_UsageError, ContractError, StateRootError) as error:
++        _write_error("CONTRACT_ERROR", str(error))
++        return 2
++    except (CollisionError, TransitionError) as error:
++        _write_error("BLOCKED", str(error))
++        return 3
++    except KeyboardInterrupt:
++        _write_error("OUTCOME_UNKNOWN", "operator interrupted the finite command")
++        return 5
++    except BuildFabricError as error:
++        _write_error("FAILED", str(error))
++        return 4
++    except Exception as error:  # the CLI boundary never emits a traceback
++        _write_error("FAILED", f"{type(error).__name__}: {error}")
++        return 4
++
++
++def _build_parser() -> tuple[_ArgumentParser, dict[str, CommandHandler]]:
++    parser = _ArgumentParser(prog="python -m tools.helios_build")
++    parser.add_argument("--repo-root")
++    parser.add_argument("--state-root")
++    subparsers = parser.add_subparsers(dest="command", required=True)
++    handlers: dict[str, CommandHandler] = {}
++    register_command(subparsers, handlers, "doctor", _configure_doctor, _handle_doctor)
++    register_command(subparsers, handlers, "graph", _configure_graph, _handle_graph)
++    register_command(subparsers, handlers, "task", _configure_task, _handle_task)
++    register_command(subparsers, handlers, "dispatch", _configure_dispatch, _handle_dispatch)
++    register_command(subparsers, handlers, "collect", _configure_task_ref, _handle_collect)
++    register_command(subparsers, handlers, "review", _configure_review, _handle_review)
++    register_command(subparsers, handlers, "integrate", _configure_integrate, _handle_integrate)
++    register_command(
++        subparsers,
++        handlers,
++        "external-session",
++        _configure_external_session,
++        _handle_external_session,
++    )
++    register_command(subparsers, handlers, "report", _configure_empty, _handle_report)
++    return parser, handlers
++
++
++def _configure_empty(_: argparse.ArgumentParser) -> None:
++    return None
++
++
++def _configure_doctor(parser: argparse.ArgumentParser) -> None:
++    parser.add_argument("--adapter-config", type=Path)
++
++
++def _configure_graph(parser: argparse.ArgumentParser) -> None:
++    children = parser.add_subparsers(dest="graph_command", required=True)
++    children.add_parser("status")
++
++
++def _configure_task(parser: argparse.ArgumentParser) -> None:
++    children = parser.add_subparsers(dest="task_command", required=True)
++    validate = children.add_parser("validate")
++    validate.add_argument("task")
++
++
++def _configure_task_ref(parser: argparse.ArgumentParser) -> None:
++    parser.add_argument("task")
++
++
++def _configure_dispatch(parser: argparse.ArgumentParser) -> None:
++    _configure_task_ref(parser)
++    parser.add_argument("--adapter-config", type=Path, required=True)
++
++
++def _configure_review(parser: argparse.ArgumentParser) -> None:
++    _configure_dispatch(parser)
++
++
++def _configure_integrate(parser: argparse.ArgumentParser) -> None:
++    _configure_task_ref(parser)
++    parser.add_argument("--commit-sha")
++
++
++def _configure_external_session(parser: argparse.ArgumentParser) -> None:
++    children = parser.add_subparsers(dest="external_command", required=True)
++    begin = children.add_parser("begin")
++    begin.add_argument("task")
++    begin.add_argument("--worker-profile", required=True)
++    begin.add_argument(
++        "--provider", choices=tuple(provider.value for provider in ExternalProvider), required=True
++    )
++    begin.add_argument("--session-id", required=True)
++    begin.add_argument("--role", choices=("BUILDER", "REVIEWER"), required=True)
++    begin.add_argument("--routing-reason", choices=_ROUTING_REASONS, required=True)
++
++    handoff = children.add_parser("import-handoff")
++    handoff.add_argument("task")
++    handoff.add_argument("--assignment", required=True)
++    handoff.add_argument("--handoff", type=Path, required=True)
++    handoff.add_argument("--patch", type=Path, required=True)
++    handoff.add_argument("--raw-evidence", type=Path, required=True)
++
++    review = children.add_parser("import-review")
++    review.add_argument("task")
++    review.add_argument("--assignment", required=True)
++    review.add_argument("--review", type=Path, required=True)
++    review.add_argument("--raw-evidence", type=Path, required=True)
++
++
++def _handle_doctor(paths: BuildPaths, arguments: argparse.Namespace) -> dict[str, Any]:
++    return build_doctor_report(paths, arguments.adapter_config)
++
++
++def _handle_graph(paths: BuildPaths, arguments: argparse.Namespace) -> dict[str, Any]:
++    if arguments.graph_command != "status":
++        raise ContractError("unknown graph command")
++    return graph_status(paths)
++
++
++def _handle_task(paths: BuildPaths, arguments: argparse.Namespace) -> dict[str, Any]:
++    if arguments.task_command != "validate":
++        raise ContractError("unknown task command")
++    return _validate_task_reference(paths, arguments.task)
++
++
++def _handle_dispatch(paths: BuildPaths, arguments: argparse.Namespace) -> dict[str, Any]:
++    return _as_result(dispatch_task(paths, _task_ref(arguments.task), arguments.adapter_config))
++
++
++def _handle_collect(paths: BuildPaths, arguments: argparse.Namespace) -> dict[str, Any]:
++    return _as_result(collect_task(paths, _task_ref(arguments.task)))
++
++
++def _handle_review(paths: BuildPaths, arguments: argparse.Namespace) -> dict[str, Any]:
++    return _as_result(review_task(paths, _task_ref(arguments.task), arguments.adapter_config))
++
++
++def _handle_integrate(paths: BuildPaths, arguments: argparse.Namespace) -> dict[str, Any]:
++    return _as_result(
++        record_integration(paths, _task_ref(arguments.task), arguments.commit_sha)
++    )
++
++
++def _handle_external_session(
++    paths: BuildPaths, arguments: argparse.Namespace
++) -> dict[str, Any]:
++    task = _task_ref(arguments.task)
++    if arguments.external_command == "begin":
++        return _as_result(
++            begin_external_session(
++                paths,
++                task,
++                arguments.worker_profile,
++                arguments.provider,
++                arguments.session_id,
++                arguments.role,
++                arguments.routing_reason,
++            )
++        )
++    if arguments.external_command == "import-handoff":
++        return _as_result(
++            import_external_handoff(
++                paths,
++                task,
++                arguments.assignment,
++                arguments.handoff,
++                arguments.patch,
++                arguments.raw_evidence,
++            )
++        )
++    if arguments.external_command == "import-review":
++        return _as_result(
++            import_external_review(
++                paths,
++                task,
++                arguments.assignment,
++                arguments.review,
++                arguments.raw_evidence,
++            )
++        )
++    raise ContractError("unknown external-session command")
++
++
++def _handle_report(paths: BuildPaths, _: argparse.Namespace) -> dict[str, Any]:
++    return build_report(paths)
++
++
++def _validate_task_reference(paths: BuildPaths, task_ref: str) -> dict[str, Any]:
++    tasks_root = paths.repo_root / "build_control" / "tasks"
++    if _DIGEST.fullmatch(task_ref):
++        source = tasks_root / "sha256" / task_ref[:2] / f"{task_ref}.json"
++    else:
++        source = Path(task_ref)
++        if not source.is_absolute():
++            source = paths.repo_root / source
++    try:
++        resolved = source.resolve(strict=True)
++        resolved.relative_to(tasks_root.resolve())
++    except (OSError, ValueError) as error:
++        raise ContractError("task validation path must be under build_control/tasks") from error
++    if not resolved.is_file() or resolved.suffix != ".json":
++        raise ContractError("task validation requires a JSON file")
++    payload = load_strict_json(resolved)
++    SchemaRegistry(paths.repo_root).validate(payload, "task-manifest-v1.schema.json")
++    stored = ContentAddressedStore(paths.repo_root / "build_control").put_json(
++        "tasks", payload
++    )
++    expected = sha256_hex(stored.path.read_bytes())
++    if expected != stored.sha256:
++        raise ContractError("published task manifest failed digest verification")
++    if _DIGEST.fullmatch(task_ref) and stored.sha256 != task_ref:
++        raise ContractError("task manifest content does not match its digest reference")
++    return {
++        "path": stored.path.relative_to(paths.repo_root).as_posix(),
++        "protocol": "helios.build.task-validation/v1",
++        "replayed": stored.replayed,
++        "task_manifest_sha256": stored.sha256,
++    }
++
++
++def _task_ref(value: str) -> str | Path:
++    return value if _DIGEST.fullmatch(value) else Path(value)
++
++
++def _as_result(value: Any) -> dict[str, Any]:
++    normalized = _json_ready(value)
++    if not isinstance(normalized, dict):
++        raise ContractError("command handler result must be a JSON object")
++    return normalized
++
++
++def _json_ready(value: Any) -> Any:
++    if isinstance(value, Enum):
++        return value.value
++    if is_dataclass(value) and not isinstance(value, type):
++        value = asdict(value)
++    elif hasattr(value, "__dict__") and not isinstance(value, type):
++        value = vars(value)
++    if isinstance(value, Path):
++        return str(value)
++    if isinstance(value, dict):
++        return {str(key): _json_ready(item) for key, item in value.items()}
++    if isinstance(value, (list, tuple)):
++        return [_json_ready(item) for item in value]
++    if value is None or isinstance(value, (bool, int, str)):
++        return value
++    raise ContractError(f"command result contains unsupported type: {type(value).__name__}")
++
++
++def _result_exit_code(result: dict[str, Any]) -> int:
++    state = result.get("state")
++    outcome = result.get("outcome")
++    verdict = result.get("verdict")
++    if outcome == AttemptOutcome.OUTCOME_UNKNOWN.value:
++        return 5
++    if state == "BLOCKED" or result.get("availability") == "UNAVAILABLE":
++        return 3
++    if state == "FAILED" or outcome == AttemptOutcome.FAILED.value:
++        return 4
++    if verdict == "CHANGES_REQUIRED":
++        return 4
++    return 0
++
++
++def _write_json(stream: Any, payload: Any) -> None:
++    stream.write(json.dumps(payload, sort_keys=True, separators=(",", ":")) + "\n")
++
++
++def _write_error(code: str, message: str) -> None:
++    _write_json(sys.stderr, {"error": {"code": code, "message": message}})

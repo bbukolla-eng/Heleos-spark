@@ -1,0 +1,264 @@
+{
+  "protocol": "helios.engine.domain-pack/v2",
+  "pack_code": "DIV23-FULL-SPECTRUM",
+  "version": "1.0.0",
+  "title": "Division 23 full-spectrum registry test fixture",
+  "jurisdiction": "US-NY",
+  "valid_from": "2026-01-01",
+  "valid_through": null,
+  "supersedes_pack_sha256": null,
+  "sources": [
+    {
+      "source_id": "FIXTURE-AIRSIDE",
+      "authority_class": "TEST_FIXTURE",
+      "stable_reference": "fixture://division23/airside",
+      "publisher": "HELIOS test suite",
+      "title": "Airside registry fixture",
+      "retrieved_on": "2026-09-01",
+      "jurisdiction": "US-NY",
+      "content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "source_id": "FIXTURE-COMMERCIAL",
+      "authority_class": "TEST_FIXTURE",
+      "stable_reference": "fixture://division23/commercial",
+      "publisher": "HELIOS test suite",
+      "title": "Commercial registry fixture",
+      "retrieved_on": "2026-09-01",
+      "jurisdiction": "US-NY",
+      "content_sha256": null
+    },
+    {
+      "source_id": "FIXTURE-PIPING",
+      "authority_class": "TEST_FIXTURE",
+      "stable_reference": "fixture://division23/piping",
+      "publisher": "HELIOS test suite",
+      "title": "Piping registry fixture",
+      "retrieved_on": "2026-09-01",
+      "jurisdiction": "US-NY",
+      "content_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    }
+  ],
+  "definitions": [
+    {
+      "code": "ACC-ACCESS-DOOR",
+      "kind": "ACCESSORY",
+      "family": "AIRSIDE",
+      "title": "Access door",
+      "description": "Non-authoritative accessory example.",
+      "attributes": {"uom": "EA"},
+      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "accessories", "applicability": "fixture only", "limitations": "not production knowledge"}]
+    },
+    {
+      "code": "CONN-SLIP",
+      "kind": "CONNECTION",
+      "family": "SHARED",
+      "title": "Slip connection",
+      "description": "Non-authoritative connection example.",
+      "attributes": {"uom": "EA"},
+      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "connections", "applicability": "fixture only", "limitations": "not production knowledge"}]
+    },
+    {
+      "code": "CONN-SOLDER",
+      "kind": "CONNECTION",
+      "family": "PIPING",
+      "title": "Soldered connection",
+      "description": "Non-authoritative hydronic connection example.",
+      "attributes": {"uom": "EA"},
+      "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "connections", "applicability": "fixture only", "limitations": "not production knowledge"}]
+    },
+    {
+      "code": "DUCT-RECT",
+      "kind": "DUCT",
+      "family": "AIRSIDE",
+      "title": "Rectangular duct",
+      "description": "Non-authoritative duct example.",
+      "attributes": {"shape": "RECTANGULAR", "uom": "LF"},
+      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "duct", "applicability": "fixture only", "limitations": "not production knowledge"}]
+    },
+    {
+      "code": "EQ-AHU",
+      "kind": "EQUIPMENT",
+      "family": "EQUIPMENT",
+      "title": "Air handling unit",
+      "description": "Non-authoritative equipment example.",
+      "attributes": {"uom": "EA"},
+      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "equipment", "applicability": "fixture only", "limitations": "not production knowledge"}]
+    },
+    {
+      "code": "FIT-ELBOW",
+      "kind": "FITTING",
+      "family": "SHARED",
+      "title": "Elbow",
+      "description": "Non-authoritative fitting example.",
+      "attributes": {"uom": "EA"},
+      "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "fittings", "applicability": "fixture only", "limitations": "not production knowledge"}]
+    },
+    {
+      "code": "INS-DUCT-WRAP",
+      "kind": "INSULATION",
+      "family": "INSULATION",
+      "title": "Duct wrap",
+      "description": "Non-authoritative insulation example.",
+      "attributes": {"uom": "SF"},
+      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "insulation", "applicability": "fixture only", "limitations": "not production knowledge"}]
+    },
+    {
+      "code": "INS-PIPE",
+      "kind": "INSULATION",
+      "family": "INSULATION",
+      "title": "Pipe insulation",
+      "description": "Non-authoritative hydronic insulation example.",
+      "attributes": {"uom": "LF"},
+      "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "insulation", "applicability": "fixture only", "limitations": "not production knowledge"}]
+    },
+    {
+      "code": "LAB-DUCT",
+      "kind": "LABOR_ASSEMBLY",
+      "family": "LABOR",
+      "title": "Duct labor assembly",
+      "description": "Non-authoritative labor example.",
+      "attributes": {"uom": "HOUR"},
+      "citations": [{"source_ref": "FIXTURE-COMMERCIAL", "locator": "labor", "applicability": "fixture only", "limitations": "not a labor rate"}]
+    },
+    {
+      "code": "LAB-PIPE",
+      "kind": "LABOR_ASSEMBLY",
+      "family": "LABOR",
+      "title": "Pipe labor assembly",
+      "description": "Non-authoritative hydronic labor example.",
+      "attributes": {"uom": "HOUR"},
+      "citations": [{"source_ref": "FIXTURE-COMMERCIAL", "locator": "pipe-labor", "applicability": "fixture only", "limitations": "not a labor rate"}]
+    },
+    {
+      "code": "MAT-GALV",
+      "kind": "MATERIAL",
+      "family": "SHARED",
+      "title": "Galvanized sheet",
+      "description": "Non-authoritative material example.",
+      "attributes": {"uom": "SF"},
+      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "materials", "applicability": "fixture only", "limitations": "not production knowledge"}]
+    },
+    {
+      "code": "MAT-COPPER",
+      "kind": "MATERIAL",
+      "family": "PIPING",
+      "title": "Copper tube material",
+      "description": "Non-authoritative hydronic material example.",
+      "attributes": {"uom": "LF"},
+      "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "materials", "applicability": "fixture only", "limitations": "not production knowledge"}]
+    },
+    {
+      "code": "PIPE-HWS",
+      "kind": "PIPE",
+      "family": "PIPING",
+      "title": "Heating-water supply pipe",
+      "description": "Non-authoritative pipe example.",
+      "attributes": {"uom": "LF"},
+      "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "pipe", "applicability": "fixture only", "limitations": "not production knowledge"}]
+    },
+    {
+      "code": "PRICE-DUCT",
+      "kind": "PRICING_INPUT",
+      "family": "PRICING",
+      "title": "Duct pricing input",
+      "description": "Non-authoritative pricing-input shape example.",
+      "attributes": {"currency": "USD"},
+      "citations": [{"source_ref": "FIXTURE-COMMERCIAL", "locator": "pricing", "applicability": "fixture only", "limitations": "contains no price and is not bid eligible"}]
+    },
+    {
+      "code": "PRICE-PIPE",
+      "kind": "PRICING_INPUT",
+      "family": "PRICING",
+      "title": "Pipe pricing input",
+      "description": "Non-authoritative hydronic pricing-input shape example.",
+      "attributes": {"currency": "USD"},
+      "citations": [{"source_ref": "FIXTURE-COMMERCIAL", "locator": "pipe-pricing", "applicability": "fixture only", "limitations": "contains no price and is not bid eligible"}]
+    },
+    {
+      "code": "RULE-DIV23",
+      "kind": "RULE_CANDIDATE",
+      "family": "CODE_SPEC",
+      "title": "Division 23 rule candidate",
+      "description": "Non-authoritative rule-candidate example.",
+      "attributes": {"status": "CANDIDATE"},
+      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rules", "applicability": "fixture only", "limitations": "not an approved executable rule"}]
+    },
+    {
+      "code": "SUP-TRAPEZE",
+      "kind": "SUPPORT",
+      "family": "SUPPORTS",
+      "title": "Trapeze support",
+      "description": "Non-authoritative support example.",
+      "attributes": {"uom": "EA"},
+      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "supports", "applicability": "fixture only", "limitations": "not production knowledge"}]
+    },
+    {
+      "code": "SUP-PIPE-HANGER",
+      "kind": "SUPPORT",
+      "family": "SUPPORTS",
+      "title": "Pipe hanger",
+      "description": "Non-authoritative hydronic support example.",
+      "attributes": {"uom": "EA"},
+      "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "supports", "applicability": "fixture only", "limitations": "not production knowledge"}]
+    },
+    {
+      "code": "SYS-SUPPLY-AIR",
+      "kind": "SYSTEM",
+      "family": "AIRSIDE",
+      "title": "Supply air system",
+      "description": "Non-authoritative system example.",
+      "attributes": {"service": "SUPPLY_AIR"},
+      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "systems", "applicability": "fixture only", "limitations": "not production knowledge"}]
+    },
+    {
+      "code": "SYS-HYDRONIC-HW",
+      "kind": "SYSTEM",
+      "family": "PIPING",
+      "title": "Heating-water system",
+      "description": "Non-authoritative hydronic system example.",
+      "attributes": {"service": "HEATING_WATER"},
+      "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "systems", "applicability": "fixture only", "limitations": "not production knowledge"}]
+    },
+    {
+      "code": "VALVE-BALANCE",
+      "kind": "VALVE",
+      "family": "PIPING",
+      "title": "Balancing valve",
+      "description": "Non-authoritative valve example.",
+      "attributes": {"uom": "EA"},
+      "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "valves", "applicability": "fixture only", "limitations": "not production knowledge"}]
+    }
+  ],
+  "relations": [
+    {"code": "REL-BELONGS", "kind": "BELONGS_TO_SYSTEM", "from_code": "EQ-AHU", "to_code": "SYS-SUPPLY-AIR", "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rel-belongs", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-COMPOSED", "kind": "COMPOSED_OF", "from_code": "EQ-AHU", "to_code": "DUCT-RECT", "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rel-composed", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-GOVERNED", "kind": "GOVERNED_BY_RULE", "from_code": "DUCT-RECT", "to_code": "RULE-DIV23", "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rel-rule", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-LABOR", "kind": "HAS_LABOR_ASSEMBLY", "from_code": "DUCT-RECT", "to_code": "LAB-DUCT", "citations": [{"source_ref": "FIXTURE-COMMERCIAL", "locator": "rel-labor", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-PRICE", "kind": "HAS_PRICING_INPUT", "from_code": "DUCT-RECT", "to_code": "PRICE-DUCT", "citations": [{"source_ref": "FIXTURE-COMMERCIAL", "locator": "rel-price", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-ACCESSORY", "kind": "REQUIRES_ACCESSORY", "from_code": "DUCT-RECT", "to_code": "ACC-ACCESS-DOOR", "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rel-accessory", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-INSULATION", "kind": "REQUIRES_INSULATION", "from_code": "DUCT-RECT", "to_code": "INS-DUCT-WRAP", "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rel-insulation", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-SUPPORT", "kind": "REQUIRES_SUPPORT", "from_code": "DUCT-RECT", "to_code": "SUP-TRAPEZE", "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rel-support", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-CONNECTION", "kind": "USES_CONNECTION", "from_code": "DUCT-RECT", "to_code": "CONN-SLIP", "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rel-connection", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-MATERIAL", "kind": "USES_MATERIAL", "from_code": "DUCT-RECT", "to_code": "MAT-GALV", "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rel-material", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-PIPE-BELONGS", "kind": "BELONGS_TO_SYSTEM", "from_code": "PIPE-HWS", "to_code": "SYS-HYDRONIC-HW", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-pipe-belongs", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-PIPE-COMPOSED-FITTING", "kind": "COMPOSED_OF", "from_code": "PIPE-HWS", "to_code": "FIT-ELBOW", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-pipe-fitting", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-PIPE-COMPOSED-VALVE", "kind": "COMPOSED_OF", "from_code": "PIPE-HWS", "to_code": "VALVE-BALANCE", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-pipe-valve", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-PIPE-MATERIAL", "kind": "USES_MATERIAL", "from_code": "PIPE-HWS", "to_code": "MAT-COPPER", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-pipe-material", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-PIPE-CONNECTION", "kind": "USES_CONNECTION", "from_code": "PIPE-HWS", "to_code": "CONN-SOLDER", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-pipe-connection", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-PIPE-INSULATION", "kind": "REQUIRES_INSULATION", "from_code": "PIPE-HWS", "to_code": "INS-PIPE", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-pipe-insulation", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-PIPE-SUPPORT", "kind": "REQUIRES_SUPPORT", "from_code": "PIPE-HWS", "to_code": "SUP-PIPE-HANGER", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-pipe-support", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-PIPE-LABOR", "kind": "HAS_LABOR_ASSEMBLY", "from_code": "PIPE-HWS", "to_code": "LAB-PIPE", "citations": [{"source_ref": "FIXTURE-COMMERCIAL", "locator": "rel-pipe-labor", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-PIPE-PRICE", "kind": "HAS_PRICING_INPUT", "from_code": "PIPE-HWS", "to_code": "PRICE-PIPE", "citations": [{"source_ref": "FIXTURE-COMMERCIAL", "locator": "rel-pipe-price", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-PIPE-GOVERNED", "kind": "GOVERNED_BY_RULE", "from_code": "PIPE-HWS", "to_code": "RULE-DIV23", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-pipe-rule", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-FITTING-MATERIAL", "kind": "USES_MATERIAL", "from_code": "FIT-ELBOW", "to_code": "MAT-COPPER", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-fitting-material", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-FITTING-CONNECTION", "kind": "USES_CONNECTION", "from_code": "FIT-ELBOW", "to_code": "CONN-SOLDER", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-fitting-connection", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-VALVE-MATERIAL", "kind": "USES_MATERIAL", "from_code": "VALVE-BALANCE", "to_code": "MAT-COPPER", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-valve-material", "applicability": "fixture only", "limitations": "not production knowledge"}]},
+    {"code": "REL-VALVE-CONNECTION", "kind": "USES_CONNECTION", "from_code": "VALVE-BALANCE", "to_code": "CONN-SOLDER", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-valve-connection", "applicability": "fixture only", "limitations": "not production knowledge"}]}
+  ],
+  "units": [],
+  "observations": [],
+  "lookups": [],
+  "assembly_edges": [],
+  "rules": []
+}

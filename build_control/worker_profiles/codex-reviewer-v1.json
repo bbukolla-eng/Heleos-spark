@@ -1,0 +1,20 @@
+{
+  "protocol": "helios.build.worker-profile/v1",
+  "profile_id": "codex-reviewer-v1",
+  "worker_id": "codex",
+  "display_name": "Codex Independent Reviewer Session",
+  "roles": ["REVIEWER"],
+  "transports": ["EXTERNAL_SESSION"],
+  "adapter_protocol": null,
+  "skills": [],
+  "plugins": [],
+  "allowed_tools": ["repository-read", "focused-test", "review"],
+  "allowed_data_classes": ["REPOSITORY", "BUILD_CONTROL_SANITIZED"],
+  "allowed_task_purposes": ["INDEPENDENT_REVIEW"],
+  "authority_limits": [
+    "No builder, integration, commit, push, pull-request, or merge authority",
+    "Cannot review work authored by the same session",
+    "No P0, P1A, runtime database, or bid authority"
+  ],
+  "max_concurrency": 1
+}

@@ -127,13 +127,13 @@ Every schema uses JSON Schema Draft 2020-12, a local https://helios.local/build-
 - worker-profile-v1, protocol helios.build.worker-profile/v1: profile_id, worker_id, display_name, roles, transports, adapter_protocol, skills, plugins, allowed_tools, allowed_data_classes, allowed_task_purposes, authority_limits, max_concurrency. Skill/plugin items require name, revision, allowed_tools, purpose; empty means no grant. transports is a non-empty subset of LOCAL_ADAPTER and EXTERNAL_SESSION.
 - adapter-config-v1, protocol helios.build.adapter-config/v1: host_id and adapters. Each adapter has worker_id, adapter_name, adapter_revision, executable, executable_sha256, preflight_argv, dispatch_argv, environment_variable_names, preflight_timeout_seconds, attempt_timeout_seconds, max_capture_bytes, result_protocol. This document exists only outside Git.
 - graph-manifest-v1: protocol, graph_id, nodes, edges, created_at, created_by_profile_id. Nodes have node_id, node_type, manifest_sha256. Edges have edge_type, from_node_id, to_node_id.
-- lifecycle-event-v1: protocol, sequence, node_id, prior_state, new_state, reason_code, actor_profile_id, attempt_manifest_sha256, routing_event_sha256, recorded_at, previous_event_sha256, event_sha256.
+- lifecycle-event-v1: protocol, sequence, node_id, prior_state, new_state, reason_code, actor_profile_id, attempt_manifest_sha256, external_session_assignment_sha256, routing_event_sha256, recorded_at, previous_event_sha256, event_sha256. A BuildTask `READY -> DISPATCHED` event requires exactly one dispatch proof: a local AttemptManifest or an ExternalSessionAssignment. `routing_event_sha256` remains exclusive to predecessor/successor routing and is never reused for an external assignment.
 - routing-event-v1: protocol, sequence, task_manifest_sha256, action, from_profile_id, to_profile_id, reason_code, successor_task_manifest_sha256, checkpoint_sha256, recorded_at, actor_profile_id, previous_event_sha256, event_sha256.
 - preflight-receipt-v1: worker_profile_sha256, adapter_configuration_sha256, executable_sha256, host_id_sha256, availability, reason_code, returncode, timed_out, stdout_sha256, stderr_sha256, started_at, duration_ms.
 - attempt-manifest-v1: attempt_id, task_manifest_sha256, base_commit_sha, adapter_configuration_sha256, run_identity_sha256, worker_profile_sha256, attempt_ordinal, preflight_receipt_sha256, worktree_key, resume_from_checkpoint_sha256, created_at.
 - checkpoint-v1: checkpoint_id, attempt_manifest_sha256, boundary_id, base_commit_sha, commit_sha, patch_sha256, artifact_sha256s, command_receipt_sha256s, published_at.
 - artifact-manifest-v1: artifact_id, attempt_manifest_sha256, kind, sha256, byte_size, media_type, store_key, created_at.
-- command-receipt-v1: task_manifest_sha256, gate, command_id, correction_round, argv_sha256, cwd_key, started_at, duration_ms, exit_code, outcome, stdout_sha256, stderr_sha256, stdout_truncated, stderr_truncated.
+- command-receipt-v1: task_manifest_sha256, gate, command_id, correction_round, argv_sha256, cwd_key, patch_sha256, started_at, duration_ms, exit_code, outcome, stdout_sha256, stderr_sha256, stdout_truncated, stderr_truncated. `patch_sha256` is required for `AFFECTED_INTEGRATION` and `MILESTONE`; it may be null for `FOCUSED`.
 - worker-handoff-v1: transport, attempt_manifest_sha256, external_session_assignment_sha256, task_manifest_sha256, output_kind, patch_sha256, commit_sha, files_changed, commands_executed, focused_test_results, assumptions, unresolved_issues, dependency_effects, security_effects, source_record_ids, source_packet_ids, raw_evidence_sha256, duration_ms, cost_microusd. LOCAL_ADAPTER requires attempt_manifest_sha256 and null external-session/raw-evidence fields; EXTERNAL_SESSION requires assignment and raw-evidence hashes and a null attempt hash.
 - review-receipt-v1: transport, task_manifest_sha256, handoff_sha256, reviewer_profile_sha256, external_session_assignment_sha256, raw_evidence_sha256, verdict, findings, command_receipt_sha256s, source_verification, started_at, duration_ms.
 - integration-receipt-v1: task_manifest_sha256, handoff_sha256, review_receipt_sha256, integrator_profile_id, canonical_parent_sha, integrated_commit_sha, changed_paths, command_receipt_sha256s, recorded_at.
@@ -547,6 +547,11 @@ Expected: PASS within 300 seconds.
 - Create: tools/helios_build/external_sessions.py
 - Create: tests/test_build_review_integration.py
 - Create: tests/test_build_external_sessions.py
+- Modify: build_control/schemas/lifecycle-event-v1.schema.json
+- Modify: build_control/schemas/command-receipt-v1.schema.json
+- Modify: tools/helios_build/graph.py
+- Modify: tools/helios_build/doctor.py, only to add a backward-compatible keyword-only expected result protocol for exact reviewer preflight.
+- Modify as required by the new nullable lifecycle field: existing lifecycle-event producers and focused fixtures only.
 
 **Interfaces:**
 - run_verification_gate(paths, task, worktree, gate) -> tuple[CommandReceipt, ...].
@@ -604,17 +609,19 @@ For LOCAL_ADAPTER, strictly validate the external handoff. Derive paths with git
 
 - [ ] **Step 4: Implement honest EXTERNAL_SESSION begin and handoff import**
 
-begin_external_session accepts only CODEX, CLAUDE, KIMI, GROK, CURSOR, or COPILOT and an exact committed worker profile permitting EXTERNAL_SESSION. BUILDER requires task state READY, all normal dependency/collision/lane checks, and a profile with BUILDER. Store an immutable assignment containing task/base/profile/provider/session hashes and the routing reason before work begins, count it as an active implementation lane, and transition READY→DISPATCHED. EXTERNAL_SESSION_SELECTED appends EXTERNAL_SESSION_ASSIGN. LOCAL_ADAPTER_UNAVAILABLE appends REROUTE_TO_EXTERNAL_SESSION without asserting that any preflight ran; LOCAL_ADAPTER_BLOCKED_SUCCESSOR is valid only for the immutable successor of a terminally blocked local task. Reject every other action/reason pairing. Do not load adapter configuration, run preflight, create an AttemptManifest, or change availability.
+begin_external_session accepts only CODEX, CLAUDE, KIMI, GROK, CURSOR, or COPILOT and an exact committed worker profile permitting EXTERNAL_SESSION. BUILDER requires task state READY, all normal dependency/collision/lane checks, and a profile with BUILDER. Store an immutable assignment containing task/base/profile/provider/session hashes and the routing reason before work begins, count it as an active implementation lane, and transition READY→DISPATCHED with the exact assignment digest in `external_session_assignment_sha256` and a null AttemptManifest digest. EXTERNAL_SESSION_SELECTED records EXTERNAL_SESSION_ASSIGN inside the immutable assignment. LOCAL_ADAPTER_UNAVAILABLE records REROUTE_TO_EXTERNAL_SESSION without asserting that any preflight ran; LOCAL_ADAPTER_BLOCKED_SUCCESSOR is valid only for the immutable successor of a terminally blocked local task. External assignments never enter `routing.jsonl`; that ledger remains exclusive to predecessor/successor routing. Reject every other action/reason pairing. Do not load adapter configuration, run preflight, create an AttemptManifest, or change availability.
 
 import_external_handoff requires the exact assignment, task, base, worker profile, provider, and session ID. Verify patch_sha256 against the supplied patch bytes and raw_evidence_sha256 against a file already under the external state root. Copy raw evidence into external_state_root/external_sessions/evidence/sha256/first-two/digest with mode 0600; Git receives only its digest. Apply the patch with git apply --check and git apply in a fresh detached worktree at the frozen base, then derive canonical patch bytes and changed paths from Git. Reject a hash mismatch, pre-assignment handoff timestamp, second differing patch for one assignment, out-of-scope path, undeclared interface/schema impact, or worker/profile mismatch. Identical import is idempotent. Store the canonical patch, standard WorkerHandoff, and graph receipts; append DISPATCHED→RETURNED with reason EXTERNAL_SESSION_HANDOFF_IMPORTED.
 
 - [ ] **Step 5: Implement bounded gates**
 
-Key every command receipt by task SHA, gate, command ID, and correction round. Run exact argv with shell false and the smaller declared/default timeout. Collection records one final focused affected set. Review records one affected-integration gate. A second affected/milestone run requires a higher correction round and changed patch digest. Persist failure before refusing an unchanged rerun.
+Key every command receipt by task SHA, gate, command ID, correction round, and the canonical patch digest for affected/milestone gates. Run exact argv with shell false and the smaller declared/default timeout. Collection records one final focused affected set. Review records one affected-integration gate. A second affected/milestone run requires a higher correction round and changed patch digest. Persist failure before refusing an unchanged rerun.
 
 - [ ] **Step 6: Implement distinct local or external-session review**
 
 LOCAL_ADAPTER review requires reviewer hash different from builder and exact reviewer preflight. Create a fresh review worktree, git apply --check and apply the collected patch, then invoke one finite reviewer.
+
+Exact reviewer preflight uses the same pinned executable/configuration verification as builder preflight but binds the fixed `helios.build.review-receipt/v1` result protocol through a keyword-only override. Default doctor/dispatch calls remain bound to the committed profile's builder adapter protocol.
 
 EXTERNAL_SESSION review begins only after RETURNED, uses role REVIEWER, and requires reviewer profile and session ID different from the builder's. The provider may match only when the reviewer is a genuinely separate identified session with fresh context, such as codex-reviewer-v1 reviewing codex-builder-v1. It creates no preflight or availability fact. import_external_review verifies assignment/task/handoff/raw-evidence hashes, retains raw evidence only in the external CAS, applies the exact patch in a clean base worktree, and stores a standard ReviewReceipt with target_host_eligible=false.
 
@@ -646,6 +653,10 @@ Expected: PASS within 300 seconds.
 - record_integration(paths, task_ref, commit_sha: str | None = None) -> IntegrationReceipt.
 - graph_status(paths) -> dict[str, Any].
 - build_report(paths) -> dict[str, Any].
+
+`BUILD_FABRIC_CORE_CODE_COMPLETE` requires one exact non-fixture, substantive, accepted integration chain with capability_id `BUILD_FABRIC_CORE_CODE`; Task 9 is frozen and executed as that first real self-use task before its implementation begins. Broad task-name matching is forbidden.
+
+`build_report` may accept keyword-only research and target-host evidence validators. Without a registered validator, each status remains false. A validator returns only after validating its separately owned immutable receipts; the Build Fabric never reads research-owned paths or infers target-Mac truth from an arbitrary host hash.
 
 - [ ] **Step 1: Add failing authority/status tests**
 
@@ -682,6 +693,8 @@ graph_status replays only manifests and ledgers. Return node counts, ready nodes
 PRODUCTION_SELF_USE has exactly five keys: DELIVERABLE_B_DIV23_V2, DELIVERABLE_C_MODEL_REGISTRY, DELIVERABLE_D_DATASET_INTAKE, DELIVERABLE_E_LOCAL_SERVICE_SDK, and DELIVERABLE_F_CLI_ADAPTER. A key becomes true only when a substantive production task for that capability has a content-addressed task manifest, graph node/edges, non-fixture handoff with Git-derived patch, distinct accepted review, Codex integration receipt, and installed-code acceptance receipt. Documentation-only, test-only, demo-only, fixture, or canned artifacts do not count. EXTERNAL_SESSION is valid for these five keys.
 
 CORE_CODE_COMPLETE remains false until all five self-use keys and the spec's installed-code gates are true. TARGET_HOST_ACCEPTED ignores every EXTERNAL_SESSION record and requires LOCAL_ADAPTER, exact successful preflight, owner-Mac host identity, and real bounded task receipts for Claude plus one secondary builder. Research receipt discovery is an extension callback registered later by the ATHENA plan; this task neither reads nor creates research paths.
+
+Status reconstruction revalidates every affected-integration command receipt required by the accepted review against task SHA, correction round, exact patch, argv, cwd, and PASS outcome. Substantive production paths exclude documentation-only extensions and documentation directories.
 
 - [ ] **Step 5: Run GREEN once**
 
@@ -738,6 +751,8 @@ Task 9 owns tools/helios_build/cli.py and tests/test_build_cli.py until its comm
 This gate is satisfied by the non-overlapping task manifests and interface hashes. Its implementation, RED/GREEN cycle, receipts, and commit belong to the dedicated ATHENA plan.
 
 ### Task 9: CLI, documentation, package exclusion, and authority proof
+
+Before Step 1, freeze Task 9 as the first real Build Fabric self-use task with capability_id `BUILD_FABRIC_CORE_CODE`, its exact owned files/interfaces/tests/base/budgets, one identified builder, a distinct reviewer, and Codex integrator. Work started before this assignment does not count toward `BUILD_FABRIC_CORE_CODE_COMPLETE`.
 
 **Files:**
 - Create: tools/helios_build/__main__.py

@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/adapter-config-v1.schema.json",
+  "title": "HELIOS Build Fabric external adapter configuration v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "host_id", "adapters"],
+  "properties": {
+    "protocol": { "const": "helios.build.adapter-config/v1" },
+    "host_id": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+    "adapters": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/adapter" },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "worker_id",
+        "adapter_name",
+        "adapter_revision",
+        "executable",
+        "executable_sha256",
+        "preflight_argv",
+        "dispatch_argv",
+        "environment_variable_names",
+        "preflight_timeout_seconds",
+        "attempt_timeout_seconds",
+        "max_capture_bytes",
+        "result_protocol"
+      ],
+      "properties": {
+        "worker_id": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+        "adapter_name": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+        "adapter_revision": { "$ref": "common-v1.schema.json#/$defs/nonEmptyString" },
+        "executable": { "$ref": "common-v1.schema.json#/$defs/nonEmptyString" },
+        "executable_sha256": { "$ref": "common-v1.schema.json#/$defs/digest" },
+        "preflight_argv": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "common-v1.schema.json#/$defs/nonEmptyString" }
+        },
+        "dispatch_argv": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "common-v1.schema.json#/$defs/nonEmptyString" }
+        },
+        "environment_variable_names": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" },
+          "uniqueItems": true
+        },
+        "preflight_timeout_seconds": { "$ref": "common-v1.schema.json#/$defs/positiveInteger" },
+        "attempt_timeout_seconds": { "$ref": "common-v1.schema.json#/$defs/positiveInteger" },
+        "max_capture_bytes": { "$ref": "common-v1.schema.json#/$defs/positiveInteger" },
+        "result_protocol": { "$ref": "common-v1.schema.json#/$defs/nonEmptyString" }
+      }
+    }
+  }
+}

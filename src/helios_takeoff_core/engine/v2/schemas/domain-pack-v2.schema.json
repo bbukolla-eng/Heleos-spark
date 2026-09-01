@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.helios.local/engine/domain-pack-v2.schema.json",
+  "title": "HELIOS Division 23 Semantic Domain Pack V2",
+  "$comment": "Structural and lexical preflight only. helios_takeoff_core.engine.v2.compile_domain_pack is the mandatory semantic and canonical authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "pack_code", "version", "title", "jurisdiction", "valid_from", "valid_through", "supersedes_pack_sha256", "sources", "definitions", "relations", "units", "observations", "lookups", "assembly_edges", "rules"],
+  "properties": {
+    "protocol": {"const": "helios.engine.domain-pack/v2"},
+    "pack_code": {"$ref": "#/$defs/code"},
+    "version": {"$ref": "#/$defs/canonicalText"},
+    "title": {"$ref": "#/$defs/canonicalText"},
+    "jurisdiction": {"$ref": "#/$defs/canonicalText"},
+    "valid_from": {"$ref": "#/$defs/date"},
+    "valid_through": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/date"}]},
+    "supersedes_pack_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]},
+    "sources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/source"}},
+    "definitions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/definition"}},
+    "relations": {"type": "array", "items": {"$ref": "#/$defs/relation"}},
+    "units": {"type": "array", "items": {"$ref": "#/$defs/unit"}},
+    "observations": {"type": "array", "items": {"$ref": "#/$defs/observationDefinition"}},
+    "lookups": {"type": "array", "items": {"$ref": "#/$defs/lookup"}},
+    "assembly_edges": {"type": "array", "items": {"$ref": "#/$defs/assemblyEdge"}},
+    "rules": {"type": "array", "items": {"$ref": "#/$defs/rule"}}
+  },
+  "$defs": {
+    "code": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*$"},
+    "token": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "canonicalText": {"type": "string", "minLength": 1, "pattern": "^(?!\\s)(?!.*\\s$)(?!.*[\\u0000-\\u001f]).+$"},
+    "date": {"type": "string", "format": "date", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "canonicalValue": {
+      "oneOf": [
+        {"type": "null"}, {"type": "boolean"}, {"type": "integer"}, {"$ref": "#/$defs/canonicalText"},
+        {"type": "array", "items": {"$ref": "#/$defs/canonicalValue"}},
+        {"type": "object", "additionalProperties": {"$ref": "#/$defs/canonicalValue"}}
+      ]
+    },
+    "citation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_ref", "locator", "applicability", "limitations"],
+      "properties": {
+        "source_ref": {"$ref": "#/$defs/code"},
+        "locator": {"$ref": "#/$defs/canonicalText"},
+        "applicability": {"$ref": "#/$defs/canonicalText"},
+        "limitations": {"$ref": "#/$defs/canonicalText"}
+      }
+    },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_id", "authority_class", "stable_reference", "publisher", "title", "retrieved_on", "jurisdiction"],
+      "properties": {
+        "source_id": {"$ref": "#/$defs/code"},
+        "authority_class": {"$ref": "#/$defs/token"},
+        "stable_reference": {"$ref": "#/$defs/canonicalText"},
+        "publisher": {"$ref": "#/$defs/canonicalText"},
+        "title": {"$ref": "#/$defs/canonicalText"},
+        "retrieved_on": {"$ref": "#/$defs/date"},
+        "jurisdiction": {"$ref": "#/$defs/canonicalText"},
+        "content_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]}
+      }
+    },
+    "definition": {
+      "type": "object", "additionalProperties": false,
+      "required": ["code", "kind", "family", "title", "description", "attributes", "citations"],
+      "properties": {
+        "code": {"$ref": "#/$defs/code"},
+        "kind": {"enum": ["SYSTEM", "EQUIPMENT", "DUCT", "PIPE", "FITTING", "VALVE", "ACCESSORY", "MATERIAL", "CONNECTION", "INSULATION", "SUPPORT", "LABOR_ASSEMBLY", "PRICING_INPUT", "RULE_CANDIDATE"]},
+        "family": {"enum": ["SHARED", "AIRSIDE", "PIPING", "EQUIPMENT", "INSULATION", "SUPPORTS", "LABOR", "PRICING", "CODE_SPEC"]},
+        "title": {"$ref": "#/$defs/canonicalText"},
+        "description": {"$ref": "#/$defs/canonicalText"},
+        "attributes": {"type": "object", "propertyNames": {"pattern": "^[a-z][a-z0-9_]*$"}, "additionalProperties": {"$ref": "#/$defs/canonicalValue"}},
+        "citations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/citation"}}
+      }
+    },
+    "relation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["code", "kind", "from_code", "to_code", "citations"],
+      "properties": {
+        "code": {"$ref": "#/$defs/code"},
+        "kind": {"enum": ["BELONGS_TO_SYSTEM", "USES_MATERIAL", "USES_CONNECTION", "COMPOSED_OF", "REQUIRES_ACCESSORY", "REQUIRES_INSULATION", "REQUIRES_SUPPORT", "HAS_LABOR_ASSEMBLY", "HAS_PRICING_INPUT", "GOVERNED_BY_RULE"]},
+        "from_code": {"$ref": "#/$defs/code"},
+        "to_code": {"$ref": "#/$defs/code"},
+        "citations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/citation"}}
+      }
+    },
+    "sourceRef": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_id", "source_identity", "locator", "jurisdiction", "applicability", "limitations"],
+      "properties": {
+        "source_id": {"$ref": "#/$defs/code"},
+        "source_identity": {"$ref": "#/$defs/canonicalText"},
+        "locator": {"$ref": "#/$defs/canonicalText"},
+        "jurisdiction": {"$ref": "#/$defs/canonicalText"},
+        "applicability": {"$ref": "#/$defs/canonicalText"},
+        "limitations": {"$ref": "#/$defs/canonicalText"}
+      }
+    },
+    "unit": {
+      "type": "object", "additionalProperties": false,
+      "required": ["uom", "dimension", "base_uom", "to_base_numerator", "to_base_denominator"],
+      "properties": {
+        "uom": {"$ref": "#/$defs/code"},
+        "dimension": {"$ref": "#/$defs/dimension"},
+        "base_uom": {"$ref": "#/$defs/code"},
+        "to_base_numerator": {"type": "string", "pattern": "^[1-9][0-9]*$"},
+        "to_base_denominator": {"type": "string", "pattern": "^[1-9][0-9]*$"}
+      }
+    },
+    "dimension": {
+      "enum": ["DIMENSIONLESS", "COUNT", "LENGTH", "AREA", "MASS", "TIME", "CURRENCY", "MASS_PER_AREA", "TIME_PER_LENGTH", "CURRENCY_PER_LENGTH", "COUNT_PER_LENGTH"]
+    },
+    "scalarType": {"enum": ["DECIMAL", "INTEGER", "BOOLEAN", "TEXT", "ENUM"]},
+    "nullableDecimal": {
+      "oneOf": [{"type": "null"}, {"type": "string", "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?$"}]
+    },
+    "observationDefinition": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "scalar_type", "dimension", "canonical_uom", "accepted_uoms", "enum_values", "bounds", "evidence_cardinality"],
+      "properties": {
+        "name": {"$ref": "#/$defs/token"},
+        "scalar_type": {"$ref": "#/$defs/scalarType"},
+        "dimension": {"$ref": "#/$defs/dimension"},
+        "canonical_uom": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/code"}]},
+        "accepted_uoms": {"type": "array", "items": {"$ref": "#/$defs/code"}, "uniqueItems": true},
+        "enum_values": {"type": "array", "items": {"$ref": "#/$defs/canonicalText"}, "uniqueItems": true},
+        "bounds": {
+          "oneOf": [
+            {"type": "null"},
+            {"type": "object", "additionalProperties": false, "required": ["minimum", "maximum"], "properties": {"minimum": {"$ref": "#/$defs/nullableDecimal"}, "maximum": {"$ref": "#/$defs/nullableDecimal"}}}
+          ]
+        },
+        "evidence_cardinality": {"$ref": "#/$defs/token"}
+      }
+    },
+    "lookupEntry": {
+      "type": "object", "additionalProperties": false,
+      "required": ["keys", "value"],
+      "properties": {"keys": {"type": "array", "minItems": 1, "items": {"oneOf": [{"type": "boolean"}, {"type": "integer"}, {"$ref": "#/$defs/canonicalText"}]}}, "value": {"oneOf": [{"type": "boolean"}, {"type": "integer"}, {"$ref": "#/$defs/canonicalText"}]}}
+    },
+    "lookup": {
+      "type": "object", "additionalProperties": false,
+      "required": ["code", "key_types", "value_type", "dimension", "uom", "entries", "source_refs"],
+      "properties": {
+        "code": {"$ref": "#/$defs/code"},
+        "key_types": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/scalarType"}},
+        "value_type": {"$ref": "#/$defs/scalarType"},
+        "dimension": {"$ref": "#/$defs/dimension"},
+        "uom": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/code"}]},
+        "entries": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/lookupEntry"}},
+        "source_refs": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/sourceRef"}}
+      }
+    },
+    "literalFormula": {
+      "type": "object", "additionalProperties": false,
+      "required": ["op", "value_type", "value"],
+      "properties": {"op": {"const": "LITERAL"}, "value_type": {"$ref": "#/$defs/scalarType"}, "value": {"oneOf": [{"type": "boolean"}, {"type": "integer"}, {"$ref": "#/$defs/canonicalText"}]}}
+    },
+    "observationFormula": {
+      "type": "object", "additionalProperties": false,
+      "required": ["op", "name"], "properties": {"op": {"const": "OBSERVATION"}, "name": {"$ref": "#/$defs/token"}}
+    },
+    "lookupFormula": {
+      "type": "object", "additionalProperties": false,
+      "required": ["op", "lookup_code", "keys"],
+      "properties": {"op": {"const": "LOOKUP"}, "lookup_code": {"$ref": "#/$defs/code"}, "keys": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/formula"}}}
+    },
+    "binaryFormula": {
+      "type": "object", "additionalProperties": false,
+      "required": ["op", "left", "right"],
+      "properties": {"op": {"enum": ["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]}, "left": {"$ref": "#/$defs/formula"}, "right": {"$ref": "#/$defs/formula"}}
+    },
+    "compareFormula": {
+      "type": "object", "additionalProperties": false,
+      "required": ["op", "operator", "left", "right"],
+      "properties": {"op": {"const": "COMPARE"}, "operator": {"enum": ["EQ", "NE", "LT", "LE", "GT", "GE"]}, "left": {"$ref": "#/$defs/formula"}, "right": {"$ref": "#/$defs/formula"}}
+    },
+    "ifFormula": {
+      "type": "object", "additionalProperties": false,
+      "required": ["op", "condition", "then", "else"],
+      "properties": {"op": {"const": "IF"}, "condition": {"$ref": "#/$defs/formula"}, "then": {"$ref": "#/$defs/formula"}, "else": {"$ref": "#/$defs/formula"}}
+    },
+    "aggregateFormula": {
+      "type": "object", "additionalProperties": false,
+      "required": ["op", "args"],
+      "properties": {"op": {"enum": ["MIN", "MAX"]}, "args": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/formula"}}}
+    },
+    "formula": {
+      "oneOf": [{"$ref": "#/$defs/literalFormula"}, {"$ref": "#/$defs/observationFormula"}, {"$ref": "#/$defs/lookupFormula"}, {"$ref": "#/$defs/binaryFormula"}, {"$ref": "#/$defs/compareFormula"}, {"$ref": "#/$defs/ifFormula"}, {"$ref": "#/$defs/aggregateFormula"}]
+    },
+    "assemblyEdge": {
+      "type": "object", "additionalProperties": false,
+      "required": ["code", "relation_code", "quantity", "uom", "condition", "source_refs"],
+      "properties": {"code": {"$ref": "#/$defs/code"}, "relation_code": {"$ref": "#/$defs/code"}, "quantity": {"$ref": "#/$defs/formula"}, "uom": {"$ref": "#/$defs/code"}, "condition": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/formula"}]}, "source_refs": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/sourceRef"}}}
+    },
+    "rule": {
+      "type": "object", "additionalProperties": false,
+      "required": ["code", "relation_code", "result_kind", "calculation_basis", "output_claim_type", "output_scalar_type", "output_dimension", "output_uom", "condition", "formula", "source_refs"],
+      "properties": {"code": {"$ref": "#/$defs/code"}, "relation_code": {"$ref": "#/$defs/code"}, "result_kind": {"enum": ["QUANTITY", "RECONCILIATION", "ASSEMBLY"]}, "calculation_basis": {"enum": ["MEASURED", "RULE_DERIVED", "ALLOWANCE"]}, "output_claim_type": {"$ref": "#/$defs/token"}, "output_scalar_type": {"$ref": "#/$defs/scalarType"}, "output_dimension": {"$ref": "#/$defs/dimension"}, "output_uom": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/code"}]}, "condition": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/formula"}]}, "formula": {"$ref": "#/$defs/formula"}, "source_refs": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/sourceRef"}}}
+    }
+  }
+}

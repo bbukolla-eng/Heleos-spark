@@ -1,0 +1,20 @@
+{
+  "protocol": "helios.build.worker-profile/v1",
+  "profile_id": "grok-builder-v1",
+  "worker_id": "grok",
+  "display_name": "Grok CLI Builder and Adversarial Reviewer",
+  "roles": ["BUILDER", "REVIEWER"],
+  "transports": ["LOCAL_ADAPTER", "EXTERNAL_SESSION"],
+  "adapter_protocol": "helios.build.worker-handoff/v1",
+  "skills": [],
+  "plugins": [],
+  "allowed_tools": ["repository-read", "repository-write", "focused-test", "review"],
+  "allowed_data_classes": ["REPOSITORY", "BUILD_CONTROL_SANITIZED"],
+  "allowed_task_purposes": ["ALTERNATIVE_IMPLEMENTATION", "FAILURE_DISCOVERY", "INDEPENDENT_REVIEW"],
+  "authority_limits": [
+    "No self-review, integration, commit, push, pull-request, or merge authority",
+    "No ATHENA, NotebookLM, or research-source authority",
+    "No P0, P1A, runtime database, or bid authority"
+  ],
+  "max_concurrency": 1
+}

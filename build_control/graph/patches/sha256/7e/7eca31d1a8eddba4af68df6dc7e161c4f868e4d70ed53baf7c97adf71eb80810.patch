@@ -1,0 +1,3024 @@
+diff --git a/pyproject.toml b/pyproject.toml
+index e3c48df47b882520c56ad77f732e2421e412886f..991457835d30b8fb8897a93eb95ee323679d49c3 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -23,7 +23,11 @@ package-dir = {"" = "src"}
+ where = ["src"]
+ 
+ [tool.setuptools.package-data]
+-helios_takeoff_core = ["migrations/*.sql"]
++helios_takeoff_core = [
++    "migrations/*.sql",
++    "engine/v2/migrations/*.sql",
++    "engine/v2/schemas/*.json",
++]
+ 
+ [tool.helios]
+ database_schema_version = "17"
+diff --git a/src/helios_takeoff_core/engine/v2/__init__.py b/src/helios_takeoff_core/engine/v2/__init__.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..0a09101bbbc7056bc4afa49decea67c3499a1bf5
+--- /dev/null
++++ b/src/helios_takeoff_core/engine/v2/__init__.py
+@@ -0,0 +1,29 @@
++"""Database-first Division 23 v2 semantic registry."""
++
++from .compiler import compile_domain_pack
++from .contracts import (
++    CitationRecord,
++    CompiledDomainPack,
++    DefinitionKind,
++    DefinitionRecord,
++    DOMAIN_PACK_PROTOCOL_V2,
++    DomainFamily,
++    RelationKind,
++    RelationRecord,
++    StoreIntegrityReport,
++)
++from .store import EngineStore
++
++__all__ = [
++    "CitationRecord",
++    "CompiledDomainPack",
++    "DefinitionKind",
++    "DefinitionRecord",
++    "DOMAIN_PACK_PROTOCOL_V2",
++    "DomainFamily",
++    "EngineStore",
++    "RelationKind",
++    "RelationRecord",
++    "StoreIntegrityReport",
++    "compile_domain_pack",
++]
+diff --git a/src/helios_takeoff_core/engine/v2/compiler.py b/src/helios_takeoff_core/engine/v2/compiler.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..a73c6c60a25d2f05ba522ebecdb7d0a0c4b20054
+--- /dev/null
++++ b/src/helios_takeoff_core/engine/v2/compiler.py
+@@ -0,0 +1,422 @@
++"""Strict canonical compiler for non-executable Division 23 v2 registry packs."""
++
++from __future__ import annotations
++
++from datetime import date
++import hashlib
++import json
++import re
++from types import MappingProxyType
++from typing import Mapping, cast
++
++from ...errors import ValidationError
++from .contracts import (
++    CitationRecord,
++    CompiledDomainPack,
++    DefinitionKind,
++    DefinitionRecord,
++    DOMAIN_PACK_PROTOCOL_V2,
++    DomainFamily,
++    RelationKind,
++    RelationRecord,
++)
++
++
++_TOP_LEVEL_FIELDS = {
++    "protocol", "pack_code", "version", "title", "jurisdiction",
++    "valid_from", "valid_through", "supersedes_pack_sha256",
++    "sources", "definitions", "relations",
++    "units", "observations", "lookups", "assembly_edges", "rules",
++}
++_SOURCE_REQUIRED_FIELDS = {
++    "source_id", "authority_class", "stable_reference", "publisher", "title",
++    "retrieved_on", "jurisdiction",
++}
++_SOURCE_FIELDS = _SOURCE_REQUIRED_FIELDS | {"content_sha256"}
++_DEFINITION_FIELDS = {"code", "kind", "family", "title", "description", "attributes", "citations"}
++_RELATION_FIELDS = {"code", "kind", "from_code", "to_code", "citations"}
++_CITATION_FIELDS = {"source_ref", "locator", "applicability", "limitations"}
++_EXECUTABLE_FIELDS = ("units", "observations", "lookups", "assembly_edges", "rules")
++_CODE_PATTERN = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*$")
++_TOKEN_PATTERN = re.compile(r"^[A-Z][A-Z0-9_]*$")
++_ATTRIBUTE_KEY_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
++_SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
++
++_PHYSICAL_KINDS = frozenset(
++    {
++        DefinitionKind.SYSTEM, DefinitionKind.EQUIPMENT, DefinitionKind.DUCT,
++        DefinitionKind.PIPE, DefinitionKind.FITTING, DefinitionKind.VALVE,
++        DefinitionKind.ACCESSORY,
++    }
++)
++_RELATION_RANGES: dict[RelationKind, tuple[frozenset[DefinitionKind], frozenset[DefinitionKind]]] = {
++    RelationKind.BELONGS_TO_SYSTEM: (
++        _PHYSICAL_KINDS - {DefinitionKind.SYSTEM}, frozenset({DefinitionKind.SYSTEM})
++    ),
++    RelationKind.USES_MATERIAL: (
++        _PHYSICAL_KINDS | {DefinitionKind.INSULATION, DefinitionKind.SUPPORT},
++        frozenset({DefinitionKind.MATERIAL}),
++    ),
++    RelationKind.USES_CONNECTION: (
++        _PHYSICAL_KINDS, frozenset({DefinitionKind.CONNECTION})
++    ),
++    RelationKind.COMPOSED_OF: (
++        frozenset({DefinitionKind.SYSTEM, DefinitionKind.EQUIPMENT, DefinitionKind.DUCT, DefinitionKind.PIPE}),
++        _PHYSICAL_KINDS - {DefinitionKind.SYSTEM},
++    ),
++    RelationKind.REQUIRES_ACCESSORY: (
++        _PHYSICAL_KINDS, frozenset({DefinitionKind.ACCESSORY})
++    ),
++    RelationKind.REQUIRES_INSULATION: (
++        _PHYSICAL_KINDS, frozenset({DefinitionKind.INSULATION})
++    ),
++    RelationKind.REQUIRES_SUPPORT: (
++        _PHYSICAL_KINDS, frozenset({DefinitionKind.SUPPORT})
++    ),
++    RelationKind.HAS_LABOR_ASSEMBLY: (
++        _PHYSICAL_KINDS | {DefinitionKind.INSULATION, DefinitionKind.SUPPORT},
++        frozenset({DefinitionKind.LABOR_ASSEMBLY}),
++    ),
++    RelationKind.HAS_PRICING_INPUT: (
++        _PHYSICAL_KINDS | {DefinitionKind.INSULATION, DefinitionKind.SUPPORT, DefinitionKind.LABOR_ASSEMBLY},
++        frozenset({DefinitionKind.PRICING_INPUT}),
++    ),
++    RelationKind.GOVERNED_BY_RULE: (
++        frozenset(DefinitionKind) - {DefinitionKind.RULE_CANDIDATE},
++        frozenset({DefinitionKind.RULE_CANDIDATE}),
++    ),
++}
++
++
++def compile_domain_pack(document: object) -> CompiledDomainPack:
++    """Validate, normalize, deep-freeze, and hash one exact v2 semantic pack."""
++    if not isinstance(document, dict):
++        raise ValidationError("domain pack must be an object")
++    _require_exact_fields(document, _TOP_LEVEL_FIELDS, "domain pack")
++    _reject_floats(document)
++    if document["protocol"] != DOMAIN_PACK_PROTOCOL_V2:
++        raise ValidationError("domain pack protocol is unsupported")
++
++    pack_code = _code(document["pack_code"], "pack_code")
++    version = _text(document["version"], "version")
++    title = _text(document["title"], "title")
++    jurisdiction = _text(document["jurisdiction"], "jurisdiction")
++    valid_from = _date_text(document["valid_from"], "valid_from")
++    valid_through = _optional_date_text(document["valid_through"], "valid_through")
++    if valid_through is not None and valid_through < valid_from:
++        raise ValidationError("domain pack validity interval is invalid")
++    supersedes = _optional_sha256(document["supersedes_pack_sha256"], "supersedes_pack_sha256")
++
++    for field in _EXECUTABLE_FIELDS:
++        if not isinstance(document[field], list) or document[field]:
++            raise ValidationError(f"{field} must be empty in protocol v2 B1")
++
++    sources = _parse_sources(document["sources"])
++    source_ids = {source["source_id"] for source in sources}
++    definitions, definition_records = _parse_definitions(document["definitions"], source_ids)
++    definition_kinds = {record.code: record.kind for record in definition_records}
++    relations, relation_records = _parse_relations(document["relations"], source_ids, definition_kinds)
++
++    canonical_document: dict[str, object] = {
++        "protocol": DOMAIN_PACK_PROTOCOL_V2,
++        "pack_code": pack_code,
++        "version": version,
++        "title": title,
++        "jurisdiction": jurisdiction,
++        "valid_from": valid_from,
++        "valid_through": valid_through,
++        "supersedes_pack_sha256": supersedes,
++        "sources": sources,
++        "definitions": definitions,
++        "relations": relations,
++        "units": [],
++        "observations": [],
++        "lookups": [],
++        "assembly_edges": [],
++        "rules": [],
++    }
++    canonical_bytes = _canonical_bytes(canonical_document)
++    frozen_document = cast(Mapping[str, object], _freeze(canonical_document))
++    frozen_sources = cast(tuple[Mapping[str, object], ...], frozen_document["sources"])
++
++    frozen_definition_records = tuple(_freeze_definition(record) for record in definition_records)
++    frozen_relation_records = tuple(_freeze_relation(record) for record in relation_records)
++    return CompiledDomainPack(
++        canonical_document=frozen_document,
++        canonical_bytes=canonical_bytes,
++        sha256=hashlib.sha256(canonical_bytes).hexdigest(),
++        sources_by_id=MappingProxyType({str(source["source_id"]): source for source in frozen_sources}),
++        definitions_by_code=MappingProxyType({record.code: record for record in frozen_definition_records}),
++        relations_by_code=MappingProxyType({record.code: record for record in frozen_relation_records}),
++    )
++
++
++def _parse_sources(value: object) -> list[dict[str, object]]:
++    if not isinstance(value, list) or not value:
++        raise ValidationError("domain pack sources must contain at least one source")
++    result: list[dict[str, object]] = []
++    source_ids: set[str] = set()
++    references: set[str] = set()
++    content_digests: set[str] = set()
++    for index, entry in enumerate(value):
++        if not isinstance(entry, dict):
++            raise ValidationError(f"source {index} must be an object")
++        if not _SOURCE_REQUIRED_FIELDS.issubset(entry) or set(entry) - _SOURCE_FIELDS:
++            raise ValidationError(f"source {index} fields are invalid")
++        source_id = _code(entry["source_id"], "source_id")
++        stable_reference = _text(entry["stable_reference"], "stable_reference")
++        content_sha256 = _optional_sha256(entry.get("content_sha256"), "content_sha256")
++        if source_id in source_ids or stable_reference in references:
++            raise ValidationError("domain pack contains duplicate source identity")
++        if content_sha256 is not None and content_sha256 in content_digests:
++            raise ValidationError("domain pack contains duplicate source content identity")
++        source_ids.add(source_id)
++        references.add(stable_reference)
++        if content_sha256 is not None:
++            content_digests.add(content_sha256)
++        normalized: dict[str, object] = {
++            "source_id": source_id,
++            "authority_class": _token(entry["authority_class"], "authority_class"),
++            "stable_reference": stable_reference,
++            "publisher": _text(entry["publisher"], "publisher"),
++            "title": _text(entry["title"], "source title"),
++            "retrieved_on": _date_text(entry["retrieved_on"], "retrieved_on"),
++            "jurisdiction": _text(entry["jurisdiction"], "source jurisdiction"),
++            "content_sha256": content_sha256,
++        }
++        result.append(normalized)
++    return sorted(result, key=lambda source: str(source["source_id"]))
++
++
++def _parse_definitions(
++    value: object, source_ids: set[object]
++) -> tuple[list[dict[str, object]], tuple[DefinitionRecord, ...]]:
++    if not isinstance(value, list) or not value:
++        raise ValidationError("domain pack definitions must contain at least one definition")
++    documents: list[dict[str, object]] = []
++    records: list[DefinitionRecord] = []
++    codes: set[str] = set()
++    for index, entry in enumerate(value):
++        if not isinstance(entry, dict):
++            raise ValidationError(f"definition {index} must be an object")
++        _require_exact_fields(entry, _DEFINITION_FIELDS, f"definition {index}")
++        code = _code(entry["code"], "definition code")
++        if code in codes:
++            raise ValidationError("domain pack contains duplicate definition identity")
++        codes.add(code)
++        try:
++            kind = DefinitionKind(_text(entry["kind"], "definition kind"))
++            family = DomainFamily(_text(entry["family"], "definition family"))
++        except ValueError as error:
++            raise ValidationError("definition kind or family is unsupported") from error
++        attributes = _attributes(entry["attributes"])
++        citation_documents, citations = _parse_citations(entry["citations"], source_ids)
++        title = _text(entry["title"], "definition title")
++        description = _text(entry["description"], "definition description")
++        documents.append(
++            {
++                "code": code, "kind": kind.value, "family": family.value,
++                "title": title, "description": description,
++                "attributes": attributes, "citations": citation_documents,
++            }
++        )
++        records.append(DefinitionRecord(code, kind, family, title, description, attributes, citations))
++    paired = sorted(zip(documents, records, strict=True), key=lambda pair: pair[1].code)
++    return [pair[0] for pair in paired], tuple(pair[1] for pair in paired)
++
++
++def _parse_relations(
++    value: object,
++    source_ids: set[object],
++    definition_kinds: Mapping[str, DefinitionKind],
++) -> tuple[list[dict[str, object]], tuple[RelationRecord, ...]]:
++    if not isinstance(value, list):
++        raise ValidationError("domain pack relations must be an array")
++    documents: list[dict[str, object]] = []
++    records: list[RelationRecord] = []
++    codes: set[str] = set()
++    identities: set[tuple[RelationKind, str, str]] = set()
++    for index, entry in enumerate(value):
++        if not isinstance(entry, dict):
++            raise ValidationError(f"relation {index} must be an object")
++        _require_exact_fields(entry, _RELATION_FIELDS, f"relation {index}")
++        code = _code(entry["code"], "relation code")
++        if code in codes:
++            raise ValidationError("domain pack contains duplicate relation code")
++        codes.add(code)
++        try:
++            kind = RelationKind(_text(entry["kind"], "relation kind"))
++        except ValueError as error:
++            raise ValidationError("relation kind is unsupported") from error
++        from_code = _code(entry["from_code"], "relation from_code")
++        to_code = _code(entry["to_code"], "relation to_code")
++        if from_code not in definition_kinds or to_code not in definition_kinds:
++            raise ValidationError("relation references an unresolved endpoint")
++        if from_code == to_code:
++            raise ValidationError("relation cannot reference the same endpoint twice")
++        identity = (kind, from_code, to_code)
++        if identity in identities:
++            raise ValidationError("domain pack contains duplicate relation identity")
++        identities.add(identity)
++        allowed_from, allowed_to = _RELATION_RANGES[kind]
++        if definition_kinds[from_code] not in allowed_from or definition_kinds[to_code] not in allowed_to:
++            raise ValidationError("relation domain or range is invalid")
++        citation_documents, citations = _parse_citations(entry["citations"], source_ids)
++        documents.append(
++            {
++                "code": code, "kind": kind.value, "from_code": from_code,
++                "to_code": to_code, "citations": citation_documents,
++            }
++        )
++        records.append(RelationRecord(code, kind, from_code, to_code, citations))
++    paired = sorted(zip(documents, records, strict=True), key=lambda pair: pair[1].code)
++    return [pair[0] for pair in paired], tuple(pair[1] for pair in paired)
++
++
++def _parse_citations(
++    value: object, source_ids: set[object]
++) -> tuple[list[dict[str, str]], tuple[CitationRecord, ...]]:
++    if not isinstance(value, list) or not value:
++        raise ValidationError("each assertion must contain at least one citation")
++    documents: list[dict[str, str]] = []
++    identities: set[tuple[str, str, str, str]] = set()
++    for index, entry in enumerate(value):
++        if not isinstance(entry, dict):
++            raise ValidationError(f"citation {index} must be an object")
++        _require_exact_fields(entry, _CITATION_FIELDS, f"citation {index}")
++        source_ref = _code(entry["source_ref"], "citation source_ref")
++        if source_ref not in source_ids:
++            raise ValidationError("citation references an unresolved source")
++        identity = (
++            source_ref,
++            _text(entry["locator"], "citation locator"),
++            _text(entry["applicability"], "citation applicability"),
++            _text(entry["limitations"], "citation limitations"),
++        )
++        if identity in identities:
++            raise ValidationError("assertion contains a duplicate citation")
++        identities.add(identity)
++        documents.append(
++            {
++                "source_ref": identity[0], "locator": identity[1],
++                "applicability": identity[2], "limitations": identity[3],
++            }
++        )
++    documents.sort(key=lambda item: (item["source_ref"], item["locator"], item["applicability"], item["limitations"]))
++    records = tuple(CitationRecord(**document) for document in documents)
++    return documents, records
++
++
++def _attributes(value: object) -> dict[str, object]:
++    if not isinstance(value, dict):
++        raise ValidationError("definition attributes must be an object")
++    result: dict[str, object] = {}
++    for key, item in value.items():
++        if not isinstance(key, str) or _ATTRIBUTE_KEY_PATTERN.fullmatch(key) is None:
++            raise ValidationError("definition attribute keys must be lower_snake_case")
++        result[key] = _canonical_value(item, f"attribute {key}")
++    return result
++
++
++def _canonical_value(value: object, context: str) -> object:
++    if value is None or isinstance(value, bool) or isinstance(value, int):
++        return value
++    if isinstance(value, float):
++        raise ValidationError(f"{context} must not contain a float")
++    if isinstance(value, str):
++        return _text(value, context)
++    if isinstance(value, list):
++        return [_canonical_value(item, context) for item in value]
++    if isinstance(value, dict):
++        if not all(isinstance(key, str) for key in value):
++            raise ValidationError(f"{context} object keys must be strings")
++        return {key: _canonical_value(value[key], context) for key in sorted(value)}
++    raise ValidationError(f"{context} contains a non-canonical value")
++
++
++def _freeze_definition(record: DefinitionRecord) -> DefinitionRecord:
++    return DefinitionRecord(
++        record.code, record.kind, record.family, record.title, record.description,
++        cast(Mapping[str, object], _freeze(dict(record.attributes))), record.citations,
++    )
++
++
++def _freeze_relation(record: RelationRecord) -> RelationRecord:
++    return RelationRecord(record.code, record.kind, record.from_code, record.to_code, record.citations)
++
++
++def _freeze(value: object) -> object:
++    if isinstance(value, dict):
++        return MappingProxyType({key: _freeze(item) for key, item in value.items()})
++    if isinstance(value, list):
++        return tuple(_freeze(item) for item in value)
++    return value
++
++
++def _reject_floats(value: object) -> None:
++    if isinstance(value, float):
++        raise ValidationError("domain pack must not contain a float")
++    if isinstance(value, dict):
++        for key, item in value.items():
++            if not isinstance(key, str):
++                raise ValidationError("domain pack object keys must be strings")
++            _reject_floats(item)
++    elif isinstance(value, list):
++        for item in value:
++            _reject_floats(item)
++
++
++def _canonical_bytes(value: object) -> bytes:
++    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False).encode("utf-8")
++
++
++def _require_exact_fields(value: dict[object, object], expected: set[str], context: str) -> None:
++    if set(value) != expected:
++        raise ValidationError(f"{context} fields are invalid")
++
++
++def _text(value: object, context: str) -> str:
++    if (
++        not isinstance(value, str) or not value or value != value.strip()
++        or "\x00" in value or any(ord(character) < 32 for character in value)
++    ):
++        raise ValidationError(f"{context} must be non-blank canonical text")
++    return value
++
++
++def _code(value: object, context: str) -> str:
++    result = _text(value, context)
++    if _CODE_PATTERN.fullmatch(result) is None:
++        raise ValidationError(f"{context} must be an uppercase stable code")
++    return result
++
++
++def _token(value: object, context: str) -> str:
++    result = _text(value, context)
++    if _TOKEN_PATTERN.fullmatch(result) is None:
++        raise ValidationError(f"{context} must be an uppercase token")
++    return result
++
++
++def _date_text(value: object, context: str) -> str:
++    result = _text(value, context)
++    try:
++        parsed = date.fromisoformat(result)
++    except ValueError as error:
++        raise ValidationError(f"{context} must be an ISO date") from error
++    if parsed.isoformat() != result:
++        raise ValidationError(f"{context} must be a canonical ISO date")
++    return result
++
++
++def _optional_date_text(value: object, context: str) -> str | None:
++    return None if value is None else _date_text(value, context)
++
++
++def _optional_sha256(value: object, context: str) -> str | None:
++    if value is None:
++        return None
++    result = _text(value, context)
++    if _SHA256_PATTERN.fullmatch(result) is None:
++        raise ValidationError(f"{context} must be a lowercase SHA-256 digest")
++    return result
+diff --git a/src/helios_takeoff_core/engine/v2/contracts.py b/src/helios_takeoff_core/engine/v2/contracts.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..8eeac7745af4a9ebd6a9bfe2824d07b18f38ed86
+--- /dev/null
++++ b/src/helios_takeoff_core/engine/v2/contracts.py
+@@ -0,0 +1,98 @@
++"""Immutable public contracts for the Division 23 v2 semantic registry."""
++
++from __future__ import annotations
++
++from dataclasses import dataclass
++from enum import Enum
++from typing import Mapping
++
++
++DOMAIN_PACK_PROTOCOL_V2 = "helios.engine.domain-pack/v2"
++
++
++class DefinitionKind(str, Enum):
++    SYSTEM = "SYSTEM"
++    EQUIPMENT = "EQUIPMENT"
++    DUCT = "DUCT"
++    PIPE = "PIPE"
++    FITTING = "FITTING"
++    VALVE = "VALVE"
++    ACCESSORY = "ACCESSORY"
++    MATERIAL = "MATERIAL"
++    CONNECTION = "CONNECTION"
++    INSULATION = "INSULATION"
++    SUPPORT = "SUPPORT"
++    LABOR_ASSEMBLY = "LABOR_ASSEMBLY"
++    PRICING_INPUT = "PRICING_INPUT"
++    RULE_CANDIDATE = "RULE_CANDIDATE"
++
++
++class DomainFamily(str, Enum):
++    SHARED = "SHARED"
++    AIRSIDE = "AIRSIDE"
++    PIPING = "PIPING"
++    EQUIPMENT = "EQUIPMENT"
++    INSULATION = "INSULATION"
++    SUPPORTS = "SUPPORTS"
++    LABOR = "LABOR"
++    PRICING = "PRICING"
++    CODE_SPEC = "CODE_SPEC"
++
++
++class RelationKind(str, Enum):
++    BELONGS_TO_SYSTEM = "BELONGS_TO_SYSTEM"
++    USES_MATERIAL = "USES_MATERIAL"
++    USES_CONNECTION = "USES_CONNECTION"
++    COMPOSED_OF = "COMPOSED_OF"
++    REQUIRES_ACCESSORY = "REQUIRES_ACCESSORY"
++    REQUIRES_INSULATION = "REQUIRES_INSULATION"
++    REQUIRES_SUPPORT = "REQUIRES_SUPPORT"
++    HAS_LABOR_ASSEMBLY = "HAS_LABOR_ASSEMBLY"
++    HAS_PRICING_INPUT = "HAS_PRICING_INPUT"
++    GOVERNED_BY_RULE = "GOVERNED_BY_RULE"
++
++
++@dataclass(frozen=True)
++class CitationRecord:
++    source_ref: str
++    locator: str
++    applicability: str
++    limitations: str
++
++
++@dataclass(frozen=True)
++class DefinitionRecord:
++    code: str
++    kind: DefinitionKind
++    family: DomainFamily
++    title: str
++    description: str
++    attributes: Mapping[str, object]
++    citations: tuple[CitationRecord, ...]
++
++
++@dataclass(frozen=True)
++class RelationRecord:
++    code: str
++    kind: RelationKind
++    from_code: str
++    to_code: str
++    citations: tuple[CitationRecord, ...]
++
++
++@dataclass(frozen=True)
++class CompiledDomainPack:
++    canonical_document: Mapping[str, object]
++    canonical_bytes: bytes
++    sha256: str
++    sources_by_id: Mapping[str, Mapping[str, object]]
++    definitions_by_code: Mapping[str, DefinitionRecord]
++    relations_by_code: Mapping[str, RelationRecord]
++
++
++@dataclass(frozen=True)
++class StoreIntegrityReport:
++    valid: bool
++    errors: tuple[str, ...]
++    pack_count: int
++    event_count: int
+diff --git a/src/helios_takeoff_core/engine/v2/migrations/001_engine_registry.sql b/src/helios_takeoff_core/engine/v2/migrations/001_engine_registry.sql
+new file mode 100644
+index 0000000000000000000000000000000000000000..3f5aa13e861640f8d509b00bb981478621740c13
+--- /dev/null
++++ b/src/helios_takeoff_core/engine/v2/migrations/001_engine_registry.sql
+@@ -0,0 +1,279 @@
++CREATE TABLE engine_store_migrations (
++    version INTEGER PRIMARY KEY,
++    name TEXT NOT NULL UNIQUE,
++    sha256 TEXT NOT NULL CHECK(length(sha256) = 64 AND sha256 NOT GLOB '*[^0-9a-f]*'),
++    applied_at TEXT NOT NULL
++);
++
++CREATE TABLE engine_packs (
++    pack_sha256 TEXT PRIMARY KEY CHECK(length(pack_sha256) = 64 AND pack_sha256 NOT GLOB '*[^0-9a-f]*'),
++    protocol TEXT NOT NULL CHECK(protocol = 'helios.engine.domain-pack/v2'),
++    pack_code TEXT NOT NULL,
++    version TEXT NOT NULL,
++    valid_from TEXT NOT NULL,
++    supersedes_pack_sha256 TEXT REFERENCES engine_packs(pack_sha256) ON DELETE RESTRICT,
++    canonical_json BLOB NOT NULL,
++    projection_generation INTEGER NOT NULL CHECK(projection_generation > 0),
++    source_count INTEGER NOT NULL CHECK(source_count > 0),
++    definition_count INTEGER NOT NULL CHECK(definition_count > 0),
++    relation_count INTEGER NOT NULL CHECK(relation_count >= 0),
++    citation_count INTEGER NOT NULL CHECK(citation_count > 0),
++    imported_at TEXT NOT NULL,
++    UNIQUE(pack_code, version)
++);
++
++CREATE TABLE engine_source_index (
++    pack_sha256 TEXT NOT NULL REFERENCES engine_packs(pack_sha256) ON DELETE RESTRICT,
++    source_id TEXT NOT NULL,
++    projection_generation INTEGER NOT NULL CHECK(projection_generation > 0),
++    source_json TEXT NOT NULL CHECK(json_valid(source_json)),
++    PRIMARY KEY(pack_sha256, source_id)
++) WITHOUT ROWID;
++
++CREATE TABLE engine_definition_index (
++    pack_sha256 TEXT NOT NULL REFERENCES engine_packs(pack_sha256) ON DELETE RESTRICT,
++    definition_code TEXT NOT NULL,
++    kind TEXT NOT NULL,
++    family TEXT NOT NULL,
++    projection_generation INTEGER NOT NULL CHECK(projection_generation > 0),
++    definition_json TEXT NOT NULL CHECK(json_valid(definition_json)),
++    PRIMARY KEY(pack_sha256, definition_code)
++) WITHOUT ROWID;
++
++CREATE TABLE engine_relation_index (
++    pack_sha256 TEXT NOT NULL REFERENCES engine_packs(pack_sha256) ON DELETE RESTRICT,
++    relation_code TEXT NOT NULL,
++    kind TEXT NOT NULL,
++    from_code TEXT NOT NULL,
++    to_code TEXT NOT NULL,
++    projection_generation INTEGER NOT NULL CHECK(projection_generation > 0),
++    relation_json TEXT NOT NULL CHECK(json_valid(relation_json)),
++    PRIMARY KEY(pack_sha256, relation_code),
++    FOREIGN KEY(pack_sha256, from_code)
++        REFERENCES engine_definition_index(pack_sha256, definition_code) ON DELETE RESTRICT,
++    FOREIGN KEY(pack_sha256, to_code)
++        REFERENCES engine_definition_index(pack_sha256, definition_code) ON DELETE RESTRICT
++) WITHOUT ROWID;
++
++CREATE TABLE engine_citation_index (
++    pack_sha256 TEXT NOT NULL REFERENCES engine_packs(pack_sha256) ON DELETE RESTRICT,
++    assertion_kind TEXT NOT NULL CHECK(assertion_kind IN ('DEFINITION', 'RELATION')),
++    assertion_code TEXT NOT NULL,
++    citation_ordinal INTEGER NOT NULL CHECK(citation_ordinal >= 0),
++    source_id TEXT NOT NULL,
++    projection_generation INTEGER NOT NULL CHECK(projection_generation > 0),
++    citation_json TEXT NOT NULL CHECK(json_valid(citation_json)),
++    PRIMARY KEY(pack_sha256, assertion_kind, assertion_code, citation_ordinal),
++    FOREIGN KEY(pack_sha256, source_id)
++        REFERENCES engine_source_index(pack_sha256, source_id) ON DELETE RESTRICT
++) WITHOUT ROWID;
++
++CREATE TABLE engine_registry_events (
++    pack_sha256 TEXT NOT NULL REFERENCES engine_packs(pack_sha256) ON DELETE RESTRICT,
++    event_sequence INTEGER NOT NULL CHECK(event_sequence > 0),
++    event_type TEXT NOT NULL CHECK(event_type IN ('PACK_IMPORTED', 'PROJECTIONS_REBUILT')),
++    projection_generation INTEGER NOT NULL CHECK(projection_generation > 0),
++    previous_event_sha256 TEXT,
++    event_sha256 TEXT NOT NULL UNIQUE CHECK(length(event_sha256) = 64 AND event_sha256 NOT GLOB '*[^0-9a-f]*'),
++    event_json TEXT NOT NULL CHECK(json_valid(event_json)),
++    created_at TEXT NOT NULL,
++    PRIMARY KEY(pack_sha256, event_sequence)
++) WITHOUT ROWID;
++
++CREATE INDEX engine_definitions_by_kind_family
++ON engine_definition_index(pack_sha256, kind, family, definition_code);
++CREATE INDEX engine_relations_by_outbound
++ON engine_relation_index(pack_sha256, from_code, kind, relation_code);
++CREATE INDEX engine_relations_by_inbound
++ON engine_relation_index(pack_sha256, to_code, kind, relation_code);
++CREATE INDEX engine_citations_by_source
++ON engine_citation_index(pack_sha256, source_id, assertion_kind, assertion_code);
++
++CREATE TRIGGER engine_packs_validate_canonical_insert
++BEFORE INSERT ON engine_packs
++BEGIN
++    SELECT RAISE(ABORT, 'engine pack canonical payload is invalid')
++    WHERE helios_v2_pack_is_canonical(
++        NEW.canonical_json, NEW.pack_sha256, NEW.protocol, NEW.pack_code,
++        NEW.version, NEW.valid_from, NEW.supersedes_pack_sha256,
++        NEW.source_count, NEW.definition_count, NEW.relation_count, NEW.citation_count
++    ) <> 1;
++    SELECT RAISE(ABORT, 'engine pack initial projection generation is invalid')
++    WHERE NEW.projection_generation <> 1;
++END;
++CREATE TRIGGER engine_packs_validate_supersession_insert
++BEFORE INSERT ON engine_packs
++WHEN NEW.supersedes_pack_sha256 IS NOT NULL
++BEGIN
++    SELECT RAISE(ABORT, 'engine pack supersession lineage is invalid')
++    WHERE NEW.pack_sha256 = NEW.supersedes_pack_sha256
++       OR NOT EXISTS (
++            SELECT 1 FROM engine_packs WHERE pack_sha256 = NEW.supersedes_pack_sha256
++       )
++       OR NEW.pack_code <> (
++            SELECT pack_code FROM engine_packs WHERE pack_sha256 = NEW.supersedes_pack_sha256
++       )
++       OR NEW.version = (
++            SELECT version FROM engine_packs WHERE pack_sha256 = NEW.supersedes_pack_sha256
++       )
++       OR NEW.valid_from <= (
++            SELECT valid_from FROM engine_packs WHERE pack_sha256 = NEW.supersedes_pack_sha256
++       );
++END;
++CREATE TRIGGER engine_packs_are_immutable
++BEFORE UPDATE ON engine_packs
++BEGIN
++    SELECT RAISE(ABORT, 'engine pack canonical authority is immutable')
++    WHERE NEW.pack_sha256 IS NOT OLD.pack_sha256
++       OR NEW.protocol IS NOT OLD.protocol
++       OR NEW.pack_code IS NOT OLD.pack_code
++       OR NEW.version IS NOT OLD.version
++       OR NEW.valid_from IS NOT OLD.valid_from
++       OR NEW.supersedes_pack_sha256 IS NOT OLD.supersedes_pack_sha256
++       OR NEW.canonical_json IS NOT OLD.canonical_json
++       OR NEW.source_count IS NOT OLD.source_count
++       OR NEW.definition_count IS NOT OLD.definition_count
++       OR NEW.relation_count IS NOT OLD.relation_count
++       OR NEW.citation_count IS NOT OLD.citation_count
++       OR NEW.imported_at IS NOT OLD.imported_at;
++    SELECT RAISE(ABORT, 'engine pack projection generation advance is invalid')
++    WHERE NEW.projection_generation <> OLD.projection_generation + 1
++       OR NOT EXISTS (
++            SELECT 1 FROM engine_registry_events
++            WHERE pack_sha256 = OLD.pack_sha256
++              AND projection_generation = OLD.projection_generation
++              AND event_sequence = (
++                  SELECT MAX(event_sequence) FROM engine_registry_events
++                  WHERE pack_sha256 = OLD.pack_sha256
++              )
++       );
++    SELECT RAISE(ABORT, 'engine pack projection generation is not fully rewritten')
++    WHERE (SELECT COUNT(*) FROM engine_source_index WHERE pack_sha256 = OLD.pack_sha256) <> NEW.source_count
++       OR (SELECT COUNT(*) FROM engine_source_index WHERE pack_sha256 = OLD.pack_sha256 AND projection_generation = NEW.projection_generation) <> NEW.source_count
++       OR (SELECT COUNT(*) FROM engine_definition_index WHERE pack_sha256 = OLD.pack_sha256) <> NEW.definition_count
++       OR (SELECT COUNT(*) FROM engine_definition_index WHERE pack_sha256 = OLD.pack_sha256 AND projection_generation = NEW.projection_generation) <> NEW.definition_count
++       OR (SELECT COUNT(*) FROM engine_relation_index WHERE pack_sha256 = OLD.pack_sha256) <> NEW.relation_count
++       OR (SELECT COUNT(*) FROM engine_relation_index WHERE pack_sha256 = OLD.pack_sha256 AND projection_generation = NEW.projection_generation) <> NEW.relation_count
++       OR (SELECT COUNT(*) FROM engine_citation_index WHERE pack_sha256 = OLD.pack_sha256) <> NEW.citation_count
++       OR (SELECT COUNT(*) FROM engine_citation_index WHERE pack_sha256 = OLD.pack_sha256 AND projection_generation = NEW.projection_generation) <> NEW.citation_count;
++END;
++CREATE TRIGGER engine_packs_cannot_be_deleted
++BEFORE DELETE ON engine_packs
++BEGIN SELECT RAISE(ABORT, 'engine packs cannot be deleted'); END;
++
++CREATE TRIGGER engine_relation_index_validates_insert
++BEFORE INSERT ON engine_relation_index
++BEGIN
++    SELECT RAISE(ABORT, 'relation endpoint is missing')
++    WHERE NOT EXISTS (
++        SELECT 1 FROM engine_definition_index
++        WHERE pack_sha256 = NEW.pack_sha256 AND definition_code = NEW.from_code
++    ) OR NOT EXISTS (
++        SELECT 1 FROM engine_definition_index
++        WHERE pack_sha256 = NEW.pack_sha256 AND definition_code = NEW.to_code
++    );
++END;
++CREATE TRIGGER engine_relation_index_validates_update
++BEFORE UPDATE ON engine_relation_index
++BEGIN
++    SELECT RAISE(ABORT, 'relation endpoint is missing')
++    WHERE NOT EXISTS (
++        SELECT 1 FROM engine_definition_index
++        WHERE pack_sha256 = NEW.pack_sha256 AND definition_code = NEW.from_code
++    ) OR NOT EXISTS (
++        SELECT 1 FROM engine_definition_index
++        WHERE pack_sha256 = NEW.pack_sha256 AND definition_code = NEW.to_code
++    );
++END;
++
++CREATE TRIGGER engine_citation_index_validates_insert
++BEFORE INSERT ON engine_citation_index
++BEGIN
++    SELECT RAISE(ABORT, 'citation source is missing')
++    WHERE NOT EXISTS (
++        SELECT 1 FROM engine_source_index
++        WHERE pack_sha256 = NEW.pack_sha256 AND source_id = NEW.source_id
++    );
++    SELECT RAISE(ABORT, 'citation assertion is missing')
++    WHERE (NEW.assertion_kind = 'DEFINITION' AND NOT EXISTS (
++        SELECT 1 FROM engine_definition_index
++        WHERE pack_sha256 = NEW.pack_sha256 AND definition_code = NEW.assertion_code
++    )) OR (NEW.assertion_kind = 'RELATION' AND NOT EXISTS (
++        SELECT 1 FROM engine_relation_index
++        WHERE pack_sha256 = NEW.pack_sha256 AND relation_code = NEW.assertion_code
++    ));
++END;
++CREATE TRIGGER engine_citation_index_validates_update
++BEFORE UPDATE ON engine_citation_index
++BEGIN
++    SELECT RAISE(ABORT, 'citation source is missing')
++    WHERE NOT EXISTS (
++        SELECT 1 FROM engine_source_index
++        WHERE pack_sha256 = NEW.pack_sha256 AND source_id = NEW.source_id
++    );
++    SELECT RAISE(ABORT, 'citation assertion is missing')
++    WHERE (NEW.assertion_kind = 'DEFINITION' AND NOT EXISTS (
++        SELECT 1 FROM engine_definition_index
++        WHERE pack_sha256 = NEW.pack_sha256 AND definition_code = NEW.assertion_code
++    )) OR (NEW.assertion_kind = 'RELATION' AND NOT EXISTS (
++        SELECT 1 FROM engine_relation_index
++        WHERE pack_sha256 = NEW.pack_sha256 AND relation_code = NEW.assertion_code
++    ));
++END;
++
++CREATE TRIGGER engine_registry_events_are_immutable
++BEFORE UPDATE ON engine_registry_events
++BEGIN SELECT RAISE(ABORT, 'engine registry events are immutable'); END;
++CREATE TRIGGER engine_registry_events_cannot_be_deleted
++BEFORE DELETE ON engine_registry_events
++BEGIN SELECT RAISE(ABORT, 'engine registry events cannot be deleted'); END;
++CREATE TRIGGER engine_registry_events_validate_insert
++BEFORE INSERT ON engine_registry_events
++BEGIN
++    SELECT RAISE(ABORT, 'engine registry event lifecycle is invalid')
++    WHERE (
++        NEW.event_sequence = 1 AND (
++            NEW.event_type <> 'PACK_IMPORTED'
++            OR NEW.projection_generation <> 1
++            OR NEW.previous_event_sha256 IS NOT NULL
++            OR EXISTS (
++                SELECT 1 FROM engine_registry_events WHERE pack_sha256 = NEW.pack_sha256
++            )
++        )
++    ) OR (
++        NEW.event_sequence > 1 AND (
++            NEW.event_type <> 'PROJECTIONS_REBUILT'
++            OR NOT EXISTS (
++                SELECT 1 FROM engine_registry_events
++                WHERE pack_sha256 = NEW.pack_sha256
++                  AND event_sequence = NEW.event_sequence - 1
++                  AND event_sha256 = NEW.previous_event_sha256
++                  AND projection_generation = NEW.projection_generation - 1
++            )
++            OR EXISTS (
++                SELECT 1 FROM engine_registry_events
++                WHERE pack_sha256 = NEW.pack_sha256
++                  AND event_sequence >= NEW.event_sequence
++            )
++        )
++    );
++    SELECT RAISE(ABORT, 'engine registry event projection generation is unattested')
++    WHERE NOT EXISTS (
++            SELECT 1 FROM engine_packs
++            WHERE pack_sha256 = NEW.pack_sha256
++              AND projection_generation = NEW.projection_generation
++              AND (SELECT COUNT(*) FROM engine_source_index WHERE pack_sha256 = NEW.pack_sha256) = source_count
++              AND (SELECT COUNT(*) FROM engine_source_index WHERE pack_sha256 = NEW.pack_sha256 AND projection_generation = NEW.projection_generation) = source_count
++              AND (SELECT COUNT(*) FROM engine_definition_index WHERE pack_sha256 = NEW.pack_sha256) = definition_count
++              AND (SELECT COUNT(*) FROM engine_definition_index WHERE pack_sha256 = NEW.pack_sha256 AND projection_generation = NEW.projection_generation) = definition_count
++              AND (SELECT COUNT(*) FROM engine_relation_index WHERE pack_sha256 = NEW.pack_sha256) = relation_count
++              AND (SELECT COUNT(*) FROM engine_relation_index WHERE pack_sha256 = NEW.pack_sha256 AND projection_generation = NEW.projection_generation) = relation_count
++              AND (SELECT COUNT(*) FROM engine_citation_index WHERE pack_sha256 = NEW.pack_sha256) = citation_count
++              AND (SELECT COUNT(*) FROM engine_citation_index WHERE pack_sha256 = NEW.pack_sha256 AND projection_generation = NEW.projection_generation) = citation_count
++       );
++    SELECT RAISE(ABORT, 'engine registry event canonical payload is invalid')
++    WHERE helios_v2_event_is_canonical(
++        NEW.event_json, NEW.event_sha256, NEW.pack_sha256, NEW.event_sequence,
++        NEW.event_type, NEW.projection_generation, NEW.previous_event_sha256, NEW.created_at
++    ) <> 1;
++END;
+diff --git a/src/helios_takeoff_core/engine/v2/schemas/domain-pack-v2.schema.json b/src/helios_takeoff_core/engine/v2/schemas/domain-pack-v2.schema.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..47b9d60ad7d612cd37ffc836a5ec57614d8c682d
+--- /dev/null
++++ b/src/helios_takeoff_core/engine/v2/schemas/domain-pack-v2.schema.json
+@@ -0,0 +1,89 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "$id": "https://schemas.helios.local/engine/domain-pack-v2.schema.json",
++  "title": "HELIOS Division 23 Semantic Domain Pack V2",
++  "$comment": "Structural and lexical preflight only. helios_takeoff_core.engine.v2.compile_domain_pack is the mandatory semantic and canonical authority.",
++  "type": "object",
++  "additionalProperties": false,
++  "required": ["protocol", "pack_code", "version", "title", "jurisdiction", "valid_from", "valid_through", "supersedes_pack_sha256", "sources", "definitions", "relations", "units", "observations", "lookups", "assembly_edges", "rules"],
++  "properties": {
++    "protocol": {"const": "helios.engine.domain-pack/v2"},
++    "pack_code": {"$ref": "#/$defs/code"},
++    "version": {"$ref": "#/$defs/canonicalText"},
++    "title": {"$ref": "#/$defs/canonicalText"},
++    "jurisdiction": {"$ref": "#/$defs/canonicalText"},
++    "valid_from": {"$ref": "#/$defs/date"},
++    "valid_through": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/date"}]},
++    "supersedes_pack_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]},
++    "sources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/source"}},
++    "definitions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/definition"}},
++    "relations": {"type": "array", "items": {"$ref": "#/$defs/relation"}},
++    "units": {"type": "array", "maxItems": 0},
++    "observations": {"type": "array", "maxItems": 0},
++    "lookups": {"type": "array", "maxItems": 0},
++    "assembly_edges": {"type": "array", "maxItems": 0},
++    "rules": {"type": "array", "maxItems": 0}
++  },
++  "$defs": {
++    "code": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*$"},
++    "token": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
++    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
++    "canonicalText": {"type": "string", "minLength": 1, "pattern": "^(?!\\s)(?!.*\\s$)(?!.*[\\u0000-\\u001f]).+$"},
++    "date": {"type": "string", "format": "date", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
++    "canonicalValue": {
++      "oneOf": [
++        {"type": "null"}, {"type": "boolean"}, {"type": "integer"}, {"$ref": "#/$defs/canonicalText"},
++        {"type": "array", "items": {"$ref": "#/$defs/canonicalValue"}},
++        {"type": "object", "additionalProperties": {"$ref": "#/$defs/canonicalValue"}}
++      ]
++    },
++    "citation": {
++      "type": "object", "additionalProperties": false,
++      "required": ["source_ref", "locator", "applicability", "limitations"],
++      "properties": {
++        "source_ref": {"$ref": "#/$defs/code"},
++        "locator": {"$ref": "#/$defs/canonicalText"},
++        "applicability": {"$ref": "#/$defs/canonicalText"},
++        "limitations": {"$ref": "#/$defs/canonicalText"}
++      }
++    },
++    "source": {
++      "type": "object", "additionalProperties": false,
++      "required": ["source_id", "authority_class", "stable_reference", "publisher", "title", "retrieved_on", "jurisdiction"],
++      "properties": {
++        "source_id": {"$ref": "#/$defs/code"},
++        "authority_class": {"$ref": "#/$defs/token"},
++        "stable_reference": {"$ref": "#/$defs/canonicalText"},
++        "publisher": {"$ref": "#/$defs/canonicalText"},
++        "title": {"$ref": "#/$defs/canonicalText"},
++        "retrieved_on": {"$ref": "#/$defs/date"},
++        "jurisdiction": {"$ref": "#/$defs/canonicalText"},
++        "content_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]}
++      }
++    },
++    "definition": {
++      "type": "object", "additionalProperties": false,
++      "required": ["code", "kind", "family", "title", "description", "attributes", "citations"],
++      "properties": {
++        "code": {"$ref": "#/$defs/code"},
++        "kind": {"enum": ["SYSTEM", "EQUIPMENT", "DUCT", "PIPE", "FITTING", "VALVE", "ACCESSORY", "MATERIAL", "CONNECTION", "INSULATION", "SUPPORT", "LABOR_ASSEMBLY", "PRICING_INPUT", "RULE_CANDIDATE"]},
++        "family": {"enum": ["SHARED", "AIRSIDE", "PIPING", "EQUIPMENT", "INSULATION", "SUPPORTS", "LABOR", "PRICING", "CODE_SPEC"]},
++        "title": {"$ref": "#/$defs/canonicalText"},
++        "description": {"$ref": "#/$defs/canonicalText"},
++        "attributes": {"type": "object", "propertyNames": {"pattern": "^[a-z][a-z0-9_]*$"}, "additionalProperties": {"$ref": "#/$defs/canonicalValue"}},
++        "citations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/citation"}}
++      }
++    },
++    "relation": {
++      "type": "object", "additionalProperties": false,
++      "required": ["code", "kind", "from_code", "to_code", "citations"],
++      "properties": {
++        "code": {"$ref": "#/$defs/code"},
++        "kind": {"enum": ["BELONGS_TO_SYSTEM", "USES_MATERIAL", "USES_CONNECTION", "COMPOSED_OF", "REQUIRES_ACCESSORY", "REQUIRES_INSULATION", "REQUIRES_SUPPORT", "HAS_LABOR_ASSEMBLY", "HAS_PRICING_INPUT", "GOVERNED_BY_RULE"]},
++        "from_code": {"$ref": "#/$defs/code"},
++        "to_code": {"$ref": "#/$defs/code"},
++        "citations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/citation"}}
++      }
++    }
++  }
++}
+diff --git a/src/helios_takeoff_core/engine/v2/store.py b/src/helios_takeoff_core/engine/v2/store.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..221b552f3eda530b478602463ead93fa71e54c85
+--- /dev/null
++++ b/src/helios_takeoff_core/engine/v2/store.py
+@@ -0,0 +1,1028 @@
++"""Isolated immutable-blob SQLite store for Division 23 v2 registry packs."""
++
++from __future__ import annotations
++
++from contextlib import contextmanager
++from datetime import UTC, date, datetime
++import hashlib
++from importlib import resources
++import json
++from pathlib import Path
++import sqlite3
++from typing import Iterator, Mapping, cast
++
++from ...errors import ConflictError, NotFoundError, ValidationError
++from .compiler import compile_domain_pack
++from .contracts import (
++    CitationRecord,
++    CompiledDomainPack,
++    DefinitionKind,
++    DefinitionRecord,
++    DomainFamily,
++    RelationKind,
++    RelationRecord,
++    StoreIntegrityReport,
++)
++
++
++_MIGRATION_NAME = "001_engine_registry.sql"
++_EXPECTED_TABLES = frozenset(
++    {
++        "engine_store_migrations", "engine_packs", "engine_source_index",
++        "engine_definition_index", "engine_relation_index", "engine_citation_index",
++        "engine_registry_events",
++    }
++)
++_ASSERTION_KINDS = frozenset({"DEFINITION", "RELATION"})
++
++
++def _now() -> str:
++    return datetime.now(UTC).isoformat(timespec="microseconds")
++
++
++def _json_bytes(value: object) -> bytes:
++    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False).encode("utf-8")
++
++
++def _json_text(value: object) -> str:
++    return _json_bytes(value).decode("utf-8")
++
++
++def _materialize(value: object) -> object:
++    if isinstance(value, Mapping):
++        if not all(isinstance(key, str) for key in value):
++            raise TypeError("JSON object keys must be strings")
++        return {key: _materialize(item) for key, item in value.items()}
++    if isinstance(value, (list, tuple)):
++        return [_materialize(item) for item in value]
++    if value is None or isinstance(value, (str, bool, int)):
++        return value
++    raise TypeError("value is not canonical JSON")
++
++
++class EngineStore:
++    """Own a dedicated seven-table registry whose canonical blobs are authoritative."""
++
++    def __init__(self, path: str | Path) -> None:
++        self._path = Path(path)
++
++    @property
++    def path(self) -> Path:
++        return self._path
++
++    def initialize(self) -> None:
++        """Create only the isolated schema, or reject every foreign/partial database."""
++        self._path.parent.mkdir(parents=True, exist_ok=True)
++        with self._connect() as connection:
++            tables = self._table_names(connection)
++            if tables:
++                self._validate_schema_or_raise(connection)
++                return
++            try:
++                connection.execute("BEGIN IMMEDIATE")
++                if self._table_names(connection):
++                    self._validate_schema_or_raise(connection)
++                    connection.commit()
++                    return
++                migration_bytes = self._migration_bytes()
++                for statement in self._sql_statements(migration_bytes.decode("utf-8")):
++                    connection.execute(statement)
++                connection.execute(
++                    "INSERT INTO engine_store_migrations(version, name, sha256, applied_at) VALUES (1, ?, ?, ?)",
++                    (_MIGRATION_NAME, hashlib.sha256(migration_bytes).hexdigest(), _now()),
++                )
++                self._validate_schema_or_raise(connection)
++                connection.commit()
++            except BaseException:
++                connection.rollback()
++                raise
++
++    def import_pack(self, pack: CompiledDomainPack) -> str:
++        """Atomically import canonical bytes and disposable graph projections."""
++        compiled = self._validated_compiled_pack(pack)
++        document = cast(dict[str, object], json.loads(compiled.canonical_bytes))
++        source_count, definition_count, relation_count, citation_count = self._projection_counts(compiled)
++        with self._transaction() as connection:
++            self._validate_schema_or_raise(connection)
++            persisted_packs = tuple(
++                self._load_compiled(connection, str(row["pack_sha256"]))
++                for row in connection.execute("SELECT pack_sha256 FROM engine_packs ORDER BY pack_sha256").fetchall()
++            )
++            existing = next(
++                (
++                    item for item in persisted_packs
++                    if item.canonical_document["pack_code"] == document["pack_code"]
++                    and item.canonical_document["version"] == document["version"]
++                ),
++                None,
++            )
++            if existing is not None:
++                if existing.sha256 == compiled.sha256 and existing.canonical_bytes == compiled.canonical_bytes:
++                    return compiled.sha256
++                raise ConflictError("pack code and version already identify different immutable content")
++            digest_owner = next((item for item in persisted_packs if item.sha256 == compiled.sha256), None)
++            if digest_owner is not None:
++                raise ConflictError("pack digest already identifies a different immutable identity")
++            self._validate_supersession(connection, compiled, document)
++            connection.execute(
++                """
++                INSERT INTO engine_packs(
++                    pack_sha256, protocol, pack_code, version, valid_from,
++                    supersedes_pack_sha256, canonical_json, projection_generation,
++                    source_count, definition_count, relation_count, citation_count, imported_at
++                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
++                """,
++                (
++                    compiled.sha256, document["protocol"], document["pack_code"],
++                    document["version"], document["valid_from"],
++                    document["supersedes_pack_sha256"], compiled.canonical_bytes, 1,
++                    source_count, definition_count, relation_count, citation_count, _now(),
++                ),
++            )
++            self._insert_projections(connection, compiled, projection_generation=1)
++            self._append_event(
++                connection,
++                pack_sha256=compiled.sha256,
++                event_type="PACK_IMPORTED",
++                projection_generation=1,
++            )
++        return compiled.sha256
++
++    def load_pack(self, *, pack_sha256: str) -> CompiledDomainPack:
++        with self._read_transaction() as connection:
++            self._validate_schema_or_raise(connection)
++            compiled = self._load_compiled(connection, pack_sha256)
++            self._projection_generation(connection, compiled, require_projection_rows=True)
++            return compiled
++
++    def get_source(self, *, pack_sha256: str, source_id: str) -> dict[str, object]:
++        with self._read_transaction() as connection:
++            compiled = self._load_compiled(connection, pack_sha256)
++            self._validate_projection_snapshot(connection, compiled)
++            row = connection.execute(
++                "SELECT source_json FROM engine_source_index WHERE pack_sha256 = ? AND source_id = ?",
++                (pack_sha256, source_id),
++            ).fetchone()
++            if row is None:
++                raise NotFoundError("source was not found")
++            actual = self._parse_json_text(row["source_json"], "source projection")
++            expected = compiled.sources_by_id.get(source_id)
++            if expected is None or actual != _materialize(expected):
++                raise ValidationError("source projection does not match canonical pack")
++            return cast(dict[str, object], actual)
++
++    def get_definition(self, *, pack_sha256: str, definition_code: str) -> DefinitionRecord:
++        with self._read_transaction() as connection:
++            compiled = self._load_compiled(connection, pack_sha256)
++            self._validate_projection_snapshot(connection, compiled)
++            row = connection.execute(
++                "SELECT definition_json FROM engine_definition_index WHERE pack_sha256 = ? AND definition_code = ?",
++                (pack_sha256, definition_code),
++            ).fetchone()
++            if row is None:
++                raise NotFoundError("definition was not found")
++            self._validate_definition_projection(compiled, definition_code, row["definition_json"])
++            return compiled.definitions_by_code[definition_code]
++
++    def list_definitions(
++        self,
++        *,
++        pack_sha256: str,
++        kind: DefinitionKind | None = None,
++        family: DomainFamily | None = None,
++    ) -> tuple[DefinitionRecord, ...]:
++        if kind is not None and not isinstance(kind, DefinitionKind):
++            raise ValidationError("kind must be a DefinitionKind")
++        if family is not None and not isinstance(family, DomainFamily):
++            raise ValidationError("family must be a DomainFamily")
++        clauses = ["pack_sha256 = ?"]
++        parameters: list[object] = [pack_sha256]
++        if kind is not None:
++            clauses.append("kind = ?")
++            parameters.append(kind.value)
++        if family is not None:
++            clauses.append("family = ?")
++            parameters.append(family.value)
++        with self._read_transaction() as connection:
++            compiled = self._load_compiled(connection, pack_sha256)
++            self._validate_projection_snapshot(connection, compiled)
++            rows = connection.execute(
++                "SELECT definition_code, definition_json FROM engine_definition_index WHERE "
++                + " AND ".join(clauses)
++                + " ORDER BY definition_code",
++                parameters,
++            ).fetchall()
++            result: list[DefinitionRecord] = []
++            for row in rows:
++                code = str(row["definition_code"])
++                self._validate_definition_projection(compiled, code, row["definition_json"])
++                result.append(compiled.definitions_by_code[code])
++            return tuple(result)
++
++    def get_relation(self, *, pack_sha256: str, relation_code: str) -> RelationRecord:
++        with self._read_transaction() as connection:
++            compiled = self._load_compiled(connection, pack_sha256)
++            self._validate_projection_snapshot(connection, compiled)
++            row = connection.execute(
++                "SELECT relation_json FROM engine_relation_index WHERE pack_sha256 = ? AND relation_code = ?",
++                (pack_sha256, relation_code),
++            ).fetchone()
++            if row is None:
++                raise NotFoundError("relation was not found")
++            self._validate_relation_projection(compiled, relation_code, row["relation_json"])
++            return compiled.relations_by_code[relation_code]
++
++    def neighbors(
++        self,
++        *,
++        pack_sha256: str,
++        definition_code: str,
++        relation: RelationKind | None = None,
++        direction: str = "OUT",
++    ) -> tuple[RelationRecord, ...]:
++        if relation is not None and not isinstance(relation, RelationKind):
++            raise ValidationError("relation must be a RelationKind")
++        if direction not in {"OUT", "IN", "BOTH"}:
++            raise ValidationError("direction must be OUT, IN, or BOTH")
++        with self._read_transaction() as connection:
++            compiled = self._load_compiled(connection, pack_sha256)
++            self._validate_projection_snapshot(connection, compiled)
++            if definition_code not in compiled.definitions_by_code:
++                raise NotFoundError("definition was not found")
++            endpoint_clause = {
++                "OUT": "from_code = ?",
++                "IN": "to_code = ?",
++                "BOTH": "(from_code = ? OR to_code = ?)",
++            }[direction]
++            parameters: list[object] = [pack_sha256, definition_code]
++            if direction == "BOTH":
++                parameters.append(definition_code)
++            relation_clause = ""
++            if relation is not None:
++                relation_clause = " AND kind = ?"
++                parameters.append(relation.value)
++            rows = connection.execute(
++                "SELECT relation_code, relation_json FROM engine_relation_index "
++                f"WHERE pack_sha256 = ? AND {endpoint_clause}{relation_clause} ORDER BY relation_code",
++                parameters,
++            ).fetchall()
++            result: list[RelationRecord] = []
++            for row in rows:
++                code = str(row["relation_code"])
++                self._validate_relation_projection(compiled, code, row["relation_json"])
++                result.append(compiled.relations_by_code[code])
++            return tuple(result)
++
++    def list_citations(
++        self, *, pack_sha256: str, assertion_kind: str, assertion_code: str
++    ) -> tuple[CitationRecord, ...]:
++        if assertion_kind not in _ASSERTION_KINDS:
++            raise ValidationError("assertion_kind must be DEFINITION or RELATION")
++        with self._read_transaction() as connection:
++            compiled = self._load_compiled(connection, pack_sha256)
++            self._validate_projection_snapshot(connection, compiled)
++            expected_record: DefinitionRecord | RelationRecord | None
++            if assertion_kind == "DEFINITION":
++                expected_record = compiled.definitions_by_code.get(assertion_code)
++            else:
++                expected_record = compiled.relations_by_code.get(assertion_code)
++            if expected_record is None:
++                raise NotFoundError("assertion was not found")
++            rows = connection.execute(
++                """
++                SELECT citation_ordinal, source_id, citation_json
++                FROM engine_citation_index
++                WHERE pack_sha256 = ? AND assertion_kind = ? AND assertion_code = ?
++                ORDER BY citation_ordinal
++                """,
++                (pack_sha256, assertion_kind, assertion_code),
++            ).fetchall()
++            actual = tuple(
++                CitationRecord(**cast(dict[str, str], self._parse_json_text(row["citation_json"], "citation projection")))
++                for row in rows
++            )
++            if actual != expected_record.citations or any(
++                row["source_id"] != citation.source_ref or row["citation_ordinal"] != index
++                for index, (row, citation) in enumerate(zip(rows, actual, strict=True))
++            ):
++                raise ValidationError("citation projection does not match canonical pack")
++            return actual
++
++    def list_events(self, *, pack_sha256: str) -> tuple[dict[str, object], ...]:
++        with self._read_transaction() as connection:
++            compiled = self._load_compiled(connection, pack_sha256)
++            self._projection_generation(connection, compiled, require_projection_rows=True)
++            rows = connection.execute(
++                """
++                SELECT event_sequence, event_type, projection_generation, previous_event_sha256,
++                       event_sha256, event_json, created_at
++                FROM engine_registry_events
++                WHERE pack_sha256 = ? ORDER BY event_sequence
++                """,
++                (pack_sha256,),
++            ).fetchall()
++            return tuple(
++                {
++                    "event_sequence": row["event_sequence"],
++                    "event_type": row["event_type"],
++                    "projection_generation": row["projection_generation"],
++                    "previous_event_sha256": row["previous_event_sha256"],
++                    "event_sha256": row["event_sha256"],
++                    "event": self._parse_json_text(row["event_json"], "registry event"),
++                    "created_at": row["created_at"],
++                }
++                for row in rows
++            )
++
++    def rebuild_indexes(self, *, pack_sha256: str | None = None) -> None:
++        with self._transaction() as connection:
++            self._validate_schema_or_raise(connection)
++            if pack_sha256 is None:
++                rows = connection.execute("SELECT pack_sha256 FROM engine_packs ORDER BY pack_sha256").fetchall()
++                digests = [str(row["pack_sha256"]) for row in rows]
++            else:
++                self._require_digest(pack_sha256)
++                if connection.execute("SELECT 1 FROM engine_packs WHERE pack_sha256 = ?", (pack_sha256,)).fetchone() is None:
++                    raise NotFoundError("domain pack was not found")
++                digests = [pack_sha256]
++            compiled_packs: list[tuple[CompiledDomainPack, int]] = []
++            for digest in digests:
++                compiled = self._load_compiled(connection, digest)
++                generation = self._projection_generation(
++                    connection, compiled, require_projection_rows=False
++                )
++                compiled_packs.append((compiled, generation))
++            for compiled, current_generation in compiled_packs:
++                digest = compiled.sha256
++                next_generation = current_generation + 1
++                connection.execute("DELETE FROM engine_citation_index WHERE pack_sha256 = ?", (digest,))
++                connection.execute("DELETE FROM engine_relation_index WHERE pack_sha256 = ?", (digest,))
++                connection.execute("DELETE FROM engine_definition_index WHERE pack_sha256 = ?", (digest,))
++                connection.execute("DELETE FROM engine_source_index WHERE pack_sha256 = ?", (digest,))
++                self._insert_projections(
++                    connection, compiled, projection_generation=next_generation
++                )
++                connection.execute(
++                    "UPDATE engine_packs SET projection_generation = ? WHERE pack_sha256 = ?",
++                    (next_generation, digest),
++                )
++                self._append_event(
++                    connection,
++                    pack_sha256=digest,
++                    event_type="PROJECTIONS_REBUILT",
++                    projection_generation=next_generation,
++                )
++
++    def verify_integrity(self) -> StoreIntegrityReport:
++        errors: list[str] = []
++        pack_count = 0
++        event_count = 0
++        try:
++            with self._read_transaction() as connection:
++                self._validate_schema_or_raise(connection)
++                pack_rows = connection.execute("SELECT pack_sha256 FROM engine_packs ORDER BY pack_sha256").fetchall()
++                pack_count = len(pack_rows)
++                event_count = connection.execute("SELECT COUNT(*) FROM engine_registry_events").fetchone()[0]
++                for row in pack_rows:
++                    digest = str(row["pack_sha256"])
++                    try:
++                        compiled = self._load_compiled(connection, digest)
++                        generation = self._projection_generation(
++                            connection, compiled, require_projection_rows=True
++                        )
++                        if self._actual_projection_snapshot(connection, digest) != self._expected_projection_snapshot(
++                            compiled, generation
++                        ):
++                            errors.append(f"pack {digest} projection mismatch")
++                    except (ValidationError, NotFoundError, sqlite3.DatabaseError, TypeError, ValueError) as error:
++                        errors.append(f"pack {digest} integrity failure: {error}")
++        except (ValidationError, sqlite3.DatabaseError) as error:
++            errors.append(str(error))
++        return StoreIntegrityReport(not errors, tuple(errors), pack_count, event_count)
++
++    @contextmanager
++    def _connect(self) -> Iterator[sqlite3.Connection]:
++        connection = sqlite3.connect(self._path, isolation_level=None)
++        try:
++            connection.row_factory = sqlite3.Row
++            connection.execute("PRAGMA foreign_keys = ON")
++            connection.create_function(
++                "helios_v2_pack_is_canonical", 11, self._sqlite_pack_is_canonical, deterministic=True
++            )
++            connection.create_function(
++                "helios_v2_event_is_canonical", 8, self._sqlite_event_is_canonical, deterministic=True
++            )
++            yield connection
++        finally:
++            connection.close()
++
++    @contextmanager
++    def _read_transaction(self) -> Iterator[sqlite3.Connection]:
++        """Hold one stable SQLite snapshot across validation and the dependent read."""
++        with self._connect() as connection:
++            try:
++                connection.execute("BEGIN")
++                yield connection
++                connection.commit()
++            except BaseException:
++                connection.rollback()
++                raise
++
++    @contextmanager
++    def _transaction(self) -> Iterator[sqlite3.Connection]:
++        with self._connect() as connection:
++            try:
++                connection.execute("BEGIN IMMEDIATE")
++                yield connection
++                connection.commit()
++            except BaseException:
++                connection.rollback()
++                raise
++
++    @staticmethod
++    def _sqlite_pack_is_canonical(
++        canonical_json: object,
++        digest: object,
++        protocol: object,
++        pack_code: object,
++        version: object,
++        valid_from: object,
++        supersedes_pack_sha256: object,
++        source_count: object,
++        definition_count: object,
++        relation_count: object,
++        citation_count: object,
++    ) -> int:
++        try:
++            if not isinstance(canonical_json, bytes) or not isinstance(digest, str):
++                return 0
++            document = json.loads(canonical_json.decode("utf-8"), parse_constant=lambda value: (_ for _ in ()).throw(ValueError(value)))
++            compiled = compile_domain_pack(document)
++            expected_header = (
++                document["protocol"], document["pack_code"], document["version"],
++                document["valid_from"], document["supersedes_pack_sha256"],
++                *EngineStore._projection_counts(compiled),
++            )
++            actual_header = (
++                protocol, pack_code, version, valid_from, supersedes_pack_sha256,
++                source_count, definition_count, relation_count, citation_count,
++            )
++            return int(
++                compiled.canonical_bytes == canonical_json
++                and compiled.sha256 == digest
++                and actual_header == expected_header
++            )
++        except Exception:
++            return 0
++
++    @staticmethod
++    def _sqlite_event_is_canonical(
++        event_json: object,
++        event_sha256: object,
++        pack_sha256: object,
++        event_sequence: object,
++        event_type: object,
++        projection_generation: object,
++        previous_event_sha256: object,
++        created_at: object,
++    ) -> int:
++        try:
++            if (
++                not isinstance(event_json, str)
++                or not isinstance(event_sha256, str)
++                or not isinstance(pack_sha256, str)
++                or not isinstance(event_sequence, int)
++                or not isinstance(event_type, str)
++                or not isinstance(projection_generation, int)
++                or (previous_event_sha256 is not None and not isinstance(previous_event_sha256, str))
++                or not isinstance(created_at, str)
++            ):
++                return 0
++            event = {
++                "protocol": "helios.engine.registry-event/v1",
++                "pack_sha256": pack_sha256,
++                "event_sequence": event_sequence,
++                "event_type": event_type,
++                "projection_generation": projection_generation,
++                "previous_event_sha256": previous_event_sha256,
++                "created_at": created_at,
++            }
++            canonical = _json_text(event)
++            return int(
++                event_json == canonical
++                and event_sha256 == hashlib.sha256(canonical.encode("utf-8")).hexdigest()
++            )
++        except Exception:
++            return 0
++
++    @staticmethod
++    def _migration_bytes() -> bytes:
++        return (resources.files("helios_takeoff_core.engine.v2") / "migrations" / _MIGRATION_NAME).read_bytes()
++
++    @classmethod
++    def _expected_schema_objects(cls) -> dict[tuple[str, str], str]:
++        connection = sqlite3.connect(":memory:", isolation_level=None)
++        try:
++            connection.create_function("helios_v2_pack_is_canonical", 11, lambda *_args: 0, deterministic=True)
++            connection.create_function("helios_v2_event_is_canonical", 8, lambda *_args: 0, deterministic=True)
++            for statement in cls._sql_statements(cls._migration_bytes().decode("utf-8")):
++                connection.execute(statement)
++            return cls._schema_objects(connection)
++        finally:
++            connection.close()
++
++    @staticmethod
++    def _schema_objects(connection: sqlite3.Connection) -> dict[tuple[str, str], str]:
++        rows = connection.execute(
++            """
++            SELECT type, name, sql FROM sqlite_master
++            WHERE type IN ('table', 'index', 'trigger')
++              AND name NOT LIKE 'sqlite_%' AND sql IS NOT NULL
++            """
++        ).fetchall()
++        return {(str(row[0]), str(row[1])): str(row[2]) for row in rows}
++
++    @staticmethod
++    def _table_names(connection: sqlite3.Connection) -> set[str]:
++        return {
++            str(row[0])
++            for row in connection.execute(
++                "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
++            ).fetchall()
++        }
++
++    def _validate_schema_or_raise(self, connection: sqlite3.Connection) -> None:
++        tables = self._table_names(connection)
++        if tables != _EXPECTED_TABLES:
++            raise ValidationError("engine store must be an isolated exact seven-table database")
++        if self._schema_objects(connection) != self._expected_schema_objects():
++            raise ValidationError("engine store schema objects do not match the packaged migration")
++        rows = connection.execute("SELECT version, name, sha256 FROM engine_store_migrations").fetchall()
++        expected_digest = hashlib.sha256(self._migration_bytes()).hexdigest()
++        if len(rows) != 1 or tuple(rows[0]) != (1, _MIGRATION_NAME, expected_digest):
++            raise ValidationError("engine store migration identity is invalid")
++        if connection.execute("PRAGMA foreign_key_check").fetchone() is not None:
++            raise ValidationError("engine store contains a foreign-key violation")
++
++    @staticmethod
++    def _sql_statements(script: str) -> Iterator[str]:
++        pending = ""
++        for line in script.splitlines(keepends=True):
++            pending += line
++            if sqlite3.complete_statement(pending):
++                statement = pending.strip()
++                if statement:
++                    yield statement
++                pending = ""
++        if pending.strip():
++            raise sqlite3.OperationalError("migration ends with an incomplete SQL statement")
++
++    @classmethod
++    def _validated_compiled_pack(cls, pack: CompiledDomainPack) -> CompiledDomainPack:
++        if not isinstance(pack, CompiledDomainPack) or not isinstance(pack.canonical_bytes, bytes):
++            raise ValidationError("pack must be a compiled v2 domain pack")
++        if hashlib.sha256(pack.canonical_bytes).hexdigest() != pack.sha256:
++            raise ValidationError("pack digest does not match canonical bytes")
++        try:
++            document = json.loads(pack.canonical_bytes.decode("utf-8"), parse_constant=lambda value: (_ for _ in ()).throw(ValueError(value)))
++            recompiled = compile_domain_pack(document)
++            declared = _materialize(pack.canonical_document)
++        except (UnicodeDecodeError, json.JSONDecodeError, TypeError, ValueError) as error:
++            raise ValidationError("pack canonical content is invalid") from error
++        if recompiled.canonical_bytes != pack.canonical_bytes or recompiled.sha256 != pack.sha256 or declared != document:
++            raise ValidationError("pack projections do not share one canonical identity")
++        if (
++            _materialize(pack.sources_by_id) != _materialize(recompiled.sources_by_id)
++            or pack.definitions_by_code != recompiled.definitions_by_code
++            or pack.relations_by_code != recompiled.relations_by_code
++        ):
++            raise ValidationError("pack compiled indexes do not match canonical bytes")
++        return recompiled
++
++    @classmethod
++    def _validate_supersession(
++        cls, connection: sqlite3.Connection, compiled: CompiledDomainPack, document: dict[str, object]
++    ) -> None:
++        supersedes = document["supersedes_pack_sha256"]
++        if supersedes is None:
++            return
++        try:
++            prior = cls._load_compiled(connection, cast(str, supersedes))
++        except NotFoundError:
++            raise ValidationError("superseded pack has not been imported")
++        prior_document = prior.canonical_document
++        if prior_document["pack_code"] != document["pack_code"]:
++            raise ValidationError("superseded pack must have the same pack_code")
++        if prior_document["version"] == document["version"] or prior.sha256 == compiled.sha256:
++            raise ValidationError("superseding pack must have a different version and digest")
++        if date.fromisoformat(str(prior_document["valid_from"])) >= date.fromisoformat(str(document["valid_from"])):
++            raise ValidationError("superseded pack valid_from must be strictly earlier")
++
++    @staticmethod
++    def _projection_counts(compiled: CompiledDomainPack) -> tuple[int, int, int, int]:
++        citation_count = sum(
++            len(record.citations) for record in compiled.definitions_by_code.values()
++        ) + sum(len(record.citations) for record in compiled.relations_by_code.values())
++        return (
++            len(compiled.sources_by_id),
++            len(compiled.definitions_by_code),
++            len(compiled.relations_by_code),
++            citation_count,
++        )
++
++    @classmethod
++    def _insert_projections(
++        cls,
++        connection: sqlite3.Connection,
++        compiled: CompiledDomainPack,
++        *,
++        projection_generation: int,
++    ) -> None:
++        document = cast(dict[str, object], json.loads(compiled.canonical_bytes))
++        digest = compiled.sha256
++        for source in cast(list[dict[str, object]], document["sources"]):
++            connection.execute(
++                """
++                INSERT INTO engine_source_index(
++                    pack_sha256, source_id, projection_generation, source_json
++                ) VALUES (?, ?, ?, ?)
++                """,
++                (digest, source["source_id"], projection_generation, _json_text(source)),
++            )
++        for definition in cast(list[dict[str, object]], document["definitions"]):
++            connection.execute(
++                """
++                INSERT INTO engine_definition_index(
++                    pack_sha256, definition_code, kind, family,
++                    projection_generation, definition_json
++                ) VALUES (?, ?, ?, ?, ?, ?)
++                """,
++                (
++                    digest, definition["code"], definition["kind"], definition["family"],
++                    projection_generation, _json_text(definition),
++                ),
++            )
++        for relation in cast(list[dict[str, object]], document["relations"]):
++            connection.execute(
++                """
++                INSERT INTO engine_relation_index(
++                    pack_sha256, relation_code, kind, from_code, to_code,
++                    projection_generation, relation_json
++                ) VALUES (?, ?, ?, ?, ?, ?, ?)
++                """,
++                (
++                    digest, relation["code"], relation["kind"], relation["from_code"],
++                    relation["to_code"], projection_generation, _json_text(relation),
++                ),
++            )
++        for assertion_kind, assertions in (
++            ("DEFINITION", cast(list[dict[str, object]], document["definitions"])),
++            ("RELATION", cast(list[dict[str, object]], document["relations"])),
++        ):
++            for assertion in assertions:
++                for ordinal, citation in enumerate(cast(list[dict[str, str]], assertion["citations"])):
++                    connection.execute(
++                        """
++                        INSERT INTO engine_citation_index(
++                            pack_sha256, assertion_kind, assertion_code,
++                            citation_ordinal, source_id, projection_generation, citation_json
++                        ) VALUES (?, ?, ?, ?, ?, ?, ?)
++                        """,
++                        (
++                            digest, assertion_kind, assertion["code"], ordinal,
++                            citation["source_ref"], projection_generation, _json_text(citation),
++                        ),
++                    )
++
++    @staticmethod
++    def _append_event(
++        connection: sqlite3.Connection,
++        *,
++        pack_sha256: str,
++        event_type: str,
++        projection_generation: int,
++    ) -> None:
++        prior = connection.execute(
++            """
++            SELECT event_sequence, event_sha256, projection_generation FROM engine_registry_events
++            WHERE pack_sha256 = ? ORDER BY event_sequence DESC LIMIT 1
++            """,
++            (pack_sha256,),
++        ).fetchone()
++        sequence = 1 if prior is None else int(prior["event_sequence"]) + 1
++        previous = None if prior is None else str(prior["event_sha256"])
++        expected_type = "PACK_IMPORTED" if prior is None else "PROJECTIONS_REBUILT"
++        if event_type != expected_type:
++            raise ValidationError("registry event type does not match lifecycle position")
++        expected_generation = 1 if prior is None else int(prior["projection_generation"]) + 1
++        if projection_generation != expected_generation:
++            raise ValidationError("registry event projection generation does not match lifecycle position")
++        created_at = _now()
++        event = {
++            "protocol": "helios.engine.registry-event/v1",
++            "pack_sha256": pack_sha256,
++            "event_sequence": sequence,
++            "event_type": event_type,
++            "projection_generation": projection_generation,
++            "previous_event_sha256": previous,
++            "created_at": created_at,
++        }
++        event_json = _json_text(event)
++        event_sha256 = hashlib.sha256(event_json.encode("utf-8")).hexdigest()
++        connection.execute(
++            """
++            INSERT INTO engine_registry_events(
++                pack_sha256, event_sequence, event_type, projection_generation,
++                previous_event_sha256, event_sha256, event_json, created_at
++            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
++            """,
++            (
++                pack_sha256, sequence, event_type, projection_generation,
++                previous, event_sha256, event_json, created_at,
++            ),
++        )
++
++    @staticmethod
++    def _require_digest(digest: str) -> None:
++        if not isinstance(digest, str) or len(digest) != 64 or any(character not in "0123456789abcdef" for character in digest):
++            raise ValidationError("pack_sha256 must be a lowercase SHA-256 digest")
++
++    @classmethod
++    def _load_compiled(
++        cls,
++        connection: sqlite3.Connection,
++        digest: str,
++        *,
++        _lineage: frozenset[str] | None = None,
++    ) -> CompiledDomainPack:
++        cls._require_digest(digest)
++        lineage = frozenset() if _lineage is None else _lineage
++        if digest in lineage:
++            raise ValidationError("persisted supersession lineage contains a cycle")
++        row = connection.execute(
++            """
++            SELECT pack_sha256, protocol, pack_code, version, valid_from,
++                   supersedes_pack_sha256, canonical_json, projection_generation,
++                   source_count, definition_count, relation_count, citation_count
++            FROM engine_packs WHERE pack_sha256 = ?
++            """,
++            (digest,),
++        ).fetchone()
++        if row is None:
++            raise NotFoundError("domain pack was not found")
++        blob = row["canonical_json"]
++        if not isinstance(blob, bytes):
++            raise ValidationError("canonical pack authority must be stored as bytes")
++        try:
++            document = json.loads(blob.decode("utf-8"), parse_constant=lambda value: (_ for _ in ()).throw(ValueError(value)))
++            compiled = compile_domain_pack(document)
++        except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as error:
++            raise ValidationError("canonical pack blob is invalid") from error
++        if compiled.canonical_bytes != blob or compiled.sha256 != digest:
++            raise ValidationError("canonical pack blob identity is invalid")
++        expected_header = (
++            digest,
++            document["protocol"],
++            document["pack_code"],
++            document["version"],
++            document["valid_from"],
++            document["supersedes_pack_sha256"],
++            *cls._projection_counts(compiled),
++        )
++        actual_header = (
++            row["pack_sha256"], row["protocol"], row["pack_code"], row["version"],
++            row["valid_from"], row["supersedes_pack_sha256"], row["source_count"],
++            row["definition_count"], row["relation_count"], row["citation_count"],
++        )
++        if actual_header != expected_header:
++            raise ValidationError("canonical pack header does not match canonical blob")
++        if not isinstance(row["projection_generation"], int) or row["projection_generation"] < 1:
++            raise ValidationError("canonical pack projection generation is invalid")
++        supersedes = document["supersedes_pack_sha256"]
++        if supersedes is not None:
++            try:
++                prior = cls._load_compiled(
++                    connection,
++                    cast(str, supersedes),
++                    _lineage=lineage | {digest},
++                )
++            except NotFoundError as error:
++                raise ValidationError("persisted supersession lineage references a missing pack") from error
++            prior_document = prior.canonical_document
++            if (
++                prior.sha256 == compiled.sha256
++                or prior_document["pack_code"] != document["pack_code"]
++                or prior_document["version"] == document["version"]
++                or date.fromisoformat(str(prior_document["valid_from"]))
++                >= date.fromisoformat(str(document["valid_from"]))
++            ):
++                raise ValidationError("persisted supersession lineage is invalid")
++        return compiled
++
++    @staticmethod
++    def _parse_json_text(value: object, context: str) -> object:
++        if not isinstance(value, str):
++            raise ValidationError(f"{context} must be canonical JSON text")
++        try:
++            parsed = json.loads(value, parse_constant=lambda constant: (_ for _ in ()).throw(ValueError(constant)))
++        except (json.JSONDecodeError, ValueError) as error:
++            raise ValidationError(f"{context} is invalid") from error
++        if _json_text(parsed) != value:
++            raise ValidationError(f"{context} is not canonical")
++        return parsed
++
++    @classmethod
++    def _validate_definition_projection(
++        cls, compiled: CompiledDomainPack, code: str, serialized: object
++    ) -> None:
++        record = compiled.definitions_by_code.get(code)
++        if record is None:
++            raise ValidationError("definition projection contains an unknown code")
++        actual = cls._parse_json_text(serialized, "definition projection")
++        expected = next(
++            item for item in cast(tuple[Mapping[str, object], ...], compiled.canonical_document["definitions"])
++            if item["code"] == code
++        )
++        if actual != _materialize(expected):
++            raise ValidationError("definition projection does not match canonical pack")
++
++    @classmethod
++    def _validate_relation_projection(
++        cls, compiled: CompiledDomainPack, code: str, serialized: object
++    ) -> None:
++        record = compiled.relations_by_code.get(code)
++        if record is None:
++            raise ValidationError("relation projection contains an unknown code")
++        actual = cls._parse_json_text(serialized, "relation projection")
++        expected = next(
++            item for item in cast(tuple[Mapping[str, object], ...], compiled.canonical_document["relations"])
++            if item["code"] == code
++        )
++        if actual != _materialize(expected):
++            raise ValidationError("relation projection does not match canonical pack")
++
++    @staticmethod
++    def _expected_projection_snapshot(
++        compiled: CompiledDomainPack, projection_generation: int
++    ) -> dict[str, tuple[tuple[object, ...], ...]]:
++        document = cast(dict[str, object], json.loads(compiled.canonical_bytes))
++        sources = tuple(
++            (source["source_id"], projection_generation, _json_text(source))
++            for source in cast(list[dict[str, object]], document["sources"])
++        )
++        definitions = tuple(
++            (
++                definition["code"], definition["kind"], definition["family"],
++                projection_generation, _json_text(definition),
++            )
++            for definition in cast(list[dict[str, object]], document["definitions"])
++        )
++        relations = tuple(
++            (
++                relation["code"], relation["kind"], relation["from_code"],
++                relation["to_code"], projection_generation, _json_text(relation),
++            )
++            for relation in cast(list[dict[str, object]], document["relations"])
++        )
++        citations: list[tuple[object, ...]] = []
++        for assertion_kind, assertions in (
++            ("DEFINITION", cast(list[dict[str, object]], document["definitions"])),
++            ("RELATION", cast(list[dict[str, object]], document["relations"])),
++        ):
++            for assertion in assertions:
++                for ordinal, citation in enumerate(cast(list[dict[str, str]], assertion["citations"])):
++                    citations.append(
++                        (
++                            assertion_kind, assertion["code"], ordinal, citation["source_ref"],
++                            projection_generation, _json_text(citation),
++                        )
++                    )
++        return {
++            "sources": sources,
++            "definitions": definitions,
++            "relations": relations,
++            "citations": tuple(sorted(citations)),
++        }
++
++    @staticmethod
++    def _actual_projection_snapshot(
++        connection: sqlite3.Connection, digest: str
++    ) -> dict[str, tuple[tuple[object, ...], ...]]:
++        queries = {
++            "sources": "SELECT source_id, projection_generation, source_json FROM engine_source_index WHERE pack_sha256 = ? ORDER BY source_id",
++            "definitions": "SELECT definition_code, kind, family, projection_generation, definition_json FROM engine_definition_index WHERE pack_sha256 = ? ORDER BY definition_code",
++            "relations": "SELECT relation_code, kind, from_code, to_code, projection_generation, relation_json FROM engine_relation_index WHERE pack_sha256 = ? ORDER BY relation_code",
++            "citations": "SELECT assertion_kind, assertion_code, citation_ordinal, source_id, projection_generation, citation_json FROM engine_citation_index WHERE pack_sha256 = ? ORDER BY assertion_kind, assertion_code, citation_ordinal",
++        }
++        return {
++            name: tuple(tuple(row) for row in connection.execute(query, (digest,)).fetchall())
++            for name, query in queries.items()
++        }
++
++    @classmethod
++    def _validate_projection_snapshot(
++        cls, connection: sqlite3.Connection, compiled: CompiledDomainPack
++    ) -> None:
++        generation = cls._projection_generation(
++            connection, compiled, require_projection_rows=True
++        )
++        if cls._actual_projection_snapshot(connection, compiled.sha256) != cls._expected_projection_snapshot(
++            compiled, generation
++        ):
++            raise ValidationError("projection snapshot does not match canonical pack")
++
++    @classmethod
++    def _projection_generation(
++        cls,
++        connection: sqlite3.Connection,
++        compiled: CompiledDomainPack,
++        *,
++        require_projection_rows: bool,
++    ) -> int:
++        row = connection.execute(
++            """
++            SELECT projection_generation, source_count, definition_count,
++                   relation_count, citation_count
++            FROM engine_packs WHERE pack_sha256 = ?
++            """,
++            (compiled.sha256,),
++        ).fetchone()
++        if row is None:
++            raise NotFoundError("domain pack was not found")
++        generation = row["projection_generation"]
++        if not isinstance(generation, int) or generation < 1:
++            raise ValidationError("projection generation state is invalid")
++        event_errors = cls._event_errors(connection, compiled.sha256)
++        if event_errors:
++            raise ValidationError(event_errors[0])
++        latest = connection.execute(
++            """
++            SELECT projection_generation FROM engine_registry_events
++            WHERE pack_sha256 = ? ORDER BY event_sequence DESC LIMIT 1
++            """,
++            (compiled.sha256,),
++        ).fetchone()
++        if latest is None or latest["projection_generation"] != generation:
++            raise ValidationError("pack and registry event projection generations disagree")
++        if require_projection_rows:
++            expectations = (
++                ("engine_source_index", int(row["source_count"])),
++                ("engine_definition_index", int(row["definition_count"])),
++                ("engine_relation_index", int(row["relation_count"])),
++                ("engine_citation_index", int(row["citation_count"])),
++            )
++            for table, expected_count in expectations:
++                total, current = connection.execute(
++                    f"""
++                    SELECT COUNT(*),
++                           SUM(CASE WHEN projection_generation = ? THEN 1 ELSE 0 END)
++                    FROM {table} WHERE pack_sha256 = ?
++                    """,
++                    (generation, compiled.sha256),
++                ).fetchone()
++                current_count = 0 if current is None else int(current)
++                if int(total) != expected_count or current_count != expected_count:
++                    raise ValidationError(
++                        "projection snapshot generation rows do not match current pack state"
++                    )
++        return generation
++
++    @staticmethod
++    def _event_errors(connection: sqlite3.Connection, digest: str) -> list[str]:
++        rows = connection.execute(
++            """
++            SELECT event_sequence, event_type, projection_generation, previous_event_sha256,
++                   event_sha256, event_json, created_at
++            FROM engine_registry_events WHERE pack_sha256 = ? ORDER BY event_sequence
++            """,
++            (digest,),
++        ).fetchall()
++        errors: list[str] = []
++        previous: str | None = None
++        for expected_sequence, row in enumerate(rows, start=1):
++            expected_type = "PACK_IMPORTED" if expected_sequence == 1 else "PROJECTIONS_REBUILT"
++            expected_event = {
++                "protocol": "helios.engine.registry-event/v1",
++                "pack_sha256": digest,
++                "event_sequence": expected_sequence,
++                "event_type": expected_type,
++                "projection_generation": expected_sequence,
++                "previous_event_sha256": previous,
++                "created_at": row["created_at"],
++            }
++            expected_json = _json_text(expected_event)
++            expected_hash = hashlib.sha256(expected_json.encode("utf-8")).hexdigest()
++            if (
++                row["event_sequence"] != expected_sequence
++                or row["event_type"] != expected_type
++                or row["projection_generation"] != expected_sequence
++                or row["previous_event_sha256"] != previous
++                or row["event_json"] != expected_json
++                or row["event_sha256"] != expected_hash
++            ):
++                errors.append(f"pack {digest} registry event chain mismatch")
++                break
++            previous = str(row["event_sha256"])
++        if not rows:
++            errors.append(f"pack {digest} has no registry event")
++        return errors
+diff --git a/tests/fixtures/engine_v2/full_division23_registry_pack.json b/tests/fixtures/engine_v2/full_division23_registry_pack.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..d3db8277efeb8e8bd15fe4f6003e47162b8698d2
+--- /dev/null
++++ b/tests/fixtures/engine_v2/full_division23_registry_pack.json
+@@ -0,0 +1,264 @@
++{
++  "protocol": "helios.engine.domain-pack/v2",
++  "pack_code": "DIV23-FULL-SPECTRUM",
++  "version": "1.0.0",
++  "title": "Division 23 full-spectrum registry test fixture",
++  "jurisdiction": "US-NY",
++  "valid_from": "2026-01-01",
++  "valid_through": null,
++  "supersedes_pack_sha256": null,
++  "sources": [
++    {
++      "source_id": "FIXTURE-AIRSIDE",
++      "authority_class": "TEST_FIXTURE",
++      "stable_reference": "fixture://division23/airside",
++      "publisher": "HELIOS test suite",
++      "title": "Airside registry fixture",
++      "retrieved_on": "2026-09-01",
++      "jurisdiction": "US-NY",
++      "content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
++    },
++    {
++      "source_id": "FIXTURE-COMMERCIAL",
++      "authority_class": "TEST_FIXTURE",
++      "stable_reference": "fixture://division23/commercial",
++      "publisher": "HELIOS test suite",
++      "title": "Commercial registry fixture",
++      "retrieved_on": "2026-09-01",
++      "jurisdiction": "US-NY",
++      "content_sha256": null
++    },
++    {
++      "source_id": "FIXTURE-PIPING",
++      "authority_class": "TEST_FIXTURE",
++      "stable_reference": "fixture://division23/piping",
++      "publisher": "HELIOS test suite",
++      "title": "Piping registry fixture",
++      "retrieved_on": "2026-09-01",
++      "jurisdiction": "US-NY",
++      "content_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
++    }
++  ],
++  "definitions": [
++    {
++      "code": "ACC-ACCESS-DOOR",
++      "kind": "ACCESSORY",
++      "family": "AIRSIDE",
++      "title": "Access door",
++      "description": "Non-authoritative accessory example.",
++      "attributes": {"uom": "EA"},
++      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "accessories", "applicability": "fixture only", "limitations": "not production knowledge"}]
++    },
++    {
++      "code": "CONN-SLIP",
++      "kind": "CONNECTION",
++      "family": "SHARED",
++      "title": "Slip connection",
++      "description": "Non-authoritative connection example.",
++      "attributes": {"uom": "EA"},
++      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "connections", "applicability": "fixture only", "limitations": "not production knowledge"}]
++    },
++    {
++      "code": "CONN-SOLDER",
++      "kind": "CONNECTION",
++      "family": "PIPING",
++      "title": "Soldered connection",
++      "description": "Non-authoritative hydronic connection example.",
++      "attributes": {"uom": "EA"},
++      "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "connections", "applicability": "fixture only", "limitations": "not production knowledge"}]
++    },
++    {
++      "code": "DUCT-RECT",
++      "kind": "DUCT",
++      "family": "AIRSIDE",
++      "title": "Rectangular duct",
++      "description": "Non-authoritative duct example.",
++      "attributes": {"shape": "RECTANGULAR", "uom": "LF"},
++      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "duct", "applicability": "fixture only", "limitations": "not production knowledge"}]
++    },
++    {
++      "code": "EQ-AHU",
++      "kind": "EQUIPMENT",
++      "family": "EQUIPMENT",
++      "title": "Air handling unit",
++      "description": "Non-authoritative equipment example.",
++      "attributes": {"uom": "EA"},
++      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "equipment", "applicability": "fixture only", "limitations": "not production knowledge"}]
++    },
++    {
++      "code": "FIT-ELBOW",
++      "kind": "FITTING",
++      "family": "SHARED",
++      "title": "Elbow",
++      "description": "Non-authoritative fitting example.",
++      "attributes": {"uom": "EA"},
++      "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "fittings", "applicability": "fixture only", "limitations": "not production knowledge"}]
++    },
++    {
++      "code": "INS-DUCT-WRAP",
++      "kind": "INSULATION",
++      "family": "INSULATION",
++      "title": "Duct wrap",
++      "description": "Non-authoritative insulation example.",
++      "attributes": {"uom": "SF"},
++      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "insulation", "applicability": "fixture only", "limitations": "not production knowledge"}]
++    },
++    {
++      "code": "INS-PIPE",
++      "kind": "INSULATION",
++      "family": "INSULATION",
++      "title": "Pipe insulation",
++      "description": "Non-authoritative hydronic insulation example.",
++      "attributes": {"uom": "LF"},
++      "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "insulation", "applicability": "fixture only", "limitations": "not production knowledge"}]
++    },
++    {
++      "code": "LAB-DUCT",
++      "kind": "LABOR_ASSEMBLY",
++      "family": "LABOR",
++      "title": "Duct labor assembly",
++      "description": "Non-authoritative labor example.",
++      "attributes": {"uom": "HOUR"},
++      "citations": [{"source_ref": "FIXTURE-COMMERCIAL", "locator": "labor", "applicability": "fixture only", "limitations": "not a labor rate"}]
++    },
++    {
++      "code": "LAB-PIPE",
++      "kind": "LABOR_ASSEMBLY",
++      "family": "LABOR",
++      "title": "Pipe labor assembly",
++      "description": "Non-authoritative hydronic labor example.",
++      "attributes": {"uom": "HOUR"},
++      "citations": [{"source_ref": "FIXTURE-COMMERCIAL", "locator": "pipe-labor", "applicability": "fixture only", "limitations": "not a labor rate"}]
++    },
++    {
++      "code": "MAT-GALV",
++      "kind": "MATERIAL",
++      "family": "SHARED",
++      "title": "Galvanized sheet",
++      "description": "Non-authoritative material example.",
++      "attributes": {"uom": "SF"},
++      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "materials", "applicability": "fixture only", "limitations": "not production knowledge"}]
++    },
++    {
++      "code": "MAT-COPPER",
++      "kind": "MATERIAL",
++      "family": "PIPING",
++      "title": "Copper tube material",
++      "description": "Non-authoritative hydronic material example.",
++      "attributes": {"uom": "LF"},
++      "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "materials", "applicability": "fixture only", "limitations": "not production knowledge"}]
++    },
++    {
++      "code": "PIPE-HWS",
++      "kind": "PIPE",
++      "family": "PIPING",
++      "title": "Heating-water supply pipe",
++      "description": "Non-authoritative pipe example.",
++      "attributes": {"uom": "LF"},
++      "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "pipe", "applicability": "fixture only", "limitations": "not production knowledge"}]
++    },
++    {
++      "code": "PRICE-DUCT",
++      "kind": "PRICING_INPUT",
++      "family": "PRICING",
++      "title": "Duct pricing input",
++      "description": "Non-authoritative pricing-input shape example.",
++      "attributes": {"currency": "USD"},
++      "citations": [{"source_ref": "FIXTURE-COMMERCIAL", "locator": "pricing", "applicability": "fixture only", "limitations": "contains no price and is not bid eligible"}]
++    },
++    {
++      "code": "PRICE-PIPE",
++      "kind": "PRICING_INPUT",
++      "family": "PRICING",
++      "title": "Pipe pricing input",
++      "description": "Non-authoritative hydronic pricing-input shape example.",
++      "attributes": {"currency": "USD"},
++      "citations": [{"source_ref": "FIXTURE-COMMERCIAL", "locator": "pipe-pricing", "applicability": "fixture only", "limitations": "contains no price and is not bid eligible"}]
++    },
++    {
++      "code": "RULE-DIV23",
++      "kind": "RULE_CANDIDATE",
++      "family": "CODE_SPEC",
++      "title": "Division 23 rule candidate",
++      "description": "Non-authoritative rule-candidate example.",
++      "attributes": {"status": "CANDIDATE"},
++      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rules", "applicability": "fixture only", "limitations": "not an approved executable rule"}]
++    },
++    {
++      "code": "SUP-TRAPEZE",
++      "kind": "SUPPORT",
++      "family": "SUPPORTS",
++      "title": "Trapeze support",
++      "description": "Non-authoritative support example.",
++      "attributes": {"uom": "EA"},
++      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "supports", "applicability": "fixture only", "limitations": "not production knowledge"}]
++    },
++    {
++      "code": "SUP-PIPE-HANGER",
++      "kind": "SUPPORT",
++      "family": "SUPPORTS",
++      "title": "Pipe hanger",
++      "description": "Non-authoritative hydronic support example.",
++      "attributes": {"uom": "EA"},
++      "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "supports", "applicability": "fixture only", "limitations": "not production knowledge"}]
++    },
++    {
++      "code": "SYS-SUPPLY-AIR",
++      "kind": "SYSTEM",
++      "family": "AIRSIDE",
++      "title": "Supply air system",
++      "description": "Non-authoritative system example.",
++      "attributes": {"service": "SUPPLY_AIR"},
++      "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "systems", "applicability": "fixture only", "limitations": "not production knowledge"}]
++    },
++    {
++      "code": "SYS-HYDRONIC-HW",
++      "kind": "SYSTEM",
++      "family": "PIPING",
++      "title": "Heating-water system",
++      "description": "Non-authoritative hydronic system example.",
++      "attributes": {"service": "HEATING_WATER"},
++      "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "systems", "applicability": "fixture only", "limitations": "not production knowledge"}]
++    },
++    {
++      "code": "VALVE-BALANCE",
++      "kind": "VALVE",
++      "family": "PIPING",
++      "title": "Balancing valve",
++      "description": "Non-authoritative valve example.",
++      "attributes": {"uom": "EA"},
++      "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "valves", "applicability": "fixture only", "limitations": "not production knowledge"}]
++    }
++  ],
++  "relations": [
++    {"code": "REL-BELONGS", "kind": "BELONGS_TO_SYSTEM", "from_code": "EQ-AHU", "to_code": "SYS-SUPPLY-AIR", "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rel-belongs", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-COMPOSED", "kind": "COMPOSED_OF", "from_code": "EQ-AHU", "to_code": "DUCT-RECT", "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rel-composed", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-GOVERNED", "kind": "GOVERNED_BY_RULE", "from_code": "DUCT-RECT", "to_code": "RULE-DIV23", "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rel-rule", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-LABOR", "kind": "HAS_LABOR_ASSEMBLY", "from_code": "DUCT-RECT", "to_code": "LAB-DUCT", "citations": [{"source_ref": "FIXTURE-COMMERCIAL", "locator": "rel-labor", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-PRICE", "kind": "HAS_PRICING_INPUT", "from_code": "DUCT-RECT", "to_code": "PRICE-DUCT", "citations": [{"source_ref": "FIXTURE-COMMERCIAL", "locator": "rel-price", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-ACCESSORY", "kind": "REQUIRES_ACCESSORY", "from_code": "DUCT-RECT", "to_code": "ACC-ACCESS-DOOR", "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rel-accessory", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-INSULATION", "kind": "REQUIRES_INSULATION", "from_code": "DUCT-RECT", "to_code": "INS-DUCT-WRAP", "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rel-insulation", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-SUPPORT", "kind": "REQUIRES_SUPPORT", "from_code": "DUCT-RECT", "to_code": "SUP-TRAPEZE", "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rel-support", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-CONNECTION", "kind": "USES_CONNECTION", "from_code": "DUCT-RECT", "to_code": "CONN-SLIP", "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rel-connection", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-MATERIAL", "kind": "USES_MATERIAL", "from_code": "DUCT-RECT", "to_code": "MAT-GALV", "citations": [{"source_ref": "FIXTURE-AIRSIDE", "locator": "rel-material", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-PIPE-BELONGS", "kind": "BELONGS_TO_SYSTEM", "from_code": "PIPE-HWS", "to_code": "SYS-HYDRONIC-HW", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-pipe-belongs", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-PIPE-COMPOSED-FITTING", "kind": "COMPOSED_OF", "from_code": "PIPE-HWS", "to_code": "FIT-ELBOW", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-pipe-fitting", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-PIPE-COMPOSED-VALVE", "kind": "COMPOSED_OF", "from_code": "PIPE-HWS", "to_code": "VALVE-BALANCE", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-pipe-valve", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-PIPE-MATERIAL", "kind": "USES_MATERIAL", "from_code": "PIPE-HWS", "to_code": "MAT-COPPER", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-pipe-material", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-PIPE-CONNECTION", "kind": "USES_CONNECTION", "from_code": "PIPE-HWS", "to_code": "CONN-SOLDER", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-pipe-connection", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-PIPE-INSULATION", "kind": "REQUIRES_INSULATION", "from_code": "PIPE-HWS", "to_code": "INS-PIPE", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-pipe-insulation", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-PIPE-SUPPORT", "kind": "REQUIRES_SUPPORT", "from_code": "PIPE-HWS", "to_code": "SUP-PIPE-HANGER", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-pipe-support", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-PIPE-LABOR", "kind": "HAS_LABOR_ASSEMBLY", "from_code": "PIPE-HWS", "to_code": "LAB-PIPE", "citations": [{"source_ref": "FIXTURE-COMMERCIAL", "locator": "rel-pipe-labor", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-PIPE-PRICE", "kind": "HAS_PRICING_INPUT", "from_code": "PIPE-HWS", "to_code": "PRICE-PIPE", "citations": [{"source_ref": "FIXTURE-COMMERCIAL", "locator": "rel-pipe-price", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-PIPE-GOVERNED", "kind": "GOVERNED_BY_RULE", "from_code": "PIPE-HWS", "to_code": "RULE-DIV23", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-pipe-rule", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-FITTING-MATERIAL", "kind": "USES_MATERIAL", "from_code": "FIT-ELBOW", "to_code": "MAT-COPPER", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-fitting-material", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-FITTING-CONNECTION", "kind": "USES_CONNECTION", "from_code": "FIT-ELBOW", "to_code": "CONN-SOLDER", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-fitting-connection", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-VALVE-MATERIAL", "kind": "USES_MATERIAL", "from_code": "VALVE-BALANCE", "to_code": "MAT-COPPER", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-valve-material", "applicability": "fixture only", "limitations": "not production knowledge"}]},
++    {"code": "REL-VALVE-CONNECTION", "kind": "USES_CONNECTION", "from_code": "VALVE-BALANCE", "to_code": "CONN-SOLDER", "citations": [{"source_ref": "FIXTURE-PIPING", "locator": "rel-valve-connection", "applicability": "fixture only", "limitations": "not production knowledge"}]}
++  ],
++  "units": [],
++  "observations": [],
++  "lookups": [],
++  "assembly_edges": [],
++  "rules": []
++}
+diff --git a/tests/test_engine_v2_registry_spine.py b/tests/test_engine_v2_registry_spine.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..cb812d1ae62adefa5091036d908871660357ccec
+--- /dev/null
++++ b/tests/test_engine_v2_registry_spine.py
+@@ -0,0 +1,731 @@
++"""Focused contract for the isolated Division 23 v2 semantic registry."""
++
++from __future__ import annotations
++
++from copy import deepcopy
++import hashlib
++from importlib import resources
++import json
++import re
++import sqlite3
++import tempfile
++import threading
++import unittest
++from pathlib import Path
++from unittest.mock import patch
++
++from helios_takeoff_core.errors import ConflictError, NotFoundError, ValidationError
++
++
++ROOT = Path(__file__).resolve().parents[1]
++FIXTURE = ROOT / "tests" / "fixtures" / "engine_v2" / "full_division23_registry_pack.json"
++V1_MIGRATION = ROOT / "src" / "helios_takeoff_core" / "migrations" / "017_engine_domain_packs.sql"
++V2_SCHEMA = ROOT / "src" / "helios_takeoff_core" / "engine" / "v2" / "schemas" / "domain-pack-v2.schema.json"
++
++
++def fixture_pack() -> dict[str, object]:
++    return json.loads(FIXTURE.read_text(encoding="utf-8"))
++
++
++class Division23V2CompilerTests(unittest.TestCase):
++    def test_v1_identity_and_migration_remain_exact(self) -> None:
++        from tests.test_engine_domain_pack_compiler import valid_pack
++        from helios_takeoff_core.engine.compiler import compile_domain_pack as compile_v1
++
++        self.assertEqual(
++            compile_v1(valid_pack()).sha256,
++            "6d448537430a3dd6708f77e335998c14448a661ba594190c82735ccac93b591e",
++        )
++        self.assertEqual(
++            hashlib.sha256(V1_MIGRATION.read_bytes()).hexdigest(),
++            "30fe60e8bf6a3a506fa0a16cb557cb4f06b3a2b4305963773018aa5a5acfc89d",
++        )
++
++    def test_compiles_full_spectrum_pack_with_cited_immutable_records(self) -> None:
++        from helios_takeoff_core.engine.v2 import (
++            DefinitionKind,
++            DomainFamily,
++            RelationKind,
++            compile_domain_pack,
++        )
++
++        compiled = compile_domain_pack(fixture_pack())
++
++        self.assertEqual({record.kind for record in compiled.definitions_by_code.values()}, set(DefinitionKind))
++        self.assertEqual({record.family for record in compiled.definitions_by_code.values()}, set(DomainFamily))
++        self.assertEqual({record.kind for record in compiled.relations_by_code.values()}, set(RelationKind))
++        self.assertEqual(len(compiled.sources_by_id), 3)
++        self.assertTrue(all(record.citations for record in compiled.definitions_by_code.values()))
++        self.assertTrue(all(record.citations for record in compiled.relations_by_code.values()))
++        self.assertTrue(all(source["authority_class"] == "TEST_FIXTURE" for source in compiled.sources_by_id.values()))
++        with self.assertRaises(TypeError):
++            compiled.canonical_document["title"] = "changed"  # type: ignore[index]
++        with self.assertRaises(TypeError):
++            compiled.definitions_by_code["DUCT-RECT"].attributes["uom"] = "EA"  # type: ignore[index]
++
++    def test_identity_is_order_independent(self) -> None:
++        from helios_takeoff_core.engine.v2 import compile_domain_pack
++
++        reordered = fixture_pack()
++        reordered["sources"] = list(reversed(reordered["sources"]))  # type: ignore[arg-type,index]
++        reordered["definitions"] = list(reversed(reordered["definitions"]))  # type: ignore[arg-type,index]
++        reordered["relations"] = list(reversed(reordered["relations"]))  # type: ignore[arg-type,index]
++        for definition in reordered["definitions"]:  # type: ignore[union-attr]
++            definition["citations"] = list(reversed(definition["citations"]))
++
++        original = compile_domain_pack(fixture_pack())
++        shuffled = compile_domain_pack(reordered)
++        self.assertEqual(shuffled.canonical_bytes, original.canonical_bytes)
++        self.assertEqual(shuffled.sha256, original.sha256)
++
++    def test_source_content_identity_is_digest_first_and_missing_normalizes_to_null(self) -> None:
++        from helios_takeoff_core.engine.v2 import compile_domain_pack
++
++        explicit_null = fixture_pack()
++        omitted = fixture_pack()
++        del omitted["sources"][1]["content_sha256"]  # type: ignore[index]
++        self.assertEqual(
++            compile_domain_pack(omitted).canonical_bytes,
++            compile_domain_pack(explicit_null).canonical_bytes,
++        )
++
++        duplicate_content = fixture_pack()
++        duplicate_content["sources"][1]["content_sha256"] = "a" * 64  # type: ignore[index]
++        with self.assertRaisesRegex(ValidationError, "content identity"):
++            compile_domain_pack(duplicate_content)
++
++    def test_packaged_schema_matches_compiler_lexical_contract_and_declares_semantic_authority(self) -> None:
++        from helios_takeoff_core.engine.v2 import compile_domain_pack
++
++        schema = json.loads(V2_SCHEMA.read_text(encoding="utf-8"))
++        self.assertIn("compile_domain_pack", schema["$comment"])
++        canonical_text = schema["$defs"]["canonicalText"]
++        pattern = re.compile(canonical_text["pattern"])
++        for value in ("Valid text", "US-NY", "1.0.0"):
++            with self.subTest(value=value):
++                self.assertIsNotNone(pattern.fullmatch(value))
++        for value in ("", " leading", "trailing ", "embedded\ncontrol"):
++            with self.subTest(value=value):
++                self.assertIsNone(pattern.fullmatch(value))
++
++        canonical_ref = {"$ref": "#/$defs/canonicalText"}
++        for property_name in ("version", "title", "jurisdiction"):
++            self.assertEqual(schema["properties"][property_name], canonical_ref)
++        for property_name in ("stable_reference", "publisher", "title", "jurisdiction"):
++            self.assertEqual(schema["$defs"]["source"]["properties"][property_name], canonical_ref)
++        for property_name in ("title", "description"):
++            self.assertEqual(schema["$defs"]["definition"]["properties"][property_name], canonical_ref)
++        for property_name in ("locator", "applicability", "limitations"):
++            self.assertEqual(schema["$defs"]["citation"]["properties"][property_name], canonical_ref)
++        self.assertEqual(schema["$defs"]["canonicalValue"]["oneOf"][3], canonical_ref)
++
++        for field, invalid in (("title", " padded"), ("jurisdiction", "US-NY\n")):
++            document = fixture_pack()
++            document[field] = invalid
++            with self.subTest(field=field), self.assertRaisesRegex(ValidationError, "canonical text"):
++                compile_domain_pack(document)
++
++    def test_relation_domain_and_range_are_table_driven_across_all_kinds(self) -> None:
++        from helios_takeoff_core.engine.v2 import RelationKind, compile_domain_pack
++
++        compiled = compile_domain_pack(fixture_pack())
++        hydronic_codes = {
++            "REL-PIPE-BELONGS", "REL-PIPE-COMPOSED-FITTING", "REL-PIPE-COMPOSED-VALVE",
++            "REL-PIPE-MATERIAL", "REL-PIPE-CONNECTION", "REL-FITTING-MATERIAL",
++            "REL-FITTING-CONNECTION", "REL-VALVE-MATERIAL", "REL-VALVE-CONNECTION",
++        }
++        self.assertTrue(hydronic_codes.issubset(compiled.relations_by_code))
++
++        invalid_endpoint: dict[RelationKind, tuple[str, str]] = {
++            RelationKind.BELONGS_TO_SYSTEM: ("to_code", "MAT-GALV"),
++            RelationKind.USES_MATERIAL: ("to_code", "CONN-SLIP"),
++            RelationKind.USES_CONNECTION: ("to_code", "MAT-GALV"),
++            RelationKind.COMPOSED_OF: ("from_code", "VALVE-BALANCE"),
++            RelationKind.REQUIRES_ACCESSORY: ("to_code", "MAT-GALV"),
++            RelationKind.REQUIRES_INSULATION: ("to_code", "MAT-GALV"),
++            RelationKind.REQUIRES_SUPPORT: ("to_code", "MAT-GALV"),
++            RelationKind.HAS_LABOR_ASSEMBLY: ("to_code", "MAT-GALV"),
++            RelationKind.HAS_PRICING_INPUT: ("to_code", "MAT-GALV"),
++            RelationKind.GOVERNED_BY_RULE: ("to_code", "MAT-GALV"),
++        }
++        self.assertEqual(set(invalid_endpoint), set(RelationKind))
++        for kind, (field, value) in invalid_endpoint.items():
++            document = fixture_pack()
++            relation = next(item for item in document["relations"] if item["kind"] == kind.value)  # type: ignore[union-attr]
++            relation[field] = value
++            with self.subTest(kind=kind.value), self.assertRaisesRegex(ValidationError, "domain or range"):
++                compile_domain_pack(document)
++
++    def test_rejects_malformed_unresolved_uncited_executable_and_domain_invalid_content(self) -> None:
++        from helios_takeoff_core.engine.v2 import compile_domain_pack
++
++        cases: list[tuple[str, dict[str, object], str]] = []
++        unknown = fixture_pack()
++        unknown["unexpected"] = True
++        cases.append(("unknown", unknown, "fields"))
++        floating = fixture_pack()
++        floating["definitions"][0]["attributes"]["factor"] = 1.5  # type: ignore[index]
++        cases.append(("float", floating, "float"))
++        uncited = fixture_pack()
++        uncited["definitions"][0]["citations"] = []  # type: ignore[index]
++        cases.append(("uncited", uncited, "citation"))
++        unresolved_source = fixture_pack()
++        unresolved_source["relations"][0]["citations"][0]["source_ref"] = "MISSING"  # type: ignore[index]
++        cases.append(("source", unresolved_source, "source"))
++        unresolved_endpoint = fixture_pack()
++        unresolved_endpoint["relations"][0]["to_code"] = "SYS-MISSING"  # type: ignore[index]
++        cases.append(("endpoint", unresolved_endpoint, "endpoint"))
++        executable = fixture_pack()
++        executable["rules"] = [{"code": "DO-NOT-RUN"}]
++        cases.append(("executable", executable, "must be empty"))
++        domain_invalid = fixture_pack()
++        domain_invalid["relations"][0]["to_code"] = "MAT-GALV"  # type: ignore[index]
++        cases.append(("domain", domain_invalid, "domain"))
++        invalid_interval = fixture_pack()
++        invalid_interval["valid_through"] = "2025-12-31"
++        cases.append(("interval", invalid_interval, "validity"))
++
++        for label, document, message in cases:
++            with self.subTest(label=label), self.assertRaisesRegex(ValidationError, message):
++                compile_domain_pack(document)
++
++
++class EngineStoreTests(unittest.TestCase):
++    def setUp(self) -> None:
++        self.temporary_directory = tempfile.TemporaryDirectory()
++        self.path = Path(self.temporary_directory.name) / "engine-v2.sqlite3"
++
++    def tearDown(self) -> None:
++        self.temporary_directory.cleanup()
++
++    def _store(self):
++        from helios_takeoff_core.engine.v2 import EngineStore
++
++        store = EngineStore(self.path)
++        store.initialize()
++        return store
++
++    def test_initialize_creates_exactly_seven_isolated_tables_and_packaged_resources(self) -> None:
++        store = self._store()
++        with sqlite3.connect(store.path) as connection:
++            tables = {
++                row[0]
++                for row in connection.execute(
++                    "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
++                )
++            }
++        self.assertEqual(
++            tables,
++            {
++                "engine_store_migrations",
++                "engine_packs",
++                "engine_source_index",
++                "engine_definition_index",
++                "engine_relation_index",
++                "engine_citation_index",
++                "engine_registry_events",
++            },
++        )
++        package = resources.files("helios_takeoff_core.engine.v2")
++        self.assertTrue((package / "migrations" / "001_engine_registry.sql").is_file())
++        self.assertTrue((package / "schemas" / "domain-pack-v2.schema.json").is_file())
++
++        for forbidden in ("projects", "agent_jobs", "engine_domain_packs", "unknown_table"):
++            path = Path(self.temporary_directory.name) / f"{forbidden}.sqlite3"
++            with sqlite3.connect(path) as connection:
++                connection.execute(f"CREATE TABLE {forbidden}(id TEXT PRIMARY KEY)")
++            from helios_takeoff_core.engine.v2 import EngineStore
++
++            with self.subTest(forbidden=forbidden), self.assertRaisesRegex(ValidationError, "isolated"):
++                EngineStore(path).initialize()
++
++    def test_import_reopen_queries_citations_neighbors_and_idempotency(self) -> None:
++        from helios_takeoff_core.engine.v2 import DefinitionKind, DomainFamily, RelationKind, compile_domain_pack
++
++        store = self._store()
++        compiled = compile_domain_pack(fixture_pack())
++        digest = store.import_pack(compiled)
++        self.assertEqual(digest, compiled.sha256)
++        self.assertEqual(store.import_pack(compiled), digest)
++        self.assertEqual(len(store.list_events(pack_sha256=digest)), 1)
++
++        reopened = type(store)(store.path)
++        reopened.initialize()
++        self.assertEqual(reopened.load_pack(pack_sha256=digest).canonical_bytes, compiled.canonical_bytes)
++        self.assertEqual(reopened.get_source(pack_sha256=digest, source_id="FIXTURE-AIRSIDE")["authority_class"], "TEST_FIXTURE")
++        self.assertEqual(reopened.get_definition(pack_sha256=digest, definition_code="DUCT-RECT").kind, DefinitionKind.DUCT)
++        self.assertEqual(len(reopened.list_definitions(pack_sha256=digest)), 21)
++        self.assertEqual(len(reopened.list_definitions(pack_sha256=digest, kind=DefinitionKind.DUCT)), 1)
++        self.assertEqual(len(reopened.list_definitions(pack_sha256=digest, family=DomainFamily.PIPING)), 5)
++        self.assertEqual(reopened.get_relation(pack_sha256=digest, relation_code="REL-MATERIAL").kind, RelationKind.USES_MATERIAL)
++        self.assertEqual(len(reopened.neighbors(pack_sha256=digest, definition_code="DUCT-RECT", direction="OUT")), 8)
++        self.assertEqual(len(reopened.neighbors(pack_sha256=digest, definition_code="MAT-GALV", direction="IN")), 1)
++        self.assertEqual(
++            len(reopened.neighbors(pack_sha256=digest, definition_code="DUCT-RECT", relation=RelationKind.USES_MATERIAL)),
++            1,
++        )
++        self.assertEqual(len(reopened.neighbors(pack_sha256=digest, definition_code="PIPE-HWS")), 10)
++        self.assertEqual(
++            {edge.to_code for edge in reopened.neighbors(pack_sha256=digest, definition_code="FIT-ELBOW")},
++            {"MAT-COPPER", "CONN-SOLDER"},
++        )
++        self.assertEqual(
++            {edge.to_code for edge in reopened.neighbors(pack_sha256=digest, definition_code="VALVE-BALANCE")},
++            {"MAT-COPPER", "CONN-SOLDER"},
++        )
++        definition_citations = reopened.list_citations(pack_sha256=digest, assertion_kind="DEFINITION", assertion_code="DUCT-RECT")
++        relation_citations = reopened.list_citations(pack_sha256=digest, assertion_kind="RELATION", assertion_code="REL-MATERIAL")
++        self.assertEqual(definition_citations[0].source_ref, "FIXTURE-AIRSIDE")
++        self.assertEqual(relation_citations[0].locator, "rel-material")
++        with self.assertRaises(NotFoundError):
++            reopened.get_definition(pack_sha256=digest, definition_code="MISSING")
++        with self.assertRaisesRegex(ValidationError, "direction"):
++            reopened.neighbors(pack_sha256=digest, definition_code="DUCT-RECT", direction="SIDEWAYS")
++
++    def test_conflicts_and_pack_level_supersession_fail_closed(self) -> None:
++        from helios_takeoff_core.engine.v2 import compile_domain_pack
++
++        store = self._store()
++        first = compile_domain_pack(fixture_pack())
++        store.import_pack(first)
++
++        changed_same_version = fixture_pack()
++        changed_same_version["title"] = "Conflicting immutable content"
++        with self.assertRaises(ConflictError):
++            store.import_pack(compile_domain_pack(changed_same_version))
++
++        successor_document = fixture_pack()
++        successor_document["version"] = "2.0.0"
++        successor_document["valid_from"] = "2026-02-01"
++        successor_document["supersedes_pack_sha256"] = first.sha256
++        successor = compile_domain_pack(successor_document)
++        self.assertEqual(store.import_pack(successor), successor.sha256)
++
++        unresolved = fixture_pack()
++        unresolved["version"] = "3.0.0"
++        unresolved["valid_from"] = "2026-03-01"
++        unresolved["supersedes_pack_sha256"] = "f" * 64
++        with self.assertRaisesRegex(ValidationError, "superseded"):
++            store.import_pack(compile_domain_pack(unresolved))
++
++        wrong_code = fixture_pack()
++        wrong_code["pack_code"] = "OTHER-PACK"
++        wrong_code["version"] = "2.0.0"
++        wrong_code["valid_from"] = "2026-03-01"
++        wrong_code["supersedes_pack_sha256"] = first.sha256
++        with self.assertRaisesRegex(ValidationError, "pack_code"):
++            store.import_pack(compile_domain_pack(wrong_code))
++
++        self.assertNotIn("SUPERSEDES", {relation.kind.value for relation in successor.relations_by_code.values()})
++
++    def test_projection_rebuild_is_exact_and_appends_one_chained_event(self) -> None:
++        from helios_takeoff_core.engine.v2 import compile_domain_pack
++
++        store = self._store()
++        compiled = compile_domain_pack(fixture_pack())
++        digest = store.import_pack(compiled)
++        before = store.list_events(pack_sha256=digest)
++        with sqlite3.connect(store.path) as connection:
++            connection.execute("PRAGMA foreign_keys = ON")
++            connection.execute("DELETE FROM engine_citation_index WHERE pack_sha256 = ?", (digest,))
++            connection.execute("DELETE FROM engine_relation_index WHERE pack_sha256 = ?", (digest,))
++            connection.execute("DELETE FROM engine_definition_index WHERE pack_sha256 = ?", (digest,))
++            connection.execute("DELETE FROM engine_source_index WHERE pack_sha256 = ?", (digest,))
++        self.assertFalse(store.verify_integrity().valid)
++
++        store.rebuild_indexes(pack_sha256=digest)
++
++        self.assertTrue(store.verify_integrity().valid)
++        self.assertEqual(len(store.list_definitions(pack_sha256=digest)), 21)
++        after = store.list_events(pack_sha256=digest)
++        self.assertEqual(len(after), len(before) + 1)
++        self.assertEqual(after[-1]["previous_event_sha256"], before[-1]["event_sha256"])
++        self.assertEqual(after[-1]["event_type"], "PROJECTIONS_REBUILT")
++        self.assertEqual(after[-1]["projection_generation"], 2)
++        with sqlite3.connect(store.path) as connection:
++            self.assertEqual(
++                connection.execute(
++                    "SELECT projection_generation FROM engine_packs WHERE pack_sha256 = ?", (digest,)
++                ).fetchone()[0],
++                2,
++            )
++            for table in (
++                "engine_source_index", "engine_definition_index",
++                "engine_relation_index", "engine_citation_index",
++            ):
++                self.assertEqual(
++                    connection.execute(
++                        f"SELECT DISTINCT projection_generation FROM {table} WHERE pack_sha256 = ?",
++                        (digest,),
++                    ).fetchall(),
++                    [(2,)],
++                )
++
++    def test_migration_blob_projection_citation_endpoint_and_event_tampering_fail_closed(self) -> None:
++        from helios_takeoff_core.engine.v2 import compile_domain_pack
++
++        store = self._store()
++        compiled = compile_domain_pack(fixture_pack())
++        digest = store.import_pack(compiled)
++
++        with sqlite3.connect(store.path) as connection:
++            with self.assertRaises(sqlite3.IntegrityError):
++                connection.execute("UPDATE engine_packs SET canonical_json = '{}' WHERE pack_sha256 = ?", (digest,))
++            with self.assertRaises(sqlite3.IntegrityError):
++                connection.execute("UPDATE engine_registry_events SET event_type = 'TAMPERED' WHERE pack_sha256 = ?", (digest,))
++            with self.assertRaises(sqlite3.IntegrityError):
++                connection.execute("UPDATE engine_relation_index SET to_code = 'MISSING' WHERE pack_sha256 = ?", (digest,))
++            connection.execute(
++                "UPDATE engine_definition_index SET definition_json = '{}' WHERE pack_sha256 = ? AND definition_code = 'DUCT-RECT'",
++                (digest,),
++            )
++        report = store.verify_integrity()
++        self.assertFalse(report.valid)
++        self.assertTrue(any("projection" in error for error in report.errors))
++
++        migration_store = self._store()
++        with sqlite3.connect(migration_store.path) as connection:
++            connection.execute("UPDATE engine_store_migrations SET sha256 = ?", ("0" * 64,))
++        with self.assertRaisesRegex(ValidationError, "migration"):
++            migration_store.initialize()
++
++    def test_pack_header_trigger_and_independent_reads_reject_incoherent_columns(self) -> None:
++        from helios_takeoff_core.engine.v2 import compile_domain_pack
++
++        store = self._store()
++        compiled = compile_domain_pack(fixture_pack())
++        digest = store.import_pack(compiled)
++
++        other_document = fixture_pack()
++        other_document["pack_code"] = "DIRECT-SQL-PACK"
++        other_document["version"] = "2.0.0"
++        other = compile_domain_pack(other_document)
++        connection = sqlite3.connect(store.path)
++        try:
++            connection.create_function(
++                "helios_v2_pack_is_canonical", 11, store._sqlite_pack_is_canonical, deterministic=True
++            )
++            source_count, definition_count, relation_count, citation_count = store._projection_counts(other)
++            with self.assertRaisesRegex(sqlite3.IntegrityError, "canonical payload"):
++                connection.execute(
++                    """
++                    INSERT INTO engine_packs(
++                        pack_sha256, protocol, pack_code, version, valid_from,
++                        supersedes_pack_sha256, canonical_json, projection_generation,
++                        source_count, definition_count, relation_count, citation_count, imported_at
++                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
++                    """,
++                    (
++                        other.sha256, other_document["protocol"], "INCOHERENT-HEADER",
++                        other_document["version"], other_document["valid_from"], None,
++                        other.canonical_bytes, 1, source_count, definition_count,
++                        relation_count, citation_count, "2026-09-01T00:00:00+00:00",
++                    ),
++                )
++        finally:
++            connection.close()
++
++        with sqlite3.connect(store.path) as connection:
++            trigger_sql = connection.execute(
++                "SELECT sql FROM sqlite_master WHERE type='trigger' AND name='engine_packs_are_immutable'"
++            ).fetchone()[0]
++            connection.execute("DROP TRIGGER engine_packs_are_immutable")
++            connection.execute(
++                "UPDATE engine_packs SET pack_code = 'CORRUPTED-HEADER' WHERE pack_sha256 = ?", (digest,)
++            )
++            connection.execute(trigger_sql)
++
++        with self.assertRaisesRegex(ValidationError, "header"):
++            store.load_pack(pack_sha256=digest)
++        report = store.verify_integrity()
++        self.assertFalse(report.valid)
++        self.assertTrue(any("header" in error for error in report.errors))
++
++    def test_filtered_projection_queries_fail_closed_and_replay_after_rebuild(self) -> None:
++        from helios_takeoff_core.engine.v2 import DefinitionKind, DomainFamily, RelationKind, compile_domain_pack
++
++        store = self._store()
++        digest = store.import_pack(compile_domain_pack(fixture_pack()))
++
++        with sqlite3.connect(store.path) as connection:
++            connection.execute(
++                "UPDATE engine_definition_index SET kind = 'PIPE' WHERE pack_sha256 = ? AND definition_code = 'DUCT-RECT'",
++                (digest,),
++            )
++        with self.assertRaisesRegex(ValidationError, "projection snapshot"):
++            store.list_definitions(pack_sha256=digest, kind=DefinitionKind.DUCT)
++        with sqlite3.connect(store.path) as connection:
++            connection.execute(
++                "UPDATE engine_definition_index SET kind = 'DUCT', family = 'PIPING' WHERE pack_sha256 = ? AND definition_code = 'DUCT-RECT'",
++                (digest,),
++            )
++        with self.assertRaisesRegex(ValidationError, "projection snapshot"):
++            store.list_definitions(pack_sha256=digest, family=DomainFamily.AIRSIDE)
++        with sqlite3.connect(store.path) as connection:
++            connection.execute(
++                "UPDATE engine_definition_index SET family = 'AIRSIDE' WHERE pack_sha256 = ? AND definition_code = 'DUCT-RECT'",
++                (digest,),
++            )
++            connection.execute(
++                "UPDATE engine_relation_index SET from_code = 'PIPE-HWS' WHERE pack_sha256 = ? AND relation_code = 'REL-MATERIAL'",
++                (digest,),
++            )
++        with self.assertRaisesRegex(ValidationError, "projection snapshot"):
++            store.neighbors(
++                pack_sha256=digest, definition_code="DUCT-RECT", relation=RelationKind.USES_MATERIAL
++            )
++        with sqlite3.connect(store.path) as connection:
++            connection.execute(
++                "UPDATE engine_relation_index SET from_code = 'DUCT-RECT' WHERE pack_sha256 = ? AND relation_code = 'REL-MATERIAL'",
++                (digest,),
++            )
++            connection.execute(
++                "DELETE FROM engine_relation_index WHERE pack_sha256 = ? AND relation_code = 'REL-VALVE-CONNECTION'",
++                (digest,),
++            )
++        with self.assertRaisesRegex(ValidationError, "projection snapshot"):
++            store.neighbors(pack_sha256=digest, definition_code="DUCT-RECT")
++
++        store.rebuild_indexes(pack_sha256=digest)
++        self.assertEqual(
++            len(store.neighbors(pack_sha256=digest, definition_code="DUCT-RECT", relation=RelationKind.USES_MATERIAL)),
++            1,
++        )
++
++    def test_filtered_projection_read_uses_one_stable_snapshot_during_concurrent_write(self) -> None:
++        from helios_takeoff_core.engine.v2 import DefinitionKind, EngineStore, compile_domain_pack
++
++        store = self._store()
++        digest = store.import_pack(compile_domain_pack(fixture_pack()))
++        with sqlite3.connect(store.path) as connection:
++            self.assertEqual(connection.execute("PRAGMA journal_mode = WAL").fetchone()[0], "wal")
++
++        snapshot_validated = threading.Event()
++        continue_read = threading.Event()
++
++        class PausingStore(EngineStore):
++            @classmethod
++            def _validate_projection_snapshot(cls, connection, compiled) -> None:  # type: ignore[no-untyped-def]
++                EngineStore._validate_projection_snapshot(connection, compiled)
++                snapshot_validated.set()
++                if not continue_read.wait(timeout=5):
++                    raise RuntimeError("concurrent-writer test did not release the stable read")
++
++        outcomes: list[object] = []
++
++        def read_filtered() -> None:
++            try:
++                outcomes.append(
++                    PausingStore(store.path).list_definitions(
++                        pack_sha256=digest, kind=DefinitionKind.DUCT
++                    )
++                )
++            except BaseException as error:
++                outcomes.append(error)
++
++        reader = threading.Thread(target=read_filtered, daemon=True)
++        reader.start()
++        self.assertTrue(snapshot_validated.wait(timeout=5))
++        with sqlite3.connect(store.path, timeout=2) as connection:
++            connection.execute(
++                "UPDATE engine_definition_index SET kind = 'PIPE' WHERE pack_sha256 = ? AND definition_code = 'DUCT-RECT'",
++                (digest,),
++            )
++        continue_read.set()
++        reader.join(timeout=5)
++
++        self.assertFalse(reader.is_alive())
++        self.assertEqual(len(outcomes), 1)
++        self.assertIsInstance(outcomes[0], tuple)
++        self.assertEqual(len(outcomes[0]), 1)  # type: ignore[arg-type]
++        with self.assertRaisesRegex(ValidationError, "projection snapshot"):
++            store.list_definitions(pack_sha256=digest, kind=DefinitionKind.DUCT)
++
++    def test_sql_and_independent_load_enforce_supersession_lineage(self) -> None:
++        from helios_takeoff_core.engine.v2 import compile_domain_pack
++
++        store = self._store()
++        first = compile_domain_pack(fixture_pack())
++        store.import_pack(first)
++
++        connection = sqlite3.connect(store.path)
++        connection.create_function(
++            "helios_v2_pack_is_canonical", 11, store._sqlite_pack_is_canonical, deterministic=True
++        )
++
++        def insert_pack(document: dict[str, object]) -> None:
++            compiled = compile_domain_pack(document)
++            counts = store._projection_counts(compiled)
++            connection.execute(
++                """
++                INSERT INTO engine_packs(
++                    pack_sha256, protocol, pack_code, version, valid_from,
++                    supersedes_pack_sha256, canonical_json, projection_generation,
++                    source_count, definition_count, relation_count, citation_count, imported_at
++                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
++                """,
++                (
++                    compiled.sha256, document["protocol"], document["pack_code"],
++                    document["version"], document["valid_from"],
++                    document["supersedes_pack_sha256"], compiled.canonical_bytes, 1,
++                    *counts, "2026-09-01T00:00:00+00:00",
++                ),
++            )
++
++        invalid_documents: list[dict[str, object]] = []
++        missing = fixture_pack()
++        missing["version"] = "2.0.0"
++        missing["valid_from"] = "2026-02-01"
++        missing["supersedes_pack_sha256"] = "f" * 64
++        invalid_documents.append(missing)
++        wrong_code = fixture_pack()
++        wrong_code["pack_code"] = "WRONG-LINEAGE"
++        wrong_code["version"] = "2.1.0"
++        wrong_code["valid_from"] = "2026-02-01"
++        wrong_code["supersedes_pack_sha256"] = first.sha256
++        invalid_documents.append(wrong_code)
++        same_version = fixture_pack()
++        same_version["title"] = "Different content with reused version"
++        same_version["valid_from"] = "2026-02-01"
++        same_version["supersedes_pack_sha256"] = first.sha256
++        invalid_documents.append(same_version)
++        nonlater = fixture_pack()
++        nonlater["version"] = "2.2.0"
++        nonlater["supersedes_pack_sha256"] = first.sha256
++        invalid_documents.append(nonlater)
++
++        try:
++            for document in invalid_documents:
++                with self.subTest(version=document["version"]), self.assertRaisesRegex(
++                    sqlite3.IntegrityError, "supersession lineage"
++                ):
++                    insert_pack(document)
++
++            bypassed = fixture_pack()
++            bypassed["pack_code"] = "BYPASSED-LINEAGE"
++            bypassed["version"] = "9.0.0"
++            bypassed["valid_from"] = "2026-09-01"
++            bypassed["supersedes_pack_sha256"] = first.sha256
++            bypassed_compiled = compile_domain_pack(bypassed)
++            trigger_sql = connection.execute(
++                """
++                SELECT sql FROM sqlite_master
++                WHERE type='trigger' AND name='engine_packs_validate_supersession_insert'
++                """
++            ).fetchone()[0]
++            connection.execute("DROP TRIGGER engine_packs_validate_supersession_insert")
++            insert_pack(bypassed)
++            connection.execute(trigger_sql)
++            connection.commit()
++        finally:
++            connection.close()
++
++        with self.assertRaisesRegex(ValidationError, "supersession lineage"):
++            store.load_pack(pack_sha256=bypassed_compiled.sha256)
++        report = store.verify_integrity()
++        self.assertFalse(report.valid)
++        self.assertTrue(any("supersession lineage" in error for error in report.errors))
++
++    def test_registry_event_semantics_and_hashed_public_metadata_reject_fabrication(self) -> None:
++        from helios_takeoff_core.engine.v2 import compile_domain_pack
++
++        store = self._store()
++        digest = store.import_pack(compile_domain_pack(fixture_pack()))
++        prior = store.list_events(pack_sha256=digest)[0]["event_sha256"]
++
++        def forged(
++            event_type: str,
++            *,
++            projection_generation: int,
++            json_created_at: str,
++            column_created_at: str,
++        ) -> tuple[object, ...]:
++            event = {
++                "protocol": "helios.engine.registry-event/v1",
++                "pack_sha256": digest,
++                "event_sequence": 2,
++                "event_type": event_type,
++                "projection_generation": projection_generation,
++                "previous_event_sha256": prior,
++                "created_at": json_created_at,
++            }
++            event_json = json.dumps(event, sort_keys=True, separators=(",", ":"))
++            return (
++                digest, 2, event_type, projection_generation, prior,
++                hashlib.sha256(event_json.encode("utf-8")).hexdigest(), event_json, column_created_at,
++            )
++
++        connection = sqlite3.connect(store.path)
++        try:
++            connection.create_function(
++                "helios_v2_event_is_canonical", 8, store._sqlite_event_is_canonical, deterministic=True
++            )
++            insert = """
++                INSERT INTO engine_registry_events(
++                    pack_sha256, event_sequence, event_type, projection_generation,
++                    previous_event_sha256, event_sha256, event_json, created_at
++                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
++            """
++            timestamp = "2026-09-01T00:00:00+00:00"
++            with self.assertRaises(sqlite3.IntegrityError):
++                connection.execute(
++                    insert,
++                    forged(
++                        "PACK_IMPORTED", projection_generation=2,
++                        json_created_at=timestamp, column_created_at=timestamp,
++                    ),
++                )
++            with self.assertRaises(sqlite3.IntegrityError):
++                connection.execute(
++                    insert,
++                    forged(
++                        "PROJECTIONS_REBUILT",
++                        projection_generation=2,
++                        json_created_at=timestamp,
++                        column_created_at="2026-09-01T00:00:01+00:00",
++                    ),
++                )
++            with self.assertRaisesRegex(sqlite3.IntegrityError, "unattested"):
++                connection.execute(
++                    insert,
++                    forged(
++                        "PROJECTIONS_REBUILT", projection_generation=2,
++                        json_created_at=timestamp, column_created_at=timestamp,
++                    ),
++                )
++            with self.assertRaisesRegex(sqlite3.IntegrityError, "fully rewritten"):
++                connection.execute(
++                    "UPDATE engine_packs SET projection_generation = 2 WHERE pack_sha256 = ?",
++                    (digest,),
++                )
++        finally:
++            connection.close()
++
++        self.assertEqual(len(store.list_events(pack_sha256=digest)), 1)
++        self.assertTrue(store.verify_integrity().valid)
++
++    def test_public_store_operations_close_every_sqlite_connection(self) -> None:
++        from helios_takeoff_core.engine.v2 import compile_domain_pack
++
++        store = self._store()
++        digest = store.import_pack(compile_domain_pack(fixture_pack()))
++        real_connect = sqlite3.connect
++        opened: list[sqlite3.Connection] = []
++
++        def tracking_connect(*args: object, **kwargs: object) -> sqlite3.Connection:
++            connection = real_connect(*args, **kwargs)
++            opened.append(connection)
++            return connection
++
++        with patch("helios_takeoff_core.engine.v2.store.sqlite3.connect", side_effect=tracking_connect):
++            store.load_pack(pack_sha256=digest)
++            store.list_definitions(pack_sha256=digest)
++
++        self.assertTrue(opened)
++        for connection in opened:
++            with self.assertRaises(sqlite3.ProgrammingError):
++                connection.execute("SELECT 1")
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/tests/test_package_metadata.py b/tests/test_package_metadata.py
+index 26f60be1ce35fbcb29eec65418181b45a0f309b5..b321a59bd7dd1fc0efdb051711b076904d205e10 100644
+--- a/tests/test_package_metadata.py
++++ b/tests/test_package_metadata.py
+@@ -18,6 +18,14 @@ class PackageMetadataTests(unittest.TestCase):
+         self.assertEqual(project["build-system"]["build-backend"], "setuptools.build_meta")
+         self.assertEqual(project["tool"]["setuptools"]["package-dir"][""], "src")
+         self.assertIn("migrations/*.sql", project["tool"]["setuptools"]["package-data"]["helios_takeoff_core"])
++        self.assertIn(
++            "engine/v2/migrations/*.sql",
++            project["tool"]["setuptools"]["package-data"]["helios_takeoff_core"],
++        )
++        self.assertIn(
++            "engine/v2/schemas/*.json",
++            project["tool"]["setuptools"]["package-data"]["helios_takeoff_core"],
++        )
+         self.assertEqual(project["project"]["scripts"]["helios-p0"], "helios_takeoff_core.cli:main")
+         self.assertEqual(project["project"]["scripts"]["helios-p1a"], "helios_takeoff_core.p1a_cli:main")
+         self.assertEqual(project["project"]["scripts"]["helios-engine"], "helios_takeoff_core.engine_cli:main")

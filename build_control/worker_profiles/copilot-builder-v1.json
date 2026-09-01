@@ -1,0 +1,20 @@
+{
+  "protocol": "helios.build.worker-profile/v1",
+  "profile_id": "copilot-builder-v1",
+  "worker_id": "copilot",
+  "display_name": "Copilot Issue-Scoped Builder and Reviewer",
+  "roles": ["BUILDER", "REVIEWER"],
+  "transports": ["LOCAL_ADAPTER", "EXTERNAL_SESSION"],
+  "adapter_protocol": "helios.build.worker-handoff/v1",
+  "skills": [],
+  "plugins": [],
+  "allowed_tools": ["repository-read", "repository-write", "focused-test", "review"],
+  "allowed_data_classes": ["REPOSITORY", "BUILD_CONTROL_SANITIZED"],
+  "allowed_task_purposes": ["CI", "MAINTENANCE", "TESTS", "ISSUE_SCOPED_IMPLEMENTATION", "INDEPENDENT_REVIEW"],
+  "authority_limits": [
+    "No branch-protection, self-review, integration, commit, push, pull-request, or merge authority",
+    "Work is limited to the immutable issue-scoped task manifest",
+    "No P0, P1A, runtime database, or bid authority"
+  ],
+  "max_concurrency": 1
+}

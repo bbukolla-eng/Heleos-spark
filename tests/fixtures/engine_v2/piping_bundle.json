@@ -1,0 +1,48 @@
+{
+  "protocol": "helios.engine.observation-bundle/v1",
+  "mode": "BENCHMARK",
+  "pack_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "subject_code": "PIPE-HWS",
+  "context": {
+    "system": "HEATING-WATER-SUPPLY",
+    "floor": null,
+    "area": "BENCHMARK-P",
+    "phase": "BASE",
+    "zone": null,
+    "work_state": "NEW",
+    "commercial_dimension": "BASE",
+    "revision_ids": [],
+    "addendum_ids": []
+  },
+  "observations": [
+    {
+      "name": "LENGTH",
+      "origin": "STRUCTURED_IMPORT",
+      "scalar_type": "DECIMAL",
+      "value": "40",
+      "uom": "LF",
+      "confidence": "0.99",
+      "evidence_item_ids": [],
+      "model_id": null,
+      "model_revision": null,
+      "input_sha256": "8888888888888888888888888888888888888888888888888888888888888888",
+      "region": null,
+      "revision_ids": []
+    },
+    {
+      "name": "INSULATED",
+      "origin": "STRUCTURED_IMPORT",
+      "scalar_type": "BOOLEAN",
+      "value": true,
+      "uom": null,
+      "confidence": "0.98",
+      "evidence_item_ids": [],
+      "model_id": null,
+      "model_revision": null,
+      "input_sha256": "9999999999999999999999999999999999999999999999999999999999999999",
+      "region": null,
+      "revision_ids": []
+    }
+  ],
+  "benchmark_artifact_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+}

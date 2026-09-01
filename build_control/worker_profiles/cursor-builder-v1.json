@@ -1,0 +1,20 @@
+{
+  "protocol": "helios.build.worker-profile/v1",
+  "profile_id": "cursor-builder-v1",
+  "worker_id": "cursor",
+  "display_name": "Cursor Focused Repository Builder",
+  "roles": ["BUILDER", "REVIEWER"],
+  "transports": ["LOCAL_ADAPTER", "EXTERNAL_SESSION"],
+  "adapter_protocol": "helios.build.worker-handoff/v1",
+  "skills": [],
+  "plugins": [],
+  "allowed_tools": ["repository-read", "repository-write", "focused-test", "review"],
+  "allowed_data_classes": ["REPOSITORY", "BUILD_CONTROL_SANITIZED"],
+  "allowed_task_purposes": ["FOCUSED_IMPLEMENTATION", "NATIVE_UI", "TARGETED_REFACTOR", "INDEPENDENT_REVIEW"],
+  "authority_limits": [
+    "One assigned file scope at a time",
+    "No self-review, integration, commit, push, pull-request, or merge authority",
+    "No P0, P1A, runtime database, or bid authority"
+  ],
+  "max_concurrency": 1
+}

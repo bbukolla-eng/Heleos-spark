@@ -151,6 +151,8 @@ Each dispatch creates one finite append-only attempt. A worker may publish a che
 
 Git stores immutable manifests and sanitized receipts. A configured external state root stores raw logs, credentials, authenticated sessions, and ephemeral worktrees. Workers may return patches or commits from isolated worktrees but never push or merge the canonical branch. Only Codex stages canonical changes, records independent review, commits, and merges.
 
+Local attempts and identified external sessions are separate dispatch-proof types. Every dispatched BuildTask binds exactly one of them in its lifecycle event. External assignments live in their own content-addressed collection and never consume the predecessor/successor routing ledger. Affected and milestone command receipts bind the exact canonical patch digest they verified.
+
 ### 4.4 Skills and plugins
 
 Skills and plugins are versioned build-time capabilities, not implicit authority. A worker profile declares the exact skill/plugin, version or revision, allowed tools, data class, and task purpose. A task contract grants only the minimum needed capabilities. Superpowers governs design/planning/execution gates; graph-engineering governs task DAGs, ownership, synthesis, and verification. Additional plugins are admitted only for a concrete task and never gain direct P0/P1A writes, credentials beyond their declared connector, or merge authority.
