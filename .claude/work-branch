@@ -1,0 +1,10 @@
+# Heleos-spark designated Claude Code work branch.
+#
+# The first non-comment line is the ONLY branch on which Claude Code may
+# edit files, commit, or push in this repository. Every other branch,
+# including `main`, is read-only for Claude Code.
+#
+# Enforced by .claude/hooks/branch_guard.py (PreToolUse) and reported by
+# .claude/hooks/session_start.sh (SessionStart). Change the lane by editing
+# this line on the current lane branch and merging through review.
+claude/heleos-spark-branch-60gd5e

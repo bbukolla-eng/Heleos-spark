@@ -1,0 +1,13 @@
+#!/bin/bash
+# Heleos-spark lane guard (git layer): warn loudly when Claude Code leaves the lane.
+# $3 = 1 for a branch checkout, 0 for a file checkout.
+. "$(dirname "${BASH_SOURCE[0]}")/lane_common.sh"
+lane_hooks_active || exit 0
+[ "$3" = "1" ] || exit 0
+LANE="$(lane_branch_name)"
+[ -n "$LANE" ] || exit 0
+BRANCH="$(lane_current_branch)"
+if [ "$BRANCH" != "$LANE" ]; then
+  echo "[BranchGuard] WARNING: now on '$BRANCH'. Claude Code is read-only until: git checkout $LANE" >&2
+fi
+exit 0
