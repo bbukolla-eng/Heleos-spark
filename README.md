@@ -13,3 +13,11 @@ The first implementation milestone will establish the operational database, immu
 ## Authority rule
 
 Research systems and AI workers may propose findings and patches. Deterministic code, governed data, cited evidence, automated tests, and explicit human approval determine production truth.
+
+## Working with Claude Code
+
+Claude Code operates in one designated branch, named in [`.claude/work-branch`](.claude/work-branch), and treats every other branch as read-only. The rule, the enforcement hooks, and the day-to-day flow are described in [`CLAUDE.md`](CLAUDE.md) and [`docs/workspace/claude-code-lane.md`](docs/workspace/claude-code-lane.md). Hook tests run with the standard library only:
+
+```bash
+python3 -m unittest discover -s tests -p 'test_*.py' -v
+```
