@@ -10,6 +10,8 @@ The repository is in foundation design. Production implementation begins only af
 
 The first implementation milestone will establish the operational database, immutable evidence vault, deterministic PDF intake, and tests before broader AI, research, or interface work.
 
+The build roadmap, the owner decisions it needs, and the tooling admission register are in [`ROADMAP.md`](ROADMAP.md) and [`docs/roadmap/`](docs/roadmap/).
+
 ## Authority rule
 
 Research systems and AI workers may propose findings and patches. Deterministic code, governed data, cited evidence, automated tests, and explicit human approval determine production truth.

@@ -40,6 +40,11 @@ architecture authority; this file only tells you how to work inside it.
 - Phase: **foundation design**. Production implementation begins only after the
   owner approves the written design. Until then, work is limited to design
   documents, repository policy, tooling, and test scaffolding.
+- Roadmap: `ROADMAP.md` lists the phases, the owner decisions still open, and
+  the tooling admission register under `docs/roadmap/`. The plan of record for
+  Foundation 0.1 is not chosen yet (Decision 1); do not start production tasks
+  from either candidate plan until a decision record exists under
+  `docs/decisions/`.
 - Authority rule: research systems and AI workers propose. Deterministic code,
   governed data, cited evidence, automated tests, and explicit human approval
   determine production truth. Never present model output as an accepted
