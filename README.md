@@ -6,7 +6,7 @@ No predecessor repository, code, configuration, data, tests, prompt, artifact, o
 
 ## Current phase
 
-P0, P1A, and the first P1B engine foundation are implemented on the current feature history. The enriched multi-builder, ATHENA/NotebookLM, Division 23 v2, Hugging Face/Kaggle, API/SDK, native-app, and operational-bot architecture is defined in [the current design](docs/superpowers/specs/2026-09-01-enriched-build-fabric-design.md). That implementation begins only after the owner approves the written successor design and its implementation plan.
+P0, P1A, and the first P1B engine foundation are implemented on the current feature history. The owner-approved multi-builder, ATHENA/NotebookLM, Division 23 v2, Hugging Face/Kaggle, API/SDK, native-app, and operational-bot architecture is defined in [the current design](docs/superpowers/specs/2026-09-01-enriched-build-fabric-design.md). The bounded, non-overlapping execution sequence is recorded in [the enriched build-cycle plan](docs/superpowers/plans/2026-09-01-enriched-build-cycle.md).
 
 The current installed package contains the P0 foundation, bounded P1A execution spine, and P1B domain-pack/evaluation foundation for an auditable Division 23 system.
 

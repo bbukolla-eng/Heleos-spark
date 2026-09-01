@@ -1,6 +1,6 @@
 # HELIOS Enriched Build Fabric Design
 
-**Status:** Owner-approved architecture; written specification awaiting final review
+**Status:** Owner-approved; implementation plan recorded
 
 **Date:** 2026-09-01
 
@@ -698,6 +698,6 @@ Provider routing will be updated from measured results—correctness, review fin
 - No native desktop UI before the shared local service is usable; native applications remain the intended product and follow in the next product-facing increment.
 - No claim that a server-side test proves performance on the owner's Mac or Windows hardware.
 
-## 18. Next decision
+## 18. Next action
 
-After the owner approves this written specification, create a detailed implementation plan using Superpowers `writing-plans`. The plan must interleave the thin Build Fabric MVP with real engine deliverables, assign non-overlapping paths, use the bounded verification policy, and end each milestone in installed executable behavior.
+The owner approved this written specification on 2026-09-01. Execute the recorded plan suite beginning with Build Fabric contracts and the v1 compatibility lock, then start v2 contracts/store work as soon as their interfaces are free. Use Superpowers `subagent-driven-development`, retain one writer per owned path, and do not wait for external research login or target-host receipts before continuing independent core construction.
