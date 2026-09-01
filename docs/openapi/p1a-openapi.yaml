@@ -1,0 +1,184 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "HELIOS Takeoff Core P1A API",
+    "version": "0.1.0",
+    "description": "Loopback-only baseline-audit submission and integrity inspection. The P1A API has no worker-completion or bid-impacting authority routes."
+  },
+  "servers": [{"url": "http://127.0.0.1:8787"}],
+  "paths": {
+    "/v1/agent-jobs": {
+      "post": {
+        "summary": "Submit one baseline audit against a frozen revision set.",
+        "parameters": [{"$ref": "#/components/parameters/IdempotencyKey"}],
+        "requestBody": {
+          "required": true,
+          "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AgentJobRequest"}}}
+        },
+        "responses": {
+          "201": {"description": "Queued job and immutable input artifact metadata."},
+          "400": {"$ref": "#/components/responses/Error"},
+          "403": {"$ref": "#/components/responses/Error"},
+          "404": {"$ref": "#/components/responses/Error"},
+          "409": {"$ref": "#/components/responses/Error"}
+        }
+      }
+    },
+    "/v1/agent-jobs/{job_id}": {
+      "get": {
+        "summary": "Read the complete immutable job execution projection.",
+        "parameters": [{"$ref": "#/components/parameters/JobId"}],
+        "responses": {
+          "200": {
+            "description": "Worker, exact adapter, timestamped events, attempts, purpose-keyed artifacts, and report artifact identity.",
+            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AgentJob"}}}
+          },
+          "403": {"$ref": "#/components/responses/Error"},
+          "404": {"$ref": "#/components/responses/Error"}
+        }
+      }
+    },
+    "/v1/agent-artifacts/{artifact_id}": {
+      "get": {
+        "summary": "Read artifact metadata and verify its content identity.",
+        "parameters": [{"$ref": "#/components/parameters/ArtifactId"}],
+        "responses": {
+          "200": {"description": "Metadata and VERIFIED or TAMPERED integrity status."},
+          "403": {"$ref": "#/components/responses/Error"},
+          "404": {"$ref": "#/components/responses/Error"},
+          "409": {
+            "description": "The API application has no configured artifact root.",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/Error"},
+                "example": {
+                  "error": {
+                    "code": "PRECONDITION_FAILED",
+                    "message": "P1A artifact storage is not configured for this API process"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "IdempotencyKey": {"name": "Idempotency-Key", "in": "header", "required": true, "schema": {"type": "string", "minLength": 1}},
+      "JobId": {"name": "job_id", "in": "path", "required": true, "schema": {"type": "string", "minLength": 1}},
+      "ArtifactId": {"name": "artifact_id", "in": "path", "required": true, "schema": {"type": "string", "minLength": 1}}
+    },
+    "schemas": {
+      "AgentJobRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["project_id", "revision_set_id", "requested_by_actor_id", "worker_code"],
+        "properties": {
+          "project_id": {"type": "string", "minLength": 1},
+          "revision_set_id": {"type": "string", "minLength": 1},
+          "requested_by_actor_id": {"type": "string", "minLength": 1},
+          "worker_code": {
+            "type": "string",
+            "enum": [
+              "codex",
+              "claude",
+              "kimi",
+              "grok",
+              "cursor",
+              "grokbot",
+              "helios-baseline-auditor"
+            ],
+            "description": "External workers queue normally but block unless an actual preflight recorded AVAILABLE for the job's exact immutable adapter revision and normalized configuration hash."
+          }
+        }
+      },
+      "ArtifactProjection": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "sha256", "byte_size", "media_type", "schema_version", "store_key", "created_at"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "byte_size": {"type": "integer", "minimum": 0},
+          "media_type": {"type": "string", "minLength": 1},
+          "schema_version": {"type": "string", "minLength": 1},
+          "store_key": {"type": "string", "minLength": 1},
+          "created_at": {"type": "string", "format": "date-time"}
+        }
+      },
+      "AgentEvent": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "attempt_id", "type", "created_at", "reason_code", "detail"],
+        "properties": {
+          "id": {"type": "string"},
+          "attempt_id": {"type": ["string", "null"]},
+          "type": {"type": "string"},
+          "created_at": {"type": "string", "format": "date-time"},
+          "reason_code": {"type": ["string", "null"]},
+          "detail": {"type": ["object", "null"]}
+        }
+      },
+      "AgentAttempt": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "attempt_number", "worker_id", "adapter_revision_id", "created_at", "artifacts"],
+        "properties": {
+          "id": {"type": "string"},
+          "attempt_number": {"type": "integer", "minimum": 1},
+          "worker_id": {"type": "string"},
+          "adapter_revision_id": {"type": "string"},
+          "created_at": {"type": "string", "format": "date-time"},
+          "artifacts": {
+            "type": "object",
+            "propertyNames": {"enum": ["INPUT", "STDOUT", "STDERR", "REPORT", "ERROR"]},
+            "additionalProperties": {"$ref": "#/components/schemas/ArtifactProjection"}
+          }
+        }
+      },
+      "AgentJob": {
+        "type": "object",
+        "required": ["id", "state", "worker", "adapter", "events", "event_types", "attempts", "artifacts", "report_artifact_id"],
+        "properties": {
+          "id": {"type": "string"},
+          "state": {"type": "string"},
+          "worker": {
+            "type": "object",
+            "required": ["id", "code", "name"],
+            "properties": {"id": {"type": "string"}, "code": {"type": "string"}, "name": {"type": "string"}}
+          },
+          "adapter": {
+            "type": "object",
+            "required": ["id", "name", "kind", "revision", "configuration_sha256"],
+            "properties": {
+              "id": {"type": "string"},
+              "name": {"type": "string"},
+              "kind": {"enum": ["BUILTIN", "SUBPROCESS"]},
+              "revision": {"type": "string"},
+              "configuration_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+            }
+          },
+          "events": {"type": "array", "items": {"$ref": "#/components/schemas/AgentEvent"}},
+          "event_types": {"type": "array", "items": {"type": "string"}},
+          "attempts": {"type": "array", "items": {"$ref": "#/components/schemas/AgentAttempt"}},
+          "artifacts": {
+            "type": "object",
+            "propertyNames": {"enum": ["INPUT", "STDOUT", "STDERR", "REPORT", "ERROR"]},
+            "additionalProperties": {"$ref": "#/components/schemas/ArtifactProjection"}
+          },
+          "report_artifact_id": {"type": ["string", "null"]}
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {"error": {"type": "object", "required": ["code", "message"]}}
+      }
+    },
+    "responses": {
+      "Error": {"description": "Structured request error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}}
+    }
+  }
+}

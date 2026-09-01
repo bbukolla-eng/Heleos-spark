@@ -1,0 +1,491 @@
+openapi: 3.1.0
+info:
+  title: HELIOS Takeoff Core P0 API
+  version: 0.1.0
+  description: >-
+    Local-only, command-style API for immutable takeoff evidence, approvals,
+    pricing provenance, and as-bid release. Every POST requires JSON and an
+    Idempotency-Key. PUT, PATCH, and DELETE always return 405.
+servers:
+  - url: http://127.0.0.1:8787
+tags:
+  - name: Baseline
+  - name: Evidence
+  - name: Takeoff
+  - name: Pricing
+paths:
+  /health:
+    get:
+      summary: Check the local P0 service.
+      responses:
+        '200':
+          description: Service is available.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status, api_version]
+                properties:
+                  status: {type: string, const: ok}
+                  api_version: {type: string, const: v1}
+  /v1/projects:
+    post:
+      tags: [Baseline]
+      summary: Create an immutable project identity.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}]
+      requestBody: {$ref: '#/components/requestBodies/Project'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/actors:
+    post:
+      tags: [Baseline]
+      summary: Create an immutable actor identity.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}]
+      requestBody: {$ref: '#/components/requestBodies/Actor'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/projects/{project_id}/document-revisions:
+    post:
+      tags: [Baseline]
+      summary: Register a hash-bound source document revision.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/ProjectId'}]
+      requestBody: {$ref: '#/components/requestBodies/DocumentRevision'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/projects/{project_id}/revision-sets:
+    post:
+      tags: [Baseline]
+      summary: Create an open revision-set manifest.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/ProjectId'}]
+      requestBody: {$ref: '#/components/requestBodies/RevisionSet'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/revision-sets/{revision_set_id}/document-revisions:
+    post:
+      tags: [Baseline]
+      summary: Include an issued document in an open baseline.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/RevisionSetId'}]
+      requestBody: {$ref: '#/components/requestBodies/DocumentMembership'}
+      responses:
+        '201':
+          description: Membership recorded or idempotently replayed.
+          content: {application/json: {schema: {$ref: '#/components/schemas/RevisionSetDocumentResult'}}}
+        '400': {$ref: '#/components/responses/Error'}
+        '404': {$ref: '#/components/responses/Error'}
+        '409': {$ref: '#/components/responses/Error'}
+  /v1/revision-sets/{revision_set_id}/freeze:
+    post:
+      tags: [Baseline]
+      summary: Freeze a non-empty revision-set manifest.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/RevisionSetId'}]
+      requestBody: {$ref: '#/components/requestBodies/EmptyCommand'}
+      responses:
+        '201':
+          description: Frozen revision set.
+          content: {application/json: {schema: {$ref: '#/components/schemas/RevisionSetResult'}}}
+        '400': {$ref: '#/components/responses/Error'}
+        '404': {$ref: '#/components/responses/Error'}
+        '409': {$ref: '#/components/responses/Error'}
+  /v1/document-revisions/{document_revision_id}/evidence-items:
+    post:
+      tags: [Evidence]
+      summary: Anchor geometry or text evidence to an issued document.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/DocumentRevisionId'}]
+      requestBody: {$ref: '#/components/requestBodies/EvidenceItem'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/extraction-runs:
+    post:
+      tags: [Evidence]
+      summary: Record an extraction worker run and its configuration/input hashes.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}]
+      requestBody: {$ref: '#/components/requestBodies/ExtractionRun'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/evidence-items/{evidence_item_id}/claims:
+    post:
+      tags: [Evidence]
+      summary: Record a proposed extraction claim with one or more evidence items.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/EvidenceItemId'}]
+      requestBody: {$ref: '#/components/requestBodies/ExtractionClaim'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/revision-sets/{revision_set_id}/quantity-assertions:
+    post:
+      tags: [Takeoff]
+      summary: Create an evidence-allocated decimal quantity in a frozen baseline.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/RevisionSetId'}]
+      requestBody: {$ref: '#/components/requestBodies/QuantityAssertion'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/quantity-assertions/{quantity_assertion_id}/review-decisions:
+    post:
+      tags: [Takeoff]
+      summary: Append a reviewer decision; CANDIDATE must be VERIFIED before APPROVED.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/QuantityAssertionId'}]
+      requestBody: {$ref: '#/components/requestBodies/QuantityReview'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '403': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/revision-sets/{revision_set_id}/takeoff-versions:
+    post:
+      tags: [Takeoff]
+      summary: Snapshot approved assertions from a frozen baseline.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/RevisionSetId'}]
+      requestBody: {$ref: '#/components/requestBodies/EmptyCommand'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/takeoff-versions/{takeoff_version_id}:
+    get:
+      tags: [Takeoff]
+      summary: Read the immutable takeoff snapshot and derived approval status.
+      parameters: [{$ref: '#/components/parameters/TakeoffVersionId'}]
+      responses:
+        '200': {description: Takeoff snapshot, content: {application/json: {schema: {$ref: '#/components/schemas/TakeoffVersion'}}}}
+        '404': {$ref: '#/components/responses/Error'}
+  /v1/takeoff-versions/{takeoff_version_id}/approvals:
+    post:
+      tags: [Takeoff]
+      summary: Append the estimator approval for a takeoff snapshot.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/TakeoffVersionId'}]
+      requestBody: {$ref: '#/components/requestBodies/ActorDecision'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '403': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/revision-sets/{revision_set_id}/successors:
+    post:
+      tags: [Takeoff]
+      summary: Create an open successor baseline after an addendum or response.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/RevisionSetId'}]
+      requestBody: {$ref: '#/components/requestBodies/SuccessorRevisionSet'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/revision-sets/{revision_set_id}/conflicts:
+    post:
+      tags: [Takeoff]
+      summary: Record a project-document conflict that blocks snapshot/approval until dispositioned.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/RevisionSetId'}]
+      requestBody: {$ref: '#/components/requestBodies/Conflict'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/revision-sets/{revision_set_id}/rfis:
+    post:
+      tags: [Takeoff]
+      summary: Record an RFI question in a revision set.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/RevisionSetId'}]
+      requestBody: {$ref: '#/components/requestBodies/Rfi'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/rfis/{rfi_id}/responses:
+    post:
+      tags: [Takeoff]
+      summary: Link a formal document-backed RFI response.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/RfiId'}]
+      requestBody: {$ref: '#/components/requestBodies/RfiResponse'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/conflicts/{conflict_id}/dispositions:
+    post:
+      tags: [Takeoff]
+      summary: Resolve a conflict with a reviewed formal RFI response.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/ConflictId'}]
+      requestBody: {$ref: '#/components/requestBodies/ConflictDisposition'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '403': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/projects/{project_id}/suppliers:
+    post:
+      tags: [Pricing]
+      summary: Register an immutable project supplier record.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/ProjectId'}]
+      requestBody: {$ref: '#/components/requestBodies/Supplier'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/projects/{project_id}/quote-revisions:
+    post:
+      tags: [Pricing]
+      summary: Register an immutable, dated quote revision.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/ProjectId'}]
+      requestBody: {$ref: '#/components/requestBodies/QuoteRevision'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/quote-revisions/{quote_revision_id}/lines:
+    post:
+      tags: [Pricing]
+      summary: Add an immutable quote line.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/QuoteRevisionId'}]
+      requestBody: {$ref: '#/components/requestBodies/QuoteLine'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/takeoff-versions/{takeoff_version_id}/estimate-versions:
+    post:
+      tags: [Pricing]
+      summary: Build an immutable estimate from an approved takeoff and quote lines.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/TakeoffVersionId'}]
+      requestBody: {$ref: '#/components/requestBodies/EstimateVersion'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/estimate-versions/{estimate_version_id}/approvals:
+    post:
+      tags: [Pricing]
+      summary: Append the estimator approval for an estimate snapshot.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/EstimateVersionId'}]
+      requestBody: {$ref: '#/components/requestBodies/ActorDecision'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '403': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/bid-releases:
+    post:
+      tags: [Pricing]
+      summary: Create an as-bid release with both bidder and submitter decisions.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}]
+      requestBody: {$ref: '#/components/requestBodies/BidRelease'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '400': {$ref: '#/components/responses/Error'}, '403': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+  /v1/bid-releases/{bid_release_id}:
+    get:
+      tags: [Pricing]
+      summary: Read an immutable as-bid release and its decision records.
+      parameters: [{$ref: '#/components/parameters/BidReleaseId'}]
+      responses:
+        '200': {description: Bid release, content: {application/json: {schema: {$ref: '#/components/schemas/BidReleaseResult'}}}}
+        '404': {$ref: '#/components/responses/Error'}
+  /v1/bid-releases/{bid_release_id}/void:
+    post:
+      tags: [Pricing]
+      summary: Append an authorized void event; never changes the original release.
+      parameters: [{$ref: '#/components/parameters/IdempotencyKey'}, {$ref: '#/components/parameters/BidReleaseId'}]
+      requestBody: {$ref: '#/components/requestBodies/ActorDecision'}
+      responses: {'201': {$ref: '#/components/responses/Created'}, '403': {$ref: '#/components/responses/Error'}, '404': {$ref: '#/components/responses/Error'}, '409': {$ref: '#/components/responses/Error'}}
+components:
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema: {type: string, minLength: 1, maxLength: 255}
+    ProjectId: {name: project_id, in: path, required: true, schema: {$ref: '#/components/schemas/Uuid'}}
+    RevisionSetId: {name: revision_set_id, in: path, required: true, schema: {$ref: '#/components/schemas/Uuid'}}
+    DocumentRevisionId: {name: document_revision_id, in: path, required: true, schema: {$ref: '#/components/schemas/Uuid'}}
+    EvidenceItemId: {name: evidence_item_id, in: path, required: true, schema: {$ref: '#/components/schemas/Uuid'}}
+    QuantityAssertionId: {name: quantity_assertion_id, in: path, required: true, schema: {$ref: '#/components/schemas/Uuid'}}
+    TakeoffVersionId: {name: takeoff_version_id, in: path, required: true, schema: {$ref: '#/components/schemas/Uuid'}}
+    RfiId: {name: rfi_id, in: path, required: true, schema: {$ref: '#/components/schemas/Uuid'}}
+    ConflictId: {name: conflict_id, in: path, required: true, schema: {$ref: '#/components/schemas/Uuid'}}
+    QuoteRevisionId: {name: quote_revision_id, in: path, required: true, schema: {$ref: '#/components/schemas/Uuid'}}
+    EstimateVersionId: {name: estimate_version_id, in: path, required: true, schema: {$ref: '#/components/schemas/Uuid'}}
+    BidReleaseId: {name: bid_release_id, in: path, required: true, schema: {$ref: '#/components/schemas/Uuid'}}
+  requestBodies:
+    Project: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/ProjectCommand'}}}}
+    Actor: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/ActorCommand'}}}}
+    DocumentRevision: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/DocumentRevisionCommand'}}}}
+    RevisionSet: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/RevisionSetCommand'}}}}
+    DocumentMembership: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/DocumentMembershipCommand'}}}}
+    EmptyCommand: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/EmptyCommand'}}}}
+    EvidenceItem: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/EvidenceItemCommand'}}}}
+    ExtractionRun: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/ExtractionRunCommand'}}}}
+    ExtractionClaim: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/ExtractionClaimCommand'}}}}
+    QuantityAssertion: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/QuantityAssertionCommand'}}}}
+    QuantityReview: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/QuantityReviewCommand'}}}}
+    ActorDecision: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/ActorDecisionCommand'}}}}
+    SuccessorRevisionSet: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/SuccessorRevisionSetCommand'}}}}
+    Conflict: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/ConflictCommand'}}}}
+    Rfi: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/RfiCommand'}}}}
+    RfiResponse: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/RfiResponseCommand'}}}}
+    ConflictDisposition: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/ConflictDispositionCommand'}}}}
+    Supplier: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/SupplierCommand'}}}}
+    QuoteRevision: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/QuoteRevisionCommand'}}}}
+    QuoteLine: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/QuoteLineCommand'}}}}
+    EstimateVersion: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/EstimateVersionCommand'}}}}
+    BidRelease: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/BidReleaseCommand'}}}}
+  responses:
+    Created:
+      description: Immutable resource created or idempotently replayed.
+      content: {application/json: {schema: {$ref: '#/components/schemas/Id'}}}
+    Error:
+      description: Structured error.
+      content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}
+  schemas:
+    Uuid: {type: string, format: uuid}
+    DecimalString: {type: string, pattern: '^(?:0|[1-9][0-9]*)(?:\.[0-9]+)?$'}
+    Sha256: {type: string, pattern: '^[0-9a-f]{64}$'}
+    Id: {type: object, required: [id], properties: {id: {$ref: '#/components/schemas/Uuid'}}}
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties: {code: {type: string}, message: {type: string}}
+    EmptyCommand: {type: object, additionalProperties: false}
+    ProjectCommand:
+      type: object
+      additionalProperties: false
+      required: [code, name]
+      properties: {code: {type: string, minLength: 1}, name: {type: string, minLength: 1}}
+    ActorCommand:
+      type: object
+      additionalProperties: false
+      required: [display_name, actor_type]
+      properties: {display_name: {type: string, minLength: 1}, actor_type: {type: string, enum: [USER, SERVICE]}}
+    DocumentRevisionCommand:
+      type: object
+      additionalProperties: false
+      required: [document_type, document_number, title, sha256, issue_date]
+      properties:
+        document_type: {type: string, enum: [DRAWING, SPECIFICATION, SCHEDULE, ADDENDUM, RFI_RESPONSE, OTHER]}
+        document_number: {type: string, minLength: 1}
+        title: {type: string, minLength: 1}
+        sha256: {$ref: '#/components/schemas/Sha256'}
+        issue_date: {type: string, format: date}
+        supersedes_document_revision_id: {$ref: '#/components/schemas/Uuid'}
+    RevisionSetCommand: {type: object, additionalProperties: false, required: [name], properties: {name: {type: string, minLength: 1}}}
+    DocumentMembershipCommand: {type: object, additionalProperties: false, required: [document_revision_id], properties: {document_revision_id: {$ref: '#/components/schemas/Uuid'}}}
+    EvidenceItemCommand:
+      type: object
+      additionalProperties: false
+      required: [sheet_id, page_number]
+      properties:
+        sheet_id: {type: string, minLength: 1}
+        page_number: {type: integer, minimum: 1}
+        geometry: {type: object}
+        text_span: {type: string, minLength: 1}
+        content_sha256: {$ref: '#/components/schemas/Sha256'}
+      anyOf: [{required: [geometry]}, {required: [text_span]}]
+    ExtractionRunCommand:
+      type: object
+      additionalProperties: false
+      required: [project_id, plugin_id, plugin_version, configuration_sha256, input_manifest_sha256]
+      properties:
+        project_id: {$ref: '#/components/schemas/Uuid'}
+        plugin_id: {type: string, minLength: 1}
+        plugin_version: {type: string, minLength: 1}
+        configuration_sha256: {$ref: '#/components/schemas/Sha256'}
+        input_manifest_sha256: {$ref: '#/components/schemas/Sha256'}
+    ExtractionClaimCommand:
+      type: object
+      additionalProperties: false
+      required: [extraction_run_id, subject_kind, subject_key, claim_type, payload, confidence]
+      properties:
+        extraction_run_id: {$ref: '#/components/schemas/Uuid'}
+        evidence_item_ids: {type: array, items: {$ref: '#/components/schemas/Uuid'}}
+        subject_kind: {type: string, minLength: 1}
+        subject_key: {type: string, minLength: 1}
+        claim_type: {type: string, minLength: 1}
+        payload: {type: object}
+        confidence: {allOf: [{$ref: '#/components/schemas/DecimalString'}], description: Decimal string from 0 to 1.}
+    QuantityAssertionCommand:
+      type: object
+      additionalProperties: false
+      required: [subject_kind, subject_key, uom, quantity, scope_state, evidence_allocations]
+      properties:
+        subject_kind: {type: string, minLength: 1}
+        subject_key: {type: string, minLength: 1}
+        uom: {type: string, minLength: 1}
+        quantity: {$ref: '#/components/schemas/DecimalString'}
+        scope_state: {type: string, enum: [NEW, EXISTING, DEMOLITION, RELOCATE, UNKNOWN]}
+        supersedes_assertion_id: {$ref: '#/components/schemas/Uuid'}
+        evidence_allocations:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required: [evidence_item_id]
+            properties:
+              evidence_item_id: {$ref: '#/components/schemas/Uuid'}
+              claim_id: {$ref: '#/components/schemas/Uuid'}
+              allocation_quantity: {$ref: '#/components/schemas/DecimalString'}
+    QuantityReviewCommand:
+      type: object
+      additionalProperties: false
+      required: [actor_id, outcome, rationale]
+      properties:
+        actor_id: {$ref: '#/components/schemas/Uuid'}
+        outcome: {type: string, enum: [VERIFIED, APPROVED, REJECTED]}
+        rationale: {type: string, minLength: 1}
+    ActorDecisionCommand:
+      type: object
+      additionalProperties: false
+      required: [actor_id, rationale]
+      properties: {actor_id: {$ref: '#/components/schemas/Uuid'}, rationale: {type: string, minLength: 1}}
+    SuccessorRevisionSetCommand:
+      type: object
+      additionalProperties: false
+      required: [triggering_document_revision_id]
+      properties: {triggering_document_revision_id: {$ref: '#/components/schemas/Uuid'}, name: {type: string, minLength: 1}}
+    ConflictCommand:
+      type: object
+      additionalProperties: false
+      required: [conflict_type, severity, description]
+      properties:
+        conflict_type: {type: string, minLength: 1}
+        severity: {type: string, enum: [LOW, MEDIUM, HIGH, CRITICAL]}
+        description: {type: string, minLength: 1}
+    RfiCommand: {type: object, additionalProperties: false, required: [question], properties: {question: {type: string, minLength: 1}}}
+    RfiResponseCommand:
+      type: object
+      additionalProperties: false
+      required: [response_document_revision_id, response_text]
+      properties: {response_document_revision_id: {$ref: '#/components/schemas/Uuid'}, response_text: {type: string, minLength: 1}}
+    ConflictDispositionCommand:
+      type: object
+      additionalProperties: false
+      required: [actor_id, rfi_response_id, rationale]
+      properties: {actor_id: {$ref: '#/components/schemas/Uuid'}, rfi_response_id: {$ref: '#/components/schemas/Uuid'}, rationale: {type: string, minLength: 1}}
+    SupplierCommand: {type: object, additionalProperties: false, required: [name], properties: {name: {type: string, minLength: 1}}}
+    QuoteRevisionCommand:
+      type: object
+      additionalProperties: false
+      required: [supplier_id, source_document_revision_id, quote_number, issued_at, valid_through, currency, terms]
+      properties:
+        supplier_id: {$ref: '#/components/schemas/Uuid'}
+        source_document_revision_id: {$ref: '#/components/schemas/Uuid'}
+        quote_number: {type: string, minLength: 1}
+        issued_at: {type: string, format: date}
+        valid_through: {type: string, format: date}
+        currency: {type: string, pattern: '^[A-Z]{3}$'}
+        terms: {type: string, minLength: 1}
+    QuoteLineCommand:
+      type: object
+      additionalProperties: false
+      required: [supplier_part_number, description, uom, unit_price]
+      properties:
+        supplier_part_number: {type: string, minLength: 1}
+        description: {type: string, minLength: 1}
+        uom: {type: string, minLength: 1}
+        unit_price: {$ref: '#/components/schemas/DecimalString'}
+    EstimateVersionCommand:
+      type: object
+      additionalProperties: false
+      required: [line_inputs]
+      properties:
+        line_inputs:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            additionalProperties: false
+            required: [takeoff_line_id, quote_line_id]
+            properties: {takeoff_line_id: {$ref: '#/components/schemas/Uuid'}, quote_line_id: {$ref: '#/components/schemas/Uuid'}}
+    BidReleaseCommand:
+      type: object
+      additionalProperties: false
+      required: [takeoff_version_id, estimate_version_id, authorized_bidder_actor_id, submitter_actor_id, rationale]
+      properties:
+        takeoff_version_id: {$ref: '#/components/schemas/Uuid'}
+        estimate_version_id: {$ref: '#/components/schemas/Uuid'}
+        authorized_bidder_actor_id: {$ref: '#/components/schemas/Uuid'}
+        submitter_actor_id: {$ref: '#/components/schemas/Uuid'}
+        rationale: {type: string, minLength: 1}
+    RevisionSetResult:
+      type: object
+      required: [id, project_id, name, status, created_at, frozen_at]
+      properties:
+        id: {$ref: '#/components/schemas/Uuid'}
+        project_id: {$ref: '#/components/schemas/Uuid'}
+        name: {type: string}
+        status: {type: string, enum: [OPEN, FROZEN]}
+        created_at: {type: string, format: date-time}
+        frozen_at: {type: [string, 'null'], format: date-time}
+    RevisionSetDocumentResult:
+      type: object
+      required: [revision_set_id]
+      properties:
+        revision_set_id: {$ref: '#/components/schemas/Uuid'}
+    TakeoffVersion:
+      type: object
+      required: [id, project_id, revision_set_id, status, created_at, lines]
+      properties:
+        id: {$ref: '#/components/schemas/Uuid'}
+        project_id: {$ref: '#/components/schemas/Uuid'}
+        revision_set_id: {$ref: '#/components/schemas/Uuid'}
+        status: {type: string, enum: [DRAFT, APPROVED]}
+        created_at: {type: string, format: date-time}
+        lines: {type: array, items: {type: object}}
+    BidReleaseResult:
+      type: object
+      required: [id, project_id, takeoff_version_id, estimate_version_id, status, created_at, approval_events, estimate_lines]
+      properties:
+        id: {$ref: '#/components/schemas/Uuid'}
+        project_id: {$ref: '#/components/schemas/Uuid'}
+        takeoff_version_id: {$ref: '#/components/schemas/Uuid'}
+        estimate_version_id: {$ref: '#/components/schemas/Uuid'}
+        status: {type: string, enum: [PENDING, RELEASED, VOIDED]}
+        created_at: {type: string, format: date-time}
+        approval_events: {type: array, items: {type: object}}
+        estimate_lines: {type: array, items: {type: object}}
