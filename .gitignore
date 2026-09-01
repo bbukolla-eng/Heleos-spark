@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+
+# Local secrets and environment (never committed)
+.env
+.env.*

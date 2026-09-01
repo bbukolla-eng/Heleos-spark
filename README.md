@@ -10,6 +10,16 @@ The repository is in foundation design. Production implementation begins only af
 
 The first implementation milestone will establish the operational database, immutable evidence vault, deterministic PDF intake, and tests before broader AI, research, or interface work.
 
+The build roadmap, the owner decisions it needs, and the tooling admission register are in [`ROADMAP.md`](ROADMAP.md) and [`docs/roadmap/`](docs/roadmap/).
+
 ## Authority rule
 
 Research systems and AI workers may propose findings and patches. Deterministic code, governed data, cited evidence, automated tests, and explicit human approval determine production truth.
+
+## Working with Claude Code
+
+Claude Code operates in one designated branch, named in [`.claude/work-branch`](.claude/work-branch), and treats every other branch as read-only. The rule, the enforcement hooks, and the day-to-day flow are described in [`CLAUDE.md`](CLAUDE.md) and [`docs/workspace/claude-code-lane.md`](docs/workspace/claude-code-lane.md). Hook tests run with the standard library only:
+
+```bash
+python3 -m unittest discover -s tests -p 'test_*.py' -v
+```
