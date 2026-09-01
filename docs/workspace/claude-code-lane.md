@@ -66,6 +66,22 @@ git checkout main`, `git -C /other/repo ...`) are out of scope and allowed.
 When the working directory cannot be tracked (subshells, `cd -`, command
 substitution) the guard assumes this repository and stays strict.
 
+**Guard files are owner-managed.** `.claude/work-branch`,
+`.claude/settings.json`, everything under `.claude/hooks/`, and everything
+under `.githooks/` cannot be edited, deleted, overwritten, `chmod`-ed,
+restored from another commit, or reset away from inside a session, on or off
+the lane. To change the guard, the owner sets `HELEOS_GUARD_ALLOW_SELF_EDIT=1`
+in the harness environment before the session starts. `git reset --hard`,
+`git checkout <tree-ish> -- <paths>`, and `git restore --source=<tree-ish>`
+stay allowed whenever the source tree carries the same guard files as `HEAD`.
+
+**The lane name is validated.** It must be a plain branch name that
+`git check-ref-format --branch` accepts and must not begin with `-`, so it can
+never be read by git as an option. If `.claude/work-branch` is missing or
+invalid, every layer fails closed: the guard treats the checkout as off-lane
+(read-only), and the git hooks refuse commits and pushes from Claude Code
+until the owner restores the file.
+
 ### SessionStart (`session_start.sh`)
 
 - Prints the lane, the current branch, and how far the lane is ahead of or
@@ -126,9 +142,11 @@ accepted for now:
 - A script or program that internally calls `git checkout` cannot be inspected
   by the PreToolUse guard. The git layer still refuses commits and pushes off
   the lane, and the post-checkout hook warns.
-- On the lane, file writes are unrestricted; the lane itself is the boundary.
-- The guard relies on the local `.claude/work-branch` and hook files being
-  present. A clone that removes them has no guard.
+- On the lane, file writes outside the guard's own files are unrestricted; the
+  lane itself is the boundary.
+- The guard relies on the hook files being present in the clone. Removing
+  them outside a Claude Code session (or with the owner override set)
+  disables it; that is the owner's call.
 
 Recommended complement (owner action on GitHub): protect `main` so that direct
 pushes are rejected and changes arrive only through reviewed pull requests.

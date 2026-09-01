@@ -4,7 +4,10 @@
 . "$(dirname "${BASH_SOURCE[0]}")/lane_common.sh"
 lane_hooks_active || exit 0
 LANE="$(lane_branch_name)"
-[ -n "$LANE" ] || exit 0
+if [ -z "$LANE" ]; then
+  echo "[BranchGuard] push blocked: .claude/work-branch is missing or not a valid branch name; the lane cannot be determined." >&2
+  exit 1
+fi
 REMOTE_NAME="$1"
 REMOTE_URL="$2"
 ORIGIN_URL="$(git remote get-url origin 2>/dev/null)"

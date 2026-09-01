@@ -14,8 +14,16 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT" || exit 0
 
 LANE="$(grep -Ev '^\s*(#|$)' "$ROOT/.claude/work-branch" 2>/dev/null | head -n 1 | tr -d '[:space:]')"
+# The lane must be a branch name git accepts and must never look like an
+# option (a leading dash could otherwise be read by git as a flag).
+case "$LANE" in
+  ""|-*) LANE="" ;;
+esac
+if [ -n "$LANE" ] && ! git check-ref-format --branch "$LANE" >/dev/null 2>&1; then
+  LANE=""
+fi
 if [ -z "$LANE" ]; then
-  echo "[LaneStatus] WARNING: .claude/work-branch is missing or empty; branch guard is inactive." >&2
+  echo "[LaneStatus] WARNING: .claude/work-branch is missing, empty, or not a valid branch name. Claude Code is read-only in this repository until the owner restores it." >&2
   exit 0
 fi
 

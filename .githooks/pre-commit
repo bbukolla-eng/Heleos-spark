@@ -3,7 +3,10 @@
 . "$(dirname "${BASH_SOURCE[0]}")/lane_common.sh"
 lane_hooks_active || exit 0
 LANE="$(lane_branch_name)"
-[ -n "$LANE" ] || exit 0
+if [ -z "$LANE" ]; then
+  echo "[BranchGuard] commit blocked: .claude/work-branch is missing or not a valid branch name; the lane cannot be determined." >&2
+  exit 1
+fi
 BRANCH="$(lane_current_branch)"
 if [ "$BRANCH" != "$LANE" ]; then
   echo "[BranchGuard] commit blocked: checkout is on '$BRANCH' but Claude Code may only commit on '$LANE'." >&2

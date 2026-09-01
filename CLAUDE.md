@@ -25,9 +25,15 @@ architecture authority; this file only tells you how to work inside it.
   act only for Claude Code processes. A denial prints `[BranchGuard]`; do not
   look for a way around it. If you believe a denial is wrong, stop and report
   it with the exact command.
-- Changing the lane is an owner decision: edit `.claude/work-branch` on the
-  current lane, commit, and merge through review. The owner kill switch is
-  `HELEOS_BRANCH_GUARD=off` in the harness environment, never from a command.
+- The guard's own files (`.claude/work-branch`, `.claude/settings.json`,
+  `.claude/hooks/`, `.githooks/`) are owner-managed. Do not edit, delete,
+  restore, or reset them from inside a session; the guard denies it. The owner
+  lifts this for a session with `HELEOS_GUARD_ALLOW_SELF_EDIT=1` in the
+  harness environment.
+- Changing the lane is an owner decision: with that override set, edit
+  `.claude/work-branch` on the current lane, commit, and merge through review.
+  The owner kill switch is `HELEOS_BRANCH_GUARD=off` in the harness
+  environment, never from a command.
 
 ## Project status and authority
 

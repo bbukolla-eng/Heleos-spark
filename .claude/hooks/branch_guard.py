@@ -49,7 +49,7 @@ GIT_READ_ONLY = {
 }
 GIT_PLUMBING_WRITES = {
     "update-ref", "receive-pack", "send-pack", "fast-import", "filter-branch",
-    "replace", "filter-repo",
+    "replace", "filter-repo", "update-index",
 }
 SHELL_READ_ONLY = {
     "cd", "pushd", "popd", "pwd", "ls", "cat", "head", "tail", "less", "more", "wc",
@@ -99,6 +99,7 @@ class RepoContext(object):
     def __init__(self, root, lane, cwd):
         self.root = os.path.realpath(root)
         self.lane = lane
+        self.lane_invalid = lane == UNCONFIGURED_LANE
         self.cwd = cwd or self.root
         self._branch = None
         self._origin_url = None
@@ -145,6 +146,25 @@ class RepoContext(object):
         git_dir = os.path.join(self.root, ".git")
         return real == git_dir or real.startswith(git_dir + os.sep)
 
+    def touches_protected(self, path):
+        """True when ``path`` is a guard file, inside a guard directory, or an ancestor of one."""
+        try:
+            real = os.path.realpath(path)
+        except (OSError, ValueError):
+            return True
+        if not (real == self.root or real.startswith(self.root + os.sep)):
+            return False
+        rel = os.path.relpath(real, self.root).replace(os.sep, "/")
+        if rel == ".":
+            return True
+        for item in PROTECTED_RELPATHS:
+            if rel == item:
+                return True
+        for item in PROTECTED_DIRS:
+            if rel == item or rel.startswith(item + "/") or item.startswith(rel + "/"):
+                return True
+        return False
+
     def owns_directory(self, directory):
         """True when ``directory`` belongs to this repository (or is unknown)."""
         if directory is None:
@@ -156,6 +176,14 @@ class RepoContext(object):
             # Not a git repository at all: nothing there can leave the lane.
             return False
         return os.path.realpath(top.strip()) == self.root
+
+    def guard_differs(self, treeish):
+        """True when ``treeish`` carries different guard files than HEAD (or cannot be resolved)."""
+        if treeish in ("HEAD", "@", ""):
+            return False
+        proc = _git_proc(self.root, "diff", "--quiet", treeish, "HEAD", "--",
+                         *(PROTECTED_RELPATHS + PROTECTED_DIRS))
+        return proc is None or proc.returncode != 0
 
     def upstream_branch(self):
         out = run_git(self.root, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}", ok_codes=(0, 128))
@@ -191,36 +219,83 @@ def git_succeeds(directory, *args):
 
 
 def find_repo_root():
+    """Locate the guarded repository.
+
+    The script lives at <repo>/.claude/hooks/, so its own location is the
+    authority; the lane file is deliberately NOT required to exist here, so a
+    deleted .claude/work-branch fails closed in main() instead of open.
+    """
     override = os.environ.get("HELEOS_GUARD_REPO_ROOT")
-    candidates = []
-    if override:
-        candidates.append(override)
+    if override and os.path.isdir(override):
+        return override
     here = os.path.dirname(os.path.abspath(__file__))
-    candidates.append(os.path.abspath(os.path.join(here, "..", "..")))
+    by_location = os.path.abspath(os.path.join(here, "..", ".."))
+    if os.path.exists(os.path.join(by_location, ".git")) or os.path.isdir(os.path.join(by_location, ".claude")):
+        return by_location
     project_dir = os.environ.get("CLAUDE_PROJECT_DIR")
-    if project_dir:
-        candidates.append(project_dir)
-    for candidate in candidates:
-        if os.path.isfile(os.path.join(candidate, ".claude", "work-branch")):
-            return candidate
+    if project_dir and os.path.isfile(os.path.join(project_dir, ".claude", "work-branch")):
+        return project_dir
     return None
 
 
 def read_lane(root):
     path = os.path.join(root, ".claude", "work-branch")
-    with open(path, "r", encoding="utf-8") as handle:
-        for line in handle:
-            text = line.strip()
-            if text and not text.startswith("#"):
-                return text
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            for line in handle:
+                text = line.strip()
+                if text and not text.startswith("#"):
+                    return text
+    except (OSError, UnicodeDecodeError):
+        return None
     return None
+
+
+_LANE_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]*$")
+UNCONFIGURED_LANE = "(unconfigured lane)"
+
+
+def valid_lane_name(root, name):
+    """A lane must be a plain branch name git accepts and never look like an option."""
+    if not name or not _LANE_NAME_RE.match(name) or ".." in name or name.endswith("/") or name.endswith(".lock"):
+        return False
+    return git_succeeds(root, "check-ref-format", "--branch", name)
+
+
+# Files that implement the guard. Claude Code may not change them from inside a
+# session; the owner lifts this with HELEOS_GUARD_ALLOW_SELF_EDIT=1 in the
+# harness environment.
+PROTECTED_RELPATHS = (".claude/work-branch", ".claude/settings.json", ".claude/settings.local.json")
+PROTECTED_DIRS = (".claude/hooks", ".githooks")
+FILE_MUTATORS = {"rm", "mv", "cp", "tee", "truncate", "ln", "install", "rsync", "dd", "chmod", "chattr",
+                 "shred", "unlink", "rmdir", "patch", "touch"}
+
+
+def self_edit_allowed():
+    return os.environ.get("HELEOS_GUARD_ALLOW_SELF_EDIT", "").lower() in ("1", "true", "yes", "on")
 
 
 # ---------------------------------------------------------------------------
 # Messages
 # ---------------------------------------------------------------------------
 
+def protected_message(ctx, path):
+    return (
+        "%s DENIED: '%s' is part of the lane guard and is owner-managed. Changing the guard requires "
+        "the owner to set HELEOS_GUARD_ALLOW_SELF_EDIT=1 in the harness environment before the session "
+        "starts. Do not modify, delete, restore, or reset guard files from inside a session."
+        % (TAG, path)
+    )
+
+
 def off_lane_message(ctx, what):
+    if ctx.lane_invalid:
+        return (
+            "%s DENIED: %s. The lane configuration in .claude/work-branch is missing or is not a valid "
+            "branch name, so the designated lane cannot be determined. Claude Code is read-only until the "
+            "owner restores it. Do not attempt to recreate the file from inside a session."
+            % (TAG, what)
+        )
     return (
         "%s DENIED: %s while Heleos-spark is on branch '%s'. Claude Code may only work on the "
         "designated lane branch '%s'. Allowed right now: read-only commands and "
@@ -326,6 +401,53 @@ def short_cluster_hits(flags, letters):
     return False
 
 
+def guard_restore_check(ctx, source, paths):
+    """Deny restoring guard files from a tree-ish whose guard differs from HEAD."""
+    if self_edit_allowed() or not ctx.guard_differs(source):
+        return Decision.allow()
+    for item in paths:
+        if ctx.touches_protected(os.path.join(ctx.cwd, item)):
+            return Decision.deny(protected_message(ctx, item))
+    return Decision.allow()
+
+
+def check_restore(ctx, sub_args):
+    source = "HEAD"
+    paths = []
+    skip = False
+    for idx, tok in enumerate(sub_args):
+        if skip:
+            skip = False
+            continue
+        if tok in ("-s", "--source", "--conflict", "--pathspec-from-file"):
+            if tok in ("-s", "--source") and idx + 1 < len(sub_args):
+                source = sub_args[idx + 1]
+            skip = True
+            continue
+        if tok.startswith("--source="):
+            source = tok.split("=", 1)[1]
+            continue
+        if tok.startswith("-s") and len(tok) > 2 and not tok.startswith("--"):
+            source = tok[2:]
+            continue
+        if tok.startswith("-") and tok != "--":
+            continue
+        if tok != "--":
+            paths.append(tok)
+    return guard_restore_check(ctx, source, paths)
+
+
+def check_reset(ctx, sub_args):
+    flags = [t for t in sub_args if t.startswith("-")]
+    if not any(f in ("--hard", "--merge", "--keep") for f in flags):
+        return Decision.allow()
+    targets = [t for t in sub_args if not t.startswith("-")]
+    target = targets[0] if targets else "HEAD"
+    if not self_edit_allowed() and ctx.guard_differs(target):
+        return Decision.deny(protected_message(ctx, "working tree (git reset to %s)" % target))
+    return Decision.allow()
+
+
 def check_checkout(ctx, sub_args):
     before, after, flags, seen_dd = positionals(sub_args, _CHECKOUT_VALUE_OPTS)
     flag_names = {f.split("=", 1)[0] for f in flags}
@@ -333,9 +455,11 @@ def check_checkout(ctx, sub_args):
         return Decision.deny(lane_message(ctx, "`git checkout` would create or detach a branch",
                                           "Do not create new branches; the lane is the only branch."))
     if seen_dd and after:
-        return Decision.allow()  # file restore from a tree-ish: does not switch branches
+        # File restore from a tree-ish: does not switch branches, but must not
+        # bring back guard files from a tree that lacks or alters them.
+        return guard_restore_check(ctx, before[0] if before else "HEAD", after)
     if len(before) >= 2:
-        return Decision.allow()  # `git checkout <tree-ish> <path>` restores files
+        return guard_restore_check(ctx, before[0], before[1:])  # `git checkout <tree-ish> <path>`
     if not before:
         return Decision.allow()  # `git checkout -- .`, `git checkout -p`, etc.
     target = before[0]
@@ -584,6 +708,18 @@ def check_git(ctx, argv, env_names, segment_dir, depth=0):
                 return Decision.deny(off_lane_message(ctx, "`git branch` changes"))
             return Decision.allow()
         return check_branch(ctx, sub_args)
+    if sub in ("rm", "mv") and not self_edit_allowed():
+        for tok in sub_args:
+            if not tok.startswith("-") and ctx.touches_protected(os.path.join(ctx.cwd, tok)):
+                return Decision.deny(protected_message(ctx, tok))
+    if sub == "restore":
+        if not ctx.on_lane:
+            return Decision.deny(off_lane_message(ctx, "`git restore`"))
+        return check_restore(ctx, sub_args)
+    if sub == "reset":
+        if not ctx.on_lane:
+            return Decision.deny(off_lane_message(ctx, "`git reset`"))
+        return check_reset(ctx, sub_args)
     if sub in ("fetch", "pull"):
         before, _a, _f, _dd = positionals(sub_args, {"--depth", "--deepen", "--shallow-since", "--shallow-exclude",
                                                      "--refmap", "--recurse-submodules", "--jobs", "-j", "-o",
@@ -700,6 +836,8 @@ def check_bash(ctx, command, depth=0):
             path = os.path.normpath(os.path.join(base, os.path.expanduser(target)))
             if ctx.inside_git_dir(path):
                 return Decision.deny(lane_message(ctx, "writing into .git/ directly"))
+            if ctx.touches_protected(path) and not self_edit_allowed() and not os.path.isdir(path):
+                return Decision.deny(protected_message(ctx, target))
             if in_scope and not ctx.on_lane and ctx.inside_repo(path):
                 return Decision.deny(off_lane_message(ctx, "writing to '%s'" % target))
 
@@ -736,13 +874,21 @@ def check_bash(ctx, command, depth=0):
                 return Decision.deny(off_lane_message(ctx, "`sed -i`"))
             if name == "find" and any(t in ("-delete", "-exec", "-execdir", "-ok", "-okdir") for t in argv[1:]):
                 return Decision.deny(off_lane_message(ctx, "`find` with side effects"))
-        for tok in argv[1:]:
-            if tok.startswith("-"):
-                continue
-            base = segment_dir if segment_dir is not None else ctx.cwd
-            path = os.path.normpath(os.path.join(base, os.path.expanduser(tok)))
-            if name in ("rm", "mv", "cp", "tee", "truncate", "ln", "install", "rsync", "dd") and ctx.inside_git_dir(path):
-                return Decision.deny(lane_message(ctx, "`%s` touching .git/ directly" % name))
+        mutates_files = (
+            name in FILE_MUTATORS
+            or (name == "sed" and any(t == "-i" or t.startswith("-i") or t.startswith("--in-place") for t in argv[1:]))
+            or (name == "find" and any(t in ("-delete", "-exec", "-execdir", "-ok", "-okdir", "-fprint", "-fprintf", "-fls") for t in argv[1:]))
+        )
+        if mutates_files:
+            for tok in argv[1:]:
+                if tok.startswith("-"):
+                    continue
+                base = segment_dir if segment_dir is not None else ctx.cwd
+                path = os.path.normpath(os.path.join(base, os.path.expanduser(tok)))
+                if ctx.inside_git_dir(path):
+                    return Decision.deny(lane_message(ctx, "`%s` touching .git/ directly" % name))
+                if ctx.touches_protected(path) and not self_edit_allowed():
+                    return Decision.deny(protected_message(ctx, tok))
         current = resolve_cd(current, argv)
     return Decision.allow()
 
@@ -795,6 +941,8 @@ def evaluate(ctx, payload):
             return Decision.allow()
         if ctx.inside_git_dir(full):
             return Decision.deny(lane_message(ctx, "editing files inside .git/"))
+        if ctx.touches_protected(full) and not self_edit_allowed():
+            return Decision.deny(protected_message(ctx, path))
         if not ctx.on_lane:
             return Decision.deny(off_lane_message(ctx, "editing '%s'" % path))
         return Decision.allow()
@@ -824,9 +972,9 @@ def main():
         sys.stderr.write("%s .claude/work-branch not found; allowing.\n" % TAG)
         return 0
     lane = read_lane(root)
-    if not lane:
-        sys.stderr.write("%s .claude/work-branch is empty; allowing.\n" % TAG)
-        return 0
+    if not (lane and valid_lane_name(root, lane)):
+        # Fail closed: without a trustworthy lane name every checkout is off-lane.
+        lane = UNCONFIGURED_LANE
     ctx = RepoContext(root, lane, payload.get("cwd") or None)
     try:
         decision = evaluate(ctx, payload)

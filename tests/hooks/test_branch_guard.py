@@ -16,6 +16,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import unittest.mock
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 HOOKS_DIR = os.path.join(REPO_ROOT, ".claude", "hooks")
@@ -394,6 +395,118 @@ class LauncherTests(FixtureMixin, unittest.TestCase):
 
     def test_work_branch_file_is_read(self):
         self.assertEqual(branch_guard.read_lane(REPO_ROOT), LANE)
+
+
+class LaneConfigTests(FixtureMixin, unittest.TestCase):
+    def test_lane_name_validation(self):
+        for name in (LANE, "main", "feat/x.y_z", "release-1.2"):
+            self.assertTrue(branch_guard.valid_lane_name(self.lane_dir, name), name)
+        for name in ("", "-x", "--upload-pack=touch /tmp/x", "a b", "a..b", "a/", "a.lock", "$(x)", "a@{1}", "a\\b", "-"):
+            self.assertFalse(branch_guard.valid_lane_name(self.lane_dir, name), repr(name))
+
+    def run_hook(self, root, tool, tool_input):
+        env = dict(os.environ)
+        env["HELEOS_GUARD_REPO_ROOT"] = root
+        env.pop("HELEOS_BRANCH_GUARD", None)
+        env.pop("HELEOS_GUARD_ALLOW_SELF_EDIT", None)
+        proc = subprocess.run(["bash", os.path.join(HOOKS_DIR, "branch_guard.sh")],
+                              input=json.dumps({"tool_name": tool, "tool_input": tool_input, "cwd": root}),
+                              capture_output=True, text=True, env=env)
+        return proc.returncode, proc.stderr
+
+    def test_invalid_or_missing_lane_fails_closed(self):
+        for content in ("--upload-pack=touch /tmp/pwned\n", "-x\n", "main branch\n", "", None):
+            with self.subTest(content=content):
+                clone = os.path.join(self.base, "badlane")
+                shutil.rmtree(clone, ignore_errors=True)
+                git(self.base, "clone", "-q", os.path.join(self.base, "bbukolla-eng", "Heleos-spark.git"), clone)
+                git(clone, "checkout", "-q", LANE)
+                lane_file = os.path.join(clone, ".claude", "work-branch")
+                if content is None:
+                    os.remove(lane_file)
+                else:
+                    with open(lane_file, "w", encoding="utf-8") as handle:
+                        handle.write(content)
+                code, err = self.run_hook(clone, "Write", {"file_path": os.path.join(clone, "README.md"), "content": "x"})
+                self.assertEqual(code, DENY)
+                self.assertIn("work-branch", err)
+                code, _err = self.run_hook(clone, "Bash", {"command": "git commit -m x"})
+                self.assertEqual(code, DENY)
+                code, _err = self.run_hook(clone, "Bash", {"command": "git status && ls"})
+                self.assertEqual(code, ALLOW)
+
+
+class SelfProtectionTests(FixtureMixin, unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        super(SelfProtectionTests, cls).setUpClass()
+        # The lane carries a guard file that main does not have, so restoring
+        # from main would remove it.
+        settings = os.path.join(cls.lane_dir, ".claude", "settings.json")
+        with open(settings, "w", encoding="utf-8") as handle:
+            handle.write("{}\n")
+        git(cls.lane_dir, "add", ".claude/settings.json")
+        git(cls.lane_dir, "commit", "-q", "-m", "add settings")
+
+    def test_guard_files_are_owner_managed(self):
+        d = self.lane_dir
+        self.check_table(d, [
+            ("Write", {"file_path": os.path.join(d, ".claude", "work-branch"), "content": "main"}, DENY),
+            ("Write", {"file_path": os.path.join(d, ".claude", "hooks", "branch_guard.py"), "content": "x"}, DENY),
+            ("Edit", {"file_path": os.path.join(d, ".githooks", "pre-push")}, DENY),
+            ("Write", {"file_path": os.path.join(d, ".claude", "settings.json"), "content": "{}"}, DENY),
+            ("Write", {"file_path": os.path.join(d, ".claude", "skills", "x", "SKILL.md"), "content": "x"}, ALLOW),
+            ("Write", {"file_path": os.path.join(d, "README.md"), "content": "x"}, ALLOW),
+            ("Bash", {"command": "echo main > .claude/work-branch"}, DENY),
+            ("Bash", {"command": "rm -rf .githooks"}, DENY),
+            ("Bash", {"command": "rm -rf .claude"}, DENY),
+            ("Bash", {"command": "rm -rf ."}, DENY),
+            ("Bash", {"command": "chmod -x .githooks/pre-push"}, DENY),
+            ("Bash", {"command": "chmod +x scripts/run.sh"}, ALLOW),
+            ("Bash", {"command": "sed -i s/a/b/ .claude/hooks/branch_guard.py"}, DENY),
+            ("Bash", {"command": "sed -n 1p .claude/hooks/branch_guard.py"}, ALLOW),
+            ("Bash", {"command": "cat .githooks/pre-push .claude/work-branch"}, ALLOW),
+            ("Bash", {"command": "cp x .claude/settings.json"}, DENY),
+            ("Bash", {"command": "find . -name '*.pyc' -delete"}, DENY),
+            ("Bash", {"command": "find docs -name '*.tmp' -delete"}, ALLOW),
+            ("Bash", {"command": "git rm .claude/settings.json"}, DENY),
+            ("Bash", {"command": "git mv .githooks hooks"}, DENY),
+            ("Bash", {"command": "git rm docs/a.md"}, ALLOW),
+            ("Bash", {"command": "git checkout main -- .claude/work-branch"}, DENY),
+            ("Bash", {"command": "git checkout main -- ."}, DENY),
+            ("Bash", {"command": "git checkout main -- README.md"}, ALLOW),
+            ("Bash", {"command": "git checkout -- ."}, ALLOW),
+            ("Bash", {"command": "git checkout HEAD -- ."}, ALLOW),
+            ("Bash", {"command": "git restore --source=main .claude/settings.json"}, DENY),
+            ("Bash", {"command": "git restore --source main ."}, DENY),
+            ("Bash", {"command": "git restore --staged README.md"}, ALLOW),
+            ("Bash", {"command": "git restore README.md"}, ALLOW),
+            ("Bash", {"command": "git reset --hard"}, ALLOW),
+            ("Bash", {"command": "git reset --hard HEAD"}, ALLOW),
+            ("Bash", {"command": "git reset --hard main"}, DENY),
+            ("Bash", {"command": "git reset --soft main"}, ALLOW),
+            ("Bash", {"command": "git reset --hard origin/%s" % LANE}, DENY),
+            ("Bash", {"command": "git update-index --assume-unchanged .githooks/pre-push"}, DENY),
+        ])
+
+    def test_owner_can_lift_self_protection(self):
+        d = self.lane_dir
+        with unittest.mock.patch.dict(os.environ, {"HELEOS_GUARD_ALLOW_SELF_EDIT": "1"}):
+            self.check_table(d, [
+                ("Write", {"file_path": os.path.join(d, ".claude", "work-branch"), "content": "main"}, ALLOW),
+                ("Bash", {"command": "rm -rf .githooks"}, ALLOW),
+                ("Bash", {"command": "git checkout main -- .claude/work-branch"}, ALLOW),
+                ("Bash", {"command": "git checkout main"}, DENY),
+            ])
+
+    def test_touches_protected(self):
+        ctx = branch_guard.RepoContext(self.lane_dir, LANE, self.lane_dir)
+        for rel in (".claude/work-branch", ".claude/settings.json", ".claude/hooks", ".claude/hooks/x.py",
+                    ".githooks", ".githooks/pre-push", ".claude", "."):
+            self.assertTrue(ctx.touches_protected(os.path.join(self.lane_dir, rel)), rel)
+        for rel in ("README.md", "docs", ".claude/skills/x/SKILL.md", ".claude/identity.json", ".gitignore"):
+            self.assertFalse(ctx.touches_protected(os.path.join(self.lane_dir, rel)), rel)
+        self.assertFalse(ctx.touches_protected("/tmp"))
 
 
 if __name__ == "__main__":

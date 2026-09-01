@@ -11,10 +11,17 @@ lane_root() {
   git rev-parse --show-toplevel 2>/dev/null
 }
 
+# Prints the validated lane name; prints nothing (and returns 1) when the
+# file is missing or the name is not a plain branch name git accepts.
 lane_branch_name() {
-  local root
+  local root name
   root="$(lane_root)" || return 1
-  grep -Ev '^\s*(#|$)' "$root/.claude/work-branch" 2>/dev/null | head -n 1 | tr -d '[:space:]'
+  name="$(grep -Ev '^\s*(#|$)' "$root/.claude/work-branch" 2>/dev/null | head -n 1 | tr -d '[:space:]')"
+  case "$name" in
+    ""|-*) return 1 ;;
+  esac
+  git check-ref-format --branch "$name" >/dev/null 2>&1 || return 1
+  printf '%s\n' "$name"
 }
 
 lane_current_branch() {
