@@ -20,7 +20,7 @@ Freshness: PR #1 moved on 2026-09-02 after the audits read it. Its head is now `
 
 Other facts about the branches:
 
-- No branch carries a `.github` directory. There is no continuous integration anywhere in the repository.
+- At the audit snapshot, no audited branch carried a `.github` directory. This revision subsequently added the GitHub Actions workflows documented in `docs/policies/github-automation.md`; they were not part of the ten-agent evidence audit.
 - No branch carries a `docs/decisions` record except PR #3, whose README records only the lane decision of 2026-09-01.
 - The ECC bundle branch `ecc-tools/Heleos-spark-1788252490451` no longer exists as a ref; its 12 `ecc-tools[bot]` commits survive through merge commit `d85bd86`.
 - The string `HELEO_HELIOS` (the quarantined predecessor) appears five times across all branches, every time as a policy statement forbidding its use. Nothing references its content.
