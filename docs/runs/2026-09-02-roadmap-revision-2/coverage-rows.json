@@ -1,0 +1,1172 @@
+[
+ [
+  "spec-coverage-2-6",
+  "S2-1",
+  "Heleos-spark must not fork, clone, inspect, compare against, import, migrate, install, reference, or reuse the predecessor's code, tests, configuration, dependencies, database state, prompts, datasets, generated artifacts, or build outputs (spec L21-23)",
+  "covered \u2014 standing policy from Phase 0: CLAUDE.md:52-55 ('do not fork, clone, inspect, compare against, import, or reference the quarantined predecessor repository in any form'), CLAUDE.md:126; guard denies non-origin fetch (.claude/hooks/branch_guard.py:732 'Fetch only from origin (clean-room boundary)'); plan Global Constraint L15"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S2-2",
+  "must not reuse predecessor branches, commits, tags, issues, pull requests, actions, releases, or Git history (spec L24)",
+  "covered \u2014 CLAUDE.md:52-54 'in any form'; branch_guard.py:732 fetch restriction; phase-0-evidence.md:12 main has its own history"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S2-3",
+  "must not reuse predecessor internal documentation, schemas, conventions, filenames, or implementation details (spec L25)",
+  "covered \u2014 CLAUDE.md:52-54 'in any form'; no review checklist item names schemas/filenames specifically (note only)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S2-4",
+  "every external source, dependency, dataset, model, and copied asset introduced must have independently recorded provenance and an acceptable license or usage basis (spec L27)",
+  "weak \u2014 policy at CLAUDE.md:54-55; Python deps via dependencies/manifest.toml (ROADMAP.md:136-137, Phase 1); tools via admission register (skills-and-plugins.md:22-37); model/dataset candidates via Phase 2 quarantine (ROADMAP.md:177-178); fixtures via plan Task 5 manifest (plan L455). Copied assets (loop templates ROADMAP.md:191-192, graph-engineering skill copied to ~/.claude/skills skills-and-plugins.md:29) only 'cite the commit'. No single mechanism or exit criterion covering all five classes"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S2-5",
+  "the new repository begins with its own root history and source registry (spec L27)",
+  "root history: covered (phase-0-evidence.md:12-16, recovery bundle quarantined). Source registry: misplaced \u2014 first registry is Phase 2 knowledge lane (ROADMAP.md:161, 199); Phase 0 exit (ROADMAP.md:90-92) does not create a registry; 'root history' and 'source registry' do not appear as a Phase 0 item"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S3-1",
+  "every material takeoff line traceable to document revision, sheet, coordinates, extraction method, rule version, model or software version, confidence, and review history (spec L31)",
+  "covered \u2014 Phase 4 exit ROADMAP.md:249-250 'every exported line traces to evidence'; Phase 3 exit ROADMAP.md:226; field list carried by plan Task 6 L569 (Option A). The 8 traceability elements are not enumerated in any roadmap exit criterion (minor)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S3-2",
+  "intelligence separate from authority; models and research propose, deterministic controls and approved humans authorize (spec L32)",
+  "covered \u2014 CLAUDE.md:48-51; ROADMAP.md:211-212 (checker 'can only flag, never correct'); ROADMAP.md:336-337"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S3-3",
+  "local-first: core intake, review, correction, calculation, evidence retrieval, and export must work without a cloud connection (spec L33)",
+  "weak \u2014 'local-first', 'offline', 'without a cloud' absent from all five files (grep 0 hits). Only Phase 1 carries 'zero external network calls' via the section 14 list (ROADMAP.md:140, 155) and plan Task 7 L626/L641. Phases 3 and 4 (review, correction, calculation, export) have no offline criterion"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S3-4",
+  "affected-scope blocking: uncertainty blocks the affected item/system/release, does not cause guessing, and should not prevent safe work elsewhere (spec L34)",
+  "partially covered \u2014 blocking half in Phase 3 exit ROADMAP.md:225-227 and gate G3 ROADMAP.md:272; the 'does not prevent safe work elsewhere' half has no criterion"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S3-5",
+  "reproducibility: same frozen inputs, rules, versions yield same authoritative quantities and evidence references (spec L35)",
+  "covered \u2014 Phase 4 exit ROADMAP.md:250-251 'correction round trip reproducible from frozen inputs (section 3, principle 5)'; Phase 1 stable identities via section 14 list"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S3-6",
+  "least privilege for every worker, plugin, browser session, and cloud adapter (spec L36)",
+  "covered \u2014 admission register column 'Permissions and egress' (skills-and-plugins.md:22) and checklist item 3 (:56); dedicated browser profile ROADMAP.md:184-185; lane guard. The phrase 'least privilege' does not appear (note only)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S3-7",
+  "replaceable providers: NotebookLM, model hosts, cloud, automation tools, coding CLIs are adapters, never the canonical data model (spec L37)",
+  "covered \u2014 CLAUDE.md:79-81; skills-and-plugins.md:31 'Adapters only; never authority (spec section 3, principle 7)'; ROADMAP.md:217, 245"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S3-8",
+  "measured promotion: corrections and research become candidate rules, then tests, then staging, then owner-approved production (spec L38)",
+  "covered \u2014 Phase 4 ROADMAP.md:240-242; knowledge-lane graph ROADMAP.md:300-312; Phase 2 exit 'zero promotions' ROADMAP.md:201"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4-1",
+  "arrows into the production lane are controlled submissions; research and workers cannot write accepted quantities, approved rules, immutable evidence, or release state directly (spec L52)",
+  "weak \u2014 stated in graph labels ROADMAP.md:335-337 and CLAUDE.md:48-51; no phase exit or test verifies the absence of a write path (plan Task 9 L720 regressions are post-Foundation)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.1-1",
+  "production lane begins as one local process and one transactional metadata store (spec L56)",
+  "covered \u2014 Phase 1 graph ROADMAP.md:318-323; plan L7 'One local Python process owns a controlled SQLite writer'"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.1-2",
+  "production lane owns immutable project intake; document and revision identity; sheet inventory and scale state; job execution and resumability; evidence objects, crops, overlays, coordinates; detections, schedule rows, reconciliations, takeoff lines; corrections, reviewer decisions, exports, audit events; and all release gates (spec L58-65)",
+  "covered for 7 of 8 groups \u2014 Phase 1 (intake, identity, jobs, evidence, audit) ROADMAP.md:96-97; Phase 3 (sheets, scale, schedule rows, reconciliation, detections) ROADMAP.md:203-210; Phase 4 (takeoff lines, corrections, exports) ROADMAP.md:229-233. 'All release gates' as production-lane data is not scheduled in any phase (grep 'release' finds only 'bid-release' in spec context; ROADMAP Phase 5 lists systems, automation, clients, cloud)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.1-3",
+  "first milestone metadata uses SQLite in WAL mode with foreign keys, explicit migrations, a controlled single-writer path, and safe transaction boundaries (spec L67)",
+  "covered (Phase 1, by reference) \u2014 ROADMAP.md:126 (database-reviewer: migrations, WAL, transactions), :151 (single-writer path with tests), :320; foreign keys only in plan L19 and L141 (PRAGMA foreign_keys = ON), not in roadmap text"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.1-4",
+  "binary evidence uses a content-addressed filesystem vault keyed by SHA-256 (spec L67)",
+  "covered \u2014 Phase 1 goal ROADMAP.md:96, graph :321; plan Task 4 L303-317"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.1-5",
+  "objects immutable by application contract and written atomically (spec L67)",
+  "covered (Phase 1, by reference) \u2014 'atomic' absent from the five files; carried via section 14 item 3 which ROADMAP.md:100 adopts 'exactly', and plan Task 4 L284-289, L310-313"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.1-6",
+  "an ordinary local filesystem is not represented as regulatory WORM storage (spec L67)",
+  "weak \u2014 'WORM' and 'regulatory' absent from the five files and from the plan (grep 0 hits); no documentation criterion requires the non-claim"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.1-7",
+  "mutable review and lifecycle state stays in separate records (spec L67)",
+  "covered by reference (Option A only) \u2014 plan Task 6 L531-537 test_correction_does_not_mutate_original; plan Task 3 L243 triggers reject UPDATE/DELETE on immutable rows; not stated in the roadmap; not addressed for Option B"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.1-8",
+  "storage interfaces must permit a later PostgreSQL and object-storage implementation without changing domain contracts (spec L67)",
+  "weak \u2014 only ROADMAP.md:127 '/council --quick for ... the storage-interface boundary (SQLite now, PostgreSQL later)' and register :27; 'object storage' absent from all five files and the plan (grep 0 hits); plan L91 names repositories.py as the only persistence layer but no interface/protocol contract; no exit criterion"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.2-1",
+  "knowledge lane is separate from project operational state (spec L71)",
+  "covered \u2014 ROADMAP.md:144-146 (Phase 1 note), graph :325-329 (Phase 2)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.2-2",
+  "knowledge lane owns source registry and immutable source snapshots (spec L73)",
+  "covered \u2014 Phase 2 goal ROADMAP.md:161, exit :199, graph :302 and :326"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.2-3",
+  "knowledge lane owns Division 23 taxonomy and system vocabulary (spec L74)",
+  "covered \u2014 Phase 2 ROADMAP.md:161, exit :199-200 'taxonomy v1 approved by the owner'"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.2-4",
+  "knowledge lane owns cited specification facts and manufacturer requirements (spec L75)",
+  "covered \u2014 Phase 2 kg pipeline ROADMAP.md:164-173 (Cited fact node, /kg-eval citation resolution rate)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.2-5",
+  "knowledge lane owns versioned candidate and approved rules (spec L76)",
+  "covered \u2014 ROADMAP.md:168-169 schema, :240-242 Phase 4 promotion, graph :304-307"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.2-6",
+  "knowledge lane owns pricing provenance and freshness metadata (spec L77)",
+  "missing \u2014 'pricing' appears only at ROADMAP.md:101 as Phase 1 scope-out; no phase schedules pricing provenance or freshness; Phase 5 list (ROADMAP.md:255-258) omits it"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.2-7",
+  "knowledge lane owns training/evaluation dataset manifests (spec L78)",
+  "weak \u2014 'dataset manifest' absent (grep 0); Phase 2 mentions 'frozen evaluation on adjudicated public or synthetic sheets' (ROADMAP.md:179) and exit 'harness runs end to end on the frozen set' (:200); no manifest record or fields named"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.2-8",
+  "knowledge lane owns supersession, review, and retirement history (spec L79)",
+  "weak \u2014 graph node ROADMAP.md:311 and schema term :169; no exit criterion in Phase 2 or later"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.2-9",
+  "a source can support a candidate rule but cannot directly alter a quantity (spec L81)",
+  "covered \u2014 ROADMAP.md:172-173 '/kg-rag ... never the production authority (section 4.2)'; graph :336 'approved rules only'"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.2-10",
+  "a rule may enter production only after its citations, scope, tests, version, reviewer, and rollback path are recorded (spec L81)",
+  "weak \u2014 graph ROADMAP.md:304-307 names scope, citations, version, tests, review, reviewer, rollback path; Phase 4 text :240-242 'records each step with reviewer and version'; no phase exit requires the six-field record before a rule is production"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.2-11",
+  "promotion path order: original source -> versioned cited finding -> candidate rule -> tests -> independent review -> owner promotion (spec L83)",
+  "covered \u2014 graph ROADMAP.md:302-307 reproduces the order"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.2-12",
+  "source records include source class, rights basis, jurisdiction, edition or effective date, retrieval date, document hash, precise locator, applicability, and supersession state (spec L83)",
+  "weak \u2014 ROADMAP.md:302 lists 'class, rights, edition, hash, locator' (5 of 9); jurisdiction, retrieval date, applicability, supersession state absent (grep 'jurisdiction' 0 hits); Phase 2 exit :199 'provenance for every source' does not enumerate fields"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.3-1",
+  "research lane may use NotebookLM, browser research, Hugging Face, Kaggle, Grok Bots, direct model APIs, isolated coding CLIs; produces cited research packets, dataset candidates, model evaluations, rule candidates, code patches (spec L87)",
+  "covered (permissive 'may') \u2014 ROADMAP.md:184-187, 330-335, register :35; Grok Bots and direct model APIs not mentioned anywhere (grep 'Grok' 0 hits); Kaggle only in graph node :332"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.3-2",
+  "research-lane outputs land in staging or quarantine (spec L89)",
+  "covered \u2014 ROADMAP.md:186-187, :335; register :35"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S4.3-3",
+  "research lane has no direct production database credentials, bid-release authority, or ability to approve its own output (spec L89)",
+  "weak \u2014 ROADMAP.md:211-212 (checker flags only), register :35 'Research lane only'; no test or exit criterion; plan Task 9 L720 self-approval regression is post-Foundation; plan Task 7 L626 config rejects provider credentials (the inverse direction)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S5-1",
+  "PUBLIC data may be sent to approved research providers with source and license logging (spec L95)",
+  "weak \u2014 ROADMAP.md:180, :352 and register :35 restrict Exa/HF to PUBLIC; 'source and license logging' of each send is not scheduled"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S5-2",
+  "INTERNAL is local by default; provider access requires an explicit approved policy (spec L96)",
+  "weak \u2014 CLAUDE.md:57-58 states local by default; Decision 10 (ROADMAP.md:382) defers 'until the data-class policy for prompts is written' with no phase, owner action, or exit criterion for writing that policy"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S5-3",
+  "PROJECT_CONFIDENTIAL is local by default; external use requires project- and provider-specific approval (spec L97)",
+  "weak \u2014 CLAUDE.md:57, :127-128; approval mechanism (per project and provider) not scheduled"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S5-4",
+  "SECRET never placed in prompts, datasets, notebooks, logs, or the repository (spec L98)",
+  "covered as policy, weak as control \u2014 CLAUDE.md:56-57 lists repository, prompts, logs, notebooks but omits 'datasets'; no secret-scanning check in Phase 1 CI (ROADMAP.md:139-142) or loops table (:357-362)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S5-5",
+  "every external submission must record provider, purpose, data class, source hashes, policy decision, time, and result reference (spec L100)",
+  "missing \u2014 'submission' appears only as graph label ROADMAP.md:337; no record, table, or exit criterion anywhere; Phase 2 NotebookLM import record (:186-187: notebook identity, source set, query, time, citation map, hash) is the section 9 artifact record, not the section 5 submission record; plan Task 9 L720 'external egress without policy approval' is post-Foundation"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S5-6",
+  "interactive login through the official service UI; credentials entered by the owner, never extracted by automation; expired sessions pause the affected workflow (spec L100)",
+  "weak \u2014 ROADMAP.md:184-185 'official UI in a dedicated browser profile with owner login (section 9)'; 'never extracted' and 'expired' absent from the five files (grep 'expired' 0 hits); no Phase 2 exit criterion"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-1",
+  "first schema establishes `projects` (spec L108)",
+  "covered \u2014 plan Task 3 L234-241 migration 0001 (Option A); PR #1 has projects table (Option B)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-2",
+  "first schema establishes `content_objects` (spec L109)",
+  "covered under Option A only \u2014 plan L236, L243; absent from PR #1 migrations (0 CREATE TABLE hits)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-3",
+  "first schema establishes `documents` (spec L110)",
+  "covered under Option A only \u2014 plan L237; absent from PR #1 migrations"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-4",
+  "first schema establishes `document_revisions` (spec L111)",
+  "covered \u2014 plan L238, L243; PR #1 has document_revisions table"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-5",
+  "first schema establishes `project_documents` (spec L112)",
+  "covered under Option A only \u2014 plan L239, L243; absent from PR #1 migrations"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-6",
+  "first schema establishes `ingest_events` including duplicate, rejected, quarantined outcomes (spec L113)",
+  "covered under Option A only \u2014 plan L240, L243 (ACCEPTED, DUPLICATE, REJECTED, QUARANTINED); absent from PR #1 migrations"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-7",
+  "first schema establishes `sheets` (spec L114)",
+  "covered under Option A only \u2014 plan Task 5 L495 (migration 0002); absent from PR #1 migrations. Roadmap places sheet inventory in Phase 3 (ROADMAP.md:203-206) while the identity table itself is Phase 1 via plan"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-8",
+  "first schema establishes `scales` with declared, detected, calibrated, verified, rejected facts (spec L115)",
+  "covered under Option A only \u2014 plan L495 (DECLARED, DETECTED, CALIBRATED, VERIFIED, REJECTED); absent from PR #1 migrations"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-9",
+  "first schema establishes `job_runs` with frozen inputs, versions, budget, exit reason (spec L116)",
+  "covered under Option A only \u2014 plan Task 6 L569 (job_runs, job_events, job_leases); PR #1 has agent_jobs, not job_runs"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-10",
+  "first schema establishes `source_records` with provenance, license/rights basis, data class, taxonomy, source hash (spec L117)",
+  "missing \u2014 ROADMAP.md:144 claims Phase 1 knowledge graph is 'Empty except the schema of `source_records`', but the Option A plan never mentions source_records (grep 0 hits; migrations 0001-0004 at plan L57-61 cover the other 12) and PR #1 has no source_records table; no roadmap task creates it"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-11",
+  "first schema establishes `evidence_objects` (spec L118)",
+  "covered under Option A only \u2014 plan Task 6 L569; PR #1 has evidence_items/claim_evidence (parallel naming), not evidence_objects"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-12",
+  "first schema establishes `corrections` with before/after, reason, author, scope, rule-candidate link (spec L119)",
+  "covered under Option A only \u2014 plan L569, test L539-542; absent from PR #1 migrations"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-13",
+  "first schema establishes `audit_events` append-only (spec L120)",
+  "covered under Option A only \u2014 plan L569, tests/test_audit_events.py L78; absent from PR #1 migrations"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-14",
+  "later migrations add detections, equipment schedule rows, reconciliation edges, topology, takeoff lines, RFIs, pricing, labor, and exports (spec L122)",
+  "partially covered \u2014 detections/schedule rows/reconciliation Phase 3 (ROADMAP.md:203-210), takeoff lines/exports Phase 4 (:229-233); topology, RFIs, pricing, labor absent from all five files (grep 0 hits each)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-15",
+  "later tables must reference the same document revision, evidence, rule, and run identities rather than parallel provenance schemes (spec L122)",
+  "weak \u2014 stated once at ROADMAP.md:144-146 ('never to parallel ones (section 6)'); no Phase 3 or Phase 4 exit criterion; Option B gate (ROADMAP.md:72-75) does not address PR #1's parallel scheme (evidence_items, extraction_runs, agent_jobs)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-16",
+  "evidence object records object SHA-256, media type, byte length, storage-relative key (spec L126)",
+  "covered by reference (Option A) \u2014 plan Task 6 L569 'source object' plus content_objects fields L243; not in roadmap text; no exit criterion"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-17",
+  "evidence object records project association, document revision, sheet, page coordinate space and transform, bounding box or polygon (spec L127)",
+  "covered by reference (Option A) \u2014 plan L569 'revision, sheet, coordinate space, transform, bbox/polygon'; 'coordinate' absent from the five roadmap files"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-18",
+  "evidence object records source text or visual crop and, when applicable, an overlay object hash (spec L128)",
+  "weak \u2014 plan L569 does not name overlay hash or source text; roadmap mentions crops and overlays only as Phase 3-4 deliverables (ROADMAP.md:207, 231)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-19",
+  "evidence object records extraction method and parameters (spec L129)",
+  "covered by reference (Option A) \u2014 plan L569 'extraction method/parameters'; absent from roadmap text (grep 0)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-20",
+  "evidence object records model name, pinned version or digest, and runtime when a model participated (spec L130)",
+  "covered by reference (Option A) \u2014 plan L569 'runtime/model fields when applicable'; CLAUDE.md:61-62 forbids unpinned latest identifiers"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-21",
+  "evidence object records applied rule identifiers and versions (spec L131)",
+  "covered by reference (Option A) \u2014 plan L569 'rule IDs'; versions not named; absent from roadmap"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-22",
+  "evidence object records confidence components rather than one opaque score (spec L132)",
+  "covered by reference (Option A) \u2014 plan L569 'confidence components'; 'confidence' absent from the five roadmap files (grep 0)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-23",
+  "evidence object records originating run, timestamps, and decision state (spec L133)",
+  "weak \u2014 plan L569 'run'; timestamps and decision state not named in plan or roadmap (grep 'timestamps', 'decision state' 0 hits)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-24",
+  "evidence object records reviewer identity, correction history, and final disposition (spec L134)",
+  "covered by reference (Option A) \u2014 plan L569 'reviewer, and disposition'; correction history via corrections table; absent from roadmap"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-25",
+  "no accepted material line may exist without resolvable evidence (spec L136)",
+  "covered \u2014 Phase 3 exit ROADMAP.md:226, Phase 4 exit :249-250; plan L534-536 test_evidence_requires_resolvable_source_lineage"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-26",
+  "derivatives record parent artifact hashes so lineage can be traversed to the original bytes (spec L136)",
+  "weak \u2014 'lineage' and 'parent' absent from the five roadmap files (grep: only claude-code-lane.md:117 'parent folder'); carried only via section 14 bullet 'derivative lineage' and plan L569 'derivative parents'; no roadmap exit criterion names it"
+ ],
+ [
+  "spec-coverage-2-6",
+  "S6-27",
+  "evidence bytes immutable by application contract; corrections create new records and links rather than overwriting history (spec L136)",
+  "covered by reference (Option A) \u2014 plan L539-542 test_correction_does_not_mutate_original, plan L243 immutable-row triggers; not stated in roadmap; not addressed for Option B"
+ ],
+ [
+  "spec-coverage-2-6",
+  "",
+  "Roadmap self-declared scope excludes spec sections 2-6",
+  "ROADMAP.md:6: 'This roadmap details the spec's sections 14 and 15; it does not reorder them'"
+ ],
+ [
+  "spec-coverage-2-6",
+  "",
+  "Option B gate maps only the section 14 acceptance list, not section 6 records",
+  "ROADMAP.md:72-75: '(d) the spec's section 14 acceptance list is mapped onto the enriched milestones with a written delta for the deferred PDF intake'; ROADMAP.md:105-107 Option B adds 'a new task set that satisfies the section 14 acceptance list'"
+ ],
+ [
+  "spec-coverage-2-6",
+  "",
+  "PR #1 migrations contain 2 of the 13 section-6 record names",
+  "projects=1, document_revisions=1; content_objects, documents, project_documents, ingest_events, sheets, scales, job_runs, source_records, evidence_objects, corrections, audit_events = 0 (17 migration files under pr1/src/helios_takeoff_core/migrations/)"
+ ],
+ [
+  "spec-coverage-2-6",
+  "",
+  "Reconciliation plan (Option A) mentions 12 of 13 section-6 records; source_records has zero mentions",
+  "plan_mentions: projects 1, content_objects 1, documents 1, document_revisions 2, project_documents 2, ingest_events 2, sheets 1, scales 1, job_runs 2, source_records 0, evidence_objects 1, corrections 1, audit_events 1"
+ ],
+ [
+  "spec-coverage-2-6",
+  "",
+  "The pr3 mirror of the reconciliation plan equals the recon original apart from a 2-line provenance header",
+  "diff shows only lines 1-2 added on pr3 ('Copied unchanged from origin/docs/recovery-reconciliation-2026-08-27 (commit 7d7c97c) on 2026-09-01 ...')"
+ ],
+ [
+  "spec-coverage-2-6",
+  "",
+  "Terms with zero hits across the five audited files",
+  "lineage, egress-record/submission-record, foreign key, WORM, atomic, expired, least privilege, local-first/offline, confidence, coordinate, dataset manifest, jurisdiction, root history, Grok, RFI, topology, labor, reconciliation edge, detections (as a table), orphan, backup, ingest_events, project_documents, content_objects, document_revisions, extraction method, decision state, timestamps"
+ ],
+ [
+  "spec-coverage-7-11",
+  "",
+  "Audit inputs: pr3 export equals origin/claude/heleos-spark-branch-60gd5e 861fcfe; ROADMAP.md sha256 5e272b36... identical in export and branch; the five audited pages total 832 lines added over main d85bd86",
+  "verified identity of audited files"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S7-1",
+  "Vocabulary reserves seven states: measured_m, rule_derived, context_required_candidate, allowance, clarification, exclusion_proposal, human_accepted_estimate_line (spec 140-148)",
+  "weak: listed verbatim in Phase 4 (ROADMAP 235-237) but no exit criterion/test; not reserved in Phase 1 typed contracts"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S7-2",
+  "Context documents may create obligations, conflicts, candidates, allowances, or questions (spec 150)",
+  "weak: only 'obligations' restated (ROADMAP 237-238)"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S7-3",
+  "Context documents may not silently rewrite measured M-drawing quantities (spec 150)",
+  "weak: stated in Phase 4 (ROADMAP 237-238); no exit test (249-251)"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S7-4",
+  "Project-specific contract instructions determine precedence (spec 150)",
+  "missing: no hit in any page"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S7-5",
+  "Unresolved material conflict is evidence-linked and blocked for decision (spec 150)",
+  "covered: Phase 3 Exit (ROADMAP 225-227 'conflicts are evidence-linked and blocked, not guessed'); also Gate 3 (272)"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S8-1",
+  "No HF/Kaggle asset automatically in product; each candidate passes license, provenance, security, hardware, accuracy, latency, memory, reproducibility review (spec 154)",
+  "weak: Phase 2 quarantine covers checksum/malware/safe-serialization/license/provenance (ROADMAP 176-179); hardware/accuracy/latency/memory/reproducibility not named; criteria delegated to council (189-190)"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S8-2",
+  "Detection: RF-DETR Large primary, challenged by D-FINE, LW-DETR, RT-DETR-family with verified releases and acceptable licenses (spec 158)",
+  "weak: names listed without primary/challenger structure or release/license filter (ROADMAP 175)"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S8-3",
+  "OCR/layout: exact pinned PP-OCR releases; PaddleOCR-VL-family; challenged by reproducible document-VLMs (spec 159)",
+  "weak: 'PP-OCR and PaddleOCR-VL' only (ROADMAP 176); pin and challengers absent"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S8-4",
+  "Segmentation: EdgeTAM, SAM 2.1, RF-DETR segmentation candidate where license/performance qualify (spec 160)",
+  "weak: EdgeTAM and SAM 2.1 (ROADMAP 176); RF-DETR segmentation absent"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S8-5",
+  "Verification: locally runnable Qwen-family VLM as non-authoritative checker, not a measuring engine (spec 161)",
+  "covered: Phase 2 (ROADMAP 176) and Phase 3 task graph (211-213 'can only flag, never correct'; 'Vision candidates remain non-authoritative')"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S8-6",
+  "Candidates not permanent winners; repository, release, license, weights digest, preprocessing, runtime pinned only after frozen bakeoff (spec 163)",
+  "weak: 'No model is promoted'/'zero promotions' (ROADMAP 162, 201) but no pin record or promotion step defined before Phase 3 consumes candidates (209-210)"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S8-7",
+  "Unpinned `latest` model identifiers forbidden in reproducible or production runs (spec 163)",
+  "covered: CLAUDE.md 61-62 'No unpinned `latest` model identifiers in reproducible paths'"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S8-8",
+  "M5 Max (18 CPU, 40 GPU, 128 GB, 2 TB) is the primary local research and inference workstation (spec 165)",
+  "covered: Phase 2 'frozen evaluation ... on the M5 Max' (ROADMAP 179), graph node 333"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S8-9",
+  "Metal/MPS incompatibility or inefficient training must not be hidden (spec 165)",
+  "missing: no hit for 'Metal' or 'MPS'"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S8-10",
+  "Authoritative large training jobs may use a time-bounded NVIDIA cloud job only after local pipeline and dataset are reproducible (spec 165)",
+  "missing: Phase 5 says 'Azure first' only (ROADMAP 257); no hit for 'NVIDIA'/'time-bounded'"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S8-11",
+  "Kaggle included for public or explicitly licensed datasets, notebooks, benchmark discovery (spec 167)",
+  "missing (label only): sole hit is graph node ROADMAP 332"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S8-12",
+  "Dataset copied into governed local registry with origin, owner, version, license, files, hashes, transformations, allowed uses before evaluation (spec 167)",
+  "missing: Phase 2 registry is for knowledge sources (ROADMAP 199-200); dataset fields absent"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S8-13",
+  "Kaggle/HF downloads enter quarantine: checksum, archive and malware inspection, safe-serialization, data-leakage review, before any code loads them (spec 167)",
+  "weak: three of four checks in Phase 2 (ROADMAP 176-178); data-leakage review and load-ordering rule absent; stated for model candidates only"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S8-14",
+  "Private bid packages are not uploaded to Kaggle or Hugging Face (spec 167)",
+  "covered: CLAUDE.md 127-128 'Upload private bid data or PROJECT_CONFIDENTIAL material to any external service' under Do not; ROADMAP 180 PUBLIC-only for HF MCP/Exa"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S9-1",
+  "NotebookLM is a research workspace, not the database, rules engine, evidence vault, or production authority (spec 171)",
+  "covered (structurally): research-lane placement in graph (ROADMAP 330-337) and '/kg-rag ... never the production authority' (172-173); Cookbooks/adapters rule CLAUDE.md 79-81"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S9-2",
+  "First integration browser-driven through official UI, owner-authorized login, dedicated browser profile (spec 173)",
+  "weak: stated Phase 2 (ROADMAP 184-185, 331); Phase 2 exit (199-201) has no NotebookLM criterion"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S9-3",
+  "Login authorizes only the approved workflow; cookies/session material never exported to code, logs, other workers, repository (spec 173)",
+  "missing: no hit for 'cookie'/'session material'"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S9-4",
+  "Complete local source registry and local source copies so a notebook can be rebuilt or replaced (spec 173)",
+  "missing: registry exists for knowledge lane (ROADMAP 164-173) but no notebook-rebuild linkage; no hit for 'rebuilt'"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S9-5",
+  "Browser automation may create/update notebooks, add approved sources, request cited synthesis, export permitted results (spec 173)",
+  "missing: operations not enumerated"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S9-6",
+  "Must pause for expired sessions, MFA, consent, or ambiguous UI state (spec 173)",
+  "missing: no hit for 'MFA'/'consent'; loop constraints (ROADMAP 364-367) lack a pause rule"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S9-7",
+  "Must never extract credentials or bypass access controls (spec 173)",
+  "missing: only CLAUDE.md 57-58 SECRET-in-repo rule; no automation rule"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S9-8",
+  "Future API integration behind a capability-tested adapter; unsupported operations use explicit human-assisted fallback (spec 175)",
+  "missing: no hit for 'capability-tested'/'human-assisted'; ATHENA named as candidate (ROADMAP 185-186) while PR #1 plan line 1309 states 'no ... NotebookLM API, browser automation'"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S9-9",
+  "No undocumented API becomes a mandatory production dependency (spec 175)",
+  "missing: no hit"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S9-10",
+  "Notebook outputs imported as research artifacts with notebook identity, source set, query, time, citation mapping, content hash (spec 177)",
+  "covered: Phase 2 (ROADMAP 186-187 'Outputs land in staging with notebook identity, source set, query, time, citation map, and hash')"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S9-11",
+  "Original source and precise locator, not the notebook answer, are the authoritative citation (spec 177)",
+  "weak: only '/kg-eval measures citation resolution rate' (ROADMAP 171-172) and '/kg-fuse deduplicates by document hash and locator'; authority rule absent"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S9-12",
+  "Claims remain candidates until citations and applicability independently checked (spec 177)",
+  "weak: knowledge pipeline graph candidate->tests->independent review (ROADMAP 303-307); 'applicability' and candidate-status rule not stated as text/exit"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S10-1",
+  "Codex orchestrates task definition, routing, review, correction, verification, controlled Git integration (spec 181)",
+  "covered: ROADMAP 29-30, 112-113; register row Codex CLI (skills-and-plugins.md 32, 'Proposed: design phase, pins required first')"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S10-2",
+  "Deterministic controller (not an LLM) owns permissions, budgets, leases, timeouts, idempotency, state transitions, stop conditions (spec 181)",
+  "weak: Phase 1 build tooling (ROADMAP 114-117) and Decision 8 (380); 'state transitions' omitted; Phase 1 exit (155-157) has no controller criterion"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S10-3",
+  "Claude Code, Kimi Code, Grok Build, Cursor Agent, GitHub Copilot CLI and later approved workers operate in isolated worktrees or disposable containers (spec 183)",
+  "contradicted: Phase 1 workers 'in isolated worktrees created by the controller' (ROADMAP 110-111) vs lane guard denying `git worktree add` (claude-code-lane.md 41) and CLAUDE.md 13-14/121; controller does not exist until Phase 1 (ROADMAP 29-30); other workers unnamed"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S10-4",
+  "Each worker receives frozen base commit, exact objective, allowed paths and tools, acceptance tests, forbidden changes, time/action/cost limits (spec 183)",
+  "weak: 'frozen base commit, task contract, budget' (ROADMAP 282); allowed paths/tools, forbidden changes, action limits absent"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S10-5",
+  "Workers return patches and reports; do not push to main, approve themselves, merge, modify credentials, change production truth (spec 183)",
+  "weak: enforced for Claude Code by lane guard (claude-code-lane.md 37-56; CLAUDE.md 12-15, 121-125) and loop constraints (ROADMAP 364-367); not stated for other workers or Codex"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S10-6",
+  "Grok Bots: staged public-data research and adversarial-review channel; not security boundaries; no private data by default; cannot write to production (spec 185)",
+  "missing: no hit for 'Grok'"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S10-7",
+  "n8n: later self-hosted edge automation via idempotent job APIs; must not calculate quantities, store raw private drawing sets, invoke unrestricted shells, or become source of truth (spec 187)",
+  "weak: Phase 5 'n8n as edge automation only, section 10' (ROADMAP 255-256); constraints and gate absent"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S10-8",
+  "CrewAI remains a laboratory adapter, admitted only if a frozen benchmark shows material advantage over direct-worker workflows (spec 187)",
+  "missing: no hit for 'CrewAI'"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S10-9",
+  "No cloud deployment required for the foundation milestone (spec 189)",
+  "covered: Phase 1 'Scope out ... cloud' (ROADMAP 100-101)"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S10-10",
+  "Portable to Azure as first optional production cloud, bounded Google research lane, inactive AWS adapter; multi-cloud-ready is not multi-cloud-deployed (spec 189)",
+  "weak: 'Azure first' in Phase 5 (ROADMAP 257) and Decision 3 suspends Azure Pipelines/AWS Connector (375); Google research lane and AWS adapter posture absent"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S11-1",
+  "Six repository-owned skills: clean-room boundary enforcement; source curation and citation validation; evidence-first takeoff review; model and worker bakeoffs; plan-tag and equipment-schedule reconciliation; release verification (spec 193-199)",
+  "missing: none scheduled or registered; only 'Repository-owned' row is the lane guard (skills-and-plugins.md 24)"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S11-2",
+  "Development may use reviewed Superpowers workflows for planning, TDD, debugging, worktrees, code review, verification (spec 201)",
+  "covered: register row 25 (pinned 6.3.0 b36e082, 'Authorized by spec'); ROADMAP 32-33, 344; CLAUDE.md 65-69"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S11-3",
+  "PDF, spreadsheet, Hugging Face, analytics, native iOS skills where their task applies (spec 201)",
+  "covered (partial): xlsx/pdf skills Phase 4 (ROADMAP 244-245), Hugging Face MCP Phase 2 (180, 352); analytics and iOS skills unmentioned (iOS deferred to Phase 5 native clients)"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S11-4",
+  "GitHub connector is the current repository control path (spec 203)",
+  "covered: register row 33 'Authorized by spec (section 11)'; ROADMAP 351"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S11-5",
+  "Codex Security is the preferred next plugin before serious code-review and dependency gates (spec 203)",
+  "weak: register row 36 'Later (owner to evaluate)'; ROADMAP 353 'before first merge to main with dependencies'; no Phase 0 decision or Phase 1 entry criterion; ECC review gates precede it (126)"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S11-6",
+  "Google Drive, Figma, Gmail deferred until an approved milestone requires intake, interface design, or communication (spec 203)",
+  "missing: no register rows; no hit"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S11-7",
+  "Third-party skills/plugins require source review, version pinning, minimum permissions, named owner, concrete task; novelty not an admission criterion (spec 203)",
+  "covered (weak on owner): register preamble 8-12 and checklist 52-60; table (22) has no Owner or Evaluation-evidence column; 'novelty' not stated"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S11-8",
+  "Four auto-installed GitHub Apps (Azure Pipelines, AWS Connector, Amazon Q Developer, ECC Tools): inventory permissions and each retained/restricted/suspended/removed by owner before implementation workflows or secrets; design does not authorize changing account-wide installs (spec 205)",
+  "weak: Decision 3 (ROADMAP 375), register row 37 'Not authorized (inventory pending)', CLAUDE.md 60-61 and 125; not in Phase 0 exit (90-92) while Phase 1 adds GitHub Actions workflows (139-142)"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S11-9",
+  "Until inventoried, no workflow or secret added for the apps, and no app-triggered result is authoritative (spec 205)",
+  "weak: first half CLAUDE.md 60-61; 'no app-triggered result is authoritative' absent although 'Amazon Q already reviews' (ROADMAP 375)"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S11-10",
+  "Skills are executable supply chain reviewed like code; repository-owned skills versioned, tested, changed through review (spec 207)",
+  "covered: register 8-12; lane guard row 24 ('Versioned with the repo; revert the commit to roll back'); tests/hooks/test_branch_guard.py"
+ ],
+ [
+  "spec-coverage-7-11",
+  "S11-11",
+  "External skills/plugins/prompts/models/tools may not drift at runtime; admission requires provenance, pinned version or digest, license, permissions and egress review, evaluation evidence, rollback target (spec 207)",
+  "covered: register 8-12, checklist 54-60, Codex config pin note 48-50; exception: harness connectors 'Managed by the harness' (33-35) unpinned; ROADMAP 351 vs register 34 status mismatch for Context7"
+ ],
+ [
+  "spec-coverage-7-11",
+  "",
+  "Coverage tally over S7-1..S11-11 (52 items)",
+  "covered 19; weak 14; missing 17; contradicted 1 (S10-3); misplaced 0 (S7-1 flagged as weak with a placement note rather than misplaced)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "",
+  "Spec section 12 spans lines 210-214; section 13 lines 216-234 (15 bullets at 218-232 plus closing paragraph 234); section 14 lines 236-261 (7 items at 240-246, 10 acceptance bullets at 250-259, closing rule 261); section 15 lines 263-274 (8 items at 267-274); section 16 lines 276-280",
+  "60 checkable requirements enumerated: S12-1..10, S13-1..17, S14-0, S14-1..7, S14-A1..A10, S14-8, S15-0..9, S16-1..4"
+ ],
+ [
+  "spec-coverage-12-16",
+  "",
+  "The spec is byte-identical on main and PR #3; the reconciliation plan and provenance record on PR #3 differ from their source branches only by a two-line 'Copied unchanged from ...' preface",
+  "SPEC_IDENTICAL; plan diff = lines 1-2 preface only; provenance diff = lines 1-2 preface only"
+ ],
+ [
+  "spec-coverage-12-16",
+  "",
+  "The roadmap pages never cite spec section 13",
+  "grep for 'section 1[236]' returns ROADMAP.md:6 (16), ROADMAP.md:256 (12), docs/decisions/README.md:9 (16) only"
+ ],
+ [
+  "spec-coverage-12-16",
+  "",
+  "Spec status on main and no decision records exist",
+  "'**Status:** Proposed for owner review'; pr3/docs/decisions contains README.md only; origin/main contains no docs/recovery or docs/decisions files"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S12-1",
+  "Windows and macOS full-authority desktop clients with feature parity across nine functions",
+  "weak: Phase 5 'native clients' only (ROADMAP.md:255-258); parity never named"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S12-2",
+  "Apple Silicon is a required macOS target",
+  "covered: Phase 1 CI on macos-14 (ROADMAP.md:140), Option B gate (b) owner's Apple Silicon Mac (ROADMAP.md:70), Decision 9 (ROADMAP.md:381)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S12-3",
+  "iPhone native companion for controlled review and approval, not replacing desktop final estimate",
+  "missing"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S12-4",
+  "business rules, geometry, data contracts, evidence behavior in one shared platform-independent core",
+  "covered: Lanes graph 'Core package: intake, vault, contracts, jobs, audit' (ROADMAP.md:319); Decision 9 'shared core' (ROADMAP.md:381); Phase 1 goal (ROADMAP.md:96-98)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S12-5",
+  "core exposed through a versioned local API",
+  "missing"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S12-6",
+  "platform shells provide native filesystem, keychain, installer/signing, rendering, hardware-acceleration adapters",
+  "missing"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S12-7",
+  "UI and core implementation technologies selected in the implementation plan only after a cross-platform proof",
+  "contradicted/weak: Decision 5 selects Python 3.12 in Phase 0 without a proof (ROADMAP.md:377); only the PDF backend is proof-gated (ROADMAP.md:379); Option A plan fixes tech stack at line 11"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S12-8",
+  "the proof tests PDF rendering, local IPC, packaging, and Apple Silicon/Windows behaviour",
+  "weak: Option A Task 1 tests PDF rendering + SQLite WAL on both platforms (plan lines 157-167); IPC and packaging never scheduled; Phase 5 references the proof without placing it (ROADMAP.md:256)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S12-9",
+  "Windows CI begins with the shared core",
+  "covered: Phase 1 Loops (ROADMAP.md:139-142), Decision 9 (ROADMAP.md:381), plan Global Constraint line 22"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S12-10",
+  "desktop feature parity is a product gate, not a Foundation 0.1 requirement",
+  "covered: Phase 1 scope out 'UI' (ROADMAP.md:100-101); Phase 5 native clients behind their own gate (ROADMAP.md:255-258)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-1",
+  "intake never alters source bytes; hash mismatch is a hard failure",
+  "covered by reference: Phase 1 exit 'every bullet of the section 14 acceptance list' (ROADMAP.md:155-157) includes bullets 1 and 8; hard-failure semantics only in Option A plan lines 20, 386-390"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-2",
+  "duplicate content deduplicated in the vault while every intake attempt remains auditable",
+  "covered by reference: section 14 bullets 2 and 3 via ROADMAP.md:155-157"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-3",
+  "unsupported, corrupt, password-protected, or suspicious files enter quarantine with a typed reason",
+  "weak: Phase 1 risk 'quarantine with typed reasons' (ROADMAP.md:149-151) and bullet 7 cover corrupt and encrypted; unsupported and suspicious absent"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-4",
+  "missing or unverified scale blocks scale-dependent quantities on that sheet",
+  "covered: Phase 3 goal and exit (ROADMAP.md:205-207, 225-227)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-5",
+  "localized extraction failures block only dependents; integrity/migration/hash/scale failures block the job or release",
+  "missing: no job/release-level blocking class anywhere"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-6",
+  "research, model, browser, or cloud failure cannot corrupt or partially approve production data",
+  "weak: implied by staging and 'approved rules only' edges (ROADMAP.md:186-187, 335-337); no failure-isolation criterion"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-7",
+  "jobs have explicit states, leases, heartbeats, deadlines, action budgets, cost budgets, cancellation, resumable checkpoints",
+  "misplaced/weak: only the section 10 build controller names leases/budgets/idempotency and is declared 'build tooling, not runtime code' (ROADMAP.md:114-117); heartbeat, deadline, cancellation, checkpoint absent from roadmap; Option A plan Task 6 line 571 covers them"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-8",
+  "writes transactional and idempotent; same idempotency key cannot create a second authoritative result",
+  "covered by reference: section 14 item 6 and bullet 3 via ROADMAP.md:100, 155-157; 'transactional' not named in roadmap; plan Task 6 lines 557-561"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-9",
+  "secrets remain in OS keychains or an approved secret manager and are redacted from logs",
+  "missing: CLAUDE.md:56-57 worker rule only"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-10",
+  "logs distinguish public metadata from sensitive content and default to least revealing record",
+  "missing"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-11",
+  "vault append-only to application code; retention/deletion require separately authorized enumerated operation",
+  "weak: 'immutable evidence vault' (ROADMAP.md:96); no append-only test criterion; retention/deletion rule absent"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-12",
+  "audit events append-only and chained or exported for tamper detection; SQLite alone not claimed",
+  "missing from roadmap and from Option A plan (append-only AuditEvent, no chain: plan lines 531, 571)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-13",
+  "backups encrypted; hashes verified during backup, restore, read, export; restoration tested",
+  "weak/missing: restore verification covered by section 14 item 3 reference; encryption absent from roadmap and plan (plan line 417)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-14",
+  "untrusted PDFs, pages, notebooks, datasets, model cards, web content are data, never instructions; injection cannot grant tools, change policy, disclose secrets, promote rules",
+  "weak: CLAUDE.md:58-59 worker rule only; no phase exit or fixture"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-15",
+  "every production-changing decision records actor, inputs, prior state, new state, reason, time",
+  "weak: Phase 4 'reviewer and version' (ROADMAP.md:242-243); decisions README covers governance decisions only; six-field contract absent"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-16",
+  "(spec line 232 is the fifteenth bullet; the task brief's 'sixteen bullets' counts the closing paragraph) \u2014 no separate requirement",
+  "section 13 has 15 bullets (lines 218-232) plus closing paragraph (line 234)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S13-17",
+  "agents cannot provision cloud services, change billing, purchase, send external messages, or alter account-wide security settings without separate owner action",
+  "weak: CLAUDE.md:125 covers account-wide settings, apps, billing, secrets; cloud provisioning, purchases, external messages absent; loop constraints (ROADMAP.md:364-367) omit them"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-0",
+  "Foundation 0.1 begins only after owner approval of the design and the implementation plan",
+  "missing from Phase 0 decisions and exit (ROADMAP.md:81-92, 371-382); spec still 'Proposed for owner review'; ROADMAP.md:373 misdescribes the spec as an approval visible on main"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-1",
+  "repository policy, dependency manifests, formatting, typing, test harness",
+  "covered: Phase 1 goal 'test harness' (ROADMAP.md:96-98); pytest/ruff/mypy and dependencies/manifest.toml (ROADMAP.md:131-137); CI lint/type check (ROADMAP.md:139-141)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-2",
+  "versioned SQLite schema and forward migrations",
+  "covered: 'Operational database' (ROADMAP.md:96); database-reviewer for migrations (ROADMAP.md:126); bullet 5 via ROADMAP.md:155"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-3",
+  "content-addressed vault with atomic writes, orphan reconciliation, backup/restore verification, SHA-256 verification",
+  "covered by reference ('items 1 to 7 exactly', ROADMAP.md:100); atomic, orphan, backup/restore not named in roadmap; Option B task set names only 'vault verification' (ROADMAP.md:106)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-4",
+  "deterministic PDF intake, metadata extraction, per-page records",
+  "covered: Phase 1 goal (ROADMAP.md:96-97); Option B task set (ROADMAP.md:106); per-page records not named"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-5",
+  "typed domain and error contracts",
+  "covered: 'typed contracts' (ROADMAP.md:97), pydantic/dataclasses note (ROADMAP.md:134-135)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-6",
+  "audit events, finite job state, idempotency, crash-safe retry",
+  "covered by reference: 'audit and finite jobs' (ROADMAP.md:97); interrupted-ingest restart (ROADMAP.md:107); see S13-7 for the missing runtime job properties"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-7",
+  "unit, integration, migration, corruption, duplicate-ingest, restart tests",
+  "covered by reference: 'items 1 to 7 exactly' (ROADMAP.md:100); CI names unit tests and the acceptance test only (ROADMAP.md:139-141); 'fuzz the intake with corrupt fixtures' (ROADMAP.md:150-151)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-A1",
+  "original bytes unchanged and expected stable SHA-256",
+  "covered by reference (ROADMAP.md:155-157: 'Every bullet ... with commit, platform, fixture hashes, and command output')"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-A2",
+  "one stored content object and one canonical document revision",
+  "covered by reference (ROADMAP.md:155-157); Option A plan Task 3/5 tests; not named in roadmap"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-A3",
+  "two auditable intake attempts linked to deterministic outcomes",
+  "covered by reference (ROADMAP.md:155-157); plan lines 462-468"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-A4",
+  "stable page ordering, dimensions, rotation, units, per-page identities, derivative lineage",
+  "covered by reference only; none of the terms appears in the roadmap"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-A5",
+  "clean migration from empty database and tested migration rollback/recovery procedure",
+  "covered by reference; 'migration' appears in roadmap only in Decision 1 context and the database-reviewer row (ROADMAP.md:58-59, 126)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-A6",
+  "successful restart after an intentionally interrupted ingest without partial authoritative state",
+  "covered: Option B task set 'interrupted-ingest restart' (ROADMAP.md:107) and by reference; plan Task 7 lines 605-612"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-A7",
+  "correct typed outcomes for identical content under new filename, near-duplicate, corrupt bytes, encrypted PDF",
+  "covered by reference; only corrupt/encrypted mentioned in roadmap risks (ROADMAP.md:149-151); plan fixtures cover all four"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-A8",
+  "retrieval and hash verification of the original and its evidence manifest",
+  "covered by reference; 'evidence manifest' appears only in Phase 4 export context (ROADMAP.md:245-246)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-A9",
+  "zero external network calls in the default local test path",
+  "weak: absent from roadmap; plan Global Constraint line 23 and Task 8 socket rule"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-A10",
+  "all declared automated checks passing from a clean checkout",
+  "covered and stricter: 'from a clean checkout on macOS and Windows' (ROADMAP.md:97-98)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S14-8",
+  "closing rule: no broad Division 23 rules engine, pricing engine, multi-cloud deployment, full UI, bot roster, or model training may delay the milestone",
+  "covered for Option A (ROADMAP.md:100-101, 152-153) but contradicted by Option B, which gates the milestone on build-fabric defect fixes and a wholesale PR #1 merge (ROADMAP.md:68-76; phase-0-evidence.md:79-82)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S15-0",
+  "subsequent sequence starts only after Foundation 0.1 passes",
+  "covered: owner gate G1 (ROADMAP.md:268) and 'Nothing here is scheduled until Phase 4 exits' pattern"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S15-1",
+  "governed source registry and Division 23 taxonomy",
+  "covered: Phase 2 (ROADMAP.md:159-173, 199-201)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S15-2",
+  "frozen dataset and model/worker bakeoff harness",
+  "weak: model bakeoff covered (ROADMAP.md:175-182); worker bakeoff absent"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S15-3",
+  "sheet inventory and verified scale",
+  "covered: Phase 3 (ROADMAP.md:203-207, 225-227)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S15-4",
+  "extract equipment schedules and reconcile plan tags in both directions",
+  "covered: Phase 3 'bidirectional plan-tag reconciliation with evidence crops' (ROADMAP.md:206-207)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S15-5",
+  "one narrow airside takeoff class with evidence crops and overlays",
+  "covered: Phase 4 (ROADMAP.md:229-233)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S15-6",
+  "human correction and deterministic recalculation",
+  "covered: Phase 4 goal and exit 'correction round trip reproducible from frozen inputs' (ROADMAP.md:232, 249-251)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S15-7",
+  "estimator-usable live-formula Excel and an evidence PDF",
+  "covered: Phase 4 (ROADMAP.md:232-233, 244-246)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S15-8",
+  "expand systems, automation, native clients, optional cloud only through measured gates",
+  "covered: Phase 5 (ROADMAP.md:253-258)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S15-9",
+  "roadmap claim that it does not reorder sections 14 and 15",
+  "true for Option A (Phases 2-5 map items 1-2, 3-4, 5-7, 8 in spec order: headings at ROADMAP.md:159, 203, 229, 253); contradicted for Option B (ROADMAP.md:58, 76; PR #1 design line 15 'this later owner decision controls')"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S16-1",
+  "the spec is not permission to begin production implementation",
+  "covered: ROADMAP.md:6 'does not approve anything by itself'; CLAUDE.md:40-42"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S16-2",
+  "owner approval freezes the spec as the initial architecture baseline",
+  "missing: no Phase 0 decision or exit item records spec approval; spec status still 'Proposed for owner review'; grep -i 'freez\\|baseline' across five pages -> no hits"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S16-3",
+  "material changes to clean-room scope, data egress, production authority, evidence requirements, native platform parity, or the first milestone require a recorded owner decision",
+  "covered in form (docs/decisions/README.md:3-9; Decision 1 procedure ROADMAP.md:63-79) but bent for Option B: the deferred-PDF-intake delta is folded into gate (d) without its own decision record"
+ ],
+ [
+  "spec-coverage-12-16",
+  "S16-4",
+  "a separate implementation plan breaks Foundation 0.1 into small test-driven tasks with exact files, commands, acceptance checks, and commit boundaries",
+  "covered under Option A (ROADMAP.md:103-104; plan Tasks 1-9); missing under Option B ('a new task set' that does not exist, ROADMAP.md:105-107)"
+ ],
+ [
+  "spec-coverage-12-16",
+  "",
+  "GitHub-hosted runner label macos-14 is an Apple Silicon (arm64) runner, as ROADMAP.md:140 asserts",
+  "not checked (no network access in this audit)"
+ ]
+]
