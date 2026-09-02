@@ -18,8 +18,8 @@ export const meta = {
 }
 
 const A = args || {}
-if (!A.spec_path || !Array.isArray(A.targets) || !Array.isArray(A.section_ranges) || !A.section_ranges.length) {
-  return { status: 'ABORTED_BAD_ARGS', reason: 'spec_path, targets[], section_ranges[] are required' }
+if (!A.spec_path || !Array.isArray(A.targets) || !A.targets.length || !Array.isArray(A.section_ranges) || !A.section_ranges.length) {
+  return { status: 'ABORTED_BAD_ARGS', reason: 'spec_path, targets[] (at least one), section_ranges[] (at least one) are required' }
 }
 if (A.require_ceiling && budget.total === null) return { status: 'ABORTED_NO_CEILING' }
 if (budget.total === null) log('no token ceiling was set for this run; the policy ceiling is advisory only')

@@ -334,4 +334,4 @@ Constraints for every loop: never push before recording; never merge to `main`; 
 2. Open the plan of record; pick the next unchecked task; build the contract with `tools/wf/args.py` once it exists, or write it by hand from the task's file list until then.
 3. Run the task as a `foundation-task` diamond with a token ceiling; never commit from a worker; never push anywhere but the session's branch.
 4. Record the run under `docs/runs/`; update the draft pull request; the owner merges.
-5. Before marking a pull request ready: `pr-review` run, then `spec-coverage-audit` if the change touches a gate.
+5. Before marking a pull request ready: from Phase 1, a `pr-review` run; in Phase 0, where that workflow does not exist yet, a reviewer other than the author reads the diff against this roadmap and the spec, and `spec-coverage-audit` runs if the change touches a gate.

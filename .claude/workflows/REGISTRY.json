@@ -6,7 +6,7 @@
       "name": "spec-coverage-audit",
       "version": "1.0.0",
       "script": "spec-coverage-audit.js",
-      "sha256": "4b8f19371918c97fc35e9465f3bb051d4eae5c4ee0a5fc58ea560f8a544eb76e",
+      "sha256": "579d3987e2243a190297bd05de03f12344640a9e6de972b1f9d01a9c504a3ccd",
       "policy": {
         "data_classes": [
           "PUBLIC",

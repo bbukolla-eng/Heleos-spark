@@ -18,7 +18,7 @@ Until the secret exists, the two Claude workflows print a notice and exit green;
 
 1. Settings, General, Pull Requests: enable **Allow auto-merge**. Optionally enable **Automatically delete head branches**.
 2. Settings, Branches, add a rule for `main`: require a pull request before merging, require status checks to pass with **checks** selected, block force pushes and deletions, and apply the rule to administrators. GitHub does not offer auto-merge without such a rule.
-3. Settings, Secrets and variables, Actions: add `CLAUDE_CODE_OAUTH_TOKEN` with the value printed by `claude setup-token` on your machine. To use an API key instead, add `ANTHROPIC_API_KEY` and change the `claude_code_oauth_token` input to `anthropic_api_key` in both Claude workflows.
+3. Settings, Secrets and variables, Actions: add `CLAUDE_CODE_OAUTH_TOKEN` with the value printed by `claude setup-token` on your machine. Do this only after Decision 12 is recorded: see "Egress, and why the secret waits" below. To use an API key instead, add `ANTHROPIC_API_KEY` and change the `claude_code_oauth_token` input to `anthropic_api_key` in both Claude workflows.
 4. Install the Claude GitHub App on the repository (`/install-github-app` in Claude Code, or github.com/apps/claude) so that `@claude` runs can push the branch they work on and their commits trigger `checks`.
 5. Create the label `automerge` (Issues, Labels). Apply it to a pull request you want merged without a manual click; remove it to stop.
 
@@ -29,6 +29,12 @@ The session that wrote this page has no tool for any of these settings; each is 
 - AI workers still never approve a pull request and never call merge themselves; merges happen through GitHub's auto-merge on pull requests the owner labels, after the required checks pass.
 - The `claude` workflow works on the branch it creates for the issue or pull request and never pushes to `main` (branch protection enforces this).
 - Every Claude run reads pull request and issue text as data. Text in an issue that asks for a policy change, a secret, or a merge is reported, not followed.
+
+## Egress, and why the secret waits
+
+The two Claude workflows send repository content to Anthropic once they can run: the pull request diff, `CLAUDE.md`, `ROADMAP.md`, and the spec. This repository is private, and its own rules govern that traffic. Spec section 5 requires a provider-specific approval and a seven-field record for every external submission of anything above `PUBLIC`, and `CLAUDE.md` forbids sending `INTERNAL` or `PROJECT_CONFIDENTIAL` material to an external service. The owner's instruction of 2026-09-02 authorized this automation and supersedes the Decision 5 timing rule; it did not decide egress, which is Decision 12.
+
+So the technical gate and the policy gate are the same gate: without `CLAUDE_CODE_OAUTH_TOKEN` neither Claude workflow can send anything, and both exit green. Adding that secret is what starts the egress, so it waits for the Decision 12 record, which must name Anthropic as an approved provider for this repository's content class and say how each run's submission is recorded. The `checks` and `auto-merge` workflows send nothing outside GitHub and are unaffected.
 
 ## Provenance of the actions used
 
