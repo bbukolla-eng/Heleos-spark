@@ -180,7 +180,7 @@ Measured in this session (CLAUDECODE=1, CLAUDE_CODE_REMOTE=true, working directo
 | `/council` | Absent |
 | graph-engineering `/kg-*` prompts, loop-engineering templates | Absent |
 | Codebase Memory MCP, Codex Security, `gh` CLI | Absent |
-| GitHub Actions workflows | None exist; the runner service is available |
+| GitHub Actions workflows | None existed in the audited snapshot; this revision adds the workflows documented in `docs/policies/github-automation.md`; the runner service is available |
 | Python 3.12 floor | Default `python3` is 3.11.15; 3.12.3 at `/usr/bin/python3.12`; 3.12.11 installable through `uv` |
 
 Present and usable from a fresh clone: `uv` 0.8.17, `git` 2.43, `node` 22, `ruff`, `mypy`, and `pytest` as `uv` tools (running on 3.11), the harness connectors Context7, GitHub MCP, Exa, and Hugging Face MCP, the Claude Code `Workflow` tool with its `workflow-authoring` skill, the `Agent` tool, `EnterWorktree` and `ExitWorktree`, Claude Code Remote sessions and triggers, and the built-in `code-review`, `security-review`, `simplify`, `loop`, and `run` skills. The account-synced `pdf` and `xlsx` skills are Anthropic-provided skills, not Claude Code built-ins.
