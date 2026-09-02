@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/attempt-manifest-v1.schema.json",
+  "title": "HELIOS Build Fabric attempt manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "attempt_id", "task_manifest_sha256", "base_commit_sha", "adapter_configuration_sha256", "run_identity_sha256", "worker_profile_sha256", "attempt_ordinal", "preflight_receipt_sha256", "worktree_key", "resume_from_checkpoint_sha256", "created_at"],
+  "properties": {
+    "protocol": {"const": "helios.build.attempt-manifest/v1"},
+    "attempt_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
+    "task_manifest_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "base_commit_sha": {"$ref": "common-v1.schema.json#/$defs/gitCommit"},
+    "adapter_configuration_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "run_identity_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "worker_profile_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "attempt_ordinal": {"$ref": "common-v1.schema.json#/$defs/positiveInteger"},
+    "preflight_receipt_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "worktree_key": {"$ref": "common-v1.schema.json#/$defs/identifier"},
+    "resume_from_checkpoint_sha256": {"$ref": "#/$defs/nullableDigest"},
+    "created_at": {"$ref": "common-v1.schema.json#/$defs/rfc3339Utc"}
+  },
+  "$defs": {"nullableDigest": {"anyOf": [{"$ref": "common-v1.schema.json#/$defs/digest"}, {"type": "null"}]}}
+}

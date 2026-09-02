@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.helios.local/engine/observation-bundle-v1.schema.json",
+  "title": "HELIOS Engine Observation Bundle V1",
+  "$comment": "Structural preflight only. compile_observation_bundle is the mandatory semantic and canonical authority.",
+  "oneOf": [
+    {"$ref": "#/$defs/benchmarkBundle"},
+    {"$ref": "#/$defs/projectBundle"}
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "code": {"type": "string", "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*$"},
+    "token": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+    "canonicalText": {"type": "string", "minLength": 1, "pattern": "^(?!\\s)(?!.*\\s$)(?!.*[\\u0000-\\u001f]).+$"},
+    "nullableText": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/canonicalText"}]},
+    "stringArray": {"type": "array", "items": {"$ref": "#/$defs/canonicalText"}, "uniqueItems": true},
+    "canonicalValue": {
+      "oneOf": [
+        {"type": "null"}, {"type": "boolean"}, {"type": "integer"}, {"$ref": "#/$defs/canonicalText"},
+        {"type": "array", "items": {"$ref": "#/$defs/canonicalValue"}},
+        {"type": "object", "additionalProperties": {"$ref": "#/$defs/canonicalValue"}}
+      ]
+    },
+    "region": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/canonicalValue"}
+    },
+    "context": {
+      "type": "object", "additionalProperties": false,
+      "required": ["system", "floor", "area", "phase", "zone", "work_state", "commercial_dimension", "revision_ids", "addendum_ids"],
+      "properties": {
+        "system": {"$ref": "#/$defs/nullableText"},
+        "floor": {"$ref": "#/$defs/nullableText"},
+        "area": {"$ref": "#/$defs/nullableText"},
+        "phase": {"$ref": "#/$defs/nullableText"},
+        "zone": {"$ref": "#/$defs/nullableText"},
+        "work_state": {"enum": ["NEW", "DEMOLITION", "EXISTING", "RELOCATE", "REUSE"]},
+        "commercial_dimension": {"enum": ["BASE", "ALTERNATE", "ALLOWANCE", "UNIT_PRICE"]},
+        "revision_ids": {"$ref": "#/$defs/stringArray"},
+        "addendum_ids": {"$ref": "#/$defs/stringArray"}
+      }
+    },
+    "observation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "origin", "scalar_type", "value", "uom", "confidence", "evidence_item_ids", "model_id", "model_revision", "input_sha256", "region", "revision_ids"],
+      "properties": {
+        "name": {"$ref": "#/$defs/token"},
+        "origin": {"enum": ["HUMAN", "STRUCTURED_IMPORT", "MODEL"]},
+        "scalar_type": {"enum": ["DECIMAL", "INTEGER", "BOOLEAN", "TEXT", "ENUM"]},
+        "value": {"oneOf": [{"type": "boolean"}, {"type": "integer"}, {"$ref": "#/$defs/canonicalText"}]},
+        "uom": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/code"}]},
+        "confidence": {"type": "string", "pattern": "^(?:0(?:\\.[0-9]+)?|1(?:\\.0+)?)$"},
+        "evidence_item_ids": {"$ref": "#/$defs/stringArray"},
+        "model_id": {"$ref": "#/$defs/nullableText"},
+        "model_revision": {"$ref": "#/$defs/nullableText"},
+        "input_sha256": {"$ref": "#/$defs/sha256"},
+        "region": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/region"}]},
+        "revision_ids": {"$ref": "#/$defs/stringArray"}
+      }
+    },
+    "benchmarkBundle": {
+      "type": "object", "additionalProperties": false,
+      "required": ["protocol", "mode", "pack_sha256", "subject_code", "context", "observations", "benchmark_artifact_sha256"],
+      "properties": {
+        "protocol": {"const": "helios.engine.observation-bundle/v1"},
+        "mode": {"const": "BENCHMARK"},
+        "pack_sha256": {"$ref": "#/$defs/sha256"},
+        "subject_code": {"$ref": "#/$defs/code"},
+        "context": {"$ref": "#/$defs/context"},
+        "observations": {"type": "array", "items": {"$ref": "#/$defs/observation"}},
+        "benchmark_artifact_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "projectBundle": {
+      "type": "object", "additionalProperties": false,
+      "required": ["protocol", "mode", "pack_sha256", "subject_code", "context", "observations", "benchmark_artifact_sha256", "project_id", "extraction_run_id", "subject_kind", "subject_key", "evidence_item_ids", "primary_evidence_item_id"],
+      "properties": {
+        "protocol": {"const": "helios.engine.observation-bundle/v1"},
+        "mode": {"const": "PROJECT_BOUND"},
+        "pack_sha256": {"$ref": "#/$defs/sha256"},
+        "subject_code": {"$ref": "#/$defs/code"},
+        "context": {"$ref": "#/$defs/context"},
+        "observations": {"type": "array", "items": {"$ref": "#/$defs/observation"}},
+        "benchmark_artifact_sha256": {"type": "null"},
+        "project_id": {"$ref": "#/$defs/canonicalText"},
+        "extraction_run_id": {"$ref": "#/$defs/canonicalText"},
+        "subject_kind": {"$ref": "#/$defs/canonicalText"},
+        "subject_key": {"$ref": "#/$defs/canonicalText"},
+        "evidence_item_ids": {"$ref": "#/$defs/stringArray"},
+        "primary_evidence_item_id": {"$ref": "#/$defs/canonicalText"}
+      }
+    }
+  }
+}

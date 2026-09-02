@@ -1,0 +1,35 @@
+{
+  "protocol": "helios.build.graph-manifest/v1",
+  "graph_id": "division23-v2-calculation-assembly-kernel-correction-1-graph",
+  "created_at": "2026-09-01T19:13:00Z",
+  "created_by_profile_id": "codex-control-v1",
+  "nodes": [
+    {
+      "node_id": "division23-v2-calculation-assembly-kernel-correction-1",
+      "node_type": "BuildTask",
+      "manifest_sha256": "d7818473288fea00e14aa44c99d6b05077375edf317c7e772e093028804c9117"
+    },
+    {
+      "node_id": "division23-v2-calculation-assembly-kernel-correction-1-review",
+      "node_type": "Review",
+      "manifest_sha256": "d7818473288fea00e14aa44c99d6b05077375edf317c7e772e093028804c9117"
+    },
+    {
+      "node_id": "division23-v2-calculation-assembly-kernel-correction-1-integration",
+      "node_type": "Integration",
+      "manifest_sha256": "d7818473288fea00e14aa44c99d6b05077375edf317c7e772e093028804c9117"
+    }
+  ],
+  "edges": [
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_node_id": "division23-v2-calculation-assembly-kernel-correction-1",
+      "to_node_id": "division23-v2-calculation-assembly-kernel-correction-1-review"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_node_id": "division23-v2-calculation-assembly-kernel-correction-1-review",
+      "to_node_id": "division23-v2-calculation-assembly-kernel-correction-1-integration"
+    }
+  ]
+}

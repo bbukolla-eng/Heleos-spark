@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/checkpoint-v1.schema.json",
+  "title": "HELIOS Build Fabric checkpoint v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "checkpoint_id", "attempt_manifest_sha256", "boundary_id", "base_commit_sha", "commit_sha", "patch_sha256", "artifact_sha256s", "command_receipt_sha256s", "published_at"],
+  "properties": {
+    "protocol": {"const": "helios.build.checkpoint/v1"},
+    "checkpoint_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
+    "attempt_manifest_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "boundary_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
+    "base_commit_sha": {"$ref": "common-v1.schema.json#/$defs/gitCommit"},
+    "commit_sha": {"$ref": "#/$defs/nullableCommit"},
+    "patch_sha256": {"$ref": "#/$defs/nullableDigest"},
+    "artifact_sha256s": {"$ref": "#/$defs/digestArray"},
+    "command_receipt_sha256s": {"$ref": "#/$defs/digestArray"},
+    "published_at": {"$ref": "common-v1.schema.json#/$defs/rfc3339Utc"}
+  },
+  "$defs": {
+    "nullableCommit": {"anyOf": [{"$ref": "common-v1.schema.json#/$defs/gitCommit"}, {"type": "null"}]},
+    "nullableDigest": {"anyOf": [{"$ref": "common-v1.schema.json#/$defs/digest"}, {"type": "null"}]},
+    "digestArray": {"type": "array", "items": {"$ref": "common-v1.schema.json#/$defs/digest"}, "uniqueItems": true}
+  }
+}

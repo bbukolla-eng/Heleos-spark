@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/source-record-v1.schema.json",
+  "title": "Canonical source identity v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "source_id", "identity_kind", "original_source_url", "authorized_document_id", "publisher", "title", "publication_date", "effective_date", "retrieval_date", "jurisdiction", "data_class", "authority_class", "license_use_notes", "content_sha256"],
+  "properties": {
+    "protocol": {"const": "helios.build.source-record/v1"},
+    "source_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
+    "identity_kind": {"enum": ["PUBLIC_URL", "AUTHORIZED_DOCUMENT"]},
+    "original_source_url": {"anyOf": [{"type": "string", "minLength": 1}, {"type": "null"}]},
+    "authorized_document_id": {"anyOf": [{"$ref": "common-v1.schema.json#/$defs/nonEmptyString"}, {"type": "null"}]},
+    "publisher": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
+    "title": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
+    "publication_date": {"$ref": "#/$defs/nullableDate"},
+    "effective_date": {"$ref": "#/$defs/nullableDate"},
+    "retrieval_date": {"$ref": "#/$defs/date"},
+    "jurisdiction": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
+    "data_class": {"enum": ["PUBLIC", "AUTHORIZED_LICENSED"]},
+    "authority_class": {"enum": ["PRIMARY_PUBLIC", "AUTHORIZED_LICENSED", "REPUTABLE_SECONDARY", "DISCOVERY_ONLY"]},
+    "license_use_notes": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
+    "content_sha256": {"anyOf": [{"$ref": "common-v1.schema.json#/$defs/digest"}, {"type": "null"}]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"identity_kind": {"const": "PUBLIC_URL"}}},
+      "then": {"properties": {"original_source_url": {"type": "string", "minLength": 1}, "authorized_document_id": {"type": "null"}}}
+    },
+    {
+      "if": {"properties": {"identity_kind": {"const": "AUTHORIZED_DOCUMENT"}}},
+      "then": {"properties": {"original_source_url": {"type": "null"}, "authorized_document_id": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"}}}
+    }
+  ],
+  "$defs": {
+    "date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$", "format": "date"},
+    "nullableDate": {"anyOf": [{"$ref": "#/$defs/date"}, {"type": "null"}]}
+  }
+}

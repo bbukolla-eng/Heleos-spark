@@ -1,0 +1,20 @@
+{
+  "protocol": "helios.build.worker-profile/v1",
+  "profile_id": "codex-builder-v1",
+  "worker_id": "codex",
+  "display_name": "Codex Bounded Builder Session",
+  "roles": ["BUILDER"],
+  "transports": ["EXTERNAL_SESSION"],
+  "adapter_protocol": null,
+  "skills": [],
+  "plugins": [],
+  "allowed_tools": ["repository-read", "repository-write", "focused-test"],
+  "allowed_data_classes": ["REPOSITORY", "BUILD_CONTROL_SANITIZED"],
+  "allowed_task_purposes": ["BOUNDED_IMPLEMENTATION"],
+  "authority_limits": [
+    "No review, integration, commit, push, pull-request, or merge authority",
+    "No P0, P1A, runtime database, or bid authority",
+    "Work is limited to the immutable task manifest"
+  ],
+  "max_concurrency": 1
+}

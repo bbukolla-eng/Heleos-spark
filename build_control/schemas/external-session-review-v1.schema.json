@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/external-session-review-v1.schema.json",
+  "title": "HELIOS Build Fabric external-session review v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "assignment_sha256", "task_manifest_sha256", "handoff_sha256", "reviewer_profile_sha256", "provider", "session_id", "raw_evidence_sha256", "verdict", "findings", "command_receipt_sha256s", "source_verification", "reviewed_at", "duration_ms", "target_host_eligible"],
+  "properties": {
+    "protocol": {"const": "helios.build.external-session-review/v1"},
+    "assignment_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "task_manifest_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "handoff_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "reviewer_profile_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "provider": {"enum": ["CODEX", "CLAUDE", "KIMI", "GROK", "CURSOR", "COPILOT"]},
+    "session_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
+    "raw_evidence_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "verdict": {"enum": ["ACCEPTED", "CHANGES_REQUIRED", "REJECTED"]},
+    "findings": {"type": "array", "items": {"$ref": "#/$defs/finding"}, "uniqueItems": true},
+    "command_receipt_sha256s": {"type": "array", "items": {"$ref": "common-v1.schema.json#/$defs/digest"}, "uniqueItems": true},
+    "source_verification": {"$ref": "#/$defs/sourceVerification"},
+    "reviewed_at": {"$ref": "common-v1.schema.json#/$defs/rfc3339Utc"},
+    "duration_ms": {"$ref": "common-v1.schema.json#/$defs/nonNegativeInteger"},
+    "target_host_eligible": {"const": false}
+  },
+  "$defs": {
+    "finding": {"type": "object", "additionalProperties": false, "required": ["severity", "code"], "properties": {"severity": {"enum": ["CRITICAL", "MAJOR", "MINOR"]}, "code": {"$ref": "common-v1.schema.json#/$defs/identifier"}}},
+    "sourceVerification": {"type": "object", "additionalProperties": false, "required": ["source_record_ids", "source_packet_ids"], "properties": {"source_record_ids": {"$ref": "common-v1.schema.json#/$defs/stringArray"}, "source_packet_ids": {"$ref": "common-v1.schema.json#/$defs/stringArray"}}}
+  }
+}

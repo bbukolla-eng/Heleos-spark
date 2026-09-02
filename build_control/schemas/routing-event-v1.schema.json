@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/routing-event-v1.schema.json",
+  "title": "HELIOS Build Fabric routing event v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "sequence",
+    "task_manifest_sha256",
+    "action",
+    "from_profile_id",
+    "to_profile_id",
+    "reason_code",
+    "successor_task_manifest_sha256",
+    "checkpoint_sha256",
+    "recorded_at",
+    "actor_profile_id",
+    "previous_event_sha256",
+    "event_sha256"
+  ],
+  "properties": {
+    "protocol": { "const": "helios.build.routing-event/v1" },
+    "sequence": { "$ref": "common-v1.schema.json#/$defs/positiveInteger" },
+    "task_manifest_sha256": { "$ref": "common-v1.schema.json#/$defs/digest" },
+    "action": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+    "from_profile_id": { "$ref": "#/$defs/nullableIdentifier" },
+    "to_profile_id": { "$ref": "#/$defs/nullableIdentifier" },
+    "reason_code": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+    "successor_task_manifest_sha256": { "$ref": "#/$defs/nullableDigest" },
+    "checkpoint_sha256": { "$ref": "#/$defs/nullableDigest" },
+    "recorded_at": { "$ref": "common-v1.schema.json#/$defs/rfc3339Utc" },
+    "actor_profile_id": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+    "previous_event_sha256": { "$ref": "#/$defs/nullableDigest" },
+    "event_sha256": { "$ref": "common-v1.schema.json#/$defs/digest" }
+  },
+  "$defs": {
+    "nullableDigest": {
+      "anyOf": [
+        { "$ref": "common-v1.schema.json#/$defs/digest" },
+        { "type": "null" }
+      ]
+    },
+    "nullableIdentifier": {
+      "anyOf": [
+        { "$ref": "common-v1.schema.json#/$defs/identifier" },
+        { "type": "null" }
+      ]
+    }
+  }
+}

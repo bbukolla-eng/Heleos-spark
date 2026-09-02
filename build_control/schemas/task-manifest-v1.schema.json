@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/task-manifest-v1.schema.json",
+  "title": "HELIOS Build Fabric task manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "task_id",
+    "capability_id",
+    "capability",
+    "node_type",
+    "base_commit_sha",
+    "dependency_node_ids",
+    "roles",
+    "ownership",
+    "frozen_interfaces",
+    "schema_impact",
+    "required_source_record_ids",
+    "required_source_packet_ids",
+    "evidence_threshold",
+    "deliverables",
+    "acceptance",
+    "budgets",
+    "checkpoint_boundaries",
+    "conditions",
+    "correction_round",
+    "supersedes_task_manifest_sha256",
+    "resume_from_checkpoint_sha256",
+    "created_at",
+    "created_by_profile_id"
+  ],
+  "properties": {
+    "protocol": { "const": "helios.build.task-manifest/v1" },
+    "task_id": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+    "capability_id": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+    "capability": { "$ref": "common-v1.schema.json#/$defs/nonEmptyString" },
+    "node_type": { "const": "BuildTask" },
+    "base_commit_sha": { "$ref": "common-v1.schema.json#/$defs/gitCommit" },
+    "dependency_node_ids": {
+      "type": "array",
+      "items": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+      "uniqueItems": true
+    },
+    "roles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["builder_profile_id", "reviewer_profile_id", "integrator_profile_id"],
+      "properties": {
+        "builder_profile_id": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+        "reviewer_profile_id": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+        "integrator_profile_id": { "const": "codex-control-v1" }
+      }
+    },
+    "ownership": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["files", "path_globs", "modules", "migrations", "schemas", "public_interfaces", "forbidden_paths"],
+      "properties": {
+        "files": { "$ref": "#/$defs/repoPaths" },
+        "path_globs": { "$ref": "#/$defs/repoPaths" },
+        "modules": { "$ref": "common-v1.schema.json#/$defs/stringArray" },
+        "migrations": { "$ref": "#/$defs/repoPaths" },
+        "schemas": { "$ref": "#/$defs/repoPaths" },
+        "public_interfaces": { "$ref": "common-v1.schema.json#/$defs/stringArray" },
+        "forbidden_paths": { "$ref": "#/$defs/repoPaths" }
+      }
+    },
+    "frozen_interfaces": { "$ref": "common-v1.schema.json#/$defs/stringArray" },
+    "schema_impact": { "$ref": "common-v1.schema.json#/$defs/stringArray" },
+    "required_source_record_ids": { "$ref": "common-v1.schema.json#/$defs/stringArray" },
+    "required_source_packet_ids": { "$ref": "common-v1.schema.json#/$defs/stringArray" },
+    "evidence_threshold": { "$ref": "common-v1.schema.json#/$defs/nonNegativeInteger" },
+    "deliverables": { "$ref": "common-v1.schema.json#/$defs/stringArray" },
+    "acceptance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["behaviors", "commands"],
+      "properties": {
+        "behaviors": { "$ref": "common-v1.schema.json#/$defs/stringArray" },
+        "commands": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/acceptanceCommand" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["implementation_seconds", "cost_microusd", "focused_test_seconds", "affected_integration_seconds", "milestone_seconds", "maximum_correction_rounds"],
+      "properties": {
+        "implementation_seconds": { "$ref": "common-v1.schema.json#/$defs/nonNegativeInteger" },
+        "cost_microusd": { "$ref": "common-v1.schema.json#/$defs/nonNegativeInteger" },
+        "focused_test_seconds": { "$ref": "common-v1.schema.json#/$defs/nonNegativeInteger" },
+        "affected_integration_seconds": { "$ref": "common-v1.schema.json#/$defs/nonNegativeInteger" },
+        "milestone_seconds": { "$ref": "common-v1.schema.json#/$defs/nonNegativeInteger" },
+        "maximum_correction_rounds": { "$ref": "common-v1.schema.json#/$defs/nonNegativeInteger" }
+      }
+    },
+    "checkpoint_boundaries": { "$ref": "common-v1.schema.json#/$defs/stringArray" },
+    "conditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stop", "block", "reroute", "escalation"],
+      "properties": {
+        "stop": { "$ref": "#/$defs/conditionArray" },
+        "block": { "$ref": "#/$defs/conditionArray" },
+        "reroute": { "$ref": "#/$defs/conditionArray" },
+        "escalation": { "$ref": "#/$defs/conditionArray" }
+      }
+    },
+    "correction_round": { "$ref": "common-v1.schema.json#/$defs/nonNegativeInteger" },
+    "supersedes_task_manifest_sha256": { "$ref": "#/$defs/nullableDigest" },
+    "resume_from_checkpoint_sha256": { "$ref": "#/$defs/nullableDigest" },
+    "created_at": { "$ref": "common-v1.schema.json#/$defs/rfc3339Utc" },
+    "created_by_profile_id": { "$ref": "common-v1.schema.json#/$defs/identifier" }
+  },
+  "$defs": {
+    "repoPaths": {
+      "type": "array",
+      "items": { "$ref": "common-v1.schema.json#/$defs/repoPath" },
+      "uniqueItems": true
+    },
+    "acceptanceCommand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["command_id", "gate", "argv", "cwd", "expected_exit_code", "timeout_seconds"],
+      "properties": {
+        "command_id": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+        "gate": { "enum": ["FOCUSED", "AFFECTED_INTEGRATION", "MILESTONE"] },
+        "argv": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "common-v1.schema.json#/$defs/nonEmptyString" }
+        },
+        "cwd": { "$ref": "common-v1.schema.json#/$defs/repoPath" },
+        "expected_exit_code": { "$ref": "common-v1.schema.json#/$defs/nonNegativeInteger" },
+        "timeout_seconds": { "$ref": "common-v1.schema.json#/$defs/positiveInteger" }
+      }
+    },
+    "condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "when", "action"],
+      "properties": {
+        "code": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+        "when": { "$ref": "common-v1.schema.json#/$defs/nonEmptyString" },
+        "action": { "$ref": "common-v1.schema.json#/$defs/nonEmptyString" }
+      }
+    },
+    "conditionArray": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/condition" },
+      "uniqueItems": true
+    },
+    "nullableDigest": {
+      "anyOf": [
+        { "$ref": "common-v1.schema.json#/$defs/digest" },
+        { "type": "null" }
+      ]
+    }
+  }
+}

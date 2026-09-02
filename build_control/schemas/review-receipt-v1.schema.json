@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/review-receipt-v1.schema.json",
+  "title": "HELIOS Build Fabric review receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "transport", "task_manifest_sha256", "handoff_sha256", "reviewer_profile_sha256", "external_session_assignment_sha256", "raw_evidence_sha256", "verdict", "findings", "command_receipt_sha256s", "source_verification", "started_at", "duration_ms"],
+  "properties": {
+    "protocol": {"const": "helios.build.review-receipt/v1"},
+    "transport": {"enum": ["LOCAL_ADAPTER", "EXTERNAL_SESSION"]},
+    "task_manifest_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "handoff_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "reviewer_profile_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "external_session_assignment_sha256": {"$ref": "#/$defs/nullableDigest"},
+    "raw_evidence_sha256": {"$ref": "#/$defs/nullableDigest"},
+    "verdict": {"enum": ["ACCEPTED", "CHANGES_REQUIRED", "REJECTED"]},
+    "findings": {"type": "array", "items": {"$ref": "#/$defs/finding"}, "uniqueItems": true},
+    "command_receipt_sha256s": {"$ref": "#/$defs/digestArray"},
+    "source_verification": {"$ref": "#/$defs/sourceVerification"},
+    "started_at": {"$ref": "common-v1.schema.json#/$defs/rfc3339Utc"},
+    "duration_ms": {"$ref": "common-v1.schema.json#/$defs/nonNegativeInteger"}
+  },
+  "allOf": [
+    {"if": {"properties": {"transport": {"const": "LOCAL_ADAPTER"}}}, "then": {"properties": {"external_session_assignment_sha256": {"type": "null"}, "raw_evidence_sha256": {"type": "null"}}}},
+    {"if": {"properties": {"transport": {"const": "EXTERNAL_SESSION"}}}, "then": {"properties": {"external_session_assignment_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"}, "raw_evidence_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"}}}}
+  ],
+  "$defs": {
+    "nullableDigest": {"anyOf": [{"$ref": "common-v1.schema.json#/$defs/digest"}, {"type": "null"}]},
+    "digestArray": {"type": "array", "items": {"$ref": "common-v1.schema.json#/$defs/digest"}, "uniqueItems": true},
+    "finding": {"type": "object", "additionalProperties": false, "required": ["severity", "code"], "properties": {"severity": {"enum": ["CRITICAL", "MAJOR", "MINOR"]}, "code": {"$ref": "common-v1.schema.json#/$defs/identifier"}}},
+    "sourceVerification": {"type": "object", "additionalProperties": false, "required": ["source_record_ids", "source_packet_ids"], "properties": {"source_record_ids": {"$ref": "common-v1.schema.json#/$defs/stringArray"}, "source_packet_ids": {"$ref": "common-v1.schema.json#/$defs/stringArray"}}}
+  }
+}

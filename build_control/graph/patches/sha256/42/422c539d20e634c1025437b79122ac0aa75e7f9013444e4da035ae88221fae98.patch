@@ -1,0 +1,2499 @@
+diff --git a/build_control/schemas/athena-worker-profile-v1.schema.json b/build_control/schemas/athena-worker-profile-v1.schema.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..e127919522ccbbcca195eadc9a2e26e9f86dd1a2
+--- /dev/null
++++ b/build_control/schemas/athena-worker-profile-v1.schema.json
+@@ -0,0 +1,39 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "$id": "https://helios.local/build-control/schemas/athena-worker-profile-v1.schema.json",
++  "title": "Bounded ATHENA research profile v1",
++  "type": "object",
++  "additionalProperties": false,
++  "required": ["protocol", "profile_id", "worker_id", "display_name", "state", "allowed_capabilities", "forbidden_capabilities", "allowed_output_protocols", "allowed_data_classes", "instructions_sha256", "authority_limits"],
++  "properties": {
++    "protocol": {"const": "helios.build.athena-worker-profile/v1"},
++    "profile_id": {"const": "athena-v1"},
++    "worker_id": {"const": "athena"},
++    "display_name": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
++    "state": {"const": "PACKAGED"},
++    "allowed_capabilities": {
++      "type": "array",
++      "minItems": 1,
++      "uniqueItems": true,
++      "items": {"enum": ["DISCOVER_PUBLIC_SOURCES", "MAINTAIN_LOGICAL_NOTEBOOKS", "RECOGNIZE_RESEARCH_GAPS", "COMPARE_SOURCE_CONFLICTS", "PRODUCE_CITED_SYNTHESIS", "PROCESS_BUILDER_USEFULNESS_FEEDBACK"]}
++    },
++    "forbidden_capabilities": {
++      "type": "array",
++      "minItems": 1,
++      "uniqueItems": true,
++      "items": {"$ref": "common-v1.schema.json#/$defs/identifier"}
++    },
++    "allowed_output_protocols": {
++      "type": "array",
++      "const": ["helios.build.source-packet/v1"]
++    },
++    "allowed_data_classes": {"type": "array", "const": ["PUBLIC", "AUTHORIZED_LICENSED"]},
++    "instructions_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
++    "authority_limits": {
++      "type": "array",
++      "minItems": 1,
++      "uniqueItems": true,
++      "items": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"}
++    }
++  }
++}
+diff --git a/build_control/schemas/builder-source-bundle-v1.schema.json b/build_control/schemas/builder-source-bundle-v1.schema.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..eb4cd91b8dd43c5fc7be53ee2b956268a28b7a51
+--- /dev/null
++++ b/build_control/schemas/builder-source-bundle-v1.schema.json
+@@ -0,0 +1,31 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "$id": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json",
++  "title": "Task-scoped builder source bundle v1",
++  "type": "object",
++  "additionalProperties": false,
++  "required": ["protocol", "task_manifest_sha256", "task_id", "packet_dependencies", "packets", "sources", "citations", "findings", "conflicts", "limitations", "gaps"],
++  "properties": {
++    "protocol": {"const": "helios.build.builder-source-bundle/v1"},
++    "task_manifest_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
++    "task_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
++    "packet_dependencies": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json#/$defs/dependency"}},
++    "packets": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json#/$defs/packet"}},
++    "sources": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json#/$defs/source"}},
++    "citations": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json#/$defs/citation"}},
++    "findings": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json#/$defs/finding"}},
++    "conflicts": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json#/$defs/conflict"}},
++    "limitations": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json#/$defs/limitation"}},
++    "gaps": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/builder-source-bundle-v1.schema.json#/$defs/gap"}}
++  },
++  "$defs": {
++    "dependency": {"type": "object", "additionalProperties": false, "required": ["dependency_node_id", "packet_id", "packet_sha256"], "properties": {"dependency_node_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "packet_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "packet_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"}}},
++    "packet": {"type": "object", "additionalProperties": false, "required": ["packet_id", "packet_sha256", "request_id", "request_sha256", "notebook_id"], "properties": {"packet_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "packet_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"}, "request_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "request_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"}, "notebook_id": {"type": "string", "pattern": "^N[0-9]{2}$"}}},
++    "source": {"type": "object", "additionalProperties": false, "required": ["source_record_sha256", "source", "packet_ids", "notebook_ids"], "properties": {"source_record_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"}, "source": {"$ref": "source-record-v1.schema.json"}, "packet_ids": {"$ref": "common-v1.schema.json#/$defs/stringArray"}, "notebook_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^N[0-9]{2}$"}}}},
++    "citation": {"type": "object", "additionalProperties": false, "required": ["packet_id", "notebook_id", "citation"], "properties": {"packet_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "notebook_id": {"type": "string", "pattern": "^N[0-9]{2}$"}, "citation": {"$ref": "source-packet-v1.schema.json#/$defs/citation"}}},
++    "finding": {"type": "object", "additionalProperties": false, "required": ["packet_id", "notebook_id", "finding"], "properties": {"packet_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "notebook_id": {"type": "string", "pattern": "^N[0-9]{2}$"}, "finding": {"$ref": "source-packet-v1.schema.json#/$defs/finding"}}},
++    "conflict": {"type": "object", "additionalProperties": false, "required": ["packet_id", "notebook_id", "conflict"], "properties": {"packet_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "notebook_id": {"type": "string", "pattern": "^N[0-9]{2}$"}, "conflict": {"$ref": "source-packet-v1.schema.json#/$defs/conflict"}}},
++    "limitation": {"type": "object", "additionalProperties": false, "required": ["packet_id", "notebook_id", "text"], "properties": {"packet_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "notebook_id": {"type": "string", "pattern": "^N[0-9]{2}$"}, "text": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"}}},
++    "gap": {"type": "object", "additionalProperties": false, "required": ["packet_id", "notebook_id", "question"], "properties": {"packet_id": {"$ref": "common-v1.schema.json#/$defs/identifier"}, "notebook_id": {"type": "string", "pattern": "^N[0-9]{2}$"}, "question": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"}}}
++  }
++}
+diff --git a/build_control/schemas/notebook-manifest-v1.schema.json b/build_control/schemas/notebook-manifest-v1.schema.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..e0199dea1cee45861c77e5ad57390458c8b6a8bf
+--- /dev/null
++++ b/build_control/schemas/notebook-manifest-v1.schema.json
+@@ -0,0 +1,37 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "$id": "https://helios.local/build-control/schemas/notebook-manifest-v1.schema.json",
++  "title": "HELIOS logical notebook manifest v1",
++  "type": "object",
++  "additionalProperties": false,
++  "required": ["protocol", "manifest_version", "supersedes_manifest_sha256", "notebooks"],
++  "properties": {
++    "protocol": {"const": "helios.build.notebook-manifest/v1"},
++    "manifest_version": {"type": "integer", "minimum": 1},
++    "supersedes_manifest_sha256": {"$ref": "#/$defs/nullableDigest"},
++    "notebooks": {
++      "type": "array",
++      "minItems": 1,
++      "uniqueItems": true,
++      "items": {"$ref": "#/$defs/notebook"}
++    }
++  },
++  "$defs": {
++    "nullableDigest": {
++      "anyOf": [
++        {"$ref": "common-v1.schema.json#/$defs/digest"},
++        {"type": "null"}
++      ]
++    },
++    "notebook": {
++      "type": "object",
++      "additionalProperties": false,
++      "required": ["notebook_id", "name", "purpose"],
++      "properties": {
++        "notebook_id": {"type": "string", "pattern": "^N[0-9]{2}$"},
++        "name": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
++        "purpose": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"}
++      }
++    }
++  }
++}
+diff --git a/build_control/schemas/research-request-v1.schema.json b/build_control/schemas/research-request-v1.schema.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..8cd56fca37a3244cf34a5bdc3237356e9c92c4af
+--- /dev/null
++++ b/build_control/schemas/research-request-v1.schema.json
+@@ -0,0 +1,38 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "$id": "https://helios.local/build-control/schemas/research-request-v1.schema.json",
++  "title": "HELIOS build research request v1",
++  "type": "object",
++  "additionalProperties": false,
++  "required": ["protocol", "request_id", "task_id", "target_engine_component_id", "question", "jurisdiction", "unit_system", "data_class", "required_source_authority_class", "target_notebook_id", "excluded_source_ids", "excluded_data_classes", "required_output_protocol", "priority", "deadline", "issued_at", "issuer", "notebook_manifest_sha256", "athena_profile_sha256"],
++  "properties": {
++    "protocol": {"const": "helios.build.research-request/v1"},
++    "request_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
++    "task_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
++    "target_engine_component_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
++    "question": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
++    "jurisdiction": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
++    "unit_system": {"const": "US_CUSTOMARY"},
++    "data_class": {"enum": ["PUBLIC", "AUTHORIZED_LICENSED"]},
++    "required_source_authority_class": {"$ref": "#/$defs/authorityClass"},
++    "target_notebook_id": {"type": "string", "pattern": "^N[0-9]{2}$"},
++    "excluded_source_ids": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
++    "excluded_data_classes": {"type": "array", "uniqueItems": true, "items": {"enum": ["PUBLIC", "AUTHORIZED_LICENSED", "INTERNAL", "PROJECT_CONFIDENTIAL", "SECRET"]}},
++    "required_output_protocol": {"const": "helios.build.source-packet/v1"},
++    "priority": {"enum": ["LOW", "NORMAL", "HIGH", "CRITICAL"]},
++    "deadline": {"$ref": "common-v1.schema.json#/$defs/rfc3339Utc"},
++    "issued_at": {"$ref": "common-v1.schema.json#/$defs/rfc3339Utc"},
++    "issuer": {"$ref": "#/$defs/issuer"},
++    "notebook_manifest_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
++    "athena_profile_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"}
++  },
++  "$defs": {
++    "authorityClass": {"enum": ["PRIMARY_PUBLIC", "AUTHORIZED_LICENSED", "REPUTABLE_SECONDARY", "DISCOVERY_ONLY"]},
++    "issuer": {
++      "oneOf": [
++        {"type": "object", "additionalProperties": false, "required": ["worker_id", "role"], "properties": {"worker_id": {"const": "CODEX"}, "role": {"const": "CODEX_CONTROL"}}},
++        {"type": "object", "additionalProperties": false, "required": ["worker_id", "role"], "properties": {"worker_id": {"const": "CLAUDE"}, "role": {"const": "CLAUDE_ARCHITECTURE"}}}
++      ]
++    }
++  }
++}
+diff --git a/build_control/schemas/source-packet-v1.schema.json b/build_control/schemas/source-packet-v1.schema.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..88bb6412728e0aa60958c1864c778f509f2a70ef
+--- /dev/null
++++ b/build_control/schemas/source-packet-v1.schema.json
+@@ -0,0 +1,78 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "$id": "https://helios.local/build-control/schemas/source-packet-v1.schema.json",
++  "title": "ATHENA cited source packet v1",
++  "type": "object",
++  "additionalProperties": false,
++  "required": ["protocol", "packet_id", "request_id", "request_sha256", "supersedes_packet_id", "notebook_id", "notebook_manifest_sha256", "athena_profile_sha256", "jurisdiction", "unit_system", "generated_at", "sources", "citations", "findings", "conflicts", "limitations", "unanswered_questions", "synthesis_provenance"],
++  "properties": {
++    "protocol": {"const": "helios.build.source-packet/v1"},
++    "packet_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
++    "request_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
++    "request_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
++    "supersedes_packet_id": {"anyOf": [{"$ref": "common-v1.schema.json#/$defs/identifier"}, {"type": "null"}]},
++    "notebook_id": {"type": "string", "pattern": "^N[0-9]{2}$"},
++    "notebook_manifest_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
++    "athena_profile_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
++    "jurisdiction": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
++    "unit_system": {"const": "US_CUSTOMARY"},
++    "generated_at": {"$ref": "common-v1.schema.json#/$defs/rfc3339Utc"},
++    "sources": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "source-record-v1.schema.json"}},
++    "citations": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/source-packet-v1.schema.json#/$defs/citation"}},
++    "findings": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/source-packet-v1.schema.json#/$defs/finding"}},
++    "conflicts": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://helios.local/build-control/schemas/source-packet-v1.schema.json#/$defs/conflict"}},
++    "limitations": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
++    "unanswered_questions": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
++    "synthesis_provenance": {"$ref": "https://helios.local/build-control/schemas/source-packet-v1.schema.json#/$defs/synthesis"}
++  },
++  "$defs": {
++    "nullableString": {"anyOf": [{"$ref": "common-v1.schema.json#/$defs/nonEmptyString"}, {"type": "null"}]},
++    "citation": {
++      "type": "object",
++      "additionalProperties": false,
++      "required": ["citation_id", "source_id", "resolution", "locator", "limitation"],
++      "properties": {
++        "citation_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
++        "source_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
++        "resolution": {"enum": ["RESOLVED", "UNRESOLVED"]},
++        "locator": {"$ref": "https://helios.local/build-control/schemas/source-packet-v1.schema.json#/$defs/nullableString"},
++        "limitation": {"$ref": "https://helios.local/build-control/schemas/source-packet-v1.schema.json#/$defs/nullableString"}
++      }
++    },
++    "finding": {
++      "type": "object",
++      "additionalProperties": false,
++      "required": ["finding_id", "statement", "citation_ids", "applicability", "confidence", "proposed_engine_implication"],
++      "properties": {
++        "finding_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
++        "statement": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
++        "citation_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "common-v1.schema.json#/$defs/identifier"}},
++        "applicability": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
++        "confidence": {"enum": ["LOW", "MEDIUM", "HIGH"]},
++        "proposed_engine_implication": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"}
++      }
++    },
++    "conflict": {
++      "type": "object",
++      "additionalProperties": false,
++      "required": ["conflict_id", "description", "citation_ids"],
++      "properties": {
++        "conflict_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
++        "description": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
++        "citation_ids": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"$ref": "common-v1.schema.json#/$defs/identifier"}}
++      }
++    },
++    "synthesis": {
++      "type": "object",
++      "additionalProperties": false,
++      "required": ["provider", "query_sha256", "response_sha256", "external_evidence_sha256", "observed_at"],
++      "properties": {
++        "provider": {"const": "ATHENA_NOTEBOOKLM"},
++        "query_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
++        "response_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
++        "external_evidence_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
++        "observed_at": {"$ref": "common-v1.schema.json#/$defs/rfc3339Utc"}
++      }
++    }
++  }
++}
+diff --git a/build_control/schemas/source-record-v1.schema.json b/build_control/schemas/source-record-v1.schema.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..7bbdf216ff87731c819d2dedb0600c1b7fe4f770
+--- /dev/null
++++ b/build_control/schemas/source-record-v1.schema.json
+@@ -0,0 +1,39 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "$id": "https://helios.local/build-control/schemas/source-record-v1.schema.json",
++  "title": "Canonical source identity v1",
++  "type": "object",
++  "additionalProperties": false,
++  "required": ["protocol", "source_id", "identity_kind", "original_source_url", "authorized_document_id", "publisher", "title", "publication_date", "effective_date", "retrieval_date", "jurisdiction", "data_class", "authority_class", "license_use_notes", "content_sha256"],
++  "properties": {
++    "protocol": {"const": "helios.build.source-record/v1"},
++    "source_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
++    "identity_kind": {"enum": ["PUBLIC_URL", "AUTHORIZED_DOCUMENT"]},
++    "original_source_url": {"anyOf": [{"type": "string", "minLength": 1}, {"type": "null"}]},
++    "authorized_document_id": {"anyOf": [{"$ref": "common-v1.schema.json#/$defs/nonEmptyString"}, {"type": "null"}]},
++    "publisher": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
++    "title": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
++    "publication_date": {"$ref": "#/$defs/nullableDate"},
++    "effective_date": {"$ref": "#/$defs/nullableDate"},
++    "retrieval_date": {"$ref": "#/$defs/date"},
++    "jurisdiction": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
++    "data_class": {"enum": ["PUBLIC", "AUTHORIZED_LICENSED"]},
++    "authority_class": {"enum": ["PRIMARY_PUBLIC", "AUTHORIZED_LICENSED", "REPUTABLE_SECONDARY", "DISCOVERY_ONLY"]},
++    "license_use_notes": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
++    "content_sha256": {"anyOf": [{"$ref": "common-v1.schema.json#/$defs/digest"}, {"type": "null"}]}
++  },
++  "allOf": [
++    {
++      "if": {"properties": {"identity_kind": {"const": "PUBLIC_URL"}}},
++      "then": {"properties": {"original_source_url": {"type": "string", "minLength": 1}, "authorized_document_id": {"type": "null"}}}
++    },
++    {
++      "if": {"properties": {"identity_kind": {"const": "AUTHORIZED_DOCUMENT"}}},
++      "then": {"properties": {"original_source_url": {"type": "null"}, "authorized_document_id": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"}}}
++    }
++  ],
++  "$defs": {
++    "date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$", "format": "date"},
++    "nullableDate": {"anyOf": [{"$ref": "#/$defs/date"}, {"type": "null"}]}
++  }
++}
+diff --git a/build_control/source_registry/README.md b/build_control/source_registry/README.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..676be09306260b80112b09a84e52bfc6c00bb3d0
+--- /dev/null
++++ b/build_control/source_registry/README.md
+@@ -0,0 +1,13 @@
++# Build-time source registry
++
++This directory stores canonical, sanitized metadata for research used to build HELIOS. It is not a research database and it grants no runtime, engineering, quantity, pricing, approval, or bid authority.
++
++- The notebook manifest defines logical research domains. It contains no live NotebookLM URL, provider notebook ID, account identity, credential, or session state.
++- Source bodies, copyrighted documents, private project files, prompts, responses, and browser artifacts are never stored here.
++- One canonical source identity can be cited from many packets and logical notebooks. The source object is stored once; packet and notebook memberships remain visible in the append-only import ledger.
++- Packet and source objects are immutable and content-addressed. A corrected packet uses a new packet ID and an explicit predecessor. One predecessor cannot fork into several successors.
++- Packet import validates the entire requested batch before publishing objects and appends one final authoritative import event only after every object is safely published. Objects left without that final event after a storage interruption are unreachable and do not count as imported.
++- Exact replay is idempotent. Reuse of an identity with different bytes fails closed.
++- Provider removal or later correction never erases prior packet, source, membership, conflict, limitation, or gap history.
++
++Codex and Claude consume only a deterministic BuilderSourceBundle tied to a frozen BuildTask's declared, integrated `SourcePacket` graph nodes. The bundle remains advisory input to later reviewed implementation work.
+diff --git a/build_control/source_registry/notebooks.v1.json b/build_control/source_registry/notebooks.v1.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..5c5bf8bc9bf2be73a290be5d88e19d5559bfcc53
+--- /dev/null
++++ b/build_control/source_registry/notebooks.v1.json
+@@ -0,0 +1 @@
++{"manifest_version":1,"notebooks":[{"name":"Takeoff methodology and drawing interpretation","notebook_id":"N01","purpose":"Takeoff methods, plan reading, scale, symbols, and evidence-grounded drawing interpretation."},{"name":"Duct, fittings, and SMACNA","notebook_id":"N02","purpose":"Airside duct, fitting, terminal, damper, accessory, and lawfully accessible SMACNA research."},{"name":"Hydronic, refrigerant, and condensate piping","notebook_id":"N03","purpose":"Hydronic, refrigerant, condensate, pipe, fitting, valve, specialty, and riser research."},{"name":"Equipment, schedules, and manufacturer literature","notebook_id":"N04","purpose":"Equipment schedules, manufacturer product data, installation instructions, controls, and reconciliation."},{"name":"Insulation, supports, seismic, and vibration","notebook_id":"N05","purpose":"Insulation systems, supports, hangers, seismic restraint, and vibration isolation."},{"name":"NYC/NYS codes, public work, labor, and tax","notebook_id":"N06","purpose":"New York City and State official requirements, public work, prevailing wage, labor, and tax."},{"name":"Pricing, procurement, and vendor intelligence","notebook_id":"N07","purpose":"Public pricing sources, procurement, lead time, vendor intelligence, and pricing-source limitations."},{"name":"OCR, computer vision, PDF/CAD, and AI models","notebook_id":"N08","purpose":"Document parsing, OCR, geometry, vision models, PDF/CAD tooling, datasets, and model evaluation."},{"name":"Estimating, bidding, proposals, and risk","notebook_id":"N09","purpose":"Estimate structure, bid leveling, proposals, exclusions, allowances, alternates, and commercial risk."},{"name":"Project management, submittals, TAB, and closeout","notebook_id":"N10","purpose":"Post-award project controls, submittals, coordination, TAB, commissioning, turnover, and closeout."},{"name":"HELIOS software architecture, database, and agent engineering","notebook_id":"N11","purpose":"Software architecture, contracts, databases, provenance, testing, model orchestration, and agent engineering."}],"protocol":"helios.build.notebook-manifest/v1","supersedes_manifest_sha256":null}
+\ No newline at end of file
+diff --git a/build_control/worker_profiles/athena.instructions.v1.md b/build_control/worker_profiles/athena.instructions.v1.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..b551747b65c9958cbf91942a56b9d490c2d437c1
+--- /dev/null
++++ b/build_control/worker_profiles/athena.instructions.v1.md
+@@ -0,0 +1,11 @@
++# ATHENA Research Assistant — Version 1
++
++ATHENA is a build-time research assistant for Codex and Claude. Route each issued ResearchRequest to its named logical notebook, locate stronger lawful sources, maintain clear notebook membership, identify gaps and conflicts, and return exactly one schema-valid `helios.build.source-packet/v1` document per notebook response.
++
++Use USA customary units and preserve the request jurisdiction. Treat NotebookLM output as synthesis, never as the original source. Every resolved citation must name a source in the packet and include a precise page, section, table, or paragraph locator. Keep unresolved citations, conflicting findings, limitations, and unanswered questions explicit. Do not hide uncertainty or choose between project documents.
++
++You may improve source discovery, notebook organization, deduplication, gap recognition, conflict comparison, cited answer clarity, and usefulness to builders. You may use builder feedback to improve later research. You may not change this profile, expand your authority, or promote a finding.
++
++You do not write HELIOS code, databases, migrations, domain packs, rules, quantities, prices, estimates, approvals, proposals, or bids. You do not ingest project drawings. You do not execute browser automation or claim that a provider session ran. Never return credentials, account identity, cookies, tokens, browser state, prompt transcripts, response transcripts, source bodies, executable code, or provider notebook identifiers.
++
++All packet content is advisory. Codex or Claude validates the packet locally and later work independently verifies original sources before any engine definition can be accepted.
+diff --git a/build_control/worker_profiles/athena.v1.json b/build_control/worker_profiles/athena.v1.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..7d71e8e5167a9443e39ffb9b2b72b1badbdba233
+--- /dev/null
++++ b/build_control/worker_profiles/athena.v1.json
+@@ -0,0 +1 @@
++{"allowed_capabilities":["DISCOVER_PUBLIC_SOURCES","MAINTAIN_LOGICAL_NOTEBOOKS","RECOGNIZE_RESEARCH_GAPS","COMPARE_SOURCE_CONFLICTS","PRODUCE_CITED_SYNTHESIS","PROCESS_BUILDER_USEFULNESS_FEEDBACK"],"allowed_data_classes":["PUBLIC","AUTHORIZED_LICENSED"],"allowed_output_protocols":["helios.build.source-packet/v1"],"authority_limits":["Research packets are advisory build inputs only","Codex or Claude independently validates and verifies research before engine use","ATHENA cannot change its own permissions, profile, source policy, or acceptance threshold"],"display_name":"ATHENA Bounded Notebook Research Assistant","forbidden_capabilities":["AUTHOR_CODE","WRITE_HELIOS_DATABASE","AUTHOR_ENGINE_RULE","CREATE_QUANTITY","SET_PRICE","APPROVE_ESTIMATE","RELEASE_BID","INGEST_PROJECT_DRAWING","BROWSER_AUTOMATION","PROVIDER_SESSION_CONTROL","SELF_MODIFY_AUTHORITY"],"instructions_sha256":"0073dfab5146114f874a4999ba7e3167f0bdec256523c5ed48e4cd6a59c0483d","profile_id":"athena-v1","protocol":"helios.build.athena-worker-profile/v1","state":"PACKAGED","worker_id":"athena"}
+\ No newline at end of file
+diff --git a/tests/test_build_distribution_boundary.py b/tests/test_build_distribution_boundary.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..54a49a3dd3ec80c337c3f2c97954b43bc96edc91
+--- /dev/null
++++ b/tests/test_build_distribution_boundary.py
+@@ -0,0 +1,97 @@
++"""Prove research helpers remain repository-only and provider-free."""
++
++from __future__ import annotations
++
++import ast
++import subprocess
++import sys
++import tempfile
++import tomllib
++import unittest
++import zipfile
++from pathlib import Path
++
++
++ROOT = Path(__file__).resolve().parents[1]
++
++
++class ResearchDistributionBoundaryTests(unittest.TestCase):
++    def test_clean_runtime_wheel_excludes_research_build_control_and_provider_surfaces(self) -> None:
++        with tempfile.TemporaryDirectory() as temporary:
++            completed = subprocess.run(
++                [
++                    sys.executable,
++                    "-m",
++                    "pip",
++                    "wheel",
++                    ".",
++                    "--no-deps",
++                    "--no-build-isolation",
++                    "--wheel-dir",
++                    temporary,
++                ],
++                cwd=ROOT,
++                stdout=subprocess.PIPE,
++                stderr=subprocess.PIPE,
++                text=True,
++                timeout=300,
++            )
++            self.assertEqual(completed.returncode, 0, completed.stderr)
++            wheels = list(Path(temporary).glob("*.whl"))
++            self.assertEqual(len(wheels), 1)
++            with zipfile.ZipFile(wheels[0]) as archive:
++                names = archive.namelist()
++                forbidden_prefixes = (
++                    "build_control/",
++                    "tools/helios_build/",
++                    "helios_takeoff_core/research/",
++                    "helios_takeoff_core/notebooklm/",
++                    "helios_takeoff_core/browser/",
++                    "helios_takeoff_core/grokbot/",
++                )
++                self.assertFalse(any(name.startswith(forbidden_prefixes) for name in names))
++                entry_name = next(name for name in names if name.endswith("entry_points.txt"))
++                entries = archive.read(entry_name).decode("utf-8")
++                self.assertNotIn("helios-build", entries)
++                self.assertNotIn("notebooklm", entries.lower())
++                self.assertNotIn("grokbot", entries.lower())
++
++    def test_research_modules_use_only_local_file_contracts(self) -> None:
++        forbidden_imports = {
++            "aiohttp",
++            "browser_use",
++            "httpx",
++            "notebooklm",
++            "openai",
++            "playwright",
++            "puppeteer",
++            "requests",
++            "selenium",
++            "xai_sdk",
++        }
++        violations: dict[str, list[str]] = {}
++        for source in (
++            ROOT / "tools/helios_build/research.py",
++            ROOT / "tools/helios_build/source_registry.py",
++        ):
++            tree = ast.parse(source.read_text(encoding="utf-8"), filename=str(source))
++            imported: set[str] = set()
++            for node in ast.walk(tree):
++                if isinstance(node, ast.Import):
++                    imported.update(alias.name.split(".", 1)[0] for alias in node.names)
++                elif isinstance(node, ast.ImportFrom) and node.module:
++                    imported.add(node.module.split(".", 1)[0])
++            found = sorted(imported & forbidden_imports)
++            if found:
++                violations[source.name] = found
++        self.assertEqual(violations, {})
++
++        pyproject = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
++        self.assertNotIn("helios-build", pyproject["project"]["scripts"])
++        serialized = (ROOT / "tools/helios_build/research.py").read_text(encoding="utf-8").lower()
++        for forbidden in ("cookie", "password", "browser profile", "notebooklm api", "grok bot cli"):
++            self.assertNotIn(forbidden, serialized)
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/tests/test_build_research_packets.py b/tests/test_build_research_packets.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..9b4c34593f246bf5f38319e40b3d5e4df2ac393d
+--- /dev/null
++++ b/tests/test_build_research_packets.py
+@@ -0,0 +1,541 @@
++"""Contract and end-to-end tests for file-based ATHENA source packets."""
++
++from __future__ import annotations
++
++import contextlib
++import copy
++import hashlib
++import io
++import json
++import os
++import shutil
++import tempfile
++import threading
++import unittest
++from concurrent.futures import ThreadPoolExecutor
++from pathlib import Path
++from unittest import mock
++
++from tools.helios_build.canonical import canonical_json_bytes, sha256_hex
++from tools.helios_build.cli import main as cli_main
++from tools.helios_build.errors import ContractError
++from tools.helios_build.paths import BuildPaths
++from tools.helios_build.research import export_research_request, import_source_packets
++from tools.helios_build.schemas import SchemaRegistry
++from tools.helios_build.source_registry import SourceRegistry, canonical_source_record
++from tools.helios_build.store import ContentAddressedStore
++
++
++ROOT = Path(__file__).resolve().parents[1]
++EXPECTED_NOTEBOOKS = [
++    ("N01", "Takeoff methodology and drawing interpretation"),
++    ("N02", "Duct, fittings, and SMACNA"),
++    ("N03", "Hydronic, refrigerant, and condensate piping"),
++    ("N04", "Equipment, schedules, and manufacturer literature"),
++    ("N05", "Insulation, supports, seismic, and vibration"),
++    ("N06", "NYC/NYS codes, public work, labor, and tax"),
++    ("N07", "Pricing, procurement, and vendor intelligence"),
++    ("N08", "OCR, computer vision, PDF/CAD, and AI models"),
++    ("N09", "Estimating, bidding, proposals, and risk"),
++    ("N10", "Project management, submittals, TAB, and closeout"),
++    ("N11", "HELIOS software architecture, database, and agent engineering"),
++]
++
++
++def write_json(path: Path, payload: dict[str, object]) -> Path:
++    path.parent.mkdir(parents=True, exist_ok=True)
++    path.write_bytes(canonical_json_bytes(payload))
++    return path
++
++
++def valid_source(
++    source_id: str = "SRC-OFFICIAL-001",
++    *,
++    url: str = "https://example.test/official-guidance",
++) -> dict[str, object]:
++    return {
++        "protocol": "helios.build.source-record/v1",
++        "source_id": source_id,
++        "identity_kind": "PUBLIC_URL",
++        "original_source_url": url,
++        "authorized_document_id": None,
++        "publisher": "Example Public Authority",
++        "title": "Official HVAC Guidance",
++        "publication_date": "2026-01-15",
++        "effective_date": "2026-02-01",
++        "retrieval_date": "2026-09-01",
++        "jurisdiction": "USA-NY-NYC",
++        "data_class": "PUBLIC",
++        "authority_class": "PRIMARY_PUBLIC",
++        "license_use_notes": "Public citation metadata only; no source body stored.",
++        "content_sha256": "3" * 64,
++    }
++
++
++def valid_request(
++    manifest_sha256: str,
++    profile_sha256: str,
++    *,
++    request_id: str = "REQ-N02-001",
++    notebook_id: str = "N02",
++) -> dict[str, object]:
++    return {
++        "protocol": "helios.build.research-request/v1",
++        "request_id": request_id,
++        "task_id": "div23-registry-research",
++        "target_engine_component_id": "DIV23_V2_REGISTRY",
++        "question": "Which primary sources define the requested bounded engine behavior?",
++        "jurisdiction": "USA-NY-NYC",
++        "unit_system": "US_CUSTOMARY",
++        "data_class": "PUBLIC",
++        "required_source_authority_class": "PRIMARY_PUBLIC",
++        "target_notebook_id": notebook_id,
++        "excluded_source_ids": [],
++        "excluded_data_classes": ["SECRET", "PROJECT_CONFIDENTIAL"],
++        "required_output_protocol": "helios.build.source-packet/v1",
++        "priority": "HIGH",
++        "deadline": "2026-09-03T17:00:00Z",
++        "issued_at": "2026-09-01T18:00:00Z",
++        "issuer": {"worker_id": "CODEX", "role": "CODEX_CONTROL"},
++        "notebook_manifest_sha256": manifest_sha256,
++        "athena_profile_sha256": profile_sha256,
++    }
++
++
++def valid_packet(
++    request: dict[str, object],
++    request_sha256: str,
++    *,
++    packet_id: str = "PACKET-N02-001",
++    source: dict[str, object] | None = None,
++    supersedes_packet_id: str | None = None,
++) -> dict[str, object]:
++    selected = copy.deepcopy(source if source is not None else valid_source())
++    return {
++        "protocol": "helios.build.source-packet/v1",
++        "packet_id": packet_id,
++        "request_id": request["request_id"],
++        "request_sha256": request_sha256,
++        "supersedes_packet_id": supersedes_packet_id,
++        "notebook_id": request["target_notebook_id"],
++        "notebook_manifest_sha256": request["notebook_manifest_sha256"],
++        "athena_profile_sha256": request["athena_profile_sha256"],
++        "jurisdiction": request["jurisdiction"],
++        "unit_system": "US_CUSTOMARY",
++        "generated_at": "2026-09-01T18:10:00Z",
++        "sources": [selected],
++        "citations": [
++            {
++                "citation_id": f"CITE-{packet_id}",
++                "source_id": selected["source_id"],
++                "resolution": "RESOLVED",
++                "locator": "Section 4.2, Table 4-1",
++                "limitation": None,
++            }
++        ],
++        "findings": [
++            {
++                "finding_id": f"FINDING-{packet_id}",
++                "statement": "A bounded, cited research finding for builder evaluation.",
++                "citation_ids": [f"CITE-{packet_id}"],
++                "applicability": "NYC work when the cited source and project scope apply.",
++                "confidence": "HIGH",
++                "proposed_engine_implication": "Candidate input for a later reviewed engine definition.",
++            }
++        ],
++        "conflicts": [],
++        "limitations": ["Original-source verification is outside R1A."],
++        "unanswered_questions": ["Does the project specification impose a stricter requirement?"],
++        "synthesis_provenance": {
++            "provider": "ATHENA_NOTEBOOKLM",
++            "query_sha256": "4" * 64,
++            "response_sha256": "5" * 64,
++            "external_evidence_sha256": "6" * 64,
++            "observed_at": "2026-09-01T18:10:00Z",
++        },
++    }
++
++
++class ResearchFixture(unittest.TestCase):
++    def setUp(self) -> None:
++        self.temporary = tempfile.TemporaryDirectory()
++        self.addCleanup(self.temporary.cleanup)
++        self.root = Path(self.temporary.name) / "repo"
++        self.state = Path(self.temporary.name) / "state"
++        self.root.mkdir()
++        self.state.mkdir(mode=0o700)
++        shutil.copy(ROOT / "pyproject.toml", self.root / "pyproject.toml")
++        shutil.copytree(ROOT / "build_control" / "schemas", self.root / "build_control" / "schemas")
++        shutil.copytree(
++            ROOT / "build_control" / "worker_profiles",
++            self.root / "build_control" / "worker_profiles",
++        )
++        shutil.copytree(
++            ROOT / "build_control" / "source_registry",
++            self.root / "build_control" / "source_registry",
++        )
++        (self.root / "build_control" / "tasks").mkdir(parents=True)
++        (self.root / "build_control" / "graph").mkdir(parents=True)
++        self.paths = BuildPaths(self.root, self.state)
++        manifest = (self.root / "build_control/source_registry/notebooks.v1.json").read_bytes()
++        profile = (self.root / "build_control/worker_profiles/athena.v1.json").read_bytes()
++        self.manifest_sha = sha256_hex(manifest)
++        self.profile_sha = sha256_hex(profile)
++
++    def export(
++        self,
++        *,
++        request_id: str = "REQ-N02-001",
++        notebook_id: str = "N02",
++    ) -> tuple[dict[str, object], str]:
++        request = valid_request(
++            self.manifest_sha,
++            self.profile_sha,
++            request_id=request_id,
++            notebook_id=notebook_id,
++        )
++        stored = export_research_request(
++            self.paths, write_json(Path(self.temporary.name) / f"{request_id}.json", request)
++        )
++        return request, stored.sha256
++
++
++class ResearchPacketTests(ResearchFixture):
++    def test_direct_registry_import_cannot_bypass_cross_object_bindings(self) -> None:
++        request, request_sha = self.export()
++        packet = valid_packet(request, request_sha)
++        packet["notebook_id"] = "N03"
++        registry = SourceRegistry(self.paths)
++        self.assertFalse(hasattr(registry, "plan_import"))
++        self.assertFalse(hasattr(registry, "publish_import"))
++        with self.assertRaisesRegex(ContractError, "notebook"):
++            registry.import_packets(
++                [packet], [sha256_hex(canonical_json_bytes(packet))]
++            )
++        self.assertFalse((self.root / "build_control/source_registry/imports.jsonl").exists())
++
++    def test_registry_replay_revalidates_request_manifest_and_profile_bindings(self) -> None:
++        request, request_sha = self.export()
++        packet = valid_packet(request, request_sha)
++        import_source_packets(
++            self.paths, [write_json(Path(self.temporary.name) / "packet.json", packet)]
++        )
++        request_path = (
++            self.root
++            / "build_control/tasks/research_requests/sha256"
++            / request_sha[:2]
++            / f"{request_sha}.json"
++        )
++        tampered = copy.deepcopy(request)
++        tampered["question"] = "Tampered after import."
++        write_json(request_path, tampered)
++        with self.assertRaisesRegex(ContractError, "digest|canonical"):
++            SourceRegistry(self.paths).snapshot()
++
++    def test_registry_replay_fails_when_bound_manifest_or_profile_is_missing(self) -> None:
++        request, request_sha = self.export()
++        packet = valid_packet(request, request_sha)
++        import_source_packets(
++            self.paths, [write_json(Path(self.temporary.name) / "packet.json", packet)]
++        )
++        profile = self.root / "build_control/worker_profiles/athena.v1.json"
++        profile_bytes = profile.read_bytes()
++        profile.unlink()
++        with self.assertRaisesRegex(ContractError, "profile|read"):
++            SourceRegistry(self.paths).snapshot()
++        profile.write_bytes(profile_bytes)
++        manifest = self.root / "build_control/source_registry/notebooks.v1.json"
++        manifest.unlink()
++        with self.assertRaisesRegex(ContractError, "manifest"):
++            SourceRegistry(self.paths).snapshot()
++
++    def test_one_request_notebook_lineage_rejects_parallel_roots_and_stale_heads(self) -> None:
++        request, request_sha = self.export()
++        root = valid_packet(request, request_sha)
++        import_source_packets(
++            self.paths, [write_json(Path(self.temporary.name) / "root.json", root)]
++        )
++        parallel = valid_packet(request, request_sha, packet_id="PACKET-N02-PARALLEL")
++        with self.assertRaisesRegex(ContractError, "supersede|lineage|head"):
++            import_source_packets(
++                self.paths,
++                [write_json(Path(self.temporary.name) / "parallel.json", parallel)],
++            )
++        successor = valid_packet(
++            request,
++            request_sha,
++            packet_id="PACKET-N02-002",
++            supersedes_packet_id="PACKET-N02-001",
++        )
++        import_source_packets(
++            self.paths, [write_json(Path(self.temporary.name) / "successor.json", successor)]
++        )
++        stale = valid_packet(
++            request,
++            request_sha,
++            packet_id="PACKET-N02-STALE",
++            supersedes_packet_id="PACKET-N02-001",
++        )
++        with self.assertRaisesRegex(ContractError, "head|fork"):
++            import_source_packets(
++                self.paths, [write_json(Path(self.temporary.name) / "stale.json", stale)]
++            )
++
++        request_n03, request_n03_sha = self.export(
++            request_id="REQ-N03-TOPOLOGY", notebook_id="N03"
++        )
++        lexical_root = valid_packet(
++            request_n03,
++            request_n03_sha,
++            packet_id="PACKET-Z-ROOT",
++        )
++        lexical_successor = valid_packet(
++            request_n03,
++            request_n03_sha,
++            packet_id="PACKET-A-SUCCESSOR",
++            supersedes_packet_id="PACKET-Z-ROOT",
++        )
++        import_source_packets(
++            self.paths,
++            [
++                write_json(Path(self.temporary.name) / "lexical-successor.json", lexical_successor),
++                write_json(Path(self.temporary.name) / "lexical-root.json", lexical_root),
++            ],
++        )
++        snapshot = SourceRegistry(self.paths).snapshot()
++        self.assertEqual(
++            snapshot.head_packet_id_by_lineage[(request_n03_sha, "N03")],
++            "PACKET-A-SUCCESSOR",
++        )
++
++    def test_concurrent_changed_requests_with_one_id_publish_exactly_one_identity(self) -> None:
++        first = valid_request(self.manifest_sha, self.profile_sha, request_id="REQ-RACE-001")
++        second = copy.deepcopy(first)
++        second["question"] = "A different immutable research question."
++        first_path = write_json(Path(self.temporary.name) / "request-race-a.json", first)
++        second_path = write_json(Path(self.temporary.name) / "request-race-b.json", second)
++
++        def export(path: Path) -> str:
++            try:
++                return export_research_request(self.paths, path).sha256
++            except ContractError as error:
++                return f"ERROR:{error}"
++
++        original_put_json = ContentAddressedStore.put_json
++        publication_barrier = threading.Barrier(2)
++
++        def synchronized_put_json(
++            store: ContentAddressedStore,
++            collection: str,
++            payload: dict[str, object],
++        ):
++            if collection == "research_requests":
++                try:
++                    publication_barrier.wait(timeout=0.5)
++                except threading.BrokenBarrierError:
++                    pass
++            return original_put_json(store, collection, payload)
++
++        with mock.patch.object(ContentAddressedStore, "put_json", synchronized_put_json):
++            with ThreadPoolExecutor(max_workers=2) as executor:
++                results = list(executor.map(export, (first_path, second_path)))
++        self.assertEqual(sum(not item.startswith("ERROR:") for item in results), 1)
++        self.assertTrue(any("request_id" in item for item in results if item.startswith("ERROR:")))
++        published = tuple(
++            (self.root / "build_control/tasks/research_requests/sha256").glob("*/*.json")
++        )
++        self.assertEqual(len(published), 1)
++
++    def test_source_dates_are_real_iso_calendar_dates(self) -> None:
++        schemas = SchemaRegistry(self.root)
++        leap_day = valid_source()
++        leap_day["publication_date"] = "2024-02-29"
++        leap_day["effective_date"] = "2024-02-29"
++        leap_day["retrieval_date"] = "2024-02-29"
++        self.assertEqual(
++            canonical_source_record(leap_day, schemas)["retrieval_date"], "2024-02-29"
++        )
++        for field, value in (
++            ("publication_date", "2025-02-29"),
++            ("effective_date", "2026-04-31"),
++            ("retrieval_date", "2026-13-01"),
++            ("retrieval_date", "0000-01-01"),
++        ):
++            source = valid_source()
++            source[field] = value
++            with self.subTest(field=field, value=value):
++                with self.assertRaisesRegex(ContractError, field):
++                    schemas.validate(source, "source-record-v1.schema.json")
++                with self.assertRaisesRegex(ContractError, field):
++                    canonical_source_record(source, schemas)
++
++    def test_contracts_manifest_and_profile_are_strict_and_bounded(self) -> None:
++        schemas = SchemaRegistry(ROOT)
++        manifest_path = ROOT / "build_control/source_registry/notebooks.v1.json"
++        profile_path = ROOT / "build_control/worker_profiles/athena.v1.json"
++        instructions_path = ROOT / "build_control/worker_profiles/athena.instructions.v1.md"
++        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
++        profile = json.loads(profile_path.read_text(encoding="utf-8"))
++        schemas.validate(manifest, "notebook-manifest-v1.schema.json")
++        schemas.validate(profile, "athena-worker-profile-v1.schema.json")
++        self.assertEqual(
++            [(item["notebook_id"], item["name"]) for item in manifest["notebooks"]],
++            EXPECTED_NOTEBOOKS,
++        )
++        self.assertEqual(profile["allowed_output_protocols"], ["helios.build.source-packet/v1"])
++        self.assertEqual(
++            profile["instructions_sha256"], hashlib.sha256(instructions_path.read_bytes()).hexdigest()
++        )
++        forbidden = set(profile["forbidden_capabilities"])
++        self.assertTrue(
++            {
++                "AUTHOR_CODE",
++                "WRITE_HELIOS_DATABASE",
++                "AUTHOR_ENGINE_RULE",
++                "CREATE_QUANTITY",
++                "SET_PRICE",
++                "APPROVE_ESTIMATE",
++                "RELEASE_BID",
++                "BROWSER_AUTOMATION",
++            }
++            <= forbidden
++        )
++        serialized = canonical_json_bytes(manifest) + canonical_json_bytes(profile)
++        for forbidden_text in (b"notebook.google.com", b"provider_notebook_id", b"cookie", b"token"):
++            self.assertNotIn(forbidden_text, serialized.lower())
++
++    def test_valid_multi_notebook_batch_deduplicates_one_source_identity(self) -> None:
++        request_a, request_sha_a = self.export()
++        request_b, request_sha_b = self.export(request_id="REQ-N03-001", notebook_id="N03")
++        packet_a = valid_packet(request_a, request_sha_a)
++        packet_b = valid_packet(
++            request_b,
++            request_sha_b,
++            packet_id="PACKET-N03-001",
++        )
++        result = import_source_packets(
++            self.paths,
++            [
++                write_json(Path(self.temporary.name) / "packet-a.json", packet_a),
++                write_json(Path(self.temporary.name) / "packet-b.json", packet_b),
++            ],
++        )
++        self.assertEqual(result.packet_ids, ("PACKET-N02-001", "PACKET-N03-001"))
++        self.assertEqual(result.source_ids, ("SRC-OFFICIAL-001",))
++        self.assertEqual(result.notebook_memberships["SRC-OFFICIAL-001"], ("N02", "N03"))
++        source_files = tuple((self.root / "build_control/source_registry/sources/sha256").glob("*/*.json"))
++        self.assertEqual(len(source_files), 1)
++        self.assertTrue((self.root / "build_control/source_registry/imports.jsonl").is_file())
++
++    def test_invalid_member_prevents_the_entire_batch_from_becoming_authoritative(self) -> None:
++        request_a, request_sha_a = self.export()
++        request_b, request_sha_b = self.export(request_id="REQ-N03-001", notebook_id="N03")
++        packet_a = valid_packet(request_a, request_sha_a)
++        packet_b = valid_packet(request_b, request_sha_b, packet_id="PACKET-N03-001")
++        packet_b["notebook_id"] = "N04"
++        with self.assertRaisesRegex(ContractError, "notebook"):
++            import_source_packets(
++                self.paths,
++                [
++                    write_json(Path(self.temporary.name) / "good.json", packet_a),
++                    write_json(Path(self.temporary.name) / "bad.json", packet_b),
++                ],
++            )
++        self.assertFalse((self.root / "build_control/source_registry/imports.jsonl").exists())
++        self.assertFalse((self.root / "build_control/source_packets/sha256").exists())
++        self.assertFalse((self.root / "build_control/source_registry/sources/sha256").exists())
++
++    def test_packet_and_source_identity_are_immutable_with_explicit_successors(self) -> None:
++        request, request_sha = self.export()
++        packet = valid_packet(request, request_sha)
++        path = write_json(Path(self.temporary.name) / "packet.json", packet)
++        first = import_source_packets(self.paths, [path])
++        replay = import_source_packets(self.paths, [path])
++        self.assertFalse(first.replayed)
++        self.assertTrue(replay.replayed)
++        self.assertEqual(first.packet_sha256s, replay.packet_sha256s)
++
++        changed = copy.deepcopy(packet)
++        changed["findings"][0]["statement"] = "Changed bytes under the same packet identity."
++        with self.assertRaisesRegex(ContractError, "packet_id"):
++            import_source_packets(
++                self.paths, [write_json(Path(self.temporary.name) / "changed.json", changed)]
++            )
++
++        successor = valid_packet(
++            request,
++            request_sha,
++            packet_id="PACKET-N02-002",
++            supersedes_packet_id="PACKET-N02-001",
++        )
++        import_source_packets(
++            self.paths, [write_json(Path(self.temporary.name) / "successor.json", successor)]
++        )
++        fork = copy.deepcopy(successor)
++        fork["packet_id"] = "PACKET-N02-003"
++        with self.assertRaisesRegex(ContractError, "supersed|successor|fork|head"):
++            import_source_packets(
++                self.paths, [write_json(Path(self.temporary.name) / "fork.json", fork)]
++            )
++
++        duplicate_source = valid_packet(
++            request,
++            request_sha,
++            packet_id="PACKET-N02-004",
++            source=valid_source("SRC-OFFICIAL-OTHER", url="HTTPS://EXAMPLE.TEST:443/official-guidance#x"),
++            supersedes_packet_id="PACKET-N02-002",
++        )
++        with self.assertRaisesRegex(ContractError, "canonical source|source identity"):
++            import_source_packets(
++                self.paths,
++                [write_json(Path(self.temporary.name) / "duplicate-source.json", duplicate_source)],
++            )
++
++    def test_packet_binding_citations_and_sanitized_shape_fail_closed(self) -> None:
++        request, request_sha = self.export()
++        cases: list[tuple[str, dict[str, object], str]] = []
++        wrong_request = valid_packet(request, "0" * 64)
++        cases.append(("request hash", wrong_request, "request"))
++        wrong_units = valid_packet(request, request_sha)
++        wrong_units["unit_system"] = "METRIC"
++        cases.append(("units", wrong_units, "unit_system"))
++        missing_locator = valid_packet(request, request_sha)
++        missing_locator["citations"][0]["locator"] = None
++        cases.append(("locator", missing_locator, "locator"))
++        injected = valid_packet(request, request_sha)
++        injected["code"] = "print('not permitted')"
++        cases.append(("code", injected, "additional properties|code"))
++        for label, packet, message in cases:
++            with self.subTest(label=label), self.assertRaisesRegex(ContractError, message):
++                import_source_packets(
++                    self.paths,
++                    [write_json(Path(self.temporary.name) / f"invalid-{label}.json", packet)],
++                )
++        self.assertFalse((self.root / "build_control/source_registry/imports.jsonl").exists())
++
++    def test_research_cli_registers_the_three_finite_file_commands(self) -> None:
++        request = valid_request(self.manifest_sha, self.profile_sha)
++        request_path = write_json(Path(self.temporary.name) / "request-cli.json", request)
++        stdout, stderr = io.StringIO(), io.StringIO()
++        with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
++            code = cli_main(
++                [
++                    "--repo-root",
++                    str(self.root),
++                    "--state-root",
++                    str(self.state),
++                    "research",
++                    "request",
++                    "export",
++                    str(request_path),
++                ]
++            )
++        self.assertEqual((code, stderr.getvalue()), (0, ""))
++        payload = json.loads(stdout.getvalue())
++        self.assertEqual(payload["status"], "EXPORTED")
++        self.assertEqual(stdout.getvalue().count("\n"), 1)
++        self.assertNotIn("provider_command", payload)
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/tests/test_build_research_task_input.py b/tests/test_build_research_task_input.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..1e4010ea3ce0247e62245d09b1a7be4ab919c86e
+--- /dev/null
++++ b/tests/test_build_research_task_input.py
+@@ -0,0 +1,201 @@
++"""Task-scoped builder bundle tests for integrated SourcePacket graph nodes."""
++
++from __future__ import annotations
++
++import copy
++import json
++from pathlib import Path
++
++from tools.helios_build.canonical import canonical_json_bytes, sha256_hex
++from tools.helios_build.errors import ContractError
++from tools.helios_build.ledger import append_event
++from tools.helios_build.research import import_source_packets, prepare_task_source_bundle
++from tools.helios_build.store import ContentAddressedStore
++
++from tests.build_fabric_support import valid_task_manifest
++from tests.test_build_research_packets import (
++    ResearchFixture,
++    valid_packet,
++    write_json,
++)
++
++
++class ResearchTaskInputTests(ResearchFixture):
++    def _integrate_node(self, node_id: str) -> None:
++        states = ("READY", "DISPATCHED", "RETURNED", "REVIEWED", "ACCEPTED", "INTEGRATED")
++        prior = "DRAFT"
++        for state in states:
++            append_event(
++                self.root / "build_control/graph/events.jsonl",
++                {
++                    "protocol": "helios.build.lifecycle-event/v1",
++                    "node_id": node_id,
++                    "prior_state": prior,
++                    "new_state": state,
++                    "reason_code": "TEST_FIXTURE_TRANSITION",
++                    "actor_profile_id": "codex-control-v1",
++                    "attempt_manifest_sha256": None,
++                    "external_session_assignment_sha256": None,
++                    "routing_event_sha256": None,
++                    "recorded_at": "2026-09-01T18:30:00Z",
++                },
++                self.state,
++            )
++            prior = state
++
++    def _frozen_task(
++        self,
++        packet_nodes: list[tuple[str, str]],
++        *,
++        integrate: bool = True,
++        node_type: str = "SourcePacket",
++    ) -> tuple[str, dict[str, object]]:
++        node_ids = [node_id for node_id, _ in packet_nodes]
++        task = valid_task_manifest()
++        task["task_id"] = "builder-consumes-research"
++        task["base_commit_sha"] = "d" * 40
++        task["dependency_node_ids"] = node_ids
++        task["required_source_packet_ids"] = node_ids
++        task["required_source_record_ids"] = []
++        task["created_at"] = "2026-09-01T18:20:00Z"
++        task_stored = ContentAddressedStore(self.root / "build_control").put_json("tasks", task)
++        task_node = "builder-task"
++        graph = {
++            "protocol": "helios.build.graph-manifest/v1",
++            "graph_id": "builder-research-input-graph",
++            "nodes": [
++                *[
++                    {
++                        "node_id": node_id,
++                        "node_type": node_type,
++                        "manifest_sha256": digest,
++                    }
++                    for node_id, digest in packet_nodes
++                ],
++                {
++                    "node_id": task_node,
++                    "node_type": "BuildTask",
++                    "manifest_sha256": task_stored.sha256,
++                },
++            ],
++            "edges": [
++                {"edge_type": "DEPENDS_ON", "from_node_id": node_id, "to_node_id": task_node}
++                for node_id in node_ids
++            ],
++            "created_at": "2026-09-01T18:20:00Z",
++            "created_by_profile_id": "codex-control-v1",
++        }
++        write_json(self.root / "build_control/graph/builder-research-input.json", graph)
++        if integrate:
++            for node_id in node_ids:
++                self._integrate_node(node_id)
++        return task_stored.sha256, task
++
++    def test_bundle_uses_only_declared_integrated_nodes_and_preserves_gaps(self) -> None:
++        request_a, request_sha_a = self.export()
++        request_b, request_sha_b = self.export(request_id="REQ-N03-001", notebook_id="N03")
++        packet_a = valid_packet(request_a, request_sha_a)
++        packet_b = valid_packet(request_b, request_sha_b, packet_id="PACKET-N03-001")
++        packet_b["citations"].append(
++            {
++                "citation_id": "CITE-PACKET-N03-UNRESOLVED",
++                "source_id": "SRC-OFFICIAL-001",
++                "resolution": "UNRESOLVED",
++                "locator": None,
++                "limitation": "ATHENA could not resolve the referenced appendix locator.",
++            }
++        )
++        imported = import_source_packets(
++            self.paths,
++            [
++                write_json(Path(self.temporary.name) / "a.json", packet_a),
++                write_json(Path(self.temporary.name) / "b.json", packet_b),
++            ],
++        )
++        packet_digests = dict(zip(imported.packet_ids, imported.packet_sha256s, strict=True))
++        task_sha, _ = self._frozen_task(
++            [
++                ("packet-air", packet_digests["PACKET-N02-001"]),
++                ("packet-pipe", packet_digests["PACKET-N03-001"]),
++            ]
++        )
++        stored = prepare_task_source_bundle(self.paths, task_sha)
++        bundle = json.loads(stored.path.read_text(encoding="utf-8"))
++        self.assertEqual(bundle["task_manifest_sha256"], task_sha)
++        self.assertEqual(
++            [item["dependency_node_id"] for item in bundle["packet_dependencies"]],
++            ["packet-air", "packet-pipe"],
++        )
++        self.assertEqual(len(bundle["sources"]), 1)
++        self.assertEqual(bundle["sources"][0]["notebook_ids"], ["N02", "N03"])
++        self.assertEqual(len(bundle["citations"]), 3)
++        self.assertTrue(
++            any(item["citation"]["resolution"] == "UNRESOLVED" for item in bundle["citations"])
++        )
++        self.assertEqual(len(bundle["findings"]), 2)
++        self.assertEqual(len(bundle["gaps"]), 2)
++        self.assertNotIn("code", bundle)
++        replay = prepare_task_source_bundle(self.paths, task_sha)
++        self.assertEqual((stored.sha256, replay.sha256), (replay.sha256, stored.sha256))
++        self.assertTrue(replay.replayed)
++
++    def test_distinct_dependency_nodes_may_reuse_one_packet_digest(self) -> None:
++        request, request_sha = self.export()
++        packet = valid_packet(request, request_sha)
++        imported = import_source_packets(
++            self.paths, [write_json(Path(self.temporary.name) / "packet.json", packet)]
++        )
++        digest = imported.packet_sha256s[0]
++        task_sha, _ = self._frozen_task([("packet-a", digest), ("packet-b", digest)])
++        bundle = json.loads(prepare_task_source_bundle(self.paths, task_sha).path.read_text())
++        self.assertEqual(len(bundle["packet_dependencies"]), 2)
++        self.assertEqual(len(bundle["packets"]), 1)
++        self.assertEqual(len(bundle["findings"]), 1)
++
++    def test_bundle_rejects_unintegrated_wrong_type_missing_and_mismatched_lineage(self) -> None:
++        request, request_sha = self.export()
++        packet = valid_packet(request, request_sha)
++        imported = import_source_packets(
++            self.paths, [write_json(Path(self.temporary.name) / "packet.json", packet)]
++        )
++        digest = imported.packet_sha256s[0]
++
++        task_sha, _ = self._frozen_task([("packet-a", digest)], integrate=False)
++        with self.assertRaisesRegex(ContractError, "INTEGRATED"):
++            prepare_task_source_bundle(self.paths, task_sha)
++
++        (self.root / "build_control/graph/builder-research-input.json").unlink()
++        task_sha, _ = self._frozen_task([("packet-a", digest)], node_type="Artifact")
++        with self.assertRaisesRegex(ContractError, "SourcePacket"):
++            prepare_task_source_bundle(self.paths, task_sha)
++
++        (self.root / "build_control/graph/builder-research-input.json").unlink()
++        (self.root / "build_control/graph/events.jsonl").unlink()
++        task_sha, _ = self._frozen_task([("packet-a", "f" * 64)])
++        with self.assertRaisesRegex(ContractError, "packet|digest"):
++            prepare_task_source_bundle(self.paths, task_sha)
++
++    def test_superseded_packet_cannot_enter_a_new_builder_bundle(self) -> None:
++        request, request_sha = self.export()
++        original = valid_packet(request, request_sha)
++        first = import_source_packets(
++            self.paths, [write_json(Path(self.temporary.name) / "first.json", original)]
++        )
++        successor = valid_packet(
++            request,
++            request_sha,
++            packet_id="PACKET-N02-002",
++            supersedes_packet_id="PACKET-N02-001",
++        )
++        import_source_packets(
++            self.paths, [write_json(Path(self.temporary.name) / "successor.json", successor)]
++        )
++        task_sha, _ = self._frozen_task([("packet-old", first.packet_sha256s[0])])
++        with self.assertRaisesRegex(ContractError, "superseded"):
++            prepare_task_source_bundle(self.paths, task_sha)
++
++
++if __name__ == "__main__":
++    import unittest
++
++    unittest.main()
+diff --git a/tools/helios_build/cli.py b/tools/helios_build/cli.py
+index 6e0cd048a35fa6dd084d4f25f40270f281dca623..770f659f09e0ec56a1d344bc331249bf9bff8829 100644
+--- a/tools/helios_build/cli.py
++++ b/tools/helios_build/cli.py
+@@ -30,6 +30,11 @@ from tools.helios_build.external_sessions import (
+ from tools.helios_build.integrate import record_integration
+ from tools.helios_build.paths import BuildPaths
+ from tools.helios_build.review import import_external_review, review_task
++from tools.helios_build.research import (
++    export_research_request,
++    import_source_packets,
++    prepare_task_source_bundle,
++)
+ from tools.helios_build.schemas import SchemaRegistry
+ from tools.helios_build.status import build_report, graph_status
+ from tools.helios_build.store import ContentAddressedStore
+@@ -124,6 +129,7 @@ def _build_parser() -> tuple[_ArgumentParser, dict[str, CommandHandler]]:
+         _configure_external_session,
+         _handle_external_session,
+     )
++    register_command(subparsers, handlers, "research", _configure_research, _handle_research)
+     register_command(subparsers, handlers, "report", _configure_empty, _handle_report)
+     return parser, handlers
+ 
+@@ -191,6 +197,23 @@ def _configure_external_session(parser: argparse.ArgumentParser) -> None:
+     review.add_argument("--raw-evidence", type=Path, required=True)
+ 
+ 
++def _configure_research(parser: argparse.ArgumentParser) -> None:
++    children = parser.add_subparsers(dest="research_command", required=True)
++
++    request = children.add_parser("request")
++    request_children = request.add_subparsers(dest="research_request_command", required=True)
++    request_export = request_children.add_parser("export")
++    request_export.add_argument("request", type=Path)
++
++    packet = children.add_parser("packet")
++    packet_children = packet.add_subparsers(dest="research_packet_command", required=True)
++    packet_import = packet_children.add_parser("import")
++    packet_import.add_argument("packets", type=Path, nargs="+")
++
++    prepare = children.add_parser("prepare-task")
++    prepare.add_argument("task")
++
++
+ def _handle_doctor(paths: BuildPaths, arguments: argparse.Namespace) -> dict[str, Any]:
+     return build_doctor_report(paths, arguments.adapter_config)
+ 
+@@ -265,6 +288,45 @@ def _handle_external_session(
+     raise ContractError("unknown external-session command")
+ 
+ 
++def _handle_research(paths: BuildPaths, arguments: argparse.Namespace) -> dict[str, Any]:
++    if arguments.research_command == "request":
++        if arguments.research_request_command != "export":
++            raise ContractError("unknown research request command")
++        stored = export_research_request(paths, arguments.request)
++        return {
++            "kind": "tasks/research_requests",
++            "path": stored.path.relative_to(paths.repo_root).as_posix(),
++            "replayed": stored.replayed,
++            "sha256": stored.sha256,
++            "status": "EXPORTED",
++        }
++    if arguments.research_command == "packet":
++        if arguments.research_packet_command != "import":
++            raise ContractError("unknown research packet command")
++        imported = import_source_packets(paths, arguments.packets)
++        return {
++            "import_event_sha256": imported.import_event_sha256,
++            "notebook_memberships": imported.notebook_memberships,
++            "packet_ids": imported.packet_ids,
++            "packet_sha256s": imported.packet_sha256s,
++            "replayed": imported.replayed,
++            "source_ids": imported.source_ids,
++            "source_sha256s": imported.source_sha256s,
++            "status": "IMPORTED",
++        }
++    if arguments.research_command == "prepare-task":
++        stored = prepare_task_source_bundle(paths, arguments.task)
++        return {
++            "kind": "builder_source_bundles",
++            "path": stored.path.relative_to(paths.repo_root).as_posix(),
++            "replayed": stored.replayed,
++            "sha256": stored.sha256,
++            "status": "PREPARED",
++            "task_manifest_sha256": arguments.task,
++        }
++    raise ContractError("unknown research command")
++
++
+ def _handle_report(paths: BuildPaths, _: argparse.Namespace) -> dict[str, Any]:
+     return build_report(paths)
+ 
+diff --git a/tools/helios_build/research.py b/tools/helios_build/research.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..86e82df5a6cbb1922216e281c26360761f6729c8
+--- /dev/null
++++ b/tools/helios_build/research.py
+@@ -0,0 +1,333 @@
++"""Finite file transport for ATHENA research requests and source packets."""
++
++from __future__ import annotations
++
++from collections.abc import Mapping, Sequence
++from dataclasses import dataclass
++from pathlib import Path
++from types import MappingProxyType
++from typing import Any
++
++from tools.helios_build.canonical import canonical_json_bytes, load_strict_json, sha256_hex
++from tools.helios_build.errors import ContractError
++from tools.helios_build.graph import BuildGraph, validate_acyclic
++from tools.helios_build.ledger import replay_events
++from tools.helios_build.paths import BuildPaths
++from tools.helios_build.schemas import SchemaRegistry
++from tools.helios_build.source_registry import (
++    SourceRegistry,
++    canonical_source_record,
++    load_athena_profile,
++    load_notebook_manifest,
++    research_operation_lock,
++)
++from tools.helios_build.store import ContentAddressedStore, StoredObject
++from tools.helios_build.types import NodeState, NodeType
++
++
++REQUEST_PROTOCOL = "helios.build.research-request/v1"
++PACKET_PROTOCOL = "helios.build.source-packet/v1"
++BUNDLE_PROTOCOL = "helios.build.builder-source-bundle/v1"
++
++
++@dataclass(frozen=True, slots=True)
++class PacketImportResult:
++    """Stable result from one atomic packet batch import."""
++
++    packet_ids: tuple[str, ...]
++    packet_sha256s: tuple[str, ...]
++    source_ids: tuple[str, ...]
++    source_sha256s: tuple[str, ...]
++    notebook_memberships: Mapping[str, tuple[str, ...]]
++    import_event_sha256: str | None
++    replayed: bool
++
++
++def export_research_request(paths: BuildPaths, request_path: Path) -> StoredObject:
++    """Validate and content-address one provider-independent ResearchRequest."""
++    schemas = SchemaRegistry(paths.repo_root)
++    request = load_strict_json(request_path)
++    schemas.validate(request, "research-request-v1.schema.json")
++    content = canonical_json_bytes(request)
++    digest = sha256_hex(content)
++    with research_operation_lock(paths):
++        manifest = load_notebook_manifest(
++            paths, request["notebook_manifest_sha256"], schemas
++        )
++        profile = load_athena_profile(paths, request["athena_profile_sha256"], schemas)
++        notebook_ids = {item["notebook_id"] for item in manifest["notebooks"]}
++        if request["target_notebook_id"] not in notebook_ids:
++            raise ContractError("ResearchRequest target_notebook_id is not in its notebook manifest")
++        if request["data_class"] not in profile["allowed_data_classes"]:
++            raise ContractError("ResearchRequest data_class is not allowed by the ATHENA profile")
++        if request["data_class"] in request["excluded_data_classes"]:
++            raise ContractError("ResearchRequest excludes its own data_class")
++        if request["required_output_protocol"] not in profile["allowed_output_protocols"]:
++            raise ContractError(
++                "ResearchRequest output protocol is not allowed by the ATHENA profile"
++            )
++
++        requests_root = paths.repo_root / "build_control" / "tasks" / "research_requests"
++        for existing_path in sorted((requests_root / "sha256").glob("*/*.json")):
++            existing = _load_verified_json(existing_path)
++            schemas.validate(existing, "research-request-v1.schema.json")
++            if existing["request_id"] == request["request_id"] and existing_path.stem != digest:
++                raise ContractError(
++                    f"request_id {request['request_id']} is reused with changed bytes"
++                )
++        stored = ContentAddressedStore(
++            paths.repo_root / "build_control" / "tasks"
++        ).put_json("research_requests", request)
++        if stored.sha256 != digest:
++            raise ContractError("published ResearchRequest digest mismatch")
++        return stored
++
++
++def import_source_packets(
++    paths: BuildPaths, packet_paths: Sequence[Path]
++) -> PacketImportResult:
++    """Validate a complete batch, publish its objects, then append one final event."""
++    if not packet_paths:
++        raise ContractError("packet import requires at least one SourcePacket file")
++    schemas = SchemaRegistry(paths.repo_root)
++    packets_by_id: dict[str, tuple[dict[str, Any], str]] = {}
++    for packet_path in packet_paths:
++        packet = load_strict_json(packet_path)
++        schemas.validate(packet, "source-packet-v1.schema.json")
++        digest = sha256_hex(canonical_json_bytes(packet))
++        packet_id = packet["packet_id"]
++        prior = packets_by_id.get(packet_id)
++        if prior is not None and prior[1] != digest:
++            raise ContractError(f"packet_id {packet_id} conflicts inside the import batch")
++        packets_by_id[packet_id] = (packet, digest)
++
++    ordered = tuple(packets_by_id[key] for key in sorted(packets_by_id))
++    registry = SourceRegistry(paths, schemas)
++    imported = registry.import_packets(
++        [packet for packet, _ in ordered], [digest for _, digest in ordered]
++    )
++    snapshot = imported.snapshot
++    packet_ids = tuple(packet["packet_id"] for packet, _ in ordered)
++    packet_sha256s = tuple(digest for _, digest in ordered)
++    source_ids = tuple(
++        sorted({source["source_id"] for packet, _ in ordered for source in packet["sources"]})
++    )
++    return PacketImportResult(
++        packet_ids=packet_ids,
++        packet_sha256s=packet_sha256s,
++        source_ids=source_ids,
++        source_sha256s=tuple(snapshot.source_sha256_by_id[item] for item in source_ids),
++        notebook_memberships=MappingProxyType(
++            {item: snapshot.memberships_by_source_id[item] for item in source_ids}
++        ),
++        import_event_sha256=imported.import_event_sha256,
++        replayed=imported.replayed,
++    )
++
++
++def prepare_task_source_bundle(paths: BuildPaths, task_manifest_sha256: str) -> StoredObject:
++    """Build a deterministic bundle from one task's exact integrated packet nodes."""
++    schemas = SchemaRegistry(paths.repo_root)
++    task = _load_task(paths, task_manifest_sha256, schemas)
++    graph_manifest, task_node_id = _resolve_task_graph(
++        paths, task_manifest_sha256, schemas
++    )
++    node_ids = {node["node_id"] for node in graph_manifest["nodes"]}
++    events = tuple(
++        event
++        for event in replay_events(paths.repo_root / "build_control" / "graph" / "events.jsonl")
++        if event.get("node_id") in node_ids
++    )
++    for event in events:
++        schemas.validate(event, "lifecycle-event-v1.schema.json")
++    graph = BuildGraph.load(
++        graph_manifest,
++        events,
++        successor_resolver=lambda _: True,
++    )
++    validate_acyclic(graph)
++    dependencies = graph.dependencies(task_node_id)
++    if set(task["dependency_node_ids"]) != set(dependencies):
++        raise ContractError("frozen task dependency_node_ids differ from its committed graph")
++
++    required_ids = task["required_source_packet_ids"]
++    if not isinstance(required_ids, list):
++        raise ContractError("frozen task required_source_packet_ids must be an array")
++    registry = SourceRegistry(paths, schemas)
++    snapshot = registry.snapshot()
++    dependency_rows: list[dict[str, Any]] = []
++    packets_by_digest: dict[str, dict[str, Any]] = {}
++    for dependency_node_id in sorted(required_ids):
++        if dependency_node_id not in dependencies:
++            raise ContractError(
++                f"required SourcePacket node is not a task dependency: {dependency_node_id}"
++            )
++        node = graph.nodes.get(dependency_node_id)
++        if node is None or node.node_type is not NodeType.SOURCE_PACKET:
++            raise ContractError(
++                f"task dependency {dependency_node_id} is not a SourcePacket node"
++            )
++        if graph.state(dependency_node_id) is not NodeState.INTEGRATED:
++            raise ContractError(
++                f"task SourcePacket dependency {dependency_node_id} is not INTEGRATED"
++            )
++        packet = registry.packet_by_digest(node.manifest_sha256)
++        packet_id = packet["packet_id"]
++        if snapshot.packet_ids_by_sha256.get(node.manifest_sha256) != packet_id:
++            raise ContractError("SourcePacket graph digest does not match the import lineage")
++        if packet_id in snapshot.successor_by_packet_id:
++            raise ContractError(f"task SourcePacket dependency {packet_id} is superseded")
++        dependency_rows.append(
++            {
++                "dependency_node_id": dependency_node_id,
++                "packet_id": packet_id,
++                "packet_sha256": node.manifest_sha256,
++            }
++        )
++        packets_by_digest[node.manifest_sha256] = packet
++
++    packet_rows: list[dict[str, Any]] = []
++    source_accumulator: dict[str, dict[str, Any]] = {}
++    citations: list[dict[str, Any]] = []
++    findings: list[dict[str, Any]] = []
++    conflicts: list[dict[str, Any]] = []
++    limitations: list[dict[str, Any]] = []
++    gaps: list[dict[str, Any]] = []
++    for packet_sha, packet in sorted(packets_by_digest.items()):
++        packet_id = packet["packet_id"]
++        notebook_id = packet["notebook_id"]
++        packet_rows.append(
++            {
++                "packet_id": packet_id,
++                "packet_sha256": packet_sha,
++                "request_id": packet["request_id"],
++                "request_sha256": packet["request_sha256"],
++                "notebook_id": notebook_id,
++            }
++        )
++        for raw_source in packet["sources"]:
++            source = canonical_source_record(raw_source, schemas)
++            source_id = source["source_id"]
++            source_sha = snapshot.source_sha256_by_id.get(source_id)
++            if source_sha is None or sha256_hex(canonical_json_bytes(source)) != source_sha:
++                raise ContractError("SourcePacket source does not match the canonical source registry")
++            row = source_accumulator.setdefault(
++                source_id,
++                {
++                    "source_record_sha256": source_sha,
++                    "source": source,
++                    "packet_ids": set(),
++                    "notebook_ids": set(),
++                },
++            )
++            row["packet_ids"].add(packet_id)
++            row["notebook_ids"].add(notebook_id)
++        citations.extend(
++            {"packet_id": packet_id, "notebook_id": notebook_id, "citation": item}
++            for item in packet["citations"]
++        )
++        findings.extend(
++            {"packet_id": packet_id, "notebook_id": notebook_id, "finding": item}
++            for item in packet["findings"]
++        )
++        conflicts.extend(
++            {"packet_id": packet_id, "notebook_id": notebook_id, "conflict": item}
++            for item in packet["conflicts"]
++        )
++        limitations.extend(
++            {"packet_id": packet_id, "notebook_id": notebook_id, "text": item}
++            for item in packet["limitations"]
++        )
++        gaps.extend(
++            {"packet_id": packet_id, "notebook_id": notebook_id, "question": item}
++            for item in packet["unanswered_questions"]
++        )
++
++    sources = [
++        {
++            "source_record_sha256": row["source_record_sha256"],
++            "source": row["source"],
++            "packet_ids": sorted(row["packet_ids"]),
++            "notebook_ids": sorted(row["notebook_ids"]),
++        }
++        for _, row in sorted(source_accumulator.items())
++    ]
++    bundle = {
++        "protocol": BUNDLE_PROTOCOL,
++        "task_manifest_sha256": task_manifest_sha256,
++        "task_id": task["task_id"],
++        "packet_dependencies": dependency_rows,
++        "packets": sorted(packet_rows, key=lambda item: (item["packet_id"], item["packet_sha256"])),
++        "sources": sources,
++        "citations": sorted(
++            citations, key=lambda item: (item["packet_id"], item["citation"]["citation_id"])
++        ),
++        "findings": sorted(
++            findings, key=lambda item: (item["packet_id"], item["finding"]["finding_id"])
++        ),
++        "conflicts": sorted(
++            conflicts, key=lambda item: (item["packet_id"], item["conflict"]["conflict_id"])
++        ),
++        "limitations": sorted(
++            limitations, key=lambda item: (item["packet_id"], item["text"])
++        ),
++        "gaps": sorted(gaps, key=lambda item: (item["packet_id"], item["question"])),
++    }
++    schemas.validate(bundle, "builder-source-bundle-v1.schema.json")
++    return ContentAddressedStore(paths.repo_root / "build_control").put_json(
++        "builder_source_bundles", bundle
++    )
++
++
++def _load_task(
++    paths: BuildPaths, digest: str, schemas: SchemaRegistry
++) -> dict[str, Any]:
++    if not _is_digest(digest):
++        raise ContractError("task manifest reference must be a lowercase SHA-256 digest")
++    path = (
++        paths.repo_root
++        / "build_control/tasks/sha256"
++        / digest[:2]
++        / f"{digest}.json"
++    )
++    task = _load_verified_json(path, expected_digest=digest)
++    schemas.validate(task, "task-manifest-v1.schema.json")
++    return task
++
++
++def _resolve_task_graph(
++    paths: BuildPaths, task_digest: str, schemas: SchemaRegistry
++) -> tuple[dict[str, Any], str]:
++    matches: list[tuple[dict[str, Any], str]] = []
++    for graph_path in sorted((paths.repo_root / "build_control/graph").glob("*.json")):
++        graph = _load_verified_json(graph_path)
++        if graph.get("protocol") != "helios.build.graph-manifest/v1":
++            continue
++        schemas.validate(graph, "graph-manifest-v1.schema.json")
++        for node in graph["nodes"]:
++            if node["node_type"] == "BuildTask" and node["manifest_sha256"] == task_digest:
++                matches.append((graph, node["node_id"]))
++    if len(matches) != 1:
++        raise ContractError("frozen BuildTask does not resolve to exactly one committed graph")
++    return matches[0]
++
++
++def _load_verified_json(path: Path, expected_digest: str | None = None) -> dict[str, Any]:
++    payload = load_strict_json(path)
++    content = canonical_json_bytes(payload)
++    try:
++        stored = path.read_bytes()
++    except OSError as error:
++        raise ContractError(f"cannot reread immutable JSON at {path}: {error}") from error
++    if stored != content:
++        raise ContractError(f"immutable JSON is not canonical at {path}")
++    digest = sha256_hex(content)
++    if expected_digest is not None and digest != expected_digest:
++        raise ContractError(f"immutable JSON digest mismatch at {path}")
++    return payload
++
++
++def _is_digest(value: object) -> bool:
++    return isinstance(value, str) and len(value) == 64 and all(
++        character in "0123456789abcdef" for character in value
++    )
+diff --git a/tools/helios_build/source_registry.py b/tools/helios_build/source_registry.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..c0e966e4d6c356b979cc0d90c6eeed43cc24d87b
+--- /dev/null
++++ b/tools/helios_build/source_registry.py
+@@ -0,0 +1,853 @@
++"""Canonical, append-only source identity registry for build-time research."""
++
++from __future__ import annotations
++
++import copy
++import fcntl
++import os
++import stat
++from dataclasses import dataclass
++from datetime import date, datetime, timezone
++from pathlib import Path
++from types import MappingProxyType
++from typing import Any, Iterator, Mapping, Sequence
++from urllib.parse import SplitResult, urlsplit, urlunsplit
++from contextlib import contextmanager
++
++from tools.helios_build.canonical import canonical_json_bytes, load_strict_json, sha256_hex
++from tools.helios_build.doctor import _open_private_child_directory, _open_secure_state_root
++from tools.helios_build.errors import ContractError
++from tools.helios_build.ledger import append_event, replay_events
++from tools.helios_build.paths import BuildPaths
++from tools.helios_build.schemas import SchemaRegistry
++from tools.helios_build.store import ContentAddressedStore
++
++
++IMPORT_PROTOCOL = "helios.build.source-packet-import/v1"
++
++
++@dataclass(frozen=True, slots=True)
++class RegistrySnapshot:
++    """Verified projection of the authoritative import-event chain."""
++
++    packets_by_id: Mapping[str, Mapping[str, Any]]
++    packet_ids_by_sha256: Mapping[str, str]
++    successor_by_packet_id: Mapping[str, str]
++    head_packet_id_by_lineage: Mapping[tuple[str, str], str]
++    source_sha256_by_id: Mapping[str, str]
++    source_id_by_identity: Mapping[str, str]
++    source_id_by_content_sha256: Mapping[str, str]
++    memberships_by_source_id: Mapping[str, tuple[str, ...]]
++    packet_ids_by_source_id: Mapping[str, tuple[str, ...]]
++
++
++@dataclass(frozen=True, slots=True)
++class _ImportPlan:
++    """Fully validated prospective import with no durable side effects."""
++
++    packet_documents: tuple[dict[str, Any], ...]
++    packet_sha256s: tuple[str, ...]
++    source_documents: tuple[dict[str, Any], ...]
++    source_sha256s: tuple[str, ...]
++    event: dict[str, Any] | None
++    replayed: bool
++    memberships: Mapping[str, tuple[str, ...]]
++
++
++@dataclass(frozen=True, slots=True)
++class RegistryImportResult:
++    """Result from the sole locked and authoritative packet-import boundary."""
++
++    import_event_sha256: str | None
++    replayed: bool
++    snapshot: RegistrySnapshot
++
++
++class SourceRegistry:
++    """Validate and publish canonical source records plus packet memberships."""
++
++    def __init__(self, paths: BuildPaths, schemas: SchemaRegistry | None = None) -> None:
++        self.paths = paths
++        self.schemas = schemas if schemas is not None else SchemaRegistry(paths.repo_root)
++        self.control_root = paths.repo_root / "build_control"
++        self.registry_root = self.control_root / "source_registry"
++        self.imports_path = self.registry_root / "imports.jsonl"
++
++    def snapshot(self) -> RegistrySnapshot:
++        """Replay and verify the complete authoritative registry index."""
++        packets_by_id: dict[str, Mapping[str, Any]] = {}
++        packet_ids_by_sha256: dict[str, str] = {}
++        successor_by_packet_id: dict[str, str] = {}
++        head_packet_id_by_lineage: dict[tuple[str, str], str] = {}
++        source_sha256_by_id: dict[str, str] = {}
++        source_id_by_identity: dict[str, str] = {}
++        source_id_by_content: dict[str, str] = {}
++        memberships: dict[str, set[str]] = {}
++        packet_memberships: dict[str, set[str]] = {}
++
++        for event in replay_events(self.imports_path):
++            self._validate_event_shape(event)
++            packet_entries = event["packets"]
++            source_entries = event["sources"]
++            assert isinstance(packet_entries, list) and isinstance(source_entries, list)
++            batch_body = {
++                "packet_sha256s": sorted(item["packet_sha256"] for item in packet_entries)
++            }
++            if event["batch_sha256"] != sha256_hex(canonical_json_bytes(batch_body)):
++                raise ContractError("source import event has a batch digest mismatch")
++
++            event_packets: dict[str, dict[str, Any]] = {}
++            for entry in packet_entries:
++                packet = self._load_packet_object(entry["packet_sha256"])
++                validate_packet_bindings(self.paths, packet, self.schemas)
++                if packet["packet_id"] != entry["packet_id"]:
++                    raise ContractError("source import event packet identity mismatch")
++                expected = {
++                    "packet_id": packet["packet_id"],
++                    "packet_sha256": entry["packet_sha256"],
++                    "request_id": packet["request_id"],
++                    "request_sha256": packet["request_sha256"],
++                    "notebook_id": packet["notebook_id"],
++                    "supersedes_packet_id": packet["supersedes_packet_id"],
++                }
++                if entry != expected:
++                    raise ContractError("source import event packet projection mismatch")
++                packet_id = packet["packet_id"]
++                prior = packets_by_id.get(packet_id)
++                if prior is not None:
++                    raise ContractError(f"duplicate authoritative packet_id event: {packet_id}")
++                digest = entry["packet_sha256"]
++                if digest in packet_ids_by_sha256:
++                    raise ContractError("one packet digest is indexed under multiple packet identities")
++                predecessor = packet["supersedes_packet_id"]
++                lineage = _lineage_key(packet)
++                if predecessor is not None:
++                    if predecessor not in packets_by_id:
++                        raise ContractError("packet successor event precedes its predecessor")
++                    if predecessor in successor_by_packet_id:
++                        raise ContractError("packet predecessor has a forked successor")
++                    predecessor_packet = packets_by_id[predecessor]
++                    self._validate_successor(packet, predecessor_packet)
++                    if head_packet_id_by_lineage.get(lineage) != predecessor:
++                        raise ContractError(
++                            "source packet successor does not supersede the active lineage head"
++                        )
++                    successor_by_packet_id[predecessor] = packet_id
++                elif lineage in head_packet_id_by_lineage:
++                    raise ContractError(
++                        "source packet lineage contains more than one root for one request and notebook"
++                    )
++                packets_by_id[packet_id] = MappingProxyType(dict(packet))
++                packet_ids_by_sha256[digest] = packet_id
++                head_packet_id_by_lineage[lineage] = packet_id
++                event_packets[packet_id] = packet
++
++            projected_sources: set[str] = set()
++            for entry in source_entries:
++                source = self._load_source_object(entry["source_record_sha256"])
++                source_id = source["source_id"]
++                if source_id != entry["source_id"]:
++                    raise ContractError("source import event source identity mismatch")
++                if source_id in projected_sources:
++                    raise ContractError("source import event repeats a source projection")
++                projected_sources.add(source_id)
++                digest = entry["source_record_sha256"]
++                identity = _identity_key(source)
++                existing_digest = source_sha256_by_id.get(source_id)
++                if existing_digest is not None and existing_digest != digest:
++                    raise ContractError(f"source_id {source_id} changed immutable metadata")
++                existing_id = source_id_by_identity.get(identity)
++                if existing_id is not None and existing_id != source_id:
++                    raise ContractError(
++                        f"canonical source identity is shared by {existing_id} and {source_id}"
++                    )
++                content_digest = source["content_sha256"]
++                if content_digest is not None:
++                    content_owner = source_id_by_content.get(content_digest)
++                    if content_owner is not None and content_owner != source_id:
++                        raise ContractError(
++                            f"content digest is shared by source IDs {content_owner} and {source_id}"
++                        )
++                    source_id_by_content[content_digest] = source_id
++                source_sha256_by_id[source_id] = digest
++                source_id_by_identity[identity] = source_id
++
++                entry_packet_ids = tuple(entry["packet_ids"])
++                entry_notebooks = tuple(entry["notebook_ids"])
++                expected_notebooks: set[str] = set()
++                for packet_id in entry_packet_ids:
++                    packet = event_packets.get(packet_id)
++                    if packet is None:
++                        raise ContractError("source import event references a packet outside its batch")
++                    packet_source_ids = {item["source_id"] for item in packet["sources"]}
++                    if source_id not in packet_source_ids:
++                        raise ContractError("source import event packet membership mismatch")
++                    expected_notebooks.add(packet["notebook_id"])
++                if tuple(sorted(expected_notebooks)) != entry_notebooks:
++                    raise ContractError("source import event notebook membership mismatch")
++                memberships.setdefault(source_id, set()).update(entry_notebooks)
++                packet_memberships.setdefault(source_id, set()).update(entry_packet_ids)
++
++            expected_sources = {
++                item["source_id"] for packet in event_packets.values() for item in packet["sources"]
++            }
++            if projected_sources != expected_sources:
++                raise ContractError("source import event omits or adds source projections")
++
++        return RegistrySnapshot(
++            packets_by_id=MappingProxyType(packets_by_id),
++            packet_ids_by_sha256=MappingProxyType(packet_ids_by_sha256),
++            successor_by_packet_id=MappingProxyType(successor_by_packet_id),
++            head_packet_id_by_lineage=MappingProxyType(head_packet_id_by_lineage),
++            source_sha256_by_id=MappingProxyType(source_sha256_by_id),
++            source_id_by_identity=MappingProxyType(source_id_by_identity),
++            source_id_by_content_sha256=MappingProxyType(source_id_by_content),
++            memberships_by_source_id=MappingProxyType(
++                {key: tuple(sorted(value)) for key, value in memberships.items()}
++            ),
++            packet_ids_by_source_id=MappingProxyType(
++                {key: tuple(sorted(value)) for key, value in packet_memberships.items()}
++            ),
++        )
++
++    def import_packets(
++        self,
++        packets: Sequence[dict[str, Any]],
++        packet_sha256s: Sequence[str],
++    ) -> RegistryImportResult:
++        """Validate bindings, publish objects, and index one batch under one shared lock."""
++        with research_operation_lock(self.paths):
++            if not packets or len(packets) != len(packet_sha256s):
++                raise ContractError("source packet import requires a non-empty aligned batch")
++            for packet, supplied_digest in zip(packets, packet_sha256s, strict=True):
++                self.schemas.validate(packet, "source-packet-v1.schema.json")
++                actual_digest = sha256_hex(canonical_json_bytes(packet))
++                if supplied_digest != actual_digest:
++                    raise ContractError("supplied SourcePacket digest does not match canonical bytes")
++                validate_packet_bindings(self.paths, packet, self.schemas)
++            plan = self._plan_import(packets, packet_sha256s)
++            event_sha: str | None = None
++            if plan.event is not None:
++                source_store = ContentAddressedStore(self.registry_root)
++                for source, expected_digest in zip(
++                    plan.source_documents, plan.source_sha256s, strict=True
++                ):
++                    stored = source_store.put_json("sources", source)
++                    if stored.sha256 != expected_digest:
++                        raise ContractError("published source record digest mismatch")
++                packet_store = ContentAddressedStore(self.control_root)
++                for packet, expected_digest in zip(
++                    plan.packet_documents, plan.packet_sha256s, strict=True
++                ):
++                    stored = packet_store.put_json("source_packets", packet)
++                    if stored.sha256 != expected_digest:
++                        raise ContractError("published source packet digest mismatch")
++                event_sha = append_event(
++                    self.imports_path, plan.event, self.paths.state_root
++                )
++            return RegistryImportResult(event_sha, plan.replayed, self.snapshot())
++
++    def _plan_import(
++        self,
++        packets: Sequence[dict[str, Any]],
++        packet_sha256s: Sequence[str],
++    ) -> _ImportPlan:
++        """Validate a complete packet batch without publishing any part of it."""
++        if not packets or len(packets) != len(packet_sha256s):
++            raise ContractError("source packet import requires a non-empty aligned batch")
++        snapshot = self.snapshot()
++        incoming_by_id: dict[str, tuple[dict[str, Any], str]] = {}
++        for packet, digest in zip(packets, packet_sha256s, strict=True):
++            packet_id = packet["packet_id"]
++            prior = incoming_by_id.get(packet_id)
++            if prior is not None and prior[1] != digest:
++                raise ContractError(f"packet_id {packet_id} is reused with changed bytes")
++            incoming_by_id[packet_id] = (packet, digest)
++
++        prospective_packets: dict[str, Mapping[str, Any]] = dict(snapshot.packets_by_id)
++        prospective_successors = dict(snapshot.successor_by_packet_id)
++        prospective_heads = dict(snapshot.head_packet_id_by_lineage)
++        new_packet_pairs: list[tuple[dict[str, Any], str]] = []
++        pending = dict(incoming_by_id)
++        while pending:
++            progressed = False
++            for packet_id in sorted(tuple(pending)):
++                packet, digest = pending[packet_id]
++                existing = snapshot.packets_by_id.get(packet_id)
++                if existing is not None:
++                    existing_digest = next(
++                        key for key, value in snapshot.packet_ids_by_sha256.items() if value == packet_id
++                    )
++                    if existing_digest != digest:
++                        raise ContractError(f"packet_id {packet_id} is reused with changed bytes")
++                    del pending[packet_id]
++                    progressed = True
++                    continue
++                predecessor_id = packet["supersedes_packet_id"]
++                lineage = _lineage_key(packet)
++                if predecessor_id == packet_id:
++                    raise ContractError("a source packet cannot supersede itself")
++                if predecessor_id is not None and predecessor_id not in prospective_packets:
++                    continue
++                if predecessor_id is not None:
++                    if prospective_heads.get(lineage) != predecessor_id:
++                        raise ContractError(
++                            "new SourcePacket must explicitly supersede the active lineage head"
++                        )
++                    existing_successor = prospective_successors.get(predecessor_id)
++                    if existing_successor is not None and existing_successor != packet_id:
++                        raise ContractError(
++                            f"packet predecessor {predecessor_id} has a forked successor"
++                        )
++                    self._validate_successor(packet, prospective_packets[predecessor_id])
++                    prospective_successors[predecessor_id] = packet_id
++                elif lineage in prospective_heads:
++                    raise ContractError(
++                        "parallel SourcePacket root is forbidden; supersede the active lineage head"
++                    )
++                prospective_packets[packet_id] = packet
++                prospective_heads[lineage] = packet_id
++                new_packet_pairs.append((packet, digest))
++                del pending[packet_id]
++                progressed = True
++            if not progressed:
++                missing = ", ".join(sorted(pending))
++                raise ContractError(
++                    f"source packet successor lineage is missing or cyclic for: {missing}"
++                )
++
++        source_by_id: dict[str, tuple[dict[str, Any], str]] = {}
++        identity_to_id = dict(snapshot.source_id_by_identity)
++        content_to_id = dict(snapshot.source_id_by_content_sha256)
++        source_digest_by_id = dict(snapshot.source_sha256_by_id)
++        new_memberships: dict[str, set[str]] = {}
++        new_packet_memberships: dict[str, set[str]] = {}
++        for packet, _ in new_packet_pairs:
++            for raw_source in packet["sources"]:
++                source = canonical_source_record(raw_source, self.schemas)
++                digest = sha256_hex(canonical_json_bytes(source))
++                source_id = source["source_id"]
++                prior_digest = source_digest_by_id.get(source_id)
++                if prior_digest is not None and prior_digest != digest:
++                    raise ContractError(f"source_id {source_id} is reused with changed metadata")
++                prior_batch = source_by_id.get(source_id)
++                if prior_batch is not None and prior_batch[1] != digest:
++                    raise ContractError(f"source_id {source_id} conflicts inside the import batch")
++                identity = _identity_key(source)
++                identity_owner = identity_to_id.get(identity)
++                if identity_owner is not None and identity_owner != source_id:
++                    raise ContractError(
++                        f"canonical source identity already belongs to {identity_owner}, not {source_id}"
++                    )
++                content_digest = source["content_sha256"]
++                if content_digest is not None:
++                    content_owner = content_to_id.get(content_digest)
++                    if content_owner is not None and content_owner != source_id:
++                        raise ContractError(
++                            f"source identity conflicts with content already owned by {content_owner}"
++                        )
++                    content_to_id[content_digest] = source_id
++                source_by_id[source_id] = (source, digest)
++                source_digest_by_id[source_id] = digest
++                identity_to_id[identity] = source_id
++                new_memberships.setdefault(source_id, set()).add(packet["notebook_id"])
++                new_packet_memberships.setdefault(source_id, set()).add(packet["packet_id"])
++
++        all_memberships = {
++            key: set(value) for key, value in snapshot.memberships_by_source_id.items()
++        }
++        for source_id, notebooks in new_memberships.items():
++            all_memberships.setdefault(source_id, set()).update(notebooks)
++
++        if not new_packet_pairs:
++            return _ImportPlan(
++                packet_documents=tuple(packet for packet, _ in incoming_by_id.values()),
++                packet_sha256s=tuple(digest for _, digest in incoming_by_id.values()),
++                source_documents=(),
++                source_sha256s=(),
++                event=None,
++                replayed=True,
++                memberships=MappingProxyType(
++                    {key: tuple(sorted(value)) for key, value in all_memberships.items()}
++                ),
++            )
++
++        # Preserve the deterministic predecessor-before-successor order produced
++        # by the pending-lineage walk. Sorting only by packet_id could place a
++        # lexically earlier successor before its root and make valid batch replay
++        # fail even though planning accepted the lineage.
++        packet_entries = [
++            {
++                "packet_id": packet["packet_id"],
++                "packet_sha256": digest,
++                "request_id": packet["request_id"],
++                "request_sha256": packet["request_sha256"],
++                "notebook_id": packet["notebook_id"],
++                "supersedes_packet_id": packet["supersedes_packet_id"],
++            }
++            for packet, digest in new_packet_pairs
++        ]
++        source_entries = [
++            {
++                "source_id": source_id,
++                "source_record_sha256": source_by_id[source_id][1],
++                "packet_ids": sorted(new_packet_memberships[source_id]),
++                "notebook_ids": sorted(new_memberships[source_id]),
++            }
++            for source_id in sorted(new_memberships)
++        ]
++        event = {
++            "protocol": IMPORT_PROTOCOL,
++            "batch_sha256": sha256_hex(
++                canonical_json_bytes(
++                    {"packet_sha256s": sorted(item["packet_sha256"] for item in packet_entries)}
++                )
++            ),
++            "packets": packet_entries,
++            "sources": source_entries,
++            "imported_at": _now(),
++        }
++        return _ImportPlan(
++            packet_documents=tuple(packet for packet, _ in new_packet_pairs),
++            packet_sha256s=tuple(digest for _, digest in new_packet_pairs),
++            source_documents=tuple(source_by_id[key][0] for key in sorted(source_by_id)),
++            source_sha256s=tuple(source_by_id[key][1] for key in sorted(source_by_id)),
++            event=event,
++            replayed=False,
++            memberships=MappingProxyType(
++                {key: tuple(sorted(value)) for key, value in all_memberships.items()}
++            ),
++        )
++
++    def packet_by_digest(self, digest: str) -> dict[str, Any]:
++        """Resolve one imported packet by exact digest."""
++        snapshot = self.snapshot()
++        if digest not in snapshot.packet_ids_by_sha256:
++            raise ContractError(f"source packet digest is not authoritatively imported: {digest}")
++        return self._load_packet_object(digest)
++
++    def source_by_digest(self, digest: str) -> dict[str, Any]:
++        """Resolve one indexed source record by exact digest."""
++        snapshot = self.snapshot()
++        if digest not in snapshot.source_sha256_by_id.values():
++            raise ContractError(f"source record digest is not authoritatively indexed: {digest}")
++        return self._load_source_object(digest)
++
++    def _load_packet_object(self, digest: str) -> dict[str, Any]:
++        return _load_cas_json(
++            self.control_root / "source_packets", digest, self.schemas, "source-packet-v1.schema.json"
++        )
++
++    def _load_source_object(self, digest: str) -> dict[str, Any]:
++        source = _load_cas_json(
++            self.registry_root / "sources", digest, self.schemas, "source-record-v1.schema.json"
++        )
++        normalized = canonical_source_record(source, self.schemas)
++        if normalized != source:
++            raise ContractError("indexed source record is not identity-canonical")
++        return source
++
++    @staticmethod
++    def _validate_successor(
++        successor: Mapping[str, Any], predecessor: Mapping[str, Any]
++    ) -> None:
++        for field in (
++            "request_id",
++            "request_sha256",
++            "notebook_id",
++            "notebook_manifest_sha256",
++            "athena_profile_sha256",
++            "jurisdiction",
++            "unit_system",
++        ):
++            if successor[field] != predecessor[field]:
++                raise ContractError(f"source packet successor changes immutable {field}")
++
++    @staticmethod
++    def _validate_event_shape(event: Mapping[str, Any]) -> None:
++        required = {
++            "protocol",
++            "batch_sha256",
++            "packets",
++            "sources",
++            "imported_at",
++            "sequence",
++            "previous_event_sha256",
++            "event_sha256",
++        }
++        if set(event) != required or event.get("protocol") != IMPORT_PROTOCOL:
++            raise ContractError("source import event has an invalid shape or protocol")
++        if not _is_digest(event.get("batch_sha256")):
++            raise ContractError("source import event has an invalid batch digest")
++        if not isinstance(event.get("packets"), list) or not event["packets"]:
++            raise ContractError("source import event must index a non-empty packet batch")
++        if not isinstance(event.get("sources"), list) or not event["sources"]:
++            raise ContractError("source import event must index source projections")
++        for entry in event["packets"]:
++            if not isinstance(entry, dict) or set(entry) != {
++                "packet_id",
++                "packet_sha256",
++                "request_id",
++                "request_sha256",
++                "notebook_id",
++                "supersedes_packet_id",
++            }:
++                raise ContractError("source import event has an invalid packet entry")
++            if not _is_digest(entry.get("packet_sha256")):
++                raise ContractError("source import event has an invalid packet digest")
++        for entry in event["sources"]:
++            if not isinstance(entry, dict) or set(entry) != {
++                "source_id",
++                "source_record_sha256",
++                "packet_ids",
++                "notebook_ids",
++            }:
++                raise ContractError("source import event has an invalid source entry")
++            if not _is_digest(entry.get("source_record_sha256")):
++                raise ContractError("source import event has an invalid source digest")
++            if (
++                not isinstance(entry.get("packet_ids"), list)
++                or not entry["packet_ids"]
++                or entry["packet_ids"] != sorted(set(entry["packet_ids"]))
++                or not isinstance(entry.get("notebook_ids"), list)
++                or not entry["notebook_ids"]
++                or entry["notebook_ids"] != sorted(set(entry["notebook_ids"]))
++            ):
++                raise ContractError("source import event memberships are not canonical")
++
++
++def canonical_source_record(
++    source: Mapping[str, Any], schemas: SchemaRegistry
++) -> dict[str, Any]:
++    """Normalize identity-bearing fields before hashing the canonical source."""
++    if not isinstance(source, Mapping):
++        raise ContractError("source record must be an object")
++    normalized = copy.deepcopy(dict(source))
++    schemas.validate(normalized, "source-record-v1.schema.json")
++    for field in ("publication_date", "effective_date", "retrieval_date"):
++        value = normalized[field]
++        if value is not None:
++            _validate_iso_calendar_date(field, value)
++    if normalized["identity_kind"] == "PUBLIC_URL":
++        normalized["original_source_url"] = _canonical_public_url(
++            normalized["original_source_url"]
++        )
++    schemas.validate(normalized, "source-record-v1.schema.json")
++    return normalized
++
++
++def validate_packet_bindings(
++    paths: BuildPaths,
++    packet: dict[str, Any],
++    schemas: SchemaRegistry,
++) -> None:
++    """Independently prove a packet's immutable request and policy bindings."""
++    schemas.validate(packet, "source-packet-v1.schema.json")
++    request = load_exported_request(paths, packet["request_sha256"], schemas)
++    exact_pairs = (
++        ("request_id", "request_id"),
++        ("notebook_id", "target_notebook_id"),
++        ("notebook_manifest_sha256", "notebook_manifest_sha256"),
++        ("athena_profile_sha256", "athena_profile_sha256"),
++        ("jurisdiction", "jurisdiction"),
++        ("unit_system", "unit_system"),
++    )
++    for packet_field, request_field in exact_pairs:
++        if packet[packet_field] != request[request_field]:
++            raise ContractError(
++                f"SourcePacket {packet_field} does not match its exported ResearchRequest"
++            )
++    if packet["request_sha256"] != sha256_hex(canonical_json_bytes(request)):
++        raise ContractError("SourcePacket request_sha256 does not match its exported request")
++    manifest = load_notebook_manifest(
++        paths, packet["notebook_manifest_sha256"], schemas
++    )
++    profile = load_athena_profile(paths, packet["athena_profile_sha256"], schemas)
++    notebook_ids = {item["notebook_id"] for item in manifest["notebooks"]}
++    if packet["notebook_id"] not in notebook_ids:
++        raise ContractError("SourcePacket notebook_id is not in its bound notebook manifest")
++    if request["data_class"] not in profile["allowed_data_classes"]:
++        raise ContractError("bound ResearchRequest data_class is not allowed by ATHENA")
++    if request["data_class"] in request["excluded_data_classes"]:
++        raise ContractError("bound ResearchRequest excludes its own data_class")
++    if request["required_output_protocol"] not in profile["allowed_output_protocols"]:
++        raise ContractError(
++            "bound ResearchRequest output protocol is not allowed by ATHENA"
++        )
++
++    sources: dict[str, dict[str, Any]] = {}
++    for raw_source in packet["sources"]:
++        source = canonical_source_record(raw_source, schemas)
++        source_id = source["source_id"]
++        if source_id in sources:
++            raise ContractError(f"SourcePacket repeats source_id {source_id}")
++        if source_id in request["excluded_source_ids"]:
++            raise ContractError(f"SourcePacket includes excluded source_id {source_id}")
++        if source["data_class"] in request["excluded_data_classes"]:
++            raise ContractError(
++                f"SourcePacket includes excluded source data class {source['data_class']}"
++            )
++        sources[source_id] = source
++
++    citations: dict[str, dict[str, Any]] = {}
++    for citation in packet["citations"]:
++        citation_id = citation["citation_id"]
++        if citation_id in citations:
++            raise ContractError(f"SourcePacket repeats citation_id {citation_id}")
++        if citation["source_id"] not in sources:
++            raise ContractError(f"citation {citation_id} references an unknown source")
++        if citation["resolution"] == "RESOLVED" and citation["locator"] is None:
++            raise ContractError(f"resolved citation {citation_id} requires a precise locator")
++        if citation["resolution"] == "UNRESOLVED" and citation["limitation"] is None:
++            raise ContractError(f"unresolved citation {citation_id} requires a limitation")
++        citations[citation_id] = citation
++
++    finding_ids: set[str] = set()
++    supports_required_authority = False
++    for finding in packet["findings"]:
++        finding_id = finding["finding_id"]
++        if finding_id in finding_ids:
++            raise ContractError(f"SourcePacket repeats finding_id {finding_id}")
++        finding_ids.add(finding_id)
++        for citation_id in finding["citation_ids"]:
++            citation = citations.get(citation_id)
++            if citation is None:
++                raise ContractError(f"finding {finding_id} references an unknown citation")
++            if (
++                citation["resolution"] == "RESOLVED"
++                and sources[citation["source_id"]]["authority_class"]
++                == request["required_source_authority_class"]
++            ):
++                supports_required_authority = True
++    for conflict in packet["conflicts"]:
++        for citation_id in conflict["citation_ids"]:
++            if citation_id not in citations:
++                raise ContractError("SourcePacket conflict references an unknown citation")
++    if not supports_required_authority:
++        raise ContractError(
++            "SourcePacket findings lack a resolved citation of the requested authority class"
++        )
++
++
++def load_exported_request(
++    paths: BuildPaths, digest: str, schemas: SchemaRegistry
++) -> dict[str, Any]:
++    """Load one canonical request object from its exact content digest."""
++    if not _is_digest(digest):
++        raise ContractError("ResearchRequest reference is not a lowercase SHA-256 digest")
++    path = (
++        paths.repo_root
++        / "build_control/tasks/research_requests/sha256"
++        / digest[:2]
++        / f"{digest}.json"
++    )
++    request = _load_verified_json(path, expected_digest=digest)
++    schemas.validate(request, "research-request-v1.schema.json")
++    return request
++
++
++def load_notebook_manifest(
++    paths: BuildPaths, expected_digest: str, schemas: SchemaRegistry
++) -> dict[str, Any]:
++    """Resolve exactly one canonical logical-notebook manifest by digest."""
++    matches: list[dict[str, Any]] = []
++    for path in sorted(
++        (paths.repo_root / "build_control/source_registry").glob("notebooks.v*.json")
++    ):
++        payload = _load_verified_json(path)
++        schemas.validate(payload, "notebook-manifest-v1.schema.json")
++        notebook_ids = [item["notebook_id"] for item in payload["notebooks"]]
++        if len(notebook_ids) != len(set(notebook_ids)):
++            raise ContractError(f"notebook manifest repeats a notebook_id: {path}")
++        if sha256_hex(canonical_json_bytes(payload)) == expected_digest:
++            matches.append(payload)
++    if len(matches) != 1:
++        raise ContractError("notebook_manifest_sha256 does not resolve exactly")
++    return matches[0]
++
++
++def load_athena_profile(
++    paths: BuildPaths, expected_digest: str, schemas: SchemaRegistry
++) -> dict[str, Any]:
++    """Resolve the canonical profile and its exact instruction bytes."""
++    profile_path = paths.repo_root / "build_control/worker_profiles/athena.v1.json"
++    profile = _load_verified_json(profile_path)
++    schemas.validate(profile, "athena-worker-profile-v1.schema.json")
++    if sha256_hex(canonical_json_bytes(profile)) != expected_digest:
++        raise ContractError("athena_profile_sha256 does not match the committed profile")
++    instructions_path = paths.repo_root / "build_control/worker_profiles/athena.instructions.v1.md"
++    try:
++        instructions_digest = sha256_hex(instructions_path.read_bytes())
++    except OSError as error:
++        raise ContractError(f"cannot read ATHENA instructions: {error}") from error
++    if instructions_digest != profile["instructions_sha256"]:
++        raise ContractError("ATHENA profile instructions_sha256 is stale")
++    return profile
++
++
++@contextmanager
++def research_operation_lock(paths: BuildPaths) -> Iterator[None]:
++    """Serialize all request exports and packet imports with one POSIX lock."""
++    state_descriptor: int | None = None
++    locks_descriptor: int | None = None
++    lock_descriptor: int | None = None
++    try:
++        state_descriptor = _open_secure_state_root(paths.state_root)
++        try:
++            os.mkdir("locks", mode=0o700, dir_fd=state_descriptor)
++            os.fsync(state_descriptor)
++        except FileExistsError:
++            # Concurrent first-use creation is expected; the descriptor open
++            # below independently verifies ownership, type, and exact mode.
++            pass
++        except OSError as error:
++            raise ContractError(
++                f"cannot create shared research lock directory: {error}"
++            ) from error
++        locks_descriptor = _open_private_child_directory(state_descriptor, "locks")
++        if (
++            not hasattr(os, "O_CLOEXEC")
++            or not hasattr(os, "O_NOFOLLOW")
++            or not hasattr(os, "O_NONBLOCK")
++        ):
++            raise ContractError(
++                "shared research locking requires no-follow nonblocking file opens"
++            )
++        lock_descriptor = os.open(
++            "research-control.lock",
++            os.O_RDWR
++            | os.O_CREAT
++            | os.O_CLOEXEC
++            | os.O_NOFOLLOW
++            | os.O_NONBLOCK,
++            0o600,
++            dir_fd=locks_descriptor,
++        )
++        metadata = os.fstat(lock_descriptor)
++        current_uid = os.getuid() if hasattr(os, "getuid") else None
++        if (
++            current_uid is None
++            or not stat.S_ISREG(metadata.st_mode)
++            or metadata.st_uid != current_uid
++            or stat.S_IMODE(metadata.st_mode) != 0o600
++        ):
++            raise ContractError(
++                "shared research lock must be a current-owner regular file with mode 0600"
++            )
++        fcntl.flock(lock_descriptor, fcntl.LOCK_EX)
++    except BaseException as error:
++        for descriptor in (lock_descriptor, locks_descriptor, state_descriptor):
++            if descriptor is not None:
++                os.close(descriptor)
++        if isinstance(error, ContractError):
++            raise
++        if isinstance(error, OSError):
++            raise ContractError(
++                f"cannot acquire shared research operation lock: {error}"
++            ) from error
++        raise
++    assert lock_descriptor is not None
++    try:
++        yield
++    finally:
++        release_error: OSError | None = None
++        try:
++            fcntl.flock(lock_descriptor, fcntl.LOCK_UN)
++        except OSError as error:
++            release_error = error
++        for descriptor in (lock_descriptor, locks_descriptor, state_descriptor):
++            try:
++                os.close(descriptor)
++            except OSError as error:
++                if release_error is None:
++                    release_error = error
++        if release_error is not None:
++            raise ContractError(
++                f"cannot release shared research operation lock: {release_error}"
++            ) from release_error
++
++
++def _load_verified_json(path: Path, expected_digest: str | None = None) -> dict[str, Any]:
++    payload = load_strict_json(path)
++    content = canonical_json_bytes(payload)
++    try:
++        stored = path.read_bytes()
++    except OSError as error:
++        raise ContractError(f"cannot reread immutable JSON at {path}: {error}") from error
++    if stored != content:
++        raise ContractError(f"immutable JSON is not canonical at {path}")
++    digest = sha256_hex(content)
++    if expected_digest is not None and digest != expected_digest:
++        raise ContractError(f"immutable JSON digest mismatch at {path}")
++    return payload
++
++
++def _lineage_key(packet: Mapping[str, Any]) -> tuple[str, str]:
++    return str(packet["request_sha256"]), str(packet["notebook_id"])
++
++
++def _validate_iso_calendar_date(field: str, value: object) -> None:
++    if not isinstance(value, str):
++        raise ContractError(f"{field} must be an ISO calendar date")
++    try:
++        parsed = date.fromisoformat(value)
++    except ValueError as error:
++        raise ContractError(f"{field} is not a real ISO calendar date") from error
++    if parsed.isoformat() != value:
++        raise ContractError(f"{field} is not a canonical ISO calendar date")
++
++
++def _canonical_public_url(value: object) -> str:
++    if not isinstance(value, str):
++        raise ContractError("original_source_url must be an absolute HTTP(S) URL")
++    try:
++        parsed = urlsplit(value)
++        port = parsed.port
++    except ValueError as error:
++        raise ContractError("original_source_url has an invalid authority") from error
++    scheme = parsed.scheme.lower()
++    if scheme not in {"http", "https"} or not parsed.hostname or parsed.username or parsed.password:
++        raise ContractError("original_source_url must be an absolute credential-free HTTP(S) URL")
++    hostname = parsed.hostname.lower()
++    if (scheme, port) in {("http", 80), ("https", 443)}:
++        port = None
++    authority = hostname if port is None else f"{hostname}:{port}"
++    return urlunsplit(SplitResult(scheme, authority, parsed.path or "/", parsed.query, ""))
++
++
++def _identity_key(source: Mapping[str, Any]) -> str:
++    if source["identity_kind"] == "PUBLIC_URL":
++        return "PUBLIC_URL\0" + _canonical_public_url(source["original_source_url"])
++    return (
++        "AUTHORIZED_DOCUMENT\0"
++        + str(source["publisher"])
++        + "\0"
++        + str(source["authorized_document_id"])
++    )
++
++
++def _load_cas_json(
++    collection_root: Path,
++    digest: str,
++    schemas: SchemaRegistry,
++    schema_name: str,
++) -> dict[str, Any]:
++    if not _is_digest(digest):
++        raise ContractError("content-addressed reference is not a lowercase SHA-256 digest")
++    path = collection_root / "sha256" / digest[:2] / f"{digest}.json"
++    payload = load_strict_json(path)
++    content = canonical_json_bytes(payload)
++    if sha256_hex(content) != digest or path.read_bytes() != content:
++        raise ContractError(f"content-addressed object is not canonical at {path}")
++    schemas.validate(payload, schema_name)
++    return payload
++
++
++def _is_digest(value: object) -> bool:
++    return isinstance(value, str) and len(value) == 64 and all(
++        character in "0123456789abcdef" for character in value
++    )
++
++
++def _now() -> str:
++    return datetime.now(timezone.utc).isoformat(timespec="microseconds").replace("+00:00", "Z")

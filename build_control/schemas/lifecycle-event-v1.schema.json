@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/lifecycle-event-v1.schema.json",
+  "title": "HELIOS Build Fabric lifecycle event v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "sequence",
+    "node_id",
+    "prior_state",
+    "new_state",
+    "reason_code",
+    "actor_profile_id",
+    "attempt_manifest_sha256",
+    "external_session_assignment_sha256",
+    "routing_event_sha256",
+    "recorded_at",
+    "previous_event_sha256",
+    "event_sha256"
+  ],
+  "properties": {
+    "protocol": { "const": "helios.build.lifecycle-event/v1" },
+    "sequence": { "$ref": "common-v1.schema.json#/$defs/positiveInteger" },
+    "node_id": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+    "prior_state": { "$ref": "#/$defs/nullableNodeState" },
+    "new_state": { "$ref": "#/$defs/nodeState" },
+    "reason_code": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+    "actor_profile_id": { "$ref": "common-v1.schema.json#/$defs/identifier" },
+    "attempt_manifest_sha256": { "$ref": "#/$defs/nullableDigest" },
+    "external_session_assignment_sha256": { "$ref": "#/$defs/nullableDigest" },
+    "routing_event_sha256": { "$ref": "#/$defs/nullableDigest" },
+    "recorded_at": { "$ref": "common-v1.schema.json#/$defs/rfc3339Utc" },
+    "previous_event_sha256": { "$ref": "#/$defs/nullableDigest" },
+    "event_sha256": { "$ref": "common-v1.schema.json#/$defs/digest" }
+  },
+  "$defs": {
+    "nodeState": {
+      "enum": ["DRAFT", "READY", "DISPATCHED", "RETURNED", "REVIEWED", "ACCEPTED", "INTEGRATED", "BLOCKED", "FAILED", "SUPERSEDED"]
+    },
+    "nullableNodeState": {
+      "anyOf": [
+        { "$ref": "#/$defs/nodeState" },
+        { "type": "null" }
+      ]
+    },
+    "nullableDigest": {
+      "anyOf": [
+        { "$ref": "common-v1.schema.json#/$defs/digest" },
+        { "type": "null" }
+      ]
+    }
+  }
+}

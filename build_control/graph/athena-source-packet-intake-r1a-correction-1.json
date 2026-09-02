@@ -1,0 +1,35 @@
+{
+  "protocol": "helios.build.graph-manifest/v1",
+  "graph_id": "athena-source-packet-intake-r1a-correction-1-graph",
+  "created_at": "2026-09-01T18:28:30Z",
+  "created_by_profile_id": "codex-control-v1",
+  "nodes": [
+    {
+      "node_id": "athena-source-packet-intake-r1a-correction-1",
+      "node_type": "BuildTask",
+      "manifest_sha256": "7607569e69e36895aabb4ed87996dfd0701e6745dac1818d4f88e5887f96cf8f"
+    },
+    {
+      "node_id": "athena-source-packet-intake-r1a-correction-1-review",
+      "node_type": "Review",
+      "manifest_sha256": "7607569e69e36895aabb4ed87996dfd0701e6745dac1818d4f88e5887f96cf8f"
+    },
+    {
+      "node_id": "athena-source-packet-intake-r1a-correction-1-integration",
+      "node_type": "Integration",
+      "manifest_sha256": "7607569e69e36895aabb4ed87996dfd0701e6745dac1818d4f88e5887f96cf8f"
+    }
+  ],
+  "edges": [
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_node_id": "athena-source-packet-intake-r1a-correction-1",
+      "to_node_id": "athena-source-packet-intake-r1a-correction-1-review"
+    },
+    {
+      "edge_type": "DEPENDS_ON",
+      "from_node_id": "athena-source-packet-intake-r1a-correction-1-review",
+      "to_node_id": "athena-source-packet-intake-r1a-correction-1-integration"
+    }
+  ]
+}

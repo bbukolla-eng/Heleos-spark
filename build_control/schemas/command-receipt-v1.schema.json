@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/command-receipt-v1.schema.json",
+  "title": "HELIOS Build Fabric command receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "task_manifest_sha256", "gate", "command_id", "correction_round", "argv_sha256", "cwd_key", "started_at", "duration_ms", "exit_code", "outcome", "stdout_sha256", "stderr_sha256", "stdout_truncated", "stderr_truncated"],
+  "properties": {
+    "protocol": {"const": "helios.build.command-receipt/v1"},
+    "task_manifest_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "gate": {"enum": ["FOCUSED", "AFFECTED_INTEGRATION", "MILESTONE"]},
+    "command_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
+    "correction_round": {"$ref": "common-v1.schema.json#/$defs/nonNegativeInteger"},
+    "argv_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "cwd_key": {"$ref": "common-v1.schema.json#/$defs/identifier"},
+    "patch_sha256": {"anyOf": [{"$ref": "common-v1.schema.json#/$defs/digest"}, {"type": "null"}]},
+    "started_at": {"$ref": "common-v1.schema.json#/$defs/rfc3339Utc"},
+    "duration_ms": {"$ref": "common-v1.schema.json#/$defs/nonNegativeInteger"},
+    "exit_code": {"anyOf": [{"type": "integer"}, {"type": "null"}]},
+    "outcome": {"enum": ["PASS", "FAIL", "BLOCKED", "OUTCOME_UNKNOWN"]},
+    "stdout_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "stderr_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "stdout_truncated": {"type": "boolean"},
+    "stderr_truncated": {"type": "boolean"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"gate": {"enum": ["AFFECTED_INTEGRATION", "MILESTONE"]}}},
+      "then": {
+        "required": ["patch_sha256"],
+        "properties": {"patch_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"}}
+      }
+    }
+  ]
+}

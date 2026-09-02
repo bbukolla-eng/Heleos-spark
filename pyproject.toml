@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "helios-takeoff-core"
+version = "0.1.0"
+description = "Local-first evidence, approval, and bounded worker core for HELIOS Division 23 takeoff."
+requires-python = ">=3.12"
+
+[project.optional-dependencies]
+build-fabric = ["jsonschema>=4.23,<5"]
+
+[project.scripts]
+helios-p0 = "helios_takeoff_core.cli:main"
+helios-p1a = "helios_takeoff_core.p1a_cli:main"
+helios-engine = "helios_takeoff_core.engine_cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+helios_takeoff_core = [
+    "migrations/*.sql",
+    "engine/v2/migrations/*.sql",
+    "engine/v2/schemas/*.json",
+]
+
+[tool.helios]
+database_schema_version = "17"

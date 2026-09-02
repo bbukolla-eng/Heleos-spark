@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/external-session-handoff-v1.schema.json",
+  "title": "HELIOS Build Fabric external-session handoff v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "assignment_sha256", "task_manifest_sha256", "base_commit_sha", "worker_profile_sha256", "provider", "session_id", "patch_sha256", "raw_evidence_sha256", "commands_executed", "focused_test_results", "assumptions", "unresolved_issues", "dependency_effects", "security_effects", "source_record_ids", "source_packet_ids", "duration_ms", "cost_microusd", "returned_at", "target_host_eligible"],
+  "properties": {
+    "protocol": {"const": "helios.build.external-session-handoff/v1"},
+    "assignment_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "task_manifest_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "base_commit_sha": {"$ref": "common-v1.schema.json#/$defs/gitCommit"},
+    "worker_profile_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "provider": {"enum": ["CODEX", "CLAUDE", "KIMI", "GROK", "CURSOR", "COPILOT"]},
+    "session_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
+    "patch_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "raw_evidence_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "commands_executed": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
+    "focused_test_results": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
+    "assumptions": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
+    "unresolved_issues": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
+    "dependency_effects": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
+    "security_effects": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
+    "source_record_ids": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
+    "source_packet_ids": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
+    "duration_ms": {"$ref": "common-v1.schema.json#/$defs/nonNegativeInteger"},
+    "cost_microusd": {"$ref": "common-v1.schema.json#/$defs/nonNegativeInteger"},
+    "returned_at": {"$ref": "common-v1.schema.json#/$defs/rfc3339Utc"},
+    "target_host_eligible": {"const": false}
+  }
+}

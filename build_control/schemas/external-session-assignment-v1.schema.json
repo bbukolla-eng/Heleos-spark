@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/external-session-assignment-v1.schema.json",
+  "title": "HELIOS Build Fabric external-session assignment v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "assignment_id", "task_manifest_sha256", "base_commit_sha", "role", "worker_profile_id", "worker_profile_sha256", "provider", "session_id", "transport", "routing_action", "routing_reason", "created_at", "created_by_profile_id", "target_host_eligible"],
+  "properties": {
+    "protocol": {"const": "helios.build.external-session-assignment/v1"},
+    "assignment_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
+    "task_manifest_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "base_commit_sha": {"$ref": "common-v1.schema.json#/$defs/gitCommit"},
+    "role": {"enum": ["BUILDER", "REVIEWER"]},
+    "worker_profile_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
+    "worker_profile_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "provider": {"enum": ["CODEX", "CLAUDE", "KIMI", "GROK", "CURSOR", "COPILOT"]},
+    "session_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
+    "transport": {"const": "EXTERNAL_SESSION"},
+    "routing_action": {"enum": ["EXTERNAL_SESSION_ASSIGN", "REROUTE_TO_EXTERNAL_SESSION"]},
+    "routing_reason": {"enum": ["EXTERNAL_SESSION_SELECTED", "LOCAL_ADAPTER_UNAVAILABLE", "LOCAL_ADAPTER_BLOCKED_SUCCESSOR"]},
+    "created_at": {"$ref": "common-v1.schema.json#/$defs/rfc3339Utc"},
+    "created_by_profile_id": {"const": "codex-control-v1"},
+    "target_host_eligible": {"const": false}
+  },
+  "allOf": [
+    {"if": {"properties": {"routing_action": {"const": "EXTERNAL_SESSION_ASSIGN"}}}, "then": {"properties": {"routing_reason": {"const": "EXTERNAL_SESSION_SELECTED"}}}},
+    {"if": {"properties": {"routing_action": {"const": "REROUTE_TO_EXTERNAL_SESSION"}}}, "then": {"properties": {"routing_reason": {"enum": ["LOCAL_ADAPTER_UNAVAILABLE", "LOCAL_ADAPTER_BLOCKED_SUCCESSOR"]}}}}
+  ]
+}

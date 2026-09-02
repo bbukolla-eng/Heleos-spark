@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/athena-worker-profile-v1.schema.json",
+  "title": "Bounded ATHENA research profile v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "profile_id", "worker_id", "display_name", "state", "allowed_capabilities", "forbidden_capabilities", "allowed_output_protocols", "allowed_data_classes", "instructions_sha256", "authority_limits"],
+  "properties": {
+    "protocol": {"const": "helios.build.athena-worker-profile/v1"},
+    "profile_id": {"const": "athena-v1"},
+    "worker_id": {"const": "athena"},
+    "display_name": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
+    "state": {"const": "PACKAGED"},
+    "allowed_capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"enum": ["DISCOVER_PUBLIC_SOURCES", "MAINTAIN_LOGICAL_NOTEBOOKS", "RECOGNIZE_RESEARCH_GAPS", "COMPARE_SOURCE_CONFLICTS", "PRODUCE_CITED_SYNTHESIS", "PROCESS_BUILDER_USEFULNESS_FEEDBACK"]}
+    },
+    "forbidden_capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "common-v1.schema.json#/$defs/identifier"}
+    },
+    "allowed_output_protocols": {
+      "type": "array",
+      "const": ["helios.build.source-packet/v1"]
+    },
+    "allowed_data_classes": {"type": "array", "const": ["PUBLIC", "AUTHORIZED_LICENSED"]},
+    "instructions_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "authority_limits": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"}
+    }
+  }
+}

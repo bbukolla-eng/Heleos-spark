@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/worker-handoff-v1.schema.json",
+  "title": "HELIOS Build Fabric worker handoff v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "transport", "attempt_manifest_sha256", "external_session_assignment_sha256", "task_manifest_sha256", "output_kind", "patch_sha256", "commit_sha", "files_changed", "commands_executed", "focused_test_results", "assumptions", "unresolved_issues", "dependency_effects", "security_effects", "source_record_ids", "source_packet_ids", "raw_evidence_sha256", "duration_ms", "cost_microusd"],
+  "properties": {
+    "protocol": {"const": "helios.build.worker-handoff/v1"},
+    "transport": {"enum": ["LOCAL_ADAPTER", "EXTERNAL_SESSION"]},
+    "attempt_manifest_sha256": {"$ref": "#/$defs/nullableDigest"},
+    "external_session_assignment_sha256": {"$ref": "#/$defs/nullableDigest"},
+    "task_manifest_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "output_kind": {"enum": ["PATCH", "COMMIT"]},
+    "patch_sha256": {"$ref": "#/$defs/nullableDigest"},
+    "commit_sha": {"$ref": "#/$defs/nullableCommit"},
+    "files_changed": {"type": "array", "items": {"$ref": "common-v1.schema.json#/$defs/repoPath"}, "uniqueItems": true},
+    "commands_executed": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
+    "focused_test_results": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
+    "assumptions": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
+    "unresolved_issues": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
+    "dependency_effects": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
+    "security_effects": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
+    "source_record_ids": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
+    "source_packet_ids": {"$ref": "common-v1.schema.json#/$defs/stringArray"},
+    "raw_evidence_sha256": {"$ref": "#/$defs/nullableDigest"},
+    "duration_ms": {"$ref": "common-v1.schema.json#/$defs/nonNegativeInteger"},
+    "cost_microusd": {"$ref": "common-v1.schema.json#/$defs/nonNegativeInteger"}
+  },
+  "allOf": [
+    {"if": {"properties": {"transport": {"const": "LOCAL_ADAPTER"}}}, "then": {"properties": {"attempt_manifest_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"}, "external_session_assignment_sha256": {"type": "null"}, "raw_evidence_sha256": {"type": "null"}}}},
+    {"if": {"properties": {"transport": {"const": "EXTERNAL_SESSION"}}}, "then": {"properties": {"attempt_manifest_sha256": {"type": "null"}, "external_session_assignment_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"}, "raw_evidence_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"}}}},
+    {"if": {"properties": {"output_kind": {"const": "PATCH"}}}, "then": {"properties": {"patch_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"}, "commit_sha": {"type": "null"}}}},
+    {"if": {"properties": {"output_kind": {"const": "COMMIT"}}}, "then": {"properties": {"patch_sha256": {"type": "null"}, "commit_sha": {"$ref": "common-v1.schema.json#/$defs/gitCommit"}}}}
+  ],
+  "$defs": {
+    "nullableDigest": {"anyOf": [{"$ref": "common-v1.schema.json#/$defs/digest"}, {"type": "null"}]},
+    "nullableCommit": {"anyOf": [{"$ref": "common-v1.schema.json#/$defs/gitCommit"}, {"type": "null"}]}
+  }
+}

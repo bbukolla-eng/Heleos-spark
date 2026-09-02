@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://helios.local/build-control/schemas/artifact-manifest-v1.schema.json",
+  "title": "HELIOS Build Fabric artifact manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "artifact_id", "attempt_manifest_sha256", "kind", "sha256", "byte_size", "media_type", "store_key", "created_at"],
+  "properties": {
+    "protocol": {"const": "helios.build.artifact-manifest/v1"},
+    "artifact_id": {"$ref": "common-v1.schema.json#/$defs/identifier"},
+    "attempt_manifest_sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "kind": {"$ref": "common-v1.schema.json#/$defs/identifier"},
+    "sha256": {"$ref": "common-v1.schema.json#/$defs/digest"},
+    "byte_size": {"$ref": "common-v1.schema.json#/$defs/nonNegativeInteger"},
+    "media_type": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
+    "store_key": {"$ref": "common-v1.schema.json#/$defs/nonEmptyString"},
+    "created_at": {"$ref": "common-v1.schema.json#/$defs/rfc3339Utc"}
+  }
+}
