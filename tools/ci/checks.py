@@ -20,7 +20,7 @@ PROSE_SCOPE = (
     "docs/runs",
     ".claude/workflows",
 )
-LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\(([^)\s#]+)(?:#[^)]*)?\)")
+LINK_RE = re.compile(r"\[[^\]]*\]\(([^)\s#]+)(?:#[^)]*)?\)")
 DASHES = ("—", "–")
 
 
