@@ -27,8 +27,8 @@ export const meta = {
 }
 
 const A = args || {}
-if (!A.context || !A.deliverable || !Array.isArray(A.angles) || A.angles.length < 2 || !Array.isArray(A.lenses) || A.lenses.length < 2 || !A.synthesis) {
-  return { status: 'ABORTED_BAD_ARGS', reason: 'context, deliverable, angles[>=2], lenses[>=2], synthesis are required' }
+if (!A.context || !A.deliverable || !Array.isArray(A.angles) || A.angles.length < 2 || A.angles.length > 5 || !Array.isArray(A.lenses) || A.lenses.length < 2 || A.lenses.length > 5 || !A.synthesis) {
+  return { status: 'ABORTED_BAD_ARGS', reason: 'context, deliverable, angles[2..5], lenses[2..5], synthesis are required' }
 }
 if (A.require_ceiling && budget.total === null) return { status: 'ABORTED_NO_CEILING' }
 if (budget.total === null) log('no token ceiling was set for this run; the policy ceiling is advisory only')
