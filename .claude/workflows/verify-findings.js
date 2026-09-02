@@ -31,8 +31,11 @@ if (budget.total === null) log('no token ceiling was set for this run; the polic
 const bm = A.items.filter(i => i.sev !== 'minor')
 const mn = A.items.filter(i => i.sev === 'minor')
 function chunk(arr, n) { const out = []; for (let i = 0; i < arr.length; i += n) out.push(arr.slice(i, i + n)); return out }
-const bmChunks = chunk(bm, A.chunk_major || 10)
-const mnChunks = chunk(mn, A.chunk_minor || 12)
+const chunkMajor = A.chunk_major ?? 10
+const chunkMinor = A.chunk_minor ?? 12
+if (!Number.isInteger(chunkMajor) || chunkMajor <= 0 || !Number.isInteger(chunkMinor) || chunkMinor <= 0) return { status: 'ABORTED_BAD_ARGS', reason: 'chunk_major and chunk_minor must be positive integers' }
+const bmChunks = chunk(bm, chunkMajor)
+const mnChunks = chunk(mn, chunkMinor)
 
 const SCHEMA = {
   type: 'object',
