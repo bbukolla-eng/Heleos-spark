@@ -1,6 +1,9 @@
 name: claude
 # Answers @claude mentions in issues, pull requests, and review comments:
-# it implements the request, commits on a branch, and opens or updates a pull request.
+# it implements the request and commits: on an open pull request it pushes to that pull
+# request's branch; from an issue it creates a branch and replies with a pre-filled pull
+# request link a person must click. The action does not open pull requests itself
+# (anthropics/claude-code-action v1.0.99, its docs/security.md, "Pull Request Creation").
 # Needs the CLAUDE_CODE_OAUTH_TOKEN secret (docs/policies/github-automation.md).
 on:
   issue_comment:
@@ -39,4 +42,4 @@ jobs:
         uses: anthropics/claude-code-action@c3d45e8e941e1b2ad7b278c57482d9c5bf1f35b3 # v1.0.99
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          claude_args: '--allowed-tools "Bash(python -m unittest *),Bash(python3 -m unittest *),Bash(node --check *),Bash(python tools/ci/checks.py),Bash(git *)"'
+          claude_args: '--allowed-tools "Bash(python -m unittest *),Bash(python3 -m unittest *),Bash(node --check *),Bash(python tools/ci/checks.py)"'

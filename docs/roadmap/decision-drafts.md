@@ -72,7 +72,7 @@ Each draft is self-contained so that a decision record can be made from it witho
 
 **Options.** Per app: retain as-is; restrict to read-only; suspend; remove.
 
-**Evidence.** ECC Tools holds at least `contents:write` and `pull_requests:write`: it authored 12 commits and opened PR #2, whose generated files describe another branch and would egress by default if run. Amazon Q posts reviews on pull requests. Spec section 11 says their presence is not approval to run them, and no workflow or secret may be added until this inventory is done. `docs/roadmap/phase-0-evidence.md` section 9.
+**Evidence.** ECC Tools holds at least `contents:write` and `pull_requests:write`: it authored 12 commits and opened PR #2, whose generated files describe another branch and would egress by default if run. Amazon Q posts reviews on pull requests. Spec section 11 says their presence is not approval to run them, and no workflow or secret may be added for them until this inventory is done. `docs/roadmap/phase-0-evidence.md` section 9.
 
 **Recommended.** Inventory permissions from the repository's Settings, Integrations, GitHub Apps page, or with `gh api /user/installations` (each row's `app_slug` and `permissions`; the `/repos/:owner/:repo/installation` endpoint needs the app's own JWT and returns nothing for a user login), and paste the output into the record; remove or restrict ECC Tools to read-only; suspend the other three until a task needs them; state that no app-triggered result is authoritative.
 

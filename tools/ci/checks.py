@@ -1,4 +1,5 @@
-"""Repository checks run by CI and locally: registry hashes, JSON validity, relative links, prose rule.
+"""Repository checks run by CI and locally: registry hashes, JSON validity, relative links and image
+destinations, prose rule.
 
 Standard library only. Exit code 1 on any failure; every failure is printed with its file.
 """
@@ -71,7 +72,7 @@ def check_json(files, root=ROOT):
 
 
 def check_links(files, root=ROOT):
-    """Relative markdown links must resolve to an existing file or directory."""
+    """Relative markdown link and image destinations must resolve to an existing file or directory."""
     failures = []
     for rel in files:
         if not rel.endswith(".md"):

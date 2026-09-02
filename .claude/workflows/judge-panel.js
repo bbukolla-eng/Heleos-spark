@@ -103,8 +103,19 @@ const judgments = (await parallel(A.lenses.map(j => () =>
 log(`${judgments.length}/${A.lenses.length} judgments returned`)
 if (!judgments.length) return { status: 'FAILED', reason: 'no judgments', designs }
 
+// A judgment counts toward the ranking only if it scores every design exactly once and invents none;
+// judges name a design by its key or its title, so both are accepted and mapped to the key.
+const designKeyOf = (name) => { const d = designs.find(x => x.key === name || x.title === name); return d ? d.key : null }
+const scored = []
+const mismatched = []
+for (const j of judgments) {
+  const keys = j.scores.map(s => designKeyOf(s.design))
+  if (keys.length === designs.length && keys.every(Boolean) && new Set(keys).size === designs.length) scored.push(j)
+  else mismatched.push(j.key)
+}
+if (mismatched.length) log(`judgments excluded from the ranking, design keys do not match: ${mismatched.join(', ')}`)
 const totals = {}
-for (const j of judgments) for (const s of j.scores) totals[s.design] = (totals[s.design] || 0) + s.total
+for (const j of scored) for (const s of j.scores) { const k = designKeyOf(s.design); totals[k] = (totals[k] || 0) + s.total }
 const ranking = Object.entries(totals).sort((a, b) => b[1] - a[1])
 log(`ranking: ${ranking.map(([k, v]) => `${k}=${v}`).join(', ')}`)
 const winnerKey = ranking.length ? ranking[0][0] : designs[0].key
@@ -117,11 +128,12 @@ const synthesis = await agent(`${A.context}\n\n${READONLY}\n\nYou are the synthe
 const dropped = []
 if (designs.length < A.angles.length) dropped.push(`${A.angles.length - designs.length} design(s)`)
 if (judgments.length < A.lenses.length) dropped.push(`${A.lenses.length - judgments.length} judgment(s)`)
+if (mismatched.length) dropped.push(`${mismatched.length} judgment(s) with design keys that do not match the designs`)
 if (!synthesis) dropped.push('synthesis')
 if (dropped.length) log(`dropped: ${dropped.join(', ')}`)
 return {
   status: dropped.length ? 'PARTIAL' : 'COMPLETE',
   winner: winner.key, ranking,
   designs: designs.map(d => ({ key: d.key, title: d.title, summary: d.summary, key_mechanisms: d.key_mechanisms, known_limitations: d.known_limitations })),
-  judgments, synthesis, spent: budget.spent(),
+  judgments, mismatched_judgments: mismatched, synthesis, spent: budget.spent(),
 }

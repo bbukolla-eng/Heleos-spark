@@ -22,6 +22,12 @@ class LinkAndProseChecks(unittest.TestCase):
         failures = checks.check_links(["README.md"], root=self.root)
         self.assertEqual(failures, ["link: README.md: docs/missing.md"])
 
+    def test_broken_image_destination_is_reported(self):
+        self.write("docs/diagram.png", "stand-in for a binary image\n")
+        self.write("README.md", "![ok](docs/diagram.png)\n![bad](docs/missing.png)\n")
+        failures = checks.check_links(["README.md"], root=self.root)
+        self.assertEqual(failures, ["link: README.md: docs/missing.png"])
+
     def test_dash_rule_applies_only_to_repository_documents(self):
         self.write("README.md", "plain sentence\nwith an em dash — here\n")
         os.makedirs(os.path.join(self.root, "docs", "superpowers"))

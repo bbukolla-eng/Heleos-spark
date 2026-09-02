@@ -166,7 +166,7 @@ The reconciliation plan (`docs/superpowers/plans/2026-08-27-recovery-reconciliat
 
 Dependency analysis: as written the nine tasks are strictly serial and Tasks 1, 3, and 4 depend on later artifacts. After renumbering migrations by commit order, moving the fixture and adapter probe into Task 1, and assigning fixture ownership, the critical path is T1, T2, T3, T5, T7, T8, T9, with T4 (vault and backup) parallel to T3 and T6 (jobs and audit) parallel to T5. The plan yields 9 commits, 14 written test functions, and roughly 54 tests once every "Expected" list is implemented. No step cherry-picks recovered code.
 
-Reproduce: `docs/roadmap/plan-of-record-audit.md` carries the simulation scripts and the full mapping.
+Reproduce: `docs/roadmap/plan-of-record-audit.md` section 5 carries the shell commands that read the plan's own migration code and task file lists, its section 2 carries the evidence and repair for each defect above, and the recorded output of the migration-order and Task 2 simulations is quoted in `docs/runs/2026-09-02-roadmap-revision-2/findings.json` under the findings `option-a-audit/mig-numbering-gap-blocks-task4` and `option-a-audit/task2-tests-mutually-exclusive-fixture`.
 
 ## 7. Tooling reality in the Claude Code Remote harness
 

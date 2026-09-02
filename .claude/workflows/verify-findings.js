@@ -87,7 +87,10 @@ bmChunks.forEach((c, i) => {
 mnChunks.forEach((c, i) => {
   tasks.push(() => agent(refutePrompt(c), { label: `mn${i}-refute`, phase: 'Refute', schema: SCHEMA, effort: A.effort_minor || 'medium' }).then(r => r && ({ lens: 'refute', chunk: `mn${i}`, ...r })))
 })
-log(`${bm.length} blocker/major findings in ${bmChunks.length} chunks (two lenses each); ${mn.length} minor in ${mnChunks.length} chunks (one lens); ${tasks.length} agents`)
+// max_agents recorded for this workflow in .claude/workflows/REGISTRY.json; keep the two in step.
+const MAX_AGENTS = 40
+if (tasks.length > MAX_AGENTS) return { status: 'ABORTED_OVER_CEILING', reason: `${tasks.length} agents exceeds the registered ceiling of ${MAX_AGENTS}; raise chunk_major or chunk_minor, or verify fewer findings in one run` }
+log(`${bm.length} blocker/major findings in ${bmChunks.length} chunks (two lenses each); ${mn.length} minor in ${mnChunks.length} chunks (one lens); ${tasks.length} of at most ${MAX_AGENTS} agents`)
 
 const results = (await parallel(tasks)).filter(Boolean)
 const byUid = {}
@@ -104,5 +107,13 @@ const table = Object.entries(byUid).map(([uid, vs]) => {
 const counts = {}
 for (const t of table) counts[t.status] = (counts[t.status] || 0) + 1
 const missing = A.items.filter(i => !byUid[i.uid]).map(i => i.uid)
-log(`${JSON.stringify(counts)}; ${results.length}/${tasks.length} agents returned; ${missing.length} findings without any verdict`)
-return { status: missing.length || results.length < tasks.length ? 'PARTIAL' : 'COMPLETE', counts, table, missing, spent: budget.spent() }
+// Every blocker or major finding owes a verdict from both lenses and every minor one from the refute lens;
+// an agent that returns but omits an assigned uid leaves a lens unfilled, which is a partial run.
+const expectedPairs = []
+bmChunks.forEach(c => c.forEach(i => { expectedPairs.push(`${i.uid}|refute`); expectedPairs.push(`${i.uid}|assess`) }))
+mnChunks.forEach(c => c.forEach(i => { expectedPairs.push(`${i.uid}|refute`) }))
+const seenPairs = new Set()
+for (const r of results) for (const v of r.verdicts) seenPairs.add(`${v.uid}|${r.lens}`)
+const missingPairs = expectedPairs.filter(p => !seenPairs.has(p))
+log(`${JSON.stringify(counts)}; ${results.length}/${tasks.length} agents returned; ${missing.length} findings without any verdict; ${missingPairs.length} of ${expectedPairs.length} expected (finding, lens) verdicts missing`)
+return { status: missing.length || missingPairs.length || results.length < tasks.length ? 'PARTIAL' : 'COMPLETE', counts, table, missing, missing_pairs: missingPairs, spent: budget.spent() }
