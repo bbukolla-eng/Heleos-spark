@@ -35,7 +35,7 @@
       "name": "verify-findings",
       "version": "1.0.0",
       "script": "verify-findings.js",
-      "sha256": "a7e6b079c221faaa7f0c78b3809a3dc16ecb0fcc10307a90030f89609aaa1bfa",
+      "sha256": "4463c504b64159776ff267fd85460326dfcc81b69c6cad95ff24186c133dab57",
       "policy": {
         "data_classes": [
           "PUBLIC",
@@ -64,7 +64,7 @@
       "name": "judge-panel",
       "version": "1.0.0",
       "script": "judge-panel.js",
-      "sha256": "b576a59905eab1e61221b47685c6620ae5b8c496b97f3a8c4a22caf3aa8ea98a",
+      "sha256": "e08c05d81dfd99d614bb3b04f9f00fe8f20bc7de2d3b8c6564ddc266392332d2",
       "policy": {
         "data_classes": [
           "PUBLIC",
