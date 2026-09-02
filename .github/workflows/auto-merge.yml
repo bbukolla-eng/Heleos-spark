@@ -1,0 +1,21 @@
+name: auto-merge
+# Enables GitHub auto-merge on a non-draft pull request that carries the `automerge` label.
+# GitHub then merges it by itself once every required check on `main` passes.
+# Needs "Allow auto-merge" in Settings and branch protection on main with the `checks` job required.
+# Remove the label (or convert to draft) to cancel.
+on:
+  pull_request:
+    types: [labeled, ready_for_review, synchronize]
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  enable:
+    if: github.event.pull_request.draft == false && contains(github.event.pull_request.labels.*.name, 'automerge')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
