@@ -241,3 +241,104 @@ class PreCallHashesSurviveACommitDuringTheRun(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RunningFromOutsideTheTreeItChecks(unittest.TestCase):
+    """Both workflows copy the recorder to $RUNNER_TEMP, so its own location is not the checkout.
+
+    The module derives ROOT from __file__. A copy therefore resolves every relative path against
+    the temporary directory it was copied into and reports present files as missing, which turns
+    a correctly signed decision record into a red job. The checkout must be named explicitly.
+    """
+
+    def setUp(self):
+        self.root = tempfile.mkdtemp()
+        self.elsewhere = tempfile.mkdtemp()
+        os.makedirs(os.path.join(self.root, "docs", "policies"))
+        os.makedirs(os.path.join(self.root, "docs", "decisions"))
+        with open(os.path.join(self.root, "docs/policies/egress.md"), "w", encoding="utf-8") as handle:
+            handle.write("# Egress policy\n")
+        with open(os.path.join(self.root, "docs/decisions/d.md"), "w", encoding="utf-8") as handle:
+            handle.write("# Decision\n\n**Status:** APPROVED\n\n**Decided by:** Bekim Bukolla **Date:** 2026-09-03\n")
+        self.copy = os.path.join(self.elsewhere, "record.py")
+        with open(record.__file__, encoding="utf-8") as source, open(self.copy, "w", encoding="utf-8") as target:
+            target.write(source.read())
+
+    def run_copy(self, *extra):
+        argv = [sys.executable, self.copy, "check", "--provider", "anthropic", "--purpose", "p",
+                "--data-class", "INTERNAL", "--decision", "docs/decisions/d.md", "--rule", "r"]
+        return subprocess.run(argv + list(extra), capture_output=True, text=True, cwd=self.elsewhere)
+
+    def test_without_root_the_copy_cannot_see_the_checkout(self):
+        result = self.run_copy()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("policy file missing", result.stdout)
+
+    def test_with_root_the_copy_checks_the_real_checkout(self):
+        result = self.run_copy("--root", self.root)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("may receive INTERNAL", result.stdout)
+
+
+class AnExampleSignatureIsNotASignature(unittest.TestCase):
+    """The owner is told to sign by adding a line reading exactly '**Status:** APPROVED'.
+
+    That instruction invites a paste-me example into the draft, and a bare regex cannot tell an
+    example from a signature. A status line inside a fenced block or an HTML comment is
+    illustration, not authorization.
+    """
+
+    def setUp(self):
+        self.root = tempfile.mkdtemp()
+        os.makedirs(os.path.join(self.root, "docs"))
+
+    def failures(self, body):
+        with open(os.path.join(self.root, "docs/d.md"), "w", encoding="utf-8") as handle:
+            handle.write(body)
+        return record.approval_failures(self.root, "docs/d.md")
+
+    def test_a_fenced_example_above_the_determinations_does_not_sign_the_record(self):
+        """The shape the draft actually has: the how-to-sign section sits above section 6."""
+        body = (
+            "# Draft of Decision 12\n\nTo sign, replace the banner with:\n\n"
+            "```markdown\n**Status:** APPROVED\n\n**Decided by:** Your Name **Date:** 2026-09-03\n```\n\n"
+            "## 6. Decision\n\n**Status:** Draft\n\n**Decided by:** ____ **Date:** ____\n"
+        )
+        self.assertTrue(self.failures(body), "a fenced example above the determinations opened the gate")
+
+    def test_a_tilde_fenced_example_above_the_determinations_does_not_sign_the_record(self):
+        body = (
+            "# Draft\n\n~~~\n**Status:** APPROVED\n\n**Decided by:** Someone **Date:** x\n~~~\n\n"
+            "## 6. Decision\n\n**Status:** Draft\n\n**Decided by:** ____ **Date:** ____\n"
+        )
+        self.assertTrue(self.failures(body), "a tilde-fenced example opened the gate")
+
+    def test_a_commented_example_above_the_determinations_does_not_sign_the_record(self):
+        body = (
+            "# Draft\n\n<!--\n**Status:** APPROVED\n\n**Decided by:** Someone **Date:** x\n-->\n\n"
+            "## 6. Decision\n\n**Status:** Draft\n\n**Decided by:** ____ **Date:** ____\n"
+        )
+        self.assertTrue(self.failures(body), "a commented example opened the gate")
+
+    def test_an_indented_code_block_example_does_not_sign_the_record(self):
+        body = (
+            "# Draft\n\nExample:\n\n    **Status:** APPROVED\n    **Decided by:** Someone **Date:** x\n\n"
+            "## 6. Decision\n\n**Status:** Draft\n\n**Decided by:** ____ **Date:** ____\n"
+        )
+        self.assertTrue(self.failures(body), "an indented code block opened the gate")
+
+    def test_a_real_signature_outside_any_fence_still_opens_the_gate(self):
+        body = (
+            "# Decision 12\n\n**Status:** APPROVED\n\n**Decided by:** Bekim Bukolla **Date:** 2026-09-03\n\n"
+            "An illustration of the draft banner it replaced:\n\n```\n**Status:** Draft\n```\n"
+        )
+        self.assertEqual(self.failures(body), [])
+
+    def test_todays_real_draft_is_still_refused(self):
+        """The file the owner is actually told to copy must not open the gate as it stands."""
+        here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        draft = os.path.join(here, "docs", "roadmap", "decision-12-egress-draft.md")
+        if not os.path.exists(draft):
+            self.skipTest("draft not present in this checkout")
+        with open(draft, encoding="utf-8") as handle:
+            self.assertTrue(self.failures(handle.read()), "the live draft opened the gate")

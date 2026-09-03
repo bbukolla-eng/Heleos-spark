@@ -8,7 +8,7 @@
 
 ## How to turn this into a decision
 
-The egress gate in `tools/egress/record.py` looks for `docs/decisions/2026-09-03-egress-policy.md` and requires it to be signed. Existence alone does not open the gate: the file must carry a line reading exactly `**Status:** APPROVED` and a `**Decided by:**` line with a real name on it. That is deliberate, so that a prepared draft can never authorize a submission.
+The egress gate in `tools/egress/record.py` looks for `docs/decisions/2026-09-03-egress-policy.md` and requires it to be signed. Existence alone does not open the gate: the file must carry a line reading exactly `**Status:** APPROVED` and a `**Decided by:**` line with a real name on it. That is deliberate, so that a prepared draft can never authorize a submission. The gate blanks out every fenced block, HTML comment, and indented code block before it looks, so an example of a signature is never mistaken for one.
 
 To decide: copy this file to `docs/decisions/2026-09-03-egress-policy.md`, answer the six determinations in section 6, replace the draft banner with `**Status:** APPROVED`, sign the `**Decided by:**` line, and commit. Only then does the gate open, and only then may `ANTHROPIC_API_KEY` be added.
 

@@ -134,19 +134,63 @@ def result_ref(env, session_id=None, conclusion=None, entity_url=None):
 APPROVED_RE = re.compile(r"^\*\*Status:\*\*\s*APPROVED\s*$", re.M)
 DECIDED_BY_RE = re.compile(r"^\*\*Decided by:\*\*\s*(?P<who>.*?)\s*(?:\*\*Date:\*\*\s*(?P<date>.*?))?\s*$", re.M)
 BLANK = re.compile(r"^_*$")
+FENCE = re.compile(r"^\s{0,3}(?P<mark>`{3,}|~{3,})")
+
+
+def prose_only(text):
+    """Blank out every region of a Markdown file that is illustration rather than assertion.
+
+    A decision record tells the owner how to sign it, and the natural way to show that is a
+    fenced example of the very line the gate looks for. An example is not a signature, and a
+    regex over the whole file cannot tell them apart: re.search returns the first match, so an
+    example placed above the determinations wins. Fenced blocks, HTML comments and indented
+    code blocks are replaced by empty lines here, which keeps every other line at its own
+    offset so the caller's anchored patterns behave exactly as before.
+    """
+    lines = text.split("\n")
+    kept = []
+    fence = None
+    commented = False
+    for line in lines:
+        if fence is not None:
+            kept.append("")
+            if FENCE.match(line) and line.strip().startswith(fence):
+                fence = None
+            continue
+        if commented:
+            kept.append("")
+            if "-->" in line:
+                commented = False
+            continue
+        opening = FENCE.match(line)
+        if opening:
+            fence = opening.group("mark")[0] * 3
+            kept.append("")
+            continue
+        if "<!--" in line and "-->" not in line.split("<!--", 1)[1]:
+            commented = True
+            kept.append("")
+            continue
+        if line.startswith("    ") or line.startswith("\t"):
+            kept.append("")
+            continue
+        kept.append(line)
+    return "\n".join(kept)
 
 
 def approval_failures(root, decision):
     """A decision record authorizes nothing until the owner has signed it.
 
-    Existence is not approval. The gate reads the record and requires an explicit APPROVED
-    status and a non-blank signer, so a prepared record with blank determinations, which is
-    exactly how one arrives in the tree, cannot open the gate.
+    Existence is not approval, and neither is an example of a signature. The gate reads the
+    record with every fenced block, HTML comment and indented code block blanked out, then
+    requires an explicit APPROVED status and a non-blank signer in what remains, so neither a
+    prepared record with blank determinations nor a paste-me block showing the owner what to
+    write can open it.
     """
     path = os.path.join(root, decision)
     try:
         with open(path, encoding="utf-8") as handle:
-            text = handle.read()
+            text = prose_only(handle.read())
     except OSError:
         return [f"check: decision file missing from the checkout: {decision}"]
     failures = []
@@ -251,11 +295,19 @@ def parse_args(argv):
     parser.add_argument("--summary", default=None)
     parser.add_argument("--precall", default=None,
                         help="check writes the pre-call source hashes here; write reads them back")
+    parser.add_argument("--root", default=None,
+                        help="the checkout to inspect. Required whenever this file is run from a copy "
+                             "outside the tree it checks, which is what both workflows do")
     return parser.parse_args(argv)
 
 
 def main(argv=None, env=None, root=ROOT):
     args = parse_args(argv if argv is not None else sys.argv[1:])
+    # ROOT is derived from __file__, which is wrong wherever this file is not inside the tree it
+    # checks. Both workflows copy it to $RUNNER_TEMP so a run cannot silence its own recorder, and
+    # a copy resolves every relative path against the temporary directory instead of the checkout.
+    # An explicit --root wins; the root= keyword stays for the tests that call main directly.
+    root = args.root or root
     allowed = tuple(name.strip() for name in args.allowed_classes.split(",") if name.strip())
     failures = check_preconditions(root, args.policy, args.decision, args.data_class, allowed)
     if args.mode == "check":
