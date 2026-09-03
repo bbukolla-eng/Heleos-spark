@@ -23,6 +23,8 @@ PROSE_SCOPE = (
 )
 LINK_RE = re.compile(r"\[[^\]]*\]\(([^)\s#]+)(?:#[^)]*)?\)")
 DASHES = ("—", "–")
+EGRESS_CLASSES = ("PUBLIC", "INTERNAL", "PROJECT_CONFIDENTIAL")
+EGRESS_FIELDS = ("provider", "purpose", "data_class", "source_hashes", "policy_decision", "time", "result_ref")
 
 
 def tracked_files(root=ROOT):
@@ -101,9 +103,54 @@ def check_prose(files, root=ROOT):
     return failures
 
 
+def check_egress_ledger(root=ROOT):
+    """Every committed external-submission record carries the seven spec section 5 fields,
+    names a decision file that exists in the tree, and records an allowed outcome."""
+    failures = []
+    path = os.path.join(root, "docs", "runs", "egress", "index.jsonl")
+    if not os.path.exists(path):
+        return failures
+    with open(path, encoding="utf-8") as handle:
+        for number, line in enumerate(handle, 1):
+            if not line.strip():
+                continue
+            where = f"egress: index.jsonl:{number}"
+            try:
+                record = json.loads(line)
+            except ValueError as err:
+                failures.append(f"{where}: not valid JSON: {err}")
+                continue
+            if not isinstance(record, dict) or set(record) != set(EGRESS_FIELDS):
+                # The recorder serialises with sort_keys, so compare the key set, never the order.
+                failures.append(f"{where}: fields must be exactly {EGRESS_FIELDS}, got {sorted(record)}")
+                continue
+            if record["data_class"] not in EGRESS_CLASSES:
+                failures.append(f"{where}: data class not one of {EGRESS_CLASSES}: {record['data_class']}")
+            if not isinstance(record["source_hashes"], list) or not record["source_hashes"]:
+                failures.append(f"{where}: source_hashes must be a non-empty list")
+            for key in ("provider", "purpose", "time"):
+                if not isinstance(record[key], str) or not record[key].strip():
+                    failures.append(f"{where}: {key} must be a non-empty string")
+            decision = record["policy_decision"]
+            if not isinstance(decision, dict):
+                failures.append(f"{where}: policy_decision must be an object, got {type(decision).__name__}")
+                continue
+            if decision.get("outcome") != "allow":
+                failures.append(f"{where}: outcome is {decision.get('outcome')}, not allow")
+            if not str(decision.get("rule", "")).strip():
+                failures.append(f"{where}: no rule recorded")
+            for key in ("policy", "decision"):
+                target = decision.get(key)
+                if not isinstance(target, str) or not os.path.exists(os.path.join(root, target)):
+                    failures.append(f"{where}: {key} file named by the record is not in the tree: {target}")
+                elif not re.fullmatch(r"[0-9a-f]{64}", str(decision.get(key + "_sha256", ""))):
+                    failures.append(f"{where}: {key}_sha256 is not a sha256 digest")
+    return failures
+
+
 def main():
     files = tracked_files()
-    failures = check_registry() + check_json(files) + check_links(files) + check_prose(files)
+    failures = check_registry() + check_json(files) + check_links(files) + check_prose(files) + check_egress_ledger()
     for failure in failures:
         print(failure)
     print(f"{len(files)} tracked files checked, {len(failures)} failures")

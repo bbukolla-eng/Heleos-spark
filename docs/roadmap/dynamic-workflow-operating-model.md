@@ -725,6 +725,7 @@ The owner reads `docs/runs/<run_id>/SUMMARY.md` for every cited run and the revi
 | Workflow | Data classes | External providers | Network in acceptance | Session kind |
 |---|---|---|---|---|
 | `harness-probe`, `roadmap-review`, `spec-coverage-audit`, `foundation-task`, `foundation-milestone`, `pr-review`, `acceptance-verify`, `provenance-audit`, `release-verification` | `PUBLIC`, `INTERNAL` (repository content) | none | deny | web or local |
+| `.github/workflows/claude-review.yml`, `.github/workflows/claude.yml` (GitHub Actions, not `Workflow` tool runs) | `PUBLIC`, `INTERNAL` | Anthropic, under `docs/policies/egress.md` and its decision record; `tools/egress/record.py` gates and records every run | allow, to that provider only | GitHub Actions runner |
 | `research-triage`, `source-admit`, `dataset-quarantine` | `PUBLIC` only | Exa, Hugging Face, Context7 through `hs-quoter` after register rows are Admitted (Phase 2) | deny | web or local |
 | `bakeoff-run` | `PUBLIC` (adjudicated public or synthetic sheets) | none (assets already quarantined) | deny | local CLI on the M5 Max |
 | `extraction-eval`, `export-verify`, `correction-roundtrip` on real bid sets | `PROJECT_CONFIDENTIAL` by vault hash reference | none | deny | local CLI only; `args.py` refuses when `CLAUDE_CODE_REMOTE=true` |

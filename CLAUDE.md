@@ -52,4 +52,4 @@ Operating rules for Claude Code and any other AI worker in this repository. Read
 - Provision cloud services, change billing, purchase anything, send external messages, or alter account-wide settings, apps, or secrets (spec section 13); each needs a separately authorized owner action.
 - Describe the local vault or the SQLite store as WORM, tamper-proof, or regulatory storage.
 - Import anything from the quarantined predecessor repository.
-- Send `INTERNAL` or `PROJECT_CONFIDENTIAL` material to any external service, or upload private bid data anywhere.
+- Send `INTERNAL` or `PROJECT_CONFIDENTIAL` material to any external service, except where `docs/policies/egress.md` permits it for a named caller and provider once the owner has recorded the decision that puts that policy in force. `PROJECT_CONFIDENTIAL` is permitted nowhere today. Never upload private bid data anywhere.

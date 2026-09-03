@@ -148,6 +148,8 @@ Each draft is self-contained so that a decision record can be made from it witho
 
 ## Draft 12: Egress policy for prompts, connectors, and sessions
 
+**Superseded by a prepared record.** This draft is answered in full at `docs/roadmap/decision-12-egress-draft.md`, which carries the evidence, the recommendation, and the blank determinations. That file's own header says how the owner turns it into `docs/decisions/2026-09-03-egress-policy.md`. Decide there, not here. What follows is the original draft, kept for the record.
+
 **Question.** What may leave the machine, to whom, from which kind of session, with what record?
 
 **Recommended.** Write `docs/policies/egress.md`: `PUBLIC` content may go to admitted providers with source and license logging; `INTERNAL` is local by default and needs an explicit approved policy per provider; `PROJECT_CONFIDENTIAL` never enters a web session and never reaches a provider without a project- and provider-specific record; `SECRET` never appears anywhere; every external submission records provider, purpose, data class, source hashes, policy decision, time, and result reference; multi-provider routing of prompts is off.
