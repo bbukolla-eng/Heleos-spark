@@ -327,6 +327,46 @@ class AnExampleSignatureIsNotASignature(unittest.TestCase):
         )
         self.assertTrue(self.failures(body), "an indented code block opened the gate")
 
+    def test_a_shorter_nested_fence_does_not_end_the_block(self):
+        """CommonMark: a closing fence must be at least as long as the one that opened it.
+
+        A four-backtick block is exactly how a document shows a fenced example that itself
+        contains a fence, which is what a signing instruction looks like. Collapsing every
+        opener to three markers lets the inner fence close the outer block and spills the
+        example into the prose the gate reads.
+        """
+        body = (
+            "# Draft\n\n````markdown\n```\n**Status:** APPROVED\n\n"
+            "**Decided by:** Someone **Date:** x\n````\n\n"
+            "## 6. Decision\n\n**Status:** Draft\n\n**Decided by:** ____ **Date:** ____\n"
+        )
+        self.assertTrue(self.failures(body), "a shorter nested fence opened the gate")
+
+    def test_a_fence_line_carrying_an_info_string_does_not_close_a_block(self):
+        """A closing fence carries nothing after the markers, so this line is content."""
+        body = (
+            "# Draft\n\n```\n```python\n**Status:** APPROVED\n\n"
+            "**Decided by:** Someone **Date:** x\n```\n\n"
+            "## 6. Decision\n\n**Status:** Draft\n\n**Decided by:** ____ **Date:** ____\n"
+        )
+        self.assertTrue(self.failures(body), "an info-string line closed the block")
+
+    def test_a_tilde_fence_is_not_closed_by_backticks(self):
+        body = (
+            "# Draft\n\n~~~\n```\n**Status:** APPROVED\n\n"
+            "**Decided by:** Someone **Date:** x\n~~~\n\n"
+            "## 6. Decision\n\n**Status:** Draft\n\n**Decided by:** ____ **Date:** ____\n"
+        )
+        self.assertTrue(self.failures(body), "backticks closed a tilde fence")
+
+    def test_a_longer_closing_fence_still_closes_the_block(self):
+        """Closing with more markers than the opener is legal, so prose after it is prose."""
+        body = (
+            "# Decision 12\n\n```\n**Status:** Draft\n`````\n\n"
+            "**Status:** APPROVED\n\n**Decided by:** Bekim Bukolla **Date:** 2026-09-03\n"
+        )
+        self.assertEqual(self.failures(body), [])
+
     def test_a_real_signature_outside_any_fence_still_opens_the_gate(self):
         body = (
             "# Decision 12\n\n**Status:** APPROVED\n\n**Decided by:** Bekim Bukolla **Date:** 2026-09-03\n\n"

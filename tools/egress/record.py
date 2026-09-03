@@ -134,7 +134,7 @@ def result_ref(env, session_id=None, conclusion=None, entity_url=None):
 APPROVED_RE = re.compile(r"^\*\*Status:\*\*\s*APPROVED\s*$", re.M)
 DECIDED_BY_RE = re.compile(r"^\*\*Decided by:\*\*\s*(?P<who>.*?)\s*(?:\*\*Date:\*\*\s*(?P<date>.*?))?\s*$", re.M)
 BLANK = re.compile(r"^_*$")
-FENCE = re.compile(r"^\s{0,3}(?P<mark>`{3,}|~{3,})")
+FENCE = re.compile(r"^ {0,3}(?P<mark>`{3,}|~{3,})(?P<rest>.*)$")
 
 
 def prose_only(text):
@@ -154,8 +154,16 @@ def prose_only(text):
     for line in lines:
         if fence is not None:
             kept.append("")
-            if FENCE.match(line) and line.strip().startswith(fence):
-                fence = None
+            closing = FENCE.match(line)
+            # A fence closes only on its own marker character, with at least as many markers as
+            # opened it, and nothing but whitespace after them. Anything shorter, of the other
+            # character, or carrying an info string is content: a four-backtick block holding a
+            # three-backtick example stays one block, which is exactly the shape a document uses
+            # to show a fenced example of a fenced example.
+            if closing:
+                mark = closing.group("mark")
+                if mark[0] == fence[0] and len(mark) >= len(fence) and not closing.group("rest").strip():
+                    fence = None
             continue
         if commented:
             kept.append("")
@@ -164,7 +172,7 @@ def prose_only(text):
             continue
         opening = FENCE.match(line)
         if opening:
-            fence = opening.group("mark")[0] * 3
+            fence = opening.group("mark")
             kept.append("")
             continue
         if "<!--" in line and "-->" not in line.split("<!--", 1)[1]:
