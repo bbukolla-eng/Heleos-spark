@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "note": "Repository-owned workflow scripts for the Claude Code Workflow tool. Each row pins a script by SHA-256 and states its policy. Only the owner admits a row (docs/decisions/). Hashes are recomputed by the Phase 0 lint; a hash change without a version bump fails the lint.",
+  "workflows": [
+    {
+      "name": "spec-coverage-audit",
+      "version": "1.0.0",
+      "script": "spec-coverage-audit.js",
+      "sha256": "579d3987e2243a190297bd05de03f12344640a9e6de972b1f9d01a9c504a3ccd",
+      "policy": {
+        "data_classes": [
+          "PUBLIC",
+          "INTERNAL"
+        ],
+        "external_providers": [],
+        "network": "deny",
+        "may_edit": false,
+        "worktrees": false,
+        "ceiling_tokens": 150000,
+        "max_agents": 30,
+        "require_ceiling": false,
+        "human_gate": "owner reads the findings; matrix copied into docs/roadmap/spec-coverage-matrix.md",
+        "stop_rules": [
+          "one pass",
+          "dropped range turns the status PARTIAL"
+        ]
+      },
+      "status": "run in roadmap revision 2 as an inline script; generalized here",
+      "runs": [
+        "docs/runs/2026-09-02-roadmap-revision-2/README.md"
+      ],
+      "admitted_by": null
+    },
+    {
+      "name": "verify-findings",
+      "version": "1.0.0",
+      "script": "verify-findings.js",
+      "sha256": "64d04fa1dabbfc9b041ae1efad1e69e7dcda78e0798a9731c1efd8fce0006cf3",
+      "policy": {
+        "data_classes": [
+          "PUBLIC",
+          "INTERNAL"
+        ],
+        "external_providers": [],
+        "network": "deny",
+        "may_edit": false,
+        "worktrees": false,
+        "ceiling_tokens": 200000,
+        "max_agents": 40,
+        "require_ceiling": false,
+        "human_gate": "owner reads the surviving findings",
+        "stop_rules": [
+          "one pass",
+          "missing verdicts turn the status PARTIAL"
+        ]
+      },
+      "status": "run in roadmap revision 2 as three inline scripts; generalized here",
+      "runs": [
+        "docs/runs/2026-09-02-roadmap-revision-2/README.md"
+      ],
+      "admitted_by": null
+    },
+    {
+      "name": "judge-panel",
+      "version": "1.0.0",
+      "script": "judge-panel.js",
+      "sha256": "689a21cacab5149df33dc3ce34092c56da8f54f356b5acc0fd87263ea87bcaa0",
+      "policy": {
+        "data_classes": [
+          "PUBLIC",
+          "INTERNAL"
+        ],
+        "external_providers": [],
+        "network": "deny",
+        "may_edit": false,
+        "worktrees": false,
+        "ceiling_tokens": 300000,
+        "max_agents": 12,
+        "require_ceiling": false,
+        "human_gate": "owner decides; the synthesis is a draft",
+        "stop_rules": [
+          "fewer than two designs fails the run",
+          "dropped design, judgment, or synthesis turns the status PARTIAL"
+        ]
+      },
+      "status": "run in roadmap revision 2 as an inline script; generalized here",
+      "runs": [
+        "docs/runs/2026-09-02-roadmap-revision-2/README.md"
+      ],
+      "admitted_by": null
+    }
+  ]
+}

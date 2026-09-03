@@ -1,0 +1,32 @@
+name: auto-merge
+# Enables GitHub auto-merge on a non-draft pull request that carries the `automerge` label.
+# GitHub then merges it by itself once every required check on `main` passes.
+# Needs "Allow auto-merge" in Settings and branch protection on main with the `checks` job required.
+# Removing the label disables the pending auto-merge through the `disable` job below.
+# Converting the pull request to a draft also cancels it, which GitHub does by itself.
+on:
+  pull_request:
+    types: [labeled, unlabeled, ready_for_review, synchronize]
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  enable:
+    if: github.event.action != 'unlabeled' && github.event.pull_request.draft == false && contains(github.event.pull_request.labels.*.name, 'automerge')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+  disable:
+    # Enabling auto-merge outlives the label, so removing it must cancel the pending merge.
+    if: github.event.action == 'unlabeled' && github.event.label.name == 'automerge'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: gh pr merge --disable-auto "$PR_URL"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
