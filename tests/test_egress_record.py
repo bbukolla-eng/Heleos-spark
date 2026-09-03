@@ -132,3 +132,31 @@ class EgressRecord(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class GitFailureDegradesRatherThanCrashes(unittest.TestCase):
+    """Write mode runs after the submission, so it must never lose a record to a git failure."""
+
+    def setUp(self):
+        self.root = tempfile.mkdtemp()  # deliberately not a git repository
+        os.makedirs(os.path.join(self.root, "docs", "policies"))
+        os.makedirs(os.path.join(self.root, "docs", "decisions"))
+        for rel in ("docs/policies/egress.md", "docs/decisions/d.md"):
+            with open(os.path.join(self.root, rel), "w", encoding="utf-8") as handle:
+                handle.write("x\n")
+
+    def test_git_tree_outside_a_repository_returns_unavailable(self):
+        self.assertEqual(record.git_tree(self.root), "unavailable")
+
+    def test_write_still_emits_a_record_when_git_fails(self):
+        out = os.path.join(self.root, "egress.jsonl")
+        code = record.main(
+            ["write", "--provider", "anthropic", "--purpose", "p", "--data-class", "INTERNAL",
+             "--decision", "docs/decisions/d.md", "--rule", "r", "--out", out],
+            env={}, root=self.root,
+        )
+        self.assertEqual(code, 0)
+        with open(out, encoding="utf-8") as handle:
+            written = json.loads(handle.read().strip())
+        self.assertEqual(set(written), set(record.FIELDS))  # written sorted, so compare the set
+        self.assertIn("checkout-tree:sha1:unavailable", written["source_hashes"])

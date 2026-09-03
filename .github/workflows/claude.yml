@@ -61,7 +61,9 @@ jobs:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           claude_args: '--allowed-tools "Bash(python -m unittest *),Bash(python3 -m unittest *),Bash(node --check *),Bash(python tools/ci/checks.py)"'
       - name: Egress record
-        if: always() && env.HAS_TOKEN == 'true'
+        # Only when the provider step actually ran, so a submission that happened is always
+        # recorded and a call the gate blocked is not recorded as a refusal that never occurred.
+        if: always() && env.HAS_TOKEN == 'true' && steps.claude.conclusion != '' && steps.claude.conclusion != 'skipped'
         run: |
           python3 tools/egress/record.py write \
             --provider anthropic \
@@ -71,7 +73,7 @@ jobs:
             --conclusion "${{ steps.claude.conclusion }}" \
             --out egress.jsonl --summary "$GITHUB_STEP_SUMMARY"
       - name: Keep the egress record
-        if: always() && env.HAS_TOKEN == 'true' && hashFiles('egress.jsonl') != ''
+        if: always() && hashFiles('egress.jsonl') != ''
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: egress-claude-${{ github.run_id }}-${{ github.run_attempt }}

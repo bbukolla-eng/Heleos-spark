@@ -67,11 +67,19 @@ def sha256_file(path):
 
 
 def git_tree(root):
-    """SHA-1 of the tree that was on disk: the upper bound of what the provider could be shown."""
-    result = subprocess.run(
-        ["git", "rev-parse", "HEAD^{tree}"], cwd=root, capture_output=True, text=True, check=True
-    )
-    return result.stdout.strip()
+    """SHA-1 of the tree that was on disk: the upper bound of what the provider could be shown.
+
+    Never raises. In write mode the submission has already happened, so a git that fails or is
+    absent must degrade the record, not prevent it: an unrecorded submission is the one outcome
+    this module exists to make impossible. A record carrying "unavailable" is honest and visible.
+    """
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD^{tree}"], cwd=root, capture_output=True, text=True, check=True
+        )
+    except (subprocess.CalledProcessError, OSError):
+        return "unavailable"
+    return result.stdout.strip() or "unavailable"
 
 
 def source_hashes(root, env, prompt_source=None):
