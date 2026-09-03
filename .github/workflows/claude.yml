@@ -3,7 +3,7 @@ name: claude
 # it implements the request and commits: on an open pull request it pushes to that pull
 # request's branch; from an issue it creates a branch and replies with a pre-filled pull
 # request link a person must click. The action does not open pull requests itself
-# (anthropics/claude-code-action v1.0.99, its docs/security.md, "Pull Request Creation").
+# (anthropics/claude-code-action v1.0.211, its docs/security.md, "Pull Request Creation").
 #
 # This job makes an external submission of INTERNAL repository content to Anthropic, so it
 # is governed by docs/policies/egress.md and the decision record named in EGRESS_DECISION.
@@ -64,7 +64,7 @@ jobs:
             --precall "$RUNNER_TEMP/precall.json"
       - if: env.HAS_TOKEN == 'true'
         id: claude
-        uses: anthropics/claude-code-action@c3d45e8e941e1b2ad7b278c57482d9c5bf1f35b3 # v1.0.99
+        uses: anthropics/claude-code-action@833fb0f8c9f6686b33d963a8bae0a94f4936ab2a # v1.0.211
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           # An @claude run implements a change, so it needs to run the suite to verify its own

@@ -22,12 +22,15 @@ The immediate occasion is narrower. `.github/workflows/claude-review.yml` and `.
 
 ## 2. What actually leaves, established from the pinned action's source
 
-Both workflows pin `anthropics/claude-code-action` at `c3d45e8e941e1b2ad7b278c57482d9c5bf1f35b3` (v1.0.99). The following was read from that commit, not inferred.
+Both workflows pin `anthropics/claude-code-action` at `833fb0f8c9f6686b33d963a8bae0a94f4936ab2a` (v1.0.211). The following was read from that commit, not inferred.
+
+**This section was re-read after a version bump.** The research run behind this record read v1.0.99 at `c3d45e8e941e1b2ad7b278c57482d9c5bf1f35b3`. Dependabot then bumped both workflows to v1.0.211 and the owner merged that as pull request #5, so the evidence was fetched again at the new commit and every row below reflects it. One finding changed materially and is marked. The run record at `docs/runs/2026-09-03-decision-12/` keeps the v1.0.99 reading as the historical record of what that run saw.
 
 | Question | Finding | Source |
 |---|---|---|
-| What does `claude-review.yml` send first? | Agent mode. Nothing is prefetched from GitHub. The first call carries the literal prompt from the workflow file, the system prompt preset, and the tool schemas | `src/modes/detector.ts` 64 to 76; `src/modes/agent/index.ts` 72 to 80; `src/create-prompt/index.ts` 455 to 457 |
-| What does `claude.yml` send first? | Tag mode. It prefetches the pull request or issue title, body, up to 100 comment bodies, up to 100 reviews with inline comments, the changed file list as metadata, and the triggering comment verbatim. No file bytes and no patch text | `src/modes/tag/index.ts` 52 to 63 and 104 to 110; `src/github/data/formatter.ts` 11 to 146 |
+| What does `claude-review.yml` send first? | Agent mode. Nothing is prefetched from GitHub. The first call carries the literal prompt from the workflow file, the system prompt preset, and the tool schemas. Unchanged at v1.0.211 | `src/modes/agent/index.ts` 86 to 90, which writes `context.inputs.prompt` and nothing else |
+| What does `claude.yml` send first? | Tag mode. `fetchGitHubData` runs before the first call and prefetches the pull request or issue title, body, all labels, up to 100 comment bodies, up to 100 reviews with up to 100 inline comments each, the changed file list as metadata, and the triggering comment verbatim | `src/modes/tag/index.ts` 53; `src/github/api/queries/github.ts` 26, 55, 70, 87 |
+| **Changed at v1.0.211:** does the prefetch carry patch text? | **Yes, now it does.** At v1.0.99 the prefetch carried no file bytes and no patch text. v1.0.211 adds `diffHunk` to every prefetched review comment and renders it into the prompt as a fenced `diff` block, so up to 10,000 diff hunks of this repository's own code can leave before the model asks for anything. `claude-review.yml` is unaffected, because agent mode prefetches nothing | `src/github/api/queries/github.ts` 90 (`diffHunk`, absent at v1.0.99); `src/github/data/formatter.ts` 125 to 127 |
 | How does file content reach the provider? | As tool results, pulled by the model, never pushed by the action. Each result then rides in the next call | `docs/configuration.md` 223 to 244 |
 | How much content is that in practice? | `claude-review.yml` names `CLAUDE.md`, `ROADMAP.md`, and the spec in its prompt, so those are near certain to be read in full: about 96 KB of governed prose per run, before the diff | `wc -c` on the three files: 7,120, 65,363, 23,616 bytes |
 | How wide is the reachable set? | `claude-review.yml` checks out with `fetch-depth: 0`, so `git log` and `git diff` can reach any commit and any historical file version. `claude.yml` uses `fetch-depth: 1` | `.github/workflows/claude-review.yml` line 25; `.github/workflows/claude.yml` line 40 |
@@ -113,8 +116,9 @@ Decision: ____
 ```bash
 # What the action sends, from the pinned commit
 for f in docs/setup.md docs/configuration.md src/modes/detector.ts src/modes/agent/index.ts \
-         src/modes/tag/index.ts src/github/data/formatter.ts src/create-prompt/index.ts; do
-  curl -s "https://raw.githubusercontent.com/anthropics/claude-code-action/c3d45e8e941e1b2ad7b278c57482d9c5bf1f35b3/$f"
+         src/modes/tag/index.ts src/github/data/fetcher.ts src/github/data/formatter.ts \
+         src/github/api/queries/github.ts src/create-prompt/index.ts; do
+  curl -s "https://raw.githubusercontent.com/anthropics/claude-code-action/833fb0f8c9f6686b33d963a8bae0a94f4936ab2a/$f"
 done
 
 # The two contracts

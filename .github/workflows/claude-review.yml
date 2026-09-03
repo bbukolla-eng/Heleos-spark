@@ -50,7 +50,7 @@ jobs:
             --precall "$RUNNER_TEMP/precall.json"
       - if: env.HAS_TOKEN == 'true'
         id: claude
-        uses: anthropics/claude-code-action@c3d45e8e941e1b2ad7b278c57482d9c5bf1f35b3 # v1.0.99
+        uses: anthropics/claude-code-action@833fb0f8c9f6686b33d963a8bae0a94f4936ab2a # v1.0.211
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: |

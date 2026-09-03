@@ -53,10 +53,10 @@ The credential is part of the policy. These workflows use `ANTHROPIC_API_KEY` un
 |---|---|---|---|
 | `actions/checkout` | `11bd71901bbe5b1630ceea73d27597364c9af683` | v4.2.2 | MIT |
 | `actions/setup-python` | `a26af69be951a213d495a4c3e4e4022e16d87065` | v5.6.0 | MIT |
-| `anthropics/claude-code-action` | `c3d45e8e941e1b2ad7b278c57482d9c5bf1f35b3` | v1.0.99 | MIT |
+| `anthropics/claude-code-action` | `833fb0f8c9f6686b33d963a8bae0a94f4936ab2a` | v1.0.211 | MIT |
 | `actions/upload-artifact` | `043fb46d1a93c77aae656e7c1c64a875d1fc6a0a` | v7.0.1 | MIT |
 
-Pins are by commit, resolved with `git ls-remote --tags` on 2026-09-02; Dependabot proposes bumps as pull requests that go through `checks` like any other change.
+Pins are by commit, resolved with `git ls-remote --tags` on 2026-09-02; Dependabot proposes bumps as pull requests that go through `checks` like any other change. A bump of `claude-code-action` is not a routine bump: what the action prefetches before the first model call is the evidence base of the egress record, and v1.0.211 changed it. Re-read the prefetch query and re-verify section 2 of that record before merging one.
 
 ## Local run
 
