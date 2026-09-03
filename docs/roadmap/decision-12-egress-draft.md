@@ -97,7 +97,7 @@ Decision: ____
 
 Decision: ____
 
-**d. Is the upper-bound ledger of section 5 accepted as satisfying spec section 5's record requirement, with the five gaps of the policy's section 6 accepted as known?**
+**d. Is the upper-bound ledger of section 5 accepted as satisfying spec section 5's record requirement, with gaps 1 to 5 of the policy's section 6 accepted as known? Gap 6 belongs to determination (f).**
 
 Decision: ____
 
