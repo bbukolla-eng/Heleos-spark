@@ -6,6 +6,7 @@ Each record states the question, the options considered (with the run record of 
 
 Recorded so far:
 
-- None on `main`. Pull request #3 records a 2026-09-01 decision that Claude Code works only in a designated lane branch; `ROADMAP.md` Decision 3 asks the owner to confirm or replace that policy.
+- `2026-09-03-egress-policy.md`, Decision 12, prepared and awaiting the owner's determination in its section 6. Nothing it describes is in force until then.
+- Pull request #3 records a 2026-09-01 decision that Claude Code works only in a designated lane branch; `ROADMAP.md` Decision 3 asks the owner to confirm or replace that policy.
 
 Pending: Decisions 1 to 14 of `ROADMAP.md`, drafted in `docs/roadmap/decision-drafts.md`.

@@ -4,7 +4,12 @@ name: claude
 # request's branch; from an issue it creates a branch and replies with a pre-filled pull
 # request link a person must click. The action does not open pull requests itself
 # (anthropics/claude-code-action v1.0.99, its docs/security.md, "Pull Request Creation").
-# Needs the CLAUDE_CODE_OAUTH_TOKEN secret (docs/policies/github-automation.md).
+#
+# This job makes an external submission of INTERNAL repository content to Anthropic, so it
+# is governed by docs/policies/egress.md and the decision record named in EGRESS_DECISION.
+# The egress check step runs BEFORE the provider step and fails the job when that policy or
+# that decision record is missing from the checkout, so the record is a gate, not a log.
+# Needs the ANTHROPIC_API_KEY secret; until it exists this job prints a notice and passes.
 on:
   issue_comment:
     types: [created]
@@ -14,6 +19,9 @@ on:
     types: [submitted]
   issues:
     types: [opened, assigned]
+env:
+  EGRESS_DECISION: docs/decisions/2026-09-03-egress-policy.md
+  EGRESS_RULE: egress-3-claude-mention
 jobs:
   claude:
     if: |
@@ -30,16 +38,42 @@ jobs:
       id-token: write
       actions: read
     env:
-      HAS_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
+      HAS_TOKEN: ${{ secrets.ANTHROPIC_API_KEY != '' }}
     steps:
       - if: env.HAS_TOKEN != 'true'
-        run: echo "::notice::CLAUDE_CODE_OAUTH_TOKEN is not set; see docs/policies/github-automation.md"
+        run: echo "::notice::ANTHROPIC_API_KEY is not set; see docs/policies/github-automation.md"
       - if: env.HAS_TOKEN == 'true'
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 1
+      - name: Egress precondition
+        if: env.HAS_TOKEN == 'true'
+        run: |
+          python3 tools/egress/record.py check \
+            --provider anthropic \
+            --purpose "Answer an @claude mention and commit the requested change on a branch" \
+            --data-class INTERNAL --allowed-classes PUBLIC,INTERNAL \
+            --decision "$EGRESS_DECISION" --rule "$EGRESS_RULE"
       - if: env.HAS_TOKEN == 'true'
+        id: claude
         uses: anthropics/claude-code-action@c3d45e8e941e1b2ad7b278c57482d9c5bf1f35b3 # v1.0.99
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           claude_args: '--allowed-tools "Bash(python -m unittest *),Bash(python3 -m unittest *),Bash(node --check *),Bash(python tools/ci/checks.py)"'
+      - name: Egress record
+        if: always() && env.HAS_TOKEN == 'true'
+        run: |
+          python3 tools/egress/record.py write \
+            --provider anthropic \
+            --purpose "Answer an @claude mention and commit the requested change on a branch" \
+            --data-class INTERNAL --allowed-classes PUBLIC,INTERNAL \
+            --decision "$EGRESS_DECISION" --rule "$EGRESS_RULE" \
+            --conclusion "${{ steps.claude.conclusion }}" \
+            --out egress.jsonl --summary "$GITHUB_STEP_SUMMARY"
+      - name: Keep the egress record
+        if: always() && env.HAS_TOKEN == 'true' && hashFiles('egress.jsonl') != ''
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: egress-claude-${{ github.run_id }}-${{ github.run_attempt }}
+          path: egress.jsonl
+          retention-days: 90
