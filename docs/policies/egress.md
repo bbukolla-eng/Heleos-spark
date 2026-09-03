@@ -1,7 +1,7 @@
 # Egress policy
 
 **Owner:** Bekim Bukolla
-**Status:** Proposed. It takes effect when the owner records the decision at `docs/decisions/2026-09-03-egress-policy.md`, and not before.
+**Status:** Proposed. It takes effect when the owner signs the decision at `docs/decisions/2026-09-03-egress-policy.md`, and not before. The draft prepared for that signature is `docs/roadmap/decision-12-egress-draft.md`.
 **Authorized by:** that decision record (Decision 12 of `ROADMAP.md`, task P0.9).
 **Version:** 1. **Effective:** on the date of the decision record.
 **Implements:** section 5 of `docs/superpowers/specs/2026-08-26-heleos-spark-foundation-design.md`.
@@ -38,9 +38,11 @@ A value shaped like a credential appearing in a submission record is a failure o
 | `.github/workflows/ci.yml` (`checks`) | none | none | not applicable | Sends nothing outside GitHub |
 | `.github/workflows/auto-merge.yml` | none | none | not applicable | Sends nothing outside GitHub |
 | Dependabot | GitHub | none of this repository's content | not applicable | Reads public action metadata |
-| Claude Code sessions (interactive, including this one) | Anthropic | `INTERNAL` and `PUBLIC`; never `PROJECT_CONFIDENTIAL` in a web session | The session's run record under `docs/runs/` | Permitted; the session is the owner's own tool and its content is the same class |
+| Claude Code sessions (interactive, including this one) | Anthropic | `INTERNAL` and `PUBLIC`; never `PROJECT_CONFIDENTIAL` in a web session | The session's run record under `docs/runs/`, written by hand | The owner's own use of the tool, not an admission of an automated caller. Determination (f) of the decision record settles this row; determination (c) settles the two workflow rows above |
 | Research lane (`research-triage`, NotebookLM, Exa, Hugging Face, Kaggle, Context7) | as admitted in `docs/roadmap/skills-and-plugins.md` | `PUBLIC` only | The seven-field record required by Phase 2 | Not yet admitted; Phase 2 |
 | Anything not listed | none | none | not applicable | Refused |
+
+**Two kinds of caller, two determinations.** The first two rows are automated callers: a GitHub event starts them, no person is present, and `tools/egress/record.py` produces their record. The interactive row is the owner typing into their own tool. Determination (c) of the decision record admits the automated callers and names those two workflow files only; determination (f) covers the interactive row separately. Reading (c) as covering interactive sessions would be wrong, and reading it as forbidding them would be equally wrong, because this file was itself written in such a session.
 
 Both Claude workflows run `tools/egress/record.py check` before the provider step. If this policy file or the decision record is missing from the checkout, or the declared class is not one the caller may send, the job fails and the provider step never runs. The record is a gate, not a log.
 
@@ -84,9 +86,10 @@ Stated plainly, because a policy that overstates its own reach is worse than one
 
 1. The ledger records what was **available**, not what was read. The model chooses what to read from the checkout, and that choice is not observable from inside the run. Every line is an upper bound.
 2. For `claude.yml` the bound is looser still: tag mode fetches issue and pull request comments during the run, after the event payload was written, so text created in between is covered by no hash in the record.
-3. The recorder lives inside the thing it records. A pull request that deletes the record steps still triggers `claude-review`, because `pull_request` runs the workflow file from the pull request head. The `checks` job fails such a pull request, but the submission has already happened. Only the owner reading the diff before merge covers this. `claude.yml` is safer, because `issue_comment` runs the workflow file from the default branch, where branch protection applies.
+3. The recorder lives inside the thing it records. A pull request that deletes the record steps still triggers `claude-review`, because `pull_request` runs the workflow file from the pull request head, not from `main`. The `checks` job fails such a pull request, but by then the submission has happened. Two owner-set controls stand in front of that, and neither is automatic. `claude-review` declares the `claude-egress` GitHub Environment, so once the owner adds required reviewers to that environment in Settings the job halts before it can read `ANTHROPIC_API_KEY` and waits for a person. Separately, Settings, Actions, "Require approval for all external contributors" stops a fork pull request from running at all. Without both set, an edited workflow file on a pull request head runs as written. Reading the diff before merge does not cover this, because the run happens before the merge. `claude.yml` is safer, because `issue_comment` runs the workflow file from the default branch, where branch protection applies.
 4. Comment text written by anyone who can comment on a pull request reaches the provider through these workflows. That text is not this repository's to classify.
 5. The policy binds this repository. It does not bind what the owner pastes into a chat window.
+6. The interactive session row of section 3 has no automated record. `tools/egress/record.py` runs in the two workflows only; a session's run record under `docs/runs/` is written by hand and can simply be omitted. The ledger check in `tools/ci/checks.py` validates the lines that exist and cannot know about a submission nobody wrote down.
 
 ## 7. Version history
 

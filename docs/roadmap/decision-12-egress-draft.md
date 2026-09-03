@@ -1,11 +1,18 @@
-# Decision 12: Egress policy for prompts, connectors, and sessions
+# Draft of Decision 12: Egress policy for prompts, connectors, and sessions
 
-**Status:** Awaiting the owner's determination. Section 6 is blank and this record has no effect until the owner fills it in.
+**This is a draft, not a decision record.** It lives under `docs/roadmap/` because `docs/decisions/README.md` reserves `docs/decisions/` for the owner and sends sessions here. Nothing in it is in force.
+
 **Prepared by:** Claude Code session `session_01B2JFyezFSWnrMMbaC7nZ1U`, on the owner's instruction of 2026-09-03 to record Decision 12 so the provider secret can be added.
-**Decides:** Decision 12 of `ROADMAP.md`, drafted at `docs/roadmap/decision-drafts.md` Draft 12, delivering task P0.9.
+**Drafts:** Decision 12 of `ROADMAP.md`, listed at `docs/roadmap/decision-drafts.md` Draft 12, delivering task P0.9.
 **Authority:** section 5 of `docs/superpowers/specs/2026-08-26-heleos-spark-foundation-design.md`.
 
-A note on how this record was made. A session prepared it; the owner decides it. Sections 1 to 5 are research and a recommendation, and every factual claim in them names the page or file it came from. Section 6 is the owner's, and until it is filled in nothing here authorizes anything. This ordering is the repository's authority rule, that workers propose and human approval determines truth, applied to itself.
+## How to turn this into a decision
+
+The egress gate in `tools/egress/record.py` looks for `docs/decisions/2026-09-03-egress-policy.md` and requires it to be signed. Existence alone does not open the gate: the file must carry a line reading exactly `**Status:** APPROVED` and a `**Decided by:**` line with a real name on it. That is deliberate, so that a prepared draft can never authorize a submission.
+
+To decide: copy this file to `docs/decisions/2026-09-03-egress-policy.md`, answer the six determinations in section 6, replace the draft banner with `**Status:** APPROVED`, sign the `**Decided by:**` line, and commit. Only then does the gate open, and only then may `ANTHROPIC_API_KEY` be added.
+
+A note on how this draft was made. A session prepared it; the owner decides it. Sections 1 to 5 are research and a recommendation, and every factual claim in them names the page or file it came from. Section 6 is the owner's, and its six determinations are blank on purpose. This ordering is the repository's authority rule, that workers propose and human approval determines truth, applied to itself.
 
 ## 1. The question
 
@@ -38,7 +45,7 @@ The workflows accept either a Claude subscription OAuth token or a Console API k
 | Governing terms | Consumer Terms of Service, effective 2025-10-08 | Commercial Terms of Service, effective 2025-06-17 |
 | Model training | Opt out, not excluded: "We may use Materials to provide, maintain, and improve the Services and to develop other products and services, including training our models, unless you opt out of training through your account settings" | Excluded by contract: "Anthropic may not train models on Customer Content from Services" |
 | Training after opting out | Still occurs for flagged content: Materials are used "when ... your Materials are flagged for safety review" | Not applicable |
-| Retention | Up to 2 years generally; a 5-year retention period applies when the model improvement setting is on | "we automatically delete inputs and outputs on our backend within 30 days of receipt or generation" |
+| Retention | 30 days when the model improvement setting is off; a 5-year retention period when it is on; up to 2 years separately for content the automated trust and safety systems flag | "we automatically delete inputs and outputs on our backend within 30 days of receipt or generation" |
 | Confidentiality | The Consumer Terms page does not contain the word "confidential" | "Customer Content is Customer's Confidential Information", with a need-to-know limit |
 | Data processing agreement | None applies to a subscription | Commercial Terms section C incorporates the DPA, whose sections C.1 and C.3 give sub-processor authorization, notice, and a fifteen day objection window |
 | Zero data retention | Unavailable. ZDR covers "eligible Anthropic APIs, Anthropic products that use your Commercial organization API key ... and Claude Code for Enterprise plans" | Available on request, subject to Anthropic's approval |
@@ -53,7 +60,7 @@ Sources, each fetched and returning HTTP 200 on 2026-09-03: `anthropic.com/legal
 
 The change is one line in each workflow, from `claude_code_oauth_token` to `anthropic_api_key`, which `docs/policies/github-automation.md` already describes.
 
-Four supports are published terms, quoted in section 3: training prohibited rather than toggled, content treated as confidential, retention of 30 days rather than up to 5 years, and a processor agreement with sub-processor rights.
+Four supports are published terms, quoted in section 3: training prohibited rather than toggled, content treated as confidential, a 30 day retention floor that does not depend on a setting, and a processor agreement with sub-processor rights. The retention difference is the weakest of the four, because a consumer account with model improvement off is also documented at 30 days; the argument rests on that being a toggle rather than a term.
 
 One support is judgement, and is labelled as such. On the OAuth path this repository's egress posture becomes a property of one person's personal account setting, changeable at any time, invisible from inside the repository, and impossible to cite in a run record. A repository whose stated purpose is that cited evidence determines truth should not rest a data class decision on an unobservable toggle. The API key makes the same question an owner-controlled organization property. That is an argument about this repository's governance, not a claim about Anthropic.
 
@@ -83,7 +90,7 @@ Decision: ____
 
 Decision: ____
 
-**c. Is Anthropic admitted as a provider for `INTERNAL` repository content, submitted by `.github/workflows/claude-review.yml` and `.github/workflows/claude.yml` only?**
+**c. Is Anthropic admitted as a provider for `INTERNAL` repository content submitted by an automated caller, and are `.github/workflows/claude-review.yml` and `.github/workflows/claude.yml` the only automated callers admitted?**
 
 Decision: ____
 
@@ -92,6 +99,10 @@ Decision: ____
 Decision: ____
 
 **e. On the day `PROJECT_CONFIDENTIAL` content first enters this repository, the two Claude workflows are disabled or path-restricted before that content is committed, and their continued use needs a new decision.** Confirm:
+
+Decision: ____
+
+**f. Interactive Claude Code sessions run by the owner are a separate case from (c): a person is present, no workflow submits, and `tools/egress/record.py` does not run. Are they covered by `docs/policies/egress.md` on the terms in its section 3, `INTERNAL` and `PUBLIC` only, never `PROJECT_CONFIDENTIAL` in a web session, with the session's run record under `docs/runs/` as the record and gap 6 of the policy's section 6 accepted as known?** Recommended: yes, because this draft was written in such a session and a policy that pretended otherwise would be false on its first line.
 
 Decision: ____
 
@@ -116,6 +127,7 @@ wc -c CLAUDE.md ROADMAP.md docs/superpowers/specs/2026-08-26-heleos-spark-founda
 
 # The mechanism
 python3 -m unittest discover -s tests -p 'test_*.py' -v
+# The gate. Exits 1 today, because no signed decision record exists; exits 0 once one does.
 python3 tools/egress/record.py check --provider anthropic --purpose 'demonstration' \
   --data-class INTERNAL --decision docs/decisions/2026-09-03-egress-policy.md --rule egress-3-claude-review
 ```

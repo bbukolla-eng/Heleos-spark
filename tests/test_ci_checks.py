@@ -70,8 +70,11 @@ class EgressLedgerChecks(unittest.TestCase):
             "source_hashes": ["checkout-tree:sha1:abc"],
             "policy_decision": {
                 "outcome": "allow",
+                "rule": "claude-review-anthropic",
                 "policy": "docs/policies/egress.md",
+                "policy_sha256": "0" * 64,
                 "decision": "docs/decisions/d.md",
+                "decision_sha256": "0" * 64,
             },
             "time": "2026-09-03T00:00:00Z",
             "result_ref": {"conclusion": "success"},
@@ -82,6 +85,30 @@ class EgressLedgerChecks(unittest.TestCase):
     def test_absent_ledger_is_not_a_failure(self):
         self.assertEqual(checks.check_egress_ledger(root=self.root), [])
 
+    def test_a_real_recorder_line_passes(self):
+        """The recorder serialises with sort_keys, so the validator must not compare key order."""
+        from tools.egress import record
+        rec = record.build_record(
+            self.root, {}, "anthropic", "review", "INTERNAL",
+            "docs/policies/egress.md", "docs/decisions/d.md", "claude-review-anthropic",
+        )
+        self.write("docs/runs/egress/index.jsonl", record.serialise(rec) + "\n")
+        self.assertEqual(checks.check_egress_ledger(root=self.root), [])
+
+    def test_a_null_policy_decision_is_reported_not_raised(self):
+        self.write("docs/runs/egress/index.jsonl", self.line(policy_decision=None) + "\n")
+        failures = checks.check_egress_ledger(root=self.root)
+        self.assertEqual(len(failures), 1)
+        self.assertIn("must be an object", failures[0])
+
+    def test_an_unknown_data_class_fails(self):
+        self.write("docs/runs/egress/index.jsonl", self.line(data_class="WHATEVER") + "\n")
+        self.assertTrue(any("data class not one of" in f for f in checks.check_egress_ledger(root=self.root)))
+
+    def test_empty_source_hashes_fail(self):
+        self.write("docs/runs/egress/index.jsonl", self.line(source_hashes=[]) + "\n")
+        self.assertTrue(any("non-empty list" in f for f in checks.check_egress_ledger(root=self.root)))
+
     def test_well_formed_record_passes(self):
         self.write("docs/runs/egress/index.jsonl", self.line() + "\n")
         self.assertEqual(checks.check_egress_ledger(root=self.root), [])
@@ -90,15 +117,13 @@ class EgressLedgerChecks(unittest.TestCase):
         pd = {"outcome": "refused", "policy": "docs/policies/egress.md", "decision": "docs/decisions/d.md"}
         self.write("docs/runs/egress/index.jsonl", self.line(policy_decision=pd) + "\n")
         failures = checks.check_egress_ledger(root=self.root)
-        self.assertEqual(len(failures), 1)
-        self.assertIn("not allow", failures[0])
+        self.assertTrue(any("not allow" in f for f in failures), failures)
 
     def test_record_naming_a_missing_decision_fails(self):
         pd = {"outcome": "allow", "policy": "docs/policies/egress.md", "decision": "docs/decisions/gone.md"}
         self.write("docs/runs/egress/index.jsonl", self.line(policy_decision=pd) + "\n")
         failures = checks.check_egress_ledger(root=self.root)
-        self.assertEqual(len(failures), 1)
-        self.assertIn("not in the tree", failures[0])
+        self.assertTrue(any("not in the tree" in f for f in failures), failures)
 
     def test_record_missing_a_spec_field_fails(self):
         record = json.loads(self.line())

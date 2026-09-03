@@ -131,6 +131,34 @@ def result_ref(env, session_id=None, conclusion=None, entity_url=None):
     return reference
 
 
+APPROVED_RE = re.compile(r"^\*\*Status:\*\*\s*APPROVED\s*$", re.M)
+DECIDED_BY_RE = re.compile(r"^\*\*Decided by:\*\*\s*(?P<who>.*?)\s*(?:\*\*Date:\*\*\s*(?P<date>.*?))?\s*$", re.M)
+BLANK = re.compile(r"^_*$")
+
+
+def approval_failures(root, decision):
+    """A decision record authorizes nothing until the owner has signed it.
+
+    Existence is not approval. The gate reads the record and requires an explicit APPROVED
+    status and a non-blank signer, so a prepared record with blank determinations, which is
+    exactly how one arrives in the tree, cannot open the gate.
+    """
+    path = os.path.join(root, decision)
+    try:
+        with open(path, encoding="utf-8") as handle:
+            text = handle.read()
+    except OSError:
+        return [f"check: decision file missing from the checkout: {decision}"]
+    failures = []
+    if not APPROVED_RE.search(text):
+        failures.append(f"check: {decision} carries no '**Status:** APPROVED' line, so it is not signed")
+    match = DECIDED_BY_RE.search(text)
+    who = (match.group("who") if match else "") or ""
+    if not match or BLANK.match(who.strip()):
+        failures.append(f"check: {decision} has no signer on its '**Decided by:**' line")
+    return failures
+
+
 def check_preconditions(root, policy, decision, data_class, allowed_classes):
     failures = []
     if data_class not in DATA_CLASSES:
@@ -139,9 +167,9 @@ def check_preconditions(root, policy, decision, data_class, allowed_classes):
         failures.append("check: SECRET may never be submitted to any provider")
     if data_class not in allowed_classes:
         failures.append(f"check: this caller may send {', '.join(allowed_classes)}, not {data_class}")
-    for label, relative in (("policy", policy), ("decision", decision)):
-        if not os.path.exists(os.path.join(root, relative)):
-            failures.append(f"check: {label} file missing from the checkout: {relative}")
+    if not os.path.exists(os.path.join(root, policy)):
+        failures.append(f"check: policy file missing from the checkout: {policy}")
+    failures.extend(approval_failures(root, decision))
     return failures
 
 
@@ -149,14 +177,31 @@ def secret_shapes(text):
     return [label for label, pattern in SECRET_PATTERNS if pattern.search(text)]
 
 
+def read_precall(path):
+    """Source hashes captured before the call, so an action that commits cannot rewrite them."""
+    if not path:
+        return None
+    try:
+        with open(path, encoding="utf-8") as handle:
+            hashes = json.load(handle)["source_hashes"]
+    except (OSError, ValueError, KeyError):
+        return None
+    return hashes if isinstance(hashes, list) and hashes else None
+
+
 def build_record(root, env, provider, purpose, data_class, policy, decision, rule,
                  prompt_source=None, session_id=None, conclusion=None, entity_url=None,
-                 outcome="allow"):
+                 outcome="allow", precall=None):
+    hashes = read_precall(precall)
+    if hashes is None:
+        hashes = source_hashes(root, env, prompt_source)
+        if precall:
+            hashes = hashes + ["precall-snapshot:absent"]
     return {
         "provider": provider,
         "purpose": purpose,
         "data_class": data_class,
-        "source_hashes": source_hashes(root, env, prompt_source),
+        "source_hashes": hashes,
         "policy_decision": policy_decision(root, policy, decision, rule, outcome),
         "time": utc_now(),
         "result_ref": result_ref(env, session_id, conclusion, entity_url),
@@ -204,6 +249,8 @@ def parse_args(argv):
     parser.add_argument("--entity-url", default=None)
     parser.add_argument("--out", default=None)
     parser.add_argument("--summary", default=None)
+    parser.add_argument("--precall", default=None,
+                        help="check writes the pre-call source hashes here; write reads them back")
     return parser.parse_args(argv)
 
 
@@ -216,6 +263,10 @@ def main(argv=None, env=None, root=ROOT):
             print(failure)
         if failures:
             return 1
+        if args.precall:
+            env_now = read_env(env if env is not None else os.environ)
+            with open(args.precall, "w", encoding="utf-8") as handle:
+                json.dump({"source_hashes": source_hashes(root, env_now, args.prompt_source)}, handle)
         print(f"check: {args.provider} may receive {args.data_class} under {args.decision}")
         return 0
     # In write mode the submission has already happened, so a failed precondition is recorded
@@ -224,7 +275,7 @@ def main(argv=None, env=None, root=ROOT):
         root, read_env(env if env is not None else os.environ),
         args.provider, args.purpose, args.data_class, args.policy, args.decision, args.rule,
         args.prompt_source, args.session_id, args.conclusion, args.entity_url,
-        outcome="allow" if not failures else "refused",
+        outcome="allow" if not failures else "refused", precall=args.precall,
     )
     try:
         line = serialise(record)

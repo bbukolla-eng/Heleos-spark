@@ -148,7 +148,7 @@ Each draft is self-contained so that a decision record can be made from it witho
 
 ## Draft 12: Egress policy for prompts, connectors, and sessions
 
-**Superseded by a prepared record.** This draft is answered in full at `docs/decisions/2026-09-03-egress-policy.md`, which carries the evidence, the recommendation, and the blank determination. Sign there, not here. What follows is the original draft, kept for the record.
+**Superseded by a prepared record.** This draft is answered in full at `docs/roadmap/decision-12-egress-draft.md`, which carries the evidence, the recommendation, and the blank determinations. That file's own header says how the owner turns it into `docs/decisions/2026-09-03-egress-policy.md`. Decide there, not here. What follows is the original draft, kept for the record.
 
 **Question.** What may leave the machine, to whom, from which kind of session, with what record?
 

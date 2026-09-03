@@ -1,7 +1,7 @@
 # Run record: Decision 12, the egress policy (2026-09-03)
 
 **Status:** COMPLETE. Three agents, all returned.
-**Produced:** `docs/decisions/2026-09-03-egress-policy.md` (awaiting the owner's determination), `docs/policies/egress.md` version 1, `tools/egress/record.py` and its tests, the ledger check in `tools/ci/checks.py`, and the egress steps in the two Claude workflows.
+**Produced:** `docs/roadmap/decision-12-egress-draft.md` (the prepared record, awaiting the owner's determination and their copy into `docs/decisions/`), `docs/policies/egress.md` version 1, `tools/egress/record.py` and its tests, the ledger check in `tools/ci/checks.py`, and the egress steps in the two Claude workflows.
 **Base commit:** `0400963` on `main`.
 **Occasion:** the owner asked for Decision 12 to be recorded so the provider secret could be added. The decision could not be recorded honestly without establishing what the workflows actually transmit, how the provider handles it, and how a run can produce the record spec section 5 requires.
 
@@ -46,7 +46,7 @@ In the script and the findings, `<scratch>` stands for the session's scratch dir
 python3 -m unittest discover -s tests -p 'test_*.py' -v   # 18 tests, OK
 python3 tools/ci/checks.py                                # 49 files, 0 failures
 python3 tools/egress/record.py check --provider anthropic --purpose demo --data-class INTERNAL \
-  --decision docs/decisions/2026-09-03-egress-policy.md --rule egress-3-claude-review   # exit 0
+  --decision docs/decisions/2026-09-03-egress-policy.md --rule egress-3-claude-review   # exit 1 until the owner signs that record
 python3 tools/egress/record.py check --provider anthropic --purpose demo --data-class INTERNAL \
   --decision docs/decisions/does-not-exist.md --rule x                                  # exit 1
 ```
