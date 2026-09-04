@@ -55,6 +55,8 @@ class BuildDispatchTests(unittest.TestCase):
         self._git("init")
         self._git("config", "user.email", "fixture@example.invalid")
         self._git("config", "user.name", "Build Fixture")
+        self._git("config", "maintenance.auto", "false")
+        self._git("config", "gc.autoDetach", "false")
         self._git("add", ".")
         self._git("commit", "-m", "fixture base")
         self.base_sha = self._git("rev-parse", "HEAD").stdout.strip()
