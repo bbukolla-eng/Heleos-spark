@@ -1,3 +1,4 @@
+import hashlib
 import json
 import os
 import sys
@@ -45,8 +46,51 @@ class LinkAndProseChecks(unittest.TestCase):
         self.assertIn("does not match", failures[0])
 
 
-if __name__ == "__main__":
-    unittest.main()
+class RegistryPins(unittest.TestCase):
+    """The committed REGISTRY.json is a list of workflow objects, not a name-keyed map.
+
+    The only existing registry test feeds the dict shape and a mismatch. A parser that only
+    understood that shape would silently skip every pin on main.
+    """
+
+    def setUp(self):
+        self.root = tempfile.mkdtemp()
+        os.makedirs(os.path.join(self.root, ".claude", "workflows"))
+
+    def write(self, rel, text):
+        path = os.path.join(self.root, rel)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write(text)
+
+    def digest_for(self, name="demo.js", body="export const meta = {}\n"):
+        self.write(f".claude/workflows/{name}", body)
+        return hashlib.sha256(body.encode("utf-8")).hexdigest()
+
+    def test_absent_registry_is_not_a_failure(self):
+        self.assertEqual(checks.check_registry(root=self.root), [])
+
+    def test_the_committed_list_shape_with_a_matching_hash_passes(self):
+        digest = self.digest_for()
+        self.write(".claude/workflows/REGISTRY.json", json.dumps({
+            "workflows": [{"name": "demo", "script": "demo.js", "sha256": digest}],
+        }))
+        self.assertEqual(checks.check_registry(root=self.root), [])
+
+    def test_a_matching_prefix_is_accepted(self):
+        digest = self.digest_for()
+        self.write(".claude/workflows/REGISTRY.json", json.dumps({
+            "workflows": {"demo": {"script": "demo.js", "sha256": digest[:12]}},
+        }))
+        self.assertEqual(checks.check_registry(root=self.root), [])
+
+    def test_a_missing_script_is_reported(self):
+        self.write(".claude/workflows/REGISTRY.json", json.dumps({
+            "workflows": [{"name": "demo", "script": "gone.js", "sha256": "0" * 64}],
+        }))
+        failures = checks.check_registry(root=self.root)
+        self.assertEqual(len(failures), 1)
+        self.assertIn("script missing", failures[0])
 
 
 class EgressLedgerChecks(unittest.TestCase):
@@ -132,3 +176,39 @@ class EgressLedgerChecks(unittest.TestCase):
         failures = checks.check_egress_ledger(root=self.root)
         self.assertEqual(len(failures), 1)
         self.assertIn("fields must be exactly", failures[0])
+
+    def test_an_empty_provider_fails(self):
+        self.write("docs/runs/egress/index.jsonl", self.line(provider="  ") + "\n")
+        failures = checks.check_egress_ledger(root=self.root)
+        self.assertTrue(any("provider must be a non-empty string" in f for f in failures), failures)
+
+    def test_an_uppercase_sha256_fails(self):
+        pd = {
+            "outcome": "allow",
+            "rule": "r",
+            "policy": "docs/policies/egress.md",
+            "policy_sha256": "0" * 64,
+            "decision": "docs/decisions/d.md",
+            "decision_sha256": "A" * 64,
+        }
+        self.write("docs/runs/egress/index.jsonl", self.line(policy_decision=pd) + "\n")
+        failures = checks.check_egress_ledger(root=self.root)
+        self.assertTrue(any("decision_sha256 is not a sha256 digest" in f for f in failures), failures)
+
+    def test_an_invalid_json_line_is_reported_not_raised(self):
+        self.write("docs/runs/egress/index.jsonl", "{not json\n")
+        failures = checks.check_egress_ledger(root=self.root)
+        self.assertEqual(len(failures), 1)
+        self.assertIn("not valid JSON", failures[0])
+
+    def test_blank_lines_are_ignored(self):
+        self.write("docs/runs/egress/index.jsonl", "\n" + self.line() + "\n\n")
+        self.assertEqual(checks.check_egress_ledger(root=self.root), [])
+
+    def test_secret_is_not_an_allowed_ledger_data_class(self):
+        self.write("docs/runs/egress/index.jsonl", self.line(data_class="SECRET") + "\n")
+        self.assertTrue(any("data class not one of" in f for f in checks.check_egress_ledger(root=self.root)))
+
+
+if __name__ == "__main__":
+    unittest.main()
