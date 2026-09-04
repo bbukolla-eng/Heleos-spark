@@ -13,7 +13,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from tools.helios_build.canonical import sha256_hex
+from tools.helios_build.canonical import load_strict_json, sha256_hex
 from tools.helios_build.errors import ContractError
 from tools.helios_build.paths import BuildPaths
 from tools.helios_build.process import (
@@ -275,6 +275,9 @@ def build_doctor_report(
     workers: list[dict[str, Any]] = []
     profiles_root = paths.repo_root / "build_control" / "worker_profiles"
     for profile_path in sorted(profiles_root.glob("*.json")):
+        payload = load_strict_json(profile_path)
+        if payload.get("protocol") != "helios.build.worker-profile/v1":
+            continue
         profile = load_worker_profile(profile_path, schemas)
         adapter = (
             adapters_by_worker.get(profile.worker_id)

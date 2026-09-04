@@ -3,9 +3,30 @@
 from __future__ import annotations
 
 import ast
+import json
 import re
 import unittest
 from pathlib import Path
+
+
+def _schema_property_names(repo: Path) -> set[str]:
+    """Collect property names declared by committed Build Fabric JSON schemas."""
+    names: set[str] = set()
+
+    def _collect(node: object) -> None:
+        if isinstance(node, dict):
+            properties = node.get("properties")
+            if isinstance(properties, dict):
+                names.update(key.lower() for key in properties)
+            for value in node.values():
+                _collect(value)
+        elif isinstance(node, list):
+            for item in node:
+                _collect(item)
+
+    for schema_path in (repo / "build_control" / "schemas").glob("*.json"):
+        _collect(json.loads(schema_path.read_text(encoding="utf-8")))
+    return names
 
 
 def _import_roots(path: Path) -> set[str]:
@@ -45,10 +66,14 @@ class BuildAuthorityBoundaryTests(unittest.TestCase):
                 )
             )
         violations: list[str] = []
+        contract_fields = _schema_property_names(repo)
         for source in sorted((repo / "tools" / "helios_build").glob("*.py")):
             text = source.read_text(encoding="utf-8")
             for table in sorted(table_names):
-                quoted = re.search(rf"[\"']{re.escape(table)}[\"']", text, re.IGNORECASE)
+                quoted = (
+                    table not in contract_fields
+                    and re.search(rf"[\"']{re.escape(table)}[\"']", text, re.IGNORECASE)
+                )
                 sql = re.search(
                     rf"\b(?:FROM|INTO|JOIN|UPDATE|TABLE)\s+[\"`\[]?{re.escape(table)}\b",
                     text,
