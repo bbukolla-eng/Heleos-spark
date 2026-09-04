@@ -61,6 +61,7 @@ jobs:
             --purpose "Answer an @claude mention and commit the requested change on a branch" \
             --data-class INTERNAL --allowed-classes PUBLIC,INTERNAL \
             --decision "$EGRESS_DECISION" --rule "$EGRESS_RULE" \
+            --root "$GITHUB_WORKSPACE" \
             --precall "$RUNNER_TEMP/precall.json"
       - if: env.HAS_TOKEN == 'true'
         id: claude
@@ -82,6 +83,7 @@ jobs:
             --purpose "Answer an @claude mention and commit the requested change on a branch" \
             --data-class INTERNAL --allowed-classes PUBLIC,INTERNAL \
             --decision "$EGRESS_DECISION" --rule "$EGRESS_RULE" \
+            --root "$GITHUB_WORKSPACE" \
             --conclusion "${{ steps.claude.conclusion }}" \
             --session-id "${{ steps.claude.outputs.session_id }}" \
             --precall "$RUNNER_TEMP/precall.json" \

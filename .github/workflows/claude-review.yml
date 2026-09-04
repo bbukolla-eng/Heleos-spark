@@ -47,6 +47,7 @@ jobs:
             --purpose "Review this pull request against CLAUDE.md, the spec, and ROADMAP.md" \
             --data-class INTERNAL --allowed-classes PUBLIC,INTERNAL \
             --decision "$EGRESS_DECISION" --rule "$EGRESS_RULE" \
+            --root "$GITHUB_WORKSPACE" \
             --precall "$RUNNER_TEMP/precall.json"
       - if: env.HAS_TOKEN == 'true'
         id: claude
@@ -73,6 +74,7 @@ jobs:
             --purpose "Review this pull request against CLAUDE.md, the spec, and ROADMAP.md" \
             --data-class INTERNAL --allowed-classes PUBLIC,INTERNAL \
             --decision "$EGRESS_DECISION" --rule "$EGRESS_RULE" \
+            --root "$GITHUB_WORKSPACE" \
             --conclusion "${{ steps.claude.conclusion }}" \
             --session-id "${{ steps.claude.outputs.session_id }}" \
             --precall "$RUNNER_TEMP/precall.json" \
