@@ -10,7 +10,7 @@ Each record states the question, the options considered (with the run record of 
 Recorded so far:
 
 
-- `2026-09-03-egress-policy.md` — Decision 12 (egress policy). Signed 2026-09-06 by Bekim Bukolla.
+- `2026-09-03-egress-policy.md` - Decision 12 (egress policy). Signed 2026-09-06 by Bekim Bukolla.
 - Pull request #3 records a 2026-09-01 decision that Claude Code works only in a designated lane branch; `ROADMAP.md` Decision 3 asks the owner to confirm or replace that policy.
 
 
