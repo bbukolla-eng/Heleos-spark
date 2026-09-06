@@ -130,7 +130,6 @@ class EgressRecord(unittest.TestCase):
         self.assertEqual(written["policy_decision"]["decision_sha256"], "absent")
 
 
-
 class GitFailureDegradesRatherThanCrashes(unittest.TestCase):
     """Write mode runs after the submission, so it must never lose a record to a git failure."""
 
@@ -239,8 +238,19 @@ class PreCallHashesSurviveACommitDuringTheRun(unittest.TestCase):
             written = json.loads(handle.read().strip())
         self.assertIn("precall-snapshot:absent", written["source_hashes"])
 
-if __name__ == "__main__":
-    unittest.main()
+    def test_check_writes_the_precall_snapshot(self):
+        """Both workflows run check with --precall before the provider step."""
+        precall = os.path.join(self.root, "precall.json")
+        code = record.main(
+            ["check", "--provider", "anthropic", "--purpose", "p", "--data-class", "INTERNAL",
+             "--decision", "docs/decisions/d.md", "--rule", "r", "--precall", precall],
+            env={"GITHUB_SHA": "b" * 40}, root=self.root,
+        )
+        self.assertEqual(code, 0)
+        with open(precall, encoding="utf-8") as handle:
+            payload = json.load(handle)
+        self.assertTrue(payload["source_hashes"])
+        self.assertTrue(any(entry.startswith("checkout-commit:sha1:bbbb") for entry in payload["source_hashes"]))
 
 
 class RunningFromOutsideTheTreeItChecks(unittest.TestCase):
@@ -264,20 +274,49 @@ class RunningFromOutsideTheTreeItChecks(unittest.TestCase):
         with open(record.__file__, encoding="utf-8") as source, open(self.copy, "w", encoding="utf-8") as target:
             target.write(source.read())
 
-    def run_copy(self, *extra):
-        argv = [sys.executable, self.copy, "check", "--provider", "anthropic", "--purpose", "p",
+    def run_copy(self, mode, *extra):
+        argv = [sys.executable, self.copy, mode, "--provider", "anthropic", "--purpose", "p",
                 "--data-class", "INTERNAL", "--decision", "docs/decisions/d.md", "--rule", "r"]
         return subprocess.run(argv + list(extra), capture_output=True, text=True, cwd=self.elsewhere)
 
     def test_without_root_the_copy_cannot_see_the_checkout(self):
-        result = self.run_copy()
+        result = self.run_copy("check")
         self.assertEqual(result.returncode, 1)
         self.assertIn("policy file missing", result.stdout)
 
     def test_with_root_the_copy_checks_the_real_checkout(self):
-        result = self.run_copy("--root", self.root)
+        result = self.run_copy("check", "--root", self.root)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("may receive INTERNAL", result.stdout)
+
+    def test_without_root_write_records_present_files_as_absent(self):
+        """PR #10 verified this in a simulated runner; the unit suite only covered check."""
+        out = os.path.join(self.elsewhere, "egress.jsonl")
+        result = self.run_copy("write", "--out", out)
+        self.assertTrue(os.path.exists(out), result.stdout + result.stderr)
+        with open(out, encoding="utf-8") as handle:
+            written = json.loads(handle.read().strip())
+        self.assertEqual(written["policy_decision"]["policy_sha256"], "absent")
+        self.assertEqual(written["policy_decision"]["outcome"], "refused")
+
+    def test_with_root_write_records_the_real_digests(self):
+        out = os.path.join(self.elsewhere, "egress.jsonl")
+        result = self.run_copy("write", "--root", self.root, "--out", out)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        with open(out, encoding="utf-8") as handle:
+            written = json.loads(handle.read().strip())
+        self.assertEqual(written["policy_decision"]["outcome"], "allow")
+        self.assertNotEqual(written["policy_decision"]["policy_sha256"], "absent")
+        self.assertRegex(written["policy_decision"]["policy_sha256"], r"^[0-9a-f]{64}$")
+
+    def test_the_root_flag_wins_over_the_keyword(self):
+        empty = tempfile.mkdtemp()
+        code = record.main(
+            ["check", "--provider", "anthropic", "--purpose", "p", "--data-class", "INTERNAL",
+             "--decision", "docs/decisions/d.md", "--rule", "r", "--root", self.root],
+            env={}, root=empty,
+        )
+        self.assertEqual(code, 0)
 
 
 class AnExampleSignatureIsNotASignature(unittest.TestCase):
@@ -382,3 +421,15 @@ class AnExampleSignatureIsNotASignature(unittest.TestCase):
             self.skipTest("draft not present in this checkout")
         with open(draft, encoding="utf-8") as handle:
             self.assertTrue(self.failures(handle.read()), "the live draft opened the gate")
+
+    def test_an_unclosed_fence_does_not_let_a_later_signature_count(self):
+        """Fail closed: a forgotten closer blanks the rest of the file, including a real signature."""
+        body = (
+            "# Draft\n\n```\nthis example never closes\n\n"
+            "**Status:** APPROVED\n\n**Decided by:** Bekim Bukolla **Date:** 2026-09-03\n"
+        )
+        self.assertTrue(self.failures(body), "an unclosed fence let a later signature open the gate")
+
+
+if __name__ == "__main__":
+    unittest.main()
