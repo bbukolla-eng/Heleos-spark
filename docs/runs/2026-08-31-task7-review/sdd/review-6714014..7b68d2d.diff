@@ -1,0 +1,3506 @@
+# Review package: 6714014d638ce7c7e489c2e758ef468797708d01..7b68d2dab447b912e59bb7d0d878f363f77c88b0
+
+## Commits
+7b68d2d review: task6 restart recovery closure
+
+## Files changed
+ crates/heleos-core/src/ingest/job.rs              |  527 ++++++++++
+ crates/heleos-core/src/store/ingest_repository.rs |  517 ++++++++++
+ crates/heleos-core/src/store/mod.rs               |   23 +
+ crates/heleos-core/tests/ingest.rs                | 1145 ++++++++++++++++++++-
+ crates/heleos-core/tests/restart.rs               |  457 +++++++-
+ 5 files changed, 2643 insertions(+), 26 deletions(-)
+
+## Diff
+diff --git a/crates/heleos-core/src/ingest/job.rs b/crates/heleos-core/src/ingest/job.rs
+index a7bdc96..c1524e1 100644
+--- a/crates/heleos-core/src/ingest/job.rs
++++ b/crates/heleos-core/src/ingest/job.rs
+@@ -38,20 +38,22 @@ pub(crate) const MAX_SOURCE_DISPLAY_BYTES: usize = 4 * 1024;
+ struct SourceMarker {
+     device: u64,
+     inode: u64,
+     length: u64,
+ }
+ 
+ pub struct IntakeSource {
+     file: File,
+     marker: SourceMarker,
+     display_name: String,
++    #[cfg(test)]
++    after_vault_read: Option<std::sync::Arc<dyn Fn() -> Result<()> + Send + Sync>>,
+ }
+ 
+ impl fmt::Debug for IntakeSource {
+     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+         formatter
+             .debug_struct("IntakeSource")
+             .field("display_name", &self.display_name)
+             .finish_non_exhaustive()
+     }
+ }
+@@ -62,20 +64,22 @@ impl IntakeSource {
+         options.read(true);
+         configure_source_open(&mut options);
+         let file = options.open(path).map_err(map_source_open_error)?;
+         let marker = source_marker(&file)?;
+         let display_name =
+             encode_source_display(path.file_name().ok_or(HeleosError::PolicyDenied)?)?;
+         Ok(Self {
+             file,
+             marker,
+             display_name,
++            #[cfg(test)]
++            after_vault_read: None,
+         })
+     }
+ 
+     pub(crate) fn fingerprint(&mut self, maximum: u64) -> Result<SourceFingerprint> {
+         if maximum == 0 {
+             return Err(HeleosError::PolicyDenied);
+         }
+         self.recheck()?;
+         self.file
+             .seek(SeekFrom::Start(0))
+@@ -134,38 +138,50 @@ impl IntakeSource {
+         budget: crate::VaultWriteBudget,
+         inventory: &crate::VaultInventory,
+         orphan_budget: crate::vault::VaultOrphanBudget,
+         expected: Sha256Digest,
+         expected_length: u64,
+     ) -> Result<crate::PutOutcome> {
+         self.recheck()?;
+         self.rewind()?;
+         let outcome =
+             vault.put_reader_accounted(&mut self.file, budget, inventory, orphan_budget)?;
++        #[cfg(test)]
++        if let Some(observer) = &self.after_vault_read {
++            observer()?;
++        }
+         let (digest, byte_length) = match &outcome {
+             crate::PutOutcome::Stored(stored) => (stored.digest, stored.byte_length),
+             crate::PutOutcome::QuotaRejected {
+                 digest,
+                 byte_length,
+             } => (*digest, *byte_length),
+         };
+         if digest != expected || byte_length != expected_length {
+             return Err(HeleosError::Integrity);
+         }
+         self.recheck()?;
+         let repeated = self.fingerprint(PdfLimits::default().max_input_bytes)?;
+         if repeated.digest != Some(expected) || repeated.byte_length != expected_length {
+             return Err(HeleosError::Integrity);
+         }
+         Ok(outcome)
+     }
+ 
++    #[cfg(all(test, unix))]
++    fn inject_after_vault_read_for_test(
++        &mut self,
++        observer: std::sync::Arc<dyn Fn() -> Result<()> + Send + Sync>,
++    ) {
++        self.after_vault_read = Some(observer);
++    }
++
+     pub(crate) fn verify_unchanged(&mut self, expected: &SourceFingerprint) -> Result<()> {
+         let repeated = self.fingerprint(PdfLimits::default().max_input_bytes)?;
+         if &repeated != expected {
+             return Err(HeleosError::Integrity);
+         }
+         Ok(())
+     }
+ 
+     fn rewind(&mut self) -> Result<()> {
+         self.file
+@@ -3994,20 +4010,344 @@ mod tests {
+             .expect("resume with deterministic manifest winner")
+             .receipt;
+         let mut expected = vec![source_digest, manifest_digest];
+         expected.sort_unstable();
+ 
+         assert_eq!(winner_calls.get(), 1);
+         assert_eq!(receipt.outcome, IngestOutcome::AcceptedNew);
+         assert_eq!(receipt.preexisting_vault_digests, expected);
+     }
+ 
++    #[test]
++    fn committed_authority_with_unknown_outcome_reopens_as_one_replayable_result() {
++        // Break caught: a post-commit check failure causing a durable accepted authority to be
++        // retried as a second job/result instead of a same-key replay after restart.
++        let database_parent = tempfile::TempDir::new().expect("create database parent");
++        crate::apply_private_permissions(database_parent.path()).expect("harden database parent");
++        let database_path = fs::canonicalize(database_parent.path())
++            .expect("canonicalize database parent")
++            .join("foundation.sqlite3");
++        let mut store = crate::Store::open_writer(&database_path).expect("open writer");
++        store.migrate().expect("migrate store");
++        let vault_parent = tempfile::TempDir::new().expect("create vault parent");
++        let vault = engine_test_vault(&vault_parent);
++        let ids = EngineTestIds::new(300);
++        let project_id = ProjectId::from_uuid(uuid(290));
++        engine_test_project(&mut store, &ids, project_id);
++        let source_parent = tempfile::TempDir::new().expect("create source parent");
++        let source_path = source_parent.path().join("unknown-commit.pdf");
++        let source = b"%PDF-1.7\nunknown accepted commit\n%%EOF\n";
++        fs::write(&source_path, source).expect("write test source");
++        let source_digest = Sha256Digest::hash_reader(source.as_slice()).expect("hash source");
++        let probe = EngineAcceptedProbe {
++            provenance: provenance(),
++        };
++        store.inject_commit_outcome_unknown_after_for_test(3);
++        let result = IngestEngine::new(&mut store, &vault, &probe, &EngineTestClock, &ids)
++            .expect("construct intake engine")
++            .ingest(IngestRequest {
++                project_id,
++                source: IntakeSource::open(&source_path).expect("open source"),
++                idempotency_key: IdempotencyKey::try_from("unknown-authority").expect("key"),
++                actor: ActorId::from_str("tester").expect("actor"),
++                pdf_limits: PdfLimits::default(),
++            });
++        assert!(matches!(result, Err(HeleosError::CommitOutcomeUnknown)));
++        let before = crate::FoundationReader::new(&store, &vault)
++            .inspect_foundation(project_id)
++            .expect("inspect committed unknown outcome");
++        assert_eq!(before.jobs.len(), 1);
++        assert_eq!(before.jobs[0].state, crate::JobState::Succeeded);
++        assert_eq!(before.intake_events.len(), 1);
++        assert_eq!(before.intake_events[0].outcome, IngestOutcome::AcceptedNew);
++        assert_eq!(before.content_objects.len(), 2);
++        assert!(
++            before
++                .content_objects
++                .iter()
++                .any(|object| object.sha256 == source_digest)
++        );
++        let authoritative_job_id = before.jobs[0].job_id;
++        let authoritative_event_id = before.intake_events[0].ingest_event_id;
++        let document_ids = before.document_ids.clone();
++        let revision_ids = before.revision_ids.clone();
++        let evidence = before.evidence.clone();
++
++        drop(store);
++        drop(vault);
++        let mut store = crate::Store::open_writer(&database_path).expect("reopen writer");
++        let vault = crate::Vault::open(crate::VaultConfig {
++            root: fs::canonicalize(vault_parent.path())
++                .expect("canonicalize vault parent")
++                .join("vault"),
++            open_mode: crate::VaultOpenMode::ExistingOnly,
++        })
++        .expect("reopen vault");
++        let replay = IngestEngine::new(&mut store, &vault, &probe, &EngineTestClock, &ids)
++            .expect("construct replay engine")
++            .ingest(IngestRequest {
++                project_id,
++                source: IntakeSource::open(&source_path).expect("reopen source"),
++                idempotency_key: IdempotencyKey::try_from("unknown-authority").expect("key"),
++                actor: ActorId::from_str("replayer").expect("actor"),
++                pdf_limits: PdfLimits::default(),
++            })
++            .expect("retry resolves as replay");
++        assert_eq!(replay.outcome, IngestOutcome::IdempotentReplay);
++        assert_eq!(replay.authoritative_job_id, authoritative_job_id);
++        assert_ne!(replay.ingest_event_id, authoritative_event_id);
++        let after = crate::FoundationReader::new(&store, &vault)
++            .inspect_foundation(project_id)
++            .expect("inspect replayed authority");
++        assert_eq!(after.jobs.len(), 1);
++        assert_eq!(after.content_objects.len(), 2);
++        assert_eq!(after.document_ids, document_ids);
++        assert_eq!(after.revision_ids, revision_ids);
++        assert_eq!(after.evidence, evidence);
++        assert_eq!(after.intake_events.len(), 2);
++        assert_eq!(
++            after
++                .intake_events
++                .iter()
++                .filter(|event| event.outcome == IngestOutcome::AcceptedNew)
++                .count(),
++            1
++        );
++        assert_eq!(
++            after
++                .intake_events
++                .iter()
++                .filter(|event| event.outcome == IngestOutcome::IdempotentReplay)
++                .count(),
++            1
++        );
++    }
++
++    #[test]
++    fn project_association_preflight_resume_rehashes_its_claimed_existing_object() {
++        // Break caught: a resumed association denial claiming call-relative preexistence after
++        // its checkpointed duplicate disappeared or changed following the commit-boundary fault.
++        use crate::store::ingest_repository::JobCreateCommand;
++
++        struct ManualEngineClock(Cell<i64>);
++
++        impl crate::Clock for ManualEngineClock {
++            fn now_unix_ms(&self) -> i64 {
++                self.0.get()
++            }
++        }
++
++        for remove_object in [true, false] {
++            let mut store = crate::Store::open_in_memory().expect("open test store");
++            store.migrate().expect("migrate test store");
++            let vault_parent = tempfile::TempDir::new().expect("create vault parent");
++            let vault = engine_test_vault(&vault_parent);
++            let ids = EngineTestIds::new(800);
++            let project_id = ProjectId::from_uuid(uuid(790));
++            engine_test_project(&mut store, &ids, project_id);
++            let source = b"%PDF-1.7\nassociation checkpoint object\n%%EOF\n";
++            let digest = Sha256Digest::hash_reader(source.as_slice()).expect("hash source");
++            let byte_length = u64::try_from(source.len()).expect("source length");
++            let stored = match vault
++                .put_reader(
++                    source.as_slice(),
++                    crate::VaultWriteBudget::new(byte_length, byte_length)
++                        .expect("object write budget"),
++                )
++                .expect("publish claimed duplicate")
++            {
++                crate::PutOutcome::Stored(stored) => stored,
++                crate::PutOutcome::QuotaRejected { .. } => panic!("object must fit"),
++            };
++            let mut input = valid_input();
++            input.project_id = project_id;
++            input.idempotency_key = IdempotencyKey::try_from("association-resume").expect("key");
++            input.content_sha256 = Some(digest);
++            input.byte_length = byte_length;
++            input.source_display = "utf8:association.pdf".to_owned();
++            let quarantine = IntakeQuarantineV1 {
++                schema: INTAKE_QUARANTINE_SCHEMA_V1.to_owned(),
++                reason: IntakeQuarantineReasonV1::ProjectAssociationQuota,
++                probe_provenance: None,
++            };
++            let job_id = JobId::from_uuid(uuid(900));
++            let created_at_ms = 1_700_000_000_000_i64;
++            store
++                .job_create_with_checkpoint_and_audit(JobCreateCommand {
++                    job_id,
++                    project_id,
++                    input,
++                    budget: IngestBudgetV1::new(byte_length),
++                    checkpoint: IngestCheckpointV1 {
++                        schema: INGEST_CHECKPOINT_SCHEMA_V1.to_owned(),
++                        phase: IngestCheckpointPhaseV1::PreflightRejected {
++                            content_sha256: Some(digest),
++                            byte_length,
++                            quarantine,
++                        },
++                    },
++                    actor: ActorId::from_str("tester").expect("actor"),
++                    created_at_ms,
++                    deadline_at_ms: created_at_ms + JOB_DEADLINE_MS,
++                    audit_event_id: crate::AuditEventId::from_uuid(uuid(901)),
++                })
++                .expect("create preflight job");
++            let clock = ManualEngineClock(Cell::new(created_at_ms));
++            let probe = EngineAcceptedProbe {
++                provenance: provenance(),
++            };
++            let interrupted = IngestEngine::with_fault_injector(
++                &mut store,
++                &vault,
++                &probe,
++                &clock,
++                &ids,
++                &EngineFailAt(super::super::FaultPoint::BeforeAuthoritativeCommit),
++            )
++            .expect("construct faulting resume engine")
++            .resume(job_id, ActorId::from_str("first-resumer").expect("actor"));
++            assert!(matches!(interrupted, Err(HeleosError::FaultInjected)));
++
++            let object_path = vault_parent
++                .path()
++                .join("vault")
++                .join(crate::Vault::object_key(digest));
++            if remove_object {
++                fs::remove_file(&object_path).expect("remove checkpoint object");
++            } else {
++                fs::write(&object_path, vec![0_u8; source.len()])
++                    .expect("replace checkpoint object at same length");
++                crate::apply_private_permissions(&object_path)
++                    .expect("reharden corrupt checkpoint object");
++            }
++            clock.0.set(created_at_ms + LEASE_DURATION_MS);
++            let resumed = IngestEngine::new(&mut store, &vault, &probe, &clock, &ids)
++                .expect("construct second resume engine")
++                .resume(job_id, ActorId::from_str("second-resumer").expect("actor"));
++            assert!(matches!(resumed, Err(HeleosError::Integrity)));
++            let inspection = crate::FoundationReader::new(&store, &vault)
++                .inspect_foundation(project_id)
++                .expect("inspect rejected association recovery");
++            assert_eq!(inspection.jobs.len(), 1);
++            assert_eq!(inspection.jobs[0].state, crate::JobState::Failed);
++            assert_eq!(inspection.jobs[0].attempt, 2);
++            assert_eq!(inspection.counts.content_objects, 0);
++            assert_eq!(
++                inspection
++                    .intake_events
++                    .iter()
++                    .filter(|event| event.outcome == IngestOutcome::Interrupted)
++                    .count(),
++                1
++            );
++            if remove_object {
++                assert!(!object_path.exists());
++            } else {
++                assert!(matches!(
++                    vault.open_verified(stored.digest),
++                    Err(HeleosError::Integrity)
++                ));
++            }
++        }
++    }
++
++    #[test]
++    #[cfg(unix)]
++    fn fresh_source_mutation_before_vault_and_after_vault_read_never_commits_authority() {
++        // Break caught: same-inode/same-length source replacement escaping either the frozen
++        // fingerprint-to-Vault binding or the Vault-read-to-final-source-check binding.
++        for timing in ["before_vault", "after_vault_read"] {
++            use std::io::{Seek, SeekFrom, Write};
++            use std::sync::{Arc, Mutex};
++
++            let mut store = crate::Store::open_in_memory().expect("open test store");
++            store.migrate().expect("migrate test store");
++            let vault_parent = tempfile::TempDir::new().expect("create vault parent");
++            let vault = engine_test_vault(&vault_parent);
++            let ids = EngineTestIds::new(500);
++            let project_id = ProjectId::from_uuid(uuid(490));
++            engine_test_project(&mut store, &ids, project_id);
++            let source_parent = tempfile::TempDir::new().expect("create source parent");
++            let source_path = source_parent.path().join("mutating-fresh.pdf");
++            let original = b"%PDF-1.7\nfresh source alpha\n%%EOF\n";
++            let replacement = b"%PDF-1.7\nfresh source omega\n%%EOF\n";
++            assert_eq!(original.len(), replacement.len());
++            fs::write(&source_path, original).expect("write original source");
++            let original_digest =
++                Sha256Digest::hash_reader(original.as_slice()).expect("hash original");
++            let replacement_digest =
++                Sha256Digest::hash_reader(replacement.as_slice()).expect("hash replacement");
++            let writer = fs::OpenOptions::new()
++                .read(true)
++                .write(true)
++                .open(&source_path)
++                .expect("open retained source mutator");
++            let writer = Arc::new(Mutex::new(writer));
++            let mutate: Arc<dyn Fn() -> Result<()> + Send + Sync> = {
++                let writer = Arc::clone(&writer);
++                Arc::new(move || -> Result<()> {
++                    let mut writer = writer.lock().map_err(|_| HeleosError::Integrity)?;
++                    writer.seek(SeekFrom::Start(0)).map_err(HeleosError::Io)?;
++                    writer.write_all(replacement).map_err(HeleosError::Io)?;
++                    writer.sync_all().map_err(HeleosError::Io)
++                })
++            };
++            let mut source = IntakeSource::open(&source_path).expect("open retained source");
++            if timing == "after_vault_read" {
++                source.inject_after_vault_read_for_test(Arc::clone(&mutate));
++            }
++            let probe = EngineAcceptedProbe {
++                provenance: provenance(),
++            };
++            let before_vault = {
++                let mutate = Arc::clone(&mutate);
++                move |point: AccountedPublicationTestPoint, _: Sha256Digest| -> Result<()> {
++                    if timing == "before_vault" && point == AccountedPublicationTestPoint::Original
++                    {
++                        mutate()?;
++                    }
++                    Ok(())
++                }
++            };
++            let mut engine = IngestEngine::new(&mut store, &vault, &probe, &EngineTestClock, &ids)
++                .expect("construct mutation engine");
++            engine.before_accounted_publication = Some(&before_vault);
++            let result = engine.ingest(IngestRequest {
++                project_id,
++                source,
++                idempotency_key: IdempotencyKey::try_from(format!("fresh-{timing}")).expect("key"),
++                actor: ActorId::from_str("tester").expect("actor"),
++                pdf_limits: PdfLimits::default(),
++            });
++            assert!(matches!(result, Err(HeleosError::Integrity)));
++            let inspection = crate::FoundationReader::new(&store, &vault)
++                .inspect_foundation(project_id)
++                .expect("inspect rejected mutation");
++            assert_eq!(inspection.counts.jobs, 0);
++            assert_eq!(inspection.counts.ingest_events, 0);
++            assert_eq!(inspection.counts.content_objects, 0);
++            if timing == "before_vault" {
++                assert!(matches!(
++                    vault.open_verified(original_digest),
++                    Err(HeleosError::NotFound)
++                ));
++                assert!(vault.open_verified(replacement_digest).is_ok());
++            } else {
++                assert!(vault.open_verified(original_digest).is_ok());
++                assert!(matches!(
++                    vault.open_verified(replacement_digest),
++                    Err(HeleosError::NotFound)
++                ));
++            }
++        }
++    }
++
+     #[test]
+     fn accepted_receipt_binds_sheets_length_and_preexisting_object_authority() {
+         // Break caught: valid-looking receipt scalars drifting from manifest/vault authority.
+         let mut receipt = accepted_receipt();
+         receipt.sheet_ids[0] = SheetId::from(Sha256Digest::from_bytes([8; 32]));
+         assert!(receipt.validate().is_err());
+ 
+         let mut receipt = accepted_receipt();
+         receipt.byte_length += 1;
+         assert!(receipt.validate().is_err());
+@@ -4268,20 +4608,207 @@ mod tests {
+                 resumed_attempt,
+                 interrupted_event_id,
+                 receipt,
+             };
+             assert!(resume.validate().is_err());
+             let value = serde_json::to_value(&resume).expect("resume JSON");
+             assert!(serde_json::from_value::<ResumeReceipt>(value).is_err());
+         }
+     }
+ 
++    #[test]
++    fn public_receipt_jcs_vectors_are_literal_and_stable() {
++        // Break caught: a public authority or recovery receipt changing its canonical wire bytes.
++        let accepted_new = accepted_receipt();
++        let mut accepted_duplicate = accepted_new.clone();
++        accepted_duplicate.outcome = IngestOutcome::AcceptedDuplicate;
++        accepted_duplicate.preexisting_vault_digests = vec![
++            accepted_duplicate
++                .content_sha256
++                .expect("duplicate original"),
++            accepted_duplicate
++                .evidence_manifest
++                .as_ref()
++                .expect("duplicate manifest")
++                .manifest_content_sha256,
++        ];
++        accepted_duplicate.preexisting_vault_digests.sort_unstable();
++        accepted_duplicate.validate().expect("duplicate receipt");
++
++        let mut pdf_quarantine = accepted_new.clone();
++        pdf_quarantine.outcome = IngestOutcome::QuarantinedCorrupt;
++        pdf_quarantine.quarantine = Some(IntakeQuarantineV1 {
++            schema: INTAKE_QUARANTINE_SCHEMA_V1.to_owned(),
++            reason: IntakeQuarantineReasonV1::Pdf(PdfQuarantineReason::BadMagic),
++            probe_provenance: Some(provenance()),
++        });
++        pdf_quarantine.document_id = None;
++        pdf_quarantine.revision_id = None;
++        pdf_quarantine.sheet_ids.clear();
++        pdf_quarantine.evidence_manifest = None;
++        pdf_quarantine.validate().expect("PDF quarantine receipt");
++
++        let mut nonretained = pdf_quarantine.clone();
++        nonretained.outcome = IngestOutcome::QuarantinedLimit;
++        nonretained.quarantine = Some(IntakeQuarantineV1 {
++            schema: INTAKE_QUARANTINE_SCHEMA_V1.to_owned(),
++            reason: IntakeQuarantineReasonV1::OriginalRetentionQuota,
++            probe_provenance: None,
++        });
++        nonretained.validate().expect("nonretained limit receipt");
++
++        let mut replay = accepted_new.clone();
++        replay.outcome = IngestOutcome::IdempotentReplay;
++        replay.preexisting_vault_digests = accepted_duplicate.preexisting_vault_digests.clone();
++        replay.validate().expect("accepted replay receipt");
++
++        let resumed_initial = ResumeReceipt {
++            job_id: pdf_quarantine.authoritative_job_id,
++            resumed_attempt: Some(1),
++            interrupted_event_id: None,
++            receipt: pdf_quarantine.clone(),
++        };
++        resumed_initial.validate().expect("initial resume receipt");
++        let mut interrupted_receipt = pdf_quarantine.clone();
++        interrupted_receipt.attempt = 2;
++        let resumed_interrupted = ResumeReceipt {
++            job_id: interrupted_receipt.authoritative_job_id,
++            resumed_attempt: Some(2),
++            interrupted_event_id: Some(IngestEventId::from_uuid(uuid(9))),
++            receipt: interrupted_receipt,
++        };
++        resumed_interrupted
++            .validate()
++            .expect("interrupted resume receipt");
++        let resumed_terminal = ResumeReceipt {
++            job_id: pdf_quarantine.authoritative_job_id,
++            resumed_attempt: None,
++            interrupted_event_id: None,
++            receipt: pdf_quarantine.clone(),
++        };
++        resumed_terminal
++            .validate()
++            .expect("terminal resume receipt");
++
++        let actual = [
++            crate::canonical_json(&accepted_new).expect("accepted-new JCS"),
++            crate::canonical_json(&accepted_duplicate).expect("accepted-duplicate JCS"),
++            crate::canonical_json(&pdf_quarantine).expect("PDF quarantine JCS"),
++            crate::canonical_json(&nonretained).expect("nonretained JCS"),
++            crate::canonical_json(&replay).expect("replay JCS"),
++            crate::canonical_json(&resumed_initial).expect("initial resume JCS"),
++            crate::canonical_json(&resumed_interrupted).expect("interrupted resume JCS"),
++            crate::canonical_json(&resumed_terminal).expect("terminal resume JCS"),
++        ];
++
++        const ACCEPTED_PREFIX: &[u8] = br#"{"attempt":1,"authoritative_job_id":"00000000-0000-4000-8000-000000000002","byte_length":7,"content_sha256":"0101010101010101010101010101010101010101010101010101010101010101","document_id":"0101010101010101010101010101010101010101010101010101010101010101","evidence_manifest":{"lineages":[{"evidence_id":"00000000-0000-4000-8000-000000000004","originating_job_id":"00000000-0000-4000-8000-000000000002","project_id":"00000000-0000-4000-8000-000000000003"}],"manifest":{"document_id":"0101010101010101010101010101010101010101010101010101010101010101","original":{"byte_length":7,"media_type":"application/pdf","sha256":"0101010101010101010101010101010101010101010101010101010101010101"},"pages":[{"height_micropoints":792000000,"index":0,"page_id":"afc77f9543d33514d6f70fa7c664189efb42292ec45c2ca7a935238d204aff72","rotation_degrees":0,"transform":{"m11":1,"m12":0,"m21":0,"m22":-1,"tx_micropoints":0,"ty_micropoints":792000000},"unit":"pt","width_micropoints":612000000}],"probe_provenance":{"guest_dependency_graph_sha256":"0404040404040404040404040404040404040404040404040404040404040404","guest_source_tree_sha256":"0303030303030303030303030303030303030303030303030303030303030303","guest_wasm_sha256":"0202020202020202020202020202020202020202020202020202020202020202","parser_name":"fixture-parser","parser_version":"1.0.0","protocol_version":"heleos.pdf-probe/v1"},"requested_limits":{"max_fuel":5000000000,"max_guest_memory_bytes":805306368,"max_indirect_objects":250000,"max_input_bytes":268435456,"max_instances":1,"max_metadata_bytes":16777216,"max_nested_references":64,"max_page_axis_points":14400,"max_pages":10000,"max_protocol_output_bytes":4194304,"max_tables":4,"timeout_seconds":120},"revision_id":"0101010101010101010101010101010101010101010101010101010101010101","schema":"heleos.evidence-manifest/v1"},"manifest_byte_length":1353,"manifest_content_sha256":"bf966017bc683b3c858c2fa32c796f55a59036215d865ed20abbec5cff30469b","manifest_media_type":"application/vnd.heleos.evidence-manifest+json;version=1","manifest_vault_key":"objects/sha256/bf/96/bf966017bc683b3c858c2fa32c796f55a59036215d865ed20abbec5cff30469b","original_vault_key":"objects/sha256/01/01/0101010101010101010101010101010101010101010101010101010101010101"},"ingest_event_id":"00000000-0000-4000-8000-000000000001","outcome":""#;
++        const ACCEPTED_PREEXISTING_PREFIX: &[u8] = br#"","preexisting_vault_digests":"#;
++        const ACCEPTED_SUFFIX: &[u8] = br#","quarantine":null,"revision_id":"0101010101010101010101010101010101010101010101010101010101010101","sheet_ids":["afc77f9543d33514d6f70fa7c664189efb42292ec45c2ca7a935238d204aff72"]}"#;
++        const DUPLICATE_OBJECTS: &[u8] = br#"["0101010101010101010101010101010101010101010101010101010101010101","bf966017bc683b3c858c2fa32c796f55a59036215d865ed20abbec5cff30469b"]"#;
++        const QUARANTINE_AFTER_ATTEMPT: &[u8] = br#","authoritative_job_id":"00000000-0000-4000-8000-000000000002","byte_length":7,"content_sha256":"0101010101010101010101010101010101010101010101010101010101010101","document_id":null,"evidence_manifest":null,"ingest_event_id":"00000000-0000-4000-8000-000000000001","outcome":""#;
++        const QUARANTINE_BEFORE_BODY: &[u8] = br#"","preexisting_vault_digests":[],"quarantine":"#;
++        const PDF_QUARANTINE_BODY: &[u8] = br#"{"probe_provenance":{"guest_dependency_graph_sha256":"0404040404040404040404040404040404040404040404040404040404040404","guest_source_tree_sha256":"0303030303030303030303030303030303030303030303030303030303030303","guest_wasm_sha256":"0202020202020202020202020202020202020202020202020202020202020202","parser_name":"fixture-parser","parser_version":"1.0.0","protocol_version":"heleos.pdf-probe/v1"},"reason":{"detail":{"kind":"bad_magic"},"kind":"pdf"},"schema":"heleos.intake-quarantine/v1"}"#;
++        const NONRETAINED_BODY: &[u8] = br#"{"probe_provenance":null,"reason":{"kind":"original_retention_quota"},"schema":"heleos.intake-quarantine/v1"}"#;
++        const QUARANTINE_SUFFIX: &[u8] = br#","revision_id":null,"sheet_ids":[]}"#;
++        const RESUME_PREFIX: &[u8] = br#"{"interrupted_event_id":"#;
++        const RESUME_BEFORE_RECEIPT: &[u8] =
++            br#","job_id":"00000000-0000-4000-8000-000000000002","receipt":"#;
++        const RESUME_BEFORE_ATTEMPT: &[u8] = br#","resumed_attempt":"#;
++
++        fn literal(parts: &[&[u8]]) -> Vec<u8> {
++            let length = parts.iter().map(|part| part.len()).sum();
++            let mut bytes = Vec::with_capacity(length);
++            for part in parts {
++                bytes.extend_from_slice(part);
++            }
++            bytes
++        }
++        let accepted_literal = |outcome: &'static [u8], preexisting: &'static [u8]| {
++            literal(&[
++                ACCEPTED_PREFIX,
++                outcome,
++                ACCEPTED_PREEXISTING_PREFIX,
++                preexisting,
++                ACCEPTED_SUFFIX,
++            ])
++        };
++        let quarantine_literal =
++            |attempt: &'static [u8], outcome: &'static [u8], body: &'static [u8]| {
++                literal(&[
++                    br#"{"attempt":"#,
++                    attempt,
++                    QUARANTINE_AFTER_ATTEMPT,
++                    outcome,
++                    QUARANTINE_BEFORE_BODY,
++                    body,
++                    QUARANTINE_SUFFIX,
++                ])
++            };
++        let resume_literal =
++            |interrupted: &'static [u8], receipt: &[u8], resumed_attempt: &'static [u8]| {
++                literal(&[
++                    RESUME_PREFIX,
++                    interrupted,
++                    RESUME_BEFORE_RECEIPT,
++                    receipt,
++                    RESUME_BEFORE_ATTEMPT,
++                    resumed_attempt,
++                    b"}",
++                ])
++            };
++        let accepted_new_literal = accepted_literal(b"accepted_new", b"[]");
++        let accepted_duplicate_literal = accepted_literal(b"accepted_duplicate", DUPLICATE_OBJECTS);
++        let pdf_literal = quarantine_literal(b"1", b"quarantined_corrupt", PDF_QUARANTINE_BODY);
++        let interrupted_pdf_literal =
++            quarantine_literal(b"2", b"quarantined_corrupt", PDF_QUARANTINE_BODY);
++        let nonretained_literal = quarantine_literal(b"1", b"quarantined_limit", NONRETAINED_BODY);
++        let replay_literal = accepted_literal(b"idempotent_replay", DUPLICATE_OBJECTS);
++        let expected = [
++            accepted_new_literal,
++            accepted_duplicate_literal,
++            pdf_literal.clone(),
++            nonretained_literal,
++            replay_literal,
++            resume_literal(b"null", &pdf_literal, b"1"),
++            resume_literal(
++                br#""00000000-0000-4000-8000-000000000009""#,
++                &interrupted_pdf_literal,
++                b"2",
++            ),
++            resume_literal(b"null", &pdf_literal, b"null"),
++        ];
++        assert_eq!(actual, expected);
++
++        for (bytes, receipt) in expected[..5].iter().zip([
++            &accepted_new,
++            &accepted_duplicate,
++            &pdf_quarantine,
++            &nonretained,
++            &replay,
++        ]) {
++            assert_eq!(
++                serde_json::from_slice::<IngestReceipt>(bytes).expect("literal receipt vector"),
++                *receipt
++            );
++        }
++        for (bytes, receipt) in
++            expected[5..]
++                .iter()
++                .zip([&resumed_initial, &resumed_interrupted, &resumed_terminal])
++        {
++            assert_eq!(
++                serde_json::from_slice::<ResumeReceipt>(bytes).expect("literal resume vector"),
++                *receipt
++            );
++        }
++    }
++
+     #[test]
+     fn nested_pdf_quarantine_reason_rejects_unknown_outer_fields() {
+         // Break caught: Task 6 strict wrapper inheriting permissive adjacent-enum decoding.
+         let value = serde_json::json!({
+             "schema": INTAKE_QUARANTINE_SCHEMA_V1,
+             "reason": {
+                 "kind": "pdf",
+                 "detail": {"kind": "bad_magic", "extra": true}
+             },
+             "probe_provenance": provenance(),
+diff --git a/crates/heleos-core/src/store/ingest_repository.rs b/crates/heleos-core/src/store/ingest_repository.rs
+index 319e5c6..a40d034 100644
+--- a/crates/heleos-core/src/store/ingest_repository.rs
++++ b/crates/heleos-core/src/store/ingest_repository.rs
+@@ -4558,20 +4558,158 @@ mod tests {
+                     )
+                     .map_err(|_| HeleosError::Database)?;
+                 if changed != 1 {
+                     return Err(HeleosError::Integrity);
+                 }
+                 Ok(())
+             })
+             .expect("forge matching queued checkpoint and audit");
+     }
+ 
++    fn recovery_command(job_id: JobId, now_ms: i64, id_base: u128) -> JobRecoverCommand {
++        JobRecoverCommand {
++            job_id,
++            actor: ActorId::from_str("recovery-actor").expect("actor"),
++            lease_owner: uuid(id_base),
++            now_ms,
++            expected_probe_provenance: provenance(),
++            interrupted_event_id: IngestEventId::from_uuid(uuid(id_base + 1)),
++            audit_event_ids: [
++                AuditEventId::from_uuid(uuid(id_base + 2)),
++                AuditEventId::from_uuid(uuid(id_base + 3)),
++            ],
++        }
++    }
++
++    fn queued_recovery_fixture(created_at_ms: i64, key: &str) -> (Store, ProjectId, JobId) {
++        let mut store = Store::open_in_memory().expect("open recovery store");
++        store.migrate().expect("migrate recovery store");
++        let project_id = ProjectId::from_uuid(uuid(30_000));
++        let job_id = JobId::from_uuid(uuid(30_001));
++        insert_project(&store, project_id);
++        let input = valid_input(project_id, key);
++        let digest = input.content_sha256.expect("recovery digest");
++        queue_inventory_job(
++            &mut store,
++            project_id,
++            job_id,
++            input.clone(),
++            IngestCheckpointV1 {
++                schema: INGEST_CHECKPOINT_SCHEMA_V1.to_owned(),
++                phase: IngestCheckpointPhaseV1::VaultPublished {
++                    original: StoredObjectV1 {
++                        digest,
++                        byte_length: input.byte_length,
++                        vault_key: crate::Vault::object_key(digest),
++                    },
++                },
++            },
++            created_at_ms,
++            AuditEventId::from_uuid(uuid(30_002)),
++        );
++        (store, project_id, job_id)
++    }
++
++    fn job_actions(store: &Store, job_id: JobId) -> Vec<String> {
++        let mut statement = store
++            .connection
++            .prepare(
++                "SELECT action FROM audit_events
++                 WHERE subject_type = 'job' AND subject_id = ?1
++                 ORDER BY sequence",
++            )
++            .expect("prepare job action query");
++        statement
++            .query_map([job_id.as_uuid().to_string()], |row| row.get(0))
++            .expect("query job actions")
++            .collect::<std::result::Result<Vec<_>, _>>()
++            .expect("read job actions")
++    }
++
++    fn job_state_row(store: &Store, job_id: JobId) -> (String, i64, Option<i64>, Option<String>) {
++        store
++            .connection
++            .query_row(
++                "SELECT state, attempt, lease_expires_at_ms, terminal_reason
++                 FROM job_runs WHERE id = ?1",
++                [job_id.as_uuid().to_string()],
++                |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?)),
++            )
++            .expect("read job state")
++    }
++
++    struct ForgedJobState<'a> {
++        state: &'a str,
++        attempt: u32,
++        lease_owner: Option<Uuid>,
++        lease_expires_at_ms: Option<i64>,
++        terminal_reason: Option<&'a str>,
++        checkpoint: &'a IngestCheckpointV1,
++        updated_at_ms: i64,
++    }
++
++    fn forge_job_state_and_matching_anchor(
++        store: &mut Store,
++        job_id: JobId,
++        state: ForgedJobState<'_>,
++    ) {
++        store
++            .connection
++            .execute_batch(
++                "DROP TRIGGER job_runs_legal_transition;
++                 DROP TRIGGER audit_events_no_update;",
++            )
++            .expect("open bounded recovery fixture");
++        let checkpoint_json = json_text(state.checkpoint, EIGHT_MIB).expect("checkpoint JSON");
++        store
++            .with_immediate_transaction(|transaction| {
++                let changed = transaction
++                    .execute(
++                        "UPDATE job_runs
++                         SET state = ?1, attempt = ?2, lease_owner = ?3,
++                             lease_expires_at_ms = ?4, checkpoint_json = ?5,
++                             terminal_reason = ?6, updated_at_ms = ?7
++                         WHERE id = ?8",
++                        params![
++                            state.state,
++                            i64::from(state.attempt),
++                            state
++                                .lease_owner
++                                .map(|value| value.hyphenated().to_string()),
++                            state.lease_expires_at_ms,
++                            checkpoint_json,
++                            state.terminal_reason,
++                            state.updated_at_ms,
++                            job_id.as_uuid().to_string(),
++                        ],
++                    )
++                    .map_err(|_| HeleosError::Database)?;
++                if changed != 1 {
++                    return Err(HeleosError::Integrity);
++                }
++                let anchored = json_text(&job_audit_snapshot(transaction, job_id)?, ONE_MIB)?;
++                let changed = transaction
++                    .execute(
++                        "UPDATE audit_events SET after_json = ?1
++                         WHERE subject_type = 'job' AND subject_id = ?2
++                           AND action = 'job_created'",
++                        params![anchored, job_id.as_uuid().to_string()],
++                    )
++                    .map_err(|_| HeleosError::Database)?;
++                if changed != 1 {
++                    return Err(HeleosError::Integrity);
++                }
++                Ok(())
++            })
++            .expect("forge recovery state and matching latest anchor");
++    }
++
+     fn accepted_commit_fixture() -> (Store, AcceptedIntakeCommand) {
+         let mut store = Store::open_in_memory().expect("open store");
+         store.migrate().expect("migrate store");
+         let project_id = ProjectId::from_uuid(uuid(100));
+         let job_id = JobId::from_uuid(uuid(101));
+         insert_project(&store, project_id);
+         let input = valid_input(project_id, "accepted-command");
+         let original = StoredObjectV1 {
+             digest: input.content_sha256.expect("content digest"),
+             byte_length: input.byte_length,
+@@ -5522,20 +5660,399 @@ mod tests {
+                 actor: ActorId::from_str("fixture-actor").expect("actor"),
+                 lease_owner: uuid(37),
+                 now_ms: near_jcs_max - LEASE_DURATION_MS + 1,
+                 lease_expires_at_ms: near_jcs_max,
+                 audit_event_id: AuditEventId::from_uuid(uuid(38)),
+             }),
+             Err(HeleosError::Integrity)
+         ));
+     }
+ 
++    #[test]
++    fn recovery_distinguishes_expiry_minus_one_from_exact_expiry() {
++        // Break caught: an unexpired lease being interrupted, or equality failing to recover.
++        let (mut store, project_id, job_id) =
++            queued_recovery_fixture(10, "recovery-lease-boundary");
++        start_inventory_job(
++            &mut store,
++            project_id,
++            job_id,
++            20,
++            uuid(31_000),
++            AuditEventId::from_uuid(uuid(31_001)),
++        );
++        let lease_expiry = 20 + LEASE_DURATION_MS;
++        assert!(matches!(
++            store.job_recover_expired_attempt_with_audit(recovery_command(
++                job_id,
++                lease_expiry - 1,
++                31_010,
++            )),
++            Err(HeleosError::LeaseUnavailable)
++        ));
++        assert_eq!(
++            job_state_row(&store, job_id),
++            ("running".to_owned(), 1, Some(lease_expiry), None)
++        );
++        assert_eq!(job_actions(&store, job_id), ["job_created", "job_started"]);
++        assert_eq!(
++            store
++                .connection
++                .query_row("SELECT COUNT(*) FROM ingest_events", [], |row| row
++                    .get::<_, i64>(0))
++                .expect("count pre-recovery events"),
++            0
++        );
++
++        let recovery = store
++            .job_recover_expired_attempt_with_audit(recovery_command(job_id, lease_expiry, 31_020))
++            .expect("recover at exact lease expiry");
++        match recovery {
++            JobRecoveryOutcome::Started {
++                record,
++                interrupted_event_id,
++            } => {
++                assert_eq!(record.state, JobState::Running);
++                assert_eq!(record.attempt, 2);
++                assert_eq!(
++                    record.lease_expires_at_ms,
++                    Some(lease_expiry + LEASE_DURATION_MS)
++                );
++                assert_eq!(
++                    interrupted_event_id,
++                    Some(IngestEventId::from_uuid(uuid(31_021)))
++                );
++            }
++            _ => panic!("exact expiry did not resume the attempt"),
++        }
++        assert_eq!(
++            job_actions(&store, job_id),
++            [
++                "job_created",
++                "job_started",
++                "job_interrupted",
++                "job_resumed"
++            ]
++        );
++        let event: (String, i64) = store
++            .connection
++            .query_row(
++                "SELECT outcome, attempt FROM ingest_events WHERE job_id = ?1",
++                [job_id.as_uuid().to_string()],
++                |row| Ok((row.get(0)?, row.get(1)?)),
++            )
++            .expect("read interruption event");
++        assert_eq!(event, ("interrupted".to_owned(), 1));
++    }
++
++    #[test]
++    fn recovery_applies_deadline_before_lease_and_preserves_queued_action_order() {
++        // Break caught: a running deadline being masked by a live lease, or queued failure
++        // omitting its exact transient start image and audit order.
++        let (mut running, project_id, job_id) =
++            queued_recovery_fixture(10, "running-deadline-priority");
++        let deadline = 10 + JOB_DEADLINE_MS;
++        start_inventory_job(
++            &mut running,
++            project_id,
++            job_id,
++            deadline - 10_000,
++            uuid(32_000),
++            AuditEventId::from_uuid(uuid(32_001)),
++        );
++        assert!(matches!(
++            running
++                .job_recover_expired_attempt_with_audit(recovery_command(job_id, deadline, 32_010))
++                .expect("deadline is a finite recovery result"),
++            JobRecoveryOutcome::DeadlineExpired
++        ));
++        assert_eq!(
++            job_state_row(&running, job_id),
++            (
++                "failed".to_owned(),
++                1,
++                None,
++                Some("deadline_expired".to_owned())
++            )
++        );
++        assert_eq!(
++            job_actions(&running, job_id),
++            ["job_created", "job_started", "job_failed"]
++        );
++        assert_eq!(
++            running
++                .connection
++                .query_row("SELECT COUNT(*) FROM ingest_events", [], |row| row
++                    .get::<_, i64>(0))
++                .expect("count running deadline events"),
++            0
++        );
++
++        let (mut queued, _, queued_job) = queued_recovery_fixture(10, "queued-deadline");
++        assert!(matches!(
++            queued
++                .job_recover_expired_attempt_with_audit(recovery_command(
++                    queued_job, deadline, 32_100,
++                ))
++                .expect("queued deadline is finite"),
++            JobRecoveryOutcome::DeadlineExpired
++        ));
++        assert_eq!(
++            job_actions(&queued, queued_job),
++            ["job_created", "job_started", "job_failed"]
++        );
++        let started_after: String = queued
++            .connection
++            .query_row(
++                "SELECT after_json FROM audit_events
++                 WHERE subject_type = 'job' AND subject_id = ?1 AND action = 'job_started'",
++                [queued_job.as_uuid().to_string()],
++                |row| row.get(0),
++            )
++            .expect("read queued start audit image");
++        let started_after: JsonValue =
++            serde_json::from_str(&started_after).expect("parse queued start audit image");
++        assert_eq!(
++            started_after["lease_expires_at_ms"],
++            json!(deadline + LEASE_DURATION_MS)
++        );
++
++        let maximum = i64::try_from(JCS_SAFE_INTEGER_MAX).expect("JCS maximum fits i64");
++        let (mut maximum_queued, _, maximum_job) =
++            queued_recovery_fixture(maximum - JOB_DEADLINE_MS, "queued-deadline-jcs-maximum");
++        assert!(matches!(
++            maximum_queued
++                .job_recover_expired_attempt_with_audit(recovery_command(
++                    maximum_job,
++                    maximum,
++                    32_200,
++                ))
++                .expect("maximum queued deadline is finite"),
++            JobRecoveryOutcome::DeadlineExpired
++        ));
++        let maximum_started_after: String = maximum_queued
++            .connection
++            .query_row(
++                "SELECT after_json FROM audit_events
++                 WHERE subject_type = 'job' AND subject_id = ?1 AND action = 'job_started'",
++                [maximum_job.as_uuid().to_string()],
++                |row| row.get(0),
++            )
++            .expect("read maximum queued start image");
++        let maximum_started_after: JsonValue =
++            serde_json::from_str(&maximum_started_after).expect("parse maximum queued start image");
++        assert_eq!(maximum_started_after["lease_expires_at_ms"], json!(maximum));
++    }
++
++    #[test]
++    fn recovery_stops_at_attempt_sixteen_and_rejects_terminal_non_success_states() {
++        // Break caught: an attempt 17 or interruption event escaping the terminal attempt cap.
++        let (mut store, _, job_id) = queued_recovery_fixture(10, "attempt-sixteen");
++        let checkpoint = store
++            .idempotency_lookup(
++                ProjectId::from_uuid(uuid(30_000)),
++                &IdempotencyKey::try_from("attempt-sixteen").expect("key"),
++            )
++            .expect("read queued job");
++        let IdempotencyLookup::Existing(record) = checkpoint else {
++            panic!("queued job is present");
++        };
++        forge_job_state_and_matching_anchor(
++            &mut store,
++            job_id,
++            ForgedJobState {
++                state: "running",
++                attempt: MAX_JOB_ATTEMPTS,
++                lease_owner: Some(uuid(33_000)),
++                lease_expires_at_ms: Some(100),
++                terminal_reason: None,
++                checkpoint: &record.checkpoint,
++                updated_at_ms: 99,
++            },
++        );
++        assert!(matches!(
++            store
++                .job_recover_expired_attempt_with_audit(recovery_command(job_id, 100, 33_010))
++                .expect("attempt limit is finite"),
++            JobRecoveryOutcome::AttemptLimit
++        ));
++        assert_eq!(
++            job_state_row(&store, job_id),
++            (
++                "failed".to_owned(),
++                i64::from(MAX_JOB_ATTEMPTS),
++                None,
++                Some("attempt_limit".to_owned())
++            )
++        );
++        assert_eq!(job_actions(&store, job_id), ["job_created", "job_failed"]);
++        assert_eq!(
++            store
++                .connection
++                .query_row("SELECT COUNT(*) FROM ingest_events", [], |row| row
++                    .get::<_, i64>(0))
++                .expect("count attempt-limit events"),
++            0
++        );
++
++        for (state, attempt, reason, base) in [
++            ("failed", 1, "internal_failure", 33_100_u128),
++            ("cancelled", 0, "cancelled", 33_200_u128),
++        ] {
++            let key = format!("terminal-{state}");
++            let (mut terminal, _, terminal_job) = queued_recovery_fixture(10, &key);
++            let IdempotencyLookup::Existing(record) = terminal
++                .idempotency_lookup(
++                    ProjectId::from_uuid(uuid(30_000)),
++                    &IdempotencyKey::try_from(key).expect("key"),
++                )
++                .expect("read terminal fixture")
++            else {
++                panic!("terminal fixture exists");
++            };
++            forge_job_state_and_matching_anchor(
++                &mut terminal,
++                terminal_job,
++                ForgedJobState {
++                    state,
++                    attempt,
++                    lease_owner: None,
++                    lease_expires_at_ms: None,
++                    terminal_reason: Some(reason),
++                    checkpoint: &record.checkpoint,
++                    updated_at_ms: 20,
++                },
++            );
++            let before_actions = job_actions(&terminal, terminal_job);
++            assert!(matches!(
++                terminal.job_recover_expired_attempt_with_audit(recovery_command(
++                    terminal_job,
++                    30,
++                    base,
++                )),
++                Err(HeleosError::InvalidStateTransition)
++            ));
++            assert_eq!(job_actions(&terminal, terminal_job), before_actions);
++        }
++    }
++
++    #[test]
++    fn recovery_avoids_unused_lease_arithmetic_for_terminal_and_rolls_back_overflow() {
++        // Break caught: terminal replay or deadline precedence being masked by an unused
++        // now+lease overflow, or a nonterminal overflow committing half an interruption.
++        let maximum = i64::try_from(JCS_SAFE_INTEGER_MAX).expect("JCS maximum fits i64");
++        let created_at = maximum - JOB_DEADLINE_MS;
++        let (mut terminal, project_id, terminal_job) =
++            queued_recovery_fixture(created_at, "terminal-at-jcs-maximum");
++        let receipt = accepted_receipt(
++            terminal_job,
++            vec![EvidenceManifestLineage {
++                project_id,
++                evidence_id: EvidenceId::from_uuid(uuid(34_000)),
++                originating_job_id: terminal_job,
++            }],
++        );
++        let terminal_checkpoint = IngestCheckpointV1 {
++            schema: INGEST_CHECKPOINT_SCHEMA_V1.to_owned(),
++            phase: IngestCheckpointPhaseV1::Terminal {
++                receipt: Box::new(receipt),
++            },
++        };
++        forge_job_state_and_matching_anchor(
++            &mut terminal,
++            terminal_job,
++            ForgedJobState {
++                state: "succeeded",
++                attempt: 1,
++                lease_owner: None,
++                lease_expires_at_ms: None,
++                terminal_reason: Some("completed"),
++                checkpoint: &terminal_checkpoint,
++                updated_at_ms: maximum,
++            },
++        );
++        match terminal
++            .job_recover_expired_attempt_with_audit(recovery_command(terminal_job, maximum, 34_010))
++            .expect("terminal replay ignores lease arithmetic")
++        {
++            JobRecoveryOutcome::Terminal(record) => {
++                assert_eq!(record.state, JobState::Succeeded);
++                assert_eq!(record.attempt, 1);
++            }
++            _ => panic!("terminal recovery did not return stored authority"),
++        }
++        assert_eq!(job_actions(&terminal, terminal_job), ["job_created"]);
++
++        let overflow_now = maximum - LEASE_DURATION_MS + 1;
++        let (mut queued, _, queued_job) =
++            queued_recovery_fixture(created_at, "queued-lease-overflow");
++        assert!(matches!(
++            queued.job_recover_expired_attempt_with_audit(recovery_command(
++                queued_job,
++                overflow_now,
++                34_100,
++            )),
++            Err(HeleosError::Integrity)
++        ));
++        assert_eq!(
++            job_state_row(&queued, queued_job),
++            ("queued".to_owned(), 0, None, None)
++        );
++        assert_eq!(job_actions(&queued, queued_job), ["job_created"]);
++
++        let (mut running, _, running_job) =
++            queued_recovery_fixture(created_at, "running-lease-overflow");
++        let IdempotencyLookup::Existing(record) = running
++            .idempotency_lookup(
++                ProjectId::from_uuid(uuid(30_000)),
++                &IdempotencyKey::try_from("running-lease-overflow").expect("key"),
++            )
++            .expect("read running overflow fixture")
++        else {
++            panic!("running overflow fixture exists");
++        };
++        forge_job_state_and_matching_anchor(
++            &mut running,
++            running_job,
++            ForgedJobState {
++                state: "running",
++                attempt: 1,
++                lease_owner: Some(uuid(34_200)),
++                lease_expires_at_ms: Some(overflow_now),
++                terminal_reason: None,
++                checkpoint: &record.checkpoint,
++                updated_at_ms: overflow_now,
++            },
++        );
++        assert!(matches!(
++            running.job_recover_expired_attempt_with_audit(recovery_command(
++                running_job,
++                overflow_now,
++                34_210,
++            )),
++            Err(HeleosError::Integrity)
++        ));
++        assert_eq!(
++            job_state_row(&running, running_job),
++            ("running".to_owned(), 1, Some(overflow_now), None)
++        );
++        assert_eq!(job_actions(&running, running_job), ["job_created"]);
++        assert_eq!(
++            running
++                .connection
++                .query_row("SELECT COUNT(*) FROM ingest_events", [], |row| row
++                    .get::<_, i64>(0))
++                .expect("count rolled-back interruption events"),
++            0
++        );
++    }
++
+     #[test]
+     fn quota_snapshot_reserves_nonterminal_vault_published_objects() {
+         // Break caught: a crashed published object leaving quota headroom available to a rival job.
+         let mut store = Store::open_in_memory().expect("open store");
+         store.migrate().expect("migrate store");
+         let project_id = ProjectId::from_uuid(uuid(40));
+         insert_project(&store, project_id);
+         let input = valid_input(project_id, "reserved-original");
+         let digest = input.content_sha256.expect("complete digest");
+         store
+diff --git a/crates/heleos-core/src/store/mod.rs b/crates/heleos-core/src/store/mod.rs
+index 66e460b..a8ee493 100644
+--- a/crates/heleos-core/src/store/mod.rs
++++ b/crates/heleos-core/src/store/mod.rs
+@@ -125,20 +125,22 @@ pub struct Store {
+     // Rust drops fields in declaration order. For readers this closes staging SQLite, then the
+     // checked source DB/WAL/SHM handles, then the shared lock, and finally deletes staging.
+     pub(super) connection: Connection,
+     database_identity_handle: Option<File>,
+     source_sidecar_handles: Vec<CheckedSourceFile>,
+     writer_lock: Option<WriterLock>,
+     reader_lock: Option<ReaderLock>,
+     database_path: Option<PathBuf>,
+     _snapshot_directory: Option<tempfile::TempDir>,
+     pub(super) read_only: bool,
++    #[cfg(test)]
++    commit_outcome_unknown_after: Option<usize>,
+ }
+ 
+ impl Store {
+     pub fn open_writer(path: impl AsRef<Path>) -> Result<Self> {
+         let path = path.as_ref();
+         check_parent(path, PermissionPolicy::ApplyAndVerify)?;
+         let writer_lock = WriterLock::acquire(path)?;
+         reject_invalid_existing_path(path)?;
+         check_sqlite_sidecars(path, PermissionPolicy::ApplyAndVerify)?;
+         let (database_file, identity) =
+@@ -156,20 +158,22 @@ impl Store {
+ 
+         let store = Self {
+             connection,
+             database_identity_handle: Some(database_file),
+             source_sidecar_handles: Vec::new(),
+             writer_lock: Some(writer_lock),
+             reader_lock: None,
+             database_path: Some(path.to_owned()),
+             _snapshot_directory: None,
+             read_only: false,
++            #[cfg(test)]
++            commit_outcome_unknown_after: None,
+         };
+         store.harden_sqlite_sidecars()?;
+ 
+         Ok(store)
+     }
+ 
+     pub fn open_read_only(path: impl AsRef<Path>) -> Result<Self> {
+         let path = path.as_ref();
+         check_parent(path, PermissionPolicy::VerifyOnly)?;
+         let reader_lock = ReaderLock::acquire(path)?;
+@@ -229,35 +233,39 @@ impl Store {
+ 
+         Ok(Self {
+             connection,
+             database_identity_handle: Some(database_file),
+             source_sidecar_handles: wal_file.into_iter().chain(shm_file).collect(),
+             writer_lock: None,
+             reader_lock: Some(reader_lock),
+             database_path: Some(path.to_owned()),
+             _snapshot_directory: Some(snapshot_directory),
+             read_only: true,
++            #[cfg(test)]
++            commit_outcome_unknown_after: None,
+         })
+     }
+ 
+     pub fn open_in_memory() -> Result<Self> {
+         let connection = Connection::open_in_memory().map_err(database_error)?;
+         configure_connection(&connection, ConnectionKind::MemoryWriter)?;
+         Ok(Self {
+             connection,
+             database_identity_handle: None,
+             source_sidecar_handles: Vec::new(),
+             writer_lock: None,
+             reader_lock: None,
+             database_path: None,
+             _snapshot_directory: None,
+             read_only: false,
++            #[cfg(test)]
++            commit_outcome_unknown_after: None,
+         })
+     }
+ 
+     /// Runs one crate-owned immediate transaction.
+     ///
+     /// Normal consumers cannot use this primitive to bypass audited repositories.
+     ///
+     /// ```compile_fail
+     /// #![forbid(unsafe_code)]
+     /// use heleos_core::Store;
+@@ -279,27 +287,42 @@ impl Store {
+         self.recheck_writer_lock_identity()?;
+         self.recheck_database_identity()?;
+         let transaction = self
+             .connection
+             .transaction_with_behavior(TransactionBehavior::Immediate)
+             .map_err(database_error)?;
+         let value = operation(&transaction)?;
+         transaction
+             .commit()
+             .map_err(|_| HeleosError::CommitOutcomeUnknown)?;
++        #[cfg(test)]
++        if let Some(remaining) = self.commit_outcome_unknown_after.take() {
++            if remaining == 0 {
++                return Err(HeleosError::CommitOutcomeUnknown);
++            }
++            self.commit_outcome_unknown_after = Some(remaining - 1);
++        }
+         self.recheck_writer_lock_identity()
+             .and_then(|()| self.harden_sqlite_sidecars())
+             .and_then(|()| self.recheck_database_identity())
+             .map_err(|_| HeleosError::CommitOutcomeUnknown)?;
+         Ok(value)
+     }
+ 
++    #[cfg(test)]
++    pub(crate) fn inject_commit_outcome_unknown_after_for_test(
++        &mut self,
++        successful_commits_before_failure: usize,
++    ) {
++        self.commit_outcome_unknown_after = Some(successful_commits_before_failure);
++    }
++
+     pub(crate) fn require_writer_capability(&self) -> Result<()> {
+         if self.read_only {
+             return Err(HeleosError::PolicyDenied);
+         }
+         self.recheck_writer_lock_identity()?;
+         self.recheck_database_identity()
+     }
+ 
+     pub fn verify_integrity(&self) -> Result<IntegrityReport> {
+         self.recheck_database_identity()?;
+diff --git a/crates/heleos-core/tests/ingest.rs b/crates/heleos-core/tests/ingest.rs
+index b1a5a9c..52917ec 100644
+--- a/crates/heleos-core/tests/ingest.rs
++++ b/crates/heleos-core/tests/ingest.rs
+@@ -10,25 +10,25 @@ use std::{
+     io::{Seek, SeekFrom, Write},
+     sync::{Mutex, atomic::AtomicBool},
+ };
+ 
+ #[cfg(unix)]
+ use heleos_core::VaultWriteBudget;
+ use heleos_core::{
+     ActorId, AuditChainFinding, AuditChainReport, AuditEvent, AuditEventId, Clock, DataClass,
+     EVIDENCE_MANIFEST_SCHEMA_V1, EvidenceContentV1, EvidenceManifestV1, FaultInjector, FaultPoint,
+     FoundationInspection, FoundationReader, HeleosError, IdGenerator, IdempotencyKey, IngestEngine,
+-    IngestOutcome, IngestRequest, IntakeQuarantineReasonV1, IntakeSource, PDF_MEDIA_TYPE,
+-    PageMetadata, PageTransform, PageUnit, PdfInspection, PdfLimits, PdfProbe, PdfProbeOutcome,
+-    PdfProbeProvenance, PdfQuarantine, PdfQuarantineReason, ProjectCreateRequest, ProjectId,
+-    ProjectReceipt, ProjectService, Result, RevisionId, Sha256Digest, Store, Vault, VaultConfig,
+-    VaultOpenMode, VerifiedObject, canonical_document_ids, canonical_json, page_id,
++    IngestOutcome, IngestReceipt, IngestRequest, IntakeQuarantineReasonV1, IntakeSource,
++    PDF_MEDIA_TYPE, PageMetadata, PageTransform, PageUnit, PdfInspection, PdfLimits, PdfProbe,
++    PdfProbeOutcome, PdfProbeProvenance, PdfQuarantine, PdfQuarantineReason, ProjectCreateRequest,
++    ProjectId, ProjectReceipt, ProjectService, Result, RevisionId, Sha256Digest, Store, Vault,
++    VaultConfig, VaultOpenMode, VerifiedObject, canonical_document_ids, canonical_json, page_id,
+ };
+ use tempfile::TempDir;
+ use uuid::Uuid;
+ 
+ const NOW_MS: i64 = 1_700_000_000_000;
+ 
+ struct FixedClock;
+ 
+ impl Clock for FixedClock {
+     fn now_unix_ms(&self) -> i64 {
+@@ -608,50 +608,73 @@ fn unrelated_orphan_pressure_rejects_a_novel_original_without_residue() {
+         })
+         .expect("create project");
+     let source_root = TempDir::new().expect("create source parent");
+     let source_path = source_root.path().join("novel.pdf");
+     let source_bytes = b"%PDF-1.7\nnovel under orphan pressure\n%%EOF\n";
+     fs::write(&source_path, source_bytes).expect("write source");
+     let source_digest =
+         Sha256Digest::hash_reader(source_bytes.as_slice()).expect("hash source fixture");
+     create_sparse_vault_orphans(&vault_parent, QUARANTINE_BYTES, &[source_digest]);
+ 
+-    let receipt = IngestEngine::new(&mut store, &vault, &accepted_probe(), &FixedClock, &ids)
++    let probe = accepted_probe();
++    let receipt = IngestEngine::new(&mut store, &vault, &probe, &FixedClock, &ids)
+         .expect("construct intake engine")
+         .ingest(IngestRequest {
+             project_id,
+             source: IntakeSource::open(&source_path).expect("open source"),
+             idempotency_key: IdempotencyKey::try_from("orphan-original").expect("key"),
+             actor: ActorId::from_str("tester").expect("actor"),
+             pdf_limits: PdfLimits::default(),
+         })
+         .expect("orphan pressure is a finite result");
+ 
+     assert_eq!(receipt.outcome, IngestOutcome::QuarantinedLimit);
+     assert!(matches!(
+-        receipt.quarantine.expect("quota quarantine").reason,
++        receipt
++            .quarantine
++            .as_ref()
++            .expect("quota quarantine")
++            .reason,
+         IntakeQuarantineReasonV1::OriginalRetentionQuota
+     ));
+     assert_eq!(receipt.content_sha256, Some(source_digest));
+     assert_eq!(receipt.preexisting_vault_digests, Vec::new());
+     assert!(matches!(
+         vault.open_verified(source_digest),
+         Err(HeleosError::NotFound)
+     ));
++    let no_probe = FailingProbe {
++        provenance: probe.provenance.clone(),
++    };
++    let replay = IngestEngine::new(&mut store, &vault, &no_probe, &FixedClock, &ids)
++        .expect("construct nonretained replay engine")
++        .ingest(IngestRequest {
++            project_id,
++            source: IntakeSource::open(&source_path).expect("reopen source"),
++            idempotency_key: IdempotencyKey::try_from("orphan-original").expect("key"),
++            actor: ActorId::from_str("replayer").expect("actor"),
++            pdf_limits: PdfLimits::default(),
++        })
++        .expect("replay nonretained original-quota authority");
++    assert_eq!(replay.outcome, IngestOutcome::IdempotentReplay);
++    assert_eq!(replay.content_sha256, Some(source_digest));
++    assert_eq!(replay.quarantine, receipt.quarantine);
++    assert!(replay.preexisting_vault_digests.is_empty());
+     let staging = fs::canonicalize(vault_parent.path())
+         .expect("canonicalize vault parent")
+         .join("vault/.staging");
+     assert_eq!(fs::read_dir(staging).expect("read staging").count(), 0);
+     let inspection = FoundationReader::new(&store, &vault)
+         .inspect_foundation(project_id)
+         .expect("inspect finite quota outcome");
+     assert_eq!(inspection.counts.jobs, 1);
++    assert_eq!(inspection.counts.ingest_events, 2);
+     assert_eq!(inspection.counts.content_objects, 0);
+ }
+ 
+ #[test]
+ #[cfg(unix)]
+ fn unrelated_orphan_pressure_rejects_a_novel_manifest_but_retains_the_original() {
+     // Break caught: manifest publication ignoring orphans created before its processing checkpoint.
+     const QUARANTINE_BYTES: u64 = 8 * 1024 * 1024 * 1024;
+ 
+     let mut store = Store::open_in_memory().expect("open store");
+@@ -1014,21 +1037,27 @@ fn an_inventory_bound_original_must_not_be_repaired_when_missing_or_corrupt() {
+                 Err(HeleosError::Integrity)
+             ));
+         }
+     }
+ }
+ 
+ #[test]
+ fn an_inventory_bound_manifest_must_not_be_repaired_when_missing_or_corrupt() {
+     // Break caught: self-healing a manifest after its ProcessingComplete authority is durable.
+     for remove_object in [true, false] {
+-        let mut store = Store::open_in_memory().expect("open store");
++        let database_root = TempDir::new().expect("create database parent");
++        heleos_core::apply_private_permissions(database_root.path())
++            .expect("harden database parent");
++        let database_path = fs::canonicalize(database_root.path())
++            .expect("canonicalize database parent")
++            .join("foundation.sqlite3");
++        let mut store = Store::open_writer(&database_path).expect("open store");
+         store.migrate().expect("migrate store");
+         let vault_parent = TempDir::new().expect("create vault parent");
+         let vault = opened_vault(&vault_parent);
+         let project_id = ProjectId::from_uuid(
+             Uuid::parse_str("00000000-0000-4000-8000-000000000001").expect("project UUID"),
+         );
+         let ids = SequenceIds::new(
+             (2_u128..=220).map(|value| Uuid::from_u128((4_u128 << 76) | (2_u128 << 62) | value)),
+         );
+         let clock = ManualClock::new(NOW_MS);
+@@ -1067,28 +1096,32 @@ fn an_inventory_bound_manifest_must_not_be_repaired_when_missing_or_corrupt() {
+         assert!(matches!(interrupted, Err(HeleosError::FaultInjected)));
+         let job_id = FoundationReader::new(&store, &vault)
+             .inspect_foundation(project_id)
+             .expect("inspect processing checkpoint")
+             .jobs[0]
+             .job_id;
+         let object_path = fs::canonicalize(vault_parent.path())
+             .expect("canonicalize vault parent")
+             .join("vault")
+             .join(Vault::object_key(manifest_digest));
++        drop(store);
++        drop(vault);
+         if remove_object {
+             fs::remove_file(&object_path).expect("remove checkpoint manifest");
+         } else {
+             fs::write(&object_path, vec![0_u8; manifest_bytes.len()])
+                 .expect("replace checkpoint manifest at the same length");
+             heleos_core::apply_private_permissions(&object_path)
+                 .expect("reharden corrupted manifest");
+         }
++        let mut store = Store::open_writer(&database_path).expect("reopen manifest writer");
++        let vault = reopened_vault(&vault_parent);
+         clock.set(NOW_MS + 30_000);
+ 
+         let resumed = IngestEngine::new(&mut store, &vault, &accepted_probe(), &clock, &ids)
+             .expect("construct resume engine")
+             .resume(job_id, ActorId::from_str("resumer").expect("actor"));
+         assert!(matches!(resumed, Err(HeleosError::Integrity)));
+         let inspection = FoundationReader::new(&store, &vault)
+             .inspect_foundation(project_id)
+             .expect("inspect failed recovery");
+         assert_eq!(inspection.jobs.len(), 1);
+@@ -1099,20 +1132,213 @@ fn an_inventory_bound_manifest_must_not_be_repaired_when_missing_or_corrupt() {
+             assert!(!object_path.exists());
+         } else {
+             assert!(matches!(
+                 vault.open_verified(manifest_digest),
+                 Err(HeleosError::Integrity)
+             ));
+         }
+     }
+ }
+ 
++#[test]
++fn reopened_resume_rejects_input_checkpoint_audit_provenance_and_original_corruption() {
++    // Break caught: restart trusting a stale job anchor, a changed probe identity, or repairing a
++    // missing/corrupt checkpoint original before returning authority.
++    for mutation in [
++        "input",
++        "checkpoint",
++        "audit_hash",
++        "provenance",
++        "missing_original",
++        "corrupt_original",
++    ] {
++        let database_root = TempDir::new().expect("create database parent");
++        heleos_core::apply_private_permissions(database_root.path())
++            .expect("harden database parent");
++        let database_path = fs::canonicalize(database_root.path())
++            .expect("canonicalize database parent")
++            .join("foundation.sqlite3");
++        let mut store = Store::open_writer(&database_path).expect("open store");
++        store.migrate().expect("migrate store");
++        let vault_root = TempDir::new().expect("create vault parent");
++        let vault = opened_vault(&vault_root);
++        let project_id = ProjectId::from_uuid(
++            Uuid::parse_str("00000000-0000-4000-8000-000000000001").expect("project UUID"),
++        );
++        let ids = SequenceIds::new(
++            (2_u128..=250).map(|value| Uuid::from_u128((4_u128 << 76) | (2_u128 << 62) | value)),
++        );
++        let clock = ManualClock::new(NOW_MS);
++        ProjectService::new(&mut store, &clock, &ids)
++            .expect("construct project service")
++            .create(ProjectCreateRequest {
++                project_id: Some(project_id),
++                name: format!("Resume corruption {mutation}"),
++                actor: ActorId::from_str("creator").expect("actor"),
++                data_class: DataClass::Internal,
++            })
++            .expect("create project");
++        let source_root = TempDir::new().expect("create source parent");
++        let source_path = source_root.path().join("resume-corruption.pdf");
++        let source_bytes = b"%PDF-1.7\nreopened resume corruption\n%%EOF\n";
++        fs::write(&source_path, source_bytes).expect("write source");
++        let source_digest =
++            Sha256Digest::hash_reader(source_bytes.as_slice()).expect("hash source");
++        let interrupted = IngestEngine::with_fault_injector(
++            &mut store,
++            &vault,
++            &accepted_probe(),
++            &clock,
++            &ids,
++            &FailAt(FaultPoint::AfterJobStart),
++        )
++        .expect("construct fault engine")
++        .ingest(IngestRequest {
++            project_id,
++            source: IntakeSource::open(&source_path).expect("open source"),
++            idempotency_key: IdempotencyKey::try_from("resume-corruption").expect("key"),
++            actor: ActorId::from_str("tester").expect("actor"),
++            pdf_limits: PdfLimits::default(),
++        });
++        assert!(matches!(interrupted, Err(HeleosError::FaultInjected)));
++        let job_id = FoundationReader::new(&store, &vault)
++            .inspect_foundation(project_id)
++            .expect("inspect running checkpoint")
++            .jobs[0]
++            .job_id;
++        let object_path = fs::canonicalize(vault_root.path())
++            .expect("canonicalize vault parent")
++            .join("vault")
++            .join(Vault::object_key(source_digest));
++        drop(store);
++        drop(vault);
++
++        match mutation {
++            "input" | "checkpoint" | "audit_hash" => {
++                let connection = rusqlite::Connection::open(&database_path)
++                    .expect("open hostile restart mutator");
++                match mutation {
++                    "input" => {
++                        connection
++                            .execute_batch(
++                                "PRAGMA ignore_check_constraints = ON;
++                                 DROP TRIGGER job_runs_frozen_identity;
++                                 DROP TRIGGER job_runs_legal_transition;",
++                            )
++                            .expect("open input mutation fixture");
++                        assert_eq!(
++                            connection
++                                .execute(
++                                    "UPDATE job_runs
++                                     SET input_json = replace(
++                                         input_json,
++                                         '\"parser_version\":\"1.0.0\"',
++                                         '\"parser_version\":\"1.0.1\"'
++                                     )
++                                     WHERE id = ?1",
++                                    [job_id.as_uuid().to_string()],
++                                )
++                                .expect("mutate canonical input"),
++                            1
++                        );
++                    }
++                    "checkpoint" => {
++                        connection
++                            .execute_batch(
++                                "PRAGMA ignore_check_constraints = ON;
++                                 DROP TRIGGER job_runs_legal_transition;",
++                            )
++                            .expect("open checkpoint mutation fixture");
++                        assert_eq!(
++                            connection
++                                .execute(
++                                    "UPDATE job_runs
++                                     SET checkpoint_json = replace(checkpoint_json, ?1, ?2)
++                                     WHERE id = ?3",
++                                    rusqlite::params![
++                                        source_digest.to_string(),
++                                        Sha256Digest::from_bytes([9; 32]).to_string(),
++                                        job_id.as_uuid().to_string(),
++                                    ],
++                                )
++                                .expect("mutate canonical checkpoint"),
++                            1
++                        );
++                    }
++                    "audit_hash" => {
++                        connection
++                            .execute_batch("DROP TRIGGER audit_events_no_update;")
++                            .expect("open audit mutation fixture");
++                        assert_eq!(
++                            connection
++                                .execute(
++                                    "UPDATE audit_events
++                                     SET event_hash = ?1
++                                     WHERE sequence = (SELECT MAX(sequence) FROM audit_events)",
++                                    ["0".repeat(64)],
++                                )
++                                .expect("mutate latest audit hash"),
++                            1
++                        );
++                    }
++                    _ => unreachable!(),
++                }
++            }
++            "missing_original" => {
++                fs::remove_file(&object_path).expect("remove checkpoint original");
++            }
++            "corrupt_original" => {
++                fs::write(&object_path, vec![0_u8; source_bytes.len()])
++                    .expect("replace checkpoint original at same length");
++                heleos_core::apply_private_permissions(&object_path)
++                    .expect("reharden corrupt checkpoint original");
++            }
++            "provenance" => {}
++            _ => unreachable!(),
++        }
++
++        let mut store = Store::open_writer(&database_path).expect("reopen writer");
++        let vault = reopened_vault(&vault_root);
++        clock.set(NOW_MS + 30_000);
++        let mut probe = accepted_probe();
++        if mutation == "provenance" {
++            probe.provenance.parser_version = "1.0.1".to_owned();
++        }
++        let resumed = IngestEngine::new(&mut store, &vault, &probe, &clock, &ids)
++            .expect("construct restarted engine")
++            .resume(job_id, ActorId::from_str("resumer").expect("actor"));
++        assert!(matches!(resumed, Err(HeleosError::Integrity)));
++        let state: (String, i64) = rusqlite::Connection::open(&database_path)
++            .expect("open state observer")
++            .query_row(
++                "SELECT state, attempt FROM job_runs WHERE id = ?1",
++                [job_id.as_uuid().to_string()],
++                |row| Ok((row.get(0)?, row.get(1)?)),
++            )
++            .expect("read post-rejection state");
++        if matches!(mutation, "missing_original" | "corrupt_original") {
++            assert_eq!(state, ("failed".to_owned(), 2));
++        } else {
++            assert_eq!(state, ("running".to_owned(), 1));
++        }
++        if mutation == "missing_original" {
++            assert!(!object_path.exists());
++        }
++        if mutation == "corrupt_original" {
++            assert!(matches!(
++                vault.open_verified(source_digest),
++                Err(HeleosError::Integrity)
++            ));
++        }
++    }
++}
++
+ #[test]
+ fn completed_same_key_replays_and_conflicts_are_durable_without_a_second_job() {
+     // Break caught: returning replay/conflict errors before their immutable event and audit commit.
+     let mut store = Store::open_in_memory().expect("open store");
+     store.migrate().expect("migrate store");
+     let vault_root = TempDir::new().expect("create vault parent");
+     let vault = opened_vault(&vault_root);
+     let project_id = ProjectId::from_uuid(
+         Uuid::parse_str("00000000-0000-4000-8000-000000000001").expect("project UUID"),
+     );
+@@ -1242,40 +1468,76 @@ fn input_cap_and_pdf_quarantine_are_finite_succeeded_jobs_and_pdf_admission_is_s
+             pdf_limits: PdfLimits::default(),
+         })
+         .expect("input cap is a handled result");
+     assert_eq!(capped.outcome, IngestOutcome::QuarantinedLimit);
+     assert_eq!(capped.content_sha256, None);
+     assert_eq!(capped.byte_length, PdfLimits::default().max_input_bytes + 1);
+     assert!(matches!(
+         capped.quarantine.as_ref().expect("input quarantine").reason,
+         IntakeQuarantineReasonV1::InputBytes { .. }
+     ));
++    let complete_path = source_root.path().join("complete-after-cap.pdf");
++    fs::write(&complete_path, b"%PDF-1.7\ncomplete after cap\n%%EOF\n")
++        .expect("write complete same-key source");
++    let overcap_conflict = IngestEngine::new(&mut store, &vault, &probe, &FixedClock, &ids)
++        .expect("construct overcap conflict engine")
++        .ingest(IngestRequest {
++            project_id,
++            source: IntakeSource::open(&complete_path).expect("open complete source"),
++            idempotency_key: IdempotencyKey::try_from("input-cap").expect("key"),
++            actor: ActorId::from_str("tester").expect("actor"),
++            pdf_limits: PdfLimits::default(),
++        });
++    assert!(matches!(
++        overcap_conflict,
++        Err(HeleosError::IdempotencyConflict)
++    ));
++    let no_probe = FailingProbe {
++        provenance: probe.provenance.clone(),
++    };
+ 
+     let pdf_path = source_root.path().join("bad.pdf");
+     fs::write(&pdf_path, b"not a PDF").expect("write quarantined source");
+     let first = IngestEngine::new(&mut store, &vault, &probe, &FixedClock, &ids)
+         .expect("construct quarantine engine")
+         .ingest(IngestRequest {
+             project_id,
+             source: IntakeSource::open(&pdf_path).expect("open quarantined source"),
+             idempotency_key: IdempotencyKey::try_from("bad-first").expect("key"),
+             actor: ActorId::from_str("tester").expect("actor"),
+             pdf_limits: PdfLimits::default(),
+         })
+         .expect("PDF quarantine is a handled result");
+     assert_eq!(first.outcome, IngestOutcome::QuarantinedCorrupt);
+     assert!(matches!(
+         first.quarantine.as_ref().expect("PDF quarantine").reason,
+         IntakeQuarantineReasonV1::Pdf(PdfQuarantineReason::BadMagic)
+     ));
+     assert_eq!(first.preexisting_vault_digests, Vec::new());
+ 
++    let quarantine_replay = IngestEngine::new(&mut store, &vault, &no_probe, &FixedClock, &ids)
++        .expect("construct retained-quarantine replay engine")
++        .ingest(IngestRequest {
++            project_id,
++            source: IntakeSource::open(&pdf_path).expect("reopen quarantined source"),
++            idempotency_key: IdempotencyKey::try_from("bad-first").expect("key"),
++            actor: ActorId::from_str("replayer").expect("actor"),
++            pdf_limits: PdfLimits::default(),
++        })
++        .expect("replay retained PDF quarantine");
++    assert_eq!(quarantine_replay.outcome, IngestOutcome::IdempotentReplay);
++    assert_eq!(quarantine_replay.quarantine, first.quarantine);
++    assert_eq!(
++        quarantine_replay.preexisting_vault_digests,
++        vec![first.content_sha256.expect("retained digest")]
++    );
++
+     let sticky = IngestEngine::new(&mut store, &vault, &accepted_probe(), &FixedClock, &ids)
+         .expect("construct sticky engine")
+         .ingest(IngestRequest {
+             project_id,
+             source: IntakeSource::open(&pdf_path).expect("open sticky source"),
+             idempotency_key: IdempotencyKey::try_from("bad-second").expect("key"),
+             actor: ActorId::from_str("tester").expect("actor"),
+             pdf_limits: PdfLimits::default(),
+         })
+         .expect("sticky quarantine result");
+@@ -1283,21 +1545,21 @@ fn input_cap_and_pdf_quarantine_are_finite_succeeded_jobs_and_pdf_admission_is_s
+     assert_eq!(sticky.quarantine, first.quarantine);
+     assert_eq!(
+         sticky.preexisting_vault_digests,
+         vec![first.content_sha256.expect("retained digest")]
+     );
+ 
+     let inspection = FoundationReader::new(&store, &vault)
+         .inspect_foundation(project_id)
+         .expect("inspect quarantine jobs");
+     assert_eq!(inspection.counts.jobs, 3);
+-    assert_eq!(inspection.counts.ingest_events, 3);
++    assert_eq!(inspection.counts.ingest_events, 5);
+     assert_eq!(inspection.counts.content_objects, 1);
+     assert_eq!(inspection.counts.documents, 0);
+     assert!(
+         inspection
+             .jobs
+             .iter()
+             .all(|job| job.state == heleos_core::JobState::Succeeded)
+     );
+ }
+ 
+@@ -1519,21 +1781,25 @@ fn every_in_process_fault_boundary_resumes_without_duplicate_authority() {
+             .expect("construct project service")
+             .create(ProjectCreateRequest {
+                 project_id: Some(project_id),
+                 name: "Fault matrix".to_owned(),
+                 actor: ActorId::from_str("creator").expect("actor"),
+                 data_class: DataClass::Internal,
+             })
+             .expect("create project");
+         let source_root = TempDir::new().expect("create source directory");
+         let source_path = source_root.path().join("fault.pdf");
+-        fs::write(&source_path, b"%PDF-1.7\nfault fixture\n%%EOF\n").expect("write source");
++        let source_bytes = b"%PDF-1.7\nfault fixture\n%%EOF\n";
++        fs::write(&source_path, source_bytes).expect("write source");
++        let original_digest =
++            Sha256Digest::hash_reader(source_bytes.as_slice()).expect("hash fault original");
++        let (manifest_digest, _) = accepted_manifest_bytes(source_bytes);
+         let probe = accepted_probe();
+         let fault = FailAt(point);
+         let interrupted =
+             IngestEngine::with_fault_injector(&mut store, &vault, &probe, &clock, &ids, &fault)
+                 .expect("construct fault engine")
+                 .ingest(IngestRequest {
+                     project_id,
+                     source: IntakeSource::open(&source_path).expect("open retained source"),
+                     idempotency_key: IdempotencyKey::try_from("fault-key").expect("key"),
+                     actor: ActorId::from_str("tester").expect("actor"),
+@@ -1542,20 +1808,119 @@ fn every_in_process_fault_boundary_resumes_without_duplicate_authority() {
+         assert!(matches!(interrupted, Err(HeleosError::FaultInjected)));
+         drop(store);
+         drop(vault);
+         let mut store = Store::open_writer(&database_path).expect("reopen store after fault");
+         let vault = reopened_vault(&vault_root);
+         let before = FoundationReader::new(&store, &vault)
+             .inspect_foundation(project_id)
+             .expect("inspect fault checkpoint");
+         assert_eq!(before.jobs.len(), 1);
+         let job = before.jobs[0].clone();
++        let expected_before_state = if point == FaultPoint::AfterVaultPublish {
++            heleos_core::JobState::Queued
++        } else if point == FaultPoint::AfterAuthoritativeCommit {
++            heleos_core::JobState::Succeeded
++        } else {
++            heleos_core::JobState::Running
++        };
++        let expected_before_attempt = if point == FaultPoint::AfterVaultPublish {
++            0
++        } else {
++            1
++        };
++        assert_eq!(job.state, expected_before_state);
++        assert_eq!(job.attempt, expected_before_attempt);
++        let expected_before_audits = match point {
++            FaultPoint::AfterVaultPublish => 2,
++            FaultPoint::AfterJobStart => 3,
++            FaultPoint::AfterCheckpointCommit | FaultPoint::BeforeAuthoritativeCommit => 4,
++            FaultPoint::AfterAuthoritativeCommit => 7,
++        };
++        assert_eq!(before.counts.audit_events, expected_before_audits);
++        let expected_before_events = u64::from(point == FaultPoint::AfterAuthoritativeCommit);
++        let expected_before_content = if point == FaultPoint::AfterAuthoritativeCommit {
++            2
++        } else {
++            0
++        };
++        assert_eq!(before.counts.ingest_events, expected_before_events);
++        assert_eq!(before.counts.content_objects, expected_before_content);
++        assert!(vault.open_verified(original_digest).is_ok());
++        if matches!(
++            point,
++            FaultPoint::AfterCheckpointCommit
++                | FaultPoint::BeforeAuthoritativeCommit
++                | FaultPoint::AfterAuthoritativeCommit
++        ) {
++            assert!(vault.open_verified(manifest_digest).is_ok());
++        } else {
++            assert!(matches!(
++                vault.open_verified(manifest_digest),
++                Err(HeleosError::NotFound)
++            ));
++        }
++        let connection = rusqlite::Connection::open(&database_path)
++            .expect("open fault audit observation connection");
++        let actions = {
++            let mut statement = connection
++                .prepare("SELECT action FROM audit_events ORDER BY sequence")
++                .expect("prepare pre-resume action query");
++            statement
++                .query_map([], |row| row.get::<_, String>(0))
++                .expect("query pre-resume actions")
++                .collect::<std::result::Result<Vec<_>, _>>()
++                .expect("read pre-resume actions")
++        };
++        let expected_before_actions: &[&str] = match point {
++            FaultPoint::AfterVaultPublish => &["project_created", "job_created"],
++            FaultPoint::AfterJobStart => &["project_created", "job_created", "job_started"],
++            FaultPoint::AfterCheckpointCommit | FaultPoint::BeforeAuthoritativeCommit => &[
++                "project_created",
++                "job_created",
++                "job_started",
++                "job_checkpointed",
++            ],
++            FaultPoint::AfterAuthoritativeCommit => &[
++                "project_created",
++                "job_created",
++                "job_started",
++                "job_checkpointed",
++                "job_succeeded",
++                "ingest_accepted",
++                "evidence_created",
++            ],
++        };
++        assert_eq!(
++            actions,
++            expected_before_actions
++                .iter()
++                .map(|value| (*value).to_owned())
++                .collect::<Vec<_>>()
++        );
++        let stored_terminal_receipt = if point == FaultPoint::AfterAuthoritativeCommit {
++            let checkpoint_json: String = connection
++                .query_row(
++                    "SELECT checkpoint_json FROM job_runs WHERE id = ?1",
++                    [job.job_id.as_uuid().to_string()],
++                    |row| row.get(0),
++                )
++                .expect("read stored terminal checkpoint");
++            let checkpoint: serde_json::Value =
++                serde_json::from_str(&checkpoint_json).expect("parse terminal checkpoint");
++            Some(
++                serde_json::from_value::<IngestReceipt>(checkpoint["detail"]["receipt"].clone())
++                    .expect("parse stored terminal receipt"),
++            )
++        } else {
++            None
++        };
++        drop(connection);
+         if matches!(
+             point,
+             FaultPoint::AfterJobStart
+                 | FaultPoint::AfterCheckpointCommit
+                 | FaultPoint::BeforeAuthoritativeCommit
+         ) {
+             clock.set(NOW_MS + 30_000);
+         }
+         let resumed = IngestEngine::new(&mut store, &vault, &probe, &clock, &ids)
+             .expect("construct resume engine")
+@@ -1570,41 +1935,186 @@ fn every_in_process_fault_boundary_resumes_without_duplicate_authority() {
+             | FaultPoint::AfterCheckpointCommit
+             | FaultPoint::BeforeAuthoritativeCommit => {
+                 assert_eq!(resumed.resumed_attempt, Some(2));
+                 assert!(resumed.interrupted_event_id.is_some());
+             }
+             FaultPoint::AfterAuthoritativeCommit => {
+                 assert_eq!(resumed.resumed_attempt, None);
+                 assert_eq!(resumed.interrupted_event_id, None);
+             }
+         }
+-        assert!(matches!(
+-            resumed.receipt.outcome,
+-            IngestOutcome::AcceptedNew | IngestOutcome::AcceptedDuplicate
+-        ));
++        assert_eq!(resumed.receipt.outcome, IngestOutcome::AcceptedNew);
++        let expected_attempt = match point {
++            FaultPoint::AfterVaultPublish | FaultPoint::AfterAuthoritativeCommit => 1,
++            FaultPoint::AfterJobStart
++            | FaultPoint::AfterCheckpointCommit
++            | FaultPoint::BeforeAuthoritativeCommit => 2,
++        };
++        assert_eq!(resumed.receipt.attempt, expected_attempt);
++        let mut original_and_manifest = vec![original_digest, manifest_digest];
++        original_and_manifest.sort_unstable();
++        let expected_preexisting = match point {
++            FaultPoint::AfterVaultPublish | FaultPoint::AfterJobStart => vec![original_digest],
++            FaultPoint::AfterCheckpointCommit | FaultPoint::BeforeAuthoritativeCommit => {
++                original_and_manifest
++            }
++            FaultPoint::AfterAuthoritativeCommit => Vec::new(),
++        };
++        assert_eq!(
++            resumed.receipt.preexisting_vault_digests,
++            expected_preexisting
++        );
++        if let Some(stored) = stored_terminal_receipt {
++            assert_eq!(resumed.receipt, stored);
++        }
+         let after = FoundationReader::new(&store, &vault)
+             .inspect_foundation(project_id)
+             .expect("inspect resumed authority");
+         assert_eq!(after.counts.jobs, 1);
+         assert_eq!(after.counts.documents, 1);
+         assert_eq!(after.counts.revisions, 1);
+         assert_eq!(after.counts.evidence_objects, 1);
+         assert_eq!(after.counts.content_objects, 2);
++        assert_eq!(after.jobs[0].attempt, expected_attempt);
++        assert_eq!(
++            after
++                .intake_events
++                .iter()
++                .filter(|event| event.outcome == IngestOutcome::AcceptedNew)
++                .count(),
++            1
++        );
++        assert_eq!(
++            after
++                .intake_events
++                .iter()
++                .filter(|event| event.outcome == IngestOutcome::Interrupted)
++                .count(),
++            usize::from(matches!(
++                point,
++                FaultPoint::AfterJobStart
++                    | FaultPoint::AfterCheckpointCommit
++                    | FaultPoint::BeforeAuthoritativeCommit
++            ))
++        );
++        assert!(
++            after
++                .intake_events
++                .iter()
++                .any(|event| event.ingest_event_id == resumed.receipt.ingest_event_id)
++        );
++        if let Some(interrupted_event_id) = resumed.interrupted_event_id {
++            assert!(
++                after
++                    .intake_events
++                    .iter()
++                    .any(|event| event.ingest_event_id == interrupted_event_id)
++            );
++        }
++        let expected_after_audits = match point {
++            FaultPoint::AfterVaultPublish => 7,
++            FaultPoint::AfterJobStart
++            | FaultPoint::AfterCheckpointCommit
++            | FaultPoint::BeforeAuthoritativeCommit => 9,
++            FaultPoint::AfterAuthoritativeCommit => 8,
++        };
++        assert_eq!(after.counts.audit_events, expected_after_audits);
++        let connection = rusqlite::Connection::open(&database_path)
++            .expect("open final fault audit observation connection");
++        let actions = {
++            let mut statement = connection
++                .prepare("SELECT action FROM audit_events ORDER BY sequence")
++                .expect("prepare final action query");
++            statement
++                .query_map([], |row| row.get::<_, String>(0))
++                .expect("query final actions")
++                .collect::<std::result::Result<Vec<_>, _>>()
++                .expect("read final actions")
++        };
++        let expected_after_actions: &[&str] = match point {
++            FaultPoint::AfterVaultPublish => &[
++                "project_created",
++                "job_created",
++                "job_started",
++                "job_checkpointed",
++                "job_succeeded",
++                "ingest_accepted",
++                "evidence_created",
++            ],
++            FaultPoint::AfterJobStart => &[
++                "project_created",
++                "job_created",
++                "job_started",
++                "job_interrupted",
++                "job_resumed",
++                "job_checkpointed",
++                "job_succeeded",
++                "ingest_accepted",
++                "evidence_created",
++            ],
++            FaultPoint::AfterCheckpointCommit | FaultPoint::BeforeAuthoritativeCommit => &[
++                "project_created",
++                "job_created",
++                "job_started",
++                "job_checkpointed",
++                "job_interrupted",
++                "job_resumed",
++                "job_succeeded",
++                "ingest_accepted",
++                "evidence_created",
++            ],
++            FaultPoint::AfterAuthoritativeCommit => &[
++                "project_created",
++                "job_created",
++                "job_started",
++                "job_checkpointed",
++                "job_succeeded",
++                "ingest_accepted",
++                "evidence_created",
++                "ingest_replayed",
++            ],
++        };
++        assert_eq!(
++            actions,
++            expected_after_actions
++                .iter()
++                .map(|value| (*value).to_owned())
++                .collect::<Vec<_>>()
++        );
++        drop(connection);
++        let audit = IngestEngine::new(&mut store, &vault, &probe, &clock, &ids)
++            .expect("construct final audit engine")
++            .verify_audit_chain()
++            .expect("verify final fault audit chain");
++        assert!(audit.valid);
++        assert!(audit.findings.is_empty());
+     }
+ }
+ 
+ #[test]
+ fn sticky_fault_checkpoints_resume_without_reprobing_admitted_content() {
+     // Break caught: a sticky job checkpointed as ambiguous VaultPublished and reprobed on resume.
+     for accepted in [true, false] {
+-        for point in [FaultPoint::AfterVaultPublish, FaultPoint::AfterJobStart] {
+-            let mut store = Store::open_in_memory().expect("open store");
++        for point in [
++            FaultPoint::AfterVaultPublish,
++            FaultPoint::AfterJobStart,
++            FaultPoint::AfterCheckpointCommit,
++            FaultPoint::BeforeAuthoritativeCommit,
++            FaultPoint::AfterAuthoritativeCommit,
++        ] {
++            let database_root = TempDir::new().expect("create database parent");
++            heleos_core::apply_private_permissions(database_root.path())
++                .expect("harden database parent");
++            let database_path = fs::canonicalize(database_root.path())
++                .expect("canonicalize database parent")
++                .join("foundation.sqlite3");
++            let mut store = Store::open_writer(&database_path).expect("open store");
+             store.migrate().expect("migrate store");
+             let vault_root = TempDir::new().expect("create vault parent");
+             let vault = opened_vault(&vault_root);
+             let project_id = ProjectId::from_uuid(
+                 Uuid::parse_str("00000000-0000-4000-8000-000000000001").expect("project UUID"),
+             );
+             let ids = SequenceIds::new(
+                 (2_u128..=400)
+                     .map(|value| Uuid::from_u128((4_u128 << 76) | (2_u128 << 62) | value)),
+             );
+@@ -1654,79 +2164,628 @@ fn sticky_fault_checkpoints_resume_without_reprobing_admitted_content() {
+                 .expect("construct quarantine engine")
+                 .ingest(IngestRequest {
+                     project_id,
+                     source: IntakeSource::open(&source_path).expect("open source"),
+                     idempotency_key: IdempotencyKey::try_from("first-authority").expect("key"),
+                     actor: ActorId::from_str("tester").expect("actor"),
+                     pdf_limits: PdfLimits::default(),
+                 })
+             }
+             .expect("establish sticky authority");
++            let first_job_id = first.authoritative_job_id;
+             let no_probe = FailingProbe {
+                 provenance: provenance.clone(),
+             };
+             let interrupted = IngestEngine::with_fault_injector(
+                 &mut store,
+                 &vault,
+                 &no_probe,
+                 &clock,
+                 &ids,
+                 &FailAt(point),
+             )
+             .expect("construct sticky fault engine")
+             .ingest(IngestRequest {
+                 project_id,
+                 source: IntakeSource::open(&source_path).expect("open sticky source"),
+                 idempotency_key: IdempotencyKey::try_from("second-key").expect("key"),
+                 actor: ActorId::from_str("tester").expect("actor"),
+                 pdf_limits: PdfLimits::default(),
+             });
+             assert!(matches!(interrupted, Err(HeleosError::FaultInjected)));
++            drop(store);
++            drop(vault);
++            let mut store = Store::open_writer(&database_path).expect("reopen sticky store");
++            let vault = reopened_vault(&vault_root);
+             let inspection = FoundationReader::new(&store, &vault)
+                 .inspect_foundation(project_id)
+                 .expect("inspect sticky checkpoint");
+             let job_id = inspection
+                 .jobs
+                 .iter()
+-                .find(|job| job.state != heleos_core::JobState::Succeeded)
+-                .expect("nonterminal sticky job")
++                .find(|job| job.job_id != first_job_id)
++                .expect("second sticky job")
+                 .job_id;
+-            if point == FaultPoint::AfterJobStart {
++            let second = inspection
++                .jobs
++                .iter()
++                .find(|job| job.job_id == job_id)
++                .expect("second sticky job image");
++            assert_eq!(inspection.jobs.len(), 2);
++            assert_eq!(
++                second.state,
++                match point {
++                    FaultPoint::AfterVaultPublish => heleos_core::JobState::Queued,
++                    FaultPoint::AfterAuthoritativeCommit => heleos_core::JobState::Succeeded,
++                    _ => heleos_core::JobState::Running,
++                }
++            );
++            assert_eq!(
++                second.attempt,
++                if point == FaultPoint::AfterVaultPublish {
++                    0
++                } else {
++                    1
++                }
++            );
++            let baseline_audits = if accepted { 7 } else { 6 };
++            let second_pre_audits = match point {
++                FaultPoint::AfterVaultPublish => 1,
++                FaultPoint::AfterJobStart => 2,
++                FaultPoint::AfterCheckpointCommit | FaultPoint::BeforeAuthoritativeCommit => 3,
++                FaultPoint::AfterAuthoritativeCommit => 5,
++            };
++            assert_eq!(
++                inspection.counts.audit_events,
++                baseline_audits + second_pre_audits
++            );
++            assert_eq!(
++                inspection.counts.ingest_events,
++                if point == FaultPoint::AfterAuthoritativeCommit {
++                    2
++                } else {
++                    1
++                }
++            );
++            if matches!(
++                point,
++                FaultPoint::AfterJobStart
++                    | FaultPoint::AfterCheckpointCommit
++                    | FaultPoint::BeforeAuthoritativeCommit
++            ) {
+                 clock.set(NOW_MS + 30_000);
+             }
+             let resumed = IngestEngine::new(&mut store, &vault, &no_probe, &clock, &ids)
+                 .expect("construct sticky resume engine")
+                 .resume(job_id, ActorId::from_str("resumer").expect("actor"))
+                 .expect("resume typed sticky checkpoint");
++            assert_eq!(
++                resumed.resumed_attempt,
++                match point {
++                    FaultPoint::AfterVaultPublish => Some(1),
++                    FaultPoint::AfterJobStart
++                    | FaultPoint::AfterCheckpointCommit
++                    | FaultPoint::BeforeAuthoritativeCommit => Some(2),
++                    FaultPoint::AfterAuthoritativeCommit => None,
++                }
++            );
++            assert_eq!(
++                resumed.interrupted_event_id.is_some(),
++                matches!(
++                    point,
++                    FaultPoint::AfterJobStart
++                        | FaultPoint::AfterCheckpointCommit
++                        | FaultPoint::BeforeAuthoritativeCommit
++                )
++            );
+             if accepted {
+                 assert_eq!(resumed.receipt.outcome, IngestOutcome::AcceptedDuplicate);
+-                let evidence = first.evidence_manifest.expect("accepted evidence");
++                let evidence = first.evidence_manifest.as_ref().expect("accepted evidence");
+                 let mut expected_preexisting = vec![
+                     first.content_sha256.expect("original digest"),
+                     evidence.manifest_content_sha256,
+                 ];
+                 expected_preexisting.sort_unstable();
+                 assert_eq!(
+                     resumed.receipt.preexisting_vault_digests,
+                     expected_preexisting
+                 );
+             } else {
+                 assert_eq!(resumed.receipt.outcome, IngestOutcome::QuarantinedCorrupt);
+                 assert_eq!(
+                     resumed.receipt.preexisting_vault_digests,
+                     vec![first.content_sha256.expect("quarantined digest")]
+                 );
+             }
++            let after = FoundationReader::new(&store, &vault)
++                .inspect_foundation(project_id)
++                .expect("inspect resumed sticky authority");
++            assert_eq!(after.jobs.len(), 2);
++            assert!(
++                after
++                    .jobs
++                    .iter()
++                    .all(|job| job.state == heleos_core::JobState::Succeeded)
++            );
++            assert_eq!(
++                after
++                    .intake_events
++                    .iter()
++                    .filter(|event| event.outcome != IngestOutcome::Interrupted)
++                    .count(),
++                2
++            );
++            if accepted {
++                assert_eq!(after.counts.documents, 1);
++                assert_eq!(after.counts.revisions, 1);
++                assert_eq!(after.counts.evidence_objects, 1);
++                assert_eq!(after.evidence.len(), 1);
++                assert_eq!(after.evidence[0].originating_job_id, first_job_id);
++                let reused_evidence = resumed
++                    .receipt
++                    .evidence_manifest
++                    .as_ref()
++                    .expect("reused accepted evidence");
++                assert_eq!(reused_evidence.lineages.len(), 1);
++                assert_eq!(
++                    reused_evidence.lineages[0].evidence_id,
++                    after.evidence[0].evidence_id
++                );
++                assert_eq!(reused_evidence.lineages[0].originating_job_id, first_job_id);
++            }
++            assert_eq!(
++                after.counts.ingest_events,
++                if matches!(
++                    point,
++                    FaultPoint::AfterJobStart
++                        | FaultPoint::AfterCheckpointCommit
++                        | FaultPoint::BeforeAuthoritativeCommit
++                ) {
++                    3
++                } else {
++                    2
++                }
++            );
++            assert!(
++                after
++                    .intake_events
++                    .iter()
++                    .any(|event| event.ingest_event_id == first.ingest_event_id)
++            );
++            assert!(
++                after
++                    .intake_events
++                    .iter()
++                    .any(|event| event.ingest_event_id == resumed.receipt.ingest_event_id)
++            );
++            if let Some(interrupted_event_id) = resumed.interrupted_event_id {
++                assert!(
++                    after
++                        .intake_events
++                        .iter()
++                        .any(|event| event.ingest_event_id == interrupted_event_id)
++                );
++            }
++            let expected_final_audits = baseline_audits
++                + match point {
++                    FaultPoint::AfterVaultPublish => 5,
++                    FaultPoint::AfterJobStart
++                    | FaultPoint::AfterCheckpointCommit
++                    | FaultPoint::BeforeAuthoritativeCommit => 7,
++                    FaultPoint::AfterAuthoritativeCommit => 6,
++                };
++            assert_eq!(after.counts.audit_events, expected_final_audits);
++            let audit = IngestEngine::new(&mut store, &vault, &no_probe, &clock, &ids)
++                .expect("construct sticky audit engine")
++                .verify_audit_chain()
++                .expect("verify sticky audit chain");
++            assert!(audit.valid);
++            assert!(audit.findings.is_empty());
+         }
+     }
+ }
+ 
++#[test]
++fn queued_same_digest_job_yields_to_later_sticky_authority_without_reprobing() {
++    // Break caught: resuming a VaultPublished job against the candidate it froze before another
++    // key established the digest's immutable accepted or quarantined authority.
++    for accepted_authority in [true, false] {
++        let database_root = TempDir::new().expect("create database parent");
++        heleos_core::apply_private_permissions(database_root.path())
++            .expect("harden database parent");
++        let database_path = fs::canonicalize(database_root.path())
++            .expect("canonicalize database parent")
++            .join("foundation.sqlite3");
++        let mut store = Store::open_writer(&database_path).expect("open store");
++        store.migrate().expect("migrate store");
++        let vault_root = TempDir::new().expect("create vault parent");
++        let vault = opened_vault(&vault_root);
++        let project_id = ProjectId::from_uuid(
++            Uuid::parse_str("00000000-0000-4000-8000-000000000001").expect("project UUID"),
++        );
++        let ids = SequenceIds::new(
++            (2_u128..=400).map(|value| Uuid::from_u128((4_u128 << 76) | (2_u128 << 62) | value)),
++        );
++        ProjectService::new(&mut store, &FixedClock, &ids)
++            .expect("construct project service")
++            .create(ProjectCreateRequest {
++                project_id: Some(project_id),
++                name: "Competing sticky authority".to_owned(),
++                actor: ActorId::from_str("creator").expect("actor"),
++                data_class: DataClass::Internal,
++            })
++            .expect("create project");
++        let source_root = TempDir::new().expect("create source directory");
++        let source_path = source_root.path().join("competing.pdf");
++        fs::write(
++            &source_path,
++            b"%PDF-1.7\ncompeting sticky authority\n%%EOF\n",
++        )
++        .expect("write source");
++        let provenance = accepted_probe().provenance;
++
++        let first = IngestEngine::with_fault_injector(
++            &mut store,
++            &vault,
++            &AcceptedProbe {
++                provenance: provenance.clone(),
++            },
++            &FixedClock,
++            &ids,
++            &FailAt(FaultPoint::AfterVaultPublish),
++        )
++        .expect("construct first faulting engine")
++        .ingest(IngestRequest {
++            project_id,
++            source: IntakeSource::open(&source_path).expect("open first source"),
++            idempotency_key: IdempotencyKey::try_from("first-pending-key").expect("key"),
++            actor: ActorId::from_str("first").expect("actor"),
++            pdf_limits: PdfLimits::default(),
++        });
++        assert!(matches!(first, Err(HeleosError::FaultInjected)));
++        let before_authority = FoundationReader::new(&store, &vault)
++            .inspect_foundation(project_id)
++            .expect("inspect queued first job");
++        assert_eq!(before_authority.jobs.len(), 1);
++        assert_eq!(
++            before_authority.jobs[0].state,
++            heleos_core::JobState::Queued
++        );
++        assert_eq!(before_authority.jobs[0].attempt, 0);
++        let first_job_id = before_authority.jobs[0].job_id;
++
++        let authority = if accepted_authority {
++            IngestEngine::new(
++                &mut store,
++                &vault,
++                &AcceptedProbe {
++                    provenance: provenance.clone(),
++                },
++                &FixedClock,
++                &ids,
++            )
++            .expect("construct accepted authority engine")
++            .ingest(IngestRequest {
++                project_id,
++                source: IntakeSource::open(&source_path).expect("open authority source"),
++                idempotency_key: IdempotencyKey::try_from("winning-key").expect("key"),
++                actor: ActorId::from_str("winner").expect("actor"),
++                pdf_limits: PdfLimits::default(),
++            })
++        } else {
++            IngestEngine::new(
++                &mut store,
++                &vault,
++                &QuarantinedProbe {
++                    provenance: provenance.clone(),
++                    reason: PdfQuarantineReason::Corrupt,
++                },
++                &FixedClock,
++                &ids,
++            )
++            .expect("construct quarantine authority engine")
++            .ingest(IngestRequest {
++                project_id,
++                source: IntakeSource::open(&source_path).expect("open authority source"),
++                idempotency_key: IdempotencyKey::try_from("winning-key").expect("key"),
++                actor: ActorId::from_str("winner").expect("actor"),
++                pdf_limits: PdfLimits::default(),
++            })
++        }
++        .expect("establish later sticky authority");
++
++        drop(store);
++        drop(vault);
++        let mut store = Store::open_writer(&database_path).expect("reopen competing store");
++        let vault = reopened_vault(&vault_root);
++        let no_probe = FailingProbe {
++            provenance: provenance.clone(),
++        };
++        let resumed = IngestEngine::new(&mut store, &vault, &no_probe, &FixedClock, &ids)
++            .expect("construct zero-probe resume engine")
++            .resume(first_job_id, ActorId::from_str("resumer").expect("actor"))
++            .expect("resume against later authority");
++        assert_eq!(resumed.resumed_attempt, Some(1));
++        assert_eq!(resumed.interrupted_event_id, None);
++        if accepted_authority {
++            assert_eq!(authority.outcome, IngestOutcome::AcceptedNew);
++            assert_eq!(resumed.receipt.outcome, IngestOutcome::AcceptedDuplicate);
++            let mut expected_preexisting = vec![
++                authority.content_sha256.expect("accepted original"),
++                authority
++                    .evidence_manifest
++                    .as_ref()
++                    .expect("accepted manifest")
++                    .manifest_content_sha256,
++            ];
++            expected_preexisting.sort_unstable();
++            assert_eq!(
++                resumed.receipt.preexisting_vault_digests,
++                expected_preexisting
++            );
++            assert_eq!(resumed.receipt.document_id, authority.document_id);
++            assert_eq!(resumed.receipt.revision_id, authority.revision_id);
++        } else {
++            assert_eq!(authority.outcome, IngestOutcome::QuarantinedCorrupt);
++            assert_eq!(resumed.receipt.outcome, IngestOutcome::QuarantinedCorrupt);
++            assert_eq!(resumed.receipt.quarantine, authority.quarantine);
++            assert_eq!(
++                resumed.receipt.preexisting_vault_digests,
++                vec![authority.content_sha256.expect("retained original")]
++            );
++        }
++        let after = FoundationReader::new(&store, &vault)
++            .inspect_foundation(project_id)
++            .expect("inspect competing authority");
++        assert_eq!(after.jobs.len(), 2);
++        assert!(
++            after
++                .jobs
++                .iter()
++                .all(|job| job.state == heleos_core::JobState::Succeeded)
++        );
++        assert_eq!(
++            after
++                .intake_events
++                .iter()
++                .filter(|event| event.outcome != IngestOutcome::Interrupted)
++                .count(),
++            2
++        );
++        if accepted_authority {
++            assert_eq!(after.counts.documents, 1);
++            assert_eq!(after.counts.revisions, 1);
++            assert_eq!(after.counts.evidence_objects, 1);
++        } else {
++            assert_eq!(after.counts.documents, 0);
++            assert_eq!(after.counts.evidence_objects, 0);
++        }
++        let audit = IngestEngine::new(&mut store, &vault, &no_probe, &FixedClock, &ids)
++            .expect("construct competing audit engine")
++            .verify_audit_chain()
++            .expect("verify competing audit chain");
++        assert!(audit.valid);
++        assert!(audit.findings.is_empty());
++    }
++}
++
++#[test]
++#[cfg(unix)]
++fn sticky_manifest_quota_faults_resume_from_every_boundary_without_reprobing() {
++    // Break caught: the sticky manifest-quota candidate being confused with a novel PDF after
++    // any durable fault boundary.
++    const QUARANTINE_BYTES: u64 = 8 * 1024 * 1024 * 1024;
++
++    for point in [
++        FaultPoint::AfterVaultPublish,
++        FaultPoint::AfterJobStart,
++        FaultPoint::AfterCheckpointCommit,
++        FaultPoint::BeforeAuthoritativeCommit,
++        FaultPoint::AfterAuthoritativeCommit,
++    ] {
++        let database_root = TempDir::new().expect("create database parent");
++        heleos_core::apply_private_permissions(database_root.path())
++            .expect("harden database parent");
++        let database_path = fs::canonicalize(database_root.path())
++            .expect("canonicalize database parent")
++            .join("foundation.sqlite3");
++        let mut store = Store::open_writer(&database_path).expect("open store");
++        store.migrate().expect("migrate store");
++        let vault_root = TempDir::new().expect("create vault parent");
++        let vault = opened_vault(&vault_root);
++        let project_id = ProjectId::from_uuid(
++            Uuid::parse_str("00000000-0000-4000-8000-000000000001").expect("project UUID"),
++        );
++        let ids = SequenceIds::new(
++            (2_u128..=500).map(|value| Uuid::from_u128((4_u128 << 76) | (2_u128 << 62) | value)),
++        );
++        let clock = ManualClock::new(NOW_MS);
++        ProjectService::new(&mut store, &clock, &ids)
++            .expect("construct project service")
++            .create(ProjectCreateRequest {
++                project_id: Some(project_id),
++                name: "Sticky manifest quota recovery".to_owned(),
++                actor: ActorId::from_str("creator").expect("actor"),
++                data_class: DataClass::Internal,
++            })
++            .expect("create project");
++        let source_root = TempDir::new().expect("create source directory");
++        let source_path = source_root.path().join("sticky-manifest-quota.pdf");
++        let source_bytes = b"%PDF-1.7\nsticky manifest quota recovery\n%%EOF\n";
++        fs::write(&source_path, source_bytes).expect("write source");
++        let source_digest =
++            Sha256Digest::hash_reader(source_bytes.as_slice()).expect("hash sticky source");
++        let source_length = u64::try_from(source_bytes.len()).expect("source length fits");
++        create_sparse_vault_orphans(
++            &vault_root,
++            QUARANTINE_BYTES
++                .checked_sub(source_length)
++                .expect("source fits quarantine allowance"),
++            &[source_digest],
++        );
++        let provenance = accepted_probe().provenance;
++        let first = IngestEngine::new(
++            &mut store,
++            &vault,
++            &AcceptedProbe {
++                provenance: provenance.clone(),
++            },
++            &clock,
++            &ids,
++        )
++        .expect("construct first authority engine")
++        .ingest(IngestRequest {
++            project_id,
++            source: IntakeSource::open(&source_path).expect("open source"),
++            idempotency_key: IdempotencyKey::try_from("manifest-quota-authority").expect("key"),
++            actor: ActorId::from_str("tester").expect("actor"),
++            pdf_limits: PdfLimits::default(),
++        })
++        .expect("establish sticky manifest-quota authority");
++        assert_eq!(first.outcome, IngestOutcome::QuarantinedLimit);
++        assert!(matches!(
++            first.quarantine.as_ref().expect("quarantine").reason,
++            IntakeQuarantineReasonV1::EvidenceManifestQuota
++        ));
++        assert!(vault.open_verified(source_digest).is_ok());
++
++        let no_probe = FailingProbe {
++            provenance: provenance.clone(),
++        };
++        let interrupted = IngestEngine::with_fault_injector(
++            &mut store,
++            &vault,
++            &no_probe,
++            &clock,
++            &ids,
++            &FailAt(point),
++        )
++        .expect("construct sticky manifest-quota fault engine")
++        .ingest(IngestRequest {
++            project_id,
++            source: IntakeSource::open(&source_path).expect("open sticky source"),
++            idempotency_key: IdempotencyKey::try_from("manifest-quota-second-key").expect("key"),
++            actor: ActorId::from_str("tester").expect("actor"),
++            pdf_limits: PdfLimits::default(),
++        });
++        assert!(matches!(interrupted, Err(HeleosError::FaultInjected)));
++
++        drop(store);
++        drop(vault);
++        let mut store = Store::open_writer(&database_path).expect("reopen sticky quota store");
++        let vault = reopened_vault(&vault_root);
++        let before = FoundationReader::new(&store, &vault)
++            .inspect_foundation(project_id)
++            .expect("inspect sticky manifest-quota checkpoint");
++        let job = before
++            .jobs
++            .iter()
++            .find(|job| job.job_id != first.authoritative_job_id)
++            .expect("second sticky manifest-quota job");
++        assert_eq!(
++            job.state,
++            match point {
++                FaultPoint::AfterVaultPublish => heleos_core::JobState::Queued,
++                FaultPoint::AfterAuthoritativeCommit => heleos_core::JobState::Succeeded,
++                _ => heleos_core::JobState::Running,
++            }
++        );
++        assert_eq!(
++            job.attempt,
++            if point == FaultPoint::AfterVaultPublish {
++                0
++            } else {
++                1
++            }
++        );
++        if matches!(
++            point,
++            FaultPoint::AfterJobStart
++                | FaultPoint::AfterCheckpointCommit
++                | FaultPoint::BeforeAuthoritativeCommit
++        ) {
++            clock.set(NOW_MS + 30_000);
++        }
++        let resumed = IngestEngine::new(&mut store, &vault, &no_probe, &clock, &ids)
++            .expect("construct sticky manifest-quota resume engine")
++            .resume(job.job_id, ActorId::from_str("resumer").expect("actor"))
++            .expect("resume sticky manifest-quota checkpoint");
++        assert_eq!(resumed.receipt.outcome, IngestOutcome::QuarantinedLimit);
++        assert!(matches!(
++            resumed
++                .receipt
++                .quarantine
++                .as_ref()
++                .expect("manifest quota quarantine")
++                .reason,
++            IntakeQuarantineReasonV1::EvidenceManifestQuota
++        ));
++        assert_eq!(
++            resumed.receipt.preexisting_vault_digests,
++            vec![source_digest]
++        );
++        assert_eq!(
++            resumed.resumed_attempt,
++            match point {
++                FaultPoint::AfterVaultPublish => Some(1),
++                FaultPoint::AfterJobStart
++                | FaultPoint::AfterCheckpointCommit
++                | FaultPoint::BeforeAuthoritativeCommit => Some(2),
++                FaultPoint::AfterAuthoritativeCommit => None,
++            }
++        );
++        assert_eq!(
++            resumed.interrupted_event_id.is_some(),
++            matches!(
++                point,
++                FaultPoint::AfterJobStart
++                    | FaultPoint::AfterCheckpointCommit
++                    | FaultPoint::BeforeAuthoritativeCommit
++            )
++        );
++        let after = FoundationReader::new(&store, &vault)
++            .inspect_foundation(project_id)
++            .expect("inspect sticky manifest-quota recovery");
++        assert_eq!(after.jobs.len(), 2);
++        assert!(
++            after
++                .jobs
++                .iter()
++                .all(|job| job.state == heleos_core::JobState::Succeeded)
++        );
++        assert_eq!(
++            after.counts.ingest_events,
++            if resumed.interrupted_event_id.is_some() {
++                3
++            } else {
++                2
++            }
++        );
++        assert_eq!(
++            after.counts.audit_events,
++            6 + match point {
++                FaultPoint::AfterVaultPublish => 5,
++                FaultPoint::AfterJobStart
++                | FaultPoint::AfterCheckpointCommit
++                | FaultPoint::BeforeAuthoritativeCommit => 7,
++                FaultPoint::AfterAuthoritativeCommit => 6,
++            }
++        );
++        let audit = IngestEngine::new(&mut store, &vault, &no_probe, &clock, &ids)
++            .expect("construct sticky manifest-quota audit engine")
++            .verify_audit_chain()
++            .expect("verify sticky manifest-quota audit chain");
++        assert!(audit.valid);
++        assert!(audit.findings.is_empty());
++    }
++}
++
+ #[test]
+ fn trusted_post_start_failure_is_audited_failed_while_injected_loss_is_recoverable() {
+     // Break caught: trusted probe/object failures leaking an indefinitely live Running lease.
+     let mut store = Store::open_in_memory().expect("open store");
+     store.migrate().expect("migrate store");
+     let vault_root = TempDir::new().expect("create vault parent");
+     let vault = opened_vault(&vault_root);
+     let project_id = ProjectId::from_uuid(
+         Uuid::parse_str("00000000-0000-4000-8000-000000000001").expect("project UUID"),
+     );
+@@ -1871,27 +2930,27 @@ fn evidence_reader_reconstructs_cross_project_lineage_in_canonical_order() {
+             .expect("create project");
+     }
+ 
+     let source_root = TempDir::new().expect("create source directory");
+     let source_path = source_root.path().join("shared.pdf");
+     let source_bytes = b"%PDF-1.7\nshared fixture\n%%EOF\n";
+     fs::write(&source_path, source_bytes).expect("write source fixture");
+     let source_digest = Sha256Digest::hash_reader(source_bytes.as_slice()).expect("hash source");
+     let (_, revision_id) = canonical_document_ids(source_digest);
+     let probe = accepted_probe();
+-    for (project_id, key) in [(project_b, "project-b"), (project_a, "project-a")] {
++    for project_id in [project_b, project_a] {
+         IngestEngine::new(&mut store, &vault, &probe, &FixedClock, &ids)
+             .expect("construct intake engine")
+             .ingest(IngestRequest {
+                 project_id,
+                 source: IntakeSource::open(&source_path).expect("open retained intake source"),
+-                idempotency_key: IdempotencyKey::try_from(key).expect("key"),
++                idempotency_key: IdempotencyKey::try_from("shared-cross-project-key").expect("key"),
+                 actor: ActorId::from_str("tester").expect("actor"),
+                 pdf_limits: PdfLimits::default(),
+             })
+             .expect("ingest shared fixture");
+     }
+ 
+     let evidence = FoundationReader::new(&store, &vault)
+         .evidence_manifest_for_revision(revision_id)
+         .expect("reconstruct cross-project evidence");
+     assert_eq!(evidence.lineages.len(), 2);
+@@ -1932,20 +2991,62 @@ fn evidence_reader_rehashes_both_committed_vault_objects() {
+             .join(Vault::object_key(manifest)),
+         b"corrupt manifest",
+     )
+     .expect("corrupt manifest object");
+     assert!(matches!(
+         FoundationReader::new(&store, &vault).evidence_manifest_for_revision(revision),
+         Err(HeleosError::Integrity)
+     ));
+ }
+ 
++#[test]
++fn ingest_engine_read_only_forwarders_match_foundation_reader_exactly() {
++    // Break caught: the convenience API applying different project, vault, or audit semantics
++    // from the authoritative FoundationReader implementation.
++    let (mut store, vault, _vault_root, revision, _, _) = accepted_reader_fixture();
++    let project_id = ProjectId::from_uuid(
++        Uuid::parse_str("00000000-0000-4000-8000-000000000001").expect("project UUID"),
++    );
++    let expected_audit = FoundationReader::new(&store, &vault)
++        .verify_audit_chain()
++        .expect("read audit directly");
++    let expected_evidence = FoundationReader::new(&store, &vault)
++        .evidence_manifest_for_revision(revision)
++        .expect("read evidence directly");
++    let expected_inspection = FoundationReader::new(&store, &vault)
++        .inspect_foundation(project_id)
++        .expect("inspect directly");
++    let ids = SequenceIds::new(std::iter::empty::<Uuid>());
++    let probe = FailingProbe {
++        provenance: accepted_probe().provenance,
++    };
++    let engine = IngestEngine::new(&mut store, &vault, &probe, &FixedClock, &ids)
++        .expect("construct read-only forwarding engine");
++
++    assert_eq!(
++        engine.verify_audit_chain().expect("forward audit read"),
++        expected_audit
++    );
++    assert_eq!(
++        engine
++            .evidence_manifest_for_revision(revision)
++            .expect("forward evidence read"),
++        expected_evidence
++    );
++    assert_eq!(
++        engine
++            .inspect_foundation(project_id)
++            .expect("forward inspection"),
++        expected_inspection
++    );
++}
++
+ #[test]
+ fn evidence_reader_rejects_one_disagreeing_cross_project_row() {
+     // Break caught: selecting the first lineage instead of requiring every row to agree.
+     let database_root = TempDir::new().expect("create database parent");
+     heleos_core::apply_private_permissions(database_root.path()).expect("harden database parent");
+     let database_path = fs::canonicalize(database_root.path())
+         .expect("canonicalize database parent")
+         .join("foundation.sqlite3");
+     let mut store = Store::open_writer(&database_path).expect("open writer");
+     store.migrate().expect("migrate store");
+diff --git a/crates/heleos-core/tests/restart.rs b/crates/heleos-core/tests/restart.rs
+index 10f6119..f85e959 100644
+--- a/crates/heleos-core/tests/restart.rs
++++ b/crates/heleos-core/tests/restart.rs
+@@ -1,33 +1,37 @@
+ #![forbid(unsafe_code)]
+ #![cfg(unix)]
+ 
+ // These quota-boundary regressions require sparse files to represent 8 GiB without
+ // materializing it. Native Windows coverage needs an NTFS sparse-file fixture.
+ 
+ use std::{
+     fs,
++    io::Write,
++    process::Command,
+     str::FromStr,
+     sync::{
+         Mutex,
+         atomic::{AtomicI64, Ordering},
+     },
+ };
+ 
+ use heleos_core::{
+     ActorId, Clock, DataClass, EVIDENCE_MANIFEST_SCHEMA_V1, EvidenceContentV1, EvidenceManifestV1,
+     FaultInjector, FaultPoint, FoundationReader, HeleosError, IdGenerator, IdempotencyKey,
+     IngestEngine, IngestOutcome, IngestRequest, IntakeQuarantineReasonV1, IntakeSource, JobState,
+     PDF_MEDIA_TYPE, PageMetadata, PageTransform, PageUnit, PdfInspection, PdfLimits, PdfProbe,
+-    PdfProbeOutcome, PdfProbeProvenance, ProjectCreateRequest, ProjectId, ProjectService, Result,
+-    RevisionId, Sha256Digest, Store, Vault, VaultConfig, VaultOpenMode, VerifiedObject,
+-    canonical_document_ids, canonical_json, page_id,
++    PdfProbeOutcome, PdfProbeProvenance, PdfQuarantine, PdfQuarantineReason, ProjectCreateRequest,
++    ProjectId, ProjectService, PutOutcome, ReconciliationFinding, Result, RevisionId, Sha256Digest,
++    Store, Vault, VaultConfig, VaultInventory, VaultInventoryEntry, VaultOpenMode,
++    VaultVerification, VaultWriteBudget, VerifiedObject, canonical_document_ids, canonical_json,
++    page_id,
+ };
+ use tempfile::TempDir;
+ use uuid::Uuid;
+ 
+ const NOW_MS: i64 = 1_700_000_000_000;
+ const STORE_QUARANTINE_BYTES: u64 = 8 * 1024 * 1024 * 1024;
+ const MAX_OBJECT_BYTES: u64 = 256 * 1024 * 1024;
+ 
+ struct ManualClock(AtomicI64);
+ 
+@@ -46,23 +50,27 @@ impl Clock for ManualClock {
+         self.0.load(Ordering::SeqCst)
+     }
+ }
+ 
+ struct SequenceIds {
+     values: Mutex<std::vec::IntoIter<Uuid>>,
+ }
+ 
+ impl SequenceIds {
+     fn new() -> Self {
++        Self::starting_at(2)
++    }
++
++    fn starting_at(first: u128) -> Self {
+         Self {
+             values: Mutex::new(
+-                (2_u128..=1_000)
++                (first..first.checked_add(998).expect("bounded test ID range"))
+                     .map(|value| Uuid::from_u128((4_u128 << 76) | (2_u128 << 62) | value))
+                     .collect::<Vec<_>>()
+                     .into_iter(),
+             ),
+         }
+     }
+ }
+ 
+ impl IdGenerator for SequenceIds {
+     fn next_uuid(&self) -> Uuid {
+@@ -84,20 +92,26 @@ impl FaultInjector for FailAt {
+             Ok(())
+         }
+     }
+ }
+ 
+ #[derive(Clone)]
+ struct AcceptedProbe {
+     provenance: PdfProbeProvenance,
+ }
+ 
++#[derive(Clone)]
++struct QuarantinedProbe {
++    provenance: PdfProbeProvenance,
++    reason: PdfQuarantineReason,
++}
++
+ impl PdfProbe for AcceptedProbe {
+     fn provenance(&self) -> Result<PdfProbeProvenance> {
+         Ok(self.provenance.clone())
+     }
+ 
+     fn probe(
+         &self,
+         input: VerifiedObject,
+         revision: RevisionId,
+         _: PdfLimits,
+@@ -106,20 +120,35 @@ impl PdfProbe for AcceptedProbe {
+         Ok(PdfProbeOutcome::Accepted(PdfInspection {
+             revision_id: revision,
+             content_sha256: digest,
+             byte_length: input.byte_length(),
+             provenance: self.provenance.clone(),
+             pages: vec![accepted_page(digest)],
+         }))
+     }
+ }
+ 
++impl PdfProbe for QuarantinedProbe {
++    fn provenance(&self) -> Result<PdfProbeProvenance> {
++        Ok(self.provenance.clone())
++    }
++
++    fn probe(&self, input: VerifiedObject, _: RevisionId, _: PdfLimits) -> Result<PdfProbeOutcome> {
++        Ok(PdfProbeOutcome::Quarantined(PdfQuarantine {
++            content_sha256: input.digest(),
++            byte_length: input.byte_length(),
++            provenance: self.provenance.clone(),
++            reason: self.reason,
++        }))
++    }
++}
++
+ fn accepted_probe() -> AcceptedProbe {
+     AcceptedProbe {
+         provenance: PdfProbeProvenance {
+             parser_name: "fixture-parser".to_owned(),
+             parser_version: "1.0.0".to_owned(),
+             guest_wasm_sha256: Sha256Digest::from_bytes([1; 32]),
+             guest_source_tree_sha256: Sha256Digest::from_bytes([2; 32]),
+             guest_dependency_graph_sha256: Sha256Digest::from_bytes([3; 32]),
+             protocol_version: "heleos.pdf-probe/v1".to_owned(),
+         },
+@@ -255,20 +284,156 @@ fn create_sparse_orphans(parent: &TempDir, mut total_bytes: u64, excluded: &[Sha
+             .expect("size sparse orphan without materializing bytes");
+         object.sync_all().expect("sync sparse orphan metadata");
+         drop(object);
+         heleos_core::apply_private_permissions(&path).expect("harden sparse orphan");
+         total_bytes = total_bytes
+             .checked_sub(object_bytes)
+             .expect("bounded sparse orphan total");
+     }
+ }
+ 
++fn write_process_sentinel(path: &std::path::Path, bytes: &[u8]) {
++    let mut file = fs::OpenOptions::new()
++        .write(true)
++        .create_new(true)
++        .open(path)
++        .expect("create process sentinel");
++    file.write_all(bytes).expect("write process sentinel");
++    file.sync_all().expect("sync process sentinel");
++}
++
++#[test]
++fn pre_job_vault_publish_process_helper() {
++    let Some(vault_root) = std::env::var_os("HELEOS_TEST_PRE_JOB_VAULT_ROOT") else {
++        return;
++    };
++    let source_path =
++        std::env::var_os("HELEOS_TEST_PRE_JOB_SOURCE").expect("child source path is present");
++    let started = std::env::var_os("HELEOS_TEST_PRE_JOB_STARTED")
++        .expect("child start sentinel path is present");
++    let published = std::env::var_os("HELEOS_TEST_PRE_JOB_PUBLISHED")
++        .expect("child publication sentinel path is present");
++
++    let vault = Vault::open(VaultConfig {
++        root: vault_root.into(),
++        open_mode: VaultOpenMode::ExistingOnly,
++    })
++    .expect("child opens existing vault");
++    let source = fs::File::open(source_path).expect("child opens source");
++    let byte_length = source
++        .metadata()
++        .expect("child reads source metadata")
++        .len();
++    write_process_sentinel(std::path::Path::new(&started), b"started\n");
++    let stored = match vault
++        .put_reader(
++            source,
++            VaultWriteBudget::new(byte_length, byte_length).expect("child publication budget"),
++        )
++        .expect("child publishes original")
++    {
++        PutOutcome::Stored(stored) => stored,
++        PutOutcome::QuotaRejected { .. } => panic!("child publication unexpectedly rejected"),
++    };
++    assert!(stored.newly_published);
++    assert_eq!(stored.byte_length, byte_length);
++    write_process_sentinel(
++        std::path::Path::new(&published),
++        stored.digest.to_string().as_bytes(),
++    );
++    std::process::exit(0);
++}
++
++#[test]
++fn manifest_precheckpoint_process_helper() {
++    let Some(database_path) = std::env::var_os("HELEOS_TEST_MANIFEST_DATABASE") else {
++        return;
++    };
++    let vault_root =
++        std::env::var_os("HELEOS_TEST_MANIFEST_VAULT_ROOT").expect("child vault root is present");
++    let source_path = std::path::PathBuf::from(
++        std::env::var_os("HELEOS_TEST_MANIFEST_SOURCE").expect("child source path is present"),
++    );
++    let project_id = ProjectId::from_uuid(
++        Uuid::parse_str(
++            &std::env::var("HELEOS_TEST_MANIFEST_PROJECT").expect("child project is present"),
++        )
++        .expect("parse child project"),
++    );
++    let started = std::env::var_os("HELEOS_TEST_MANIFEST_STARTED")
++        .expect("child running sentinel path is present");
++    let published = std::env::var_os("HELEOS_TEST_MANIFEST_PUBLISHED")
++        .expect("child publication sentinel path is present");
++
++    let mut store = Store::open_writer(database_path).expect("child opens writer");
++    let vault = Vault::open(VaultConfig {
++        root: vault_root.into(),
++        open_mode: VaultOpenMode::ExistingOnly,
++    })
++    .expect("child opens existing vault");
++    let probe = accepted_probe();
++    let clock = ManualClock::new(NOW_MS);
++    let ids = SequenceIds::starting_at(100_000);
++    let fault = FailAt(FaultPoint::AfterJobStart);
++    let result =
++        IngestEngine::with_fault_injector(&mut store, &vault, &probe, &clock, &ids, &fault)
++            .expect("construct child intake engine")
++            .ingest(IngestRequest {
++                project_id,
++                source: IntakeSource::open(&source_path).expect("child opens intake source"),
++                idempotency_key: IdempotencyKey::try_from("manifest-precheckpoint-process")
++                    .expect("child idempotency key"),
++                actor: ActorId::from_str("child-actor").expect("child actor"),
++                pdf_limits: PdfLimits::default(),
++            });
++    assert!(matches!(result, Err(HeleosError::FaultInjected)));
++    let inspection = FoundationReader::new(&store, &vault)
++        .inspect_foundation(project_id)
++        .expect("child inspects running job");
++    assert_eq!(inspection.jobs.len(), 1);
++    assert_eq!(inspection.jobs[0].state, JobState::Running);
++    assert_eq!(inspection.jobs[0].attempt, 1);
++    assert_eq!(inspection.counts.content_objects, 0);
++    assert_eq!(inspection.counts.ingest_events, 0);
++    write_process_sentinel(
++        std::path::Path::new(&started),
++        inspection.jobs[0]
++            .job_id
++            .as_uuid()
++            .hyphenated()
++            .to_string()
++            .as_bytes(),
++    );
++
++    let source_bytes = fs::read(source_path).expect("child rereads deterministic fixture bytes");
++    let (expected_digest, manifest_bytes) = accepted_manifest_bytes(&source_bytes);
++    let manifest_length = u64::try_from(manifest_bytes.len()).expect("manifest length fits");
++    let stored = match vault
++        .put_reader(
++            manifest_bytes.as_slice(),
++            VaultWriteBudget::new(manifest_length, manifest_length).expect("child manifest budget"),
++        )
++        .expect("child publishes manifest before checkpoint")
++    {
++        PutOutcome::Stored(stored) => stored,
++        PutOutcome::QuotaRejected { .. } => panic!("child manifest unexpectedly rejected"),
++    };
++    assert!(stored.newly_published);
++    assert_eq!(stored.digest, expected_digest);
++    assert_eq!(stored.byte_length, manifest_length);
++    write_process_sentinel(
++        std::path::Path::new(&published),
++        stored.digest.to_string().as_bytes(),
++    );
++    std::process::exit(0);
++}
++
+ struct IngestFixture<'a> {
+     probe: &'a AcceptedProbe,
+     clock: &'a ManualClock,
+     ids: &'a SequenceIds,
+     project_id: ProjectId,
+ }
+ 
+ impl IngestFixture<'_> {
+     fn ingest_with_fault(
+         &self,
+@@ -507,10 +672,294 @@ fn failed_processing_checkpoint_excludes_original_and_manifest_from_inventory()
+         .expect("inspect after processing orphan accounting");
+     assert_eq!(inspection.counts.content_objects, 0);
+     assert_eq!(inspection.jobs.len(), 2);
+     assert!(
+         inspection
+             .jobs
+             .iter()
+             .any(|job| job.state == JobState::Failed)
+     );
+ }
++
++#[test]
++fn subprocess_original_link_before_job_is_reported_and_charged_without_double_debit() {
++    // Break caught: a process loss after the original link but before the first job transaction
++    // escaping reconciliation/quarantine accounting or being repaired as a new object.
++    let database_parent = TempDir::new().expect("create database parent");
++    let database_path = database_path(&database_parent);
++    let mut store = Store::open_writer(&database_path).expect("open writer");
++    store.migrate().expect("migrate store");
++    let vault_parent = TempDir::new().expect("create vault parent");
++    let vault = open_new_vault(&vault_parent);
++    let clock = ManualClock::new(NOW_MS);
++    let ids = SequenceIds::new();
++    let project_id = ProjectId::from_uuid(
++        Uuid::parse_str("00000000-0000-4000-8000-000000000001").expect("project UUID"),
++    );
++    create_project(&mut store, &clock, &ids, project_id);
++
++    let source_parent = TempDir::new().expect("create source parent");
++    let source_path = source_parent.path().join("pre-job-loss.pdf");
++    let source_bytes = padded_pdf("pre-job process loss", 4_096);
++    fs::write(&source_path, &source_bytes).expect("write pre-job source");
++    let source_digest =
++        Sha256Digest::hash_reader(source_bytes.as_slice()).expect("hash pre-job source");
++    let source_length = u64::try_from(source_bytes.len()).expect("source length fits");
++    let unrelated_path = source_parent.path().join("unrelated.pdf");
++    let unrelated_bytes = padded_pdf("unrelated after pre-job loss", 64);
++    fs::write(&unrelated_path, &unrelated_bytes).expect("write unrelated source");
++    let unrelated_digest =
++        Sha256Digest::hash_reader(unrelated_bytes.as_slice()).expect("hash unrelated source");
++
++    drop(store);
++    drop(vault);
++    let control = TempDir::new().expect("create child sentinel directory");
++    let started = control.path().join("child-started");
++    let published = control.path().join("child-published");
++    let status = Command::new(std::env::current_exe().expect("locate restart test executable"))
++        .arg("--exact")
++        .arg("pre_job_vault_publish_process_helper")
++        .arg("--nocapture")
++        .env(
++            "HELEOS_TEST_PRE_JOB_VAULT_ROOT",
++            fs::canonicalize(vault_parent.path())
++                .expect("canonicalize vault parent")
++                .join("vault"),
++        )
++        .env("HELEOS_TEST_PRE_JOB_SOURCE", &source_path)
++        .env("HELEOS_TEST_PRE_JOB_STARTED", &started)
++        .env("HELEOS_TEST_PRE_JOB_PUBLISHED", &published)
++        .status()
++        .expect("spawn pre-job loss child");
++    assert!(status.success(), "pre-job loss child failed: {status:?}");
++    assert!(started.is_file(), "child did not emit its start sentinel");
++    assert_eq!(
++        fs::read_to_string(&published).expect("read child publication sentinel"),
++        source_digest.to_string()
++    );
++
++    let store = Store::open_writer(&database_path).expect("reopen writer after child loss");
++    let vault = reopen_vault(&vault_parent);
++    let before = FoundationReader::new(&store, &vault)
++        .inspect_foundation(project_id)
++        .expect("inspect pre-job loss");
++    assert_eq!(before.counts.jobs, 0);
++    assert_eq!(before.counts.ingest_events, 0);
++    assert_eq!(before.counts.content_objects, 0);
++    assert_eq!(
++        vault
++            .open_verified(source_digest)
++            .expect("verify child-published original")
++            .byte_length(),
++        source_length
++    );
++    let empty_inventory = VaultInventory::try_from_entries([]).expect("empty inventory");
++    let reconciliation = vault
++        .reconcile(&empty_inventory)
++        .expect("reconcile child-published orphan");
++    assert_eq!(reconciliation.findings.len(), 1);
++    assert!(matches!(
++        &reconciliation.findings[0],
++        ReconciliationFinding::UnreferencedObject {
++            verification: VaultVerification::Verified {
++                digest,
++                byte_length,
++                vault_key,
++            },
++        } if *digest == source_digest
++            && *byte_length == source_length
++            && vault_key == &Vault::object_key(source_digest)
++    ));
++    assert!(vault.open_verified(source_digest).is_ok());
++
++    drop(store);
++    drop(vault);
++    create_sparse_orphans(
++        &vault_parent,
++        STORE_QUARANTINE_BYTES
++            .checked_sub(source_length)
++            .expect("child original fits quarantine boundary"),
++        &[source_digest, unrelated_digest],
++    );
++    let mut store = Store::open_writer(&database_path).expect("reopen writer for accounting");
++    let vault = reopen_vault(&vault_parent);
++    let unrelated = IngestEngine::new(&mut store, &vault, &accepted_probe(), &clock, &ids)
++        .expect("construct unrelated intake engine")
++        .ingest(IngestRequest {
++            project_id,
++            source: IntakeSource::open(&unrelated_path).expect("open unrelated source"),
++            idempotency_key: IdempotencyKey::try_from("unrelated-after-loss").expect("key"),
++            actor: ActorId::from_str("tester").expect("actor"),
++            pdf_limits: PdfLimits::default(),
++        })
++        .expect("unrelated orphan pressure is a finite outcome");
++    assert_eq!(unrelated.outcome, IngestOutcome::QuarantinedLimit);
++    assert!(matches!(
++        unrelated.quarantine.expect("quota result").reason,
++        IntakeQuarantineReasonV1::OriginalRetentionQuota
++    ));
++    assert!(matches!(
++        vault.open_verified(unrelated_digest),
++        Err(HeleosError::NotFound)
++    ));
++
++    let quarantine_probe = QuarantinedProbe {
++        provenance: accepted_probe().provenance,
++        reason: PdfQuarantineReason::Corrupt,
++    };
++    let reused = IngestEngine::new(&mut store, &vault, &quarantine_probe, &clock, &ids)
++        .expect("construct exact orphan reuse engine")
++        .ingest(IngestRequest {
++            project_id,
++            source: IntakeSource::open(&source_path).expect("reopen child source"),
++            idempotency_key: IdempotencyKey::try_from("reuse-pre-job-orphan").expect("key"),
++            actor: ActorId::from_str("tester").expect("actor"),
++            pdf_limits: PdfLimits::default(),
++        })
++        .expect("exact child orphan is a zero-debit duplicate");
++    assert_eq!(reused.outcome, IngestOutcome::QuarantinedCorrupt);
++    assert_eq!(reused.content_sha256, Some(source_digest));
++    assert_eq!(reused.preexisting_vault_digests, vec![source_digest]);
++    let after = FoundationReader::new(&store, &vault)
++        .inspect_foundation(project_id)
++        .expect("inspect post-loss reuse");
++    assert_eq!(after.counts.jobs, 2);
++    assert_eq!(after.counts.content_objects, 1);
++    assert_eq!(after.content_objects[0].sha256, source_digest);
++}
++
++#[test]
++fn subprocess_manifest_link_before_processing_checkpoint_is_recovered_without_double_debit() {
++    // Break caught: a manifest linked after a durable VaultPublished checkpoint but before the
++    // processing checkpoint escaping reconciliation or being charged twice during recovery.
++    let database_parent = TempDir::new().expect("create database parent");
++    let database_path = database_path(&database_parent);
++    let mut store = Store::open_writer(&database_path).expect("open writer");
++    store.migrate().expect("migrate store");
++    let vault_parent = TempDir::new().expect("create vault parent");
++    let vault = open_new_vault(&vault_parent);
++    let clock = ManualClock::new(NOW_MS);
++    let ids = SequenceIds::new();
++    let project_id = ProjectId::from_uuid(
++        Uuid::parse_str("00000000-0000-4000-8000-000000000001").expect("project UUID"),
++    );
++    create_project(&mut store, &clock, &ids, project_id);
++    let source_parent = TempDir::new().expect("create source parent");
++    let source_path = source_parent.path().join("manifest-precheckpoint.pdf");
++    let source_bytes = padded_pdf("manifest precheckpoint process loss", 4_096);
++    fs::write(&source_path, &source_bytes).expect("write manifest-loss source");
++    let original_digest =
++        Sha256Digest::hash_reader(source_bytes.as_slice()).expect("hash original");
++    let original_length = u64::try_from(source_bytes.len()).expect("original length fits");
++    let (manifest_digest, manifest_bytes) = accepted_manifest_bytes(&source_bytes);
++    let manifest_length = u64::try_from(manifest_bytes.len()).expect("manifest length fits");
++
++    drop(store);
++    drop(vault);
++    let control = TempDir::new().expect("create child sentinel directory");
++    let started = control.path().join("child-started");
++    let published = control.path().join("child-manifest-published");
++    let status = Command::new(std::env::current_exe().expect("locate restart test executable"))
++        .arg("--exact")
++        .arg("manifest_precheckpoint_process_helper")
++        .arg("--nocapture")
++        .env("HELEOS_TEST_MANIFEST_DATABASE", &database_path)
++        .env(
++            "HELEOS_TEST_MANIFEST_VAULT_ROOT",
++            fs::canonicalize(vault_parent.path())
++                .expect("canonicalize vault parent")
++                .join("vault"),
++        )
++        .env("HELEOS_TEST_MANIFEST_SOURCE", &source_path)
++        .env(
++            "HELEOS_TEST_MANIFEST_PROJECT",
++            project_id.as_uuid().to_string(),
++        )
++        .env("HELEOS_TEST_MANIFEST_STARTED", &started)
++        .env("HELEOS_TEST_MANIFEST_PUBLISHED", &published)
++        .status()
++        .expect("spawn manifest-precheckpoint child");
++    assert!(status.success(), "manifest-loss child failed: {status:?}");
++    assert!(started.is_file(), "child did not emit its running sentinel");
++    assert_eq!(
++        fs::read_to_string(&published).expect("read manifest publication sentinel"),
++        manifest_digest.to_string()
++    );
++
++    let mut store = Store::open_writer(&database_path).expect("reopen writer after child loss");
++    let vault = reopen_vault(&vault_parent);
++    let before = FoundationReader::new(&store, &vault)
++        .inspect_foundation(project_id)
++        .expect("inspect manifest-precheckpoint loss");
++    assert_eq!(before.jobs.len(), 1);
++    assert_eq!(before.jobs[0].state, JobState::Running);
++    assert_eq!(before.jobs[0].attempt, 1);
++    assert_eq!(
++        fs::read_to_string(&started).expect("read child running sentinel"),
++        before.jobs[0].job_id.as_uuid().hyphenated().to_string()
++    );
++    assert_eq!(before.counts.ingest_events, 0);
++    assert_eq!(before.counts.content_objects, 0);
++    assert_eq!(
++        vault
++            .open_verified(original_digest)
++            .expect("verify checkpointed original")
++            .byte_length(),
++        original_length
++    );
++    assert_eq!(
++        vault
++            .open_verified(manifest_digest)
++            .expect("verify precheckpoint manifest")
++            .byte_length(),
++        manifest_length
++    );
++    let referenced_original = VaultInventory::try_from_entries([VaultInventoryEntry {
++        digest: original_digest,
++        expected_byte_length: original_length,
++        vault_key: Vault::object_key(original_digest),
++    }])
++    .expect("original-only checkpoint inventory");
++    let reconciliation = vault
++        .reconcile(&referenced_original)
++        .expect("reconcile manifest-precheckpoint loss");
++    assert_eq!(reconciliation.findings.len(), 1);
++    assert!(matches!(
++        &reconciliation.findings[0],
++        ReconciliationFinding::UnreferencedObject {
++            verification: VaultVerification::Verified {
++                digest,
++                byte_length,
++                vault_key,
++            },
++        } if *digest == manifest_digest
++            && *byte_length == manifest_length
++            && vault_key == &Vault::object_key(manifest_digest)
++    ));
++    assert!(vault.open_verified(manifest_digest).is_ok());
++
++    clock.set(NOW_MS + 30_000);
++    let resumed = IngestEngine::new(&mut store, &vault, &accepted_probe(), &clock, &ids)
++        .expect("construct manifest recovery engine")
++        .resume(
++            before.jobs[0].job_id,
++            ActorId::from_str("resumer").expect("actor"),
++        )
++        .expect("resume manifest-precheckpoint job at exact lease expiry");
++    assert_eq!(resumed.resumed_attempt, Some(2));
++    assert!(resumed.interrupted_event_id.is_some());
++    assert_eq!(resumed.receipt.outcome, IngestOutcome::AcceptedNew);
++    let mut expected_preexisting = vec![original_digest, manifest_digest];
++    expected_preexisting.sort_unstable();
++    assert_eq!(
++        resumed.receipt.preexisting_vault_digests,
++        expected_preexisting
++    );
++    let after = FoundationReader::new(&store, &vault)
++        .inspect_foundation(project_id)
++        .expect("inspect recovered manifest authority");
++    assert_eq!(after.jobs.len(), 1);
++    assert_eq!(after.jobs[0].state, JobState::Succeeded);
++    assert_eq!(after.jobs[0].attempt, 2);
++    assert_eq!(after.counts.ingest_events, 2);
++    assert_eq!(after.counts.content_objects, 2);
++}

@@ -1,0 +1,135 @@
+# Review package: a0be7f06d44fda449f218a2e482997560085f7ef..6714014d638ce7c7e489c2e758ef468797708d01
+
+## Commits
+6714014 review: task6 final windows test gate fix
+
+## Files changed
+ crates/heleos-core/tests/ingest.rs  | 5 +++--
+ crates/heleos-core/tests/restart.rs | 7 ++++---
+ 2 files changed, 7 insertions(+), 5 deletions(-)
+
+## Diff
+diff --git a/crates/heleos-core/tests/ingest.rs b/crates/heleos-core/tests/ingest.rs
+index d57a9ea..b1a5a9c 100644
+--- a/crates/heleos-core/tests/ingest.rs
++++ b/crates/heleos-core/tests/ingest.rs
+@@ -4,30 +4,31 @@ use std::{
+     fs,
+     str::FromStr,
+     sync::atomic::{AtomicI64, Ordering},
+ };
+ #[cfg(unix)]
+ use std::{
+     io::{Seek, SeekFrom, Write},
+     sync::{Mutex, atomic::AtomicBool},
+ };
+ 
++#[cfg(unix)]
++use heleos_core::VaultWriteBudget;
+ use heleos_core::{
+     ActorId, AuditChainFinding, AuditChainReport, AuditEvent, AuditEventId, Clock, DataClass,
+     EVIDENCE_MANIFEST_SCHEMA_V1, EvidenceContentV1, EvidenceManifestV1, FaultInjector, FaultPoint,
+     FoundationInspection, FoundationReader, HeleosError, IdGenerator, IdempotencyKey, IngestEngine,
+     IngestOutcome, IngestRequest, IntakeQuarantineReasonV1, IntakeSource, PDF_MEDIA_TYPE,
+     PageMetadata, PageTransform, PageUnit, PdfInspection, PdfLimits, PdfProbe, PdfProbeOutcome,
+     PdfProbeProvenance, PdfQuarantine, PdfQuarantineReason, ProjectCreateRequest, ProjectId,
+     ProjectReceipt, ProjectService, Result, RevisionId, Sha256Digest, Store, Vault, VaultConfig,
+-    VaultOpenMode, VaultWriteBudget, VerifiedObject, canonical_document_ids, canonical_json,
+-    page_id,
++    VaultOpenMode, VerifiedObject, canonical_document_ids, canonical_json, page_id,
+ };
+ use tempfile::TempDir;
+ use uuid::Uuid;
+ 
+ const NOW_MS: i64 = 1_700_000_000_000;
+ 
+ struct FixedClock;
+ 
+ impl Clock for FixedClock {
+     fn now_unix_ms(&self) -> i64 {
+diff --git a/crates/heleos-core/tests/restart.rs b/crates/heleos-core/tests/restart.rs
+index 08aa46b..10f6119 100644
+--- a/crates/heleos-core/tests/restart.rs
++++ b/crates/heleos-core/tests/restart.rs
+@@ -1,11 +1,15 @@
+ #![forbid(unsafe_code)]
++#![cfg(unix)]
++
++// These quota-boundary regressions require sparse files to represent 8 GiB without
++// materializing it. Native Windows coverage needs an NTFS sparse-file fixture.
+ 
+ use std::{
+     fs,
+     str::FromStr,
+     sync::{
+         Mutex,
+         atomic::{AtomicI64, Ordering},
+     },
+ };
+ 
+@@ -210,21 +214,20 @@ fn create_project(
+ fn padded_pdf(label: &str, minimum_length: usize) -> Vec<u8> {
+     let mut bytes = format!("%PDF-1.7\n{label}\n").into_bytes();
+     let suffix = b"\n%%EOF\n";
+     if bytes.len() + suffix.len() < minimum_length {
+         bytes.resize(minimum_length - suffix.len(), b'x');
+     }
+     bytes.extend_from_slice(suffix);
+     bytes
+ }
+ 
+-#[cfg(unix)]
+ fn create_sparse_orphans(parent: &TempDir, mut total_bytes: u64, excluded: &[Sha256Digest]) {
+     let vault_root = fs::canonicalize(parent.path())
+         .expect("canonicalize sparse-orphan parent")
+         .join("vault");
+     let mut index = 0_u64;
+     while total_bytes > 0 {
+         let digest = loop {
+             let mut bytes = [0xa7; 32];
+             bytes[24..].copy_from_slice(&index.to_be_bytes());
+             index = index.checked_add(1).expect("bounded orphan index");
+@@ -335,21 +338,20 @@ impl IngestFixture<'_> {
+         assert_eq!(receipt.content_sha256, Some(source_digest));
+         assert!(receipt.preexisting_vault_digests.is_empty());
+         assert!(matches!(
+             vault.open_verified(source_digest),
+             Err(HeleosError::NotFound)
+         ));
+     }
+ }
+ 
+ #[test]
+-#[cfg(unix)]
+ fn failed_original_checkpoint_is_excluded_from_inventory_and_charged_as_an_orphan() {
+     // Break caught: a Failed job continuing to reserve its abandoned original in inventory.
+     let database_parent = TempDir::new().expect("create database parent");
+     let database_path = database_path(&database_parent);
+     let mut store = Store::open_writer(&database_path).expect("open writer");
+     store.migrate().expect("migrate store");
+     let vault_parent = TempDir::new().expect("create vault parent");
+     let vault = open_new_vault(&vault_parent);
+     let clock = ManualClock::new(NOW_MS);
+     let ids = SequenceIds::new();
+@@ -418,21 +420,20 @@ fn failed_original_checkpoint_is_excluded_from_inventory_and_charged_as_an_orpha
+     assert_eq!(inspection.jobs.len(), 2);
+     assert!(
+         inspection
+             .jobs
+             .iter()
+             .any(|job| job.state == JobState::Failed)
+     );
+ }
+ 
+ #[test]
+-#[cfg(unix)]
+ fn failed_processing_checkpoint_excludes_original_and_manifest_from_inventory() {
+     // Break caught: a Failed processing job retaining either abandoned object as inventory.
+     let database_parent = TempDir::new().expect("create database parent");
+     let database_path = database_path(&database_parent);
+     let mut store = Store::open_writer(&database_path).expect("open writer");
+     store.migrate().expect("migrate store");
+     let vault_parent = TempDir::new().expect("create vault parent");
+     let vault = open_new_vault(&vault_parent);
+     let clock = ManualClock::new(NOW_MS);
+     let ids = SequenceIds::new();
