@@ -1,0 +1,102 @@
+name: AI review gate
+# Turns Codex, ECC Tools, and Copilot acknowledgement on a pull request head into
+# a single required-capable check named ai-reviewers. Drafts are skipped. No new
+# secret: gh uses GITHUB_TOKEN. Amazon Q stays a separate Sparky required check.
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  checks: read
+concurrency:
+  group: ai-review-gate-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  ai-reviewers:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      checks: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Wait for Codex, ECC Tools, and Copilot
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          PR_NUMBER="$(gh api "repos/${GH_REPO}/pulls/${PR_NUMBER}" --jq .number)"
+          HEAD_SHA="$(gh api "repos/${GH_REPO}/pulls/${PR_NUMBER}" --jq .head.sha)"
+          WORK="${RUNNER_TEMP}/ai-review-gate"
+          mkdir -p "${WORK}"
+          GATE="python3 tools/github/ai_review_gate.py"
+
+          fetch() {
+            gh api --paginate "repos/${GH_REPO}/pulls/${PR_NUMBER}/reviews" > "${WORK}/reviews.json"
+            gh api --paginate "repos/${GH_REPO}/issues/${PR_NUMBER}/comments" > "${WORK}/issue-comments.json"
+            gh api --paginate "repos/${GH_REPO}/pulls/${PR_NUMBER}/comments" > "${WORK}/review-comments.json"
+            # check-runs is an object page; flatten to a JSON array for the matcher.
+            gh api --paginate "repos/${GH_REPO}/commits/${HEAD_SHA}/check-runs" --jq '.check_runs[]' \
+              | jq -s '.' > "${WORK}/check-runs.json"
+          }
+
+          gh api --paginate "repos/${GH_REPO}/issues/${PR_NUMBER}/timeline" \
+            -H "Accept: application/vnd.github+json" > "${WORK}/timeline.json"
+          gh api "repos/${GH_REPO}/commits/${HEAD_SHA}" > "${WORK}/commit.json"
+          HEAD_SINCE="$($GATE head-since --head-sha "${HEAD_SHA}" --timeline "${WORK}/timeline.json" --commit "${WORK}/commit.json")"
+          if [ -z "${HEAD_SINCE}" ]; then
+            HEAD_SINCE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          fi
+          echo "PR=${PR_NUMBER} SHA=${HEAD_SHA} since=${HEAD_SINCE}"
+
+          fetch
+          if $GATE should-ping-codex \
+            --head-sha "${HEAD_SHA}" \
+            --head-since "${HEAD_SINCE}" \
+            --reviews "${WORK}/reviews.json" \
+            --issue-comments "${WORK}/issue-comments.json" \
+            --review-comments "${WORK}/review-comments.json"
+          then
+            gh api "repos/${GH_REPO}/issues/${PR_NUMBER}/comments" \
+              -f body="@codex review"
+            echo "posted @codex review"
+          else
+            echo "skipped @codex review (already acknowledged or already pinged for this head)"
+          fi
+
+          DEADLINE=$((SECONDS + 720))
+          while true; do
+            fetch
+            set +e
+            $GATE evaluate \
+              --head-sha "${HEAD_SHA}" \
+              --head-since "${HEAD_SINCE}" \
+              --reviews "${WORK}/reviews.json" \
+              --issue-comments "${WORK}/issue-comments.json" \
+              --review-comments "${WORK}/review-comments.json" \
+              --check-runs "${WORK}/check-runs.json"
+            status=$?
+            set -e
+            if [ "${status}" -eq 0 ]; then
+              echo "pass: Codex OK, ECC OK, Copilot OK"
+              exit 0
+            fi
+            if [ "${status}" -ne 2 ]; then
+              echo "evaluate failed with status ${status}"
+              exit 1
+            fi
+            if [ "${SECONDS}" -ge "${DEADLINE}" ]; then
+              echo "fail: timed out waiting for AI reviewers"
+              exit 1
+            fi
+            echo "waiting for remaining reviewers; retry in 20s"
+            sleep 20
+          done
