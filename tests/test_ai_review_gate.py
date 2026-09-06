@@ -244,6 +244,63 @@ class WorkflowContract(unittest.TestCase):
         self.assertNotIn("secrets.", text.replace("secrets.GITHUB_TOKEN", ""))
 
 
+
+    def test_absent_amazon_q_is_advisory_not_missing(self):
+        result = evaluate(
+            reviews=[
+                review("chatgpt-codex-connector[bot]", commit_id=HEAD),
+                review("copilot-pull-request-reviewer[bot]", commit_id=HEAD),
+            ],
+            check_runs=[],
+        )
+        self.assertFalse(result["amazon_q"])
+        self.assertNotIn("amazon_q", result["missing"])
+        self.assertTrue(result["all_ok"])
+
+    def test_amazon_q_check_success_sets_advisory_present(self):
+        runs = [{"name": "Amazon Q Developer", "conclusion": "success", "status": "completed", "head_sha": HEAD}]
+        result = evaluate(
+            reviews=[review("chatgpt-codex-connector[bot]", commit_id=HEAD), review("copilot-pull-request-reviewer[bot]", commit_id=HEAD)],
+            issue_comments=[],
+            review_comments=[],
+            check_runs=runs,
+        )
+        self.assertTrue(result["amazon_q"])
+        self.assertTrue(result["all_ok"])
+
+    def test_should_ping_amazon_q_once_when_absent(self):
+        self.assertTrue(
+            gate.should_ping_amazon_q(
+                reviews=[],
+                issue_comments=[],
+                review_comments=[],
+                check_runs=[],
+                head_sha=HEAD,
+                head_since=SINCE,
+            )
+        )
+        self.assertFalse(
+            gate.should_ping_amazon_q(
+                reviews=[],
+                issue_comments=[comment("bbukolla-eng", body="@amazon-q review")],
+                review_comments=[],
+                check_runs=[],
+                head_sha=HEAD,
+                head_since=SINCE,
+            )
+        )
+        self.assertFalse(
+            gate.should_ping_amazon_q(
+                reviews=[],
+                issue_comments=[],
+                review_comments=[],
+                check_runs=[{"name": "Amazon Q Developer", "status": "in_progress", "conclusion": None}],
+                head_sha=HEAD,
+                head_since=SINCE,
+            )
+        )
+
+
 class CliEvaluate(unittest.TestCase):
     def test_cli_passes_without_ecc_and_prints_advisory(self):
         with tempfile.TemporaryDirectory() as tmp:
