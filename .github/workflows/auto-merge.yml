@@ -6,47 +6,47 @@ name: auto-merge
 # Converting the pull request to a draft also cancels it, which GitHub does by itself.
 on:
   pull_request:
-      types: [opened, reopened, labeled, unlabeled, ready_for_review, synchronize]
-      permissions:
-        contents: write
-          pull-requests: write
-          jobs:
+    types: [opened, reopened, labeled, unlabeled, ready_for_review, synchronize]
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
 
-            label:
-                # Auto-apply automerge on non-draft same-repo PRs so enable can arm GitHub auto-merge.
-                    if: >
-                          github.event.action != 'unlabeled' &&
+  label:
+    # Auto-apply automerge on non-draft same-repo PRs so enable can arm GitHub auto-merge.
+    if: >
+      github.event.action != 'unlabeled' &&
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      !contains(github.event.pull_request.labels.*.name, 'automerge')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Apply automerge label
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+        run: gh api -X POST "repos/${{ github.repository }}/issues/${PR}/labels" -f "labels[]=automerge"
 
-                            enable:
-                                if: github.event.action != 'unlabeled' && github.event.pull_request.draft == false && contains(github.event.pull_request.labels.*.name, 'automerge')
-                                    runs-on: ubuntu-latest
-                                        timeout-minutes: 5
-                                            steps:
-                                                  - run: gh pr merge --auto --squash "$PR_URL"
-                                                          env:
-                                                                    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                                                                              PR_URL: ${{ github.event.pull_request.html_url }}
-                                                                                disable:
-                                                                                    # Enabling auto-merge outlives the label, so removing it must cancel the pending merge.
-                                                                                        if: github.event.action == 'unlabeled' && github.event.label.name == 'automerge'
-                                                                                            runs-on: ubuntu-latest
-                                                                                                timeout-minutes: 5
-                                                                                                    steps:
-                                                                                                          - run: gh pr merge --disable-auto "$PR_URL"
-                                                                                                                  env:
-                                                                                                                            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                                                                                                                                      PR_URL: ${{ github.event.pull_request.html_url }}
-                                github.event.pull_request.draft == false &&
-                                      github.event.pull_request.head.repo.full_name == github.repository &&
-                                            !contains(github.event.pull_request.labels.*.name, 'automerge')
-                                                runs-on: ubuntu-latest
-                                                    timeout-minutes: 5
-                                                        permissions:
-                                                              issues: write
-                                                                    pull-requests: write
-                                                                        steps:
-                                                                              - name: Apply automerge label
-                                                                                      env:
-                                                                                                GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                                                                                                          PR: ${{ github.event.pull_request.number }}
-                                                                                                                  run: gh api -X POST "repos/${{ github.repository }}/issues/${PR}/labels" -f "labels[]=automerge"
+  enable:
+    if: github.event.action != 'unlabeled' && github.event.pull_request.draft == false && contains(github.event.pull_request.labels.*.name, 'automerge')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+  disable:
+    # Enabling auto-merge outlives the label, so removing it must cancel the pending merge.
+    if: github.event.action == 'unlabeled' && github.event.label.name == 'automerge'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: gh pr merge --disable-auto "$PR_URL"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
