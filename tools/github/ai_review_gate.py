@@ -14,10 +14,13 @@ import sys
 CODEX_BOT = "chatgpt-codex-connector[bot]"
 ECC_BOT = "ecc-tools[bot]"
 COPILOT_BOT = "copilot-pull-request-reviewer[bot]"
+AMAZON_Q_BOT = "amazon-q-developer[bot]"
+AQ_PING = "@amazon-q review"
+AMAZON_Q_CHECK = "Amazon Q Developer"
 COPILOT_CHECK = "copilot-pull-request-reviewer"
 CODEX_PING = "@codex review"
 
-REVIEWER_KEYS = (("codex", CODEX_BOT), ("ecc", ECC_BOT), ("copilot", COPILOT_BOT))
+REVIEWER_KEYS = (("codex", CODEX_BOT), ("ecc", ECC_BOT), ("copilot", COPILOT_BOT), ("amazon_q", AMAZON_Q_BOT))
 REQUIRED = ("codex", "copilot")
 
 
@@ -114,6 +117,12 @@ def evaluate(
     for name, bot in REVIEWER_KEYS:
         flags[name] = bot_acknowledged(spoken, bot, head_sha, head_since)
     flags["copilot"] = flags["copilot"] or copilot_check_success(check_runs, head_sha)
+    # Amazon Q check-run success counts as acknowledgement even without a review comment.
+    for run in _as_items(check_runs):
+        name = (run.get("name") or "").strip()
+        if name == AMAZON_Q_CHECK and (run.get("conclusion") or "").lower() == "success":
+            flags["amazon_q"] = True
+            break
     missing = [name for name in REQUIRED if not flags[name]]
     flags["missing"] = missing
     flags["all_ok"] = not missing
@@ -136,6 +145,38 @@ def should_ping_codex(
     for item in _as_items(issue_comments):
         body = item.get("body") or ""
         if CODEX_PING in body and is_for_head(item, head_sha, head_since):
+            return False
+    return True
+
+
+def should_ping_amazon_q(
+    *,
+    reviews,
+    issue_comments,
+    review_comments,
+    check_runs,
+    head_sha,
+    head_since,
+):
+    """Ping once per head when Amazon Q has not acknowledged and its check is not success."""
+    spoken = list(_as_items(reviews)) + list(_as_items(issue_comments)) + list(
+        _as_items(review_comments)
+    )
+    if bot_acknowledged(spoken, AMAZON_Q_BOT, head_sha, head_since):
+        return False
+    for run in _as_items(check_runs):
+        name = (run.get("name") or "").strip()
+        status = (run.get("status") or "").lower()
+        conclusion = (run.get("conclusion") or "").lower()
+        if name != AMAZON_Q_CHECK:
+            continue
+        if conclusion == "success":
+            return False
+        if status == "in_progress":
+            return False
+    for item in _as_items(issue_comments):
+        body = item.get("body") or ""
+        if AQ_PING in body and is_for_head(item, head_sha, head_since):
             return False
     return True
 
@@ -179,6 +220,7 @@ def _print_result(result):
     else:
         print("Codex OK, Copilot OK")
     print("ECC advisory: present" if result.get("ecc") else "ECC advisory: absent")
+    print("Amazon Q advisory: present" if result.get("amazon_q") else "Amazon Q advisory: absent")
 
 
 def main(argv=None):
@@ -187,14 +229,16 @@ def main(argv=None):
 
     evaluate_cmd = sub.add_parser("evaluate")
     ping_cmd = sub.add_parser("should-ping-codex")
+    aq_ping_cmd = sub.add_parser("should-ping-amazon-q")
     since_cmd = sub.add_parser("head-since")
-    for cmd in (evaluate_cmd, ping_cmd):
+    for cmd in (evaluate_cmd, ping_cmd, aq_ping_cmd):
         cmd.add_argument("--head-sha", required=True)
         cmd.add_argument("--head-since", required=True)
         cmd.add_argument("--reviews", required=True)
         cmd.add_argument("--issue-comments", required=True)
         cmd.add_argument("--review-comments", required=True)
     evaluate_cmd.add_argument("--check-runs", required=True)
+    aq_ping_cmd.add_argument("--check-runs", required=True)
     since_cmd.add_argument("--head-sha", required=True)
     since_cmd.add_argument("--timeline", required=True)
     since_cmd.add_argument("--commit", required=True)
@@ -218,6 +262,12 @@ def main(argv=None):
 
     if args.command == "should-ping-codex":
         ping = should_ping_codex(**common)
+        print("ping" if ping else "skip")
+        return 0 if ping else 2
+    if args.command == "should-ping-amazon-q":
+        aq_common = dict(common)
+        aq_common["check_runs"] = _load_json(args.check_runs)
+        ping = should_ping_amazon_q(**aq_common)
         print("ping" if ping else "skip")
         return 0 if ping else 2
 
