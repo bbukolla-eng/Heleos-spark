@@ -1,7 +1,8 @@
 name: AI review gate
-# Turns Codex, ECC Tools, and Copilot acknowledgement on a pull request head into
-# a single required-capable check named ai-reviewers. Drafts are skipped. No new
-# secret: gh uses GITHUB_TOKEN. Amazon Q stays a separate Sparky required check.
+# Turns Codex and Copilot acknowledgement on a pull request head into a single
+# required-capable check named ai-reviewers. ECC Tools is detected and printed
+# as advisory and does not fail the job. Drafts are skipped. No new secret: gh
+# uses GITHUB_TOKEN. Amazon Q stays a separate Sparky required check.
 on:
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review]
@@ -25,7 +26,7 @@ jobs:
       checks: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Wait for Codex, ECC Tools, and Copilot
+      - name: Wait for Codex and Copilot
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
@@ -86,7 +87,7 @@ jobs:
             status=$?
             set -e
             if [ "${status}" -eq 0 ]; then
-              echo "pass: Codex OK, ECC OK, Copilot OK"
+              echo "pass: Codex OK, Copilot OK"
               exit 0
             fi
             if [ "${status}" -ne 2 ]; then
@@ -94,9 +95,9 @@ jobs:
               exit 1
             fi
             if [ "${SECONDS}" -ge "${DEADLINE}" ]; then
-              echo "fail: timed out waiting for AI reviewers"
+              echo "fail: timed out waiting for required reviewers (Codex, Copilot)"
               exit 1
             fi
-            echo "waiting for remaining reviewers; retry in 20s"
+            echo "waiting for remaining required reviewers; retry in 20s"
             sleep 20
           done

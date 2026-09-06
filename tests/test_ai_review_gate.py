@@ -1,9 +1,9 @@
 """Acknowledgement matching for the AI review gate.
 
-Codex, ECC Tools, and Copilot leave reviews or comments rather than a shared
-status check. The gate treats a review, an issue comment, or an inline comment
-as acknowledgement of the current head when it is bound to that SHA or created
-at or after the head push. Copilot may also pass via its check-run.
+Codex and Copilot must acknowledge the current head. ECC Tools is detected and
+printed as advisory and never fails the job. A review, issue comment, or inline
+comment counts when it is bound to that SHA or created at or after the head
+push. Copilot may also pass via its check-run.
 """
 import json
 import os
@@ -106,11 +106,21 @@ class CodexAcknowledgement(unittest.TestCase):
 
 
 class EccAcknowledgement(unittest.TestCase):
-    def test_review_or_comment_on_this_head_is_enough(self):
+    def test_review_or_comment_on_this_head_is_detected(self):
         result = evaluate(reviews=[review("ecc-tools[bot]", commit_id=HEAD)])
         self.assertTrue(result["ecc"])
         result = evaluate(issue_comments=[comment("ecc-tools[bot]")])
         self.assertTrue(result["ecc"])
+
+    def test_absent_ecc_is_advisory_not_missing(self):
+        result = evaluate(
+            reviews=[review("chatgpt-codex-connector[bot]", commit_id=HEAD)],
+            check_runs=[check_run()],
+        )
+        self.assertFalse(result["ecc"])
+        self.assertTrue(result["all_ok"])
+        self.assertEqual(result["missing"], [])
+        self.assertNotIn("ecc", result["missing"])
 
 
 class CopilotAcknowledgement(unittest.TestCase):
@@ -134,21 +144,21 @@ class CopilotAcknowledgement(unittest.TestCase):
 
 
 class GatePassFail(unittest.TestCase):
-    def test_pass_requires_all_three(self):
+    def test_pass_requires_codex_and_copilot_only(self):
         result = evaluate(
-            reviews=[
-                review("chatgpt-codex-connector[bot]", commit_id=HEAD),
-                review("ecc-tools[bot]", commit_id=HEAD),
-            ],
+            reviews=[review("chatgpt-codex-connector[bot]", commit_id=HEAD)],
             check_runs=[check_run()],
         )
         self.assertTrue(result["all_ok"])
+        self.assertFalse(result["ecc"])
         self.assertEqual(result["missing"], [])
 
-    def test_failure_lists_who_is_missing(self):
+    def test_failure_lists_required_reviewers_only(self):
         result = evaluate(reviews=[review("ecc-tools[bot]", commit_id=HEAD)])
         self.assertFalse(result["all_ok"])
+        self.assertTrue(result["ecc"])
         self.assertEqual(result["missing"], ["codex", "copilot"])
+        self.assertNotIn("ecc", result["missing"])
 
 
 class CodexPing(unittest.TestCase):
@@ -230,11 +240,12 @@ class WorkflowContract(unittest.TestCase):
         self.assertIn("checks: read", text)
         self.assertIn("github.event.pull_request.draft == false", text)
         self.assertIn("@codex review", text)
+        self.assertIn("pass: Codex OK, Copilot OK", text)
         self.assertNotIn("secrets.", text.replace("secrets.GITHUB_TOKEN", ""))
 
 
 class CliEvaluate(unittest.TestCase):
-    def test_cli_exits_zero_only_when_all_three_pass(self):
+    def test_cli_passes_without_ecc_and_prints_advisory(self):
         with tempfile.TemporaryDirectory() as tmp:
             def write(name, value):
                 path = os.path.join(tmp, name)
@@ -244,50 +255,64 @@ class CliEvaluate(unittest.TestCase):
 
             reviews = write(
                 "reviews.json",
-                [
-                    review("chatgpt-codex-connector[bot]", commit_id=HEAD),
-                    review("ecc-tools[bot]", commit_id=HEAD),
-                ],
+                [review("chatgpt-codex-connector[bot]", commit_id=HEAD)],
             )
             empty = write("empty.json", [])
             checks = write("checks.json", [check_run()])
-            code = gate.main(
-                [
-                    "evaluate",
-                    "--head-sha",
-                    HEAD,
-                    "--head-since",
-                    SINCE,
-                    "--reviews",
-                    reviews,
-                    "--issue-comments",
-                    empty,
-                    "--review-comments",
-                    empty,
-                    "--check-runs",
-                    checks,
-                ]
-            )
+            from io import StringIO
+            from contextlib import redirect_stdout
+
+            captured = StringIO()
+            with redirect_stdout(captured):
+                code = gate.main(
+                    [
+                        "evaluate",
+                        "--head-sha",
+                        HEAD,
+                        "--head-since",
+                        SINCE,
+                        "--reviews",
+                        reviews,
+                        "--issue-comments",
+                        empty,
+                        "--review-comments",
+                        empty,
+                        "--check-runs",
+                        checks,
+                    ]
+                )
+            out = captured.getvalue()
             self.assertEqual(code, 0)
+            self.assertIn("ECC advisory: absent", out)
+            payload = json.loads(out.splitlines()[0])
+            self.assertNotIn("ecc", payload["missing"])
+            self.assertFalse(payload["ecc"])
+
             missing = write("reviews.json", [review("ecc-tools[bot]", commit_id=HEAD)])
-            code = gate.main(
-                [
-                    "evaluate",
-                    "--head-sha",
-                    HEAD,
-                    "--head-since",
-                    SINCE,
-                    "--reviews",
-                    missing,
-                    "--issue-comments",
-                    empty,
-                    "--review-comments",
-                    empty,
-                    "--check-runs",
-                    empty,
-                ]
-            )
+            captured = StringIO()
+            with redirect_stdout(captured):
+                code = gate.main(
+                    [
+                        "evaluate",
+                        "--head-sha",
+                        HEAD,
+                        "--head-since",
+                        SINCE,
+                        "--reviews",
+                        missing,
+                        "--issue-comments",
+                        empty,
+                        "--review-comments",
+                        empty,
+                        "--check-runs",
+                        empty,
+                    ]
+                )
+            out = captured.getvalue()
             self.assertEqual(code, 2)
+            self.assertIn("missing: codex, copilot", out)
+            self.assertIn("ECC advisory: present", out)
+            self.assertNotIn("ecc", json.loads(out.splitlines()[0])["missing"])
 
 
 if __name__ == "__main__":

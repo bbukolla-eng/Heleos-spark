@@ -1,7 +1,8 @@
-"""Decide whether Codex, ECC Tools, and Copilot have acknowledged a pull request head.
+"""Decide whether Codex and Copilot have acknowledged a pull request head.
 
-Used by .github/workflows/ai-review-gate.yml. Standard library only. Talks to GitHub
-only through JSON the workflow already fetched with gh; it never opens a network
+ECC Tools is detected and printed as advisory; it never fails the job. Used by
+.github/workflows/ai-review-gate.yml. Standard library only. Talks to GitHub only
+through JSON the workflow already fetched with gh; it never opens a network
 connection and never reads a secret.
 """
 from __future__ import annotations
@@ -17,6 +18,7 @@ COPILOT_CHECK = "copilot-pull-request-reviewer"
 CODEX_PING = "@codex review"
 
 REVIEWER_KEYS = (("codex", CODEX_BOT), ("ecc", ECC_BOT), ("copilot", COPILOT_BOT))
+REQUIRED = ("codex", "copilot")
 
 
 def login_matches(login, expected):
@@ -112,7 +114,7 @@ def evaluate(
     for name, bot in REVIEWER_KEYS:
         flags[name] = bot_acknowledged(spoken, bot, head_sha, head_since)
     flags["copilot"] = flags["copilot"] or copilot_check_success(check_runs, head_sha)
-    missing = [name for name, _bot in REVIEWER_KEYS if not flags[name]]
+    missing = [name for name in REQUIRED if not flags[name]]
     flags["missing"] = missing
     flags["all_ok"] = not missing
     return flags
@@ -175,7 +177,8 @@ def _print_result(result):
     if missing:
         print("missing: " + ", ".join(missing))
     else:
-        print("Codex OK, ECC OK, Copilot OK")
+        print("Codex OK, Copilot OK")
+    print("ECC advisory: present" if result.get("ecc") else "ECC advisory: absent")
 
 
 def main(argv=None):
