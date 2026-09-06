@@ -1,8 +1,8 @@
 name: AI review gate
-# Turns Codex and Copilot acknowledgement on a pull request head into a single
-# required-capable check named ai-reviewers. ECC Tools is detected and printed
-# as advisory and does not fail the job. Amazon Q is also advisory here (Sparky still requires its check) and is pinged once per head if stuck. Drafts are skipped. No new secret: gh
-# uses GITHUB_TOKEN. Amazon Q stays a separate Sparky required check.
+# Turns Codex and Copilot acknowledgement into a single required-capable check.
+# Amazon Q gets an advisory once-per-head ping and is not required to pass.
+# ECC Tools is detected and printed as advisory and does not fail the job.
+# Drafts are skipped. No new secret: gh uses GITHUB_TOKEN.
 on:
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review]
@@ -72,7 +72,6 @@ jobs:
           else
             echo "skipped @codex review (already acknowledged or already pinged for this head)"
           fi
-
 
           fetch
           if $GATE should-ping-amazon-q \
