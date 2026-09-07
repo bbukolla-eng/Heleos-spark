@@ -12,6 +12,8 @@ Fresh post-landing verification passed in this checkout: `cargo +1.96.1 test --l
 
 ## Work locations
 
+Root agent instructions are available in [AGENTS.md](AGENTS.md), [CLAUDE.md](CLAUDE.md), [KIMI.md](KIMI.md), [GROK.md](GROK.md), [CURSOR.md](CURSOR.md), and [GROKBOTS.md](GROKBOTS.md), with the workflow index in [SKILLS.md](SKILLS.md). These documents define scoped writing, handoff, and continuity; their creation does not install, authenticate, or invoke those providers.
+
 | Location under this project | Purpose |
 | --- | --- |
 | `.` | Accepted baseline code and this visible status |

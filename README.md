@@ -8,7 +8,7 @@ This repository is private and starts from a new history. No code, configuration
 
 The main checkout now contains the accepted Foundation Tasks 1–6: the Rust workspace, typed domain contracts, SQLite migrations and Store, immutable evidence vault, deterministic PDF processing, crash-safe intake, and tests. Foundation 0.1 is not yet a completed release.
 
-Start with [CURRENT_STATUS.md](CURRENT_STATUS.md) for completed work, the active build location, and remaining blockers. Agent continuity rules are in [AGENTS.md](AGENTS.md).
+Start with [CURRENT_STATUS.md](CURRENT_STATUS.md) for completed work, the active build location, and remaining blockers. Shared agent rules and all provider entrypoints are in [AGENTS.md](AGENTS.md); project workflows are indexed in [SKILLS.md](SKILLS.md).
 
 - [Core implementation](crates/heleos-core/src/lib.rs)
 - [Integration tests](crates/heleos-core/tests/)
