@@ -18,7 +18,7 @@ Root agent instructions are available in [AGENTS.md](AGENTS.md), [CLAUDE.md](CLA
 | --- | --- |
 | `.` | Accepted baseline code and this visible status |
 | `.worktrees/foundation-0.1-build/` | Newer Store/backup/CLI integration work; exact Task 7 atomic gate still applies |
-| `.worktrees/claude-task4/` | Claude's unaccepted CLI candidate; round 2 has finished |
+| `.worktrees/claude-task4/` | Independently accepted CLI candidate; exact six files integrated into the build worktree |
 | `.worktrees/actual-build-plan/docs/superpowers/plans/2026-09-06-foundation-completion.md` | Current completion plan |
 | `.worktrees/WORKSPACES.md` | Workspace and recovery-copy map |
 
@@ -32,9 +32,10 @@ The detailed checkpoint is `.worktrees/foundation-0.1-build/.superpowers/sdd/202
 
 ## Remaining blockers and next work
 
-- CLI round 2: controller independently ran 45 unit tests and 43 integration tests successfully; the external dependency graph stayed unchanged. Scoped review still found two Important gaps: bind the retained temporary parent's canonical path to its strong identity, and preserve provisional staging when creation identity is unavailable. Only those remaining fixes and their affected checks should be repeated.
+- CLI source work is accepted: the final scoped review approved both specification compliance and quality, closing the remaining source findings. The controller independently passed 52 unit and 43 integration tests on that exact candidate. Real headless Claude Code implemented the CLI and earlier corrections; a fresh Codex writer completed the final correction, with independent review afterward.
+- Exactly six accepted CLI/guide/dependency files are now integrated in `.worktrees/foundation-0.1-build/`. Independent identity checks verified all six copied files, 59 other tracked files, and six held source blobs, preserving the corrected live core/Store/platform. The build has the exact eighteen authorized changed paths and an empty index; no Task 7 commit or main-branch landing has occurred. New checks on this combined build passed 52 unit and 43 integration tests (zero failed/ignored); the full host and Windows gates remain incomplete.
 - Windows diagnostic: the prescribed cross-check got past the native C dependency boundary, then unchanged CLI `build.rs` rejected `AR_x86_64_pc_windows_msvc`, which that protocol requires. Resolve that build-gate/protocol contradiction explicitly; do not repeat the identical failing command or bypass the guard. Native Windows execution remains unverified.
 - The newer Task 7 changes are not merged or committed as completed work. Their exact eighteen-path feature gate, subsequent independent verifiers, and release gates remain in force.
-- GitHub publication is separate: the last locally known `origin/main` has divergent history (37 local-only and 49 remote-only commits relative to the landed baseline). No fetch or push was performed for this landing. Review convergence before any owner-authorized publication; never force-push as a shortcut.
+- GitHub publication is separate: the locally known `origin/main` has divergent history. No fetch or push was performed for this landing. Review convergence before any owner-authorized publication; never force-push as a shortcut.
 
-Next: complete the two scoped CLI fixes, settle the Windows diagnostic contract, then integrate the accepted candidate and execute its existing commit/verification plan. Do not restart completed Foundation tasks.
+Next: finish the combined-build checks, finalize the Task 7 governance record, and execute the remaining host gates. An existing native Windows command connection is still needed to settle the separate platform gate. Consult the execution checkpoint for live handles and exact results; do not restart completed Foundation tasks or CLI fixes.
