@@ -6,9 +6,16 @@ This repository is private and starts from a new history. No code, configuration
 
 ## Current phase
 
-Foundation 0.1 implementation on the foundation-0.1 branch
+The main checkout now contains the accepted Foundation Tasks 1–6: the Rust workspace, typed domain contracts, SQLite migrations and Store, immutable evidence vault, deterministic PDF processing, crash-safe intake, and tests. Foundation 0.1 is not yet a completed release.
 
-The first implementation milestone will establish the operational database, immutable evidence vault, deterministic PDF intake, and tests before broader AI, research, or interface work.
+Start with [CURRENT_STATUS.md](CURRENT_STATUS.md) for completed work, the active build location, and remaining blockers. Agent continuity rules are in [AGENTS.md](AGENTS.md).
+
+- [Core implementation](crates/heleos-core/src/lib.rs)
+- [Integration tests](crates/heleos-core/tests/)
+- [Governance registries](governance/)
+- [Foundation implementation contract](docs/superpowers/plans/2026-08-28-heleos-spark-foundation-0.1.md)
+
+The newer encrypted-backup and CLI candidate remains in `.worktrees/foundation-0.1-build` until its integration gates pass. Agent candidates and recovery copies stay separate inside `.worktrees`; they are not temporary directories and must not be flattened into this checkout.
 
 ## Authority rule
 
