@@ -1,11 +1,28 @@
 #![forbid(unsafe_code)]
 
+pub mod backup;
 pub mod domain;
 mod error;
 pub mod ingest;
 pub mod pdf;
+#[cfg_attr(
+    test,
+    allow(
+        clippy::question_mark,
+        clippy::needless_borrow,
+        reason = "Task 2 Store test bytes are immutable during Task 3 all-targets integration"
+    )
+)]
+#[allow(
+    unfulfilled_lint_expectations,
+    reason = "Task 3 intentionally consumes the two Task 2 Store seams while Store review bytes remain immutable"
+)]
 pub mod store;
 pub mod vault;
+
+pub use crate::backup::{
+    BackupContainerSummary, BackupReceipt, BackupService, BackupVerificationReport, RestoreReceipt,
+};
 
 pub use crate::domain::{
     ActorId, Clock, DataClass, DocumentId, EvidenceId, IdGenerator, IngestEventId, IngestOutcome,

@@ -6,10 +6,13 @@ rust-version.workspace = true
 license.workspace = true
 
 [dependencies]
+age.workspace = true
 bytes.workspace = true
 cap-fs-ext.workspace = true
 cap-std.workspace = true
 fs2.workspace = true
+ed25519-dalek.workspace = true
+heleos-platform-fs = { path = "../heleos-platform-fs" }
 heleos-pdf-protocol = { path = "../heleos-pdf-protocol", features = ["artifact-host"] }
 rusqlite.workspace = true
 serde.workspace = true
@@ -31,6 +34,7 @@ wat.workspace = true
 
 [target.'cfg(unix)'.dependencies]
 libc.workspace = true
+rustix = { workspace = true, features = ["process"] }
 
 [target.'cfg(windows)'.dependencies]
 stellar-agent-windows-identity.workspace = true
