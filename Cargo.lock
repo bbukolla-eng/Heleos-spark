@@ -1369,6 +1369,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "heleos-verification"
+version = "0.1.0"
+dependencies = [
+ "age",
+ "ed25519-dalek",
+ "heleos-core",
+ "rusqlite",
+ "serde_jcs",
+ "tempfile",
+ "uuid",
+]
+
+[[package]]
 name = "hkdf"
 version = "0.12.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"

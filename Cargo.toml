@@ -7,6 +7,7 @@ members = [
     "crates/heleos-pdf-protocol",
     "crates/heleos-platform-fs",
     "crates/heleos-test-fixtures",
+    "tests/verification",
 ]
 
 [workspace.package]
