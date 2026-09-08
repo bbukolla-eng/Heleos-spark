@@ -4,11 +4,11 @@ Updated: 2026-09-08 21:53 UTC. This snapshot records local integration through T
 
 ## Current state
 
-Tasks 7-9 are complete, committed, converged, and locally integrated. Task 10's local supply-chain implementation is complete in `.worktrees/foundation-0.1-release`, branch `build/foundation-0.1-release-gate`, on baseline `c1596c4cc536155ad3a052cfec2c9b8951814aba`. The corrected full native macOS ARM64 gate ended with `SUPPLY_CHAIN_LOCAL_PASS`: the approved PDF guest, provenance, complete 405-package/1,035-edge graph, cargo-deny, cargo-audit, semantic secret scan, Clippy, builds, focused and whole-workspace tests, network-denied verifier suite, and two-root SBOM regeneration all passed. No workflow, release-candidate SHA, push, CI attestation, native Windows/NTFS acceptance, or Foundation completion is claimed.
+Tasks 7-9 are complete, committed, converged, and locally integrated. Task 10's local supply-chain implementation is committed as `6157458c6566d8ad26a2ec2c6ba1c7d8a697e2b6`, parent `c1596c4cc536155ad3a052cfec2c9b8951814aba`, tree `c4539ca7e4ecf62e0e767684c314dd56e4527a0c`, subject `chore: implement local Foundation supply-chain gate`, on branch `build/foundation-0.1-release-gate`. The corrected full native macOS ARM64 gate ended with `SUPPLY_CHAIN_LOCAL_PASS`: the approved PDF guest, provenance, complete 405-package/1,035-edge graph, cargo-deny, cargo-audit, semantic secret scan, Clippy, builds, focused and whole-workspace tests, network-denied verifier suite, and two-root SBOM regeneration all passed. No workflow, release-candidate SHA, push, CI attestation, native Windows/NTFS acceptance, or Foundation completion is claimed.
 
 ## Next local finish line
 
-Commit the completed local Task 10 implementation and fast-forward it into the visible local `main` without claiming a release-candidate SHA. Then obtain explicit owner dispositions for the four GitHub Apps before writing any workflow. Preserve the completed one-time lock normalization, all three byte-frozen PDF source-closure manifests, the admitted SBOM, and Tasks 7-9 evidence. The owner ordered no further review rounds or reviewer dispatches; deterministic checks, exact-byte controls, and causal failure evidence remain required.
+The completed local implementation checkpoint and this documentation-only continuity child are the authorized fast-forward landing in visible local `main`. The next uncompleted gate is explicit owner disposition for the four GitHub Apps before any workflow write. Preserve the completed one-time lock normalization, all three byte-frozen PDF source-closure manifests, the admitted SBOM, and Tasks 7-9 evidence. The owner ordered no further review rounds or reviewer dispatches; deterministic checks, exact-byte controls, and causal failure evidence remain required.
 
 ## Later human and platform gates
 
@@ -16,7 +16,7 @@ Azure Pipelines, AWS Connector for GitHub, Amazon Q Developer, and ECC Tools sti
 
 ## Completed work now visible here
 
-The owner requested that completed implementation be placed in the visible repository. Local `main` contains the accepted baseline, the documentation/continuity commits, and the complete Task 7-9 implementation chain. The local merge commit is `dee9179ff99f78864248f62bceb80bd2c4e595cf`; its parents are documentation head `f216ed53380da63dd33e5cf1b51753a89f711e25` and Task 9 head `dab026f990652b71120c3cbeded2bbc4092a27a8`. Continuity commit `c1596c4cc536155ad3a052cfec2c9b8951814aba`, with parent `dee9179...`, subsequently recorded the integrated handoff; it is the current Task 10 base.
+The owner requested that completed implementation be placed in the visible repository. The Task 10 implementation checkpoint is `6157458c6566d8ad26a2ec2c6ba1c7d8a697e2b6`, exactly 15 paths and 4,183 insertions, with this continuity update as its direct documentation-only child; both are the local fast-forward landing. Earlier local merge `dee9179ff99f78864248f62bceb80bd2c4e595cf` integrated the Task 7-9 chain, and continuity commit `c1596c4cc536155ad3a052cfec2c9b8951814aba` is the sole parent of the Task 10 implementation checkpoint.
 
 The visible checkout therefore includes the Rust workspace, typed domain contracts, SQLite migrations/Store, immutable vault, PDF protocol/guest/sandbox, crash-safe intake, encrypted backup/verification/restore CLI, platform publication helper, independent storage and hostile-input verifiers, portable Foundation entry points, governance registries, and architecture/operations documents. The merge added 31 implementation paths and about 36,600 changed lines. This landing does not mean Foundation 0.1 release acceptance is complete.
 
@@ -28,9 +28,9 @@ Root agent instructions are available in [AGENTS.md](AGENTS.md), [CLAUDE.md](CLA
 
 | Location under this project | Purpose |
 | --- | --- |
-| `/Users/bekim/Heleos-spark` | Visible local `main` with the integrated Task 7-9 release candidate at continuity commit `c1596c4...` |
+| `/Users/bekim/Heleos-spark` | Visible local `main` with the Task 7-9 chain plus Task 10 local implementation checkpoint `6157458...` and its continuity child |
 | `.worktrees/foundation-0.1-build/` | Closed, clean Task 7-9 implementation chain and immutable execution evidence |
-| `.worktrees/foundation-0.1-release/` | Passing local `build/foundation-0.1-release-gate` Task 10 supply-chain/SBOM implementation, based on `c1596c4...`; workflow and native Windows gates remain open |
+| `.worktrees/foundation-0.1-release/` | Passing local `build/foundation-0.1-release-gate` Task 10 supply-chain/SBOM implementation at `6157458...` plus this continuity child; workflow and native Windows gates remain open |
 | `.worktrees/claude-task4/` | Independently accepted CLI candidate; exact six files integrated into the build worktree |
 | `.worktrees/actual-build-plan/docs/superpowers/plans/2026-09-06-foundation-completion.md` | Current completion plan |
 | `.worktrees/WORKSPACES.md` | Workspace and recovery-copy map |
@@ -47,6 +47,7 @@ The detailed checkpoint is `.worktrees/foundation-0.1-build/.superpowers/sdd/202
 ## Task 10 implementation checkpoint
 
 - Tasks 7-9 are complete, committed, converged, and locally integrated. The exact post-baseline path counts are `18/2/1/8/8`; amended convergence passed with no merge inside that chain. No reviewer agents remain active or required by the owner's current direction.
+- Task 10 local implementation commit `6157458c6566d8ad26a2ec2c6ba1c7d8a697e2b6` has sole parent `c1596c4...`, tree `c4539ca7e4ecf62e0e767684c314dd56e4527a0c`, exact 15-path patch SHA-256 `9232cb6785b0ca26257b0429abc825bd2c43c0112205c39eb08d7deaacaa9637`, and no workflow or app-registry change. It is an implementation visibility checkpoint, not `release_candidate_sha`.
 - Exact `cargo-deny 0.20.2`, `cargo-audit 0.22.2`, `cargo-cyclonedx 0.5.9`, and Gitleaks `8.30.1` are installed. A clean RustSec snapshot is frozen at commit `bf25f6575a93a35f30796c65c0ed91bee7fa19fd`; offline `cargo audit --no-fetch` passed for all 405 lock packages against 1,242 pinned advisories, with zero vulnerabilities and zero warnings.
 - The one-and-only offline Task 10 lock normalization is complete. Only `serde_json` and `toml 1.1.4+spec-1.1.0` were added to the existing `heleos-verification` dependency list. Current lock SHA-256 is `6bcb2d5a43927c4c9e7fc1e34c6da982a0841061ed18c4b6ec0be4002daefe92`, previously `821daf0341e3500c7c210a1d5802b4bcf4ce0447d383e686ccc1d32ae9f4c08d`. Locked/offline metadata passes. No package identity, source, checksum, resolved feature, or production dependency changed; do not repeat unlocked normalization or regenerate the lock.
 - The corrected `deny.toml` policy at SHA-256 `23b676ca0f994980eb24485d81d42258d718955c98014bbbe0609417472db70b` passed the integrated offline/frozen advisories, bans, licenses, and sources gate. The policy includes the full development/build graph and freezes forty exact-version duplicate skips with upstream rationales, no wildcard/subtree skips, and an unskipped version in every family. Heleos engineering owns convergence before Foundation 0.2. Only the real `heleos-cli`, `heleos-core`, and `heleos-platform-fs` manifests gained exactly `publish = false`; the verifier already had it. `crates/heleos-pdf-guest/Cargo.toml`, `crates/heleos-pdf-protocol/Cargo.toml`, and `crates/heleos-test-fixtures/Cargo.toml` remain byte-identical to the accepted PDF source closure, as required by default Task 9 provenance.
