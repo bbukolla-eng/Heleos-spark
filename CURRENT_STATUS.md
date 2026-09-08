@@ -1,14 +1,14 @@
 # Current repository status
 
-Updated: 2026-09-07. This is a main-checkout snapshot, not a live process monitor or a production-release acceptance statement.
+Updated: 2026-09-08 20:10 UTC. This is the live local integration snapshot; it is not a production-release acceptance statement.
 
 ## Completed work now visible here
 
-The owner requested local integration of completed work. The main checkout was fast-forwarded from `427c7117a14afd3daf3976ba0942584cf77dfae8` to the already accepted Foundation baseline `6469508a0c56b9b306fa47f86b8982d965fb31d5`: 36 existing commits, 60 changed files, and no copied uncommitted candidate files.
+The owner requested that completed implementation be placed in the visible repository. Local `main` now contains the accepted baseline, the four documentation/continuity commits, and the complete Task 7-9 implementation chain. The local merge commit is `dee9179ff99f78864248f62bceb80bd2c4e595cf`; its parents are documentation head `f216ed53380da63dd33e5cf1b51753a89f711e25` and Task 9 head `dab026f990652b71120c3cbeded2bbc4092a27a8`.
 
-This exposes the Rust workspace, typed domain contracts, SQLite migrations/Store, immutable vault, PDF protocol/guest/sandbox, crash-safe intake, integration tests, governance registries, and architecture/operations documents. The completion plan explicitly treats Foundation Tasks 1–6 as completed; this landing does not mean all of Foundation 0.1 is complete.
+The visible checkout therefore includes the Rust workspace, typed domain contracts, SQLite migrations/Store, immutable vault, PDF protocol/guest/sandbox, crash-safe intake, encrypted backup/verification/restore CLI, platform publication helper, independent storage and hostile-input verifiers, portable Foundation entry points, governance registries, and architecture/operations documents. The merge added 31 implementation paths and about 36,600 changed lines. This landing does not mean Foundation 0.1 release acceptance is complete.
 
-Fresh post-landing verification passed in this checkout: `cargo +1.96.1 test --locked --offline --workspace --all-targets --all-features -- --test-threads=1` exited 0, with 363 primary-suite tests passed, zero failed and zero ignored. Nested subprocess rechecks are not double-counted. Formatting and strict all-workspace/all-target/all-feature Clippy (`-D warnings`) also passed. These are local macOS results, not native Windows or final release acceptance.
+Fresh post-merge checks passed here: locked/offline metadata, formatting, normal provenance, frozen verifier build, strict all-workspace/all-target/all-feature Clippy, the CLI build, and the frozen Task 9 black-box suites (`1/1` Foundation plus `7/7` hostile intake, zero failed or ignored). The first CLI attempt intentionally stopped while pinned tool installation was concurrently changing Cargo's seed cache; once installers were terminal, the exact isolated rerun passed. Both the causal stop and the passing rerun are preserved. These are local macOS results, not native Windows or final release acceptance.
 
 ## Work locations
 
@@ -16,28 +16,28 @@ Root agent instructions are available in [AGENTS.md](AGENTS.md), [CLAUDE.md](CLA
 
 | Location under this project | Purpose |
 | --- | --- |
-| `.` | Accepted baseline code and this visible status |
-| `.worktrees/foundation-0.1-build/` | Newer Store/backup/CLI integration work; exact Task 7 atomic gate still applies |
+| `.` | Visible local `main` with the integrated Task 7-9 release candidate and this status |
+| `.worktrees/foundation-0.1-build/` | Closed, clean Task 7-9 implementation chain and immutable execution evidence |
+| `.worktrees/foundation-0.1-release/` | Active `build/foundation-0.1-release-gate` Task 10 supply-chain/SBOM work, based on `dee9179...` |
 | `.worktrees/claude-task4/` | Independently accepted CLI candidate; exact six files integrated into the build worktree |
 | `.worktrees/actual-build-plan/docs/superpowers/plans/2026-09-06-foundation-completion.md` | Current completion plan |
 | `.worktrees/WORKSPACES.md` | Workspace and recovery-copy map |
 
 The detailed checkpoint is `.worktrees/foundation-0.1-build/.superpowers/sdd/2026-09-06-foundation-completion/COMPACTION_RECOVERY.md`. In Finder, use Command-Shift-G to open a `.worktrees` path; its leading dot hides the folder.
 
-## Where staleness occurred
+## Where staleness occurred and how it is prevented
 
-1. The main checkout remained 36 accepted commits behind while development happened in a hidden worktree. The local landing fixes that visibility/history gap.
+1. The main checkout previously lagged while development happened in a hidden worktree. Merge `dee9179...` fixes that visibility/history gap.
 2. Progress records still called Claude session `6654` and Windows probe `4554` running after both terminated. Those records now distinguish completed implementation, pending review, and failed verification.
 3. Older temporary-worktree registrations still have broken Git links. They are not active build authority and have not been deleted or pruned.
+4. The compaction checkpoint now records the exact completed chain, convergence evidence, visible-main merge, post-merge gates, and Task 10 worktree. Completed Tasks 7-9 must not be recreated after compaction.
 
-## Remaining blockers and next work
+## Current build and next work
 
-- CLI source work is accepted: the final scoped review approved both specification compliance and quality, closing the remaining source findings. The controller independently passed 52 unit and 43 integration tests on that exact candidate. Real headless Claude Code implemented the CLI and earlier corrections; a fresh Codex writer completed the final correction, with independent review afterward.
-- Exactly six accepted CLI/guide/dependency files are now integrated in `.worktrees/foundation-0.1-build/`. Independent identity checks verified all six copied files and preserved the corrected live core/Store/platform. The build has the exact eighteen authorized changed paths and an empty index; no Task 7 commit or main-branch landing has occurred.
-- The complete macOS host gate is GREEN: all 13 commands passed, including the 623-test all-workspace/all-target/all-feature run, strict Clippy, formatting, reproducible PDF guest builds, targeted Store/backup/platform/CLI checks, and offline metadata resolution. No failed/ignored tests or warnings were observed. All 72 source-file hashes and the approved PDF artifact/manifest matched after execution. Targeted subsets overlap the 623-test total; they are not additional unique tests.
-- Governance finalization is independently approved with zero findings. Three narrow records were appended; every prior registry byte was preserved. Exact host commands, terminal results, log hashes, source manifest, and review evidence are in the completion checkpoint directory, starting with `task-5-host-gate-report.md` and `task-5-host-gates.json`. No writer, reviewer, or host check remains running for this step.
-- Windows is now the next required gate: the prescribed cross-check got past the native C dependency boundary, then unchanged CLI `build.rs` rejected `AR_x86_64_pc_windows_msvc`, which that protocol requires. A genuine native Windows check is the existing zero-source-change route, but no in-scope command connection is established; Windows App on this Mac also displays No Devices. The owner must identify/provide an existing native connection or approve the bounded plan/guard correction recorded in `windows-check-gate-resolution.md`. Do not repeat the identical failing command, bypass the guard, or claim Windows acceptance from Mac results.
-- The newer Task 7 changes are not merged or committed as completed work. Their exact eighteen-path feature gate, subsequent independent verifiers, and release gates remain in force.
-- GitHub publication is separate: the locally known `origin/main` has divergent history. No fetch or push was performed for this landing. Review convergence before any owner-authorized publication; never force-push as a shortcut.
+- Tasks 7-9 are complete, committed, converged, and locally integrated. The exact post-baseline path counts are `18/2/1/8/8`; amended convergence passed with no merge inside that chain. No reviewer agents remain active or required by the owner's current direction.
+- Task 10 is actively implementing the local supply-chain gate. Exact `cargo-deny 0.20.2`, `cargo-audit 0.22.2`, `cargo-cyclonedx 0.5.9`, and Gitleaks `8.30.1` are installed. A clean RustSec snapshot is frozen at commit `bf25f6575a93a35f30796c65c0ed91bee7fa19fd`; `cargo audit` inspected 405 lock dependencies and reported zero vulnerabilities and zero warnings.
+- The pinned SBOM generator's raw seven member files cover only 390 of 405 packages and leak physical workspace paths. Astra has produced a deterministic normalized candidate covering all 405 packages and 1,033 dependency edges; its negative checks and durable verifier integration are still in progress. Partial raw SBOMs will not be mislabeled complete.
+- `governance/github-apps.toml` still marks Azure Pipelines, AWS Connector for GitHub, Amazon Q Developer, and ECC Tools as `owner_decision_required`. Task 10 may build local policies/scripts before that gate, but it may not create a workflow until the owner provides dispositions.
+- The locally known `origin/main` remains divergent. No fetch, push, force-push, workflow publication, deployment, or account-level mutation occurred.
 
-Next: resolve the native Windows connection/contract decision, then continue Task 5 from Step 4 and its existing staging/review/commit sequence. Completed host checks are preserved and must not be restarted merely because of compaction. The feature commit, later independent verifiers, and release acceptance remain incomplete.
+Next: finish and execute Task 10's local policy, supply-chain scripts, governed full-graph SBOM, and deterministic verifier. Then obtain the four GitHub App dispositions before creating CI. Native Windows/NTFS attestation and any push remain separate owner gates. Do not restart completed Tasks 7-9, dispatch review agents, reset/clean, or bypass a failing guard.
