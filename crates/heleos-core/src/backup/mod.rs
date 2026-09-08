@@ -2096,6 +2096,11 @@ fn verify_materialized_foundation(
         Store::open_read_only_with_snapshot_parent(&path.join("foundation.sqlite3"), temporary)
             .map_err(map_complete_reader_error)?;
     let operation = (|| {
+        if store.schema_version().map_err(map_complete_reader_error)?
+            != crate::store::FOUNDATION_SCHEMA_VERSION
+        {
+            return Err(HeleosError::Integrity);
+        }
         if !store
             .verify_integrity()
             .map_err(map_complete_reader_error)?

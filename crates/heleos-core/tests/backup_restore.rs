@@ -374,6 +374,79 @@ fn public_backup_round_trip_has_path_free_receipts_and_complete_layout() {
 }
 
 #[test]
+fn authenticated_future_schema_is_rejected_without_publication_or_staging_leaks() {
+    const CHILD_TEMP: &str = "HELEOS_TEST_FUTURE_SCHEMA_TEMP";
+    let Some(temporary) = std::env::var_os(CHILD_TEMP) else {
+        let temporary = tempfile::tempdir().unwrap();
+        heleos_core::apply_private_permissions(temporary.path()).unwrap();
+        let path = std::fs::canonicalize(temporary.path()).unwrap();
+        let status = std::process::Command::new(std::env::current_exe().unwrap())
+            .args([
+                "--exact",
+                "authenticated_future_schema_is_rejected_without_publication_or_staging_leaks",
+                "--nocapture",
+                "--test-threads=1",
+            ])
+            .env("TMPDIR", &path)
+            .env("TMP", &path)
+            .env("TEMP", &path)
+            .env(CHILD_TEMP, &path)
+            .status()
+            .unwrap();
+        assert!(
+            status.success(),
+            "future-schema subprocess failed: {status}"
+        );
+        return;
+    };
+    let temporary = std::path::PathBuf::from(temporary);
+    assert_eq!(
+        std::fs::canonicalize(tempfile::env::temp_dir()).unwrap(),
+        temporary
+    );
+    let mut fixture = Fixture::new();
+    let database = rusqlite::Connection::open(fixture.root.join("source.sqlite3")).unwrap();
+    database
+        .execute(
+            "INSERT INTO schema_migrations (version, sha256) VALUES (999, ?1)",
+            ["0".repeat(64)],
+        )
+        .unwrap();
+    drop(database);
+    assert_eq!(fixture.store.schema_version().unwrap(), 999);
+    fixture.create();
+
+    let names = |path: &Path| {
+        std::fs::read_dir(path)
+            .unwrap()
+            .map(|entry| entry.unwrap().file_name())
+            .collect::<std::collections::BTreeSet<_>>()
+    };
+    let temporary_before = names(&temporary);
+    let destination_parent_before = names(&fixture.root);
+    let signer = fixture.signer.verifying_key().to_bytes();
+    let verify =
+        BackupService::verify_container(fixture.open(), &fixture.identity, &signer).map(|_| ());
+    let verify_staging_clean = names(&temporary) == temporary_before;
+    let destination = fixture.root.join("future-schema-restore");
+    let restore = BackupService::restore(fixture.open(), &fixture.identity, &signer, &destination)
+        .map(|_| ());
+    let published = destination.exists();
+    let restore_staging_clean =
+        names(&temporary) == temporary_before && names(&fixture.root) == destination_parent_before;
+
+    assert!(
+        matches!(verify, Err(heleos_core::HeleosError::Integrity))
+            && matches!(restore, Err(heleos_core::HeleosError::Integrity))
+            && !published
+            && verify_staging_clean
+            && restore_staging_clean,
+        "future schema: verify={verify:?}, restore={restore:?}, published={published}, \
+         verify_staging_clean={verify_staging_clean}, restore_staging_clean={restore_staging_clean}"
+    );
+}
+
+#[test]
 fn authenticated_evidence_disagreement_in_later_project_is_rejected() {
     let mut fixture = Fixture::new();
     fixture.ingest_projects();
