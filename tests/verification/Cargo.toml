@@ -13,5 +13,7 @@ age = "=0.12.1"
 ed25519-dalek = "=3.0.0"
 rusqlite = "=0.40.2"
 serde_jcs = "=0.2.0"
+serde_json.workspace = true
 tempfile = "=3.27.0"
+toml.workspace = true
 uuid = { workspace = true }
