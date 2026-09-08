@@ -1,0 +1,17 @@
+[package]
+name = "heleos-verification"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+heleos-core = { path = "../../crates/heleos-core" }
+heleos-pdf-protocol = { path = "../../crates/heleos-pdf-protocol", default-features = false, features = ["artifact-host"] }
+age = "=0.12.1"
+ed25519-dalek = "=3.0.0"
+rusqlite = "=0.40.2"
+serde_jcs = "=0.2.0"
+tempfile = "=3.27.0"
+uuid = { workspace = true }

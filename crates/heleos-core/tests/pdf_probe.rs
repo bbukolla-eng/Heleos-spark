@@ -3648,7 +3648,31 @@ fn copy_build_workspace(source: &Path, destination: &Path) -> LauncherResult<()>
     let destination_crates = destination
         .open_dir_nofollow("crates")
         .map_err(|_| "workspace crates destination open failed".to_owned())?;
-    copy_cap_tree(&source_crates, &destination_crates)
+    copy_cap_tree(&source_crates, &destination_crates)?;
+
+    // Older workspace revisions do not have the verification package. Cargo
+    // metadata still rejects a declared package that is absent from this copy.
+    let mut source_verification = source;
+    for name in ["tests", "verification"] {
+        match source_verification.symlink_metadata(name) {
+            Ok(metadata) if metadata.is_dir() => {}
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(()),
+            _ => return Err("workspace verification directory is missing or indirect".to_owned()),
+        }
+        source_verification = source_verification
+            .open_dir_nofollow(name)
+            .map_err(|_| "workspace verification capability open failed".to_owned())?;
+    }
+    let mut destination_verification = destination;
+    for name in ["tests", "verification"] {
+        destination_verification
+            .create_dir(name)
+            .map_err(|_| "workspace verification destination creation failed".to_owned())?;
+        destination_verification = destination_verification
+            .open_dir_nofollow(name)
+            .map_err(|_| "workspace verification destination open failed".to_owned())?;
+    }
+    copy_cap_tree(&source_verification, &destination_verification)
 }
 
 fn copy_cap_tree(source: &cap_std::fs::Dir, destination: &cap_std::fs::Dir) -> LauncherResult<()> {
