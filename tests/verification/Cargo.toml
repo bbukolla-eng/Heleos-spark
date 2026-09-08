@@ -8,6 +8,7 @@ publish = false
 
 [dependencies]
 heleos-core = { path = "../../crates/heleos-core" }
+heleos-pdf-protocol = { path = "../../crates/heleos-pdf-protocol", default-features = false, features = ["artifact-host"] }
 age = "=0.12.1"
 ed25519-dalek = "=3.0.0"
 rusqlite = "=0.40.2"

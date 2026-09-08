@@ -1375,6 +1375,7 @@ dependencies = [
  "age",
  "ed25519-dalek",
  "heleos-core",
+ "heleos-pdf-protocol",
  "rusqlite",
  "serde_jcs",
  "tempfile",
