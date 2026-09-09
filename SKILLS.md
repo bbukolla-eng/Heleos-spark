@@ -10,6 +10,7 @@ This file is a project workflow index, not an executable skill package, installe
 | --- | --- | --- |
 | Resume or compaction recovery | Correct checkout, verified checkpoint, first unfinished action; no duplicate dispatch | [AGENTS.md](AGENTS.md) and [CURRENT_STATUS.md](CURRENT_STATUS.md) |
 | Foundation 0.1 release routing | Deterministic five-gate status, exact candidate/evidence binding, and the first unfinished release action | [Foundation release status](docs/operations/foundation-release-status.md) and `python3 scripts/foundation-release-status.py --human` |
+| GitHub App owner decision recording | Exact owner packet, stale-state binding, dry-run, and one-file atomic registry update without account mutation | [GitHub App decision guide](docs/operations/github-app-decisions.md) and `python3 scripts/apply-github-app-decisions.py --help` |
 | Scoped coding | Tests for changed behavior, minimal implementation, exact changed-file/check evidence | Assigned task from the current implementation plan |
 | Debugging | Concrete observed failure, cause, smallest repair, and affected regression check | Existing failed command/report; no wholesale restart |
 | Worker dispatch | Verified provider capability, exact brief, single writer, bounded output | Shared assignment contract in [AGENTS.md](AGENTS.md) and the provider file |
