@@ -7,8 +7,9 @@ Adapter failures: 64 invalid CLI, 65 invalid prompt, 70 launch failure,
 71 provider signal, 74 stdin read failure. Ordinary provider exits propagate;
 provider stdout/stderr are inherited without inspecting or rewriting them.
 The outer guarded runner owns timeouts, process-group cleanup, output limits,
-and provider authorization. Kimi receives the prompt as one argv value, which
-may be visible to local process inspection; never submit secrets.
+and provider authorization. Kimi 0.34 rejects `--auto` with `--prompt`, so the
+fixed noninteractive route uses `--yolo`. Kimi receives the prompt as one argv
+value, which may be visible to local process inspection; never submit secrets.
 """
 
 import os
@@ -58,7 +59,7 @@ def main() -> int:
 
     try:
         result = subprocess.run(
-            [arguments[1], "--auto", "--output-format", "stream-json", "--prompt", prompt],
+            [arguments[1], "--yolo", "--output-format", "stream-json", "--prompt", prompt],
             stdin=subprocess.DEVNULL,
             shell=False,
             check=False,
