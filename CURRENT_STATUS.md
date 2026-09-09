@@ -4,11 +4,11 @@ Updated: 2026-09-09. This snapshot records local integration through Task 9, a p
 
 <!-- active-build-authority:v1 -->
 ```json
-{"schema_version":1,"active_builds":[]}
+{"schema_version":1,"active_builds":[{"path":".worktrees/github-app-decision-draft-2026-09-09","branch":"build/github-app-decision-draft-2026-09-09","checkpoint":"18a3a51af89d2f7bff7364c884a99118bdddc32f"}]}
 ```
 <!-- /active-build-authority -->
 
-No unfinished local implementation branch is declared active above. The ignored Finder-visible path `/Users/bekim/Heleos-spark/ACTIVE_BUILD` remains a legacy pointer to the completed agent-controller worktree for inspection only; it is not recovery authority, a second source copy, or permission to resume writes there. New implementation must first register its exact path, branch, and committed checkpoint in this block.
+One unfinished local implementation branch is declared active above: the GitHub App owner-decision draft generator slice. The ignored Finder-visible path `/Users/bekim/Heleos-spark/ACTIVE_BUILD` remains a legacy pointer to the completed agent-controller worktree for inspection only; it is not recovery authority, a second source copy, or permission to resume writes there. New implementation must first register its exact path, branch, and committed checkpoint in this block.
 
 ## Local integration checkpoint - 2026-09-09
 
