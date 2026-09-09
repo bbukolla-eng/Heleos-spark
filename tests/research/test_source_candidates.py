@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -44,6 +45,18 @@ def manifest(entries):
     return text.encode()
 
 
+def aggregate_manifest(hashes, refs):
+    text = 'schema_version = 1\nstatus = "research_only"\n'
+    text += 'lane_manifest_sha256 = ' + json.dumps(hashes) + '\n'
+    if not refs:
+        text += 'source_ref = []\n'
+    for ref in refs:
+        text += '\n[[source_ref]]\n'
+        for key, value in ref.items():
+            text += key + ' = ' + json.dumps(value) + '\n'
+    return text.encode()
+
+
 class SourceCandidateTests(unittest.TestCase):
     def setUp(self):
         self.scratch = tempfile.TemporaryDirectory(prefix="heleos-source-candidate-")
@@ -78,6 +91,7 @@ class SourceCandidateTests(unittest.TestCase):
         self.assertEqual(first[1], {
             "schema_version": 1, "status": "CANDIDATE_METADATA_VALID",
             "source_count": 1, "manifest_sha256": [hashlib.sha256(raw).hexdigest()],
+            "lane_manifest_count": 1, "aggregate_manifest_count": 0,
             "production_authority": False, "source_bytes_verified": False,
             "citations_verified": False, "rights_verified": False,
         })
@@ -127,10 +141,25 @@ class SourceCandidateTests(unittest.TestCase):
         self.reject(dict(source(), notebooklm_permission="permitted", notebooklm_rights_basis=""),
                     "invalid_value")
         entry = dict(source(), notebooklm_permission="permitted",
-                     notebooklm_rights_basis="Synthetic declared permission; requires independent check")
+                     notebooklm_rights_basis="AFFIRMATIVE: Synthetic declared permission; requires independent check")
         code, report = self.probe(manifest([entry]))
         self.assertEqual(code, 0, report)
         self.assertFalse(report["rights_verified"])
+
+    def test_permitted_upload_requires_explicit_affirmative_rights_declaration(self):
+        for basis in ("No upload authorization", "Rights unverified", "Permission unknown",
+                      "Synthetic declared permission", "AFFIRMATIVE:", "AFFIRMATIVE: ",
+                      "affirmative: Declared permission", "AFFIRMATIVE:  Declared permission"):
+            with self.subTest(basis=basis):
+                self.reject(dict(source(), notebooklm_permission="permitted",
+                                 notebooklm_rights_basis=basis), "invalid_value")
+        for permission in ("reference_only", "denied"):
+            for basis in ("No upload authorization", "Rights unverified", "Permission unknown"):
+                with self.subTest(permission=permission, basis=basis):
+                    code, report = self.probe(manifest([dict(
+                        source(), notebooklm_permission=permission, notebooklm_rights_basis=basis)]))
+                    self.assertEqual(code, 0, report)
+                    self.assertIs(report["rights_verified"], False)
 
     def test_research_can_record_unresolved_and_retired_sources_without_promoting_them(self):
         for state in ("current", "unknown", "superseded", "retired"):
@@ -196,6 +225,223 @@ class SourceCandidateTests(unittest.TestCase):
         self.assertEqual(self.probe(b" " * (1024 * 1024 + 1))[1]["error"], "input_too_large")
         self.assertEqual(self.probe(paths=[self.root])[1]["error"], "input_unavailable")
         self.assertEqual(self.probe(paths=[self.root / "missing"])[1]["error"], "input_unavailable")
+
+    def aggregate_fixture(self, hashes=None, refs=None):
+        lane_raw = manifest([source()])
+        self.path.write_bytes(lane_raw)
+        digest = hashlib.sha256(lane_raw).hexdigest()
+        aggregate = self.root / "aggregate.toml"
+        aggregate.write_bytes(aggregate_manifest(
+            [digest] if hashes is None else hashes,
+            [{"id": source()["id"], "lane_manifest_sha256": digest}] if refs is None else refs))
+        return aggregate
+
+    def test_aggregate_requires_exact_lane_hashes_and_reports_sorted_counts(self):
+        aggregate = self.aggregate_fixture()
+        second = self.root / "second.toml"
+        second.write_bytes(manifest([dict(source(), id="second-lane")]))
+        lane_hashes = sorted(hashlib.sha256(p.read_bytes()).hexdigest()
+                             for p in (self.path, second))
+        aggregate.write_bytes(aggregate_manifest(lane_hashes, [
+            {"id": source()["id"], "lane_manifest_sha256": hashlib.sha256(self.path.read_bytes()).hexdigest()},
+            {"id": "second-lane", "lane_manifest_sha256": hashlib.sha256(second.read_bytes()).hexdigest()},
+        ]))
+        before = {p.name: p.read_bytes() for p in self.root.iterdir()}
+        first = self.probe(paths=[aggregate, second, self.path])
+        self.assertEqual(first[0], 0, first)
+        self.assertEqual(first[1]["lane_manifest_count"], 2)
+        self.assertEqual(first[1]["aggregate_manifest_count"], 1)
+        self.assertEqual(first[1]["source_count"], 2)
+        self.assertEqual(first[1]["manifest_sha256"],
+                         sorted(hashlib.sha256(raw).hexdigest() for raw in before.values()))
+        for field in ("production_authority", "source_bytes_verified", "citations_verified",
+                      "rights_verified"):
+            self.assertIs(first[1][field], False)
+        self.assertEqual(first, self.probe(paths=[self.path, aggregate, second]))
+        self.assertEqual(before, {p.name: p.read_bytes() for p in self.root.iterdir()})
+
+    def test_aggregate_alone_or_wrong_lane_binding_is_rejected(self):
+        aggregate = self.aggregate_fixture()
+        for paths in ([aggregate], [self.path, aggregate]):
+            if len(paths) == 2:
+                self.path.write_bytes(manifest([dict(source(), id="changed-lane")]))
+            with self.subTest(paths=len(paths)):
+                code, report = self.probe(paths=paths)
+                self.assertEqual(code, 1)
+                self.assertEqual(report["error"], "aggregate_lane_mismatch")
+
+    def test_aggregate_cannot_omit_a_named_lane_or_include_an_aggregate_hash(self):
+        aggregate = self.aggregate_fixture()
+        second = self.root / "second.toml"
+        second.write_bytes(manifest([dict(source(), id="second-lane")]))
+        self.assertEqual(self.probe(paths=[self.path, second, aggregate])[1]["error"],
+                         "aggregate_lane_mismatch")
+        hashes = sorted(hashlib.sha256(p.read_bytes()).hexdigest()
+                        for p in (self.path, aggregate))
+        aggregate.write_bytes(aggregate_manifest(hashes, [
+            {"id": source()["id"], "lane_manifest_sha256": hashes[0]}]))
+        self.assertEqual(self.probe(paths=[self.path, aggregate])[1]["error"],
+                         "aggregate_lane_mismatch")
+
+    def test_aggregate_hash_list_is_nonempty_sorted_unique_lowercase_hex_and_bounded(self):
+        for hashes in ([], "a" * 64, [1], ["A" * 64], ["g" * 64], ["a" * 63],
+                       ["b" * 64, "a" * 64], ["a" * 64, "a" * 64], ["a" * 64] * 1001):
+            with self.subTest(hashes=str(hashes)[:80]):
+                aggregate = self.aggregate_fixture(hashes=hashes)
+                self.assertEqual(self.probe(paths=[self.path, aggregate])[1]["error"],
+                                 "invalid_manifest")
+
+    def test_aggregate_references_reject_duplicates_missing_unknown_and_extra_fields(self):
+        digest = hashlib.sha256(manifest([source()])).hexdigest()
+        ref = {"id": source()["id"], "lane_manifest_sha256": digest}
+        for refs, error in (([ref, ref], "duplicate_source_id"),
+                            ([], "aggregate_source_mismatch"),
+                            ([dict(ref, id="unknown")], "aggregate_source_mismatch"),
+                            ([dict(ref, lane_manifest_sha256="a" * 64)], "aggregate_source_mismatch"),
+                            ([dict(ref, title="untrusted-marker")], "invalid_fields"),
+                            ([{"id": source()["id"]}], "invalid_fields"),
+                            ([dict(ref, id=1)], "invalid_value"),
+                            ([dict(ref, lane_manifest_sha256="A" * 64)], "invalid_value")):
+            with self.subTest(refs=refs):
+                aggregate = self.aggregate_fixture(refs=refs)
+                self.assertEqual(self.probe(paths=[self.path, aggregate])[1]["error"], error)
+
+    def test_aggregate_reference_must_bind_id_to_its_own_lane(self):
+        aggregate = self.aggregate_fixture()
+        second = self.root / "second.toml"
+        second.write_bytes(manifest([dict(source(), id="second-lane")]))
+        first_hash = hashlib.sha256(self.path.read_bytes()).hexdigest()
+        second_hash = hashlib.sha256(second.read_bytes()).hexdigest()
+        aggregate.write_bytes(aggregate_manifest(sorted([first_hash, second_hash]), [
+            {"id": source()["id"], "lane_manifest_sha256": second_hash},
+            {"id": "second-lane", "lane_manifest_sha256": first_hash},
+        ]))
+        self.assertEqual(self.probe(paths=[self.path, second, aggregate])[1]["error"],
+                         "aggregate_source_mismatch")
+
+    def test_multiple_aggregates_are_rejected_and_lane_ids_remain_unique(self):
+        aggregate = self.aggregate_fixture()
+        second = self.root / "aggregate-two.toml"
+        second.write_bytes(aggregate.read_bytes())
+        code, report = self.probe(paths=[aggregate, self.path, second])
+        self.assertEqual(code, 1, report)
+        self.assertEqual(report["error"], "multiple_aggregate_manifests")
+        self.assertIs(report["production_authority"], False)
+        second.write_bytes(manifest([source()]))
+        self.assertEqual(self.probe(paths=[aggregate, self.path, second])[1]["error"],
+                         "duplicate_source_id")
+
+    def test_aggregate_and_lane_top_levels_remain_exact(self):
+        aggregate = self.aggregate_fixture()
+        for path in (self.path, aggregate):
+            original = path.read_bytes()
+            path.write_bytes(b'unknown = "untrusted-marker"\n' + original)
+            code, report = self.probe(paths=[self.path, aggregate])
+            self.assertEqual(code, 1)
+            self.assertEqual(report["error"], "invalid_manifest")
+            self.assertNotIn("untrusted-marker", json.dumps(report))
+            path.write_bytes(original)
+        raw = aggregate.read_bytes().replace(b'[[source_ref]]', b'[[source]]')
+        aggregate.write_bytes(raw)
+        self.assertEqual(self.probe(paths=[self.path, aggregate])[1]["error"], "invalid_manifest")
+
+    def test_manifest_argument_count_is_bounded(self):
+        code, report = self.probe(paths=[self.root / "untrusted-marker"] * 1001)
+        self.assertEqual(code, 1)
+        self.assertEqual(report["error"], "invalid_manifest_count")
+
+    def test_self_test_is_deterministic_private_cleanup_and_never_authority(self):
+        expected_cases = {"valid_lane", "valid_aggregate", "missing_locator", "missing_rights",
+                          "non_public", "absent_cached_hash", "unrecognized_notebooklm_permission",
+                          "duplicate_id_across_manifests", "unknown_fields", "private_path",
+                          "valid_worker", "valid_packet", "worker_missing_input_hash",
+                          "worker_non_public", "worker_absent_budget", "worker_authority_attempt",
+                          "worker_private_path", "worker_credential_text", "packet_missing_input_hash",
+                          "packet_non_public", "packet_absent_budget", "packet_self_approval",
+                          "packet_private_path", "packet_credential_text",
+                          "valid_affirmative_rights", "unaffirmed_upload_rights"}
+        results = []
+        for _ in range(2):
+            result = subprocess.run([sys.executable, "-B", str(SCRIPT), "--self-test"],
+                                    cwd=self.root, env=dict(os.environ, TMPDIR=str(self.root)),
+                                    capture_output=True, timeout=5)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.stderr, b"")
+            self.assertLess(len(result.stdout), 4096)
+            report = json.loads(result.stdout)
+            self.assertEqual(report["status"], "SELF_TEST_PASS")
+            self.assertIs(report["production_authority"], False)
+            self.assertEqual(set(report["cases"]), expected_cases)
+            self.assertTrue(all(value == "PASS" for value in report["cases"].values()))
+            self.assertNotIn(str(self.root), result.stdout.decode())
+            self.assertEqual(list(self.root.iterdir()), [])
+            results.append(result.stdout)
+        self.assertEqual(*results)
+
+    def isolated_self_test(self, jq_filter):
+        # Invoke the real CLI and /usr/bin/jq using a disposable neighboring
+        # filter to prove that the self-test observes production verdicts.
+        script = self.root / "validate-sources.py"
+        script.write_bytes(SCRIPT.read_bytes())
+        if jq_filter is not None:
+            (self.root / "validate-contracts.jq").write_text(jq_filter, encoding="utf-8")
+        before = {p.name: p.read_bytes() for p in self.root.iterdir()}
+        result = subprocess.run([sys.executable, "-B", str(script), "--self-test"],
+                                cwd=self.root, env=dict(os.environ, TMPDIR=str(self.root)),
+                                capture_output=True, timeout=5)
+        self.assertEqual(result.stderr, b"")
+        self.assertLess(len(result.stdout), 4096)
+        self.assertNotIn(str(self.root), result.stdout.decode())
+        self.assertNotIn("untrusted-marker", result.stdout.decode())
+        self.assertEqual(before, {p.name: p.read_bytes() for p in self.root.iterdir()})
+        return result.returncode, json.loads(result.stdout)
+
+    def test_self_test_rejects_missing_real_contract_filter(self):
+        code, report = self.isolated_self_test(None)
+        self.assertEqual(code, 1, report)
+        self.assertEqual(report["error"], "contract_validator_unavailable")
+        self.assertIs(report["production_authority"], False)
+
+    def test_self_test_detects_contract_filter_accepting_every_record(self):
+        code, report = self.isolated_self_test("true")
+        self.assertEqual(code, 1, report)
+        self.assertEqual(report["status"], "SELF_TEST_FAIL")
+        for name in ("valid_worker", "valid_packet"):
+            self.assertEqual(report["cases"][name], "PASS")
+        for name in ("worker_missing_input_hash", "worker_non_public", "worker_absent_budget",
+                     "worker_authority_attempt", "worker_private_path", "worker_credential_text",
+                     "packet_missing_input_hash", "packet_non_public", "packet_absent_budget",
+                     "packet_self_approval", "packet_private_path", "packet_credential_text"):
+            self.assertEqual(report["cases"][name], "FAIL")
+
+    def test_self_test_detects_contract_filter_rejecting_valid_records(self):
+        code, report = self.isolated_self_test("false")
+        self.assertEqual(code, 1, report)
+        self.assertEqual(report["status"], "SELF_TEST_FAIL")
+        self.assertEqual(report["cases"]["valid_worker"], "FAIL")
+        self.assertEqual(report["cases"]["valid_packet"], "FAIL")
+
+    def test_self_test_bounds_contract_subprocess_output_and_time_and_sanitizes_errors(self):
+        for jq_filter, error in (("range(0; 1000000)", "contract_validator_output_limit"),
+                                 ("def spin: spin; spin", "contract_validator_timeout"),
+                                 ('error("untrusted-marker")', "contract_validator_failed")):
+            with self.subTest(error=error):
+                code, report = self.isolated_self_test(jq_filter)
+                self.assertEqual(code, 1, report)
+                self.assertEqual(report["error"], error)
+                self.assertIs(report["production_authority"], False)
+
+    def test_self_test_and_manifest_modes_are_exclusive_with_sanitized_errors(self):
+        for args in ([], ["--self-test", str(self.root / "untrusted-marker")],
+                     ["--untrusted-marker"]):
+            with self.subTest(args=args):
+                result = subprocess.run([sys.executable, "-B", str(SCRIPT), *args],
+                                        cwd=self.root, capture_output=True, timeout=5)
+                self.assertEqual(result.returncode, 1)
+                self.assertEqual(result.stderr, b"")
+                report = json.loads(result.stdout)
+                self.assertEqual(report["error"], "invalid_arguments")
+                self.assertNotIn("untrusted-marker", result.stdout.decode())
 
 
 if __name__ == "__main__":

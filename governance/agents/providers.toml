@@ -1,0 +1,178 @@
+# Local observation only. Absolute CLI locations are host inventory, never submission inputs.
+# No provider admission, executable launch authorization, or approved egress follows from this file.
+schema_version = 1
+status = "observation_only"
+observed_date = "2026-09-09"
+base_commit = "485b54e9b0915b81e564425e9b7981c5ea1e0590"
+
+[authority]
+production = false
+push = false
+merge = false
+approval = false
+credential = false
+repository_write = false
+launch = false
+
+[[provider]]
+id = "codex"
+kind = "cli"
+installed = true
+executable_path = "/Users/bekim/.local/node/bin/codex"
+resolved_path = "/Users/bekim/.local/node/lib/node_modules/@openai/codex/bin/codex.js"
+executable_sha256 = "61b0194f3bb6534439c8d26a3ed57d0805f84b884588b761795323eeb92fcf70"
+version = "codex-cli 0.153.4"
+version_evidence = "bounded --version exit 0"
+authentication = "unverified"
+authentication_probe = "not_run_no_safe_status_probe_established"
+origin = "local @openai/codex package path; upstream provenance unverified"
+license_or_rights = "unverified; no research provider use admitted"
+update_channel = "unverified_not_inspected"
+environment_exposure = "unverified_not_inspected"
+containment = "not_admitted"
+egress = "not_admitted"
+status = "not_admitted"
+
+[[provider]]
+id = "claude_code"
+kind = "cli"
+installed = true
+executable_path = "/Users/bekim/.local/node/bin/claude"
+resolved_path = "/Users/bekim/.local/node/lib/node_modules/@anthropic-ai/claude-code/bin/claude.exe"
+executable_sha256 = "5efecaff231b798be3c66def9be54183623b328b80eaef17f93c43987024e82a"
+version = "2.1.261 (Claude Code)"
+version_evidence = "bounded --version exit 0"
+authentication = "unverified"
+authentication_probe = "not_run_no_safe_status_probe_established"
+origin = "local @anthropic-ai/claude-code package path; upstream provenance unverified"
+license_or_rights = "unverified; no research provider use admitted"
+update_channel = "unverified_not_inspected"
+environment_exposure = "unverified_not_inspected"
+containment = "not_admitted"
+egress = "not_admitted"
+status = "not_admitted"
+
+[[provider]]
+id = "kimi"
+kind = "cli"
+installed = true
+executable_path = "/Users/bekim/.kimi-code/bin/kimi"
+resolved_path = "/Users/bekim/.kimi-code/bin/kimi"
+executable_sha256 = "9f4337e10da47843f6b550474012a53ba8b30dd665f83b176a5cd479c5f7e859"
+version = "0.34.0"
+version_evidence = "admitted nonlaunching state-layout probe exit 78; reviewed_version only"
+authentication = "unverified"
+authentication_probe = "not_run_no_safe_status_probe_established"
+origin = "local Kimi executable; upstream provenance unverified"
+license_or_rights = "unverified; no research provider use admitted"
+update_channel = "unverified_not_inspected"
+environment_exposure = "unverified_not_inspected"
+containment = "combined_auth_runtime_root"
+egress = "not_admitted"
+status = "not_admitted"
+
+[[provider]]
+id = "grok"
+kind = "cli"
+installed = true
+executable_path = "/Users/bekim/.grok/bin/grok"
+resolved_path = "/Users/bekim/.grok/downloads/grok-0.2.111-macos-aarch64"
+executable_sha256 = "e1fafdfffe14f339460befaf194360e8f90bfd02efe8a4f24cfa1c7aea657ffe"
+version = "unverified"
+version_evidence = "bounded --version exit 0; output outside safe version grammar discarded"
+authentication = "unverified"
+authentication_probe = "not_run_no_safe_status_probe_established"
+origin = "local Grok executable; upstream provenance unverified"
+license_or_rights = "unverified; no research provider use admitted"
+update_channel = "unverified_not_inspected"
+environment_exposure = "unverified_not_inspected"
+containment = "not_admitted"
+egress = "not_admitted"
+status = "not_admitted"
+
+[[provider]]
+id = "cursor"
+kind = "cli"
+installed = true
+executable_path = "/Users/bekim/.local/bin/cursor-agent"
+resolved_path = "/Users/bekim/.local/share/cursor-agent/versions/2026.09.02-c22c1a3/cursor-agent"
+executable_sha256 = "2ccc9a8e167797641448b5e5c936f006ba137a2555f117f38c5eb76a5238a233"
+version = "2026.09.02-c22c1a3"
+version_evidence = "bounded --version exit 0"
+authentication = "unverified"
+authentication_probe = "not_run_no_safe_status_probe_established"
+origin = "local Cursor Agent executable; upstream provenance unverified"
+license_or_rights = "unverified; no research provider use admitted"
+update_channel = "unverified_not_inspected"
+environment_exposure = "unverified_not_inspected"
+containment = "not_admitted"
+egress = "not_admitted"
+status = "not_admitted"
+
+[[provider]]
+id = "notebook_lm"
+kind = "browser_research_only"
+installed = false
+executable_path = "unverified"
+resolved_path = "unverified"
+executable_sha256 = "unverified"
+version = "unverified"
+version_evidence = "no browser or application probe"
+authentication = "unverified"
+authentication_probe = "not_run_no_safe_status_probe_established"
+origin = "unverified"
+license_or_rights = "unverified; no research provider use admitted"
+update_channel = "unverified_not_inspected"
+environment_exposure = "unverified_not_inspected"
+containment = "not_admitted"
+egress = "not_admitted"
+status = "not_admitted"
+
+[[provider]]
+id = "grok_bots"
+kind = "browser_research_only"
+installed = false
+executable_path = "unverified"
+resolved_path = "unverified"
+executable_sha256 = "unverified"
+version = "unverified"
+version_evidence = "no browser or application probe"
+authentication = "unverified"
+authentication_probe = "not_run_no_safe_status_probe_established"
+origin = "unverified"
+license_or_rights = "unverified; no research provider use admitted"
+update_channel = "unverified_not_inspected"
+environment_exposure = "unverified_not_inspected"
+containment = "not_admitted"
+egress = "not_admitted"
+status = "not_admitted"
+
+[[validator]]
+id = "python3"
+executable_path = "/opt/homebrew/bin/python3"
+resolved_path = "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/bin/python3.14"
+executable_sha256 = "4f00ea2ad53d62437a6a3946b73c73614a97e8accdc5b96dc095ea1a0d9c6a56"
+version = "Python 3.14.6"
+origin = "Homebrew Cellar path observed; upstream provenance unverified"
+license_or_rights = "unverified locally"
+tomllib = "available"
+
+[[validator]]
+id = "system_python3"
+executable_path = "/usr/bin/python3"
+resolved_path = "/usr/bin/python3"
+executable_sha256 = "44a68ddc1983d6cff3fd35ba3f9ba5f82004216f1dcde69892b3d1b06e408698"
+version = "Python 3.9.6"
+origin = "macOS system path observed; upstream provenance unverified"
+license_or_rights = "unverified locally"
+tomllib = "unavailable"
+
+[[validator]]
+id = "jq"
+executable_path = "/usr/bin/jq"
+resolved_path = "/usr/bin/jq"
+executable_sha256 = "e52747c4a03c38fe5929bea959f206743f0bcf0b9ce941acd1bcfa8851f7ecae"
+version = "jq-1.7.1-apple"
+origin = "macOS system path and apple version suffix observed; upstream provenance unverified"
+license_or_rights = "unverified locally"
+tomllib = "not_applicable"

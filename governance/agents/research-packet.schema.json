@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://heleos.invalid/research/research-packet.schema.json",
+  "title": "PUBLIC sanitized ResearchPacket v1",
+  "description": "Proposal evidence only. Load the adjacent worker-contract.schema.json locally for shared definitions; no network resolution is needed. validate-contracts.jq additionally enforces reviewer/provider separation, citation hash membership, real calendar dates, and URL origin bounds. Valid metadata does not verify source/output bytes, quotations, rights or reviewer identity and grants no production authority. Unavailable packets retain hashes of their public case inputs and actual output bytes (the empty-byte digest when no output exists); no hash placeholder is permitted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "provider", "status", "purpose", "data_class", "source_sha256", "input_sha256", "query_or_case_id", "retrieved_at", "output_sha256", "citations", "claims", "contradictions", "gaps", "evaluation", "reviewer", "disposition", "budgets"],
+  "properties": {
+    "schema": {"const": "heleos.research-packet/v1"},
+    "provider": {"$ref": "worker-contract.schema.json#/$defs/provider"},
+    "status": {"enum": ["completed", "unavailable", "unauthenticated", "sandbox_unavailable", "failed"]},
+    "purpose": {"$ref": "worker-contract.schema.json#/$defs/prose", "description": "Bounded printable text: engineering ratios, percentages and currency are allowed; recognizable private paths, credential patterns, controls and interpolation are rejected."},
+    "data_class": {"const": "PUBLIC"},
+    "source_sha256": {"type": "array", "minItems": 1, "maxItems": 64, "items": {"$ref": "worker-contract.schema.json#/$defs/digest"}},
+    "input_sha256": {"$ref": "worker-contract.schema.json#/$defs/digest"},
+    "query_or_case_id": {"$ref": "worker-contract.schema.json#/$defs/prose", "description": "Exact sanitized printable query, or the identifier of an exact frozen public case. The shared prose grammar allows ordinary punctuation without admitting private paths or credential/interpolation shapes."},
+    "retrieved_at": {"type": "string", "minLength": 20, "maxLength": 20, "format": "date-time", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"},
+    "output_sha256": {"$ref": "worker-contract.schema.json#/$defs/digest"},
+    "citations": {
+      "type": "array", "minItems": 0, "maxItems": 64,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["url", "locator", "source_sha256"],
+        "properties": {
+          "url": {"$ref": "worker-contract.schema.json#/$defs/source_url"},
+          "locator": {"$ref": "worker-contract.schema.json#/$defs/prose"},
+          "source_sha256": {"$ref": "worker-contract.schema.json#/$defs/digest"}
+        }
+      }
+    },
+    "claims": {"$ref": "#/$defs/texts"},
+    "contradictions": {"$ref": "#/$defs/texts"},
+    "gaps": {"$ref": "#/$defs/texts"},
+    "evaluation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["boundary_passes", "capability_passes", "reason"],
+      "properties": {
+        "boundary_passes": {"type": "integer", "minimum": 0, "maximum": 3},
+        "capability_passes": {"type": "integer", "minimum": 0, "maximum": 5},
+        "reason": {"$ref": "worker-contract.schema.json#/$defs/prose"}
+      }
+    },
+    "reviewer": {"enum": ["human", "codex", "claude_code", "kimi", "grok", "cursor", "notebook_lm", "grok_bots"], "description": "Must differ from provider. The controller verifies actual independence; a string does not prove it."},
+    "disposition": {"enum": ["pending", "rejected", "research_only", "disabled"], "description": "None of these states admits production truth or grants merge, push, publish or approval authority."},
+    "budgets": {"$ref": "worker-contract.schema.json#/$defs/budgets"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"evaluation": {"properties": {"capability_passes": {"minimum": 1}}}}},
+      "then": {"properties": {"evaluation": {"properties": {"boundary_passes": {"const": 3}}}}}
+    },
+    {
+      "if": {"properties": {"status": {"const": "completed"}, "claims": {"minItems": 1}}},
+      "then": {"properties": {"citations": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"status": {"not": {"const": "completed"}}}},
+      "then": {"properties": {"claims": {"maxItems": 0}, "citations": {"maxItems": 0}, "disposition": {"enum": ["pending", "rejected", "disabled"]}, "evaluation": {"properties": {"boundary_passes": {"const": 0}, "capability_passes": {"const": 0}}}}}
+    }
+  ],
+  "$defs": {"texts": {"type": "array", "minItems": 0, "maxItems": 64, "items": {"$ref": "worker-contract.schema.json#/$defs/prose"}}}
+}

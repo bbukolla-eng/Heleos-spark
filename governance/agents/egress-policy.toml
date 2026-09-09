@@ -1,0 +1,40 @@
+# Declarative requirements only: this file is not an egress mediator or approval.
+# Default deny includes unknown classifications, providers, and missing identities.
+# PUBLIC needs exact equality to a separately owner-approved WorkerContract:
+# provider identity; purpose; complete source-byte SHA-256 set; exact HTTPS endpoint
+# allowlist; approved contract-byte SHA-256; quarantine identifier; explicit allow
+# decision. A schema-valid contract is not proof of owner approval. No wildcard,
+# inherited approval, redirect expansion, host-path submission, or blanket grant.
+# There are currently no approved contracts or authorized provider submissions.
+schema_version = 1
+status = "declarative_policy_only"
+decision = "deny_until_exact_approval"
+provider_registry_sha256 = "c415eea46d9cb9fc33e0cbca01245dc347ad46931802eee99c18838760700223"
+provider_ids = ["codex", "claude_code", "kimi", "grok", "cursor", "notebook_lm", "grok_bots"]
+public_requirements = ["provider", "purpose", "source_sha256", "endpoint_allowlist", "approved_contract_sha256", "quarantine_destination", "policy_decision"]
+approved_contracts = []
+
+[authority]
+production = false
+push = false
+merge = false
+approval = false
+credential = false
+repository_write = false
+launch = false
+
+[[rule]]
+data_class = "SECRET"
+decision = "deny"
+
+[[rule]]
+data_class = "INTERNAL"
+decision = "deny"
+
+[[rule]]
+data_class = "PROJECT_CONFIDENTIAL"
+decision = "deny"
+
+[[rule]]
+data_class = "PUBLIC"
+decision = "require_exact_approval"
