@@ -4,7 +4,7 @@ Updated: 2026-09-09. This snapshot records local integration through Task 9, a p
 
 <!-- active-build-authority:v1 -->
 ```json
-{"schema_version":1,"active_builds":[{"path":".worktrees/agent-control-foundation","branch":"build/agent-control-foundation","checkpoint":"91e859843a03bdb53911819ca8a7fdcec8cdaccb","status_file":"CURRENT_STATUS.md"}]}
+{"schema_version":1,"active_builds":[{"path":".worktrees/agent-control-foundation","branch":"build/agent-control-foundation","checkpoint":"91e859843a03bdb53911819ca8a7fdcec8cdaccb"}]}
 ```
 <!-- /active-build-authority -->
 
