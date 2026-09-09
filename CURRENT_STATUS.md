@@ -1,14 +1,14 @@
 # Current repository status
 
-Updated: 2026-09-09. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, the tested native-suite receipt candidate, the completed cross-platform agent-controller build through exact clean commit `f6f1bc82c2ba6f6a2fe552d9bd3adb5dc4e0c950`, visible-main public research and benchmark integration through `0dd2f77c8ecf722c4f1ac57e94acef7b9653a292`, the completed Foundation release-status implementation checkpoint `885f8d8c713773a29fbc27ee1f13d829d5d022a3`, and the completed GitHub App owner-decision applier checkpoint `738aca452332e4495066f9cba2e46b6aaef6f8bf`. Native-Windows launchers, GitHub App inventory, guarded-provider evidence, terminal Cursor quota evidence, and terminal Athena quarantine/adjudication remain recorded; no owner App decision, new provider benchmark run, Cursor live write, native Windows result, Foundation 0.2 start, or production-release acceptance is claimed.
+Updated: 2026-09-09. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, the tested native-suite receipt candidate, the completed cross-platform agent-controller build through exact clean commit `f6f1bc82c2ba6f6a2fe552d9bd3adb5dc4e0c950`, visible-main public research and benchmark integration through `0dd2f77c8ecf722c4f1ac57e94acef7b9653a292`, the completed Foundation release-status implementation checkpoint `885f8d8c713773a29fbc27ee1f13d829d5d022a3`, the completed GitHub App owner-decision applier checkpoint `738aca452332e4495066f9cba2e46b6aaef6f8bf`, and the completed unresolved-draft generator checkpoint `5fac3b54457d832614b837365b9c3adc7d26fcdb`. Native-Windows launchers, GitHub App inventory, guarded-provider evidence, terminal Cursor quota evidence, and terminal Athena quarantine/adjudication remain recorded; no owner App decision, new provider benchmark run, Cursor live write, native Windows result, Foundation 0.2 start, or production-release acceptance is claimed.
 
 <!-- active-build-authority:v1 -->
 ```json
-{"schema_version":1,"active_builds":[{"path":".worktrees/github-app-decision-draft-2026-09-09","branch":"build/github-app-decision-draft-2026-09-09","checkpoint":"18a3a51af89d2f7bff7364c884a99118bdddc32f"}]}
+{"schema_version":1,"active_builds":[]}
 ```
 <!-- /active-build-authority -->
 
-One unfinished local implementation branch is declared active above: the GitHub App owner-decision draft generator slice. The ignored Finder-visible path `/Users/bekim/Heleos-spark/ACTIVE_BUILD` remains a legacy pointer to the completed agent-controller worktree for inspection only; it is not recovery authority, a second source copy, or permission to resume writes there. New implementation must first register its exact path, branch, and committed checkpoint in this block.
+No unfinished local implementation branch is declared active above. The ignored Finder-visible path `/Users/bekim/Heleos-spark/ACTIVE_BUILD` remains a legacy pointer to the completed agent-controller worktree for inspection only; it is not recovery authority, a second source copy, or permission to resume writes there. New implementation must first register its exact path, branch, and committed checkpoint in this block.
 
 ## Local integration checkpoint - 2026-09-09
 
@@ -45,6 +45,14 @@ Implementation commit `738aca452332e4495066f9cba2e46b6aaef6f8bf` on `build/githu
 Controller verification passed all 35 focused cases under Python 3.14.6 and system Python 3.9.6, the complete 83-test continuity suite under both runtimes, all 89 research tests, JSON parsing, Python AST parsing, stable implementation/test hashes, and staged whitespace checks. The atomic-write suite verifies a replaced inode, unchanged unrelated files and Git state, exact rerun idempotence, unique visible-main routing, secret-safe failures, strict packet semantics, and fail-closed Git override handling.
 
 This implementation is complete and must not be recreated after compaction. The four live registry entries remain `owner_decision_required`; no decision packet was invented or applied, and no GitHub account, network, workflow, or remote Git action occurred. The authority block is empty because the code/test checkpoint is terminal. After this branch is fast-forwarded into visible local `main`, resume at the current release-status first action: obtain the owner's exact four dispositions and real decision and installation evidence, dry-run the bound packet, and apply only that evidenced local registry update.
+
+## GitHub App unresolved-draft generator checkpoint
+
+Implementation commit `5fac3b54457d832614b837365b9c3adc7d26fcdb` on `build/github-app-decision-draft-2026-09-09` adds the executable `scripts/prepare-github-app-decisions.py`, 17 black-box continuity cases, a visible tracked `OWNER_ACTION_REQUIRED` entry point, and exact operator documentation. The command prepares one ignored, private-mode JSON draft bound to the unique visible-main HEAD and committed GitHub App registry hash. It derives only the canonical App names and leaves the owner date plus seven decision/evidence fields per App as exactly 29 JSON `null` values.
+
+Controller verification passed all 17 focused cases and the complete 100-test continuity suite under Python 3.14.6 and system Python 3.9.6, all 89 research tests, Python AST parsing, JSON parsing, implementation/test hash checks, and staged whitespace checks. The race and filesystem cases verify same-directory fsync, atomic no-replace publication, private mode, exact inode cleanup, unique visible-main routing, source/destination drift rejection, and preservation of unrelated tracked and untracked state. The implementation SHA-256 is `a8a0696d15d7cafec1cb759674b0d32b9359fff96990eaa886c33e17c650171f`; its test SHA-256 is `3ebe64fe099c8293360544e8da99843db3aeeaedecda7f9590903a0e6c56f0fd`.
+
+This implementation is complete and must not be recreated after compaction. It made no owner decision, evidence determination, GitHub account, network, workflow, registry, or remote Git change and grants no release authority. The active-build authority is empty because the tested code checkpoint is terminal. After local-main integration, generate a fresh draft from the final main commit, have Bekim Bukolla supply all 29 actual values and supporting evidence, then use the existing applier dry run before any separately authorized local registry update.
 
 ## Public research and benchmark implementation checkpoint
 
