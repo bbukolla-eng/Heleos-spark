@@ -107,17 +107,19 @@ Implementation checkpoint: commit `9496ef4c7a3fc59a519b5e938fa156c0364e108c` com
 - Consumes: Task 1 egress/source-entry contract and original public sources.
 - Produces: one lane manifest; does not modify the aggregate registry.
 
-- [ ] **Step 1: Gather only primary sources**
+- [x] **Step 1: Gather only primary sources**
 
 Use official Rust language/Cargo/rustup documentation and Bytecode Alliance Wasmtime/WASI security, component, fuel, memory, epoch-interruption, filesystem-capability, and resource-limiting documentation. Prefer versioned pages that apply to the Foundation pins.
 
-- [ ] **Step 2: Record and self-check every entry**
+- [x] **Step 2: Record and self-check every entry**
 
 Each entry implements Task 1 `SourceEntryV1`. Reopen each locator and reject search-result URLs or secondary summaries for technical claims.
 
-- [ ] **Step 3: Verify and commit the lane only**
+- [x] **Step 3: Verify and commit the lane only**
 
 Run `python3 governance/agents/validate-sources.py docs/research/engineering/sources/architecture-rust-wasi.toml`. Stage only the declared manifest and commit `docs: curate architecture Rust and WASI sources`.
+
+Implementation checkpoint: commit `1962927` records 10 uncached, `reference_only` primary-source entries. Controller validation returned `CANDIDATE_METADATA_VALID` with manifest SHA-256 `0754ea4f3548a63c177ec361ec05e04e5bff97677fac8e2678b3b23c4c08294d`; two observation-date fallbacks and a WASI TCP/UDP documentation contradiction remain explicit rather than promoted.
 
 ---
 
@@ -130,17 +132,19 @@ Run `python3 governance/agents/validate-sources.py docs/research/engineering/sou
 - Consumes: Task 1 egress/source-entry contract and original public sources.
 - Produces: one lane manifest; does not modify the aggregate registry.
 
-- [ ] **Step 1: Gather only primary sources**
+- [x] **Step 1: Gather only primary sources**
 
 Use official SQLite WAL, foreign-key, online-backup, defensive/trusted-schema, locking, corruption, and durability documentation; NIST SHA-256 material; official age format/implementation guidance; and primary platform documentation for atomic publication, directory durability, and ACL semantics.
 
-- [ ] **Step 2: Record claims, platform limits, and rights**
+- [x] **Step 2: Record claims, platform limits, and rights**
 
 Implement Task 1 `SourceEntryV1`. Separate guaranteed behavior from platform/filesystem assumptions, identify contradictions around `fsync`/rename/locking, and mark any source that cannot legally be uploaded to NotebookLM.
 
-- [ ] **Step 3: Verify and commit the lane only**
+- [x] **Step 3: Verify and commit the lane only**
 
 Run `python3 governance/agents/validate-sources.py docs/research/engineering/sources/sqlite-vault-backup.toml`. Stage only the declared manifest and commit `docs: curate SQLite vault and backup sources`.
+
+Implementation checkpoint: commit `64b5858` records 23 uncached primary-source entries spanning SQLite, NIST, age, POSIX, Apple, and Microsoft. Controller validation returned `CANDIDATE_METADATA_VALID` with manifest SHA-256 `6e0ddcb8c3280ca97c5836f23b2c920920d8265c3ba2cc48a9cf48bfd5c30609`; observation-date surrogates, mutable references, upload-rights limits, and native durability or ACL gaps remain explicit.
 
 ---
 
@@ -153,17 +157,19 @@ Run `python3 governance/agents/validate-sources.py docs/research/engineering/sou
 - Consumes: Task 1 egress/source-entry contract and original public sources.
 - Produces: one lane manifest; does not modify the aggregate registry.
 
-- [ ] **Step 1: Gather authoritative public material**
+- [x] **Step 1: Gather authoritative public material**
 
 Use PDF Association or ISO-authorized public material, official lopdf upstream documentation/source for pinned behavior, OWASP untrusted-file guidance, and primary advisories for relevant parser or sandbox failure modes. Do not upload licensed PDF specifications unless the recorded rights explicitly permit it.
 
-- [ ] **Step 2: Record geometry and hostile-input claims precisely**
+- [x] **Step 2: Record geometry and hostile-input claims precisely**
 
 Implement Task 1 `SourceEntryV1`. Cover page boxes, rotation, user units, encryption, incremental updates, object/decompression limits, active content, embedded files, URI/action classes, malformed cross-reference data, and capability-sandbox boundaries. Label implementation-derived observations as experiments, not normative facts.
 
-- [ ] **Step 3: Verify and commit the lane only**
+- [x] **Step 3: Verify and commit the lane only**
 
 Run `python3 governance/agents/validate-sources.py docs/research/engineering/sources/pdf-security.toml`. Stage only the declared manifest and commit `docs: curate PDF security sources`.
+
+Implementation checkpoint: commit `b4fb739` records 11 uncached public-source entries. Controller validation returned `CANDIDATE_METADATA_VALID` with manifest SHA-256 `bf1fb15d184c43a9bdfe2eadbdd1c370a8a2c58c1f6b3740329520cf3d8540ab`; general-PDF geometry coverage, licensed profile access, and implementation-derived parser observations remain bounded as gaps or experiments.
 
 ---
 
@@ -176,17 +182,19 @@ Run `python3 governance/agents/validate-sources.py docs/research/engineering/sou
 - Consumes: Task 1 egress/source-entry contract and original public sources.
 - Produces: one lane manifest; does not modify the aggregate registry.
 
-- [ ] **Step 1: Gather authoritative domain sources**
+- [x] **Step 1: Gather authoritative domain sources**
 
 Use public authoritative ASHRAE, SMACNA, federal/model-code, manufacturer, and Division 23 materials whose rights permit the intended reference or notebook use. Record jurisdiction, edition, effective date, equipment class, units, and whether a claim is normative, advisory, or manufacturer-specific.
 
-- [ ] **Step 2: Bound what the sources can support**
+- [x] **Step 2: Bound what the sources can support**
 
 Implement Task 1 `SourceEntryV1`. Identify licensed/paywalled gaps without bypassing them. Reject generic web summaries for sizing, compliance, safety, installation, or commissioning claims.
 
-- [ ] **Step 3: Verify and commit the lane only**
+- [x] **Step 3: Verify and commit the lane only**
 
 Run `python3 governance/agents/validate-sources.py docs/research/engineering/sources/hvac-division23.toml`. Stage only the declared manifest and commit `docs: curate HVAC Division 23 sources`.
+
+Implementation checkpoint: commit `09f12cf` records 10 uncached official-source entries spanning UFGS, ICC, ASHRAE, SMACNA, Carrier, and Greenheck. Controller validation returned `CANDIDATE_METADATA_VALID` with manifest SHA-256 `fc258578a17204899bcfcfe829552f577c2d869ac71daa9d208b11248851f9cd`; jurisdiction, project-tailoring, licensed-text, and manufacturer-specific limits remain explicit and no source has production authority.
 
 ---
 
