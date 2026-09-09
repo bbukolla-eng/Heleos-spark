@@ -468,6 +468,142 @@ fn verify_repository(root: &Path, source: &Source) -> Result<BTreeMap<String, St
     Ok(report)
 }
 
+fn substantive_github_app_value(value: &str) -> bool {
+    let normalized = value
+        .to_ascii_lowercase()
+        .replace(['-', '_'], " ")
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ");
+    !normalized.is_empty()
+        && ![
+            "pending",
+            "unknown",
+            "not inventoried",
+            "not evaluated",
+            "tbd",
+            "unversioned",
+            "latest",
+            "owner decision required",
+            "unavailable",
+        ]
+        .iter()
+        .any(|placeholder| {
+            normalized.strip_prefix(placeholder).is_some_and(|rest| {
+                rest.is_empty() || rest.starts_with(|c: char| !c.is_ascii_alphanumeric())
+            })
+        })
+}
+
+fn valid_github_app_decision_date(date: &str) -> bool {
+    let bytes = date.as_bytes();
+    if bytes.len() != 10
+        || bytes[4] != b'-'
+        || bytes[7] != b'-'
+        || !bytes
+            .iter()
+            .enumerate()
+            .all(|(index, byte)| index == 4 || index == 7 || byte.is_ascii_digit())
+    {
+        return false;
+    }
+    let number = |part: &[u8]| {
+        part.iter()
+            .fold(0_u32, |value, byte| value * 10 + u32::from(byte - b'0'))
+    };
+    let year = number(&bytes[..4]);
+    let month = number(&bytes[5..7]);
+    let day = number(&bytes[8..]);
+    let leap = year.is_multiple_of(4) && (!year.is_multiple_of(100) || year.is_multiple_of(400));
+    let days = match month {
+        1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
+        4 | 6 | 9 | 11 => 30,
+        2 if leap => 29,
+        2 => 28,
+        _ => return false,
+    };
+    year > 0 && day > 0 && day <= days
+}
+
+fn verify_github_app(fields: &BTreeMap<String, String>) -> Result<()> {
+    let disposition = fields
+        .get("disposition")
+        .map(String::as_str)
+        .ok_or("missing GitHub App disposition")?;
+    let inactive = match disposition {
+        "owner_decision_required" | "suspend" | "remove" => true,
+        "retain" | "restrict" => false,
+        _ => return Err("unrecognized GitHub App authority".into()),
+    };
+    let egress = fields.get("egress").ok_or("missing GitHub App egress")?;
+    ensure(
+        egress.starts_with("prohibited")
+            || (!inactive
+                && egress
+                    .strip_prefix("approved:")
+                    .is_some_and(substantive_github_app_value)),
+        "GitHub App egress does not match its disposition",
+    )?;
+    if disposition == "owner_decision_required" {
+        return Ok(());
+    }
+    for key in [
+        "version_or_digest",
+        "permissions",
+        "evaluation",
+        "decision_owner",
+        "decision_evidence",
+        "installation_evidence",
+    ] {
+        let value = fields
+            .get(key)
+            .ok_or("missing GitHub App decision evidence")?;
+        // Disabled/removed installations may make runtime or grant inventory
+        // unavailable, but require an explicit reason and installation evidence.
+        let unavailable = inactive
+            && matches!(key, "version_or_digest" | "permissions")
+            && value
+                .strip_prefix("unavailable:")
+                .is_some_and(substantive_github_app_value);
+        ensure(
+            unavailable || substantive_github_app_value(value),
+            format!("placeholder GitHub App {key}"),
+        )?;
+        if !unavailable && matches!(key, "version_or_digest" | "permissions" | "evaluation") {
+            let normalized = value.to_ascii_lowercase();
+            let words = normalized
+                .split(|character: char| !character.is_ascii_alphanumeric())
+                .filter(|word| !word.is_empty())
+                .collect::<Vec<_>>();
+            ensure(
+                !words
+                    .iter()
+                    .any(|word| ["unknown", "unavailable", "pending", "unresolved"].contains(word))
+                    && !words
+                        .windows(2)
+                        .any(|pair| pair == ["not", "inventoried"] || pair == ["not", "evaluated"]),
+                format!("unresolved GitHub App {key}"),
+            )?;
+        }
+        if key == "version_or_digest" && !unavailable {
+            let normalized = value.trim().to_ascii_lowercase().replace(['-', '_'], " ");
+            ensure(
+                !normalized.bytes().all(|byte| byte.is_ascii_digit())
+                    && !["app id", "github app id", "installation"]
+                        .iter()
+                        .any(|prefix| normalized.starts_with(prefix)),
+                "GitHub App identity is not version or digest evidence",
+            )?;
+        }
+    }
+    ensure(
+        fields
+            .get("decision_date")
+            .is_some_and(|date| valid_github_app_decision_date(date)),
+        "GitHub App decision date must be a valid YYYY-MM-DD date",
+    )
+}
+
 fn verify_governance(text: &str, kind: &str) -> Result<usize> {
     // This parser accepts the registry's deliberately constrained top-level
     // string record format, not arbitrary TOML. Full file bytes are also bound
@@ -486,6 +622,7 @@ fn verify_governance(text: &str, kind: &str) -> Result<usize> {
     ];
     let marker = format!("[[{kind}]]");
     let mut records = 0;
+    let mut app_names = BTreeSet::new();
     let mut fields = BTreeMap::<String, String>::new();
     let mut active = false;
     let mut array_depth = 0_i32;
@@ -520,16 +657,11 @@ fn verify_governance(text: &str, kind: &str) -> Result<usize> {
                 )?;
                 if kind == "github_app" {
                     ensure(
-                        fields.get("disposition").map(String::as_str)
-                            == Some("owner_decision_required"),
-                        "unrecognized GitHub App authority",
+                        app_names
+                            .insert(fields.get("name").ok_or("missing GitHub App name")?.clone()),
+                        "duplicate GitHub App name",
                     )?;
-                    ensure(
-                        fields
-                            .get("egress")
-                            .is_some_and(|s| s.starts_with("prohibited")),
-                        "GitHub App egress is not disabled",
-                    )?;
+                    verify_github_app(&fields)?;
                 } else {
                     let version = fields
                         .get("version_or_digest")
@@ -587,6 +719,19 @@ fn verify_governance(text: &str, kind: &str) -> Result<usize> {
         records > 0 || kind == "source",
         "empty required governance registry",
     )?;
+    if kind == "github_app" {
+        for name in [
+            "Azure Pipelines",
+            "AWS Connector for GitHub",
+            "Amazon Q Developer",
+            "ECC Tools",
+        ] {
+            ensure(
+                app_names.contains(name),
+                format!("missing required GitHub App {name}"),
+            )?;
+        }
+    }
     Ok(records)
 }
 
@@ -4024,6 +4169,384 @@ mod sbom {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn github_app_record(name: &str, disposition: &str) -> String {
+        format!(
+            "[[github_app]]\n\
+             name = \"{name}\"\n\
+             origin = \"account installation inventory\"\n\
+             version_or_digest = \"service-release-2026.09.1\"\n\
+             license_or_rights = \"reviewed service terms\"\n\
+             data_class = \"PROJECT_CONFIDENTIAL\"\n\
+             owner = \"repository owner\"\n\
+             permissions = \"metadata:read\"\n\
+             egress = \"prohibited by owner decision\"\n\
+             evaluation = \"reviewed against repository policy\"\n\
+             rollback = \"owner removes installation\"\n\
+             disposition = \"{disposition}\"\n\
+             decision_owner = \"repository owner\"\n\
+             decision_date = \"2026-09-09\"\n\
+             decision_evidence = \"evidence/owner-decision-123.md\"\n\
+             installation_evidence = \"evidence/installation-123.json\"\n"
+        )
+    }
+
+    fn github_app_fixture(disposition: &str) -> String {
+        [
+            "Azure Pipelines",
+            "AWS Connector for GitHub",
+            "Amazon Q Developer",
+            "ECC Tools",
+        ]
+        .map(|name| github_app_record(name, disposition))
+        .concat()
+    }
+
+    fn replace_app_field(registry: &str, key: &str, value: Option<&str>) -> String {
+        let prefix = format!("{key} = ");
+        let line = registry
+            .lines()
+            .find(|line| line.starts_with(&prefix))
+            .unwrap();
+        let replacement = value.map_or_else(String::new, |value| format!("{key} = \"{value}\""));
+        registry.replacen(line, &replacement, 1)
+    }
+
+    #[test]
+    fn github_apps_accept_pending_and_each_evidenced_owner_disposition() {
+        for disposition in [
+            "owner_decision_required",
+            "retain",
+            "restrict",
+            "suspend",
+            "remove",
+        ] {
+            let registry = github_app_fixture(disposition);
+            assert_eq!(
+                verify_governance(&registry, "github_app").unwrap(),
+                4,
+                "{disposition}"
+            );
+        }
+        let pending = include_str!("../../../../governance/github-apps.toml");
+        assert_eq!(verify_governance(pending, "github_app").unwrap(), 4);
+    }
+
+    #[test]
+    fn github_apps_require_every_exact_case_sensitive_identity() {
+        let registry = github_app_fixture("owner_decision_required");
+        for name in [
+            "Azure Pipelines",
+            "AWS Connector for GitHub",
+            "Amazon Q Developer",
+            "ECC Tools",
+        ] {
+            let missing = registry.replace(&github_app_record(name, "owner_decision_required"), "");
+            assert!(
+                verify_governance(&missing, "github_app").is_err(),
+                "missing {name}"
+            );
+            let renamed = registry.replace(
+                &format!("name = \"{name}\""),
+                &format!("name = \"{}\"", name.to_lowercase()),
+            );
+            assert!(
+                verify_governance(&renamed, "github_app").is_err(),
+                "case changed {name}"
+            );
+        }
+    }
+
+    #[test]
+    fn github_apps_reject_duplicates_and_allow_additional_governed_apps() {
+        let registry = github_app_fixture("owner_decision_required");
+        for name in [
+            "Azure Pipelines",
+            "AWS Connector for GitHub",
+            "Amazon Q Developer",
+            "ECC Tools",
+        ] {
+            let duplicate = format!(
+                "{registry}{}",
+                github_app_record(name, "owner_decision_required")
+            );
+            assert!(
+                verify_governance(&duplicate, "github_app").is_err(),
+                "duplicate {name}"
+            );
+        }
+        let additional = format!(
+            "{registry}{}",
+            github_app_record("Additional governed app", "retain")
+        );
+        assert_eq!(verify_governance(&additional, "github_app").unwrap(), 5);
+        let duplicate_extra = format!(
+            "{additional}{}",
+            github_app_record("Additional governed app", "retain")
+        );
+        assert!(verify_governance(&duplicate_extra, "github_app").is_err());
+    }
+
+    #[test]
+    fn github_apps_reject_missing_resolved_inventory_and_decision_fields() {
+        for disposition in ["retain", "restrict", "suspend", "remove"] {
+            let registry = github_app_fixture(disposition);
+            assert!(verify_governance(&registry, "github_app").is_ok());
+            for key in [
+                "version_or_digest",
+                "permissions",
+                "evaluation",
+                "decision_owner",
+                "decision_date",
+                "decision_evidence",
+                "installation_evidence",
+            ] {
+                let missing = replace_app_field(&registry, key, None);
+                assert!(
+                    verify_governance(&missing, "github_app").is_err(),
+                    "{disposition}: missing {key}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn github_apps_reject_placeholder_resolved_inventory_and_evidence() {
+        for disposition in ["retain", "restrict", "suspend", "remove"] {
+            let registry = github_app_fixture(disposition);
+            assert!(verify_governance(&registry, "github_app").is_ok());
+            for key in [
+                "version_or_digest",
+                "permissions",
+                "evaluation",
+                "decision_owner",
+                "decision_evidence",
+                "installation_evidence",
+            ] {
+                for value in [
+                    "",
+                    "  ",
+                    "pending",
+                    "Pending owner decision",
+                    "unknown",
+                    " UNKNOWN ",
+                    "not inventoried",
+                    "not-inventoried",
+                    "not inventoried; no repository use authorized",
+                    "not evaluated",
+                    "tbd",
+                    "unversioned",
+                    "latest",
+                    "owner_decision_required",
+                ] {
+                    let placeholder = replace_app_field(&registry, key, Some(value));
+                    assert!(
+                        verify_governance(&placeholder, "github_app").is_err(),
+                        "{disposition}: {key}={value:?}"
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn github_apps_require_exact_valid_decision_dates() {
+        let registry = github_app_fixture("retain");
+        assert!(verify_governance(&registry, "github_app").is_ok());
+        for date in [
+            "",
+            "pending",
+            "2026-9-09",
+            "2026-09-9",
+            "2026/09/09",
+            "2026-09-09T00:00:00Z",
+            " 2026-09-09",
+            "2026-09-09 ",
+            "2026-00-09",
+            "2026-13-09",
+            "2026-09-00",
+            "2026-09-31",
+            "2026-02-29",
+            "1900-02-29",
+            "0000-01-01",
+            "２０２６-09-09",
+        ] {
+            let invalid = replace_app_field(&registry, "decision_date", Some(date));
+            assert!(
+                verify_governance(&invalid, "github_app").is_err(),
+                "date {date:?}"
+            );
+        }
+        for date in ["2024-02-29", "2000-02-29", "2026-12-31"] {
+            let valid = replace_app_field(&registry, "decision_date", Some(date));
+            assert!(
+                verify_governance(&valid, "github_app").is_ok(),
+                "date {date:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn github_apps_allow_explicit_unavailability_only_when_suspended_or_removed() {
+        for disposition in ["retain", "restrict", "suspend", "remove"] {
+            let registry = github_app_fixture(disposition);
+            assert!(verify_governance(&registry, "github_app").is_ok());
+            for key in ["version_or_digest", "permissions"] {
+                let unavailable = replace_app_field(
+                    &registry,
+                    key,
+                    Some(
+                        "unavailable: installation disabled or removed; see installation evidence",
+                    ),
+                );
+                assert_eq!(
+                    verify_governance(&unavailable, "github_app").is_ok(),
+                    matches!(disposition, "suspend" | "remove"),
+                    "{disposition}: {key}"
+                );
+                for placeholder in [
+                    "unavailable",
+                    "unavailable:",
+                    "unavailable: pending",
+                    "unavailable: unknown",
+                ] {
+                    let invalid = replace_app_field(&registry, key, Some(placeholder));
+                    assert!(
+                        verify_governance(&invalid, "github_app").is_err(),
+                        "{disposition}: {key}={placeholder}"
+                    );
+                }
+            }
+            for key in [
+                "evaluation",
+                "decision_owner",
+                "decision_evidence",
+                "installation_evidence",
+            ] {
+                let invalid =
+                    replace_app_field(&registry, key, Some("unavailable: installation removed"));
+                assert!(
+                    verify_governance(&invalid, "github_app").is_err(),
+                    "{disposition}: {key}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn github_apps_do_not_accept_installation_or_app_ids_as_versions() {
+        let registry = github_app_fixture("retain");
+        assert!(verify_governance(&registry, "github_app").is_ok());
+        for value in [
+            "123456",
+            "app-id: 123456",
+            "GitHub App ID 123456",
+            "installation-id: 123456",
+            "installation-123456",
+        ] {
+            let invalid = replace_app_field(&registry, "version_or_digest", Some(value));
+            assert!(
+                verify_governance(&invalid, "github_app").is_err(),
+                "version {value:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn github_apps_do_not_promote_unresolved_public_inventory_to_owner_resolution() {
+        for disposition in ["retain", "restrict", "suspend", "remove"] {
+            let registry = github_app_fixture(disposition);
+            assert!(verify_governance(&registry, "github_app").is_ok());
+            for (key, value) in [
+                (
+                    "version_or_digest",
+                    "provider runtime version/digest unavailable from public GitHub metadata; public app id=9426",
+                ),
+                (
+                    "permissions",
+                    "public application-declared: metadata=read; actual installation grants, repository selection, and suspension unknown",
+                ),
+                (
+                    "evaluation",
+                    "public metadata observed; owner disposition unresolved",
+                ),
+                (
+                    "permissions",
+                    "application declares metadata=read; installation grants not-inventoried",
+                ),
+                (
+                    "evaluation",
+                    "public app reviewed; installation pending evaluation",
+                ),
+            ] {
+                let invalid = replace_app_field(&registry, key, Some(value));
+                assert!(
+                    verify_governance(&invalid, "github_app").is_err(),
+                    "{disposition}: {key}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn github_apps_require_disposition_specific_egress_policy() {
+        for disposition in [
+            "owner_decision_required",
+            "retain",
+            "restrict",
+            "suspend",
+            "remove",
+        ] {
+            let registry = github_app_fixture(disposition);
+            assert!(verify_governance(&registry, "github_app").is_ok());
+            for policy in [
+                "",
+                "pending",
+                "unknown",
+                "unrestricted",
+                "Approved: metadata only",
+                "approved:",
+                "approved: pending",
+            ] {
+                let invalid = replace_app_field(&registry, "egress", Some(policy));
+                assert!(
+                    verify_governance(&invalid, "github_app").is_err(),
+                    "{disposition}: {policy:?}"
+                );
+            }
+            let approved = replace_app_field(
+                &registry,
+                "egress",
+                Some("approved: repository metadata to service endpoint only"),
+            );
+            assert_eq!(
+                verify_governance(&approved, "github_app").is_ok(),
+                matches!(disposition, "retain" | "restrict"),
+                "{disposition}"
+            );
+        }
+    }
+
+    #[test]
+    fn github_apps_reject_missing_unknown_or_case_changed_dispositions() {
+        let registry = github_app_fixture("owner_decision_required");
+        for disposition in [
+            None,
+            Some(""),
+            Some("approved"),
+            Some("Retain"),
+            Some("Restrict"),
+            Some("Suspend"),
+            Some("Remove"),
+            Some("OWNER_DECISION_REQUIRED"),
+        ] {
+            let invalid = replace_app_field(&registry, "disposition", disposition);
+            assert!(
+                verify_governance(&invalid, "github_app").is_err(),
+                "{disposition:?}"
+            );
+        }
+    }
 
     #[test]
     fn governance_requires_each_authority_field() {
