@@ -21,6 +21,99 @@ function Invoke-SupplyChain {
     if ($LASTEXITCODE -ne 0) { Stop-SupplyChain "command failed: $Executable (exit $LASTEXITCODE)" }
 }
 
+function Assert-CleanCandidate {
+    if (@(Invoke-SupplyChain 'git' @('status', '--porcelain=v1', '--untracked-files=all', '--ignore-submodules=none')).Count -ne 0) {
+        Stop-SupplyChain 'native-suite candidate must have no tracked or untracked nonignored changes'
+    }
+    # Status alone cannot bind ignored files or raw bytes hidden by Git filters
+    # or index flags. Each critical input must exist as an exact HEAD blob.
+    foreach ($taskInputPath in @('tests/verification/src/bin/verify-provenance.rs',
+        'tests/verification/tests/native_suite_receipt.rs', 'scripts/verify-supply-chain.ps1', 'governance/tools.toml')) {
+        $taskHeadBlob = Invoke-SupplyChain 'git' @('rev-parse', '--verify', "HEAD:$taskInputPath")
+        if ((Invoke-SupplyChain 'git' @('cat-file', '-t', $taskHeadBlob)) -cne 'blob') {
+            Stop-SupplyChain "native-suite candidate input is not a HEAD blob: $taskInputPath"
+        }
+        if ((Invoke-SupplyChain 'git' @('hash-object', '--no-filters', $taskInputPath)) -cne $taskHeadBlob) {
+            Stop-SupplyChain "native-suite candidate raw input differs from HEAD: $taskInputPath"
+        }
+    }
+}
+
+function Invoke-NativeTranscript {
+    param([string[]] $Argv, [string] $Path)
+    # Drain both pipes concurrently without PowerShell's native stderr/error
+    # conversion. Keep UTF-8/LF stream files and compose stdout then stderr so
+    # pipe scheduling cannot change the transcript's cross-stream ordering.
+    $taskProcess = [Diagnostics.Process]::new()
+    $taskProcess.StartInfo.FileName = @(Get-Command $Argv[0] -CommandType Application)[0].Source
+    $taskProcess.StartInfo.WorkingDirectory = $taskRoot
+    $taskProcess.StartInfo.UseShellExecute = $false
+    $taskProcess.StartInfo.RedirectStandardOutput = $true
+    $taskProcess.StartInfo.RedirectStandardError = $true
+    $taskProcess.StartInfo.StandardOutputEncoding = [Text.UTF8Encoding]::new($false, $true)
+    $taskProcess.StartInfo.StandardErrorEncoding = [Text.UTF8Encoding]::new($false, $true)
+    foreach ($taskArgument in $Argv[1..($Argv.Count - 1)]) {
+        $taskProcess.StartInfo.ArgumentList.Add($taskArgument)
+    }
+    $taskWriters = @()
+    $taskStarted = $false
+    try {
+        foreach ($taskSuffix in @('.stdout', '.stderr')) {
+            $taskFile = [IO.File]::Open($Path + $taskSuffix, [IO.FileMode]::CreateNew, [IO.FileAccess]::Write)
+            $taskWriter = [IO.StreamWriter]::new($taskFile, [Text.UTF8Encoding]::new($false))
+            $taskWriter.NewLine = "`n"
+            $taskWriter.AutoFlush = $true
+            $taskWriters += $taskWriter
+        }
+        Write-Host ('Native suite command: ' + ($Argv -join ' '))
+        if (-not $taskProcess.Start()) { Stop-SupplyChain 'native suite process did not start' }
+        $taskStarted = $true
+        $taskReaders = @($taskProcess.StandardOutput, $taskProcess.StandardError)
+        $taskReads = @($taskReaders[0].ReadLineAsync(), $taskReaders[1].ReadLineAsync())
+        while ($null -ne $taskReads[0] -or $null -ne $taskReads[1]) {
+            for ($taskStream = 0; $taskStream -lt 2; $taskStream++) {
+                if ($null -eq $taskReads[$taskStream] -or -not $taskReads[$taskStream].IsCompleted) { continue }
+                $taskLine = $taskReads[$taskStream].GetAwaiter().GetResult()
+                if ($null -eq $taskLine) { $taskReads[$taskStream] = $null; continue }
+                $taskWriters[$taskStream].WriteLine($taskLine)
+                Write-Host $taskLine
+                $taskReads[$taskStream] = $taskReaders[$taskStream].ReadLineAsync()
+            }
+            $taskPending = [Threading.Tasks.Task[]] @($taskReads | Where-Object { $null -ne $_ })
+            if ($taskPending.Count -gt 0) {
+                $null = [Threading.Tasks.Task]::WhenAny($taskPending).GetAwaiter().GetResult()
+            }
+        }
+        $taskProcess.WaitForExit()
+        $taskExitCode = $taskProcess.ExitCode
+        foreach ($taskWriter in $taskWriters) { $taskWriter.Dispose() }
+        $taskWriters = @()
+        $taskTranscript = [IO.File]::Open($Path, [IO.FileMode]::CreateNew, [IO.FileAccess]::Write)
+        try {
+            foreach ($taskSuffix in @('.stdout', '.stderr')) {
+                $taskInput = [IO.File]::OpenRead($Path + $taskSuffix)
+                try { $taskInput.CopyTo($taskTranscript) }
+                finally { $taskInput.Dispose() }
+            }
+        }
+        finally { $taskTranscript.Dispose() }
+        return $taskExitCode
+    }
+    finally {
+        foreach ($taskWriter in $taskWriters) { $taskWriter.Dispose() }
+        if ($taskStarted -and -not $taskProcess.HasExited) {
+            $taskProcess.Kill($true)
+            $taskProcess.WaitForExit()
+        }
+        $taskProcess.Dispose()
+    }
+}
+
+function Save-NativeManifest {
+    $taskManifestJson = ConvertTo-Json -InputObject $taskNativeManifest -Depth 8 -Compress
+    [IO.File]::WriteAllText($taskNativeManifestPath, $taskManifestJson + "`n", [Text.UTF8Encoding]::new($false))
+}
+
 function Get-TextSha256([string] $Text) {
     $taskHasher = [Security.Cryptography.SHA256]::Create()
     try { return [BitConverter]::ToString($taskHasher.ComputeHash([Text.Encoding]::UTF8.GetBytes($Text))).Replace('-', '').ToLowerInvariant() }
@@ -29,7 +122,7 @@ function Get-TextSha256([string] $Text) {
 
 function Assert-Sources {
     Invoke-SupplyChain 'git' (@('diff', '--no-ext-diff', '--no-textconv', '--quiet', $taskBase, '--') + $taskSourcePaths + $taskExclusions)
-    if (@(Invoke-SupplyChain 'git' (@('ls-files', '--others', '--') + $taskSourcePaths)).Count -ne 0) {
+    if (@(Invoke-SupplyChain 'git' (@('ls-files', '--others', '--') + $taskSourcePaths + ":(exclude,literal)$taskNativeSuitePath")).Count -ne 0) {
         Stop-SupplyChain 'unrecorded source or guest file'
     }
     foreach ($taskPath in $taskPaths) {
@@ -39,6 +132,11 @@ function Assert-Sources {
         while ($null -ne $taskItem -and $taskItem.FullName -ine $taskRoot) {
             if ($taskItem.Attributes -band [IO.FileAttributes]::ReparsePoint) { Stop-SupplyChain 'indirect governed source path' }
             $taskItem = if ($taskItem -is [IO.DirectoryInfo]) { $taskItem.Parent } else { $taskItem.Directory }
+        }
+        # This exact admitted addition has no blob in the historical baseline.
+        if ($taskPath -ceq $taskNativeSuitePath) {
+            Assert-Hash (Join-Path $taskRoot $taskPath) $taskNativeSuiteSha256
+            continue
         }
         $taskHash = Invoke-SupplyChain 'git' @('hash-object', '--no-filters', $taskPath)
         $taskExpected = Invoke-SupplyChain 'git' @('rev-parse', "${taskBase}:$taskPath")
@@ -106,6 +204,7 @@ function Assert-DependencyBoundary {
 # evaluate registry contents or silently take the first of duplicate fields.
 function Get-Admission([string] $Tool, [string] $Key) {
     $taskValues = @()
+    $taskRecordCount = 0
     $taskMultiline = $false
     $taskSelected = $false
     foreach ($taskLine in [IO.File]::ReadAllLines((Join-Path $taskRoot 'governance/tools.toml'))) {
@@ -116,7 +215,10 @@ function Get-Admission([string] $Tool, [string] $Key) {
             continue
         }
         if (-not $taskMultiline -and $taskLine -ceq '[[tool]]') { $taskSelected = $false }
-        if (-not $taskMultiline -and $taskLine -cmatch '^name = "([^"]+)"$') { $taskSelected = $Matches[1] -ceq $Tool }
+        if (-not $taskMultiline -and $taskLine -cmatch '^name = "([^"]+)"$') {
+            $taskSelected = $Matches[1] -ceq $Tool
+            if ($taskSelected) { $taskRecordCount++ }
+        }
         if (-not $taskMultiline -and $taskSelected -and $taskLine -match ('^\s*' + [regex]::Escape($Key) + '\s*=')) {
             if ($taskLine -notmatch ('^\s*' + [regex]::Escape($Key) + '\s*=\s*"([A-Za-z0-9_.:+/-]+)"$')) {
                 Stop-SupplyChain "noncanonical admission: $Key"
@@ -125,6 +227,9 @@ function Get-Admission([string] $Tool, [string] $Key) {
         }
     }
     if ($taskMultiline -or $taskValues.Count -ne 1) { Stop-SupplyChain "missing or ambiguous admission: $Tool.$Key" }
+    if ($Tool -ceq 'heleos-foundation-verifier' -and $taskRecordCount -ne 1) {
+        Stop-SupplyChain 'missing or ambiguous heleos-foundation-verifier record'
+    }
     return $taskValues[0]
 }
 
@@ -327,22 +432,29 @@ try {
     $taskSourcePaths = @('Cargo.toml', 'Cargo.lock', 'rust-toolchain.toml', 'crates', 'tests/verification',
         'artifacts/pdf-guest', 'scripts/verify-provenance', 'scripts/verify-foundation', 'scripts/verify-foundation.ps1')
     $taskDeltaPaths = @('Cargo.lock', 'tests/verification/Cargo.toml', 'tests/verification/src/bin/verify-provenance.rs')
+    $taskNativeSuitePath = 'tests/verification/tests/native_suite_receipt.rs'
     $taskPackagingPaths = @('crates/heleos-cli/Cargo.toml', 'crates/heleos-core/Cargo.toml',
         'crates/heleos-platform-fs/Cargo.toml')
     $taskAuditPackagingPaths = @('crates/heleos-pdf-guest/Cargo.toml', 'crates/heleos-pdf-protocol/Cargo.toml',
         'crates/heleos-test-fixtures/Cargo.toml')
-    $taskExclusions = @($taskDeltaPaths + $taskPackagingPaths | ForEach-Object { ":(exclude,literal)$_" })
+    $taskExclusions = @($taskDeltaPaths + $taskPackagingPaths + $taskNativeSuitePath | ForEach-Object { ":(exclude,literal)$_" })
     $taskPaths = @(Invoke-SupplyChain 'git' (@('ls-tree', '-r', '--name-only', $taskBase, '--') + $taskSourcePaths))
     if ($taskPaths.Count -eq 0) { Stop-SupplyChain 'empty governed source inventory' }
+    $taskPaths += $taskNativeSuitePath
     $taskDeltaHashes = @{}
-    Assert-Sources
-    Assert-DependencyBoundary
     # The original registry uses LF UTF-8; the new records may only append.
     $taskPriorGovernance = (Invoke-SupplyChain 'git' @('show', "${taskBase}:governance/tools.toml")) -join "`n"
     $taskPriorGovernance += "`n"
     if (-not [IO.File]::ReadAllText((Join-Path $taskRoot 'governance/tools.toml')).StartsWith($taskPriorGovernance, [StringComparison]::Ordinal)) {
         Stop-SupplyChain 'historical governance was changed; Task 10 admissions must be append-only'
     }
+    $taskVerifierSha256 = Get-Admission 'heleos-foundation-verifier' 'source_sha256'
+    $taskNativeSuiteSha256 = Get-Admission 'heleos-foundation-verifier' 'native_suite_test_sha256'
+    $taskWindowsGateSha256 = Get-Admission 'heleos-foundation-verifier' 'windows_gate_sha256'
+    Assert-Hash $PSCommandPath $taskWindowsGateSha256
+    Assert-Hash 'tests/verification/src/bin/verify-provenance.rs' $taskVerifierSha256
+    Assert-Sources
+    Assert-DependencyBoundary
     foreach ($taskConfig in @('.gitleaks.toml', '.gitleaksignore', '.cargo/audit.toml', '.cargo/config', '.cargo/config.toml', '.deny.toml', '.cargo/deny.toml', 'deny.exceptions.toml')) {
         if (Test-Path -LiteralPath $taskConfig) { Stop-SupplyChain "unadmitted security-tool override: $taskConfig" }
     }
@@ -355,7 +467,6 @@ try {
     }
     if ((Invoke-SupplyChain 'gitleaks' @('version')) -cne '8.30.1') { Stop-SupplyChain 'gitleaks version drift' }
     $taskPolicySha256 = Get-Admission 'cargo-deny' 'policy_sha256'
-    $taskVerifierSha256 = Get-Admission 'cargo-cyclonedx' 'semantic_verifier_sha256'
     Assert-Hash 'deny.toml' $taskPolicySha256
     Assert-Hash 'tests/verification/src/bin/verify-provenance.rs' $taskVerifierSha256
     $taskSbomSha256 = Get-Admission 'cargo-cyclonedx' 'generated_sbom_sha256'
@@ -438,17 +549,72 @@ try {
     Invoke-SupplyChain 'cargo' @('+1.96.1', 'build', '--frozen', '-p', 'heleos-cli', '--bin', 'heleos')
     # The helper-library suite includes the frozen five-symbol metadata/source
     # contract and one local unsafe publication-call audit, as on macOS.
-    foreach ($taskTest in @(
-        @('-p', 'heleos-core', '--test', 'backup_restore'),
-        @('-p', 'heleos-core', '--lib', 'store::tests'),
-        @('-p', 'heleos-core', '--lib', 'backup::tests'),
-        @('-p', 'heleos-platform-fs', '--lib'),
-        @('-p', 'heleos-cli', '--bin', 'heleos'),
-        @('-p', 'heleos-cli', '--test', 'cli'),
-        @('--workspace', '--all-targets', '--all-features')
-    )) {
-        Invoke-SupplyChain 'cargo' (@('+1.96.1', 'test', '--frozen') + $taskTest)
+    Assert-CleanCandidate
+    $taskNativeCandidate = Invoke-SupplyChain 'git' @('rev-parse', 'HEAD')
+    if ($taskNativeCandidate -cnotmatch '^[a-f0-9]{40}$') { Stop-SupplyChain 'invalid native-suite candidate HEAD' }
+    $taskNativeCases = @(
+        @{ Id = 'core-backup-restore'; Selectors = @('-p', 'heleos-core', '--test', 'backup_restore') },
+        @{ Id = 'core-store'; Selectors = @('-p', 'heleos-core', '--lib', 'store::tests') },
+        @{ Id = 'core-backup'; Selectors = @('-p', 'heleos-core', '--lib', 'backup::tests') },
+        @{ Id = 'platform-fs'; Selectors = @('-p', 'heleos-platform-fs', '--lib') },
+        @{ Id = 'cli-unit'; Selectors = @('-p', 'heleos-cli', '--bin', 'heleos') },
+        @{ Id = 'cli-integration'; Selectors = @('-p', 'heleos-cli', '--test', 'cli') },
+        @{ Id = 'workspace-all'; Selectors = @('--workspace', '--all-targets', '--all-features') }
+    )
+    $taskNativeSuites = @(
+        foreach ($taskCase in $taskNativeCases) {
+            $taskRunArgv = @('cargo', '+1.96.1', 'test', '--frozen') + $taskCase.Selectors
+            [ordered]@{
+                id = $taskCase.Id
+                run_argv = $taskRunArgv
+                list_argv = $taskRunArgv + @('--', '--list')
+                list_exit_code = $null
+                run_exit_code = $null
+                list_path = $taskCase.Id + '.list.txt'
+                run_path = $taskCase.Id + '.run.txt'
+            }
+        }
+    )
+    $taskNativeManifest = [ordered]@{
+        schema = 'heleos.native-suite-transcripts/v1'
+        candidate_sha = $taskNativeCandidate
+        platform = 'windows-x86_64'
+        filesystem = 'NTFS'
+        suites = $taskNativeSuites
     }
+    $taskNativeManifestPath = Join-Path $taskEvidence 'native-suite-manifest.json'
+    Save-NativeManifest
+    Write-Output ('Native suite evidence retained under ' + $taskEvidence)
+    foreach ($taskSuite in $taskNativeSuites) {
+        $taskSuite.list_exit_code = Invoke-NativeTranscript $taskSuite.list_argv (Join-Path $taskEvidence $taskSuite.list_path)
+        Save-NativeManifest
+        if ($taskSuite.list_exit_code -ne 0) { Stop-SupplyChain ("native suite listing failed: " + $taskSuite.id + " (exit " + $taskSuite.list_exit_code + ")") }
+        $taskSuite.run_exit_code = Invoke-NativeTranscript $taskSuite.run_argv (Join-Path $taskEvidence $taskSuite.run_path)
+        Save-NativeManifest
+        if ($taskSuite.run_exit_code -ne 0) { Stop-SupplyChain ("native suite execution failed: " + $taskSuite.id + " (exit " + $taskSuite.run_exit_code + ")") }
+    }
+    Assert-CleanCandidate
+    if ((Invoke-SupplyChain 'git' @('rev-parse', 'HEAD')) -cne $taskNativeCandidate) {
+        Stop-SupplyChain 'candidate HEAD changed during native suites'
+    }
+    $taskNativeReceiptText = @(Invoke-SupplyChain $taskVerifier @('verify-native-suite', $taskNativeManifestPath))
+    if ($taskNativeReceiptText.Count -ne 1) { Stop-SupplyChain 'native-suite verifier must emit one canonical JSON receipt' }
+    $taskNativeReceipt = $taskNativeReceiptText[0] | ConvertFrom-Json -AsHashtable
+    if ($taskNativeReceipt['status'] -cne 'pass' -or
+        $taskNativeReceipt['candidate_sha'] -cne $taskNativeCandidate -or
+        $taskNativeReceipt['platform'] -cne 'windows-x86_64' -or
+        $taskNativeReceipt['filesystem'] -cne 'NTFS' -or
+        $taskNativeReceipt['suite_count'] -ne 7) {
+        Stop-SupplyChain 'native-suite verifier receipt does not attest this candidate and all seven native suites'
+    }
+    # Preserve the verifier's canonical JSON text; do not reserialize it through
+    # PowerShell (which can change JSON key ordering or encoding).
+    Assert-CleanCandidate
+    if ((Invoke-SupplyChain 'git' @('rev-parse', 'HEAD')) -cne $taskNativeCandidate) {
+        Stop-SupplyChain 'candidate HEAD changed before native-suite receipt issuance'
+    }
+    [IO.File]::WriteAllText((Join-Path $taskEvidence 'native-suite-receipt.json'), $taskNativeReceiptText[0] + "`n", [Text.UTF8Encoding]::new($false))
+    Write-Output $taskNativeReceiptText[0]
 
     # Rust owns full-graph generation, the fixed epoch, two-root comparison and
     # semantic validation; raw cargo-cyclonedx member output is not an aggregate.

@@ -78,6 +78,9 @@ fn main() {
 
 fn run() -> Result<String> {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
+    if args.first().map(String::as_str) == Some("verify-native-suite") {
+        return native_suite::run(&args);
+    }
     if args.first().map(String::as_str) == Some("verify-secret-scan") {
         return secret_scan::run(&args);
     }
@@ -1572,16 +1575,313 @@ fn planned_seed_snapshot(
         .collect()
 }
 
+mod native_suite {
+    use super::*;
+    use serde_json::{Value, json};
+
+    const WINDOWS_STORE_SENTINEL: &str =
+        "store::tests::windows_checked_close_releases_handles_in_three_real_rename_phases";
+
+    struct SuiteSpec {
+        id: &'static str,
+        selectors: &'static [&'static str],
+    }
+
+    const SUITES: [SuiteSpec; 7] = [
+        SuiteSpec {
+            id: "core-backup-restore",
+            selectors: &["-p", "heleos-core", "--test", "backup_restore"],
+        },
+        SuiteSpec {
+            id: "core-store",
+            selectors: &["-p", "heleos-core", "--lib", "store::tests"],
+        },
+        SuiteSpec {
+            id: "core-backup",
+            selectors: &["-p", "heleos-core", "--lib", "backup::tests"],
+        },
+        SuiteSpec {
+            id: "platform-fs",
+            selectors: &["-p", "heleos-platform-fs", "--lib"],
+        },
+        SuiteSpec {
+            id: "cli-unit",
+            selectors: &["-p", "heleos-cli", "--bin", "heleos"],
+        },
+        SuiteSpec {
+            id: "cli-integration",
+            selectors: &["-p", "heleos-cli", "--test", "cli"],
+        },
+        SuiteSpec {
+            id: "workspace-all",
+            selectors: &["--workspace", "--all-targets", "--all-features"],
+        },
+    ];
+
+    impl SuiteSpec {
+        fn validate(&self, suite: &Value) -> Result<()> {
+            ensure(suite.is_object(), "native-suite suite must be an object")?;
+            ensure(
+                suite["id"].as_str() == Some(self.id),
+                "native-suite ordered suite identity mismatch",
+            )?;
+            let mut run_argv = vec!["cargo", "+1.96.1", "test", "--frozen"];
+            run_argv.extend_from_slice(self.selectors);
+            let mut list_argv = run_argv.clone();
+            list_argv.extend_from_slice(&["--", "--list"]);
+            ensure(
+                suite["run_argv"] == json!(run_argv) && suite["list_argv"] == json!(list_argv),
+                "native-suite exact command mismatch",
+            )?;
+            ensure(
+                suite["list_path"] == format!("{}.list.txt", self.id)
+                    && suite["run_path"] == format!("{}.run.txt", self.id),
+                "native-suite exact transcript basename mismatch",
+            )
+        }
+    }
+
+    fn string(value: &Value) -> Result<&str> {
+        value
+            .as_str()
+            .ok_or_else(|| "native-suite required string missing".into())
+    }
+
+    fn transcript(directory: &Path, value: &Value) -> Result<Vec<u8>> {
+        let relative = string(value)?;
+        ensure(
+            !relative.is_empty()
+                && !relative.contains(['\\', ':'])
+                && relative
+                    .split('/')
+                    .all(|part| !part.is_empty() && part != "." && part != ".."),
+            "native-suite noncanonical transcript path",
+        )?;
+        read_regular(&directory.join(relative), FILE_CAP)
+    }
+
+    fn count(field: &str, suffixes: &[&str]) -> Result<usize> {
+        let digits = suffixes
+            .iter()
+            .find_map(|suffix| field.strip_suffix(suffix))
+            .ok_or("native-suite malformed transcript count")?;
+        ensure(
+            !digits.is_empty() && digits.bytes().all(|byte| byte.is_ascii_digit()),
+            "native-suite malformed transcript count",
+        )?;
+        digits
+            .parse()
+            .map_err(|_| "native-suite transcript count overflow".into())
+    }
+
+    fn add_name<'a>(names: &mut BTreeMap<&'a str, usize>, name: &'a str) -> Result<()> {
+        ensure(
+            !name.is_empty()
+                && !name
+                    .chars()
+                    .any(|character| character.is_whitespace() || character.is_control()),
+            "native-suite malformed test name",
+        )?;
+        *names.entry(name).or_default() += 1;
+        Ok(())
+    }
+
+    fn listed_tests(text: &str) -> Result<BTreeMap<&str, usize>> {
+        let mut names = BTreeMap::new();
+        let mut pending = 0;
+        let mut summaries = 0;
+        for line in text.lines() {
+            if let Some(name) = line.strip_suffix(": test") {
+                add_name(&mut names, name)?;
+                pending += 1;
+            } else if line.contains(": benchmark") || line.contains(": test") {
+                return Err("native-suite unsupported listing record".into());
+            } else if line.as_bytes().first().is_some_and(u8::is_ascii_digit) {
+                let (tests, benchmarks) = line
+                    .split_once(", ")
+                    .ok_or("native-suite malformed list summary")?;
+                ensure(
+                    count(tests, &[" test", " tests"])? == pending
+                        && count(benchmarks, &[" benchmark", " benchmarks"])? == 0,
+                    "native-suite list summary does not match test records",
+                )?;
+                pending = 0;
+                summaries += 1;
+            }
+        }
+        ensure(
+            summaries > 0 && pending == 0,
+            "native-suite missing list summary",
+        )?;
+        Ok(names)
+    }
+
+    fn passed_tests(text: &str) -> Result<BTreeMap<&str, usize>> {
+        let mut names = BTreeMap::new();
+        let mut running = None;
+        let mut passed = 0;
+        let mut summaries = 0;
+        for line in text.lines() {
+            if let Some(total) = line.strip_prefix("running ") {
+                ensure(running.is_none(), "native-suite missing run summary")?;
+                running = Some(count(total, &[" test", " tests"])?);
+                passed = 0;
+            } else if let Some(result) = line.strip_prefix("test result:") {
+                let result = result
+                    .strip_prefix(" ok. ")
+                    .ok_or("native-suite run result is not successful")?;
+                let fields = result.split("; ").collect::<Vec<_>>();
+                ensure(fields.len() == 6, "native-suite malformed run summary")?;
+                ensure(
+                    running == Some(passed)
+                        && count(fields[0], &[" passed"])? == passed
+                        && count(fields[1], &[" failed"])? == 0
+                        && count(fields[2], &[" ignored"])? == 0
+                        && count(fields[3], &[" measured"])? == 0,
+                    "native-suite run summary does not match successful test records",
+                )?;
+                // Exact test filters legitimately exclude other library tests.
+                count(fields[4], &[" filtered out"])?;
+                let elapsed = fields[5]
+                    .strip_prefix("finished in ")
+                    .and_then(|value| value.strip_suffix('s'))
+                    .and_then(|value| value.parse::<f64>().ok())
+                    .ok_or("native-suite malformed run duration")?;
+                ensure(
+                    elapsed.is_finite() && elapsed >= 0.0,
+                    "native-suite malformed run duration",
+                )?;
+                running = None;
+                summaries += 1;
+            } else if let Some(record) = line.strip_prefix("test ") {
+                ensure(
+                    running.is_some(),
+                    "native-suite test record outside a running harness",
+                )?;
+                // Every status record must end in exact `ok`; failures, ignored
+                // reasons, and unknown statuses must not disappear from totals.
+                let name = record
+                    .strip_suffix(" ... ok")
+                    .ok_or("native-suite test status is not successful")?;
+                add_name(&mut names, name)?;
+                passed += 1;
+            }
+        }
+        ensure(
+            summaries > 0 && running.is_none(),
+            "native-suite missing run summary",
+        )?;
+        Ok(names)
+    }
+
+    pub(super) fn run(args: &[String]) -> Result<String> {
+        ensure(args.len() == 2, "native-suite requires one manifest path")?;
+        let manifest_path = Path::new(&args[1]);
+        let manifest_bytes = read_regular(manifest_path, FILE_CAP)?;
+        let manifest: Value = serde_json::from_slice(&manifest_bytes)
+            .map_err(|_| "native-suite malformed manifest JSON")?;
+        ensure(
+            manifest["schema"] == "heleos.native-suite-transcripts/v1"
+                && manifest["platform"] == "windows-x86_64"
+                && manifest["filesystem"] == "NTFS",
+            "native-suite manifest identity mismatch",
+        )?;
+        let candidate = string(&manifest["candidate_sha"])?;
+        ensure(
+            candidate.len() == 40
+                && candidate
+                    .bytes()
+                    .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte)),
+            "native-suite candidate must be a lowercase Git SHA",
+        )?;
+        let root = std::env::current_dir()?.canonicalize()?;
+        let head = bounded(
+            Command::new("git")
+                .args(["rev-parse", "HEAD"])
+                .current_dir(&root),
+            Duration::from_secs(30),
+        )?;
+        head.require_success("native-suite candidate lookup")?;
+        ensure(
+            std::str::from_utf8(&head.stdout)?.trim() == candidate,
+            "native-suite candidate differs from current HEAD",
+        )?;
+        let suites = manifest["suites"]
+            .as_array()
+            .ok_or("native-suite suites must be an array")?;
+        ensure(
+            suites.len() == SUITES.len(),
+            "native-suite requires seven suites",
+        )?;
+        let directory = manifest_path.parent().ok_or("manifest has no parent")?;
+        let mut total_listed = 0;
+        let mut total_passed = 0;
+        let mut receipts = Vec::with_capacity(SUITES.len());
+        for (suite, spec) in suites.iter().zip(&SUITES) {
+            spec.validate(suite)?;
+            ensure(
+                suite["list_exit_code"].as_i64() == Some(0)
+                    && suite["run_exit_code"].as_i64() == Some(0),
+                "native-suite command exit must be zero",
+            )?;
+            let list = transcript(directory, &suite["list_path"])?;
+            let run = transcript(directory, &suite["run_path"])?;
+            let listed = listed_tests(
+                std::str::from_utf8(&list).map_err(|_| "native-suite list is not UTF-8")?,
+            )?;
+            let passed = passed_tests(
+                std::str::from_utf8(&run).map_err(|_| "native-suite run is not UTF-8")?,
+            )?;
+            if spec.id == "core-store" {
+                ensure(
+                    listed.get(WINDOWS_STORE_SENTINEL) == Some(&1)
+                        && passed.get(WINDOWS_STORE_SENTINEL) == Some(&1),
+                    "native-suite core-store must list and pass the Windows Store sentinel exactly once",
+                )?;
+            }
+            ensure(
+                !listed.is_empty() && listed == passed,
+                "native-suite listed and passed name multisets must be equal and nonempty",
+            )?;
+            let listed_count = listed.values().sum::<usize>();
+            let passed_count = passed.values().sum::<usize>();
+            total_listed += listed_count;
+            total_passed += passed_count;
+            receipts.push(json!({
+                "id": spec.id,
+                "list_sha256": hash(&list)?,
+                "run_sha256": hash(&run)?,
+                "listed": listed_count,
+                "passed": passed_count,
+            }));
+        }
+        Ok(serde_jcs::to_string(&json!({
+            "schema": "heleos.native-suite-receipt/v1",
+            "manifest_sha256": hash(&manifest_bytes)?,
+            "suites": receipts,
+            "status": "pass",
+            "candidate_sha": candidate,
+            "platform": "windows-x86_64",
+            "filesystem": "NTFS",
+            "suite_count": suites.len(),
+            "total_listed": total_listed,
+            "total_passed": total_passed,
+        }))?)
+    }
+}
+
 mod secret_scan {
     use super::*;
     use serde_json::{Value, json};
 
     const BASELINE_PATH: &str = "governance/secret-scan-baseline.toml";
     const BASELINE: &[u8] = include_bytes!("../../../../governance/secret-scan-baseline.toml");
-    const BASELINE_HASH: &str = "9824d4222256872805395cd2d898a308486b513146c626594a8b3a91d8d05d9b";
+    const BASELINE_HASH: &str = "4e04536718f7065ddc57c6d84cef0bebad84cf33f281382ca18288d27ddf91e6";
     const SOURCE: &str = "tests/verification/src/bin/verify-provenance.rs";
     const FIXTURE_CONTEXT_HASH: &str =
         "0b246dbefc1fa3faf4dab79a2ffccbec5f23f4e59a33fba924dee43bf83e6e87";
+    const WINDOWS_FIXTURE_CONTEXT_HASH: &str =
+        "ec0c12015eda85f6e7a64524ac5969b5a11fb893786a2a5339831c9674b53a27";
 
     fn string(v: &Value) -> Result<&str> {
         v.as_str()
@@ -1705,6 +2005,11 @@ mod secret_scan {
                 "generic-api-key" if value["File"] == "tests/test_api.py" => {
                     ["Idempotency", "-Key\": \"REDACTED\""].concat()
                 }
+                "generic-api-key"
+                    if history && value["File"] == "crates/heleos-worker-runner/src/lib.rs" =>
+                {
+                    "SECRET\", \"REDACTED\"".to_owned()
+                }
                 _ => return Err("secret-scan unadjudicated rule or path".into()),
             };
             ensure(
@@ -1789,7 +2094,7 @@ mod secret_scan {
                 && baseline["foundation_scope"] == "Foundation 0.1"
                 && baseline["expires_before"] == "Foundation 0.2"
                 && env!("CARGO_PKG_VERSION") == "0.1.0"
-                && baseline["expected_history_findings"] == 22
+                && baseline["expected_history_findings"] == 23
                 && baseline["expected_current_tree_allowances"] == 1,
             "secret-scan baseline schema, scanner, or release scope drift",
         )?;
@@ -1870,7 +2175,10 @@ mod secret_scan {
             ensure(
                 matches!(
                     class,
-                    "cwd_key_receipt" | "invalid_idempotency_fixture" | "verifier_marker_literals"
+                    "cwd_key_receipt"
+                        | "invalid_idempotency_fixture"
+                        | "verifier_marker_literals"
+                        | "windows_forbidden_path_fixture"
                 ),
                 "secret-scan unknown adjudication",
             )?;
@@ -1878,18 +2186,19 @@ mod secret_scan {
             entries.push((finding, class.to_owned()));
         }
         ensure(
-            expected.len() == 22
+            expected.len() == 23
                 && counts
                     == BTreeMap::from([
                         ("cwd_key_receipt".to_owned(), 20),
                         ("invalid_idempotency_fixture".to_owned(), 1),
                         ("verifier_marker_literals".to_owned(), 1),
+                        ("windows_forbidden_path_fixture".to_owned(), 1),
                     ]),
             "secret-scan baseline class/count drift",
         )?;
         let values = array(report)?;
         ensure(
-            values.len() == 22,
+            values.len() == 23,
             "secret-scan history count differs from complete adjudication",
         )?;
         let mut actual = BTreeSet::new();
@@ -1903,7 +2212,7 @@ mod secret_scan {
         }
         ensure(
             actual == expected,
-            "secret-scan history differs from all 22 exact adjudicated tuples",
+            "secret-scan history differs from all 23 exact adjudicated tuples",
         )?;
         Ok(entries)
     }
@@ -2040,6 +2349,27 @@ mod secret_scan {
                 ensure(
                     hash(format!("{}\n", block.join("\n")).as_bytes())? == FIXTURE_CONTEXT_HASH,
                     "secret-scan historical invalid-input fixture context changed",
+                )?;
+            }
+            "windows_forbidden_path_fixture" => {
+                ensure(
+                    finding.commit == "5f3619158ffb56e0df61a68bebd267de468b2f61"
+                        && finding.path == "crates/heleos-worker-runner/src/lib.rs"
+                        && finding.rule == "generic-api-key"
+                        && finding.start == 619
+                        && finding.end == 619,
+                    "secret-scan Windows forbidden-path fixture tuple mismatch",
+                )?;
+                let lines = std::str::from_utf8(bytes)?.split('\n').collect::<Vec<_>>();
+                let block = lines
+                    .get(614..632)
+                    .ok_or("secret-scan Windows forbidden-path fixture context truncated")?;
+                // The complete immutable test rejects case aliases of a forbidden
+                // path and accepts the distinct secret-public.txt sibling.
+                ensure(
+                    hash(format!("{}\n", block.join("\n")).as_bytes())?
+                        == WINDOWS_FIXTURE_CONTEXT_HASH,
+                    "secret-scan historical Windows forbidden-path fixture context changed",
                 )?;
             }
             "verifier_marker_literals" => {
@@ -2347,6 +2677,9 @@ mod secret_scan {
                 if finding.path == "tests/test_api.py" {
                     value["Match"] = json!(["Idempotency", "-Key\": \"REDACTED\""].concat());
                 }
+                if finding.path == "crates/heleos-worker-runner/src/lib.rs" {
+                    value["Match"] = json!("SECRET\", \"REDACTED\"");
+                }
             }
             value
         }
@@ -2384,12 +2717,89 @@ mod secret_scan {
         }
 
         #[test]
+        fn windows_forbidden_path_fixture_admits_only_the_exact_history_tuple() {
+            let finding = Finding {
+                fingerprint: "5f3619158ffb56e0df61a68bebd267de468b2f61:crates/heleos-worker-runner/src/lib.rs:generic-api-key:619".to_owned(),
+                commit: "5f3619158ffb56e0df61a68bebd267de468b2f61".to_owned(),
+                path: "crates/heleos-worker-runner/src/lib.rs".to_owned(),
+                rule: "generic-api-key".to_owned(),
+                start: 619,
+                end: 619,
+            };
+            let valid = report(&finding, true);
+            assert_eq!(Finding::read(&valid, true).unwrap(), finding);
+            let baseline = baseline(BASELINE).unwrap();
+            let mut complete = history(&baseline);
+            let index = complete
+                .as_array()
+                .unwrap()
+                .iter()
+                .position(|value| value["Fingerprint"] == finding.fingerprint)
+                .expect("the exact historical fixture must be adjudicated");
+            complete[index] = valid.clone();
+            assert_eq!(history_set(&baseline, &complete).unwrap().len(), 23);
+            for field in ["Commit", "File", "RuleID", "StartLine", "EndLine", "Match"] {
+                let mut candidate = complete.clone();
+                candidate[index][field] = match field {
+                    "Commit" => json!("a".repeat(40)),
+                    "File" => json!("crates/other/src/lib.rs"),
+                    "RuleID" => json!("private-key"),
+                    "StartLine" | "EndLine" => json!(620),
+                    _ => json!("REDACTED"),
+                };
+                if field == "StartLine" {
+                    candidate[index]["EndLine"] = json!(620);
+                }
+                candidate[index]["Fingerprint"] = json!(format!(
+                    "{}:{}:{}:{}",
+                    candidate[index]["Commit"].as_str().unwrap(),
+                    candidate[index]["File"].as_str().unwrap(),
+                    candidate[index]["RuleID"].as_str().unwrap(),
+                    candidate[index]["StartLine"].as_u64().unwrap(),
+                ));
+                assert!(history_set(&baseline, &candidate).is_err(), "field {field}");
+            }
+            let mut wrong_class = baseline.clone();
+            wrong_class["history"][index]["adjudication"] = json!("cwd_key_receipt");
+            assert!(history_set(&wrong_class, &complete).is_err());
+            let mut current = valid;
+            current.as_object_mut().unwrap().remove("Link");
+            current["Commit"] = json!("");
+            current["Fingerprint"] =
+                json!("crates/heleos-worker-runner/src/lib.rs:generic-api-key:619");
+            assert!(current_set(&baseline, &json!([current]), &[], &source(&baseline)).is_err());
+
+            let object = bounded(
+                Command::new("git").args([
+                    "cat-file",
+                    "blob",
+                    &format!("{}:{}", finding.commit, finding.path),
+                ]),
+                Duration::from_secs(30),
+            )
+            .unwrap();
+            object
+                .require_success("historical forbidden-path fixture")
+                .unwrap();
+            let class = "windows_forbidden_path_fixture";
+            assert!(historical_context(class, &finding, &object.stdout, &[]).is_ok());
+            let changed = std::str::from_utf8(&object.stdout)
+                .unwrap()
+                .replace("FailureCode::OutOfScope", "FailureCode::InvalidInput");
+            assert!(historical_context(class, &finding, changed.as_bytes(), &[]).is_err());
+            assert!(historical_context(class, &finding, b"truncated", &[]).is_err());
+            let mut shifted = finding;
+            shifted.end += 1;
+            assert!(historical_context(class, &shifted, &object.stdout, &[]).is_err());
+        }
+
+        #[test]
         fn exact_history_is_one_to_one_and_report_order_is_irrelevant() {
             let baseline = baseline(BASELINE).unwrap();
             let mut report = history(&baseline);
-            assert_eq!(history_set(&baseline, &report).unwrap().len(), 22);
+            assert_eq!(history_set(&baseline, &report).unwrap().len(), 23);
             report.as_array_mut().unwrap().reverse();
-            assert_eq!(history_set(&baseline, &report).unwrap().len(), 22);
+            assert_eq!(history_set(&baseline, &report).unwrap().len(), 23);
             for case in 0..5 {
                 let mut candidate = report.clone();
                 match case {
