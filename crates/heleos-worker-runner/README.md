@@ -12,11 +12,13 @@ typed `RunResult` or `RunError`. Provider input is a bounded generated prompt on
 stdin; the executable and ordered arguments are passed directly to `Command`.
 Only `codex`, `claude_code`, `kimi`, and `grok` are admitted in this slice;
 `cursor` remains unsupported and research providers fail before launch. Codex
-admission and its stdin adapter have local executable-fixture coverage only;
-no live Codex/Astra execution, authentication, or containment compatibility is
-claimed. Grok has both local-fixture coverage and one
-PUBLIC-only live write with controller hash acceptance; the retained evidence
-and exact limits are in `evidence/live-grok-run.md`.
+admission and its stdin adapter have local executable-fixture coverage plus one
+authenticated PUBLIC-only Codex/Astra write through the runner's explicit
+`none` containment mode. That run does not claim outer host containment; its
+failed Seatbelt precursor, version gate, hashes, and limits are in
+`evidence/live-codex-run.md`. Grok has both local-fixture coverage and one
+PUBLIC-only live write with controller hash acceptance under macOS Seatbelt;
+its evidence is in `evidence/live-grok-run.md`.
 
 ## CLI
 
@@ -42,7 +44,7 @@ Repeat `--inherit-env NAME` only for explicitly authorized environment names;
 values are passed directly to the child and are not placed in runner prompts
 or reports. The library also accepts explicit environment entries.
 
-For Codex CLI 0.147.0, use `--provider codex --command /absolute/python3` and
+For Codex CLI 0.153.4, use `--provider codex --command /absolute/python3` and
 the literal arguments after `--`:
 
 ```text
@@ -178,13 +180,15 @@ External termination of the runner is not a guaranteed cancellation mechanism
 in this slice.
 
 Live PUBLIC-only Claude Code and Grok tasks have each completed one exact-scope
-write under macOS Seatbelt and passed controller hash acceptance. Kimi remains
-blocked by its combined credential/runtime data-root design; real
-authentication state is not copied into the ephemeral home. Windows code has
-passed host tests and MSVC cross-compilation, but the required native
-Windows/NTFS gate has not run. This slice does not claim App Sandbox,
-regulatory containment, production authority, Foundation acceptance, or native
-Windows acceptance.
+write under macOS Seatbelt and passed controller hash acceptance. Codex/Astra
+completed an exact-scope write under explicit runner containment mode `none`
+and its own `workspace-write` setting after the current Seatbelt profile denied
+Codex runtime-state initialization. Kimi remains blocked by its combined
+credential/runtime data-root design; real authentication state is not copied
+into the ephemeral home. Windows code has passed host tests and MSVC
+cross-compilation, but the required native Windows/NTFS gate has not run. This
+slice does not claim App Sandbox, regulatory containment, production authority,
+Foundation acceptance, or native Windows acceptance.
 
 ## Local verification
 

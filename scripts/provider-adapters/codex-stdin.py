@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pass bounded UTF-8 stdin directly to Codex CLI 0.147.0 without a shell.
+"""Pass bounded UTF-8 stdin directly to Codex CLI 0.153.4 without a shell.
 
 Usage: python3 codex-stdin.py --codex-executable ABSOLUTE_REGULAR_EXECUTABLE
 
