@@ -61,7 +61,9 @@ def main() -> int:
     try:
         result = subprocess.run(
             [arguments[1], "--output-format", "stream-json", "--prompt", prompt],
-            stdin=subprocess.DEVNULL,
+            # Accepted prompts have drained stdin to EOF; inherit that stream
+            # without opening /dev/null, which the outer sandbox may deny.
+            stdin=None,
             shell=False,
             check=False,
         )

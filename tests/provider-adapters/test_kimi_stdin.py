@@ -103,6 +103,45 @@ class KimiStdinTests(unittest.TestCase):
     def test_empty_prompt_is_passed_as_an_empty_argument(self):
         self.assert_prompt_passed("")
 
+    def test_denied_devnull_still_launches_child_with_drained_stdin(self):
+        # Reproduce Seatbelt's denied /dev/null open inside the adapter process,
+        # while retaining a real child launch and the actual EOF input pipe.
+        self.write_fake(
+            "import json, os, sys\n"
+            "sys.stdout.write(json.dumps({\n"
+            "    'argv': sys.argv[1:],\n"
+            "    'stdin_reads': [list(os.read(0, 1)), list(os.read(0, 1))],\n"
+            "}, ensure_ascii=False))\n"
+        )
+        harness = (
+            "import errno, os, runpy, sys\n"
+            "original_open = os.open\n"
+            "def denied_devnull(path, flags, *args, **kwargs):\n"
+            "    if os.fspath(path) in ('/dev/null', b'/dev/null'):\n"
+            "        raise PermissionError(errno.EPERM, 'fixture denied')\n"
+            "    return original_open(path, flags, *args, **kwargs)\n"
+            "os.open = denied_devnull\n"
+            "sys.argv = sys.argv[1:]\n"
+            "runpy.run_path(sys.argv[0], run_name='__main__')\n"
+        )
+        prompt = "  public \u00e9\n--flag; $(literal)\n"
+        result = subprocess.run(
+            [sys.executable, "-B", "-c", harness, str(ADAPTER),
+             "--kimi-executable", str(self.fake)],
+            input=prompt.encode("utf-8"),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=self.root,
+            timeout=10,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stderr, b"")
+        self.assertEqual(json.loads(result.stdout), {
+            "argv": ["--output-format", "stream-json", "--prompt", prompt],
+            "stdin_reads": [[], []],
+        })
+
     def test_exactly_65536_prompt_bytes_are_accepted(self):
         self.assert_prompt_passed("a" * 65536)
 
