@@ -1,6 +1,6 @@
 # Guarded Worker Runner Implementation Plan
 
-**Status:** Implemented; live Claude and Kimi writes completed
+**Status:** Implemented through `fb18a39`; live Claude and Grok writes accepted under macOS Seatbelt; native Windows/NTFS gate pending
 
 **Branch:** `build/agent-control-foundation`
 
@@ -10,7 +10,7 @@
 
 Build a local, deterministic runner for write-capable AI coding workers. The runner consumes a validated `heleos.worker-task/v1` packet, proves the requested base commit exists, creates an isolated disposable checkout at exactly that commit, invokes one explicitly configured local provider process without shell interpolation, inventories all Git changes, enforces allowed and forbidden paths, and emits a task-bound handoff. It never applies, merges, or pushes the result.
 
-Initial write-capable providers are Claude Code and Kimi. Grok and Cursor remain disabled until authenticated. NotebookLM and GrokBots/Athena remain research-only.
+Claude Code and Grok Build 0.2.111 are authenticated and have completed accepted PUBLIC-only writes under macOS Seatbelt. Kimi completed an earlier uncontained write, but remains write-disabled under Seatbelt because its combined credential/runtime data root attempts a denied real-home write. Cursor remains unavailable for dispatch and is not authenticated. NotebookLM and GrokBots/Athena remain research-only.
 
 ## Implementation tasks
 
@@ -46,9 +46,11 @@ Initial write-capable providers are Claude Code and Kimi. Grok and Cursor remain
 
 ## Next after this slice
 
-Persist validated task/run/handoff identities through the governed operational store only after Foundation 0.1 acceptance and an explicit migration plan. Before then, additional provider work remains a retained candidate in this isolated engineering lane. Add a macOS containment profile and Windows Job Object backend before representing the runner as host-write containment or cross-platform worker execution.
+The macOS Seatbelt profile and Windows restricted-token/Job Object backend are implemented. Execute `scripts/verify-windows-worker-containment.ps1` from a clean frozen candidate on native Windows/NTFS; host tests and cross-compilation do not satisfy that pending gate. Kimi needs an owner-initialized dedicated worker data root or provider-supported split read-only-auth/writable-runtime capability before contained writes resume. Preserve the completed Claude and Grok tasks rather than rerunning them.
 
-## Implementation checkpoint
+Persist validated task/run/handoff identities through the governed operational store only after Foundation 0.1 acceptance and an explicit migration plan. Before then, additional provider work remains a retained candidate in this isolated engineering lane. Foundation 0.1 remains unaccepted, and this branch must not merge into its candidate before acceptance. No merge, push, or deployment has occurred for this branch.
+
+## Initial implementation checkpoint
 
 - Runner implementation commit: `cad8e4cec76e4fe2afbf30275ba31bddd0541fa3`.
 - Controller gates passed: 24 runner integration tests, 2 runner CLI tests, 19 Kimi-adapter tests, workspace formatting, locked/offline workspace check, strict workspace Clippy, reproducible two-build PDF guest provenance, and the normal provenance scan.
@@ -59,3 +61,10 @@ Persist validated task/run/handoff identities through the governed operational s
 - Kimi changed exactly `proof/kimi-headless.txt` in a dedicated PUBLIC-only source repository; its expected and observed SHA-256 is `6109053c330d9df1cb2711a6d032f3b491273558035a4fb1fa385b596d9f8640`.
 - The controller acceptance check exited zero. Completed Kimi handoff digest: `2a44c5deb931489974f2fd41de7fdf20bcf8a9685d8b2e9de3ff4e2b9eb78b76`.
 - No merge, push, deployment, production write, or Foundation 0.1 candidate change occurred.
+
+## Current implementation checkpoint
+
+- `56758dd` admits the guarded Grok adapter and runner path. The assembled runner passes 39 host tests; the Grok adapter passes all 23 black-box tests under Python 3.14.6 and 3.9.6.
+- Authenticated Grok Build `0.2.111` ran two separately identified PUBLIC-only tasks under macOS Seatbelt. The first candidate failed the declared hash check and was rejected without integration. The second produced exactly `tests/fixtures/runner/live/grok-seatbelt.txt`, 84 bytes with SHA-256 `fe8e15e6d8c4ded8a4e6bd29238a0a23130d1f3df200565b8a6b198738d983f4`, and passed controller acceptance. Both processes are terminal; exact accepted bytes and [live evidence](../../../crates/heleos-worker-runner/evidence/live-grok-run.md) are committed as `fb18a39`.
+- `9a62481` isolates three shared-temporary-directory inventory assertions in child-process temporary roots, retaining their complete inventory checks. After the repair, `./scripts/verify-foundation` exited `0`, including provenance `pass` over 172 files, the full locked/offline workspace tests, two-root reproducible PDF-guest build, and clean/offline acceptance rerun.
+- Native Windows/NTFS execution remains pending. Kimi remains write-disabled under Seatbelt; Cursor remains unavailable and unauthenticated. The accepted Grok result grants no production authority, Foundation acceptance, merge, push, or deployment authority.
