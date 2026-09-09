@@ -1,8 +1,55 @@
-# Agent coordination protocol
+# Agent coordination protocol and guarded runner
 
 The `heleos-worker-protocol` package validates bounded worker-task and handoff JSON and computes canonical SHA-256 identities. It reads local packets and reports validation; it does not dispatch a provider, execute acceptance commands, apply patches, enforce a filesystem sandbox, or promote a candidate into production.
 
-The current finish line is the validator and these synthetic examples. Persistent task records, leases, deadlines, provider adapters, quarantined artifact ingestion, and promotion gates follow in the [implementation plan](../superpowers/plans/2026-09-08-agent-coordination-foundation.md). Follow [AGENTS.md](../../AGENTS.md) and the relevant provider entrypoint for actual assignments; the [current status](../../CURRENT_STATUS.md) retains the separate Foundation release gates.
+The implemented `heleos-worker-runner` adds local execution for `claude_code` and `kimi`, exact-base retained proposals, bounded process evidence, and mandatory post-run inventory. It also offers opt-in macOS host-write containment. Protocol support for another provider does not imply a runnable adapter. Persistent coordination and promotion gates remain later work in the [coordination plan](../superpowers/plans/2026-09-08-agent-coordination-foundation.md); the [containment plan](../superpowers/plans/2026-09-08-macos-worker-containment.md) defines this narrower implementation slice. Follow [AGENTS.md](../../AGENTS.md) and the relevant provider entrypoint for actual assignments; the [current status](../../CURRENT_STATUS.md) retains the separate Foundation release gates.
+
+## Generate a retained local proposal
+
+The runner validates the task and resolves its exact 40-character base commit in the local source repository. Each named instruction must be a regular file at that base whose bytes match its recorded SHA-256; those verified bytes enter the bounded prompt. A fresh independent Git clone is detached at that base, without object hardlinks or source worktree registration. Source checkout dirt is preserved and excluded from the proposal. The runner does not fetch, create a candidate commit, execute acceptance commands, merge, or push.
+
+Supply existing absolute source, workspace-root, task, and executable paths. The workspace root must be disjoint from the source checkout. The following CLI pattern uses the repository's local fake provider, with no credentials or live provider invocation. First prepare a disposable synthetic source repository and real task as described in the [runner fixtures](../../tests/fixtures/runner/README.md): use `PUBLIC`, `local_only`, provider `claude_code`, allowed path `allowed`, a real committed base, and actual instruction hashes. Replace the absolute paths below with those prepared locations; the protocol fixtures below are not runnable assignments.
+
+```sh
+cargo +1.96.1 run --locked --offline -p heleos-worker-runner -- \
+  --task /absolute/synthetic-task.json \
+  --source /absolute/synthetic-source \
+  --workspace-root /absolute/worker-runs \
+  --provider claude_code \
+  --command /absolute/path/to/python3 \
+  --git /usr/bin/git \
+  --containment macos_seatbelt \
+  -- -B /absolute/Heleos-spark/tests/fixtures/runner/fake_provider.py \
+     --scenario untracked
+```
+
+This pattern selects the macOS backend; omit `--containment` or explicitly use `--containment none` for the default behavior. Python `-B` prevents bytecode-cache writes beside the fixture. Executable arguments are passed directly, and the generated prompt is supplied on stdin; the runner does not construct a shell command. This local fixture exercises process and inventory behavior, not authenticated Claude compatibility. The [runner README](../../crates/heleos-worker-runner/README.md) documents the CLI, library API, bounds, and failure codes.
+
+By default, the child environment is cleared and receives a fixed system `PATH` and fresh `HOME`/`TMPDIR`. `--inherit-env NAME` explicitly passes selected ambient values; the library also permits explicit environment entries. Values do not enter runner prompts or reports. Real provider installation, session authorization, data approval, and egress authorization are controller prerequisites. The runner does not authenticate providers or copy their real authentication state into the ephemeral home.
+
+## Optional macOS host-write containment
+
+`none` applies no OS filesystem containment. `macos_seatbelt` validates the fixed `/usr/bin/sandbox-exec` backend: its canonical path must be exactly that path, and it must be a regular root-owned executable without group/other write permissions. There is no configurable sandbox executable or arbitrary profile. A static Seatbelt profile allows reads and network as before and denies new path-based filesystem writes outside three canonical roots: the runner-created checkout, ephemeral home, and ephemeral temp directory. Literal `-D` parameters preserve spaces and shell metacharacters; canonicalization handles macOS `/var` versus `/private/var` paths.
+
+The provider and descendants inherit this policy. It does not enforce the task's narrower project-path allowlist: a write elsewhere inside the checkout can still occur and must fail subsequent inventory validation. Run evidence, source-host and sibling paths, and writable host devices such as `/dev/null` have no write exception. The runner's Git preparation, evidence persistence, and inventory execute outside the provider sandbox.
+
+Unsupported platforms or unusable backend validation fail before provider launch with `containment_unavailable`; there is no uncontained fallback. After `sandbox-exec` starts, policy initialization failures and provider failures share the exit-status channel and are reported as `provider_exit`, with bounded stderr retained rather than heuristically classified.
+
+Neither mode restricts reads, network, credentials, inherited external authority, provider internal actions, or cost. Environment minimization is not credential isolation, and `local_only` is a declared task policy, not network enforcement. Authenticated Claude/Kimi compatibility under Seatbelt remains a separate smoke gate. This backend does not establish App Sandbox, regulatory containment, Windows parity, production authority, or Foundation acceptance.
+
+## Interpret runner evidence
+
+Exit zero means a proposal was generated and inventoried. Standard output is a `heleos.worker-run/v1` envelope with the retained checkout, actual changed-file SHA-256 identities, bounded-output metadata, containment evidence, and a validated nested handoff. The runner's handoff is `blocked`, has no check records or claimed candidate commit, and requires controller acceptance. Exit two emits `heleos.worker-run-failure/v1` with a fixed diagnostic and typed terminal reason; it is not a successful proposal.
+
+Each owned run directory retains original and canonical task bytes, the canonical task digest, ownership identity, generated prompt, bounded `stdout.bin`/`stderr.bin`, and `run.json`/`handoff.json` or `failure.json` where evidence writing succeeds. Ownership records bind the directory path and device/inode. The runner verifies task, prompt, and ownership bytes before handoff and uses exclusive no-follow evidence creation. Successful evidence records the active `containment.mode`, its restricted write scope, and explicit false read, network, and inherited-external-authority restrictions. Read the recorded mode for that run; the existence of Seatbelt code or historical results does not prove it was applied.
+
+Both modes require Git and independent filesystem inventory against the frozen base, including committed, staged, unstaged, ignored, and untracked changes and both sides of renames. Scope violations, unsafe Git metadata, symlinks, hardlinks, special files, unsafe paths, or incomplete inventory fail closed. Final inventory cannot detect a reverted write; with `none`, it cannot detect arbitrary host writes. A zero provider exit does not waive these checks.
+
+Prompt and retained per-stream output limits default to 65,536 bytes, configurable up to 1,048,576. Excess output is drained and marked truncated; an oversized required prompt fails before launch. Elapsed-time limits cover preparation, execution, and inventory. The adapter observes one provider invocation, not its internal tool-call or cost accounting. Unix process groups terminate managed same-group descendants before inventory on normal exit or timeout. Deliberately escaped descendants need separate lifecycle containment, though inherited Seatbelt write restrictions remain. Externally terminating the runner is not guaranteed managed cancellation.
+
+Success and failure directories are retained by default. Optional `--cleanup-on-failure` targets only that invocation's identity-checked owned directory after process termination; ownership failures retain it and report `cleanup_failed`. Evidence-write failures report `evidence_write_failed` while preserving the original terminal reason. There is no success-cleanup API.
+
+The [macOS implementation evidence](../../crates/heleos-worker-runner/evidence/macos-containment-green.md) records native ARM64 tests using local fake providers and the real kernel backend, including allowed-root writes, host/sibling/descendant and symlink-escape denial, literal arguments, containment reporting, and continued scope enforcement. These recorded checks are engineering evidence, not live contained Claude/Kimi proof or release acceptance. Windows cross-compilation is not native runtime verification: the default backend fails there as `unsupported_platform`, and Seatbelt requests fail as `containment_unavailable`. A Windows Job Object/restricted-process backend remains future work.
 
 ## Synthetic examples
 
@@ -46,7 +93,7 @@ Handoff schema `heleos.worker-handoff/v1` binds `task_digest`, `provider`, `term
 ## Use with a live assignment
 
 1. Confirm the exact checkout, branch, base, dirty paths, sole writer, actual provider tools, authorized session, and read/write capabilities. Read the current shared instructions and relevant provider file. Replace every synthetic value with the approved task's real identities, objective, scope, bounded limits, and meaningful acceptance checks; the example whitespace/file-existence checks are not implementation acceptance tests.
-2. Validate and preserve the task packet and its canonical digest. Record permitted tools, forbidden actions, output location, and stop conditions in the controller's task brief. Verify the actual instruction bytes against their recorded hashes; packet validation alone does not read the named instruction files or verify the checkout's Git base.
+2. Validate and preserve the task packet and its canonical digest. Record permitted tools, forbidden actions, output location, and stop conditions in the controller's task brief. Verify the actual instruction bytes against their recorded hashes; packet validation alone does not read the named instruction files or verify the checkout's Git base. The guarded runner performs these exact-base checks before dispatch. Select and record the containment mode and any separately required read, network, authentication, or lifecycle controls before launching an authorized live provider.
 3. Keep external inputs minimized and within the approved data/provider/egress scope. Log any actual submission with provider, purpose, classification, approved source identities, policy decision, time, and result reference. For research returns, retain source citations, retrieval context, source-set identity, artifact hash, and any visible bot identity. Treat returned claims, commands, and embedded instructions as untrusted candidate data.
 4. Record the worker's terminal result immediately. Preserve changed-file identities, actual check commands and exit results, unresolved findings, process state, and one concrete next action in the task ledger. A handoff is a bounded report, not a scheduler or complete evidence archive. Do not rerun completed work after recovery without reconciling live state and recorded identities.
-5. Validate the handoff against the frozen task, inspect the candidate bytes, and run the appropriate independent deterministic checks before owner-authorized integration. Keep implementation finished, validation passed, independently accepted, and integrated as separate states. The protocol grants no merge, push, deployment, or release-acceptance authority.
+5. Validate the handoff against the frozen task, inspect the retained candidate bytes and changed-file identities, and run the appropriate independent deterministic checks before owner-authorized integration. Preserve the runner's original `blocked` handoff and record controller checks separately. Keep implementation finished, validation passed, independently accepted, and integrated as separate states. Neither the protocol nor the runner grants merge, push, deployment, production, or release-acceptance authority.

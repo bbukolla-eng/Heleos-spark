@@ -56,6 +56,14 @@ child-process inputs and are not copied into prompts or reports. The task's data
 and egress decision must be authorized independently before either provider is
 launched.
 
+Both example routes use the default `--containment none`. On macOS, a separate
+opt-in invocation can add `--containment macos_seatbelt` before the provider
+argument separator `--`. Earlier authenticated Claude/Kimi runs do not establish
+compatibility with this mode; live authenticated execution under Seatbelt remains
+a separate smoke gate. Inheriting the real `HOME` does not add it to Seatbelt's
+allowed write roots, so provider authentication or configuration writes there
+may fail. No real authentication state is copied into the ephemeral home.
+
 ## Before dispatch
 
 1. Preserve the original task bytes and canonical task digest. Validate the task,
@@ -107,11 +115,29 @@ whether external egress is approved. Approval of data, provider, and egress is a
 controller input; a task's `approved_external` string does not grant permission.
 The runner does not grant the child authority for any of these actions.
 
-A disposable checkout and post-run path validation are not an operating-system
-sandbox or network isolation. The controller must arrange any required process,
-filesystem, credential, and network restrictions before launch. Report any
-unenforced boundary rather than claiming containment or action/cost accounting
-that the adapter cannot observe.
+Default `none` applies no OS filesystem containment; a disposable checkout and
+post-run path validation alone do not isolate host writes or network access.
+Opt-in `macos_seatbelt` uses the validated fixed `/usr/bin/sandbox-exec` backend
+and a static policy to restrict new path-based filesystem writes by the provider
+and descendants to the canonical checkout, ephemeral home, and ephemeral temp
+roots. Source-host paths, run evidence, siblings, and writable host devices such
+as `/dev/null` have no write exception. Runner preparation, evidence persistence,
+and inventory operate outside that policy. Post-run scope validation remains
+mandatory because Seatbelt permits writes throughout the checkout, including
+paths outside the task allowlist.
+
+Neither mode restricts reads, network, credentials, inherited external authority,
+provider internal actions, or cost. Same-group process termination does not cover
+descendants that deliberately escape the group, although Seatbelt write
+restrictions remain inherited. The controller must arrange any additional read,
+credential, network, and lifecycle controls before launch. This implementation
+does not establish App Sandbox, Windows containment, production authority, or
+Foundation acceptance. Unsupported platforms or failed backend validation return
+`containment_unavailable` without an uncontained fallback; after backend launch,
+policy initialization failures share the `provider_exit` channel. Check the
+retained run's `containment.mode` for the mode actually applied. See the
+[runner README](../../crates/heleos-worker-runner/README.md) for evidence fields
+and the precise platform and failure limits.
 
 ## Candidate inventory and handoff
 

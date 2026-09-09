@@ -8,6 +8,54 @@ use heleos_worker_runner::{FailureCode, run};
 use std::fs;
 use std::time::{Duration, Instant};
 
+#[test]
+fn containment_default_is_none_and_mode_round_trips() {
+    use heleos_worker_runner::ContainmentMode;
+    let f = Fixture::new("exit 0");
+    assert_eq!(f.config().containment, ContainmentMode::None);
+    assert_eq!(
+        serde_json::to_string(&ContainmentMode::MacosSeatbelt).unwrap(),
+        "\"macos_seatbelt\""
+    );
+    assert_eq!(
+        serde_json::from_str::<ContainmentMode>("\"macos_seatbelt\"").unwrap(),
+        ContainmentMode::MacosSeatbelt
+    );
+    assert!(serde_json::from_str::<ContainmentMode>("\"arbitrary_profile\"").is_err());
+}
+
+#[cfg(target_os = "macos")]
+#[test]
+fn containment_keeps_inventory_and_typed_failure_evidence() {
+    let f = Fixture::new("printf forbidden > protected.txt");
+    let mut config = f.config();
+    config.containment = heleos_worker_runner::ContainmentMode::MacosSeatbelt;
+    config.cleanup_on_failure = false;
+    let error = run(&f.task(), &config).unwrap_err();
+    assert_eq!(error.code, FailureCode::OutOfScope);
+    let evidence: serde_json::Value = serde_json::from_slice(
+        &fs::read(error.run_directory.unwrap().join("failure.json")).unwrap(),
+    )
+    .unwrap();
+    assert_eq!(evidence["code"], "out_of_scope");
+    assert_eq!(
+        fs::read(f.source.join("protected.txt")).unwrap(),
+        b"protected bytes\n"
+    );
+}
+
+#[cfg(not(target_os = "macos"))]
+#[test]
+fn containment_unavailable_fails_closed_before_provider() {
+    let f = Fixture::new("printf launched > allowed/new.txt");
+    let mut config = f.config();
+    config.containment = heleos_worker_runner::ContainmentMode::MacosSeatbelt;
+    let error = run(&f.task(), &config).unwrap_err();
+    assert_eq!(error.code, FailureCode::ContainmentUnavailable);
+    assert_eq!(error.summary()["code"], "containment_unavailable");
+    f.assert_cleaned();
+}
+
 // These tests catch missing isolation, policy checks, and actual process controls.
 // Every provider is an executable fixture; the runner and local Git are real.
 #[test]

@@ -35,6 +35,30 @@ Repeat `--inherit-env NAME` only for explicitly authorized environment names;
 values are passed directly to the child and are not placed in runner prompts
 or reports. The library also accepts explicit environment entries.
 
+On macOS, opt in with `--containment macos_seatbelt` (or set
+`RunnerConfig.containment = ContainmentMode::MacosSeatbelt`). The default is
+`none`. The serializable mode accepts only `none` and `macos_seatbelt`; there is
+no custom profile or sandbox executable option.
+
+The macOS backend validates the installed `/usr/bin/sandbox-exec`: its canonical
+path must be exactly that path, and it must be a regular root-owned executable
+without group/other write permissions. It applies a static Seatbelt profile to
+the provider and descendants, allowing path-based filesystem writes only within
+the canonical checkout, ephemeral home, and ephemeral temp roots. Literal `-D`
+parameters preserve spaces and metacharacters without a shell. Canonicalization
+handles macOS `/var` versus `/private/var` paths. Paths outside those roots,
+including run evidence and writable host devices such as `/dev/null`, receive
+no write exception. Runner Git setup, evidence persistence, and inventory run
+outside that policy.
+
+Successful JSON evidence records `containment.mode`, the restricted write scope,
+and explicit false values for read, network, and inherited external authority
+restrictions. Unsupported platforms or failed pre-launch backend validation
+return `containment_unavailable`; no fallback launches an uncontained provider.
+Failure evidence retains the typed terminal reason. Once sandbox-exec starts,
+policy initialization failures and provider failures share its exit status and
+are reported as `provider_exit`; stderr is retained without heuristic parsing.
+
 Exit zero means a proposal was generated and inventoried. Standard output is a
 `heleos.worker-run/v1` JSON envelope containing the retained checkout location,
 actual changed-file SHA-256 identities, bounded-output metadata, and a nested
@@ -81,27 +105,41 @@ without erasing the original terminal reason. No success-cleanup API is exposed.
 
 ## Explicit operational limits
 
-This is not an OS filesystem, credential, or network sandbox. The controller
-must arrange any required restrictions and egress authorization independently.
+With default `none`, no OS filesystem containment is applied. The opt-in macOS
+backend restricts new path-based filesystem writes for the provider process
+tree on the tested host. Neither mode restricts reads, network, credentials,
+inherited external authority, provider internal actions, or cost. The controller
+must arrange any further restrictions and egress authorization independently.
 Post-run inventory describes final observable project files; it cannot detect
-a write that was reverted or arbitrary host writes by a hostile executable.
+a write that was reverted; without containment it cannot detect arbitrary host
+writes by a hostile executable. Inventory remains mandatory in both modes.
 
 The current process backend uses Unix process groups and nonblocking pipes.
 Timeouts and normal exits terminate same-group background descendants before
 inventory. A descendant that deliberately escapes its process group requires
-external containment. External termination of the runner is not a guaranteed
+separate process-lifecycle containment, although Seatbelt write restrictions
+remain inherited. External termination of the runner is not a guaranteed
 cancellation mechanism in this slice. Windows fails closed as
-`UnsupportedPlatform`; a Windows Job Object backend is future work. Native
+`unsupported_platform` by default or `containment_unavailable` when Seatbelt is
+requested; a Windows Job Object/restricted-process backend is future work. Native
 verification for this implementation is macOS ARM64 only.
+
+Authenticated Claude/Kimi compatibility under Seatbelt remains a separate smoke
+gate: real authentication state is not copied into the ephemeral home. This
+slice does not claim App Sandbox, Windows, regulatory containment, production
+authority, or Foundation acceptance.
 
 ## Local verification
 
 ```text
-cargo test -p heleos-worker-runner --locked --offline
-cargo clippy -p heleos-worker-runner --all-targets --locked --offline -- -D warnings
-cargo fmt -p heleos-worker-runner -- --check
+cargo +1.96.1 test -p heleos-worker-runner --locked --offline
+cargo +1.96.1 clippy -p heleos-worker-runner --all-targets --locked --offline -- -D warnings
+cargo +1.96.1 fmt -p heleos-worker-runner -- --check
 ```
 
 Tests use temporary local Git repositories and fake local provider executables.
 No authenticated provider, external service, or network call is involved.
+The macOS integration test uses the real kernel backend and proves allowed-root
+writes, host/sibling and descendant denial, symlink escape denial, literal paths
+and arguments, accurate run evidence, and continued inventory enforcement.
 The `evidence/` directory retains causal RED results and final GREEN commands.

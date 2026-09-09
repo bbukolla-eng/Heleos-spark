@@ -2,7 +2,8 @@
 use clap::Parser;
 use heleos_worker_protocol::Provider;
 use heleos_worker_runner::{
-    FailureCode, HARD_BYTE_LIMIT, ProviderCommand, RunError, RunnerConfig, run_json,
+    ContainmentMode, FailureCode, HARD_BYTE_LIMIT, ProviderCommand, RunError, RunnerConfig,
+    run_json,
 };
 use std::ffi::OsString;
 use std::fs::File;
@@ -31,6 +32,9 @@ struct Arguments {
     max_output_bytes: usize,
     #[arg(long)]
     cleanup_on_failure: bool,
+    /// Restrict provider path writes to checkout/home/tmp on supported macOS hosts.
+    #[arg(long, value_enum, default_value = "none")]
+    containment: ContainmentMode,
     /// Explicit environment names to inherit; values never enter the prompt/report.
     #[arg(long)]
     inherit_env: Vec<OsString>,
@@ -97,6 +101,7 @@ fn execute(args: Arguments) -> Result<serde_json::Value, RunError> {
     config.max_prompt_bytes = args.max_prompt_bytes;
     config.max_output_bytes = args.max_output_bytes;
     config.cleanup_on_failure = args.cleanup_on_failure;
+    config.containment = args.containment;
     Ok(run_json(&input, &config)?.summary())
 }
 fn emit_error(error: RunError) -> ExitCode {

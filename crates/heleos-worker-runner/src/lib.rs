@@ -1,18 +1,20 @@
 //! Local, guarded proposal execution for explicitly configured Claude Code and Kimi commands.
 //!
-//! This is an execution/inventory boundary, not a filesystem or network sandbox.
-//! The caller must independently restrict and authorize its provider process.
+//! Optional macOS Seatbelt containment restricts provider host-path writes.
+//! Reads, network, credentials, and provider authority need separate authorization.
 //! Only one provider invocation is counted; internal provider actions are not attested.
 //! Successful proposals remain `blocked` pending controller acceptance checks.
 #![forbid(unsafe_code)]
 
+#[cfg(unix)]
+mod containment;
 #[cfg(unix)]
 mod filesystem;
 #[cfg(unix)]
 mod process;
 
 use heleos_worker_protocol::{Handoff, Provider, Task, Validated};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::ffi::OsString;
 use std::path::{Path, PathBuf};
@@ -20,6 +22,16 @@ use std::path::{Path, PathBuf};
 pub const RUN_SCHEMA: &str = "heleos.worker-run/v1";
 pub const FAILURE_SCHEMA: &str = "heleos.worker-run-failure/v1";
 pub const HARD_BYTE_LIMIT: usize = 1_048_576;
+
+/// Opt-in host-path write restriction. Neither mode restricts reads or network.
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize, Deserialize, clap::ValueEnum)]
+#[serde(rename_all = "snake_case")]
+#[value(rename_all = "snake_case")]
+pub enum ContainmentMode {
+    #[default]
+    None,
+    MacosSeatbelt,
+}
 
 #[derive(Debug)]
 pub struct ProviderCommand {
@@ -54,6 +66,7 @@ pub struct RunnerConfig {
     pub max_output_bytes: usize,
     /// Opt-in cleanup of this run's identity-checked directory after failure.
     pub cleanup_on_failure: bool,
+    pub containment: ContainmentMode,
 }
 impl RunnerConfig {
     pub fn new(
@@ -70,6 +83,7 @@ impl RunnerConfig {
             max_prompt_bytes: 65_536,
             max_output_bytes: 65_536,
             cleanup_on_failure: false,
+            containment: ContainmentMode::None,
         }
     }
 }
@@ -107,6 +121,8 @@ pub enum FailureCode {
     UnsupportedProvider,
     #[error("runner requires the Unix process-group backend")]
     UnsupportedPlatform,
+    #[error("requested host-write containment backend is unavailable")]
+    ContainmentUnavailable,
     #[error("repository metadata changed outside permitted Git operations")]
     RepositoryMutation,
     #[error("filesystem path or object cannot be safely inventoried")]
@@ -176,6 +192,7 @@ pub struct RunResult {
     pub run_directory: PathBuf,
     pub elapsed_milliseconds: u128,
     checkout: PathBuf,
+    containment: ContainmentMode,
 }
 impl RunResult {
     pub fn checkout_path(&self) -> &Path {
@@ -188,6 +205,15 @@ impl RunResult {
             "handoff": self.handoff.document(), "changed_files": self.changed_files,
             "provider_exit_code": 0, "provider_invocations": 1,
             "internal_provider_actions_attested": false, "elapsed_milliseconds": self.elapsed_milliseconds,
+            "containment": {
+                "mode": self.containment,
+                "host_path_writes_restricted": self.containment == ContainmentMode::MacosSeatbelt,
+                "write_scope": if self.containment == ContainmentMode::MacosSeatbelt {
+                    vec!["checkout", "home", "tmp"]
+                } else { Vec::<&str>::new() },
+                "reads_restricted": false, "network_restricted": false,
+                "inherited_external_authority_restricted": false
+            },
             "stdout": {"retained_bytes": self.stdout.bytes.len(), "truncated": self.stdout.truncated},
             "stderr": {"retained_bytes": self.stderr.bytes.len(), "truncated": self.stderr.truncated},
             "next_action": "Controller independently executes the declared acceptance checks before integration."
@@ -207,8 +233,14 @@ pub fn run(task: &Validated<Task>, config: &RunnerConfig) -> Result<RunResult, R
 }
 
 #[cfg(not(unix))]
-fn run_inner(_: &Validated<Task>, _: &[u8], _: &RunnerConfig) -> Result<RunResult, RunError> {
-    Err(RunError::new(FailureCode::UnsupportedPlatform))
+fn run_inner(_: &Validated<Task>, _: &[u8], config: &RunnerConfig) -> Result<RunResult, RunError> {
+    Err(RunError::new(
+        if config.containment == ContainmentMode::None {
+            FailureCode::UnsupportedPlatform
+        } else {
+            FailureCode::ContainmentUnavailable
+        },
+    ))
 }
 
 #[cfg(unix)]
@@ -220,7 +252,6 @@ fn run_inner(
     use heleos_worker_protocol::{HANDOFF_SCHEMA, Mode, TerminalState, validate_handoff_json};
     use std::collections::BTreeSet;
     use std::fs;
-    use std::process::Command;
     use std::time::{Duration, Instant};
     let started = Instant::now();
     let deadline =
@@ -245,6 +276,7 @@ fn run_inner(
         owned.write("task.original.json", original)?;
         owned.write("task.canonical.json", task.canonical_json())?;
         owned.write("task.sha256", task.digest().as_bytes())?;
+        containment::validate(config.containment)?;
         // Standalone local objects: no shared worktree registration or hardlinks.
         let mut clone = git_command(config, &workspace_root);
         clone
@@ -293,7 +325,7 @@ fn run_inner(
         owned.write("prompt.txt", &prompt)?;
         fs::create_dir(run_directory.join("home")).map_err(|_| RunError::new(FailureCode::Io))?;
         fs::create_dir(run_directory.join("tmp")).map_err(|_| RunError::new(FailureCode::Io))?;
-        let mut command = Command::new(&config.provider.executable);
+        let mut command = containment::provider_command(config, &checkout, &run_directory)?;
         command
             .args(&config.provider.args)
             .current_dir(&checkout)
@@ -392,6 +424,7 @@ fn run_inner(
             checkout: checkout.clone(),
             run_directory: run_directory.clone(),
             elapsed_milliseconds: started.elapsed().as_millis(),
+            containment: config.containment,
         })
     };
     match work() {
