@@ -12,7 +12,9 @@ use std::path::PathBuf;
 use std::process::ExitCode;
 
 #[derive(Parser)]
-#[command(about = "Run one local Claude Code or Kimi proposal in an isolated exact-base checkout")]
+#[command(
+    about = "Run one local Claude Code, Kimi, or Grok proposal in an isolated exact-base checkout"
+)]
 struct Arguments {
     #[arg(long)]
     task: PathBuf,
@@ -20,7 +22,7 @@ struct Arguments {
     source: PathBuf,
     #[arg(long)]
     workspace_root: PathBuf,
-    #[arg(long, value_parser = ["claude_code", "kimi"])]
+    #[arg(long, value_parser = ["claude_code", "kimi", "grok"])]
     provider: String,
     #[arg(long)]
     command: PathBuf,
@@ -85,10 +87,11 @@ fn execute(args: Arguments) -> Result<serde_json::Value, RunError> {
     file.take(HARD_BYTE_LIMIT as u64 + 1)
         .read_to_end(&mut input)
         .map_err(|_| RunError::new(FailureCode::InvalidTask))?;
-    let provider = if args.provider == "kimi" {
-        Provider::Kimi
-    } else {
-        Provider::ClaudeCode
+    let provider = match args.provider.as_str() {
+        "claude_code" => Provider::ClaudeCode,
+        "kimi" => Provider::Kimi,
+        "grok" => Provider::Grok,
+        _ => return Err(RunError::new(FailureCode::InvalidConfiguration)),
     };
     let mut command = ProviderCommand::new(provider, args.command);
     command.args = args.args;

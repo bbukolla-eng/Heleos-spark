@@ -36,6 +36,74 @@ fn cli_reads_packet_and_retains_checkout_with_protocol_handoff() {
     .unwrap();
 }
 
+// Break caught: the parser must admit the new name and execute must map it to
+// Provider::Grok rather than silently using the Claude default branch.
+#[test]
+fn cli_grok_maps_to_implementation_provider_and_retains_handoff() {
+    let f = Fixture::new("printf grok-cli-fixture > allowed/new.txt");
+    let mut packet = f.packet();
+    packet["provider"] = "grok".into();
+    let task = common::validate(&packet);
+    let packet_path = f.root.path().join("task.json");
+    fs::write(&packet_path, serde_json::to_vec(&packet).unwrap()).unwrap();
+    let output = Command::new(env!("CARGO_BIN_EXE_heleos-worker-runner"))
+        .arg("--task")
+        .arg(&packet_path)
+        .arg("--source")
+        .arg(&f.source)
+        .arg("--workspace-root")
+        .arg(&f.workspace)
+        .args(["--provider", "grok", "--git", "/usr/bin/git"])
+        .arg("--command")
+        .arg(&f.provider)
+        .output()
+        .unwrap();
+    assert!(output.status.success(), "{output:?}");
+    let value: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
+    assert_eq!(value["handoff"]["provider"], "grok");
+    let checkout = std::path::Path::new(value["checkout_path"].as_str().unwrap());
+    assert_eq!(
+        fs::read(checkout.join("allowed/new.txt")).unwrap(),
+        b"grok-cli-fixture"
+    );
+    heleos_worker_protocol::validate_handoff_json(
+        &serde_json::to_vec(&value["handoff"]).unwrap(),
+        &task,
+    )
+    .unwrap();
+}
+
+#[test]
+fn cli_codex_and_cursor_fail_closed_before_command_runs() {
+    for provider in ["codex", "cursor"] {
+        let f = Fixture::new("printf unexpected > \"$1\"");
+        let marker = f.root.path().join("provider-started");
+        let mut packet = f.packet();
+        packet["provider"] = provider.into();
+        let packet_path = f.root.path().join("task.json");
+        fs::write(&packet_path, serde_json::to_vec(&packet).unwrap()).unwrap();
+        let output = Command::new(env!("CARGO_BIN_EXE_heleos-worker-runner"))
+            .arg("--task")
+            .arg(&packet_path)
+            .arg("--source")
+            .arg(&f.source)
+            .arg("--workspace-root")
+            .arg(&f.workspace)
+            .args(["--provider", provider, "--git", "/usr/bin/git"])
+            .arg("--command")
+            .arg(&f.provider)
+            .arg("--")
+            .arg(&marker)
+            .output()
+            .unwrap();
+        assert_eq!(output.status.code(), Some(2));
+        let value: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
+        assert_eq!(value["code"], "invalid_configuration");
+        assert!(!marker.exists());
+        f.assert_cleaned();
+    }
+}
+
 // Omitting the kernel wrapper must fail these tests: the fixture deliberately
 // attempts real host writes and refuses success when any outside write works.
 #[cfg(target_os = "macos")]

@@ -1,6 +1,6 @@
 # Local guarded worker runner
 
-This crate executes one explicitly configured Claude Code or Kimi command in an
+This crate executes one explicitly configured Claude Code, Kimi, or Grok command in an
 independent local Git clone detached at a validated task's exact base. It does
 not create a source worktree registration, share object hardlinks, fetch, push,
 merge, create a candidate commit, or run acceptance commands.
@@ -9,7 +9,9 @@ The library exposes `run_json(input, config)` for preserving original JSON bytes
 and `run(validated_task, config)` for already-validated callers. Both return a
 typed `RunResult` or `RunError`. Provider input is a bounded generated prompt on
 stdin; the executable and ordered arguments are passed directly to `Command`.
-Only `claude_code` and `kimi` are admitted in this slice.
+Only `claude_code`, `kimi`, and `grok` are admitted in this slice; `codex` and
+`cursor` remain unsupported. Grok admission has local-fixture coverage only,
+without live invocation or authentication evidence.
 
 ## CLI
 

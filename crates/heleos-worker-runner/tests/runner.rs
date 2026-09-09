@@ -381,19 +381,53 @@ fn overlapping_workspace_roots_are_rejected_before_creation() {
 }
 
 #[test]
-fn kimi_is_admitted_and_other_protocol_providers_are_not() {
+fn kimi_is_admitted() {
     let f = Fixture::new("printf kimi > allowed/new");
     let mut config = f.config();
     config.provider.provider = Provider::Kimi;
     let mut packet = f.packet();
     packet["provider"] = "kimi".into();
     assert!(run(&validate(&packet), &config).is_ok());
-    for provider in ["codex", "grok", "cursor"] {
-        packet["provider"] = provider.into();
+}
+
+// Break caught: rejecting Grok or treating it as another provider prevents the
+// configured implementation command from yielding a Grok-bound handoff.
+#[test]
+fn grok_is_admitted_for_implementation_with_validated_handoff() {
+    let f = Fixture::new("printf grok-fixture > allowed/new");
+    let mut config = f.config();
+    config.provider.provider = Provider::Grok;
+    let mut packet = f.packet();
+    packet["provider"] = "grok".into();
+    let task = validate(&packet);
+    let result = run(&task, &config).unwrap();
+    assert_eq!(result.handoff.document().provider, Provider::Grok);
+    assert_eq!(result.handoff.document().changed_paths, ["allowed/new"]);
+    assert_eq!(
+        fs::read(result.checkout_path().join("allowed/new")).unwrap(),
+        b"grok-fixture"
+    );
+    validate_handoff_json(result.handoff.canonical_json(), &task).unwrap();
+}
+
+// Break caught: broadening the admission gate must not launch a configured
+// Codex/Cursor command, even when its provider matches the packet exactly.
+#[test]
+fn codex_and_cursor_fail_closed_before_implementation_command_runs() {
+    for (name, provider) in [("codex", Provider::Codex), ("cursor", Provider::Cursor)] {
+        let f = Fixture::new("printf unexpected > \"$1\"");
+        let marker = f.root.path().join("provider-started");
+        let mut config = f.config();
+        config.provider.provider = provider;
+        config.provider.args.push(marker.clone().into_os_string());
+        let mut packet = f.packet();
+        packet["provider"] = name.into();
         assert_eq!(
             run(&validate(&packet), &config).unwrap_err().code,
             FailureCode::UnsupportedProvider
         );
+        assert!(!marker.exists());
+        f.assert_cleaned();
     }
 }
 

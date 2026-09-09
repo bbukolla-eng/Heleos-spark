@@ -266,7 +266,10 @@ fn run_inner(
     if assignment.mode != Mode::Implementation {
         return Err(RunError::new(FailureCode::UnsupportedMode));
     }
-    if !matches!(assignment.provider, Provider::ClaudeCode | Provider::Kimi) {
+    if !matches!(
+        assignment.provider,
+        Provider::ClaudeCode | Provider::Kimi | Provider::Grok
+    ) {
         return Err(RunError::new(FailureCode::UnsupportedProvider));
     }
     if assignment.provider != config.provider.provider {
