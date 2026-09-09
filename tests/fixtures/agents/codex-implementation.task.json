@@ -1,0 +1,29 @@
+{
+  "schema": "heleos.worker-task/v1",
+  "task_id": "synthetic-codex-001",
+  "provider": "codex",
+  "mode": "implementation",
+  "base_commit": "af526a3c9c7ad93f360b6629e9b592a81787b341",
+  "objective": "Synthetic exercise: implement integer minimum and its equal-value test in the assigned example files.",
+  "allowed_paths": [
+    "examples/agent-protocol/codex/min.rs",
+    "examples/agent-protocol/codex/min_test.rs"
+  ],
+  "forbidden_paths": [
+    "Cargo.lock",
+    "Cargo.toml",
+    "governance"
+  ],
+  "input_data_class": "PUBLIC",
+  "egress_policy": "approved_external",
+  "instruction_sha256": {
+    "AGENTS.md": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "acceptance_commands": [
+    "git diff --check -- examples/agent-protocol/codex"
+  ],
+  "limits": {
+    "max_actions": 20,
+    "max_duration_seconds": 600
+  }
+}

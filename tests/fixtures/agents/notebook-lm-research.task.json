@@ -1,0 +1,28 @@
+{
+  "schema": "heleos.worker-task/v1",
+  "task_id": "synthetic-notebook-lm-001",
+  "provider": "notebook_lm",
+  "mode": "research",
+  "base_commit": "af526a3c9c7ad93f360b6629e9b592a81787b341",
+  "objective": "Synthetic exercise: compare fictional public source A and source B, separating cited claims from inference.",
+  "allowed_paths": [
+    "artifacts/agent-protocol/notebook-lm/research.md"
+  ],
+  "forbidden_paths": [
+    "Cargo.toml",
+    "crates",
+    "governance"
+  ],
+  "input_data_class": "PUBLIC",
+  "egress_policy": "approved_external",
+  "instruction_sha256": {
+    "AGENTS.md": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "acceptance_commands": [
+    "test -s artifacts/agent-protocol/notebook-lm/research.md"
+  ],
+  "limits": {
+    "max_actions": 10,
+    "max_duration_seconds": 300
+  }
+}
