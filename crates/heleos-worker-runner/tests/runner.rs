@@ -390,6 +390,134 @@ fn kimi_is_admitted() {
     assert!(run(&validate(&packet), &config).is_ok());
 }
 
+// Break caught: a state-root request must stop at the adapter boundary, before
+// the provider can run, while preserving exit 78 as retained runner evidence.
+fn kimi_fixture_python() -> std::path::PathBuf {
+    #[cfg(target_os = "macos")]
+    {
+        // /usr/bin/python3 is an Xcode shim that attempts an out-of-root cache
+        // write. Resolve the actual interpreter before applying containment.
+        let output = std::process::Command::new("/usr/bin/xcrun")
+            .args(["--find", "python3"])
+            .output()
+            .unwrap();
+        assert!(output.status.success());
+        String::from_utf8(output.stdout).unwrap().trim().into()
+    }
+    #[cfg(not(target_os = "macos"))]
+    {
+        "/usr/bin/python3".into()
+    }
+}
+
+#[test]
+fn kimi_unavailable_state_root_retains_typed_refusal_without_provider_launch() {
+    for contained in [false, true] {
+        if contained && !cfg!(target_os = "macos") {
+            continue;
+        }
+        let f = Fixture::new("printf launched > allowed/provider-started");
+        let mut config = f.config();
+        config.cleanup_on_failure = false;
+        config.provider.provider = Provider::Kimi;
+        config.provider.executable = kimi_fixture_python();
+        let adapter = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../../scripts/provider-adapters/kimi-stdin.py")
+            .canonicalize()
+            .unwrap();
+        let state_root = f.root.path().join("owner worker state");
+        fs::create_dir(&state_root).unwrap();
+        // Synthetic credential bytes never belong in retained run evidence.
+        fs::write(
+            state_root.join("credentials"),
+            b"SYNTHETIC_AUTH_DO_NOT_COPY",
+        )
+        .unwrap();
+        config.provider.args = vec![
+            "-B".into(),
+            adapter.into_os_string(),
+            "--kimi-executable".into(),
+            f.provider.clone().into_os_string(),
+            "--worker-state-root".into(),
+            state_root.clone().into_os_string(),
+        ];
+        if contained {
+            config.containment = heleos_worker_runner::ContainmentMode::MacosSeatbelt;
+        }
+        let mut packet = f.packet();
+        packet["provider"] = "kimi".into();
+        let error = run(&validate(&packet), &config).unwrap_err();
+        assert_eq!(error.code, FailureCode::ProviderExit);
+        assert_eq!(error.exit_code, Some(78));
+        assert!(error.stdout.bytes.is_empty());
+        assert_eq!(
+            error.stderr.bytes,
+            b"kimi-stdin: read-only authentication/runtime separation unavailable\n"
+        );
+        let checkout = error.checkout_path.as_ref().unwrap();
+        assert!(!checkout.join("allowed/provider-started").exists());
+        let run_directory = error.run_directory.as_ref().unwrap();
+        assert_eq!(fs::read_dir(run_directory.join("home")).unwrap().count(), 0);
+        assert_eq!(fs::read_dir(run_directory.join("tmp")).unwrap().count(), 0);
+        assert_eq!(fs::read_dir(&state_root).unwrap().count(), 1);
+        assert_eq!(
+            fs::read(state_root.join("credentials")).unwrap(),
+            b"SYNTHETIC_AUTH_DO_NOT_COPY"
+        );
+        let evidence: serde_json::Value =
+            serde_json::from_slice(&fs::read(run_directory.join("failure.json")).unwrap()).unwrap();
+        assert_eq!(evidence["code"], "provider_exit");
+        assert_eq!(evidence["exit_code"], 78);
+        for name in ["prompt.txt", "stdout.bin", "stderr.bin", "failure.json"] {
+            assert!(
+                !String::from_utf8_lossy(&fs::read(run_directory.join(name)).unwrap())
+                    .contains("SYNTHETIC_AUTH_DO_NOT_COPY")
+            );
+        }
+    }
+}
+
+// Break caught: probe mode must never dispatch the provider or claim an
+// unreviewed executable has a safe state separation capability.
+#[test]
+fn kimi_state_probe_has_machine_readable_unavailable_runner_evidence() {
+    let f = Fixture::new("printf launched > allowed/provider-started");
+    let mut config = f.config();
+    config.cleanup_on_failure = false;
+    config.provider.provider = Provider::Kimi;
+    config.provider.executable = kimi_fixture_python();
+    config.provider.args = vec![
+        "-B".into(),
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../../scripts/provider-adapters/kimi-stdin.py")
+            .into_os_string(),
+        "--kimi-executable".into(),
+        f.provider.clone().into_os_string(),
+        "--probe-state-layout".into(),
+    ];
+    #[cfg(target_os = "macos")]
+    {
+        config.containment = heleos_worker_runner::ContainmentMode::MacosSeatbelt;
+    }
+    let mut packet = f.packet();
+    packet["provider"] = "kimi".into();
+    let error = run(&validate(&packet), &config).unwrap_err();
+    assert_eq!(error.code, FailureCode::ProviderExit);
+    assert_eq!(error.exit_code, Some(78));
+    assert!(error.stderr.bytes.is_empty());
+    let capability: serde_json::Value = serde_json::from_slice(&error.stdout.bytes).unwrap();
+    assert_eq!(capability["schema"], "heleos.kimi-state-capability/v1");
+    assert_eq!(capability["available"], false);
+    assert_eq!(capability["reason"], "unverified_executable");
+    assert!(
+        !error
+            .checkout_path
+            .unwrap()
+            .join("allowed/provider-started")
+            .exists()
+    );
+}
+
 // Break caught: rejecting Grok or treating it as another provider prevents the
 // configured implementation command from yielding a Grok-bound handoff.
 #[test]

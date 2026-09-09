@@ -17,6 +17,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import runpy
 
 
 ADAPTER = (
@@ -32,6 +33,8 @@ NUL_INPUT = b"kimi-stdin: prompt contains NUL\n"
 LAUNCH_FAILED = b"kimi-stdin: provider launch failed\n"
 SIGNALLED = b"kimi-stdin: provider terminated by signal\n"
 READ_FAILED = b"kimi-stdin: prompt read failed\n"
+STATE_UNAVAILABLE = b"kimi-stdin: read-only authentication/runtime separation unavailable\n"
+PROBE_FAILED = b"kimi-stdin: executable capability probe failed\n"
 
 
 @unittest.skipUnless(os.name == "posix", "executable-script fixtures require POSIX")
@@ -275,6 +278,93 @@ class KimiStdinTests(unittest.TestCase):
         for arguments in cases:
             with self.subTest(argument_count=len(arguments)):
                 self.assert_rejected(self.invoke(arguments=arguments), 64, USAGE)
+
+    def test_state_probe_reads_executable_without_running_it_or_reading_prompt(self):
+        # Break caught: launching a version/help command can load auth or write
+        # runtime files; an executable-byte probe must never execute the file.
+        self.write_fake("raise RuntimeError('MUST_NOT_EXECUTE')\n")
+        with tempfile.TemporaryFile(dir=self.root) as prompt:
+            prompt.write(b"PRIVATE_PROMPT")
+            prompt.seek(0)
+            result = subprocess.run(
+                [sys.executable, "-B", str(ADAPTER), "--kimi-executable",
+                 str(self.fake), "--probe-state-layout"],
+                stdin=prompt, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                timeout=10, check=False,
+            )
+            self.assertEqual(prompt.tell(), 0)
+        self.assertEqual(result.returncode, 78, result.stderr)
+        self.assertEqual(result.stderr, b"")
+        self.assertEqual(json.loads(result.stdout), {
+            "schema": "heleos.kimi-state-capability/v1",
+            "available": False,
+            "reason": "unverified_executable",
+            "read_only_auth_writable_runtime": False,
+        })
+
+    def test_reviewed_build_and_unknown_digest_both_refuse_split_state(self):
+        # Exact-byte admission prevents a same-version replacement from
+        # inheriting the reviewed build's capability classification.
+        adapter = runpy.run_path(str(ADAPTER))
+        classify = adapter.get("state_capability")
+        self.assertTrue(callable(classify), "state capability classifier is absent")
+        known = classify("9f4337e10da47843f6b550474012a53ba8b30dd665f83b176a5cd479c5f7e859")
+        self.assertFalse(known["available"])
+        self.assertFalse(known["read_only_auth_writable_runtime"])
+        self.assertEqual(known["reason"], "combined_auth_runtime_root")
+        self.assertEqual(known["reviewed_version"], "0.34.0")
+        unknown = classify("0f4337e10da47843f6b550474012a53ba8b30dd665f83b176a5cd479c5f7e859")
+        self.assertEqual(unknown["reason"], "unverified_executable")
+        self.assertNotIn("reviewed_version", unknown)
+
+    def test_state_probe_refuses_nonregular_symlink_missing_and_oversized_executables(self):
+        link = self.root / "linked-executable"
+        link.symlink_to(self.fake)
+        fifo = self.root / "executable-fifo"
+        os.mkfifo(fifo, 0o700)
+        oversized = self.root / "oversized-executable"
+        with oversized.open("wb") as output:
+            output.truncate(268435457)
+        oversized.chmod(0o700)
+        for target in (link, fifo, self.root, self.root / "PRIVATE_MISSING", oversized):
+            with self.subTest(kind=target.name):
+                result = self.invoke(arguments=["--kimi-executable", str(target), "--probe-state-layout"])
+                self.assert_rejected(result, 78, PROBE_FAILED)
+        self.fake.chmod(0o600)
+        self.assert_rejected(self.invoke(arguments=[
+            "--kimi-executable", str(self.fake), "--probe-state-layout",
+        ]), 78, PROBE_FAILED)
+
+    def test_state_root_request_refuses_before_prompt_read_and_without_touching_root(self):
+        # Missing and existing roots both refuse: neither directory creation
+        # nor credential/config inspection is permitted by this capability.
+        for target in (self.root, self.root / "PRIVATE_MISSING_STATE"):
+            with self.subTest(existing=target.exists()):
+                with tempfile.TemporaryFile(dir=self.root) as prompt:
+                    prompt.write(b"PRIVATE_PROMPT")
+                    prompt.seek(0)
+                    result = subprocess.run(
+                        [sys.executable, "-B", str(ADAPTER), "--kimi-executable",
+                         str(self.fake), "--worker-state-root", str(target)],
+                        stdin=prompt, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                        timeout=10, check=False,
+                    )
+                    self.assert_rejected(result, 78, STATE_UNAVAILABLE)
+                    self.assertEqual(prompt.tell(), 0)
+        self.assertEqual(list(self.root.iterdir()), [self.fake])
+
+    def test_state_mode_flags_are_strict_and_cannot_smuggle_provider_flags(self):
+        for suffix in (
+            ["--worker-state-root"],
+            ["--worker-state-root", "relative"],
+            ["--worker-state-root", str(self.root), "--auto"],
+            ["--probe-state-layout", "--worker-state-root", str(self.root)],
+            ["--probe-state-layout", "--probe-state-layout"],
+        ):
+            with self.subTest(suffix=suffix):
+                self.assert_rejected(self.invoke(arguments=[
+                    "--kimi-executable", str(self.fake), *suffix,
+                ]), 64, USAGE)
 
 
 if __name__ == "__main__":
