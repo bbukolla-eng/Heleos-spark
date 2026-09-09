@@ -1,53 +1,60 @@
 # Account-level apps are recorded here; this registry does not configure them.
+# Captured GET evidence: .superpowers/sdd/2026-09-09-github-app-inventory/live-evidence.md
+# Observation window: 2026-09-09T07:53:56Z through 2026-09-09T07:57:06Z.
+# Repository activity refers to bbukolla-eng/Heleos-spark at that observation.
+# Public app metadata declares application permissions; it does not prove installation grants.
+# For all four apps, installation IDs, accepted permission upgrades, repository selection,
+# suspension, running implementation version/digest, webhook delivery, provider configuration,
+# service-terms acceptance, and actual egress remain unknown. Installation APIs returned 403/401.
 
 [[github_app]]
 name = "Azure Pipelines"
 origin = "account-level auto-install observed during repository creation"
-version_or_digest = "not inventoried"
+version_or_digest = "provider runtime version/digest unavailable from public GitHub metadata; public app id=9426; slug=azure-pipelines; owner=microsoft; metadata updated_at=2026-07-24T09:50:21Z"
 license_or_rights = "third-party service terms; no use admitted"
 data_class = "PROJECT_CONFIDENTIAL"
 owner = "repository owner"
-permissions = "not inventoried; no repository use authorized"
+permissions = "public application-declared: checks=write, contents=write, deployments=write, issues=write, metadata=read, pull_requests=write, statuses=write; actual installation grants, repository selection, and suspension unknown; no repository use authorized"
 egress = "prohibited pending owner decision"
-evaluation = "not evaluated"
+evaluation = "GET /apps/azure-pipelines returned 200; queued suites 92280774728 on sampled remote main 63ae39c3bc33dc8c8b4f05e5ff3dacbcb51d7184 and 90743415440 on ECC branch tip eb0586870e4177e36d0f761dd00677b353a5aaa3; inspected main suite had zero runs; queued suites do not establish provider execution or data transfer; owner disposition unresolved"
 rollback = "owner may restrict, suspend, or remove after inventory"
 disposition = "owner_decision_required"
 
 [[github_app]]
 name = "AWS Connector for GitHub"
 origin = "account-level auto-install observed during repository creation"
-version_or_digest = "not inventoried"
+version_or_digest = "provider runtime version/digest unavailable from public GitHub metadata; public app id=81054; slug=aws-connector-for-github; owner=AWS-CodeConnections; metadata updated_at=2026-05-20T16:11:47Z"
 license_or_rights = "third-party service terms; no use admitted"
 data_class = "PROJECT_CONFIDENTIAL"
 owner = "repository owner"
-permissions = "not inventoried; no repository use authorized"
+permissions = "public application-declared: actions=read, administration=write, contents=write, deployments=read, environments=read, issues=read, members=read, metadata=read, organization_hooks=write, organization_self_hosted_runners=write, pull_requests=write, repository_hooks=write, statuses=write; actual installation grants, repository selection, and suspension unknown; no repository use authorized"
 egress = "prohibited pending owner decision"
-evaluation = "not evaluated"
+evaluation = "GET /apps/aws-connector-for-github returned 200; no matching suite on sampled remote main 63ae39c3bc33dc8c8b4f05e5ff3dacbcb51d7184 or ECC branch tip eb0586870e4177e36d0f761dd00677b353a5aaa3; no matching named bot in paginated issue/review comments or AWS-named path in sampled main tree; checks permission not declared; these absences do not prove inactivity, uninstallation, or no egress; observed AWS Amplify app 43820 is distinct; owner disposition unresolved"
 rollback = "owner may restrict, suspend, or remove after inventory"
 disposition = "owner_decision_required"
 
 [[github_app]]
 name = "Amazon Q Developer"
 origin = "account-level auto-install observed during repository creation"
-version_or_digest = "not inventoried"
+version_or_digest = "provider runtime version/digest unavailable from public GitHub metadata; public app id=1220912; slug=amazon-q-developer; owner=Amazon-Q-Developer; metadata updated_at=2025-12-08T15:25:04Z"
 license_or_rights = "third-party service terms; no use admitted"
 data_class = "PROJECT_CONFIDENTIAL"
 owner = "repository owner"
-permissions = "not inventoried; no repository use authorized"
+permissions = "public application-declared: actions=write, administration=read, checks=write, contents=write, issues=write, metadata=read, organization_administration=read, pull_requests=write, workflows=write; actual installation grants, repository selection, and suspension unknown; no repository use authorized"
 egress = "prohibited pending owner decision"
-evaluation = "not evaluated"
+evaluation = "GET /apps/amazon-q-developer returned 200; queued suites 92280774953 on sampled remote main 63ae39c3bc33dc8c8b4f05e5ff3dacbcb51d7184 and 90743415772 on ECC branch tip eb0586870e4177e36d0f761dd00677b353a5aaa3; inspected main suite had zero runs; ten historical review comments by amazon-q-developer[bot], without performed_via_github_app attribution; main ruleset 22285340 requires integration 1220912; activity/configuration does not establish current installation scope or actual egress; owner disposition unresolved"
 rollback = "owner may restrict, suspend, or remove after inventory"
 disposition = "owner_decision_required"
 
 [[github_app]]
 name = "ECC Tools"
 origin = "account-level auto-install observed during repository creation"
-version_or_digest = "not inventoried"
+version_or_digest = "provider runtime version/digest unavailable from public GitHub metadata; public app id=2724203; slug=ecc-tools; owner=ECC-Tools; metadata updated_at=2026-03-19T21:26:06Z; remote .claude/ecc-tools.json declares manifest version=1.3, not an installed app version"
 license_or_rights = "third-party service terms; no use admitted"
 data_class = "PROJECT_CONFIDENTIAL"
 owner = "repository owner"
-permissions = "not inventoried; no repository use authorized"
+permissions = "public application-declared: contents=write, issues=write, metadata=read, pull_requests=write; actual installation grants, repository selection, and suspension unknown; no repository use authorized"
 egress = "prohibited pending owner decision"
-evaluation = "not evaluated"
+evaluation = "GET /apps/ecc-tools returned 200; 33 historical issue comments explicitly attributed to app id 2724203; ecc-tools[bot] PR #2 contained twelve commits and twelve changed files, merged by bbukolla-eng at 2026-09-01T08:52:52Z as d85bd86f4dcd5f64bc78ca24e2225bc995cfa1e8; generated .claude/ecc-tools.json observed on remote main 63ae39c3bc33dc8c8b4f05e5ff3dacbcb51d7184, blob 8af4a73ed1753eb7333408515a642b84f75575da; historical writes and owner merge do not establish current installation scope or replace the pending owner disposition"
 rollback = "owner may restrict, suspend, or remove after inventory"
 disposition = "owner_decision_required"
