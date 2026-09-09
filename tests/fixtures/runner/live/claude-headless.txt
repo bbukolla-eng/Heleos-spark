@@ -1,0 +1,2 @@
+PUBLIC synthetic Claude Code guarded write.
+No repository source was read or modified.

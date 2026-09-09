@@ -19,6 +19,9 @@ cargo run -p heleos-worker-runner --locked --offline -- \
   --command /absolute/path/to/claude \
   --git /usr/bin/git \
   --inherit-env HOME \
+  --inherit-env USER \
+  --inherit-env LOGNAME \
+  --inherit-env SHELL \
   -- -p --output-format json --no-session-persistence --safe-mode \
      --restricted --no-chrome --permission-mode acceptEdits \
      --permission-prompts none --tools Read,Write,Edit,Glob,Grep
@@ -36,14 +39,20 @@ cargo run -p heleos-worker-runner --locked --offline -- \
   --command /usr/bin/python3 \
   --git /usr/bin/git \
   --inherit-env HOME \
+  --inherit-env USER \
+  --inherit-env LOGNAME \
+  --inherit-env SHELL \
   -- -B /absolute/source-checkout/scripts/provider-adapters/kimi-stdin.py \
      --kimi-executable /absolute/path/to/kimi
 ```
 
-Add `--inherit-env PATH` only when the assigned worker genuinely needs the
-operator's tool path. Inherited values are explicit child-process inputs and are
-not copied into prompts or reports. The task's data and egress decision must be
-authorized independently before either provider is launched.
+The first authenticated macOS Claude run required the four identity/home values
+shown above for its owner-authorized keychain session after the runner cleared
+the ambient environment. Add `--inherit-env PATH` only when the assigned worker
+genuinely needs the operator's tool path. Inherited values are explicit
+child-process inputs and are not copied into prompts or reports. The task's data
+and egress decision must be authorized independently before either provider is
+launched.
 
 ## Before dispatch
 
