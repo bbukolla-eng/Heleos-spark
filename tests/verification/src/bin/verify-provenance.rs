@@ -1731,10 +1731,12 @@ mod secret_scan {
 
     const BASELINE_PATH: &str = "governance/secret-scan-baseline.toml";
     const BASELINE: &[u8] = include_bytes!("../../../../governance/secret-scan-baseline.toml");
-    const BASELINE_HASH: &str = "9824d4222256872805395cd2d898a308486b513146c626594a8b3a91d8d05d9b";
+    const BASELINE_HASH: &str = "4e04536718f7065ddc57c6d84cef0bebad84cf33f281382ca18288d27ddf91e6";
     const SOURCE: &str = "tests/verification/src/bin/verify-provenance.rs";
     const FIXTURE_CONTEXT_HASH: &str =
         "0b246dbefc1fa3faf4dab79a2ffccbec5f23f4e59a33fba924dee43bf83e6e87";
+    const WINDOWS_FIXTURE_CONTEXT_HASH: &str =
+        "ec0c12015eda85f6e7a64524ac5969b5a11fb893786a2a5339831c9674b53a27";
 
     fn string(v: &Value) -> Result<&str> {
         v.as_str()
@@ -1858,6 +1860,11 @@ mod secret_scan {
                 "generic-api-key" if value["File"] == "tests/test_api.py" => {
                     ["Idempotency", "-Key\": \"REDACTED\""].concat()
                 }
+                "generic-api-key"
+                    if history && value["File"] == "crates/heleos-worker-runner/src/lib.rs" =>
+                {
+                    "SECRET\", \"REDACTED\"".to_owned()
+                }
                 _ => return Err("secret-scan unadjudicated rule or path".into()),
             };
             ensure(
@@ -1942,7 +1949,7 @@ mod secret_scan {
                 && baseline["foundation_scope"] == "Foundation 0.1"
                 && baseline["expires_before"] == "Foundation 0.2"
                 && env!("CARGO_PKG_VERSION") == "0.1.0"
-                && baseline["expected_history_findings"] == 22
+                && baseline["expected_history_findings"] == 23
                 && baseline["expected_current_tree_allowances"] == 1,
             "secret-scan baseline schema, scanner, or release scope drift",
         )?;
@@ -1989,7 +1996,10 @@ mod secret_scan {
             ensure(
                 matches!(
                     class,
-                    "cwd_key_receipt" | "invalid_idempotency_fixture" | "verifier_marker_literals"
+                    "cwd_key_receipt"
+                        | "invalid_idempotency_fixture"
+                        | "verifier_marker_literals"
+                        | "windows_forbidden_path_fixture"
                 ),
                 "secret-scan unknown adjudication",
             )?;
@@ -1997,18 +2007,19 @@ mod secret_scan {
             entries.push((finding, class.to_owned()));
         }
         ensure(
-            expected.len() == 22
+            expected.len() == 23
                 && counts
                     == BTreeMap::from([
                         ("cwd_key_receipt".to_owned(), 20),
                         ("invalid_idempotency_fixture".to_owned(), 1),
                         ("verifier_marker_literals".to_owned(), 1),
+                        ("windows_forbidden_path_fixture".to_owned(), 1),
                     ]),
             "secret-scan baseline class/count drift",
         )?;
         let values = array(report)?;
         ensure(
-            values.len() == 22,
+            values.len() == 23,
             "secret-scan history count differs from complete adjudication",
         )?;
         let mut actual = BTreeSet::new();
@@ -2022,7 +2033,7 @@ mod secret_scan {
         }
         ensure(
             actual == expected,
-            "secret-scan history differs from all 22 exact adjudicated tuples",
+            "secret-scan history differs from all 23 exact adjudicated tuples",
         )?;
         Ok(entries)
     }
@@ -2159,6 +2170,27 @@ mod secret_scan {
                 ensure(
                     hash(format!("{}\n", block.join("\n")).as_bytes())? == FIXTURE_CONTEXT_HASH,
                     "secret-scan historical invalid-input fixture context changed",
+                )?;
+            }
+            "windows_forbidden_path_fixture" => {
+                ensure(
+                    finding.commit == "5f3619158ffb56e0df61a68bebd267de468b2f61"
+                        && finding.path == "crates/heleos-worker-runner/src/lib.rs"
+                        && finding.rule == "generic-api-key"
+                        && finding.start == 619
+                        && finding.end == 619,
+                    "secret-scan Windows forbidden-path fixture tuple mismatch",
+                )?;
+                let lines = std::str::from_utf8(bytes)?.split('\n').collect::<Vec<_>>();
+                let block = lines
+                    .get(614..632)
+                    .ok_or("secret-scan Windows forbidden-path fixture context truncated")?;
+                // The complete immutable test rejects case aliases of a forbidden
+                // path and accepts the distinct secret-public.txt sibling.
+                ensure(
+                    hash(format!("{}\n", block.join("\n")).as_bytes())?
+                        == WINDOWS_FIXTURE_CONTEXT_HASH,
+                    "secret-scan historical Windows forbidden-path fixture context changed",
                 )?;
             }
             "verifier_marker_literals" => {
@@ -2348,6 +2380,9 @@ mod secret_scan {
                 if finding.path == "tests/test_api.py" {
                     value["Match"] = json!(["Idempotency", "-Key\": \"REDACTED\""].concat());
                 }
+                if finding.path == "crates/heleos-worker-runner/src/lib.rs" {
+                    value["Match"] = json!("SECRET\", \"REDACTED\"");
+                }
             }
             value
         }
@@ -2385,12 +2420,89 @@ mod secret_scan {
         }
 
         #[test]
+        fn windows_forbidden_path_fixture_admits_only_the_exact_history_tuple() {
+            let finding = Finding {
+                fingerprint: "5f3619158ffb56e0df61a68bebd267de468b2f61:crates/heleos-worker-runner/src/lib.rs:generic-api-key:619".to_owned(),
+                commit: "5f3619158ffb56e0df61a68bebd267de468b2f61".to_owned(),
+                path: "crates/heleos-worker-runner/src/lib.rs".to_owned(),
+                rule: "generic-api-key".to_owned(),
+                start: 619,
+                end: 619,
+            };
+            let valid = report(&finding, true);
+            assert_eq!(Finding::read(&valid, true).unwrap(), finding);
+            let baseline = baseline(BASELINE).unwrap();
+            let mut complete = history(&baseline);
+            let index = complete
+                .as_array()
+                .unwrap()
+                .iter()
+                .position(|value| value["Fingerprint"] == finding.fingerprint)
+                .expect("the exact historical fixture must be adjudicated");
+            complete[index] = valid.clone();
+            assert_eq!(history_set(&baseline, &complete).unwrap().len(), 23);
+            for field in ["Commit", "File", "RuleID", "StartLine", "EndLine", "Match"] {
+                let mut candidate = complete.clone();
+                candidate[index][field] = match field {
+                    "Commit" => json!("a".repeat(40)),
+                    "File" => json!("crates/other/src/lib.rs"),
+                    "RuleID" => json!("private-key"),
+                    "StartLine" | "EndLine" => json!(620),
+                    _ => json!("REDACTED"),
+                };
+                if field == "StartLine" {
+                    candidate[index]["EndLine"] = json!(620);
+                }
+                candidate[index]["Fingerprint"] = json!(format!(
+                    "{}:{}:{}:{}",
+                    candidate[index]["Commit"].as_str().unwrap(),
+                    candidate[index]["File"].as_str().unwrap(),
+                    candidate[index]["RuleID"].as_str().unwrap(),
+                    candidate[index]["StartLine"].as_u64().unwrap(),
+                ));
+                assert!(history_set(&baseline, &candidate).is_err(), "field {field}");
+            }
+            let mut wrong_class = baseline.clone();
+            wrong_class["history"][index]["adjudication"] = json!("cwd_key_receipt");
+            assert!(history_set(&wrong_class, &complete).is_err());
+            let mut current = valid;
+            current.as_object_mut().unwrap().remove("Link");
+            current["Commit"] = json!("");
+            current["Fingerprint"] =
+                json!("crates/heleos-worker-runner/src/lib.rs:generic-api-key:619");
+            assert!(current_set(&baseline, &json!([current]), &[], &source(&baseline)).is_err());
+
+            let object = bounded(
+                Command::new("git").args([
+                    "cat-file",
+                    "blob",
+                    &format!("{}:{}", finding.commit, finding.path),
+                ]),
+                Duration::from_secs(30),
+            )
+            .unwrap();
+            object
+                .require_success("historical forbidden-path fixture")
+                .unwrap();
+            let class = "windows_forbidden_path_fixture";
+            assert!(historical_context(class, &finding, &object.stdout, &[]).is_ok());
+            let changed = std::str::from_utf8(&object.stdout)
+                .unwrap()
+                .replace("FailureCode::OutOfScope", "FailureCode::InvalidInput");
+            assert!(historical_context(class, &finding, changed.as_bytes(), &[]).is_err());
+            assert!(historical_context(class, &finding, b"truncated", &[]).is_err());
+            let mut shifted = finding;
+            shifted.end += 1;
+            assert!(historical_context(class, &shifted, &object.stdout, &[]).is_err());
+        }
+
+        #[test]
         fn exact_history_is_one_to_one_and_report_order_is_irrelevant() {
             let baseline = baseline(BASELINE).unwrap();
             let mut report = history(&baseline);
-            assert_eq!(history_set(&baseline, &report).unwrap().len(), 22);
+            assert_eq!(history_set(&baseline, &report).unwrap().len(), 23);
             report.as_array_mut().unwrap().reverse();
-            assert_eq!(history_set(&baseline, &report).unwrap().len(), 22);
+            assert_eq!(history_set(&baseline, &report).unwrap().len(), 23);
             for case in 0..5 {
                 let mut candidate = report.clone();
                 match case {
