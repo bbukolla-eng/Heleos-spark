@@ -1,6 +1,6 @@
 # Current repository status
 
-Updated: 2026-09-08 21:53 UTC. This snapshot records local integration through Task 9 and a passing local Task 10 supply-chain implementation; it is not a production-release acceptance statement.
+Updated: 2026-09-09 02:15 UTC. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, and the isolated agent-controller build; it is not a production-release acceptance statement.
 
 ## Current state
 
@@ -9,6 +9,16 @@ Tasks 7-9 are complete, committed, converged, and locally integrated. Task 10's 
 ## Next local finish line
 
 The completed local implementation checkpoint and this documentation-only continuity child are the authorized fast-forward landing in visible local `main`. The next uncompleted gate is explicit owner disposition for the four GitHub Apps before any workflow write. Preserve the completed one-time lock normalization, all three byte-frozen PDF source-closure manifests, the admitted SBOM, and Tasks 7-9 evidence. The owner ordered no further review rounds or reviewer dispatches; deterministic checks, exact-byte controls, and causal failure evidence remain required.
+
+## Active isolated agent-controller build
+
+Branch `build/agent-control-foundation` in `.worktrees/agent-control-foundation` contains macOS containment commit `28daf4c0f213540a05f1928f4936ee641250686e` and Kimi adapter repair `df0233b6812d1f46de3a714ec1a647f7a245a81f`. It contains the deterministic worker protocol, guarded Claude/Kimi runner, retained live pre-containment Claude/Kimi write proofs, and an opt-in macOS Seatbelt backend. The backend uses canonical allowed roots and a fixed system policy to deny provider-tree path writes outside the exact-base checkout and ephemeral home/temp directories; default mode remains `none`.
+
+Fresh controller checks for the containment commit passed: 3 CLI plus 26 runner tests, strict package and full-workspace Clippy, full-workspace formatting, Windows MSVC target cross-compilation, staged-tree whitespace checks, and the normal provenance gate. The real macOS test proves allowed-root writes and denial of direct source-host, run-sibling, descendant, and symlink-escape writes with literal metacharacter-bearing paths. It does not restrict reads or network, prove authenticated Claude/Kimi compatibility under Seatbelt, provide Windows runtime containment, or alter Foundation 0.1 acceptance.
+
+Live contained launches are now causally recorded in `crates/heleos-worker-runner/evidence/live-seatbelt-provider-runs.md`. Claude initialized its authorized session and reached the service, then received an account HTTP 429 before any tokens or tool iteration. Kimi exposed a real adapter defect, fixed in `df0233b` with 20/20 tests on Python 3.14 and 3.9; its next launch reached Kimi 0.34 but Kimi's combined config/credential/session/log data root attempted a real-home storage write and was denied. Both retained checkouts and sources are clean.
+
+The next isolated finish line is a Claude PUBLIC-only contained write after its provider limit resets. Kimi remains write-disabled under Seatbelt until an owner-initialized dedicated worker data root or provider-supported split read-only-auth/writable-runtime capability is implemented; credentials must not be copied and the strict allowed roots must not be widened merely to force success. Provider-local limits do not undo the kernel tests or stop unrelated local implementation. Do not merge this branch into the Foundation 0.1 candidate before that candidate is accepted, and do not push it without a separate owner-authorized remote handoff.
 
 ## Later human and platform gates
 

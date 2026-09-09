@@ -83,8 +83,11 @@ and natively tested Job Object/restricted-process backend.
 - Locked/offline strict package Clippy, package formatting, Windows MSVC target
   cross-compilation, `git diff --check`, and the normal repository provenance
   gate pass. Cross-compilation is not native Windows execution evidence.
-- No authenticated Claude or Kimi process has run under this new mode yet. The
-  earlier live write proofs establish provider routing, not contained-provider
-  compatibility.
+- Live contained launches are recorded in
+  `crates/heleos-worker-runner/evidence/live-seatbelt-provider-runs.md`. Claude
+  reached its service but was account-rate-limited before a tool turn. Kimi
+  launched after the drained-stdin adapter fix, then its combined credential and
+  runtime data root attempted a denied real-home write. No contained provider
+  write success is claimed.
 - No merge, push, workflow publication, production write, Foundation acceptance,
   or Windows containment claim occurred.
