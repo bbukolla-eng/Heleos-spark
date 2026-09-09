@@ -5,3 +5,4 @@ __pycache__/
 /target/
 /.heleos/
 /research-cache/
+/OWNER_ACTION_REQUIRED/*.json

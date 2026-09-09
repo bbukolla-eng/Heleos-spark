@@ -88,6 +88,70 @@ registry exception is an unstaged exact result from the same packet; staged,
 mode, rename, and unrelated tracked changes do not qualify.
 Neither the schema nor the command can substitute for authentic owner evidence.
 
+## Prepare an unresolved draft
+
+The exact preparation CLI is:
+
+```text
+python3 scripts/prepare-github-app-decisions.py [--repo PATH] --output PATH [--human]
+```
+
+`--repo` defaults to `.` and resolves the unique registered visible-main checkout,
+including from a nested linked worktree. `--output` is required: use a canonical
+direct `.json` child of that main checkout's visible
+[OWNER_ACTION_REQUIRED](../../OWNER_ACTION_REQUIRED/README.md) directory. The
+directory must already exist and be a real, non-symlink directory; the target
+must be ignored, untracked, and absent. The generator never creates directories.
+After integrating the generator and its directory README into main, prepare a
+draft with a new filename:
+
+```sh
+python3 /Users/bekim/Heleos-spark/scripts/prepare-github-app-decisions.py \
+  --repo /Users/bekim/Heleos-spark \
+  --output /Users/bekim/Heleos-spark/OWNER_ACTION_REQUIRED/github-app-decisions.json \
+  --human
+```
+
+The indented UTF-8 JSON draft has one terminal newline and the seven root fields
+in the contract order above. It fills the schema, repository, inspected full
+main HEAD, SHA-256 of the exact committed registry bytes, and intended recipient
+`Bekim Bukolla`. Its `apps` records follow the canonical registry order listed
+above. Only each App's `name` is populated: all seven remaining fields and the
+root `decision_date` are JSON `null`, exactly 29 unresolved fields. No current
+registry decisions, metadata, permissions, evaluations, dates, or evidence
+references are copied. The untouched draft must fail the schema and applier.
+
+Preparation requires unchanged tracked main files and a regular working registry
+whose identity, Git executable classification, bytes, and index entry match
+committed state. Its full live mode must remain stable during the operation; Git
+does not attest arbitrary owner/group permission bits. It rechecks
+HEAD, registry, and destination-parent identity before publication. A private
+same-directory temporary regular file is written and fsynced, then published
+atomically without replacement. Every existing target type, even identical bytes,
+and competing creation is rejected. Final bytes, identity, hash, and private mode
+are verified; the containing directory is fsynced where supported. There is no
+force, overwrite, update, refresh, apply, network, or evidence-discovery mode.
+
+Default output is deterministic compact JSON with exactly `schema_version`,
+`status`, `main`, `registry`, `packet`, `unresolved_fields`, `write_performed`,
+`account_changes_performed`, `owner_authenticity_verified`, `release_authority`,
+and `errors`. Success is `PREPARED` (exit 0); failure is `FAIL` (exit 1), with
+fixed diagnostics. `unresolved_fields` is 29; `write_performed` becomes true only
+after publication. The three authority booleans remain false. `--human` provides
+concise output with the same success/failure semantics.
+
+The generator makes no decisions, validates no evidence, does not authenticate
+the owner, and grants no release authority. Naming the recipient is not a
+signature. It changes no accounts, workflows, registry, Git HEAD, or index;
+its only intended persistent write is the requested ignored draft.
+
+Inspect the bound state and have the owner fill all 29 unresolved fields with
+actual choices, date, and supporting evidence. If HEAD or registry changes,
+inspect the new state and prepare a new filename; preserve the old draft and do
+not merely replace its hashes. The command cannot refresh an existing draft.
+Then follow the dry-run and explicit application flow below, using the completed
+draft's absolute path as `--packet`.
+
 ## Inspect, dry-run, then apply
 
 Inspect the visible main checkout and compute the identities without changing

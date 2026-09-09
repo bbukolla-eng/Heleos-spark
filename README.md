@@ -15,6 +15,7 @@ Shared agent rules and all provider entrypoints are in [AGENTS.md](AGENTS.md); p
 - [Core implementation](crates/heleos-core/src/lib.rs)
 - [Integration tests](crates/heleos-core/tests/)
 - [Governance registries](governance/)
+- [Owner action required](OWNER_ACTION_REQUIRED/README.md): prepare a local GitHub App draft with 29 unresolved fields using the [decision guide](docs/operations/github-app-decisions.md#prepare-an-unresolved-draft); preparation supplies no decisions or release authority.
 - [Foundation implementation contract](docs/superpowers/plans/2026-08-28-heleos-spark-foundation-0.1.md)
 
 Foundation's original exact-path commits and evidence remain in `.worktrees/foundation-0.1-build`; use [CURRENT_STATUS.md](CURRENT_STATUS.md) to determine what has been locally integrated and what gates remain. Agent candidates and recovery copies stay separate inside `.worktrees`; they are not temporary directories and must not be flattened into this checkout.
