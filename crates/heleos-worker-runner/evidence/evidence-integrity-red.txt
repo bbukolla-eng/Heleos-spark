@@ -1,0 +1,6 @@
+Command: cargo test -p heleos-worker-runner --locked --offline --test runner provider_cannot_rewrite_preserved_assignment_evidence -- --exact
+Exit: 101
+Observed before fix: provider_cannot_rewrite_preserved_assignment_evidence FAILED.
+Failure: called Result::unwrap_err() on an Ok RunResult.
+Cause: provider rewrote ../task.original.json; proposal inventory alone did not detect artifact tampering.
+Fix: original task, canonical task, canonical digest, and generated prompt are checked against controller-held bytes through the owned directory handle before handoff.
