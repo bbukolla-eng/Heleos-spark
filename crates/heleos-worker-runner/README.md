@@ -91,7 +91,7 @@ validates the same 65,536-byte UTF-8/NUL boundary and forwards original stdin
 bytes with no shell. Its fixed provider argv is:
 
 ```text
-/absolute/cursor-install/index.js --disable-project-configs --exclude-workspace-context --print --force --sandbox enabled --output-format stream-json --disable-auto-update --model composer-2.5
+/absolute/cursor-install/index.js --disable-project-configs --exclude-workspace-context --print --force --sandbox enabled --output-format stream-json --disable-auto-update --model gpt-5.6-terra-high
 ```
 
 `--force` bypasses provider tool confirmations so print mode can apply writes;
@@ -103,7 +103,7 @@ help/parser and source confirm the fixed options, including its hidden
 `--disable-auto-update`, `--disable-project-configs`, and
 `--exclude-workspace-context` controls. Node launches the entrypoint directly;
 the provider shell wrapper never runs. The controller separately
-confirmed an authorized login and the account's `composer-2.5` model; that
+confirmed an authorized login and the account's `gpt-5.6-terra-high` model; that
 exact model is now fixed here. Live task `cursor-live-seatbelt-write-001` failed
 before a model/write: Apple Python attempted a denied xcrun-cache write,
 the shell wrapper attempted denied `/dev/null` writes, and the fresh HOME
@@ -136,9 +136,14 @@ Task `cursor-live-seatbelt-write-003` reached the authenticated model service
 under macOS Seatbelt, then failed before any tool/write because the previous
 fixed `gpt-5.6-sol-high` model had exhausted its usage limit. The provider
 instructed switching models and reported a September 14, 2026 reset. The
-controller selected the available Cursor-native `composer-2.5` model; only
-the fixed model value changes in this repair. Successful generation with the
-new model remains unverified until a distinct live task completes.
+controller selected the available Cursor-native `composer-2.5` model for task
+`cursor-live-seatbelt-write-004`. That task also failed before any write: the
+service rejected workspace-context exclusion for the user, team, or selected
+model. Its checkout remains clean. The fixed model is now
+`gpt-5.6-terra-high` from the controller's authenticated inventory; fixed
+`--exclude-workspace-context` and every containment/privacy/runtime control
+remain enabled. Successful generation with the new model remains unverified
+until a distinct live task completes. Tasks 001-004 must not be reused.
 
 Cursor consumes piped stdin only when no positional prompt is supplied, then
 trims its surrounding whitespace internally; the adapter itself preserves

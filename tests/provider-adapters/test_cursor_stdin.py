@@ -49,7 +49,7 @@ class CursorStdinTests(contracts.CodexStdinTests):
             "argv": [str(self.fake), str(self.entrypoint), "--disable-project-configs",
                      "--exclude-workspace-context", "--print", "--force", "--sandbox", "enabled",
                      "--output-format", "stream-json", "--disable-auto-update",
-                     "--model", "composer-2.5"],
+                     "--model", "gpt-5.6-terra-high"],
             "cwd": str(self.root), "stdin": prompt,
         })
         self.assertEqual(set(self.root.iterdir()), {self.fake, self.entrypoint})
