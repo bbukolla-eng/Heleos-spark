@@ -32,7 +32,7 @@ struct Arguments {
     max_output_bytes: usize,
     #[arg(long)]
     cleanup_on_failure: bool,
-    /// Restrict provider path writes to checkout/home/tmp on supported macOS hosts.
+    /// Restrict provider path writes to checkout/home/tmp using the selected host backend.
     #[arg(long, value_enum, default_value = "none")]
     containment: ContainmentMode,
     /// Explicit environment names to inherit; values never enter the prompt/report.

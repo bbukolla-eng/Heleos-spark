@@ -9,6 +9,7 @@ members = [
     "crates/heleos-test-fixtures",
     "crates/heleos-worker-protocol",
     "crates/heleos-worker-runner",
+    "crates/heleos-worker-windows",
     "tests/verification",
 ]
 

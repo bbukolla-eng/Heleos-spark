@@ -27,6 +27,18 @@ path = "tests/runner.rs"
 name = "cli"
 path = "tests/cli.rs"
 
+[[test]]
+name = "platform"
+path = "tests/platform.rs"
+
+[[test]]
+name = "windows_containment"
+path = "tests/windows_containment.rs"
+
+[[bin]]
+name = "heleos-worker-runner-test-provider"
+path = "tests/support/windows_provider.rs"
+
 [dependencies]
 heleos-worker-protocol = { path = "../heleos-worker-protocol" }
 clap.workspace = true
@@ -38,3 +50,8 @@ thiserror.workspace = true
 
 [target.'cfg(unix)'.dependencies]
 rustix = { workspace = true, features = ["process"] }
+
+[target.'cfg(windows)'.dependencies]
+heleos-worker-windows = { path = "../heleos-worker-windows" }
+cap-primitives.workspace = true
+windows-sys.workspace = true

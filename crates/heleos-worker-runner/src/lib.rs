@@ -1,16 +1,19 @@
 //! Local, guarded proposal execution for explicitly configured Claude Code and Kimi commands.
 //!
-//! Optional macOS Seatbelt containment restricts provider host-path writes.
+//! Explicit macOS or Windows containment restricts provider host-path writes.
 //! Reads, network, credentials, and provider authority need separate authorization.
 //! Only one provider invocation is counted; internal provider actions are not attested.
 //! Successful proposals remain `blocked` pending controller acceptance checks.
 #![forbid(unsafe_code)]
 
-#[cfg(unix)]
+#[cfg(any(unix, windows))]
 mod containment;
-#[cfg(unix)]
+#[cfg(any(unix, windows))]
 mod filesystem;
 #[cfg(unix)]
+mod process;
+#[cfg(windows)]
+#[path = "process_windows.rs"]
 mod process;
 
 use heleos_worker_protocol::{Handoff, Provider, Task, Validated};
@@ -23,7 +26,7 @@ pub const RUN_SCHEMA: &str = "heleos.worker-run/v1";
 pub const FAILURE_SCHEMA: &str = "heleos.worker-run-failure/v1";
 pub const HARD_BYTE_LIMIT: usize = 1_048_576;
 
-/// Opt-in host-path write restriction. Neither mode restricts reads or network.
+/// Explicit host-path write restriction. No mode restricts reads or network.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize, Deserialize, clap::ValueEnum)]
 #[serde(rename_all = "snake_case")]
 #[value(rename_all = "snake_case")]
@@ -31,6 +34,7 @@ pub enum ContainmentMode {
     #[default]
     None,
     MacosSeatbelt,
+    WindowsRestrictedTokenJob,
 }
 
 #[derive(Debug)]
@@ -119,7 +123,7 @@ pub enum FailureCode {
     UnsupportedMode,
     #[error("provider has no admitted implementation adapter")]
     UnsupportedProvider,
-    #[error("runner requires the Unix process-group backend")]
+    #[error("runner has no backend for this platform")]
     UnsupportedPlatform,
     #[error("requested host-write containment backend is unavailable")]
     ContainmentUnavailable,
@@ -207,8 +211,9 @@ impl RunResult {
             "internal_provider_actions_attested": false, "elapsed_milliseconds": self.elapsed_milliseconds,
             "containment": {
                 "mode": self.containment,
-                "host_path_writes_restricted": self.containment == ContainmentMode::MacosSeatbelt,
-                "write_scope": if self.containment == ContainmentMode::MacosSeatbelt {
+                "host_path_writes_restricted": self.containment != ContainmentMode::None,
+                "process_tree_contained": self.containment == ContainmentMode::WindowsRestrictedTokenJob,
+                "write_scope": if self.containment != ContainmentMode::None {
                     vec!["checkout", "home", "tmp"]
                 } else { Vec::<&str>::new() },
                 "reads_restricted": false, "network_restricted": false,
@@ -232,7 +237,7 @@ pub fn run(task: &Validated<Task>, config: &RunnerConfig) -> Result<RunResult, R
     run_inner(task, task.canonical_json(), config)
 }
 
-#[cfg(not(unix))]
+#[cfg(not(any(unix, windows)))]
 fn run_inner(_: &Validated<Task>, _: &[u8], config: &RunnerConfig) -> Result<RunResult, RunError> {
     Err(RunError::new(
         if config.containment == ContainmentMode::None {
@@ -243,7 +248,7 @@ fn run_inner(_: &Validated<Task>, _: &[u8], config: &RunnerConfig) -> Result<Run
     ))
 }
 
-#[cfg(unix)]
+#[cfg(any(unix, windows))]
 fn run_inner(
     task: &Validated<Task>,
     original: &[u8],
@@ -251,6 +256,7 @@ fn run_inner(
 ) -> Result<RunResult, RunError> {
     use heleos_worker_protocol::{HANDOFF_SCHEMA, Mode, TerminalState, validate_handoff_json};
     use std::collections::BTreeSet;
+    #[cfg(unix)]
     use std::fs;
     use std::time::{Duration, Instant};
     let started = Instant::now();
@@ -266,6 +272,8 @@ fn run_inner(
     if assignment.provider != config.provider.provider {
         return Err(RunError::new(FailureCode::ProviderMismatch));
     }
+    #[cfg(windows)]
+    containment::validate(config.containment)?;
     let (source, workspace_root) = filesystem::validate_config(config)?;
     let owned = filesystem::OwnedWorkspace::create(&workspace_root)?;
     let run_directory = owned.path().to_path_buf();
@@ -277,8 +285,10 @@ fn run_inner(
         owned.write("task.canonical.json", task.canonical_json())?;
         owned.write("task.sha256", task.digest().as_bytes())?;
         containment::validate(config.containment)?;
+        #[cfg(windows)]
+        let writable_roots = containment::prepare_windows_roots(&run_directory)?;
         // Standalone local objects: no shared worktree registration or hardlinks.
-        let mut clone = git_command(config, &workspace_root);
+        let mut clone = git_command(config, &workspace_root)?;
         clone
             .args([
                 "clone",
@@ -291,7 +301,7 @@ fn run_inner(
             .arg(&source)
             .arg(&checkout);
         git_output(clone, deadline, FailureCode::Git)?;
-        let mut remote = git_command(config, &checkout);
+        let mut remote = git_command(config, &checkout)?;
         remote.args(["remote", "remove", "origin"]);
         git_output(remote, deadline, FailureCode::Git)?;
         for path in ["objects/info/alternates", "shallow"] {
@@ -299,7 +309,7 @@ fn run_inner(
                 return Err(RunError::new(FailureCode::RepositoryMutation));
             }
         }
-        let mut resolve = git_command(config, &checkout);
+        let mut resolve = git_command(config, &checkout)?;
         resolve.args([
             "rev-parse",
             "--verify",
@@ -310,7 +320,7 @@ fn run_inner(
         if resolved != format!("{}\n", assignment.base_commit).as_bytes() {
             return Err(RunError::new(FailureCode::BaseUnavailable));
         }
-        let mut detach = git_command(config, &checkout);
+        let mut detach = git_command(config, &checkout)?;
         detach.args([
             "checkout",
             "--detach",
@@ -323,18 +333,32 @@ fn run_inner(
         let git_before = filesystem::snapshot(&checkout.join(".git"), false, deadline)?;
         let prompt = filesystem::prompt(task, &checkout, config.max_prompt_bytes, deadline)?;
         owned.write("prompt.txt", &prompt)?;
-        fs::create_dir(run_directory.join("home")).map_err(|_| RunError::new(FailureCode::Io))?;
-        fs::create_dir(run_directory.join("tmp")).map_err(|_| RunError::new(FailureCode::Io))?;
-        let mut command = containment::provider_command(config, &checkout, &run_directory)?;
-        command
-            .args(&config.provider.args)
-            .current_dir(&checkout)
-            .env_clear()
-            .env("PATH", "/usr/bin:/bin")
-            .env("HOME", run_directory.join("home"))
-            .env("TMPDIR", run_directory.join("tmp"))
-            .envs(&config.provider.environment);
-        let output = process::execute(command, &prompt, config.max_output_bytes, deadline)?;
+        #[cfg(unix)]
+        let output = {
+            fs::create_dir(run_directory.join("home"))
+                .map_err(|_| RunError::new(FailureCode::Io))?;
+            fs::create_dir(run_directory.join("tmp"))
+                .map_err(|_| RunError::new(FailureCode::Io))?;
+            let mut command = containment::provider_command(config, &checkout, &run_directory)?;
+            command
+                .args(&config.provider.args)
+                .current_dir(&checkout)
+                .env_clear()
+                .env("PATH", "/usr/bin:/bin")
+                .env("HOME", run_directory.join("home"))
+                .env("TMPDIR", run_directory.join("tmp"))
+                .envs(&config.provider.environment);
+            process::execute(command, &prompt, config.max_output_bytes, deadline)?
+        };
+        #[cfg(windows)]
+        let output = containment::execute_windows_provider(
+            config,
+            &checkout,
+            &run_directory,
+            writable_roots,
+            &prompt,
+            deadline,
+        )?;
         if !output.status.success() {
             let mut failure = RunError::new(FailureCode::ProviderExit);
             failure.exit_code = output.status.code();
@@ -353,7 +377,7 @@ fn run_inner(
             filesystem::validate_git_metadata(&git_before, &git_after)?;
             let after = filesystem::snapshot(&checkout, true, deadline)?;
             let mut paths = BTreeSet::new();
-            let mut diff = git_command(config, &checkout);
+            let mut diff = git_command(config, &checkout)?;
             diff.args([
                 "diff",
                 "--no-ext-diff",
@@ -369,7 +393,7 @@ fn run_inner(
                 deadline,
                 FailureCode::Git,
             )?)?);
-            let mut untracked = git_command(config, &checkout);
+            let mut untracked = git_command(config, &checkout)?;
             // Deliberately omit --exclude-standard: ignored writes are inventoried.
             untracked.args(["ls-files", "--others", "-z", "--"]);
             paths.extend(filesystem::nul_paths(&git_output(
@@ -385,6 +409,11 @@ fn run_inner(
             if paths.len() > heleos_worker_protocol::MAX_ITEMS {
                 return Err(RunError::new(FailureCode::InventoryLimit));
             }
+            #[cfg(windows)]
+            validate_windows_forbidden_paths(
+                &assignment.forbidden_paths,
+                &paths.iter().cloned().collect::<Vec<_>>(),
+            )?;
             let changed_files = paths
                 .iter()
                 .map(|path| ChangedFile {
@@ -481,9 +510,10 @@ fn run_inner(
     }
 }
 
-#[cfg(unix)]
-fn git_command(config: &RunnerConfig, cwd: &Path) -> std::process::Command {
+#[cfg(any(unix, windows))]
+fn git_command(config: &RunnerConfig, cwd: &Path) -> Result<std::process::Command, RunError> {
     let mut command = std::process::Command::new(&config.git_executable);
+    #[cfg(unix)]
     command
         .current_dir(cwd)
         .env_clear()
@@ -506,9 +536,41 @@ fn git_command(config: &RunnerConfig, cwd: &Path) -> std::process::Command {
             "-c",
             "protocol.file.allow=always",
         ]);
-    command
+    #[cfg(windows)]
+    {
+        command.current_dir(cwd).env_clear();
+        containment::controller_environment(config, &mut command)?;
+        command
+            .env("GIT_CONFIG_NOSYSTEM", "1")
+            .env("GIT_CONFIG_GLOBAL", "NUL")
+            .env("GIT_TERMINAL_PROMPT", "0")
+            .env("GIT_ALLOW_PROTOCOL", "file")
+            .env("GIT_NO_LAZY_FETCH", "1")
+            .env("GIT_OPTIONAL_LOCKS", "0")
+            .args([
+                "-c",
+                "core.hooksPath=NUL",
+                "-c",
+                "core.attributesFile=NUL",
+                "-c",
+                "core.fsmonitor=false",
+                "-c",
+                "protocol.allow=never",
+                "-c",
+                "protocol.file.allow=always",
+                "-c",
+                "core.autocrlf=false",
+                "-c",
+                "core.filemode=false",
+                "-c",
+                "maintenance.auto=false",
+                "-c",
+                "gc.auto=0",
+            ]);
+    }
+    Ok(command)
 }
-#[cfg(unix)]
+#[cfg(any(unix, windows))]
 fn git_output(
     command: std::process::Command,
     deadline: std::time::Instant,
@@ -522,4 +584,101 @@ fn git_output(
         return Err(RunError::new(FailureCode::InventoryLimit));
     }
     Ok(output.stdout.bytes)
+}
+
+#[cfg(any(windows, test))]
+fn validate_windows_forbidden_paths(
+    forbidden: &[String],
+    paths: &[String],
+) -> Result<(), RunError> {
+    // The protocol's exact lexical allowlist still applies. On Windows a case
+    // alias must additionally not evade a forbidden file or directory entry.
+    for path in paths {
+        let path = path.to_uppercase();
+        for prefix in forbidden {
+            let prefix = prefix.to_uppercase();
+            if path == prefix
+                || path
+                    .strip_prefix(&prefix)
+                    .is_some_and(|suffix| suffix.starts_with('/'))
+            {
+                return Err(RunError::new(FailureCode::OutOfScope));
+            }
+        }
+    }
+    Ok(())
+}
+
+#[cfg(test)]
+mod evidence_tests {
+    use super::*;
+
+    #[test]
+    fn windows_forbidden_path_aliases_cannot_bypass_task_scope() {
+        let forbidden = vec!["allowed/secret".to_owned()];
+        for path in ["allowed/SECRET", "allowed/Secret/key", "ALLOWED/secret/key"] {
+            assert_eq!(
+                validate_windows_forbidden_paths(&forbidden, &[path.to_owned()])
+                    .unwrap_err()
+                    .code,
+                FailureCode::OutOfScope
+            );
+        }
+        assert!(
+            validate_windows_forbidden_paths(&forbidden, &["allowed/secret-public.txt".to_owned()])
+                .is_ok()
+        );
+    }
+
+    #[test]
+    fn containment_evidence_reports_exact_platform_claims() {
+        use heleos_worker_protocol::{validate_handoff_json, validate_task_json};
+        let task = serde_json::json!({
+            "schema":"heleos.worker-task/v1", "task_id":"evidence-test", "provider":"claude_code",
+            "mode":"implementation", "base_commit":"a".repeat(40), "objective":"Synthetic evidence probe.",
+            "allowed_paths":["allowed"], "forbidden_paths":[], "input_data_class":"PUBLIC",
+            "egress_policy":"local_only", "instruction_sha256":{"AGENTS.md":"b".repeat(64)},
+            "acceptance_commands":["synthetic check"], "limits":{"max_actions":1,"max_duration_seconds":5}
+        });
+        let task = validate_task_json(&serde_json::to_vec(&task).unwrap()).unwrap();
+        for (mode, writes, tree, scope) in [
+            ("none", false, false, Vec::<&str>::new()),
+            (
+                "macos_seatbelt",
+                true,
+                false,
+                vec!["checkout", "home", "tmp"],
+            ),
+            (
+                "windows_restricted_token_job",
+                true,
+                true,
+                vec!["checkout", "home", "tmp"],
+            ),
+        ] {
+            let handoff = serde_json::json!({"schema":"heleos.worker-handoff/v1", "task_digest":task.digest(),
+                "provider":"claude_code", "terminal_state":"blocked", "changed_paths":[], "checks":[],
+                "candidate_commit":null, "unresolved_items":["Controller checks pending."]});
+            let handoff =
+                validate_handoff_json(&serde_json::to_vec(&handoff).unwrap(), &task).unwrap();
+            let result = RunResult {
+                handoff,
+                stdout: Capture::default(),
+                stderr: Capture::default(),
+                changed_files: Vec::new(),
+                run_directory: PathBuf::from("synthetic-run"),
+                elapsed_milliseconds: 0,
+                checkout: PathBuf::from("synthetic-run/checkout"),
+                containment: serde_json::from_value(serde_json::json!(mode)).unwrap(),
+            };
+            assert_eq!(
+                result.summary()["containment"],
+                serde_json::json!({
+                    "mode":mode, "host_path_writes_restricted":writes, "process_tree_contained":tree,
+                    "write_scope":scope, "reads_restricted":false, "network_restricted":false,
+                    "inherited_external_authority_restricted":false
+                })
+            );
+        }
+    }
 }
