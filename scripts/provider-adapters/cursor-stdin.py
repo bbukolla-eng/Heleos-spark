@@ -88,7 +88,7 @@ def main() -> int:
         if b"\x00" in prompt:
             return fail(65, "prompt contains NUL")
 
-        # HOME may point at the authorized credential store. Only these two
+        # HOME may point at the authorized credential store. Only these three
         # runtime locations are redirected; the outer runner controls access.
         environment = os.environ.copy()
         runtime_root = environment.get("TMPDIR", environment.get("HOME", ""))
@@ -100,16 +100,18 @@ def main() -> int:
             # for long roots. ASCII <=75 keeps root + '/projects' <=84.
             if not runtime_root.isascii() or len(runtime_root) > 75:
                 return fail(64, "runtime root unavailable")
-            cache = os.path.join(runtime_root, "node-compile-cache")
-            try:
-                os.mkdir(cache, 0o700)
-            except FileExistsError:
-                pass
-            metadata = os.lstat(cache)
-            if not stat.S_ISDIR(metadata.st_mode) or metadata.st_mode & (stat.S_IWGRP | stat.S_IWOTH):
-                return fail(64, "runtime root unavailable")
             environment["CURSOR_DATA_DIR"] = runtime_root
-            environment["NODE_COMPILE_CACHE"] = cache
+            for name, child in (("NODE_COMPILE_CACHE", "node-compile-cache"),
+                                ("CURSOR_CONFIG_DIR", "cursor-config")):
+                path = os.path.join(runtime_root, child)
+                try:
+                    os.mkdir(path, 0o700)
+                except FileExistsError:
+                    pass
+                metadata = os.lstat(path)
+                if not stat.S_ISDIR(metadata.st_mode) or metadata.st_mode & (stat.S_IWGRP | stat.S_IWOTH):
+                    return fail(64, "runtime root unavailable")
+                environment[name] = path
         except (OSError, ValueError):
             return fail(64, "runtime root unavailable")
 

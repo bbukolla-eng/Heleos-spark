@@ -113,14 +113,24 @@ task identity is required for any live retry.
 
 The adapter preserves inherited HOME and sets `CURSOR_DATA_DIR` to the runner's
 TMPDIR itself (HOME only if TMPDIR is absent), with `NODE_COMPILE_CACHE` in a
-private `node-compile-cache` child. The canonical root must be an existing direct
+private `node-compile-cache` child and `CURSOR_CONFIG_DIR` in a private
+`cursor-config` child. The canonical root must be an existing direct
 directory, ASCII, and at most 75 characters, so Cursor's appended `/projects`
 is at most 84 characters and cannot trigger its global `/tmp/.cursor` fallback.
-It rejects invalid roots and symlink/writable cache directories, replacing
-any inherited runtime/cache values without copying credentials. Outer Seatbelt,
+It rejects invalid roots and symlink/non-directory/group-or-other-writable
+cache/config targets, replacing inherited runtime/cache/config values without
+copying credentials. Outer Seatbelt,
 not the value of HOME, blocks writes to the real home. Apple Python's launcher
 can write caches before adapter code runs, which is why live macOS launches
 use Homebrew Python even though both Python versions pass adapter tests.
+
+The subsequent `cursor-live-seatbelt-write-002` also failed before model/write,
+with its clean retained checkout preserved: Cursor attempted an atomic
+`cli-config.json` temporary-file write under the real HOME. The config-directory
+override above repairs that separate mutable-state path; it does not copy the
+existing global configuration. Authentication remains available through the
+explicitly inherited HOME as confirmed by the controller's no-model status
+probe. A live write after this second repair still needs a new task identity.
 
 Cursor consumes piped stdin only when no positional prompt is supplied, then
 trims its surrounding whitespace internally; the adapter itself preserves

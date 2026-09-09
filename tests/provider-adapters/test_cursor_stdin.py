@@ -88,16 +88,51 @@ class CursorStdinTests(contracts.CodexStdinTests):
         result = self.invoke_harness("os.environ.update(" + repr({
             "HOME": str(self.root / "auth-home"),
             "CURSOR_DATA_DIR": "/must-not-use-data",
+            "CURSOR_CONFIG_DIR": str(self.root / "auth-home" / ".cursor"),
             "NODE_COMPILE_CACHE": "/must-not-use-cache",
         }) + ")")
         self.assertEqual(result.returncode, 0, result.stderr)
         environment = dict(line.split("=", 1) for line in result.stdout.decode().splitlines())
         self.assertEqual(environment["HOME"], str(self.root / "auth-home"))
         self.assertEqual(environment["CURSOR_DATA_DIR"], str(self.runtime))
+        self.assertEqual(environment["CURSOR_CONFIG_DIR"], str(self.runtime / "cursor-config"))
         self.assertEqual(environment["NODE_COMPILE_CACHE"], str(self.runtime / "node-compile-cache"))
         self.assertEqual(set(self.runtime.iterdir()), {
-            self.runtime / "node-compile-cache"
+            self.runtime / "node-compile-cache", self.runtime / "cursor-config"
         })
+        self.assertFalse((self.root / "auth-home").exists())
+
+    def test_unsafe_existing_config_targets_fail_before_provider_launch(self):
+        for kind in ("symlink", "file", "writable_directory"):
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory(prefix="cursor-config-", dir="/tmp") as directory:
+                runtime = Path(directory).resolve()
+                config = runtime / "cursor-config"
+                if kind == "symlink":
+                    config.symlink_to(self.root, target_is_directory=True)
+                elif kind == "file":
+                    config.write_bytes(b"preserve")
+                else:
+                    config.mkdir()
+                    config.chmod(0o777)
+                with patch.dict(os.environ, {"TMPDIR": str(runtime)}):
+                    self.assert_rejected(self.invoke(), 64, b"cursor-stdin: runtime root unavailable\n")
+                if kind == "file":
+                    self.assertEqual(config.read_bytes(), b"preserve")
+                elif kind == "symlink":
+                    self.assertTrue(config.is_symlink())
+
+    def test_child_config_write_stays_under_runtime_not_authenticated_home(self):
+        self.fake.write_text(
+            '#!/bin/sh\nprintf generated > "$CURSOR_CONFIG_DIR/cli-config.json"\n',
+            encoding="utf-8",
+        )
+        result = self.invoke_harness("os.environ.update(" + repr({
+            "HOME": str(self.root / "auth-home"),
+            "CURSOR_CONFIG_DIR": str(self.root / "auth-home" / ".cursor"),
+        }) + ")")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stderr, b"")
+        self.assertEqual((self.runtime / "cursor-config" / "cli-config.json").read_bytes(), b"generated")
         self.assertFalse((self.root / "auth-home").exists())
 
     def test_home_fallback_and_invalid_runtime_roots(self):
