@@ -1,10 +1,10 @@
 # Current repository status
 
-Updated: 2026-09-09. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, and the separately isolated agent-controller build through exact clean commit `f215be8c22e83f5783302fe9392070b0dbd95429`; it is not a production-release acceptance statement.
+Updated: 2026-09-09. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, and the separately isolated agent-controller build through exact clean commit `f6f1bc82c2ba6f6a2fe552d9bd3adb5dc4e0c950`; it is not a production-release acceptance statement.
 
 <!-- active-build-authority:v1 -->
 ```json
-{"schema_version":1,"active_builds":[{"path":".worktrees/agent-control-foundation","branch":"build/agent-control-foundation","checkpoint":"f215be8c22e83f5783302fe9392070b0dbd95429"}]}
+{"schema_version":1,"active_builds":[{"path":".worktrees/agent-control-foundation","branch":"build/agent-control-foundation","checkpoint":"f6f1bc82c2ba6f6a2fe552d9bd3adb5dc4e0c950"}]}
 ```
 <!-- /active-build-authority -->
 
@@ -20,17 +20,17 @@ The completed local implementation checkpoint and this documentation-only contin
 
 ## Latest active-build movement
 
-Implementation commit `02c61d17c8746de31acf7f397ac8c83a9614a184` adds the repository-owned offline `SourceEntryV1` research-metadata validator, 15 synthetic black-box tests, and its operator contract. It hashes explicit candidate inputs, rejects production/promotion fields, and always reports source bytes, citations, rights, and production authority as unverified/false. It does not fetch sources, write a registry, create a taxonomy, or begin Foundation 0.2. Documentation-only child `f215be8c22e83f5783302fe9392070b0dbd95429` records that exact checkpoint.
+Implementation commit `02c61d17c8746de31acf7f397ac8c83a9614a184` adds the repository-owned offline `SourceEntryV1` research-metadata validator, 15 synthetic black-box tests, and its operator contract. It hashes explicit candidate inputs, rejects production/promotion fields, and always reports source bytes, citations, rights, and production authority as unverified/false. It does not fetch sources, write a registry, create a taxonomy, or begin Foundation 0.2. Documentation-only descendants `f215be8c22e83f5783302fe9392070b0dbd95429` and `f6f1bc82c2ba6f6a2fe552d9bd3adb5dc4e0c950` preserve the checkpoint without self-referencing their own moving HEAD; the latter is current.
 
 The 15 focused tests, 22 continuity tests, Python compilation, whitespace, and clean-checkout provenance over 193 tracked files passed. The complete `./scripts/verify-foundation` gate on the code commit exited `0`, including reproducible two-root PDF builds, the full locked/offline workspace, and clean/network-denied acceptance, hostile-input, hostile-storage, and recovery reruns.
 
-The current active head is packaged for native Windows as `WINDOWS_NATIVE_HANDOFF_f215be8`. Its manifest SHA-256 is `e30a45399c579987749dac3f938555da3a7c04210724bb38f559ad4de05dfd97`; its complete-history bundle is 4,806,257 bytes with SHA-256 `bb6584ca3057ae92766ffde076c227edc3b03211930dbfe104e861cb79f2908b`. All five transfer-file hashes and `git bundle verify` pass. This is a transfer candidate, not native Windows/NTFS evidence.
+The current active head is packaged for native Windows as `WINDOWS_NATIVE_HANDOFF_f6f1bc8`. Its manifest SHA-256 is `ed867ce7119fc6d5f3b80a21e375d045a8a221529d4f22b4cebc0fd1fc0c8c2b`; its complete-history bundle is 4,817,728 bytes with SHA-256 `52a8923c746b1d9911130760c78bfc579a5fe42dea1d55e2e70bb773f63d0c77`. Explicit-branch reconstruction, strict object verification, exact clean HEAD, all five transfer-file hashes, and copied `git bundle verify` pass. This is a transfer candidate, not native Windows/NTFS evidence.
 
 The owner-requested ATHENA Grok Bot task is terminal. Its received Markdown and JSON remain ignored and immutable in `/Users/bekim/Heleos-spark/ATHENA_RESEARCH_QUARANTINE/2026-09-09-div23/`. Controller primary-source validation found 5 current seed rows, 1 held division-date row, and 5 retired/superseded rows; the packet's May 2026 UFGS bundle reference was stale against the official August 2026 release. A separate six-source controller candidate passed the new metadata grammar at SHA-256 `f97780a86717b9c9124f5ae4f8df987243cf7d099a73eab9835ac2abc91a95ba`, with every authority/verification flag still false. Nothing in that quarantine is admitted source or production truth.
 
 ## Later human and platform gates
 
-On `build/agent-control-foundation`, commit `faf8f53` implements evidence-gated retain/restrict/suspend/remove transitions and commit `337941b` records the 2026-09-09 public App inventory; `cf265eb` preserves that App checkpoint and the current clean descendant is `f215be8`. The complete `./scripts/verify-foundation` gate passed for code checkpoint `02c61d17`, including its clean-checkout rerun. Public App metadata still does not prove current installation grants, repository scope, running version/digest, or actual egress.
+On `build/agent-control-foundation`, commit `faf8f53` implements evidence-gated retain/restrict/suspend/remove transitions and commit `337941b` records the 2026-09-09 public App inventory; `cf265eb` preserves that App checkpoint and the current clean descendant is `f6f1bc8`. The complete `./scripts/verify-foundation` gate passed for code checkpoint `02c61d17`, including its clean-checkout rerun. Public App metadata still does not prove current installation grants, repository scope, running version/digest, or actual egress.
 
 Azure Pipelines, AWS Connector for GitHub, Amazon Q Developer, and ECC Tools all remain `owner_decision_required` with egress prohibited. Only the workflow substep stops at that gate; authorized local implementation continues. After every disposition and its evidence are recorded, the controller may prepare the governed workflow and freeze the candidate. Push and remote CI need a separate owner-authorized Git handoff. macOS and native Windows/NTFS CI must attest that exact candidate SHA before the documentation-only acceptance dossier or any Foundation 0.1 completion claim. No push, workflow publication, deployment, or account-level mutation occurred.
 
@@ -49,8 +49,8 @@ Root agent instructions are available in [AGENTS.md](AGENTS.md), [CLAUDE.md](CLA
 | Location under this project | Purpose |
 | --- | --- |
 | `/Users/bekim/Heleos-spark` | Visible local `main` with the Task 7-9 chain plus Task 10 local implementation checkpoint `6157458...` and its continuity child |
-| `/Users/bekim/Heleos-spark/ACTIVE_BUILD` | Finder-visible local pointer to the clean active build at `f215be8`; the branch remains isolated from the Foundation 0.1 candidate |
-| `/Users/bekim/Heleos-spark/WINDOWS_NATIVE_HANDOFF_f215be8` | Finder-visible exact-current-SHA transfer artifact; native Windows/local fixed NTFS execution remains pending |
+| `/Users/bekim/Heleos-spark/ACTIVE_BUILD` | Finder-visible local pointer to the clean active build at `f6f1bc8`; the branch remains isolated from the Foundation 0.1 candidate |
+| `/Users/bekim/Heleos-spark/WINDOWS_NATIVE_HANDOFF_f6f1bc8` | Finder-visible exact-current-SHA transfer artifact; native Windows/local fixed NTFS execution remains pending |
 | `/Users/bekim/Heleos-spark/ATHENA_RESEARCH_QUARANTINE/2026-09-09-div23` | Finder-visible ignored Athena artifacts, controller adjudication, and research-only six-source candidate; no admitted source or production authority |
 | `.worktrees/foundation-0.1-build/` | Closed, clean Task 7-9 implementation chain and immutable execution evidence |
 | `.worktrees/foundation-0.1-release/` | Passing local `build/foundation-0.1-release-gate` Task 10 supply-chain/SBOM implementation at `6157458...` plus this continuity child; workflow and native Windows gates remain open |
@@ -65,7 +65,7 @@ The detailed checkpoint is `.worktrees/foundation-0.1-build/.superpowers/sdd/202
 1. The main checkout previously lagged while development happened in a hidden worktree. Merge `dee9179...` fixes that visibility/history gap.
 2. Progress records still called Claude session `6654` and Windows probe `4554` running after both terminated. Those records now distinguish completed implementation, pending review, and failed verification.
 3. Older temporary-worktree registrations still have broken Git links. They are not active build authority and have not been deleted or pruned.
-4. The compaction checkpoint now records the exact completed chain, convergence evidence, visible-main merge, post-merge gates, current `f215be8` active-build checkpoint, terminal Athena task, and refreshed Windows handoff. Completed work must not be recreated after compaction.
+4. The compaction checkpoint now records the exact completed chain, convergence evidence, visible-main merge, post-merge gates, current `f6f1bc8` active-build checkpoint, terminal Athena task, and refreshed Windows handoff. Completed work must not be recreated after compaction.
 
 ## Task 10 implementation checkpoint
 
