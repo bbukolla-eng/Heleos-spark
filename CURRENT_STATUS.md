@@ -2,6 +2,14 @@
 
 Updated: 2026-09-09. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, and the isolated cross-platform agent-controller build through preparatory research-source metadata validator commit `02c61d17c8746de31acf7f397ac8c83a9614a184`, after GitHub App transition-verifier commit `faf8f53` and public-inventory commit `337941b`. Active-build visibility, native-Windows launcher, Kimi state-capability, accepted Codex live evidence, terminal Cursor task-005 quota evidence, and terminal Athena packet quarantine/adjudication remain recorded; no Cursor live write, native Windows result, Foundation 0.2 start, or production-release acceptance is claimed.
 
+## Local integration checkpoint - 2026-09-09
+
+Branch `integration/agent-control-foundation-2026-09-09` reconciles the histories in a non-release local integration branch at merge commit `6d5bf4302ca0edf8cafe88085321fd97b5fe9e6d`. Its two parents are `origin/main` checkpoint `63ae39c3bc33dc8c8b4f05e5ff3dacbcb51d7184` and active-build checkpoint `f6f1bc82c2ba6f6a2fe552d9bd3adb5dc4e0c950`. This checkpoint supersedes the earlier integration/divergence descriptions retained below; completed work must not be restarted after compaction. [docs/roadmap.md](docs/roadmap.md) is canonical; root [ROADMAP.md](ROADMAP.md) is historical.
+
+Local integration checks passed: the Python repository gate checked 252 files with 0 failures, all 101 Python tests passed, and Rust formatting, check, Clippy, and all product, worker, and storage suites passed. The single provenance entry-point remains intentionally blocked because inherited remote workflows have no admitted Foundation authority pending owner dispositions and supporting evidence for Azure Pipelines, AWS Connector for GitHub, Amazon Q Developer, and ECC Tools. Resolve those four App dispositions before any workflow change; the local suite results do not override that gate.
+
+No push, release, or workflow change occurred at this checkpoint, and no native Windows/NTFS acceptance is claimed.
+
 ## Current state
 
 Tasks 7-9 are complete, committed, converged, and locally integrated. Task 10's local supply-chain implementation is committed as `6157458c6566d8ad26a2ec2c6ba1c7d8a697e2b6`, parent `c1596c4cc536155ad3a052cfec2c9b8951814aba`, tree `c4539ca7e4ecf62e0e767684c314dd56e4527a0c`, subject `chore: implement local Foundation supply-chain gate`, on branch `build/foundation-0.1-release-gate`. The corrected full native macOS ARM64 gate ended with `SUPPLY_CHAIN_LOCAL_PASS`: the approved PDF guest, provenance, complete 405-package/1,035-edge graph, cargo-deny, cargo-audit, semantic secret scan, Clippy, builds, focused and whole-workspace tests, network-denied verifier suite, and two-root SBOM regeneration all passed. No workflow, release-candidate SHA, push, CI attestation, native Windows/NTFS acceptance, or Foundation completion is claimed.
