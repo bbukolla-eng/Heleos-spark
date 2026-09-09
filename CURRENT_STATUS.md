@@ -1,14 +1,14 @@
 # Current repository status
 
-Updated: 2026-09-09. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, the tested native-suite receipt candidate, the isolated cross-platform agent-controller build through exact clean commit `f6f1bc82c2ba6f6a2fe552d9bd3adb5dc4e0c950`, and the visible-main public research contracts/source lanes through `ad73e5fa07934d70c5e73c273e5936aa964051dc` plus benchmark implementation checkpoint `787c723bee4543e0198f92c69e76e704ba897a1e`. Active-build visibility, native-Windows launchers, GitHub App inventory, guarded-provider evidence, terminal Cursor quota evidence, and terminal Athena quarantine/adjudication remain recorded; no new provider benchmark run, Cursor live write, native Windows result, Foundation 0.2 start, or production-release acceptance is claimed.
+Updated: 2026-09-09. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, the tested native-suite receipt candidate, the completed cross-platform agent-controller build through exact clean commit `f6f1bc82c2ba6f6a2fe552d9bd3adb5dc4e0c950`, and the visible-main public research contracts/source lanes through `ad73e5fa07934d70c5e73c273e5936aa964051dc` plus benchmark implementation checkpoint `787c723bee4543e0198f92c69e76e704ba897a1e`. Native-Windows launchers, GitHub App inventory, guarded-provider evidence, terminal Cursor quota evidence, and terminal Athena quarantine/adjudication remain recorded; no new provider benchmark run, Cursor live write, native Windows result, Foundation 0.2 start, or production-release acceptance is claimed.
 
 <!-- active-build-authority:v1 -->
 ```json
-{"schema_version":1,"active_builds":[{"path":".worktrees/agent-control-foundation","branch":"build/agent-control-foundation","checkpoint":"f6f1bc82c2ba6f6a2fe552d9bd3adb5dc4e0c950"}]}
+{"schema_version":1,"active_builds":[]}
 ```
 <!-- /active-build-authority -->
 
-The local Finder-visible path `/Users/bekim/Heleos-spark/ACTIVE_BUILD` points to that registered worktree. It is an ignored local pointer, not a second source copy or a Git-tracked product path. The checkpoint is the minimum committed ancestor; the live branch HEAD may advance beyond it and must be reported from Git rather than copied into prose.
+No unfinished local implementation branch is declared active. The ignored Finder-visible path `/Users/bekim/Heleos-spark/ACTIVE_BUILD` remains a legacy pointer to the completed agent-controller worktree for inspection only; it is not recovery authority, a second source copy, or permission to resume writes there. New implementation must first register its exact path, branch, and committed checkpoint in this block.
 
 ## Local integration checkpoint - 2026-09-09
 
@@ -40,7 +40,7 @@ Controller fan-in passed all 89 research tests, all new focused tests under both
 
 After this branch is locally integrated, resume at the first genuinely unfinished safe action: keep Foundation native Windows/NTFS and GitHub App owner dispositions as independent release gates; preserve Task 6/8/9 independent-review checkboxes as open rather than rerunning completed implementation; and continue only work that does not start Foundation 0.2 or fabricate provider/native evidence. Remote push remains separately unauthorized.
 
-## Active isolated agent-controller build
+## Completed isolated agent-controller build
 
 Branch `build/agent-control-foundation` in `.worktrees/agent-control-foundation` contains executable checkpoint `02c61d17c8746de31acf7f397ac8c83a9614a184`, tree `931e4863383cccb38c240eae287fde4cd56bd01d`, followed only by documentation continuity. Resolve the live exact branch HEAD through the visible-main authority block and `scripts/active-build-status.py`; do not encode this file's own commit as a self-reference. The branch contains the deterministic worker protocol, guarded Claude/Kimi/Grok runner, macOS containment commit `28daf4c0f213540a05f1928f4936ee641250686e`, Kimi adapter repair `df0233b6812d1f46de3a714ec1a647f7a245a81f`, Windows containment implementation `5f3619158ffb56e0df61a68bebd267de468b2f61`, and native-gate commit `e190567eae05ec876049508ff35eeef28ec92320`. Grok admission is committed as `56758dd`, parallel temporary-inventory test isolation as `9a62481`, and accepted live Grok fixture/evidence as `fb18a39`. The Windows code creates verified NTFS write roots, a restricted token, explicit inherited handles, and a kill-on-close Job Object; the runner accepts only `windows_restricted_token_job` on Windows and has no uncontained fallback.
 
@@ -62,7 +62,7 @@ Native-Windows handoff automation began at `7e7d9e1bd62b540e8864f5e7d3474a3a75b7
 
 The active-build checkpoint `f6f1bc82c2ba6f6a2fe552d9bd3adb5dc4e0c950` is packaged for native Windows as `WINDOWS_NATIVE_HANDOFF_f6f1bc8`. Its manifest SHA-256 is `ed867ce7119fc6d5f3b80a21e375d045a8a221529d4f22b4cebc0fd1fc0c8c2b`; its complete-history bundle is 4,817,728 bytes with SHA-256 `52a8923c746b1d9911130760c78bfc579a5fe42dea1d55e2e70bb773f63d0c77`. Explicit-branch reconstruction, strict object verification, exact clean HEAD, all five transfer-file hashes, and copied `git bundle verify` pass. This is a transfer candidate, not native Windows/NTFS evidence.
 
-Active-build visibility is committed as `e1ad311` and anchored from visible local `main` by documentation commit `9747046ef7665bb7ad7f4a8e3da90db2721597f6`. `scripts/active-build-status.py` reads that committed authority, validates the registered path, branch, and minimum checkpoint ancestry, and reports the live HEAD, dirtiness, and main divergence without mutating Git. Its 12 cases plus the existing 10 continuity cases pass under Python 3.14 and 3.9. `/Users/bekim/Heleos-spark/ACTIVE_BUILD` is an ignored Finder-visible pointer to this real worktree, not a duplicate source tree.
+Active-build visibility was committed as `e1ad311` and anchored from visible local `main` by documentation commit `9747046ef7665bb7ad7f4a8e3da90db2721597f6`. `scripts/active-build-status.py` reads the current committed authority and reports no active builds when the list is empty; when entries exist, it validates their registered path, branch, checkpoint ancestry, live HEAD, dirtiness, and main divergence without mutating Git. `/Users/bekim/Heleos-spark/ACTIVE_BUILD` is now only a legacy ignored pointer to the completed worktree, not a duplicate source tree or current routing instruction.
 
 ## Preparatory source-curation checkpoint
 
@@ -114,7 +114,7 @@ Root agent instructions are available in [AGENTS.md](AGENTS.md), [CLAUDE.md](CLA
 | Location under this project | Purpose |
 | --- | --- |
 | `/Users/bekim/Heleos-spark` | Visible local `main` with the complete reconciled executable tree and native-suite receipt merge `2d6f114...` |
-| `/Users/bekim/Heleos-spark/ACTIVE_BUILD` | Finder-visible ignored pointer to the active `build/agent-control-foundation` worktree at checkpoint `f6f1bc8`; no source copy; the branch remains isolated from the Foundation 0.1 candidate |
+| `/Users/bekim/Heleos-spark/ACTIVE_BUILD` | Legacy Finder-visible ignored pointer to completed `build/agent-control-foundation` checkpoint `f6f1bc8`; inspection only, not current recovery authority or a source copy |
 | `/Users/bekim/Heleos-spark/WINDOWS_NATIVE_HANDOFF_f6f1bc8` | Finder-visible exact-checkpoint-SHA transfer artifact; native Windows/local fixed NTFS execution remains pending |
 | `/Users/bekim/Heleos-spark/WINDOWS_NATIVE_HANDOFF_58ab1e3` | Finder-visible exact Foundation candidate, trusted importer, hashes, and command; native Windows x64/NTFS execution remains pending |
 | `/Users/bekim/Heleos-spark/ATHENA_RESEARCH_QUARANTINE/2026-09-09-div23/` | Finder-visible ignored Athena receipts, controller adjudication, and separate research-only six-source UFGS candidate; no admitted source or production authority |
@@ -135,7 +135,7 @@ The detailed checkpoint is `.worktrees/foundation-0.1-build/.superpowers/sdd/202
 3. Older temporary-worktree registrations still have broken Git links. They are not active build authority and have not been deleted or pruned.
 4. The compaction checkpoint now records the exact completed chain, convergence evidence, visible-main merge, post-merge gates, Task 10 worktree, `f6f1bc8` active-build checkpoint, terminal Athena task, and refreshed Windows handoff. Completed work, including Tasks 7-9, must not be recreated after compaction.
 5. `scripts/verify-repo-state.py --expect-branch ... --expect-head ... --require-clean` now fails closed when a resumed controller is in the wrong checkout, on stale bytes, or carrying uncommitted work; its JSON retains the actual state for diagnosis.
-6. `scripts/active-build-status.py --human` resolves visible local `main` as the sole authority, then validates every explicitly registered active build and reports the current live commit. It accepts legitimate descendants of the recorded checkpoint while rejecting a missing worktree, wrong branch, unrelated history, or uncommitted authority bytes.
+6. `scripts/active-build-status.py --human` resolves visible local `main` as the sole authority, validates every explicitly registered active build, and reports the current live commit. It accepts an explicit empty list when no work remains, while rejecting a missing worktree, wrong branch, unrelated history, or uncommitted authority bytes. The completed agent-controller branch was removed from the authority list after its bytes were integrated, preventing compaction from routing work to an 81-commit-behind checkout.
 
 ## Initial Task 10 implementation checkpoint (superseded by the receipt checkpoint above)
 

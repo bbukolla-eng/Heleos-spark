@@ -104,6 +104,21 @@ class ActiveBuildStatusTests(unittest.TestCase):
         self.assertEqual([b["checkout_root"] for b in report["active_builds"]],
                          [str(other), str(self.active)])
 
+    def test_empty_authority_explicitly_reports_no_active_builds(self):
+        self.authority([])
+        code, report = self.probe(cwd=self.active)
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["status"], "PASS")
+        self.assertEqual(report["active_builds"], [])
+
+        result = subprocess.run(
+            [sys.executable, "-B", str(SCRIPT), "--human"], cwd=self.active,
+            env=self.env, capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("No active builds declared.", result.stdout)
+        self.assertNotIn("Active: ", result.stdout)
+
     def test_descendant_of_checkpoint_reports_current_head(self):
         (self.active / "new.txt").write_text("new\n")
         self.commit("advanced", cwd=self.active)
