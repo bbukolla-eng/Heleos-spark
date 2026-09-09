@@ -1,6 +1,6 @@
 # Guarded Worker Runner Implementation Plan
 
-**Status:** Runner implemented; Claude live write completed; Kimi live write next
+**Status:** Implemented; live Claude and Kimi writes completed
 
 **Branch:** `build/agent-control-foundation`
 
@@ -46,7 +46,7 @@ Initial write-capable providers are Claude Code and Kimi. Grok and Cursor remain
 
 ## Next after this slice
 
-Run one small Claude Code implementation task against a synthetic, allowlisted file in a disposable exact-base checkout. Validate and preserve its handoff and candidate commit as evidence. Then repeat with Kimi through the same runner without expanding its authority.
+Persist validated task/run/handoff identities through the governed operational store only after Foundation 0.1 acceptance and an explicit migration plan. Before then, additional provider work remains a retained candidate in this isolated engineering lane. Add a macOS containment profile and Windows Job Object backend before representing the runner as host-write containment or cross-platform worker execution.
 
 ## Implementation checkpoint
 
@@ -55,5 +55,7 @@ Run one small Claude Code implementation task against a synthetic, allowlisted f
 - Live Claude task digest: `7e8d98e428ea1ddf4d0152a142ebb3651d805092f9227b50c1492138ffd21e5d`.
 - Claude changed exactly `tests/fixtures/runner/live/claude-headless.txt`; its expected and observed SHA-256 is `d88b56eb7d68ea2ebc4b2b191c965470a5272268caa10ce471b5893692fbaf35`.
 - The controller acceptance check exited zero. Completed handoff digest: `f8182e7f7021fe7ba53d9c6ec9f2eb1768949b94d61c39e36c31066b80581145`.
+- Live Kimi task digest: `e9d03473e354fd0266fd9e4c644fd0124fdd62ff8389ebd2103c285ff6fbb6a9`.
+- Kimi changed exactly `proof/kimi-headless.txt` in a dedicated PUBLIC-only source repository; its expected and observed SHA-256 is `6109053c330d9df1cb2711a6d032f3b491273558035a4fb1fa385b596d9f8640`.
+- The controller acceptance check exited zero. Completed Kimi handoff digest: `2a44c5deb931489974f2fd41de7fdf20bcf8a9685d8b2e9de3ff4e2b9eb78b76`.
 - No merge, push, deployment, production write, or Foundation 0.1 candidate change occurred.
-- Next executable action: perform one equivalent PUBLIC-only Kimi live write through the committed runner and stdin adapter, preserving a separate task and run identity.
