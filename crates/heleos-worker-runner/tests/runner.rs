@@ -455,22 +455,49 @@ fn codex_provider_mismatch_fails_before_launch_in_both_directions() {
     }
 }
 
-// Break caught: admitting Codex must not admit Cursor implementation commands.
+// Break caught: Cursor admission must retain exact task identity and inventory.
 #[test]
-fn cursor_fails_closed_before_implementation_command_runs() {
-    let f = Fixture::new("printf unexpected > \"$1\"");
-    let marker = f.root.path().join("provider-started");
+fn cursor_is_admitted_for_implementation_with_validated_handoff() {
+    let f = Fixture::new("printf cursor-fixture > allowed/new");
     let mut config = f.config();
     config.provider.provider = Provider::Cursor;
-    config.provider.args.push(marker.clone().into_os_string());
     let mut packet = f.packet();
     packet["provider"] = "cursor".into();
+    let task = validate(&packet);
+    let result = run(&task, &config).unwrap();
+    assert_eq!(result.handoff.document().provider, Provider::Cursor);
+    assert_eq!(result.handoff.document().changed_paths, ["allowed/new"]);
     assert_eq!(
-        run(&validate(&packet), &config).unwrap_err().code,
-        FailureCode::UnsupportedProvider
+        result.handoff.document().terminal_state,
+        TerminalState::Blocked
     );
-    assert!(!marker.exists());
-    f.assert_cleaned();
+    assert_eq!(
+        fs::read(result.checkout_path().join("allowed/new")).unwrap(),
+        b"cursor-fixture"
+    );
+    validate_handoff_json(result.handoff.canonical_json(), &task).unwrap();
+}
+
+#[test]
+fn cursor_provider_mismatch_fails_before_launch_in_both_directions() {
+    for (task_provider, command_provider) in [
+        ("cursor", Provider::ClaudeCode),
+        ("claude_code", Provider::Cursor),
+    ] {
+        let f = Fixture::new("printf unexpected > \"$1\"");
+        let marker = f.root.path().join("provider-started");
+        let mut config = f.config();
+        config.provider.provider = command_provider;
+        config.provider.args.push(marker.clone().into_os_string());
+        let mut packet = f.packet();
+        packet["provider"] = task_provider.into();
+        assert_eq!(
+            run(&validate(&packet), &config).unwrap_err().code,
+            FailureCode::ProviderMismatch
+        );
+        assert!(!marker.exists());
+        f.assert_cleaned();
+    }
 }
 
 #[test]

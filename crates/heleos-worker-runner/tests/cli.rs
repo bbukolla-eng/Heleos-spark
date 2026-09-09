@@ -121,8 +121,8 @@ fn cli_codex_adapter_transports_prompt_and_retains_codex_handoff() {
 }
 
 #[test]
-fn cli_cursor_and_research_providers_fail_closed_before_command_runs() {
-    for provider in ["cursor", "notebook_lm", "grok_bots"] {
+fn cli_research_providers_fail_closed_before_command_runs() {
+    for provider in ["notebook_lm", "grok_bots"] {
         let f = Fixture::new("printf unexpected > \"$1\"");
         let marker = f.root.path().join("provider-started");
         let mut packet = f.packet();
@@ -149,6 +149,52 @@ fn cli_cursor_and_research_providers_fail_closed_before_command_runs() {
         assert!(!marker.exists());
         f.assert_cleaned();
     }
+}
+
+// Break caught: parsing Cursor as another provider or dropping its stdin bytes.
+#[test]
+fn cli_cursor_adapter_transports_prompt_and_retains_cursor_handoff() {
+    let f = Fixture::new("/bin/cat > allowed/prompt\nprintf cursor-cli-fixture > allowed/new.txt");
+    let mut packet = f.packet();
+    packet["provider"] = "cursor".into();
+    let task = common::validate(&packet);
+    let packet_path = f.root.path().join("task.json");
+    fs::write(&packet_path, serde_json::to_vec(&packet).unwrap()).unwrap();
+    let adapter = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../scripts/provider-adapters/cursor-stdin.py");
+    let output = Command::new(env!("CARGO_BIN_EXE_heleos-worker-runner"))
+        .arg("--task")
+        .arg(&packet_path)
+        .arg("--source")
+        .arg(&f.source)
+        .arg("--workspace-root")
+        .arg(&f.workspace)
+        .args(["--provider", "cursor", "--git", "/usr/bin/git"])
+        .args(["--command", "/usr/bin/python3", "--", "-B"])
+        .arg(&adapter)
+        .arg("--cursor-executable")
+        .arg(&f.provider)
+        .output()
+        .unwrap();
+    assert!(output.status.success(), "{output:?}");
+    let value: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
+    assert_eq!(value["handoff"]["provider"], "cursor");
+    assert_eq!(value["handoff"]["terminal_state"], "blocked");
+    let checkout = std::path::Path::new(value["checkout_path"].as_str().unwrap());
+    let directory = std::path::Path::new(value["run_directory"].as_str().unwrap());
+    assert_eq!(
+        fs::read(checkout.join("allowed/new.txt")).unwrap(),
+        b"cursor-cli-fixture"
+    );
+    assert_eq!(
+        fs::read(checkout.join("allowed/prompt")).unwrap(),
+        fs::read(directory.join("prompt.txt")).unwrap()
+    );
+    heleos_worker_protocol::validate_handoff_json(
+        &serde_json::to_vec(&value["handoff"]).unwrap(),
+        &task,
+    )
+    .unwrap();
 }
 
 // Omitting the kernel wrapper must fail these tests: the fixture deliberately

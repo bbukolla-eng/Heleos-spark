@@ -1,8 +1,8 @@
 # Local guarded worker runner
 
-This crate executes one explicitly configured Codex, Claude Code, Kimi, or Grok
-command in an independent local Git clone detached at a validated task's exact
-base. It does not create a source worktree registration, share object
+This crate executes one explicitly configured Codex, Claude Code, Kimi, Grok,
+or Cursor command in an independent local Git clone detached at a validated
+task's exact base. It does not create a source worktree registration, share object
 hardlinks, fetch, push, merge, create a candidate commit, or run acceptance
 commands.
 
@@ -10,9 +10,10 @@ The library exposes `run_json(input, config)` for preserving original JSON bytes
 and `run(validated_task, config)` for already-validated callers. Both return a
 typed `RunResult` or `RunError`. Provider input is a bounded generated prompt on
 stdin; the executable and ordered arguments are passed directly to `Command`.
-Only `codex`, `claude_code`, `kimi`, and `grok` are admitted in this slice;
-`cursor` remains unsupported and research providers fail before launch. Codex
-admission and its stdin adapter have local executable-fixture coverage plus one
+Only `codex`, `claude_code`, `kimi`, `grok`, and `cursor` implementation tasks
+are admitted in this slice; research providers fail before launch. Cursor has
+local executable-fixture coverage only, with no authenticated live write claim.
+Codex admission and its stdin adapter have local executable-fixture coverage plus one
 authenticated PUBLIC-only Codex/Astra write through the runner's explicit
 `none` containment mode. That run does not claim outer host containment; its
 failed Seatbelt precursor, version gate, hashes, and limits are in
@@ -74,6 +75,43 @@ terminate and reap the direct child; descendant cleanup and timeouts belong to
 the outer runner. Codex's `workspace-write` option is additional provider
 configuration, not evidence that the runner's optional host containment was
 enabled or that arbitrary inherited authority was restricted.
+
+For Cursor Agent `2026.09.02-c22c1a3`, use `--provider cursor --command
+/absolute/python3` and the literal arguments after `--`:
+
+```text
+-B /absolute/repository/scripts/provider-adapters/cursor-stdin.py --cursor-executable /absolute/cursor-agent
+```
+
+The Python 3.9-compatible adapter accepts only that exact executable option,
+validates the same 65,536-byte UTF-8/NUL boundary and forwards original stdin
+bytes with no shell. Its fixed provider argv is:
+
+```text
+--print --force --sandbox enabled --output-format stream-json --disable-auto-update --model gpt-5.6-sol-high
+```
+
+`--force` bypasses provider tool confirmations so print mode can apply writes;
+it does not supply containment. The fixed `--sandbox enabled` setting and the
+runner's selected host containment remain separate controls. Callers cannot
+append provider flags, roots, credentials, endpoints, plugins, MCP approvals,
+output paths, or model overrides through this adapter. The installed build's
+help/parser and source confirm the fixed options, including its hidden
+`--disable-auto-update` flag. No provider process was dispatched beyond a
+version/help query by this implementation worker. The controller separately
+confirmed an authorized login and the account's `gpt-5.6-sol-high` model; that
+exact model is fixed here. Runtime-state compatibility and a live contained
+write remain unverified by this implementation slice.
+
+Cursor consumes piped stdin only when no positional prompt is supplied, then
+trims its surrounding whitespace internally; the adapter itself preserves
+bytes. Empty input is forwarded and the real CLI may reject it. Its installed
+configuration/rules/plugin loading is not disabled or independently bounded
+by this adapter, so it must not be represented as an authority sandbox. The
+controller must validate provider configuration and task/data scope before
+dispatch. Adapter exits, signal handling, and output pass-through match the
+Codex adapter contract above. Official references: [headless writes](https://docs.cursor.com/en/cli/headless)
+and [permissions](https://docs.cursor.com/cli/reference/permissions).
 
 Containment is explicit: use `--containment macos_seatbelt` on macOS or
 `--containment windows_restricted_token_job` on Windows (or select the matching
@@ -199,6 +237,8 @@ cargo +1.96.1 fmt -p heleos-worker-runner -- --check
 python3 -B tests/provider-adapters/test_grok_stdin.py
 python3 -B tests/provider-adapters/test_codex_stdin.py
 /usr/bin/python3 -B tests/provider-adapters/test_codex_stdin.py
+python3 -B tests/provider-adapters/test_cursor_stdin.py
+/usr/bin/python3 -B tests/provider-adapters/test_cursor_stdin.py
 # Run only from a clean native Windows/NTFS checkout:
 pwsh -File scripts/verify-windows-worker-containment.ps1
 ```
