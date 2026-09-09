@@ -91,7 +91,7 @@ validates the same 65,536-byte UTF-8/NUL boundary and forwards original stdin
 bytes with no shell. Its fixed provider argv is:
 
 ```text
-/absolute/cursor-install/index.js --disable-project-configs --exclude-workspace-context --print --force --sandbox enabled --output-format stream-json --disable-auto-update --model gpt-5.6-sol-high
+/absolute/cursor-install/index.js --disable-project-configs --exclude-workspace-context --print --force --sandbox enabled --output-format stream-json --disable-auto-update --model composer-2.5
 ```
 
 `--force` bypasses provider tool confirmations so print mode can apply writes;
@@ -103,8 +103,8 @@ help/parser and source confirm the fixed options, including its hidden
 `--disable-auto-update`, `--disable-project-configs`, and
 `--exclude-workspace-context` controls. Node launches the entrypoint directly;
 the provider shell wrapper never runs. The controller separately
-confirmed an authorized login and the account's `gpt-5.6-sol-high` model; that
-exact model is fixed here. Live task `cursor-live-seatbelt-write-001` failed
+confirmed an authorized login and the account's `composer-2.5` model; that
+exact model is now fixed here. Live task `cursor-live-seatbelt-write-001` failed
 before a model/write: Apple Python attempted a denied xcrun-cache write,
 the shell wrapper attempted denied `/dev/null` writes, and the fresh HOME
 did not find the authorized session. Its clean retained checkout and failure
@@ -131,6 +131,14 @@ override above repairs that separate mutable-state path; it does not copy the
 existing global configuration. Authentication remains available through the
 explicitly inherited HOME as confirmed by the controller's no-model status
 probe. A live write after this second repair still needs a new task identity.
+
+Task `cursor-live-seatbelt-write-003` reached the authenticated model service
+under macOS Seatbelt, then failed before any tool/write because the previous
+fixed `gpt-5.6-sol-high` model had exhausted its usage limit. The provider
+instructed switching models and reported a September 14, 2026 reset. The
+controller selected the available Cursor-native `composer-2.5` model; only
+the fixed model value changes in this repair. Successful generation with the
+new model remains unverified until a distinct live task completes.
 
 Cursor consumes piped stdin only when no positional prompt is supplied, then
 trims its surrounding whitespace internally; the adapter itself preserves

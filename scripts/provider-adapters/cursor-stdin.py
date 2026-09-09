@@ -14,7 +14,7 @@ model run, installed binary version, internal actions, or cost.
 Fixed --force permits writes by bypassing provider tool confirmations. It is
 not containment; --sandbox enabled is explicit, and the outer runner retains
 its own task/path policy. Cursor trims surrounding stdin whitespace internally.
-The model is fixed to the controller-admitted gpt-5.6-sol-high account model.
+The model is fixed to the controller-admitted composer-2.5 account model.
 No authentication or live write is performed by this adapter's tests.
 """
 
@@ -121,7 +121,7 @@ def main() -> int:
                     arguments[1], arguments[3], "--disable-project-configs",
                     "--exclude-workspace-context", "--print", "--force", "--sandbox", "enabled",
                     "--output-format", "stream-json", "--disable-auto-update",
-                    "--model", "gpt-5.6-sol-high",
+                    "--model", "composer-2.5",
                 ],
                 input=bytes(prompt),
                 env=environment,
