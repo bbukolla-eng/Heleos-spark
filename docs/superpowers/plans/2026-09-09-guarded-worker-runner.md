@@ -1,6 +1,6 @@
 # Guarded Worker Runner Implementation Plan
 
-**Status:** Guarded provider foundation committed through `ce49970`; live Claude and Grok writes accepted under macOS Seatbelt; live Codex write accepted with runner containment `none`; exact native Windows/NTFS execution remains pending
+**Status:** Guarded provider foundation committed through `ce49970`, with GitHub App preparation through `faf8f53` and `337941b`; live Claude and Grok writes accepted under macOS Seatbelt; live Codex write accepted with runner containment `none`; exact native Windows/NTFS execution remains pending
 
 **Branch:** `build/agent-control-foundation`
 
@@ -53,6 +53,8 @@ Cursor is implemented through `02e5d2858c8d08d9d3e68741ee18037c515fcc77`, follow
 The accepted Codex fixture/evidence, synchronized Cursor terminal evidence, macOS Seatbelt profile, and Windows restricted-token/Job Object backend are committed. Handoff automation commit `7e7d9e1` adds deterministic full-history packaging and independently pinned import into a new NTFS checkout. Commit `47861fa` adds the owner-facing full native launcher with atomic retained evidence; commit `e1ad311` adds committed-main active-build discovery and continuity checks. Package an exact clean commit, transfer its candidate plus separately trusted launcher/importer scripts, and run `scripts/run-windows-native-candidate.ps1` with independently obtained manifest and commit pins on native Windows/NTFS; host tests and cross-compilation do not satisfy that pending gate. Kimi needs a provider-supported read-only-auth/writable-runtime capability before contained writes resume; the current reviewed build is explicitly unavailable. Preserve completed Claude, Grok, Codex, and Cursor task identities and outcomes; do not repeat them.
 
 Persist validated task/run/handoff identities through the governed operational store only after Foundation 0.1 acceptance and an explicit migration plan. Before then, additional provider work remains a retained candidate in this isolated engineering lane. Foundation 0.1 remains unaccepted, and this branch must not merge into its candidate before acceptance. No merge, push, or deployment has occurred for this branch.
+
+GitHub App preparation is complete at `faf8f53` (disposition-transition verifier) and `337941b` (public GET inventory); preserve those checkpoints after compaction. Next for that gate, obtain owner choices plus decision and installation evidence and validate the registry. All four dispositions remain `owner_decision_required` and egress remains prohibited. Public metadata does not prove current installation grants, repository scope, running version/digest, or actual egress. Workflow writing and release remain blocked pending those choices and evidence; the [current status](../../../CURRENT_STATUS.md#later-human-and-platform-gates) owns the detailed handoff. Neither commit supplies native Windows acceptance or push authority.
 
 ## Initial implementation checkpoint
 

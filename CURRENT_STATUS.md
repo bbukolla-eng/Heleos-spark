@@ -1,6 +1,6 @@
 # Current repository status
 
-Updated: 2026-09-09. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, and the isolated cross-platform agent-controller build through active-build visibility commit `e1ad311`, native-Windows launcher commit `47861fa`, and Kimi state-capability commit `ce49970`. Accepted Codex live evidence and terminal Cursor task-005 quota evidence remain recorded; no Cursor live write, native Windows result, or production-release acceptance is claimed.
+Updated: 2026-09-09. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, and the isolated cross-platform agent-controller build through GitHub App transition-verifier commit `faf8f53` and public-inventory commit `337941b`. Active-build visibility, native-Windows launcher, Kimi state-capability, accepted Codex live evidence, and terminal Cursor task-005 quota evidence remain recorded; no Cursor live write, native Windows result, or production-release acceptance is claimed.
 
 ## Current state
 
@@ -8,7 +8,7 @@ Tasks 7-9 are complete, committed, converged, and locally integrated. Task 10's 
 
 ## Next local finish line
 
-The completed local implementation checkpoint and this documentation-only continuity child are the authorized fast-forward landing in visible local `main`. The next uncompleted gate is explicit owner disposition for the four GitHub Apps before any workflow write. Preserve the completed one-time lock normalization, all three byte-frozen PDF source-closure manifests, the admitted SBOM, and Tasks 7-9 evidence. The owner ordered no further review rounds or reviewer dispatches; deterministic checks, exact-byte controls, and causal failure evidence remain required.
+The completed local implementation checkpoint and its documentation-only continuity child are the authorized fast-forward landing in visible local `main`. The next uncompleted gate is explicit owner disposition with decision and installation evidence for the four GitHub Apps before any workflow write. The isolated App verifier and public inventory below are completed checkpoints, not owner decisions or Foundation integration. Preserve the completed one-time lock normalization, all three byte-frozen PDF source-closure manifests, the admitted SBOM, and Tasks 7-9 evidence. The owner ordered no further review rounds or reviewer dispatches; deterministic checks, exact-byte controls, and causal failure evidence remain required.
 
 ## Active isolated agent-controller build
 
@@ -34,7 +34,9 @@ Active-build visibility is committed as `e1ad311` and anchored from visible loca
 
 ## Later human and platform gates
 
-Azure Pipelines, AWS Connector for GitHub, Amazon Q Developer, and ECC Tools still need owner dispositions in `governance/github-apps.toml`. Only the workflow substep stops at that gate; authorized local implementation continues. After every disposition is recorded, the controller may prepare the governed workflow and freeze the candidate. Push and remote CI need a separate owner-authorized Git handoff. macOS and native Windows/NTFS CI must attest that exact candidate SHA before the documentation-only acceptance dossier or any Foundation 0.1 completion claim. No fetch, push, workflow publication, deployment, or account-level mutation occurred.
+On the isolated branch, `faf8f53` adds validation for pending and owner-resolved App dispositions and disposition-compatible egress; resolved states require substantive inventory/decision/installation evidence fields and a valid decision date, with reasoned inventory-unavailability exceptions only for suspend/remove. `337941b` records the public GET inventory observed on 2026-09-09. Public application metadata and historical activity do not prove current installation grants, repository scope, running version/digest, or actual egress; installation APIs returned 403/401. Preserve these completed checkpoints after compaction; neither changes an installation or grants release authority.
+
+Azure Pipelines, AWS Connector for GitHub, Amazon Q Developer, and ECC Tools all remain `owner_decision_required` in `governance/github-apps.toml`, with egress `prohibited pending owner decision`. Next, obtain the owner's retain/restrict/suspend/remove choices and supporting decision and installation evidence; validate the resulting registry before any workflow write. Workflow writing and release remain blocked pending those choices and evidence; authorized independent local implementation continues. Push and remote CI need a separate owner-authorized Git handoff. macOS and native Windows/NTFS CI must attest the exact frozen candidate SHA before the documentation-only acceptance dossier or any Foundation 0.1 completion claim. No fetch, push, workflow publication, deployment, or account-level mutation occurred.
 
 ## Completed work now visible here
 
