@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Foundation release routing evidence",
+  "description": "A complete routing ledger, not release authorization. The Python status command enforces cross-field candidate equality and repository evidence checks that this schema cannot express.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "release_candidate_sha", "workflow", "git_handoff", "platforms"],
+  "properties": {
+    "schema": {"const": "heleos.foundation-release-evidence/v1"},
+    "release_candidate_sha": {"$ref": "#/$defs/sha1"},
+    "workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "candidate_sha", "path", "blob_sha1", "local_supply_chain"],
+      "properties": {
+        "status": {"const": "pass"},
+        "candidate_sha": {"$ref": "#/$defs/sha1"},
+        "path": {"const": ".github/workflows/core-ci.yml"},
+        "blob_sha1": {"$ref": "#/$defs/sha1"},
+        "local_supply_chain": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "candidate_sha", "platform", "receipt_sha256"],
+          "properties": {
+            "status": {"const": "pass"},
+            "candidate_sha": {"$ref": "#/$defs/sha1"},
+            "platform": {"const": "macos-arm64"},
+            "receipt_sha256": {"$ref": "#/$defs/sha256"}
+          }
+        }
+      }
+    },
+    "git_handoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "candidate_sha", "authorization_reference", "push_reference"],
+      "properties": {
+        "status": {"const": "pass"},
+        "candidate_sha": {"$ref": "#/$defs/sha1"},
+        "authorization_reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^\\S(?:[\\s\\S]*\\S)?$",
+          "not": {"pattern": "[\\u0000-\\u001f\\u007f]"}
+        },
+        "push_reference": {
+          "type": "string",
+          "maxLength": 2048,
+          "pattern": "^https://github\\.com/bbukolla-eng/Heleos-spark/commit/[0-9a-f]{40}$",
+          "not": {"pattern": "[\\r\\n]"}
+        }
+      }
+    },
+    "platforms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate_sha", "macos", "windows"],
+      "properties": {
+        "candidate_sha": {"$ref": "#/$defs/sha1"},
+        "macos": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "candidate_sha", "platform", "run_url", "artifact_sha256"],
+          "properties": {
+            "status": {"const": "pass"},
+            "candidate_sha": {"$ref": "#/$defs/sha1"},
+            "platform": {"const": "macos-arm64"},
+            "run_url": {"$ref": "#/$defs/run_url"},
+            "artifact_sha256": {"$ref": "#/$defs/sha256"}
+          }
+        },
+        "windows": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "candidate_sha", "platform", "filesystem", "suite_count", "run_url", "artifact_sha256", "native_receipt_sha256"],
+          "properties": {
+            "status": {"const": "pass"},
+            "candidate_sha": {"$ref": "#/$defs/sha1"},
+            "platform": {"const": "windows-x86_64"},
+            "filesystem": {"const": "NTFS"},
+            "suite_count": {"type": "integer", "const": 7},
+            "run_url": {"$ref": "#/$defs/run_url"},
+            "artifact_sha256": {"$ref": "#/$defs/sha256"},
+            "native_receipt_sha256": {"$ref": "#/$defs/sha256"}
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha1": {"type": "string", "minLength": 40, "maxLength": 40, "pattern": "^[0-9a-f]{40}$"},
+    "sha256": {"type": "string", "minLength": 64, "maxLength": 64, "pattern": "^[0-9a-f]{64}$"},
+    "run_url": {
+      "type": "string",
+      "maxLength": 2048,
+      "pattern": "^https://github\\.com/bbukolla-eng/Heleos-spark/actions/runs/[0-9]+$",
+      "not": {"pattern": "[\\r\\n]"}
+    }
+  }
+}

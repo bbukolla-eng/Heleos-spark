@@ -9,6 +9,7 @@ This file is a project workflow index, not an executable skill package, installe
 | Work | Required outcome | Starting point |
 | --- | --- | --- |
 | Resume or compaction recovery | Correct checkout, verified checkpoint, first unfinished action; no duplicate dispatch | [AGENTS.md](AGENTS.md) and [CURRENT_STATUS.md](CURRENT_STATUS.md) |
+| Foundation 0.1 release routing | Deterministic five-gate status, exact candidate/evidence binding, and the first unfinished release action | [Foundation release status](docs/operations/foundation-release-status.md) and `python3 scripts/foundation-release-status.py --human` |
 | Scoped coding | Tests for changed behavior, minimal implementation, exact changed-file/check evidence | Assigned task from the current implementation plan |
 | Debugging | Concrete observed failure, cause, smallest repair, and affected regression check | Existing failed command/report; no wholesale restart |
 | Worker dispatch | Verified provider capability, exact brief, single writer, bounded output | Shared assignment contract in [AGENTS.md](AGENTS.md) and the provider file |
