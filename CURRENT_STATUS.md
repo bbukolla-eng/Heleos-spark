@@ -10,6 +10,14 @@ Updated: 2026-09-09. This snapshot records local integration through Task 9, a p
 
 The local Finder-visible path `/Users/bekim/Heleos-spark/ACTIVE_BUILD` points to that registered worktree. It is an ignored local pointer, not a second source copy or a Git-tracked product path. The checkpoint is the minimum committed ancestor; the live branch HEAD may advance beyond it and must be reported from Git rather than copied into prose.
 
+## Local integration checkpoint - 2026-09-09
+
+The histories are reconciled locally in `/Users/bekim/Heleos-spark/.worktrees/agent-control-integration` on branch `integration/agent-control-foundation-2026-09-09`. Merge commit `6d5bf4302ca0edf8cafe88085321fd97b5fe9e6d` has parents `63ae39c3bc33dc8c8b4f05e5ff3dacbcb51d7184` and `f6f1bc82c2ba6f6a2fe552d9bd3adb5dc4e0c950`; the current integration documentation head is `147970271f47bd5b2f3de42ec4ffb2d3613a4665`. This checkpoint supersedes earlier integration/divergence descriptions retained below and preserves the active-build authority above.
+
+Recorded local integration checks passed: the repository gate checked 252 files with 0 failures, all 101 Python tests passed, and Rust formatting, check, Clippy, and the product, worker, and storage suites passed. Provenance remains intentionally fail-closed because inherited remote workflows lack admitted Foundation authority pending owner dispositions and supporting evidence for Azure Pipelines, AWS Connector for GitHub, Amazon Q Developer, and ECC Tools.
+
+No push, release, or workflow change occurred at this checkpoint, and no native Windows/NTFS acceptance is claimed. Resolve the four GitHub App dispositions before any workflow change.
+
 ## Current state
 
 Tasks 7-9 are complete, committed, converged, and locally integrated. Task 10's local supply-chain implementation is committed as `6157458c6566d8ad26a2ec2c6ba1c7d8a697e2b6`, parent `c1596c4cc536155ad3a052cfec2c9b8951814aba`, tree `c4539ca7e4ecf62e0e767684c314dd56e4527a0c`, subject `chore: implement local Foundation supply-chain gate`, on branch `build/foundation-0.1-release-gate`. The corrected full native macOS ARM64 gate ended with `SUPPLY_CHAIN_LOCAL_PASS`: the approved PDF guest, provenance, complete 405-package/1,035-edge graph, cargo-deny, cargo-audit, semantic secret scan, Clippy, builds, focused and whole-workspace tests, network-denied verifier suite, and two-root SBOM regeneration all passed. No workflow, release-candidate SHA, push, CI attestation, native Windows/NTFS acceptance, or Foundation completion is claimed.
