@@ -63,18 +63,18 @@ Tasks 2–5 are true parallel writers: each owns only one lane manifest and cons
 - Create: `governance/agents/validate-contracts.jq`
 - Create: `governance/agents/validate-sources.py`
 - Create: `governance/agents/egress-policy.toml`
-- Create: `docs/research/engineering/readiness-2026-08-28.md`
+- Create: `docs/research/engineering/readiness-2026-09-09.md`
 - Create: `docs/research/engineering/ecc-inventory.md`
 
 **Interfaces:**
 - Consumes: Foundation Task 1 registries and current read-only CLI/browser observations.
 - Produces: exact schemas, repository-owned dependency-free JSON/TOML validators, fail-closed provider states, and an evidence-backed ECC/GitHub-App inventory.
 
-- [ ] **Step 1: Write contract examples that initially fail**
+- [x] **Step 1: Write contract examples that initially fail**
 
 Create one valid and five invalid temporary examples for each JSON schema: missing input hash, forbidden data class, absent budget, self-approval permission, and private repository path leakage. Create one valid source-entry TOML example plus invalid examples for a missing locator, missing rights, non-`PUBLIC` class, absent hash status, and unrecognized NotebookLM permission. Run `/usr/bin/jq -e -f governance/agents/validate-contracts.jq <example>` and `python3 governance/agents/validate-sources.py <manifest>`; expected initial result is failure because the validators and schemas do not exist. Do not install a schema/TOML CLI.
 
-- [ ] **Step 2: Define exact contracts and deterministic validation**
+- [x] **Step 2: Define exact contracts and deterministic validation**
 
 Every `WorkerContract` requires schema version, task ID, provider, executable/source digest, snapshot digest, `PUBLIC` data class, allowed inputs/tools/endpoints, forbidden paths/actions, acceptance commands, wall/action/output/cost budgets, quarantine result directory, and return format. Every `ResearchPacket` requires the fields in Global Constraints. The jq validator validates the exact generated self-test JSON examples and rejects unknown top-level keys, non-`PUBLIC` classes, missing hashes/budgets, write/publish/approval authority, host/private paths, and unrecognized statuses.
 
@@ -82,17 +82,19 @@ Define one named `SourceEntryV1` contract in `validate-sources.py`: required `id
 
 `validate-sources.py` uses only standard-library `tomllib`, accepts one or more lane/aggregate TOML paths, and enforces `SourceEntryV1`. Its `--self-test` mode creates all Step 1 examples in a private temporary directory, invokes `/usr/bin/jq` through a fixed subprocess argument array with `shell = false`, checks each named pass/failure, and removes the directory. The policy maps `SECRET`, `INTERNAL`, and `PROJECT_CONFIDENTIAL` to `deny`; `PUBLIC` is allowed only when provider, purpose, source hashes, endpoint allowlist, and an approved task contract all match.
 
-- [ ] **Step 3: Inventory readiness without changing authentication**
+- [x] **Step 3: Inventory readiness without changing authentication**
 
 Record absolute executable path, SHA-256, version, authentication state without secret material, update channel, license/source, environment exposure, sandbox compatibility, and status for Codex, Claude Code, Kimi, Grok CLI, Cursor Agent, NotebookLM, and Grok Bot. Also record the exact local `jq` and `python3` paths, versions, hashes, origins, and the `tomllib` availability used by validation. Re-probe read-only. The observed baseline is Codex/Claude/Kimi installed and authenticated; Grok CLI installed but unauthenticated; Cursor Agent unavailable; NotebookLM and Grok Bot browser auth unverified. Changed facts replace, rather than inherit, that observation.
 
-- [ ] **Step 4: Use agent-sort to inventory ECC rather than assume capability**
+- [x] **Step 4: Use agent-sort to inventory ECC rather than assume capability**
 
 Record the installed account-level ECC Tools GitHub App, any callable local CLI/plugin surface, permissions visible through read-only GitHub/browser inspection, repository access, provenance, and whether it can participate. If no callable ECC capability is exposed, set `status = "installed_app_no_callable_adapter"`; do not label unrelated tools as ECC and do not change the app.
 
-- [ ] **Step 5: Verify and commit**
+- [x] **Step 5: Verify and commit**
 
 Run `python3 governance/agents/validate-sources.py --self-test`. All valid examples pass; all invalid examples fail for their named reason; no provider is marked ready without evidence; no native CLI is marked executable without an admitted sandbox and egress mediator; every declared file contains no token/cookie/private path. Stage only the eight task files and commit `docs: govern engineering research adapters`.
+
+Implementation checkpoint: commit `9496ef4c7a3fc59a519b5e938fa156c0364e108c` completes the contract/readiness outcome using eleven scoped implementation and test files. Controller verification passed 60 dedicated research tests, 26 named source/JSON self-test cases, Python compilation, schema parsing, whitespace checks, and a redacted Gitleaks report containing zero findings in the changed research paths. Every provider remains `not_admitted`; this checkpoint validates metadata and policy shape only and does not verify source bytes, citations, rights, credentials, containment, egress, or production authority.
 
 ---
 
