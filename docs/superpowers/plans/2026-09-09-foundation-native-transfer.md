@@ -1,6 +1,6 @@
 # Foundation 0.1 Native Windows Transfer Plan
 
-**Status:** In progress
+**Status:** Implemented and packaged; native execution pending
 
 **Date:** 2026-09-09
 
@@ -56,3 +56,11 @@ Portable AST-loaded tests must exercise the real pure validators and prove manif
 - Python compilation, PowerShell parsing, repository whitespace checks, and changed-path inventory pass.
 - The exact candidate is packaged only after this tooling is committed and integrated, using a dedicated exact ref/worktree; bundle reconstruction and `git fsck --strict` pass.
 - Native Windows/NTFS execution and Foundation acceptance remain pending until real retained evidence exists.
+
+## Execution checkpoint
+
+Implementation commit `cbf936afd59e563e7e20f8a2ed446ea4047f6b13` is integrated into visible local `main`. Both required RED failures were observed before production implementation. Controller verification passed 19 packaging tests on Python 3.14 and 3.9, 62 portable Foundation importer checks, 27 unchanged worker importer checks, the complete 101-test Python repository suite, Python compilation, PowerShell parsing, and whitespace checks.
+
+Exact release ref `release/foundation-0.1-native-58ab1e36c1f0cfccaf69c3a3c78b41495168fbbe` points to clean candidate `58ab1e36c1f0cfccaf69c3a3c78b41495168fbbe`. The generated bundle contains complete history and exactly that ref. Its manifest SHA-256 is `2b84da624fbc0e8549d3bb009ed898dd454a58d7e6e68226a2ab14e9295778ff`; bundle size is 4,210,962 bytes with SHA-256 `401f2c67970177c76825f42b485601f06ee300becbb3c59d8ec6ef93ab9d4765`.
+
+The Finder-visible ignored handoff is `/Users/bekim/Heleos-spark/WINDOWS_NATIVE_HANDOFF_58ab1e3`. All four copied-file checks and `git bundle verify` pass. This is transfer evidence only. Native Windows x64/NTFS execution, same-candidate CI, GitHub App dispositions, workflow publication, and Foundation acceptance remain pending.
