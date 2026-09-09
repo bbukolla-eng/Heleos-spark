@@ -76,19 +76,22 @@ the outer runner. Codex's `workspace-write` option is additional provider
 configuration, not evidence that the runner's optional host containment was
 enabled or that arbitrary inherited authority was restricted.
 
-For Cursor Agent `2026.09.02-c22c1a3`, use `--provider cursor --command
-/absolute/python3` and the literal arguments after `--`:
+For Cursor Agent `2026.09.02-c22c1a3`, use `--provider cursor` with a Homebrew
+Python executable, explicit `--inherit-env HOME` for the authorized session,
+and `--containment macos_seatbelt` on macOS. Supply these arguments after `--`:
 
 ```text
--B /absolute/repository/scripts/provider-adapters/cursor-stdin.py --cursor-executable /absolute/cursor-agent
+-B /absolute/repository/scripts/provider-adapters/cursor-stdin.py --cursor-node /absolute/cursor-install/node --cursor-entrypoint /absolute/cursor-install/index.js
 ```
 
-The Python 3.9-compatible adapter accepts only that exact executable option,
+The Python 3.9-compatible adapter accepts only those exact ordered options,
+requiring absolute regular Node/entrypoint files, executable Node, readable
+entrypoint, and no symlinks or group/other-writable files. It
 validates the same 65,536-byte UTF-8/NUL boundary and forwards original stdin
 bytes with no shell. Its fixed provider argv is:
 
 ```text
---print --force --sandbox enabled --output-format stream-json --disable-auto-update --model gpt-5.6-sol-high
+/absolute/cursor-install/index.js --disable-project-configs --exclude-workspace-context --print --force --sandbox enabled --output-format stream-json --disable-auto-update --model gpt-5.6-sol-high
 ```
 
 `--force` bypasses provider tool confirmations so print mode can apply writes;
@@ -97,17 +100,34 @@ runner's selected host containment remain separate controls. Callers cannot
 append provider flags, roots, credentials, endpoints, plugins, MCP approvals,
 output paths, or model overrides through this adapter. The installed build's
 help/parser and source confirm the fixed options, including its hidden
-`--disable-auto-update` flag. No provider process was dispatched beyond a
-version/help query by this implementation worker. The controller separately
+`--disable-auto-update`, `--disable-project-configs`, and
+`--exclude-workspace-context` controls. Node launches the entrypoint directly;
+the provider shell wrapper never runs. The controller separately
 confirmed an authorized login and the account's `gpt-5.6-sol-high` model; that
-exact model is fixed here. Runtime-state compatibility and a live contained
-write remain unverified by this implementation slice.
+exact model is fixed here. Live task `cursor-live-seatbelt-write-001` failed
+before a model/write: Apple Python attempted a denied xcrun-cache write,
+the shell wrapper attempted denied `/dev/null` writes, and the fresh HOME
+did not find the authorized session. Its clean retained checkout and failure
+evidence remain intact. The direct Node repair has fixture coverage; a new
+task identity is required for any live retry.
+
+The adapter preserves inherited HOME and sets `CURSOR_DATA_DIR` to the runner's
+TMPDIR itself (HOME only if TMPDIR is absent), with `NODE_COMPILE_CACHE` in a
+private `node-compile-cache` child. The canonical root must be an existing direct
+directory, ASCII, and at most 75 characters, so Cursor's appended `/projects`
+is at most 84 characters and cannot trigger its global `/tmp/.cursor` fallback.
+It rejects invalid roots and symlink/writable cache directories, replacing
+any inherited runtime/cache values without copying credentials. Outer Seatbelt,
+not the value of HOME, blocks writes to the real home. Apple Python's launcher
+can write caches before adapter code runs, which is why live macOS launches
+use Homebrew Python even though both Python versions pass adapter tests.
 
 Cursor consumes piped stdin only when no positional prompt is supplied, then
 trims its surrounding whitespace internally; the adapter itself preserves
-bytes. Empty input is forwarded and the real CLI may reject it. Its installed
-configuration/rules/plugin loading is not disabled or independently bounded
-by this adapter, so it must not be represented as an authority sandbox. The
+bytes. Empty input is forwarded and the real CLI may reject it. Fixed controls
+disable project configuration and exclude workspace-sourced context; they do
+not attest all global configuration/plugin behavior or provide an authority
+sandbox. The
 controller must validate provider configuration and task/data scope before
 dispatch. Adapter exits, signal handling, and output pass-through match the
 Codex adapter contract above. Official references: [headless writes](https://docs.cursor.com/en/cli/headless)

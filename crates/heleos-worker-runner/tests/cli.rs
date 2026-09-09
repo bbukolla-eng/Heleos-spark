@@ -155,6 +155,12 @@ fn cli_research_providers_fail_closed_before_command_runs() {
 #[test]
 fn cli_cursor_adapter_transports_prompt_and_retains_cursor_handoff() {
     let f = Fixture::new("/bin/cat > allowed/prompt\nprintf cursor-cli-fixture > allowed/new.txt");
+    // Cursor rejects long runtime roots to prevent its /tmp/.cursor fallback.
+    let cursor_workspace = tempfile::Builder::new()
+        .prefix("cursor-")
+        .tempdir_in("/tmp")
+        .unwrap();
+    let cursor_workspace_path = cursor_workspace.path().canonicalize().unwrap();
     let mut packet = f.packet();
     packet["provider"] = "cursor".into();
     let task = common::validate(&packet);
@@ -162,18 +168,22 @@ fn cli_cursor_adapter_transports_prompt_and_retains_cursor_handoff() {
     fs::write(&packet_path, serde_json::to_vec(&packet).unwrap()).unwrap();
     let adapter = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../../scripts/provider-adapters/cursor-stdin.py");
+    let entrypoint = f.root.path().join("index.js");
+    fs::write(&entrypoint, b"// inert entrypoint fixture\n").unwrap();
     let output = Command::new(env!("CARGO_BIN_EXE_heleos-worker-runner"))
         .arg("--task")
         .arg(&packet_path)
         .arg("--source")
         .arg(&f.source)
         .arg("--workspace-root")
-        .arg(&f.workspace)
+        .arg(&cursor_workspace_path)
         .args(["--provider", "cursor", "--git", "/usr/bin/git"])
         .args(["--command", "/usr/bin/python3", "--", "-B"])
         .arg(&adapter)
-        .arg("--cursor-executable")
+        .arg("--cursor-node")
         .arg(&f.provider)
+        .arg("--cursor-entrypoint")
+        .arg(&entrypoint)
         .output()
         .unwrap();
     assert!(output.status.success(), "{output:?}");

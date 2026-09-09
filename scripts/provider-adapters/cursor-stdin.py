@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Pass bounded UTF-8 stdin directly to Cursor Agent 2026.09.02-c22c1a3 without a shell.
 
-Usage: python3 cursor-stdin.py --cursor-executable ABSOLUTE_REGULAR_EXECUTABLE
+Usage: python3 cursor-stdin.py --cursor-node ABSOLUTE_REGULAR_EXECUTABLE
+       --cursor-entrypoint ABSOLUTE_REGULAR_FILE
 
 Adapter failures: 64 invalid CLI/executable, 65 invalid prompt, 70 launch
 failure, 71 provider/adapter signal, 74 stdin read failure. Ordinary provider
@@ -48,20 +49,22 @@ def main() -> int:
     try:
         arguments = sys.argv[1:]
         valid = (
-            len(arguments) == 2
-            and arguments[0] == "--cursor-executable"
-            and os.path.isabs(arguments[1])
-            and "\x00" not in arguments[1]
+            len(arguments) == 4
+            and arguments[0] == "--cursor-node"
+            and arguments[2] == "--cursor-entrypoint"
+            and all(os.path.isabs(path) and "\x00" not in path for path in (arguments[1], arguments[3]))
         )
         if valid:
             try:
-                valid = stat.S_ISREG(os.stat(arguments[1]).st_mode) and os.access(
-                    arguments[1], os.X_OK
-                )
+                valid = all(
+                    stat.S_ISREG(os.lstat(path).st_mode)
+                    and not os.lstat(path).st_mode & (stat.S_IWGRP | stat.S_IWOTH)
+                    for path in (arguments[1], arguments[3])
+                ) and os.access(arguments[1], os.X_OK) and os.access(arguments[3], os.R_OK)
             except (OSError, ValueError):
                 valid = False
         if not valid:
-            return fail(64, "usage: --cursor-executable ABSOLUTE_REGULAR_EXECUTABLE")
+            return fail(64, "usage: --cursor-node ABSOLUTE_REGULAR_EXECUTABLE --cursor-entrypoint ABSOLUTE_REGULAR_FILE")
 
         prompt = bytearray()
         if sys.stdin is None:
@@ -85,14 +88,41 @@ def main() -> int:
         if b"\x00" in prompt:
             return fail(65, "prompt contains NUL")
 
+        # HOME may point at the authorized credential store. Only these two
+        # runtime locations are redirected; the outer runner controls access.
+        environment = os.environ.copy()
+        runtime_root = environment.get("TMPDIR", environment.get("HOME", ""))
+        try:
+            if not os.path.isabs(runtime_root) or not stat.S_ISDIR(os.lstat(os.path.normpath(runtime_root)).st_mode):
+                return fail(64, "runtime root unavailable")
+            runtime_root = os.path.realpath(runtime_root)
+            # Cursor's installed runtime helper falls back to /tmp/.cursor
+            # for long roots. ASCII <=75 keeps root + '/projects' <=84.
+            if not runtime_root.isascii() or len(runtime_root) > 75:
+                return fail(64, "runtime root unavailable")
+            cache = os.path.join(runtime_root, "node-compile-cache")
+            try:
+                os.mkdir(cache, 0o700)
+            except FileExistsError:
+                pass
+            metadata = os.lstat(cache)
+            if not stat.S_ISDIR(metadata.st_mode) or metadata.st_mode & (stat.S_IWGRP | stat.S_IWOTH):
+                return fail(64, "runtime root unavailable")
+            environment["CURSOR_DATA_DIR"] = runtime_root
+            environment["NODE_COMPILE_CACHE"] = cache
+        except (OSError, ValueError):
+            return fail(64, "runtime root unavailable")
+
         try:
             result = subprocess.run(
                 [
-                    arguments[1], "--print", "--force", "--sandbox", "enabled",
+                    arguments[1], arguments[3], "--disable-project-configs",
+                    "--exclude-workspace-context", "--print", "--force", "--sandbox", "enabled",
                     "--output-format", "stream-json", "--disable-auto-update",
                     "--model", "gpt-5.6-sol-high",
                 ],
                 input=bytes(prompt),
+                env=environment,
                 shell=False,
                 check=False,
             )
