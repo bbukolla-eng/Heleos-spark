@@ -55,6 +55,22 @@ $taskSummary = [ordered]@{
     error = $null
 }
 
+function Resolve-GateApplication {
+    param([Parameter(Mandatory)][string] $Name)
+    # Get-Command may return every matching application from PATH. Preserve
+    # PATH precedence and never pass a multi-path array to a command invocation.
+    $taskApplications = @(Get-Command -Name $Name -CommandType Application -ErrorAction Stop)
+    if ($taskApplications.Count -eq 0) { throw "Required application is unavailable: $Name" }
+    $taskApplicationPath = $taskApplications[0].Source
+    if ($taskApplicationPath -isnot [string] -or
+        [string]::IsNullOrWhiteSpace($taskApplicationPath) -or
+        -not [IO.Path]::IsPathFullyQualified($taskApplicationPath) -or
+        -not (Test-Path -LiteralPath $taskApplicationPath -PathType Leaf)) {
+        throw "Required application has no usable absolute file path: $Name"
+    }
+    return $taskApplicationPath
+}
+
 function Invoke-GateCommand {
     param(
         [Parameter(Mandatory)][string] $Executable,
@@ -151,10 +167,10 @@ try {
         throw 'Repository must reside on one local NTFS volume.'
     }
     $taskSummary.filesystem = 'NTFS'
-    $taskGit = (Get-Command git -CommandType Application -ErrorAction Stop).Source
-    $taskCargo = (Get-Command cargo -CommandType Application -ErrorAction Stop).Source
-    $taskRustc = (Get-Command rustc -CommandType Application -ErrorAction Stop).Source
-    $taskRustup = (Get-Command rustup -CommandType Application -ErrorAction Stop).Source
+    $taskGit = Resolve-GateApplication 'git'
+    $taskCargo = Resolve-GateApplication 'cargo'
+    $taskRustc = Resolve-GateApplication 'rustc'
+    $taskRustup = Resolve-GateApplication 'rustup'
     $taskSummary.git_sha = (Invoke-GateCommand $taskGit @('rev-parse', '--verify', 'HEAD')).Trim()
     if ($taskSummary.git_sha -cnotmatch '^[0-9a-f]{40}$') { throw 'Expected an exact Git SHA-1 commit identity.' }
     $taskGitRoot = (Invoke-GateCommand $taskGit @('rev-parse', '--show-toplevel')).Trim()
