@@ -1,0 +1,202 @@
+schema_version = 1
+status = "research_only"
+
+[[source]]
+id = "wbdg-ufgs-library-2026-05"
+canonical_url = "https://www.wbdg.org/dod/ufgs"
+publisher = "National Institute of Building Sciences, Whole Building Design Guide"
+title = "Unified Facilities Guide Specifications Library"
+edition_or_version = "Master updated 2026-05-19 and posted 2026-05-28"
+effective_date = "2026-05-19"
+retrieved_at = "2026-09-09T14:54:00Z"
+cache_status = "not_cached"
+license_or_rights = "Publicly accessible United States Department of Defense guide-specification index; copyright and third-party content rights remain source-specific, and no redistribution or upload right is inferred"
+data_class = "PUBLIC"
+locators = ["Library metadata: Master Updated and Master Posted", "Division 23 - Heating, Ventilating, and Air Conditioning", "Archived UFGS notice"]
+claims_supported = ["Discovery metadata for the current public UFGS Division 23 section set", "Archived UFGS are not authorized by the publisher for new-project use"]
+applicability = "United States Department of Defense guide specifications; advisory source discovery only until a section is tailored and incorporated into a project contract; jurisdiction and project criteria control; sections use SI and I-P units"
+supersession_state = "current"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Public web reference is available, but upload and redistribution rights have not been independently verified for every linked section"
+contradictions = []
+gaps = ["The rolling library can change after retrieval", "The project-issued specification and amendments, not this index, determine contractual requirements"]
+
+[[source]]
+id = "ufgs-23-05-93-2025"
+canonical_url = "https://www.wbdg.org/dod/ufgs/ufgs-23-05-93"
+publisher = "USACE, NAVFAC, and AFCEC through Whole Building Design Guide"
+title = "UFGS 23 05 93 Testing, Adjusting, and Balancing for HVAC"
+edition_or_version = "May 2025; references aligned to UMRL July 2026 at retrieval"
+effective_date = "2025-05-01"
+retrieved_at = "2026-09-09T14:54:00Z"
+cache_status = "not_cached"
+license_or_rights = "Publicly accessible United States Government guide specification; source terms and incorporated-reference rights remain controlling, and no upload right is inferred"
+data_class = "PUBLIC"
+locators = ["PDF pages 2-4, scope and designer notes", "PDF page 3, drawing-information items 1 through 10", "Part 3, DALT and systems-acceptance provisions"]
+claims_supported = ["Candidate drawing extraction fields include unique equipment and terminal marks, terminal airflow, equipment-schedule airflow and temperatures, hydronic quantities, pump head, and balancing devices", "TAB and duct air leakage testing have evidence and acceptance dependencies when the section is contractually incorporated"]
+applicability = "Federal DoD HVAC air and hydronic distribution and domestic hot-water recirculation work; normative only after project-specific tailoring and incorporation; mixed SI and I-P units; requirements vary by service and delivery method"
+supersession_state = "current"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "The publisher permits public reference access; upload rights for the specification and incorporated standards have not been independently verified"
+contradictions = []
+gaps = ["Bracketed choices and service-specific tailoring prevent direct use as a universal rule", "Referenced SMACNA, ASHRAE, UFC, and project documents must be checked at their controlling editions"]
+
+[[source]]
+id = "ufgs-23-30-00-2025"
+canonical_url = "https://www.wbdg.org/dod/ufgs/ufgs-23-30-00"
+publisher = "USACE, NAVFAC, and AFCEC through Whole Building Design Guide"
+title = "UFGS 23 30 00 HVAC Air Distribution"
+edition_or_version = "February 2025"
+effective_date = "2025-02-01"
+retrieved_at = "2026-09-09T14:54:00Z"
+cache_status = "not_cached"
+license_or_rights = "Publicly accessible United States Government guide specification; source terms and incorporated-reference rights remain controlling, and no upload right is inferred"
+data_class = "PUBLIC"
+locators = ["Paragraph 2.12.12, Diffusers, Registers, and Grilles", "PDF pages 37-38, air-device schedule and performance criteria", "Part 3, installation and temporary protection"]
+claims_supported = ["Candidate air-device schedule fields include service, face size, neck or connection size, airflow or airflow range, and maximum noise criterion", "Air distribution components and installation requirements require project-specific evidence and cannot be inferred solely from symbol counts"]
+applicability = "Federal DoD HVAC air-distribution work; normative only after project tailoring and contractual incorporation; covers ducts, air devices, fans, coils, dampers, filters, and related equipment using SI and I-P units"
+supersession_state = "current"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "The publisher permits public reference access; upload rights for the specification and incorporated standards have not been independently verified"
+contradictions = []
+gaps = ["Guide text contains bracketed alternatives and designer notes that are not project requirements until edited", "Project drawings, schedules, specifications, and adopted codes control actual quantities and acceptance"]
+
+[[source]]
+id = "ufgs-23-08-00-change-1-2024"
+canonical_url = "https://www.wbdg.org/dod/ufgs/ufgs-23-08-00"
+publisher = "USACE, NAVFAC, and AFCEC through Whole Building Design Guide"
+title = "UFGS 23 08 00 Commissioning of Mechanical and Plumbing Systems"
+edition_or_version = "May 2023, Change 1 August 2024"
+effective_date = "2024-08-01"
+retrieved_at = "2026-09-09T14:54:00Z"
+cache_status = "not_cached"
+license_or_rights = "Publicly accessible United States Government guide specification; source terms and incorporated-reference rights remain controlling, and no upload right is inferred"
+data_class = "PUBLIC"
+locators = ["Section table of contents, paragraphs 3.2 through 3.16", "Paragraphs 3.5 and 3.6, DALT and TAB report review and verification", "PDF pages 2-3, project and service tailoring notes"]
+claims_supported = ["Commissioning evidence may include pre-functional, functional, integrated-system, DALT, TAB, controls, retest, acceptance, seasonal, and training records", "Unresolved commissioning deficiencies block the affected approval when the tailored section is incorporated"]
+applicability = "Federal DoD mechanical and optional plumbing commissioning; normative only after project and service tailoring and contractual incorporation; process evidence rather than quantity authority; mixed SI and I-P units"
+supersession_state = "current"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "The publisher permits public reference access; upload rights for the specification and incorporated standards have not been independently verified"
+contradictions = []
+gaps = ["Tailoring differs for contractor-hired and government-hired commissioning providers and by service", "Project commissioning plans and issued contract documents remain controlling"]
+
+[[source]]
+id = "icc-imc-2024-v2.1-chapter-6"
+canonical_url = "https://codes.iccsafe.org/content/IMC2024V2.1/chapter-6-duct-systems"
+publisher = "International Code Council"
+title = "2024 International Mechanical Code, Chapter 6 Duct Systems"
+edition_or_version = "IMC 2024 version 2.1, publisher page version May 2024"
+effective_date = "2024-05-01"
+retrieved_at = "2026-09-09T14:54:00Z"
+cache_status = "not_cached"
+license_or_rights = "Copyright International Code Council; public browser reference was identified, but reproduction, redistribution, and notebook-upload rights are not granted by this manifest"
+data_class = "PUBLIC"
+locators = ["Chapter 6, Duct Systems", "Section 603, Duct Construction and Installation", "Section 603.2, Duct Sizing"]
+claims_supported = ["The model code provides candidate compliance topics for duct-system construction, installation, and sizing", "Code compliance cannot be determined without the adopted edition, local amendments, occupancy, and project facts"]
+applicability = "Model code for jurisdictions that adopt the 2024 IMC; normative only through jurisdictional adoption and amendment; not a takeoff quantity source; units and exceptions must be read in the controlling code text"
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "Copyrighted code text; no independent authorization for third-party notebook upload"
+contradictions = []
+gaps = ["The publisher page rejected automated retrieval during this research pass", "Local adoption, amendments, appeals, and later errata are unresolved", "Licensed controlling text is required before implementing compliance rules"]
+
+[[source]]
+id = "ashrae-62.1-2025-overview"
+canonical_url = "https://www.ashrae.org/technical-resources/bookstore/standards-62-1-62-2"
+publisher = "ASHRAE"
+title = "ANSI/ASHRAE Standard 62.1-2025 Overview"
+edition_or_version = "Standard 62.1-2025; rolling publisher overview observed 2026-09-09"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:54:00Z"
+cache_status = "not_cached"
+license_or_rights = "Copyright ASHRAE; the public overview may be referenced, but the standard text requires authorized access and no notebook-upload right is inferred"
+data_class = "PUBLIC"
+locators = ["ANSI/ASHRAE Standard 62.1-2025 heading", "Overview paragraphs describing scope and 2025 changes", "Superseded Editions of 62.1 heading"]
+claims_supported = ["The publisher identifies 62.1-2025 as its current nonresidential ventilation and acceptable indoor-air-quality standard", "The overview identifies minimum ventilation, filtration, controls, air cleaning, operations, and maintenance as covered topics"]
+applicability = "Nonresidential ventilation and indoor-air-quality design; normative only when adopted or contractually incorporated; rates, density adjustments, procedures, exceptions, and units require the licensed standard and project facts"
+supersession_state = "current"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "Copyrighted standard content; no independent authorization for third-party notebook upload"
+contradictions = []
+gaps = ["The publisher overview does not state an exact publication-effective date, so effective_date records the documented observation date rather than inventing one", "The licensed standard, addenda, errata, and local adoption were not obtained"]
+
+[[source]]
+id = "ashrae-90.1-2022-release"
+canonical_url = "https://www.ashrae.org/about/news/2023/newly-released-ashrae-90-1-2022-includes-expanded-scope-for-building-sites"
+publisher = "ASHRAE"
+title = "Newly Released ASHRAE 90.1-2022 Includes Expanded Scope for Building Sites"
+edition_or_version = "ANSI/ASHRAE/IES Standard 90.1-2022 release announcement"
+effective_date = "2023-01-25"
+retrieved_at = "2026-09-09T14:54:00Z"
+cache_status = "not_cached"
+license_or_rights = "Copyright ASHRAE; public announcement may be referenced, but the standard text requires authorized access and no notebook-upload right is inferred"
+data_class = "PUBLIC"
+locators = ["Release date: January 25, 2023", "Release paragraph identifying title and scope", "Mechanical System Performance Path and HVAC efficiency highlights"]
+claims_supported = ["Standard 90.1-2022 addresses energy efficiency for sites and buildings except low-rise residential buildings", "The announcement identifies an optional mechanical-system performance path and selected HVAC equipment-efficiency changes"]
+applicability = "Energy-efficiency source context only; normative only when adopted or contractually incorporated; not a quantity or equipment-selection rule; the licensed standard, climate zone, building type, system facts, and local amendments control"
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "Copyrighted announcement and standard family; no independent authorization for third-party notebook upload"
+contradictions = []
+gaps = ["Current supersession status and later addenda or errata require confirmation", "The release announcement cannot substitute for the licensed standard text"]
+
+[[source]]
+id = "smacna-guide-2025-duct-standards"
+canonical_url = "https://www.smacna.org/docs/default-source/default-document-library/smacna-guide-2025.pdf"
+publisher = "Sheet Metal and Air Conditioning Contractors' National Association"
+title = "SMACNA Guide 2025"
+edition_or_version = "2025 guide; observation-date surrogate used because the guide does not state a day-level publication date"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:54:00Z"
+cache_status = "not_cached"
+license_or_rights = "Copyright SMACNA; publicly accessible catalog guide may be referenced, but technical standards are separately licensed and no notebook-upload right is inferred"
+data_class = "PUBLIC"
+locators = ["Technical standards listings for HVAC Duct Construction Standards", "Metal and Flexible fourth-edition listing", "Fibrous Glass eighth-edition and Phenolic first-edition listings"]
+claims_supported = ["The publisher guide identifies current candidate SMACNA duct-construction standard families and editions for later licensed verification", "SMACNA catalog metadata alone is not sufficient to derive fabrication, pressure-class, reinforcement, leakage, or installation rules"]
+applicability = "Advisory source discovery for duct construction and inspection; specific technical requirements are normative only when the licensed edition is adopted or incorporated; equipment class is ductwork; unit systems depend on the controlling edition"
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "Copyrighted guide and separately licensed technical standards; no independent authorization for third-party notebook upload"
+contradictions = ["An official SMACNA standards landing-page search description referenced older third and seventh editions while the 2025 guide lists fourth and eighth editions; the licensed current catalog and standard control"]
+gaps = ["effective_date records the observation date because no exact publication date was found", "The underlying standards are licensed or paywalled and were not bypassed or cached"]
+
+[[source]]
+id = "carrier-39l-air-handler-2026"
+canonical_url = "https://www.carrier.com/us/en/commercial/airside/39l/"
+publisher = "Carrier Corporation"
+title = "AERO 39L Indoor Air Handler"
+edition_or_version = "39LA through 39LH product data published 2026-03-10"
+effective_date = "2026-03-10"
+retrieved_at = "2026-09-09T14:54:00Z"
+cache_status = "not_cached"
+license_or_rights = "Copyright Carrier; public product page may be referenced, but product-data redistribution and notebook-upload rights are not inferred"
+data_class = "PUBLIC"
+locators = ["At a glance, Airflow Range", "Documents, Product Data published March 10, 2026", "Documents, Guide Specifications published March 10, 2026"]
+claims_supported = ["Manufacturer-specific candidate identity covers Carrier 39L indoor air handlers in the nominal 1,800 to 15,000 CFM range", "Manufacturer documentation is a candidate for model-specific schedule reconciliation, not a universal design or quantity rule"]
+applicability = "Carrier 39L indoor air-handler family only; manufacturer-specific and advisory until the exact selected model, submittal, project specification, and approved schedule are reconciled; airflow units are CFM"
+supersession_state = "current"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "Copyrighted manufacturer material; no independent authorization for third-party notebook upload"
+contradictions = []
+gaps = ["The landing page does not establish the selected project configuration or accessories", "Linked product data, submittals, and approved project schedules require separate governed source entries before rule use"]
+
+[[source]]
+id = "greenheck-grd-atu-handbook-r6-2025"
+canonical_url = "https://content.greenheck.com/public/DAMProd/Original/10014/GRD_handbook.pdf"
+publisher = "Greenheck Fan Corporation"
+title = "Grilles, Registers, Diffusers, and Air Terminal Units Product Handbook"
+edition_or_version = "Revision 6, May 2025"
+effective_date = "2025-05-01"
+retrieved_at = "2026-09-09T14:54:00Z"
+cache_status = "not_cached"
+license_or_rights = "Copyright Greenheck Fan Corporation; public handbook may be referenced, but redistribution and notebook-upload rights are not inferred"
+data_class = "PUBLIC"
+locators = ["PDF pages 2-3, air-terminal-unit product families and stated airflow ranges", "PDF pages 5-9, grille, register, diffuser, damper, and accessory families", "PDF page 7, direction to current product specifications and submittal data"]
+claims_supported = ["Manufacturer-specific candidate taxonomy includes single-duct, dual-duct, fan-powered, retrofit, grille, register, diffuser, damper, and accessory families", "Displayed capacity values and units are product-family metadata and require exact current model performance and submittal confirmation"]
+applicability = "Greenheck air-distribution product families only; manufacturer-specific and advisory; handbook uses CFM and inch-based product descriptions; exact selected model, neck size, airflow, throw, noise, pressure, finish, and accessories require project-approved submittal data"
+supersession_state = "current"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "Copyrighted manufacturer handbook; no independent authorization for third-party notebook upload"
+contradictions = []
+gaps = ["The handbook directs readers to current product specifications and submittals and is not itself a complete performance dataset", "No project-specific product selection or approval is established"]
