@@ -65,6 +65,22 @@ a real-home write. Inheriting the real `HOME` does not add it to Seatbelt's
 allowed write roots, and no real authentication state is copied into the
 ephemeral home.
 
+The Kimi adapter exposes a non-launching capability probe for this boundary:
+
+```text
+python3 scripts/provider-adapters/kimi-stdin.py \
+  --kimi-executable /absolute/path/to/kimi \
+  --probe-state-layout
+```
+
+The probe reads only bounded regular executable bytes, never reads standard
+input or authentication/config files, emits `heleos.kimi-state-capability/v1`,
+and exits 78 because no writable split-state capability is admitted. The exact
+reviewed 0.34.0 executable is classified `combined_auth_runtime_root`; unknown
+bytes are `unverified_executable`. `--worker-state-root /absolute/path` likewise
+exits 78 before reading a prompt, touching that root, or launching Kimi. Do not
+make the combined root writable or copy credentials to manufacture support.
+
 On Windows, callers must add `--containment windows_restricted_token_job` and
 provide absolute local `.exe` paths for Git and the provider. Windows rejects
 `none`, `macos_seatbelt`, and containment setup failure without launching an
@@ -159,10 +175,27 @@ retained run's `containment.mode` for the mode actually applied. See the
 and the precise platform and failure limits.
 
 The Windows implementation passes portable host tests and Windows MSVC
-cross-compilation. It is not native evidence. A clean native Windows/NTFS
-checkout must run `pwsh -File scripts/verify-windows-worker-containment.ps1`;
-the script verifies the exact commit, platform, filesystem, toolchain, test
-identities, and full locked/offline suites and emits a terminal JSON summary.
+cross-compilation. It is not native evidence. Package the exact clean commit on
+the controller, transfer the immutable candidate directory plus separately
+trusted launcher/importer scripts, then run the owner entrypoint on native
+Windows from an existing local fixed NTFS parent:
+
+```text
+pwsh -NoProfile -File scripts/run-windows-native-candidate.ps1 \
+  -CandidateDirectory C:\Heleos\candidate \
+  -RunDirectory C:\Heleos\runs\NEW-RUN \
+  -ExpectedManifestSha256 INDEPENDENT_64_HEX_PIN \
+  -ExpectedCommit EXACT_40_HEX_COMMIT
+```
+
+The launcher always calls `import-windows-native-candidate.ps1 -Full`; the
+importer creates a new exact checkout and invokes
+`verify-windows-worker-containment.ps1`. The scripts verify the commit,
+platform, filesystem, toolchain, test identities, and full locked/offline
+suites. Output is retained in `import-output.jsonl` and atomically published
+`result.json`. Only a zero exit with top-level and nested
+`native_evidence=true`, exact commit agreement, and `filesystem=NTFS` is native
+evidence. Failure artifacts are retained; no path is overwritten or deleted.
 
 ## Candidate inventory and handoff
 
