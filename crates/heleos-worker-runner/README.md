@@ -1,17 +1,19 @@
 # Local guarded worker runner
 
-This crate executes one explicitly configured Claude Code, Kimi, or Grok command in an
-independent local Git clone detached at a validated task's exact base. It does
-not create a source worktree registration, share object hardlinks, fetch, push,
-merge, create a candidate commit, or run acceptance commands.
+This crate executes one explicitly configured Claude Code, Kimi, or Grok
+command in an independent local Git clone detached at a validated task's exact
+base. It does not create a source worktree registration, share object
+hardlinks, fetch, push, merge, create a candidate commit, or run acceptance
+commands.
 
 The library exposes `run_json(input, config)` for preserving original JSON bytes
 and `run(validated_task, config)` for already-validated callers. Both return a
 typed `RunResult` or `RunError`. Provider input is a bounded generated prompt on
 stdin; the executable and ordered arguments are passed directly to `Command`.
 Only `claude_code`, `kimi`, and `grok` are admitted in this slice; `codex` and
-`cursor` remain unsupported. Grok admission has local-fixture coverage only,
-without live invocation or authentication evidence.
+`cursor` remain unsupported. Grok has both local-fixture coverage and one
+PUBLIC-only live write with controller hash acceptance; the retained evidence
+and exact limits are in `evidence/live-grok-run.md`.
 
 ## CLI
 
@@ -141,13 +143,14 @@ inherited. The Windows backend instead terminates the complete Job tree.
 External termination of the runner is not a guaranteed cancellation mechanism
 in this slice.
 
-A live PUBLIC-only Claude Code task has completed one exact-scope write under
-macOS Seatbelt and passed controller hash acceptance. Kimi remains blocked by
-its combined credential/runtime data-root design; real authentication state is
-not copied into the ephemeral home. Windows code has passed host tests and MSVC
-cross-compilation, but the required native Windows/NTFS gate has not run. This
-slice does not claim App Sandbox, regulatory containment, production authority,
-Foundation acceptance, or native Windows acceptance.
+Live PUBLIC-only Claude Code and Grok tasks have each completed one exact-scope
+write under macOS Seatbelt and passed controller hash acceptance. Kimi remains
+blocked by its combined credential/runtime data-root design; real
+authentication state is not copied into the ephemeral home. Windows code has
+passed host tests and MSVC cross-compilation, but the required native
+Windows/NTFS gate has not run. This slice does not claim App Sandbox,
+regulatory containment, production authority, Foundation acceptance, or native
+Windows acceptance.
 
 ## Local verification
 
@@ -155,6 +158,7 @@ Foundation acceptance, or native Windows acceptance.
 cargo +1.96.1 test -p heleos-worker-runner --locked --offline
 cargo +1.96.1 clippy -p heleos-worker-runner --all-targets --locked --offline -- -D warnings
 cargo +1.96.1 fmt -p heleos-worker-runner -- --check
+python3 -B tests/provider-adapters/test_grok_stdin.py
 # Run only from a clean native Windows/NTFS checkout:
 pwsh -File scripts/verify-windows-worker-containment.ps1
 ```

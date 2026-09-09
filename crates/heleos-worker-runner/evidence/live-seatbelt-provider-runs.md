@@ -133,8 +133,11 @@ force a green smoke result.
 
 All runner, provider, and diagnostic processes are terminal. The successful
 Claude retained checkout contains exactly its accepted one-file candidate; the
-failed retained checkouts and source checkout remain unchanged by their provider
-runs. The controller integrated the Claude file locally, but nothing was merged,
-pushed, deployed, or written to production. Do not repeat either Claude task.
-Keep Kimi write-disabled under Seatbelt until a dedicated owner-authorized state
-root is implemented and authenticated without credential copying.
+failed retained checkouts and source checkout remain unchanged by their
+provider runs. A later authenticated Grok Build run also completed an accepted
+PUBLIC-only exact-scope write; its immutable task, rejected precursor, hashes,
+and limits are recorded in `live-grok-run.md`. The controller integrated only
+the accepted fixture bytes locally, but nothing was merged, pushed, deployed,
+or written to production. Do not repeat completed provider tasks. Keep Kimi
+write-disabled under Seatbelt until a dedicated owner-authorized state root is
+implemented and authenticated without credential copying.
