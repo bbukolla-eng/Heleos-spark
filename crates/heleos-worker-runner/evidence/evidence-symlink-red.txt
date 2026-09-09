@@ -1,0 +1,6 @@
+Command: cargo test -p heleos-worker-runner --locked --offline --test runner provider_cannot_redirect_evidence_writes_through_a_symlink -- --exact
+Exit: 101
+Observed before fix: provider_cannot_redirect_evidence_writes_through_a_symlink FAILED.
+Failure: called Result::unwrap_err() on an Ok RunResult.
+Cause: evidence used ordinary filesystem writes; a provider-created ../stdout.bin symlink was followed.
+Fix: evidence uses an opened owned-directory handle, create-exclusive/no-follow openat, and identity validation.
