@@ -1,6 +1,6 @@
 # Agent Coordination Foundation Implementation Plan
 
-**Status:** Active implementation
+**Status:** Protocol slice implemented; guarded-runner slice is next
 
 **Base commit:** `af526a3c9c7ad93f360b6629e9b592a81787b341`
 
@@ -47,3 +47,12 @@ The first executable finish line is a new `heleos-worker-protocol` Rust package 
 - The CLI performs no command execution and contains no provider SDK or network dependency.
 - `cargo +1.96.1 test --locked --offline -p heleos-worker-protocol` and strict package Clippy pass with zero ignored tests.
 - Existing Foundation source, manifests other than the workspace membership/lock record, SBOM, release scripts, workflow gate, and GitHub App registry remain unchanged.
+
+## Implementation checkpoint
+
+- Protocol implementation commit: `bafbf79f71f4ff825e1bf51334382387a5f3d768`.
+- The initial RED evidence is retained under `crates/heleos-worker-protocol/evidence/`.
+- The GREEN package gate passes 15 tests with zero failures and zero ignored tests.
+- Workspace formatting, strict workspace Clippy, locked/offline metadata, fixture validation, and repository provenance checks pass.
+- The Foundation 0.1 candidate was not changed or merged.
+- Next executable slice: build a repository-owned guarded runner that creates an exact-base disposable checkout, invokes one allowed local provider CLI, verifies the resulting path scope, and emits a protocol-bound handoff without applying the candidate to an authoritative branch.
