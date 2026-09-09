@@ -35,10 +35,12 @@ Repeat `--inherit-env NAME` only for explicitly authorized environment names;
 values are passed directly to the child and are not placed in runner prompts
 or reports. The library also accepts explicit environment entries.
 
-On macOS, opt in with `--containment macos_seatbelt` (or set
-`RunnerConfig.containment = ContainmentMode::MacosSeatbelt`). The default is
-`none`. The serializable mode accepts only `none` and `macos_seatbelt`; there is
-no custom profile or sandbox executable option.
+Containment is explicit: use `--containment macos_seatbelt` on macOS or
+`--containment windows_restricted_token_job` on Windows (or select the matching
+`RunnerConfig.containment` variant). The default is `none` on Unix. Windows
+rejects `none` and every non-Windows mode before launch, so it has no
+uncontained fallback. There is no custom profile, sandbox executable, token, or
+Job Object option.
 
 The macOS backend validates the installed `/usr/bin/sandbox-exec`: its canonical
 path must be exactly that path, and it must be a regular root-owned executable
@@ -51,10 +53,23 @@ including run evidence and writable host devices such as `/dev/null`, receive
 no write exception. Runner Git setup, evidence persistence, and inventory run
 outside that policy.
 
+The Windows backend creates the checkout, ephemeral home, and ephemeral temp as
+empty local NTFS directories, adds and verifies inheritable write permission for
+the Write Restricted Code SID, and retains no-delete handles before Git
+materializes the checkout. It launches the provider suspended under a restricted
+token with exactly the three standard pipe handles inherited, assigns it to a
+fresh kill-on-close Job Object, verifies membership, and only then resumes it.
+Timeout and normal provider exit terminate and reap the complete Job tree before
+inventory. Run evidence is outside the three writable roots. Reparse points,
+hard links, identity changes, unsupported filesystems, unsafe environment or
+command forms, and containment setup failures stop the run before an uncontained
+provider can execute.
+
 Successful JSON evidence records `containment.mode`, the restricted write scope,
-and explicit false values for read, network, and inherited external authority
-restrictions. Unsupported platforms or failed pre-launch backend validation
-return `containment_unavailable`; no fallback launches an uncontained provider.
+whether the process tree is contained, and explicit false values for read,
+network, and inherited external authority restrictions. Unsupported platforms
+or failed pre-launch backend validation return `containment_unavailable`; no
+fallback launches an uncontained provider.
 Failure evidence retains the typed terminal reason. Once sandbox-exec starts,
 policy initialization failures and provider failures share its exit status and
 are reported as `provider_exit`; stderr is retained without heuristic parsing.
@@ -105,29 +120,32 @@ without erasing the original terminal reason. No success-cleanup API is exposed.
 
 ## Explicit operational limits
 
-With default `none`, no OS filesystem containment is applied. The opt-in macOS
-backend restricts new path-based filesystem writes for the provider process
-tree on the tested host. Neither mode restricts reads, network, credentials,
-inherited external authority, provider internal actions, or cost. The controller
-must arrange any further restrictions and egress authorization independently.
+With default `none` on Unix, no OS filesystem containment is applied. The
+opt-in macOS backend restricts new path-based filesystem writes for the provider
+process tree on the tested host. The required Windows mode restricts provider
+tree writes and owns provider lifecycle through a restricted token and Job
+Object. None of these modes restricts reads, network, credentials, inherited
+external authority, provider internal actions, or cost. The controller must
+arrange any further restrictions and egress authorization independently.
 Post-run inventory describes final observable project files; it cannot detect
 a write that was reverted; without containment it cannot detect arbitrary host
 writes by a hostile executable. Inventory remains mandatory in both modes.
 
-The current process backend uses Unix process groups and nonblocking pipes.
-Timeouts and normal exits terminate same-group background descendants before
-inventory. A descendant that deliberately escapes its process group requires
-separate process-lifecycle containment, although Seatbelt write restrictions
-remain inherited. External termination of the runner is not a guaranteed
-cancellation mechanism in this slice. Windows fails closed as
-`unsupported_platform` by default or `containment_unavailable` when Seatbelt is
-requested; a Windows Job Object/restricted-process backend is future work. Native
-verification for this implementation is macOS ARM64 only.
+The Unix process backend uses process groups and nonblocking pipes. Timeouts and
+normal exits terminate same-group background descendants before inventory. A
+descendant that deliberately escapes its process group requires separate
+process-lifecycle containment, although Seatbelt write restrictions remain
+inherited. The Windows backend instead terminates the complete Job tree.
+External termination of the runner is not a guaranteed cancellation mechanism
+in this slice.
 
-Authenticated Claude/Kimi compatibility under Seatbelt remains a separate smoke
-gate: real authentication state is not copied into the ephemeral home. This
-slice does not claim App Sandbox, Windows, regulatory containment, production
-authority, or Foundation acceptance.
+A live PUBLIC-only Claude Code task has completed one exact-scope write under
+macOS Seatbelt and passed controller hash acceptance. Kimi remains blocked by
+its combined credential/runtime data-root design; real authentication state is
+not copied into the ephemeral home. Windows code has passed host tests and MSVC
+cross-compilation, but the required native Windows/NTFS gate has not run. This
+slice does not claim App Sandbox, regulatory containment, production authority,
+Foundation acceptance, or native Windows acceptance.
 
 ## Local verification
 
@@ -135,6 +153,8 @@ authority, or Foundation acceptance.
 cargo +1.96.1 test -p heleos-worker-runner --locked --offline
 cargo +1.96.1 clippy -p heleos-worker-runner --all-targets --locked --offline -- -D warnings
 cargo +1.96.1 fmt -p heleos-worker-runner -- --check
+# Run only from a clean native Windows/NTFS checkout:
+pwsh -File scripts/verify-windows-worker-containment.ps1
 ```
 
 Tests use temporary local Git repositories and fake local provider executables.
@@ -142,4 +162,7 @@ No authenticated provider, external service, or network call is involved.
 The macOS integration test uses the real kernel backend and proves allowed-root
 writes, host/sibling and descendant denial, symlink escape denial, literal paths
 and arguments, accurate run evidence, and continued inventory enforcement.
-The `evidence/` directory retains causal RED results and final GREEN commands.
+The Windows-only suites compile on the MSVC target and are named explicitly by
+the PowerShell gate, but cross-compilation is not native execution evidence. The
+`evidence/` directory retains causal RED results, GREEN commands, and the exact
+remaining native gate.

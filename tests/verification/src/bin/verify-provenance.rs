@@ -1654,21 +1654,55 @@ mod secret_scan {
             .get("package")
             .and_then(toml::Value::as_array)
             .ok_or("secret-scan frozen release package scope absent")?;
-        let local = packages
-            .iter()
-            .filter(|p| p.get("source").is_none())
-            .collect::<Vec<_>>();
-        ensure(
-            local.len() == 7
-                && local.iter().all(|p| {
-                    p.get("version").and_then(toml::Value::as_str) == Some("0.1.0")
-                        && p.get("name")
-                            .and_then(toml::Value::as_str)
-                            .is_some_and(|name| name.starts_with("heleos-"))
-                }),
-            "secret-scan baseline expired or release scope absent",
-        )?;
+        validate_local_package_scope(packages)?;
         Ok(baseline)
+    }
+
+    fn validate_local_package_scope(packages: &[toml::Value]) -> Result<()> {
+        let expected_foundation = BTreeSet::from([
+            "heleos-cli",
+            "heleos-core",
+            "heleos-pdf-guest",
+            "heleos-pdf-protocol",
+            "heleos-platform-fs",
+            "heleos-test-fixtures",
+            "heleos-verification",
+        ]);
+        // These exact engineering tools are outside the Foundation 0.1 release
+        // scope. This classification grants no scanner path/finding allowances;
+        // the complete history/current scan and frozen baseline remain intact.
+        let expected_tooling = BTreeSet::from([
+            "heleos-worker-protocol",
+            "heleos-worker-runner",
+            "heleos-worker-windows",
+        ]);
+        let mut foundation = BTreeSet::new();
+        let mut tooling = BTreeSet::new();
+        for package in packages
+            .iter()
+            .filter(|package| package.get("source").is_none())
+        {
+            let name = package
+                .get("name")
+                .and_then(toml::Value::as_str)
+                .ok_or("secret-scan local package name absent or malformed")?;
+            ensure(
+                package.get("version").and_then(toml::Value::as_str) == Some("0.1.0"),
+                "secret-scan baseline expired or local package version drift",
+            )?;
+            let unique = if expected_foundation.contains(name) {
+                foundation.insert(name)
+            } else if expected_tooling.contains(name) {
+                tooling.insert(name)
+            } else {
+                return Err("secret-scan unclassified local package".into());
+            };
+            ensure(unique, "secret-scan duplicate local package identity")?;
+        }
+        ensure(
+            foundation == expected_foundation && tooling == expected_tooling,
+            "secret-scan required Foundation or tooling package identity absent",
+        )
     }
 
     fn history_set(baseline: &Value, report: &Value) -> Result<Vec<(Finding, String)>> {
@@ -2037,6 +2071,124 @@ mod secret_scan {
     mod tests {
         use super::*;
         use serde_json::{Value, json};
+
+        fn local_scope_fixture() -> Vec<toml::Value> {
+            [
+                "heleos-cli",
+                "heleos-core",
+                "heleos-pdf-guest",
+                "heleos-pdf-protocol",
+                "heleos-platform-fs",
+                "heleos-test-fixtures",
+                "heleos-verification",
+                "heleos-worker-protocol",
+                "heleos-worker-runner",
+                "heleos-worker-windows",
+            ]
+            .into_iter()
+            .map(|name| {
+                toml::from_str(&format!("name = \"{name}\"\nversion = \"0.1.0\"\n")).unwrap()
+            })
+            .collect()
+        }
+
+        #[test]
+        fn local_scope_admits_exact_foundation_and_separate_tooling_packages() {
+            let mut packages = local_scope_fixture();
+            validate_local_package_scope(&packages).unwrap();
+            packages.reverse();
+            validate_local_package_scope(&packages).unwrap();
+        }
+
+        #[test]
+        fn local_scope_rejects_unknown_substituted_and_duplicate_packages() {
+            let packages = local_scope_fixture();
+            for index in 0..packages.len() {
+                let mut unknown = packages.clone();
+                unknown[index]["name"] = toml::Value::String("heleos-unclassified".to_owned());
+                assert!(
+                    validate_local_package_scope(&unknown).is_err(),
+                    "unknown package at {index}"
+                );
+                let mut duplicate = packages.clone();
+                duplicate.push(packages[index].clone());
+                assert!(
+                    validate_local_package_scope(&duplicate).is_err(),
+                    "duplicate package at {index}"
+                );
+                let mut substituted = packages.clone();
+                substituted[index] = packages[(index + 1) % packages.len()].clone();
+                assert!(
+                    validate_local_package_scope(&substituted).is_err(),
+                    "substituted package at {index}"
+                );
+            }
+        }
+
+        #[test]
+        fn local_scope_requires_every_foundation_and_current_tooling_identity() {
+            let packages = local_scope_fixture();
+            for index in 0..packages.len() {
+                let mut missing = packages.clone();
+                missing.remove(index);
+                assert!(
+                    validate_local_package_scope(&missing).is_err(),
+                    "missing package at {index}"
+                );
+            }
+            // A coincidental total of seven is no longer release-scope proof.
+            assert!(validate_local_package_scope(&packages[..7]).is_err());
+            assert!(validate_local_package_scope(&[]).is_err());
+        }
+
+        #[test]
+        fn local_scope_rejects_every_local_version_drift_or_missing_field() {
+            let packages = local_scope_fixture();
+            for index in 0..packages.len() {
+                for version in ["0.1.1", "0.2.0", "0.1.0-alpha.1", ""] {
+                    let mut changed = packages.clone();
+                    changed[index]["version"] = toml::Value::String(version.to_owned());
+                    assert!(
+                        validate_local_package_scope(&changed).is_err(),
+                        "version drift at {index}"
+                    );
+                }
+                for field in ["name", "version"] {
+                    let mut missing = packages.clone();
+                    missing[index].as_table_mut().unwrap().remove(field);
+                    assert!(
+                        validate_local_package_scope(&missing).is_err(),
+                        "missing {field} at {index}"
+                    );
+                    let mut mistyped = packages.clone();
+                    mistyped[index][field] = toml::Value::Integer(1);
+                    assert!(
+                        validate_local_package_scope(&mistyped).is_err(),
+                        "mistyped {field} at {index}"
+                    );
+                }
+            }
+        }
+
+        #[test]
+        fn local_scope_does_not_confuse_registry_records_with_local_identity() {
+            let mut packages = local_scope_fixture();
+            packages.push(toml::from_str("name = \"serde\"\nversion = \"1.0.229\"\nsource = \"registry+https://github.com/rust-lang/crates.io-index\"\n").unwrap());
+            validate_local_package_scope(&packages).unwrap();
+            for index in 0..10 {
+                let mut substituted = packages.clone();
+                substituted[index].as_table_mut().unwrap().insert(
+                    "source".to_owned(),
+                    toml::Value::String(
+                        "registry+https://github.com/rust-lang/crates.io-index".to_owned(),
+                    ),
+                );
+                assert!(
+                    validate_local_package_scope(&substituted).is_err(),
+                    "external substitute at {index}"
+                );
+            }
+        }
 
         fn report(finding: &Finding, history: bool) -> Value {
             let mut value = json!({"Author":"","Commit":finding.commit,"Date":"","Description":"synthetic redacted fixture","Email":"",

@@ -40,6 +40,45 @@ This proves a live authenticated Claude process can initialize and reach its
 service under the policy. It is not a successful write proof; retry only after
 the provider limit resets and keep the same containment boundary.
 
+## Claude Code contained write success
+
+After the reported limit reset, task `claude-live-seatbelt-write-002` ran from
+source commit `82161f5501b0fd35c2454d5c6bb4eeeeb71d8dec` with canonical task digest
+`e686fff9cf9f67413b2ed4a79735c7c3b69e4089548d6ec64f6805351a60f1a8`.
+The task file SHA-256 is
+`d35673db953c7d1a8e63cce7bf20ee31d9559c14459f793cd8c27d89ace328e2`.
+It admitted exactly one `PUBLIC` synthetic output path and exposed only Claude's
+`Write` tool. Claude Code 2.1.261 exited zero after 6,232 milliseconds under
+`macos_seatbelt`.
+
+The runner retained the complete candidate and evidence at
+`.worktrees/provider-runs/heleos-worker-4zqjZW/`. Its inventory contains exactly
+`tests/fixtures/runner/live/claude-seatbelt.txt`, SHA-256
+`c5e8b3c1ac3acc430840eef4831b2c5352737e9d516607a1bb3de2c2bc9df59f`.
+The runner recorded one provider invocation, 2,306 retained stdout bytes, zero
+stderr bytes, no truncation, host-path writes restricted to checkout/home/tmp,
+and no claim of read, network, credential, or inherited-authority restriction.
+
+- `run.json` SHA-256:
+  `cf6e7341bf6215a18783c0195e1ba8148ff49aaae15e43dadb71c7775e1f2167`.
+- Pending runner `handoff.json` SHA-256:
+  `c2b8b592da9f831e108e6297487aa51fc81da640eeda8ec121d7e6b3abde1ed9`.
+- `stdout.bin` SHA-256:
+  `bfb19d0ac2b06c089cd750cc79682c1e147490d393fc1c069183c63f57556c48`.
+- Empty `stderr.bin` SHA-256:
+  `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+
+The controller compared the retained candidate to the exact base, confirmed
+that this one regular file was the complete change inventory, copied the exact
+bytes into the source through the controller path, and reran its declared
+SHA-256 acceptance command with exit zero. The resulting completed handoff has
+digest `2bdde5a65e2dd0de1de0c4aec950669547f905674978cc81561606430c9aaed5`
+and file SHA-256
+`873daa3375bfd2601e8ef716d3a5e7c5541879f5e0843aef669d8ba602bd28af`.
+This proves the guarded route can produce and integrate a bounded authenticated
+Claude write under the tested macOS policy. It does not grant Claude authority
+to accept, merge, push, deploy, or write production truth.
+
 ## Kimi Code adapter defect and repair
 
 Task `kimi-live-seatbelt-write-001` validated with canonical digest
@@ -92,9 +131,10 @@ force a green smoke result.
 
 ## Terminal state and next action
 
-All runner, provider, and diagnostic processes are terminal. Both source
-repositories and all three retained checkouts are clean. No candidate was
-accepted, merged, pushed, deployed, or written to production. Retry Claude after
-its provider limit resets. Keep Kimi write-disabled under Seatbelt until a
-dedicated owner-authorized state root is implemented and authenticated without
-credential copying.
+All runner, provider, and diagnostic processes are terminal. The successful
+Claude retained checkout contains exactly its accepted one-file candidate; the
+failed retained checkouts and source checkout remain unchanged by their provider
+runs. The controller integrated the Claude file locally, but nothing was merged,
+pushed, deployed, or written to production. Do not repeat either Claude task.
+Keep Kimi write-disabled under Seatbelt until a dedicated owner-authorized state
+root is implemented and authenticated without credential copying.

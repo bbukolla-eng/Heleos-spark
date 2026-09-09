@@ -1,9 +1,17 @@
 # Public synthetic runner fixtures
 
-These fixtures contain only authored `PUBLIC` synthetic data. They contain no
-credentials, private source material, provider sessions, remote URLs, or actual
-model output. They establish no provider availability, authorization, or live
-acceptance result. Do not dispatch them as a live worker assignment.
+The deterministic fake-provider fixtures contain only authored `PUBLIC`
+synthetic data. They contain no credentials, private source material, provider
+sessions, remote URLs, or actual model output. They establish no provider
+availability, authorization, or live acceptance result. Do not dispatch them as
+a live worker assignment.
+
+The `live/` directory is different: it retains the exact controller-accepted
+`PUBLIC` synthetic file bytes produced by recorded headless provider runs. Those
+files contain no credentials or private project material, but they are actual
+provider output. Their run and acceptance identities are recorded under
+`crates/heleos-worker-runner/evidence/`; the files alone do not authorize a new
+provider run or prove current provider availability.
 
 `fake_provider.py` uses the Python standard library, consumes at most 65,536
 bytes of prompt data from stdin without echoing it, and makes fixed relative

@@ -1,11 +1,24 @@
 # Windows guarded-worker containment implementation plan
 
-**Status:** Active
+**Status:** Implementation complete; native Windows/NTFS gate pending
 
 **Design:** `docs/superpowers/specs/2026-09-09-windows-worker-containment-design.md`
 
 **Starting branch/commit:** `build/agent-control-foundation` at
 `d6e2c3d83403e1771fac014cc789d7ff0ed6069e`
+
+**Implementation commits:** design/plan `82161f5501b0fd35c2454d5c6bb4eeeeb71d8dec`;
+platform and runner `5f3619158ffb56e0df61a68bebd267de468b2f61`;
+native gate `e190567eae05ec876049508ff35eeef28ec92320`.
+
+Tasks 1-3 are implemented. Portable/host and MSVC cross-compile gates pass.
+The assembled workspace exposed and now includes a test-first verifier repair:
+its release-scope sentinel classifies the exact seven Foundation packages and
+three separate worker-tool packages instead of assuming the workspace contains
+only seven local packages. The frozen secret-scan baseline was not changed.
+The final acceptance check remains the committed PowerShell entry point on a
+clean, exact candidate checkout on native Windows/NTFS. Do not recreate the
+completed tasks after compaction.
 
 ## Global constraints
 

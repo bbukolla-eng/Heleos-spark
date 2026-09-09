@@ -56,13 +56,19 @@ child-process inputs and are not copied into prompts or reports. The task's data
 and egress decision must be authorized independently before either provider is
 launched.
 
-Both example routes use the default `--containment none`. On macOS, a separate
-opt-in invocation can add `--containment macos_seatbelt` before the provider
-argument separator `--`. Earlier authenticated Claude/Kimi runs do not establish
-compatibility with this mode; live authenticated execution under Seatbelt remains
-a separate smoke gate. Inheriting the real `HOME` does not add it to Seatbelt's
-allowed write roots, so provider authentication or configuration writes there
-may fail. No real authentication state is copied into the ephemeral home.
+Both example routes use the default `--containment none`. On macOS, an opt-in
+invocation can add `--containment macos_seatbelt` before the provider argument
+separator `--`. A PUBLIC-only Claude task has now completed one exact-scope write
+under this mode and passed controller hash acceptance. Kimi still cannot run
+within this boundary because its combined credential/runtime data root requires
+a real-home write. Inheriting the real `HOME` does not add it to Seatbelt's
+allowed write roots, and no real authentication state is copied into the
+ephemeral home.
+
+On Windows, callers must add `--containment windows_restricted_token_job` and
+provide absolute local `.exe` paths for Git and the provider. Windows rejects
+`none`, `macos_seatbelt`, and containment setup failure without launching an
+uncontained provider.
 
 ## Before dispatch
 
@@ -115,8 +121,9 @@ whether external egress is approved. Approval of data, provider, and egress is a
 controller input; a task's `approved_external` string does not grant permission.
 The runner does not grant the child authority for any of these actions.
 
-Default `none` applies no OS filesystem containment; a disposable checkout and
-post-run path validation alone do not isolate host writes or network access.
+Default `none` on Unix applies no OS filesystem containment; a disposable
+checkout and post-run path validation alone do not isolate host writes or
+network access.
 Opt-in `macos_seatbelt` uses the validated fixed `/usr/bin/sandbox-exec` backend
 and a static policy to restrict new path-based filesystem writes by the provider
 and descendants to the canonical checkout, ephemeral home, and ephemeral temp
@@ -126,18 +133,36 @@ and inventory operate outside that policy. Post-run scope validation remains
 mandatory because Seatbelt permits writes throughout the checkout, including
 paths outside the task allowlist.
 
-Neither mode restricts reads, network, credentials, inherited external authority,
-provider internal actions, or cost. Same-group process termination does not cover
-descendants that deliberately escape the group, although Seatbelt write
-restrictions remain inherited. The controller must arrange any additional read,
+`windows_restricted_token_job` creates the checkout, ephemeral home, and
+ephemeral temp as empty local NTFS roots and authorizes only those roots for the
+Write Restricted Code SID before Git materialization. The provider starts
+suspended under a restricted token, inherits only its three standard pipes, is
+assigned to a verified kill-on-close Job Object, and then resumes. Timeout and
+normal exit terminate and reap the full Job tree before inventory. Run evidence
+is never one of the authorized roots. Root reparse points, path-identity drift,
+hard links, unsafe command/environment forms, unsupported filesystems, ACL
+failure, token failure, handle-list failure, or Job assignment failure all stop
+before uncontained execution.
+
+None of the modes restricts reads, network, credentials, inherited external
+authority, provider internal actions, or cost. Same-group process termination
+does not cover Unix descendants that deliberately escape the group, although
+Seatbelt write restrictions remain inherited; the Windows Job Object owns the
+complete provider tree. The controller must arrange any additional read,
 credential, network, and lifecycle controls before launch. This implementation
-does not establish App Sandbox, Windows containment, production authority, or
-Foundation acceptance. Unsupported platforms or failed backend validation return
-`containment_unavailable` without an uncontained fallback; after backend launch,
+does not establish App Sandbox, production authority, or Foundation acceptance.
+Unsupported platforms or failed backend validation return
+`containment_unavailable` without an uncontained fallback; after Seatbelt launch,
 policy initialization failures share the `provider_exit` channel. Check the
 retained run's `containment.mode` for the mode actually applied. See the
 [runner README](../../crates/heleos-worker-runner/README.md) for evidence fields
 and the precise platform and failure limits.
+
+The Windows implementation passes portable host tests and Windows MSVC
+cross-compilation. It is not native evidence. A clean native Windows/NTFS
+checkout must run `pwsh -File scripts/verify-windows-worker-containment.ps1`;
+the script verifies the exact commit, platform, filesystem, toolchain, test
+identities, and full locked/offline suites and emits a terminal JSON summary.
 
 ## Candidate inventory and handoff
 
