@@ -1,6 +1,14 @@
 # Current repository status
 
-Updated: 2026-09-08 21:53 UTC. This snapshot records local integration through Task 9 and a passing local Task 10 supply-chain implementation; it is not a production-release acceptance statement.
+Updated: 2026-09-09. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, and the separately isolated agent-controller build checkpoint; it is not a production-release acceptance statement.
+
+<!-- active-build-authority:v1 -->
+```json
+{"schema_version":1,"active_builds":[{"path":".worktrees/agent-control-foundation","branch":"build/agent-control-foundation","checkpoint":"91e859843a03bdb53911819ca8a7fdcec8cdaccb","status_file":"CURRENT_STATUS.md"}]}
+```
+<!-- /active-build-authority -->
+
+The local Finder-visible path `/Users/bekim/Heleos-spark/ACTIVE_BUILD` points to that registered worktree. It is an ignored local pointer, not a second source copy or a Git-tracked product path. The checkpoint is the minimum committed ancestor; the live branch HEAD may advance beyond it and must be reported from Git rather than copied into prose.
 
 ## Current state
 
@@ -29,6 +37,7 @@ Root agent instructions are available in [AGENTS.md](AGENTS.md), [CLAUDE.md](CLA
 | Location under this project | Purpose |
 | --- | --- |
 | `/Users/bekim/Heleos-spark` | Visible local `main` with the Task 7-9 chain plus Task 10 local implementation checkpoint `6157458...` and its continuity child |
+| `/Users/bekim/Heleos-spark/ACTIVE_BUILD` | Finder-visible local pointer to `.worktrees/agent-control-foundation`; the branch remains isolated from the Foundation 0.1 candidate |
 | `.worktrees/foundation-0.1-build/` | Closed, clean Task 7-9 implementation chain and immutable execution evidence |
 | `.worktrees/foundation-0.1-release/` | Passing local `build/foundation-0.1-release-gate` Task 10 supply-chain/SBOM implementation at `6157458...` plus this continuity child; workflow and native Windows gates remain open |
 | `.worktrees/claude-task4/` | Independently accepted CLI candidate; exact six files integrated into the build worktree |
