@@ -1,6 +1,6 @@
 # Current repository status
 
-Updated: 2026-09-09. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, and the isolated cross-platform agent-controller build through Cursor adapter commit `02e5d2858c8d08d9d3e68741ee18037c515fcc77` and terminal task-005 quota evidence. Accepted Codex live evidence and the earlier passing post-Codex Foundation gate remain recorded; no Cursor live write or production-release acceptance is claimed.
+Updated: 2026-09-09. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, and the isolated cross-platform agent-controller build through native-Windows handoff automation commit `7e7d9e1bd62b540e8864f5e7d3474a3a75b74d8f`. Accepted Codex live evidence and terminal Cursor task-005 quota evidence remain recorded; no Cursor live write, native Windows result, or production-release acceptance is claimed.
 
 ## Current state
 
@@ -28,6 +28,8 @@ The next isolated finish line is the exact native Windows/NTFS execution of `scr
 
 Cursor implementation is committed through `02e5d2858c8d08d9d3e68741ee18037c515fcc77`, after admission `042c9c0`, runtime repair `7d31665`, config repair `f14d9b6`, and model selection `9659280`. The current adapter passes 23 tests on both Python runtimes, and the runner passes 44 host tests. All five PUBLIC-only Cursor attempts are terminal with clean retained checkouts; none yielded accepted output. [Live Cursor evidence](crates/heleos-worker-runner/evidence/live-cursor-run.md) records installation, authentication, all outcomes/hashes, controls, and the quota stop. The last attempt reached GPT-5.6 Terra 272K High under macOS Seatbelt before the usage-limit response. No further Cursor call is queued.
 
+Native-Windows handoff automation is committed as `7e7d9e1bd62b540e8864f5e7d3474a3a75b74d8f`. `scripts/package-windows-candidate.py` packages only an exact clean branch/commit into a deterministic full-history bundle, reconstructs it in a retained bare repository, runs strict object verification, and publishes its manifest last without overwriting prior evidence. `scripts/import-windows-native-candidate.ps1` requires independently supplied manifest and commit hashes, creates only a new local NTFS checkout, verifies the exact ref/HEAD and clean state, and runs preflight by default or the full native gate only with `-Full`. `scripts/verify-repo-state.py` provides the read-only, machine-readable branch/HEAD/main-divergence/worktree/dirtiness checkpoint used after compaction. Controller checks passed 13 packager cases on both Python 3.14 and 3.9, 27 portable importer checks, 10 continuity cases on both Python runtimes, duplicate-PATH tool-resolution coverage, and both Mac fail-closed gate modes. These checks do not claim native Windows evidence.
+
 ## Later human and platform gates
 
 Azure Pipelines, AWS Connector for GitHub, Amazon Q Developer, and ECC Tools still need owner dispositions in `governance/github-apps.toml`. Only the workflow substep stops at that gate; authorized local implementation continues. After every disposition is recorded, the controller may prepare the governed workflow and freeze the candidate. Push and remote CI need a separate owner-authorized Git handoff. macOS and native Windows/NTFS CI must attest that exact candidate SHA before the documentation-only acceptance dossier or any Foundation 0.1 completion claim. No fetch, push, workflow publication, deployment, or account-level mutation occurred.
@@ -47,7 +49,7 @@ Root agent instructions are available in [AGENTS.md](AGENTS.md), [CLAUDE.md](CLA
 | Location under this project | Purpose |
 | --- | --- |
 | `/Users/bekim/Heleos-spark` | Visible local `main` with the Task 7-9 chain plus Task 10 local implementation checkpoint `6157458...` and its continuity child |
-| `.worktrees/agent-control-foundation/` | Active `build/agent-control-foundation` implementation with guarded providers, macOS containment, the Windows restricted-token/Job Object candidate, and its native gate; not merged into Foundation 0.1 |
+| `.worktrees/agent-control-foundation/` | Active `build/agent-control-foundation` implementation with guarded providers, macOS containment, the Windows restricted-token/Job Object candidate, deterministic Windows package/import tools, and a machine-readable continuity guard; not merged into Foundation 0.1 |
 | `.worktrees/foundation-0.1-build/` | Closed, clean Task 7-9 implementation chain and immutable execution evidence |
 | `.worktrees/foundation-0.1-release/` | Passing local `build/foundation-0.1-release-gate` Task 10 supply-chain/SBOM implementation at `6157458...` plus this continuity child; workflow and native Windows gates remain open |
 | `.worktrees/claude-task4/` | Independently accepted CLI candidate; exact six files integrated into the build worktree |
@@ -62,6 +64,7 @@ The detailed checkpoint is `.worktrees/foundation-0.1-build/.superpowers/sdd/202
 2. Progress records still called Claude session `6654` and Windows probe `4554` running after both terminated. Those records now distinguish completed implementation, pending review, and failed verification.
 3. Older temporary-worktree registrations still have broken Git links. They are not active build authority and have not been deleted or pruned.
 4. The compaction checkpoint now records the exact completed chain, convergence evidence, visible-main merge, post-merge gates, and Task 10 worktree. Completed Tasks 7-9 must not be recreated after compaction.
+5. `scripts/verify-repo-state.py --expect-branch ... --expect-head ... --require-clean` now fails closed when a resumed controller is in the wrong checkout, on stale bytes, or carrying uncommitted work; its JSON retains the actual state for diagnosis.
 
 ## Task 10 implementation checkpoint
 
