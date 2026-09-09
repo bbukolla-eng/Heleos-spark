@@ -76,7 +76,7 @@ class KimiStdinTests(unittest.TestCase):
         self.assertEqual(result.stderr, b"")
         self.assertEqual(
             json.loads(result.stdout),
-            ["--yolo", "--output-format", "stream-json", "--prompt", prompt],
+            ["--output-format", "stream-json", "--prompt", prompt],
         )
 
     def test_prompt_is_one_literal_argument_and_cannot_inject_shell_commands(self):

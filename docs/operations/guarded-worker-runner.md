@@ -28,7 +28,9 @@ cargo run -p heleos-worker-runner --locked --offline -- \
 ```
 
 Kimi Code requires its prompt as an argument, so the repository-owned bounded
-stdin adapter performs only that transport conversion without invoking a shell:
+stdin adapter performs only that transport conversion without invoking a shell.
+Kimi 0.34 prompt mode applies its noninteractive permission policy itself and
+rejects explicit `--auto` and `--yolo`, so the adapter supplies neither:
 
 ```text
 cargo run -p heleos-worker-runner --locked --offline -- \
