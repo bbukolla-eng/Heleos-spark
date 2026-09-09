@@ -3175,14 +3175,55 @@ mod tests {
         assert!(super::BACKUP_SEEK_ERROR.with(|fault| fault.borrow().is_none()));
     }
 
+    fn run_seek_failure_in_isolated_temp_parent(test_name: &str, restore: bool) {
+        const HELPER_ENV: &str = "HELEOS_BACKUP_SEEK_FAILURE_HELPER";
+        if std::env::var_os(HELPER_ENV).is_some() {
+            seek_failure_is_io_before_staging(restore);
+            return;
+        }
+
+        // The assertion inventories the complete selected parent. Run it in a
+        // fresh child process so unrelated applications and parallel tests
+        // cannot add or remove entries between the before/after snapshots.
+        let selector = tempfile::Builder::new()
+            .prefix("heleos-backup-seek-selector-")
+            .tempdir()
+            .expect("create isolated backup-seek selector");
+        apply_private_permissions(selector.path()).expect("harden isolated backup-seek selector");
+        let status = std::process::Command::new(
+            std::env::current_exe().expect("locate unit test executable"),
+        )
+        .args(["--exact", test_name, "--nocapture"])
+        .env(HELPER_ENV, "1")
+        .env("TMPDIR", selector.path())
+        .env("TMP", selector.path())
+        .env("TEMP", selector.path())
+        .status()
+        .expect("run isolated backup-seek assertion");
+        assert!(status.success());
+        assert_eq!(
+            fs::read_dir(selector.path())
+                .expect("enumerate isolated backup-seek selector")
+                .count(),
+            0,
+            "backup-seek child leaked staging into its isolated selector"
+        );
+    }
+
     #[test]
     fn verify_container_seek_failure_preserves_io() {
-        seek_failure_is_io_before_staging(false);
+        run_seek_failure_in_isolated_temp_parent(
+            "backup::tests::verify_container_seek_failure_preserves_io",
+            false,
+        );
     }
 
     #[test]
     fn restore_seek_failure_preserves_io() {
-        seek_failure_is_io_before_staging(true);
+        run_seek_failure_in_isolated_temp_parent(
+            "backup::tests::restore_seek_failure_preserves_io",
+            true,
+        );
     }
 
     #[test]

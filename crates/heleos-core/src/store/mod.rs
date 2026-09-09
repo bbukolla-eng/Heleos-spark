@@ -7633,6 +7633,38 @@ mod tests {
 
     #[test]
     fn caller_admitted_invalid_snapshot_preserves_database_taxonomy_and_cleans_child() {
+        const HELPER_ENV: &str = "HELEOS_TEST_INVALID_SNAPSHOT_CLEANUP";
+        if std::env::var_os(HELPER_ENV).is_none() {
+            let selector = tempfile::Builder::new()
+                .prefix("heleos-invalid-snapshot-selector-")
+                .tempdir()
+                .expect("create invalid-snapshot selector");
+            apply_private_permissions(selector.path()).expect("harden invalid-snapshot selector");
+            let status = std::process::Command::new(
+                std::env::current_exe().expect("locate unit test executable"),
+            )
+            .arg("--exact")
+            .arg(
+                "store::tests::caller_admitted_invalid_snapshot_preserves_database_taxonomy_and_cleans_child",
+            )
+            .arg("--nocapture")
+            .env(HELPER_ENV, "1")
+            .env("TMPDIR", selector.path())
+            .env("TMP", selector.path())
+            .env("TEMP", selector.path())
+            .status()
+            .expect("run isolated invalid-snapshot cleanup test");
+            assert!(status.success());
+            assert_eq!(
+                fs::read_dir(selector.path())
+                    .expect("inventory invalid-snapshot selector after child")
+                    .count(),
+                0,
+                "isolated invalid-snapshot test left temporary state behind"
+            );
+            return;
+        }
+
         let root = tempfile::Builder::new()
             .prefix("heleos-invalid-reader-database-")
             .tempdir()
