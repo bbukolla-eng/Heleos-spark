@@ -1,14 +1,14 @@
 # Current repository status
 
-Updated: 2026-09-09. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, the tested native-suite receipt candidate, the completed cross-platform agent-controller build through exact clean commit `f6f1bc82c2ba6f6a2fe552d9bd3adb5dc4e0c950`, visible-main public research and benchmark integration through `0dd2f77c8ecf722c4f1ac57e94acef7b9653a292`, and the completed Foundation release-status implementation checkpoint `885f8d8c713773a29fbc27ee1f13d829d5d022a3`. Native-Windows launchers, GitHub App inventory, guarded-provider evidence, terminal Cursor quota evidence, and terminal Athena quarantine/adjudication remain recorded; no new provider benchmark run, Cursor live write, native Windows result, Foundation 0.2 start, or production-release acceptance is claimed.
+Updated: 2026-09-09. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, the tested native-suite receipt candidate, the completed cross-platform agent-controller build through exact clean commit `f6f1bc82c2ba6f6a2fe552d9bd3adb5dc4e0c950`, visible-main public research and benchmark integration through `0dd2f77c8ecf722c4f1ac57e94acef7b9653a292`, the completed Foundation release-status implementation checkpoint `885f8d8c713773a29fbc27ee1f13d829d5d022a3`, and the completed GitHub App owner-decision applier checkpoint `738aca452332e4495066f9cba2e46b6aaef6f8bf`. Native-Windows launchers, GitHub App inventory, guarded-provider evidence, terminal Cursor quota evidence, and terminal Athena quarantine/adjudication remain recorded; no owner App decision, new provider benchmark run, Cursor live write, native Windows result, Foundation 0.2 start, or production-release acceptance is claimed.
 
 <!-- active-build-authority:v1 -->
 ```json
-{"schema_version":1,"active_builds":[{"path":".worktrees/github-app-decisions-2026-09-09","branch":"build/github-app-decisions-2026-09-09","checkpoint":"acedd2cbe0be13e6a616b20210ff2d8c936a6ed0"}]}
+{"schema_version":1,"active_builds":[]}
 ```
 <!-- /active-build-authority -->
 
-One unfinished local implementation branch is declared active above: the GitHub App decision-packet/applier slice. The ignored Finder-visible path `/Users/bekim/Heleos-spark/ACTIVE_BUILD` remains a legacy pointer to the completed agent-controller worktree for inspection only; it is not recovery authority, a second source copy, or permission to resume writes there. New implementation must first register its exact path, branch, and committed checkpoint in this block.
+No unfinished local implementation branch is declared active above. The ignored Finder-visible path `/Users/bekim/Heleos-spark/ACTIVE_BUILD` remains a legacy pointer to the completed agent-controller worktree for inspection only; it is not recovery authority, a second source copy, or permission to resume writes there. New implementation must first register its exact path, branch, and committed checkpoint in this block.
 
 ## Local integration checkpoint - 2026-09-09
 
@@ -37,6 +37,14 @@ Implementation commit `885f8d8c713773a29fbc27ee1f13d829d5d022a3` on `build/found
 Controller verification passed all 25 focused cases under Python 3.14.6 and system Python 3.9.6, the complete 48-test continuity suite under both runtimes, all 89 research tests, JSON parsing, and staged whitespace checks. The current real-repository inspection is deterministically `BLOCKED`; the native transfer verifies as `PASS` with `native_evidence=false`, and the first unfinished action is the four owner GitHub App dispositions. `--require-ready` exits `2` for that expected blocked state instead of misreporting a code failure or release pass.
 
 This implementation is complete and must not be recreated after compaction. No unfinished build is declared in the authority block because its code/test checkpoint is terminal and has been fast-forwarded into local `main` through documentation checkpoint `4c47089ef7ecd68d921e6434766a3be35473a826`; the preserved worktree is inspection history, not a second source of truth. Resume by running `python3 scripts/foundation-release-status.py --human` from visible local `main`, then act only on the first reported gate or continue an independently authorized local engineering slice.
+
+## GitHub App owner-decision applier checkpoint
+
+Implementation commit `738aca452332e4495066f9cba2e46b6aaef6f8bf` on `build/github-app-decisions-2026-09-09` adds the executable `scripts/apply-github-app-decisions.py`, strict `governance/github-app-decisions.schema.json`, 35 black-box continuity cases, the operator guide, and top-level workflow links. The command defaults to a no-write dry run, binds an owner packet to the exact visible-main HEAD and committed registry SHA-256, rejects stale or dirty state, and uses an atomic one-file replacement only after explicit `--apply`. It cannot change GitHub account installations, follow evidence references, mutate workflows, commit, push, or grant release acceptance.
+
+Controller verification passed all 35 focused cases under Python 3.14.6 and system Python 3.9.6, the complete 83-test continuity suite under both runtimes, all 89 research tests, JSON parsing, Python AST parsing, stable implementation/test hashes, and staged whitespace checks. The atomic-write suite verifies a replaced inode, unchanged unrelated files and Git state, exact rerun idempotence, unique visible-main routing, secret-safe failures, strict packet semantics, and fail-closed Git override handling.
+
+This implementation is complete and must not be recreated after compaction. The four live registry entries remain `owner_decision_required`; no decision packet was invented or applied, and no GitHub account, network, workflow, or remote Git action occurred. The authority block is empty because the code/test checkpoint is terminal. After this branch is fast-forwarded into visible local `main`, resume at the current release-status first action: obtain the owner's exact four dispositions and real decision and installation evidence, dry-run the bound packet, and apply only that evidenced local registry update.
 
 ## Public research and benchmark implementation checkpoint
 
