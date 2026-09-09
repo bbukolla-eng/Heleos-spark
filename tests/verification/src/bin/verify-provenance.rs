@@ -78,6 +78,9 @@ fn main() {
 
 fn run() -> Result<String> {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
+    if args.first().map(String::as_str) == Some("verify-native-suite") {
+        return native_suite::run(&args);
+    }
     if args.first().map(String::as_str) == Some("verify-secret-scan") {
         return secret_scan::run(&args);
     }
@@ -1425,6 +1428,301 @@ fn planned_seed_snapshot(
             Ok((path, digest))
         })
         .collect()
+}
+
+mod native_suite {
+    use super::*;
+    use serde_json::{Value, json};
+
+    const WINDOWS_STORE_SENTINEL: &str =
+        "store::tests::windows_checked_close_releases_handles_in_three_real_rename_phases";
+
+    struct SuiteSpec {
+        id: &'static str,
+        selectors: &'static [&'static str],
+    }
+
+    const SUITES: [SuiteSpec; 7] = [
+        SuiteSpec {
+            id: "core-backup-restore",
+            selectors: &["-p", "heleos-core", "--test", "backup_restore"],
+        },
+        SuiteSpec {
+            id: "core-store",
+            selectors: &["-p", "heleos-core", "--lib", "store::tests"],
+        },
+        SuiteSpec {
+            id: "core-backup",
+            selectors: &["-p", "heleos-core", "--lib", "backup::tests"],
+        },
+        SuiteSpec {
+            id: "platform-fs",
+            selectors: &["-p", "heleos-platform-fs", "--lib"],
+        },
+        SuiteSpec {
+            id: "cli-unit",
+            selectors: &["-p", "heleos-cli", "--bin", "heleos"],
+        },
+        SuiteSpec {
+            id: "cli-integration",
+            selectors: &["-p", "heleos-cli", "--test", "cli"],
+        },
+        SuiteSpec {
+            id: "workspace-all",
+            selectors: &["--workspace", "--all-targets", "--all-features"],
+        },
+    ];
+
+    impl SuiteSpec {
+        fn validate(&self, suite: &Value) -> Result<()> {
+            ensure(suite.is_object(), "native-suite suite must be an object")?;
+            ensure(
+                suite["id"].as_str() == Some(self.id),
+                "native-suite ordered suite identity mismatch",
+            )?;
+            let mut run_argv = vec!["cargo", "+1.96.1", "test", "--frozen"];
+            run_argv.extend_from_slice(self.selectors);
+            let mut list_argv = run_argv.clone();
+            list_argv.extend_from_slice(&["--", "--list"]);
+            ensure(
+                suite["run_argv"] == json!(run_argv) && suite["list_argv"] == json!(list_argv),
+                "native-suite exact command mismatch",
+            )?;
+            ensure(
+                suite["list_path"] == format!("{}.list.txt", self.id)
+                    && suite["run_path"] == format!("{}.run.txt", self.id),
+                "native-suite exact transcript basename mismatch",
+            )
+        }
+    }
+
+    fn string(value: &Value) -> Result<&str> {
+        value
+            .as_str()
+            .ok_or_else(|| "native-suite required string missing".into())
+    }
+
+    fn transcript(directory: &Path, value: &Value) -> Result<Vec<u8>> {
+        let relative = string(value)?;
+        ensure(
+            !relative.is_empty()
+                && !relative.contains(['\\', ':'])
+                && relative
+                    .split('/')
+                    .all(|part| !part.is_empty() && part != "." && part != ".."),
+            "native-suite noncanonical transcript path",
+        )?;
+        read_regular(&directory.join(relative), FILE_CAP)
+    }
+
+    fn count(field: &str, suffixes: &[&str]) -> Result<usize> {
+        let digits = suffixes
+            .iter()
+            .find_map(|suffix| field.strip_suffix(suffix))
+            .ok_or("native-suite malformed transcript count")?;
+        ensure(
+            !digits.is_empty() && digits.bytes().all(|byte| byte.is_ascii_digit()),
+            "native-suite malformed transcript count",
+        )?;
+        digits
+            .parse()
+            .map_err(|_| "native-suite transcript count overflow".into())
+    }
+
+    fn add_name<'a>(names: &mut BTreeMap<&'a str, usize>, name: &'a str) -> Result<()> {
+        ensure(
+            !name.is_empty()
+                && !name
+                    .chars()
+                    .any(|character| character.is_whitespace() || character.is_control()),
+            "native-suite malformed test name",
+        )?;
+        *names.entry(name).or_default() += 1;
+        Ok(())
+    }
+
+    fn listed_tests(text: &str) -> Result<BTreeMap<&str, usize>> {
+        let mut names = BTreeMap::new();
+        let mut pending = 0;
+        let mut summaries = 0;
+        for line in text.lines() {
+            if let Some(name) = line.strip_suffix(": test") {
+                add_name(&mut names, name)?;
+                pending += 1;
+            } else if line.contains(": benchmark") || line.contains(": test") {
+                return Err("native-suite unsupported listing record".into());
+            } else if line.as_bytes().first().is_some_and(u8::is_ascii_digit) {
+                let (tests, benchmarks) = line
+                    .split_once(", ")
+                    .ok_or("native-suite malformed list summary")?;
+                ensure(
+                    count(tests, &[" test", " tests"])? == pending
+                        && count(benchmarks, &[" benchmark", " benchmarks"])? == 0,
+                    "native-suite list summary does not match test records",
+                )?;
+                pending = 0;
+                summaries += 1;
+            }
+        }
+        ensure(
+            summaries > 0 && pending == 0,
+            "native-suite missing list summary",
+        )?;
+        Ok(names)
+    }
+
+    fn passed_tests(text: &str) -> Result<BTreeMap<&str, usize>> {
+        let mut names = BTreeMap::new();
+        let mut running = None;
+        let mut passed = 0;
+        let mut summaries = 0;
+        for line in text.lines() {
+            if let Some(total) = line.strip_prefix("running ") {
+                ensure(running.is_none(), "native-suite missing run summary")?;
+                running = Some(count(total, &[" test", " tests"])?);
+                passed = 0;
+            } else if let Some(result) = line.strip_prefix("test result:") {
+                let result = result
+                    .strip_prefix(" ok. ")
+                    .ok_or("native-suite run result is not successful")?;
+                let fields = result.split("; ").collect::<Vec<_>>();
+                ensure(fields.len() == 6, "native-suite malformed run summary")?;
+                ensure(
+                    running == Some(passed)
+                        && count(fields[0], &[" passed"])? == passed
+                        && count(fields[1], &[" failed"])? == 0
+                        && count(fields[2], &[" ignored"])? == 0
+                        && count(fields[3], &[" measured"])? == 0,
+                    "native-suite run summary does not match successful test records",
+                )?;
+                // Exact test filters legitimately exclude other library tests.
+                count(fields[4], &[" filtered out"])?;
+                let elapsed = fields[5]
+                    .strip_prefix("finished in ")
+                    .and_then(|value| value.strip_suffix('s'))
+                    .and_then(|value| value.parse::<f64>().ok())
+                    .ok_or("native-suite malformed run duration")?;
+                ensure(
+                    elapsed.is_finite() && elapsed >= 0.0,
+                    "native-suite malformed run duration",
+                )?;
+                running = None;
+                summaries += 1;
+            } else if let Some(record) = line.strip_prefix("test ") {
+                ensure(
+                    running.is_some(),
+                    "native-suite test record outside a running harness",
+                )?;
+                // Every status record must end in exact `ok`; failures, ignored
+                // reasons, and unknown statuses must not disappear from totals.
+                let name = record
+                    .strip_suffix(" ... ok")
+                    .ok_or("native-suite test status is not successful")?;
+                add_name(&mut names, name)?;
+                passed += 1;
+            }
+        }
+        ensure(
+            summaries > 0 && running.is_none(),
+            "native-suite missing run summary",
+        )?;
+        Ok(names)
+    }
+
+    pub(super) fn run(args: &[String]) -> Result<String> {
+        ensure(args.len() == 2, "native-suite requires one manifest path")?;
+        let manifest_path = Path::new(&args[1]);
+        let manifest_bytes = read_regular(manifest_path, FILE_CAP)?;
+        let manifest: Value = serde_json::from_slice(&manifest_bytes)
+            .map_err(|_| "native-suite malformed manifest JSON")?;
+        ensure(
+            manifest["schema"] == "heleos.native-suite-transcripts/v1"
+                && manifest["platform"] == "windows-x86_64"
+                && manifest["filesystem"] == "NTFS",
+            "native-suite manifest identity mismatch",
+        )?;
+        let candidate = string(&manifest["candidate_sha"])?;
+        ensure(
+            candidate.len() == 40
+                && candidate
+                    .bytes()
+                    .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte)),
+            "native-suite candidate must be a lowercase Git SHA",
+        )?;
+        let root = std::env::current_dir()?.canonicalize()?;
+        let head = bounded(
+            Command::new("git")
+                .args(["rev-parse", "HEAD"])
+                .current_dir(&root),
+            Duration::from_secs(30),
+        )?;
+        head.require_success("native-suite candidate lookup")?;
+        ensure(
+            std::str::from_utf8(&head.stdout)?.trim() == candidate,
+            "native-suite candidate differs from current HEAD",
+        )?;
+        let suites = manifest["suites"]
+            .as_array()
+            .ok_or("native-suite suites must be an array")?;
+        ensure(
+            suites.len() == SUITES.len(),
+            "native-suite requires seven suites",
+        )?;
+        let directory = manifest_path.parent().ok_or("manifest has no parent")?;
+        let mut total_listed = 0;
+        let mut total_passed = 0;
+        let mut receipts = Vec::with_capacity(SUITES.len());
+        for (suite, spec) in suites.iter().zip(&SUITES) {
+            spec.validate(suite)?;
+            ensure(
+                suite["list_exit_code"].as_i64() == Some(0)
+                    && suite["run_exit_code"].as_i64() == Some(0),
+                "native-suite command exit must be zero",
+            )?;
+            let list = transcript(directory, &suite["list_path"])?;
+            let run = transcript(directory, &suite["run_path"])?;
+            let listed = listed_tests(
+                std::str::from_utf8(&list).map_err(|_| "native-suite list is not UTF-8")?,
+            )?;
+            let passed = passed_tests(
+                std::str::from_utf8(&run).map_err(|_| "native-suite run is not UTF-8")?,
+            )?;
+            if spec.id == "core-store" {
+                ensure(
+                    listed.get(WINDOWS_STORE_SENTINEL) == Some(&1)
+                        && passed.get(WINDOWS_STORE_SENTINEL) == Some(&1),
+                    "native-suite core-store must list and pass the Windows Store sentinel exactly once",
+                )?;
+            }
+            ensure(
+                !listed.is_empty() && listed == passed,
+                "native-suite listed and passed name multisets must be equal and nonempty",
+            )?;
+            let listed_count = listed.values().sum::<usize>();
+            let passed_count = passed.values().sum::<usize>();
+            total_listed += listed_count;
+            total_passed += passed_count;
+            receipts.push(json!({
+                "id": spec.id,
+                "list_sha256": hash(&list)?,
+                "run_sha256": hash(&run)?,
+                "listed": listed_count,
+                "passed": passed_count,
+            }));
+        }
+        Ok(serde_jcs::to_string(&json!({
+            "schema": "heleos.native-suite-receipt/v1",
+            "manifest_sha256": hash(&manifest_bytes)?,
+            "suites": receipts,
+            "status": "pass",
+            "candidate_sha": candidate,
+            "platform": "windows-x86_64",
+            "filesystem": "NTFS",
+            "suite_count": suites.len(),
+            "total_listed": total_listed,
+            "total_passed": total_passed,
+        }))?)
+    }
 }
 
 mod secret_scan {

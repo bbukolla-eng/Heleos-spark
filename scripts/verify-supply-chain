@@ -31,24 +31,46 @@ git cat-file -e "$task_base^{commit}" || fail 'missing frozen Task 10 baseline c
 task_grafts="$(git rev-parse --git-path info/grafts)"
 [[ ! -e "$task_grafts" && ! -L "$task_grafts" ]] || fail 'Git grafts are forbidden for full-history scanning'
 
+check_clean_candidate() {
+  [[ -z "$(git status --porcelain=v1 --untracked-files=all --ignore-submodules=none)" ]] ||
+    fail 'supply-chain candidate must have no tracked or untracked nonignored changes'
+}
+check_clean_candidate
+task_candidate_sha="$(git rev-parse HEAD)"
+[[ "$task_candidate_sha" =~ ^[a-f0-9]{40}$ ]] || fail 'invalid supply-chain candidate HEAD'
+check_candidate_path() {
+  local task_path="$1" task_head_blob
+  git cat-file -e "$task_candidate_sha:$task_path" || fail "candidate is missing governed path: $task_path"
+  task_head_blob="$(git rev-parse "$task_candidate_sha:$task_path")"
+  [[ "$(git hash-object --no-filters "$task_path")" == "$task_head_blob" ]] ||
+    fail "candidate path differs from HEAD: $task_path"
+}
+for task_path in governance/tools.toml scripts/verify-supply-chain \
+  tests/verification/src/bin/verify-provenance.rs tests/verification/tests/native_suite_receipt.rs; do
+  check_candidate_path "$task_path"
+done
+
 # Production and Task 9 source bytes stay frozen. Task 10 may change only the
 # three verifier inputs below and add private-package metadata to three host manifests.
+# The native-suite receipt contract adds one exact, separately admitted test source.
 task_source_paths=(Cargo.toml Cargo.lock rust-toolchain.toml crates tests/verification artifacts/pdf-guest \
   scripts/verify-provenance scripts/verify-foundation scripts/verify-foundation.ps1)
 task_delta_paths=(Cargo.lock tests/verification/Cargo.toml tests/verification/src/bin/verify-provenance.rs)
+task_native_suite_path=tests/verification/tests/native_suite_receipt.rs
 task_packaging_paths=(crates/heleos-cli/Cargo.toml crates/heleos-core/Cargo.toml \
   crates/heleos-platform-fs/Cargo.toml)
 task_exclusions=()
-for task_path in "${task_delta_paths[@]}" "${task_packaging_paths[@]}"; do
+for task_path in "${task_delta_paths[@]}" "${task_packaging_paths[@]}" "$task_native_suite_path"; do
   task_exclusions+=(":(exclude,literal)$task_path")
 done
 task_paths="$(git ls-tree -r --name-only "$task_base" -- "${task_source_paths[@]}")"
 [[ -n "$task_paths" ]] || fail 'empty governed source inventory'
+task_paths+=$'\n'"$task_native_suite_path"
 task_delta_hashes=()
 check_sources() {
   local task_path task_parent task_hash task_expected task_index task_packaging
   git diff --no-ext-diff --no-textconv --quiet "$task_base" -- "${task_source_paths[@]}" "${task_exclusions[@]}" || fail 'production or Task 9 source drift'
-  [[ -z "$(git ls-files --others -- "${task_source_paths[@]}")" ]] || fail 'unrecorded source or guest file'
+  [[ -z "$(git ls-files --others -- "${task_source_paths[@]}" ":(exclude,literal)$task_native_suite_path")" ]] || fail 'unrecorded source or guest file'
   while IFS= read -r task_path; do
     [[ "$task_path" =~ ^[A-Za-z0-9_./-]+$ ]] || fail 'unsupported governed source filename'
     [[ -f "$task_path" ]] || fail "missing governed source: $task_path"
@@ -57,6 +79,10 @@ check_sources() {
       [[ ! -L "$task_parent" ]] || fail 'indirect governed source path'
       task_parent="$(dirname -- "$task_parent")"
     done
+    if [[ "$task_path" == "$task_native_suite_path" ]]; then
+      check_hash "$task_path" "$task_native_suite_sha256"
+      continue
+    fi
     task_hash="$(git hash-object --no-filters "$task_path")"
     task_expected="$(git rev-parse "$task_base:$task_path")"
     for task_index in "${!task_delta_paths[@]}"; do
@@ -78,8 +104,6 @@ check_sources() {
     [[ "$task_hash" == "$task_expected" ]] || fail "raw source-byte drift: $task_path"
   done <<< "$task_paths"
 }
-check_sources
-
 # Freeze every lock stanza and production dependency string; only these two
 # already-resolved dependencies may be added to the verification package.
 task_expected_lock="$(git show "$task_base:Cargo.lock" | awk '
@@ -124,13 +148,13 @@ admitted() {
     { line=$0; quotes=gsub(/"""/, "", line); if (quotes) { if (quotes%2) multi=!multi; next } }
     /\047\047\047/ { bad=1 }
     !multi && /^\[\[tool\]\]$/ { selected=0 }
-    !multi && /^name = "/ { name=$0; sub(/^name = "/, "", name); sub(/"$/, "", name); selected=(name==tool) }
+    !multi && /^name = "/ { name=$0; sub(/^name = "/, "", name); sub(/"$/, "", name); selected=(name==tool); if (selected) records++ }
     !multi && selected && $0 ~ "^[[:space:]]*" key "[[:space:]]*=" {
       count++; value=$0; sub(/^[^=]*=[[:space:]]*/, "", value);
       if (value !~ /^"[A-Za-z0-9_.:+\/-]+"$/) bad=1;
       sub(/^"/, "", value); sub(/"$/, "", value)
     }
-    END { if (count != 1 || bad || multi) exit 1; print value }
+    END { if (count != 1 || records != 1 || bad || multi) exit 1; print value }
   ' governance/tools.toml)" || fail "missing or ambiguous admission: $1.$2"
   printf '%s' "$task_value"
 }
@@ -149,6 +173,13 @@ check_hash() {
   check_direct_file "$1"
   [[ "$(sha256 "$1")" == "$task_expected" ]] || fail "checksum drift: $2"
 }
+task_verifier_sha256="$(admitted heleos-foundation-verifier source_sha256)"
+task_native_suite_sha256="$(admitted heleos-foundation-verifier native_suite_test_sha256)"
+task_macos_gate_sha256="$(admitted heleos-foundation-verifier macos_gate_sha256)"
+check_hash tests/verification/src/bin/verify-provenance.rs "$task_verifier_sha256"
+check_hash scripts/verify-supply-chain "$task_macos_gate_sha256"
+check_sources
+
 # PDF manifests are frozen guest-build inputs. Only cargo-deny's disposable
 # audit copy receives their private-package metadata; no build uses that copy.
 task_audit_packaging_paths=(crates/heleos-pdf-guest/Cargo.toml \
@@ -242,7 +273,6 @@ check_tool cargo-cyclonedx 0.5.9 5d162f67705f0f5038759d73bf546a083bf30e8677c2e94
 [[ "$(admitted gitleaks darwin_arm64_archive_sha256)" == b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5 ]] || fail 'gitleaks archive admission drift'
 [[ "$(gitleaks version)" == 8.30.1 ]] || fail 'gitleaks version drift'
 task_policy_sha256="$(admitted cargo-deny policy_sha256)"
-task_verifier_sha256="$(admitted cargo-cyclonedx semantic_verifier_sha256)"
 check_hash deny.toml "$task_policy_sha256"
 check_hash tests/verification/src/bin/verify-provenance.rs "$task_verifier_sha256"
 task_sbom_sha256="$(admitted cargo-cyclonedx generated_sbom_sha256)"
@@ -361,9 +391,12 @@ scripts/verify-provenance
 check_sources
 check_hash deny.toml "$task_policy_sha256"
 check_hash tests/verification/src/bin/verify-provenance.rs "$task_verifier_sha256"
+check_hash scripts/verify-supply-chain "$task_macos_gate_sha256"
 check_hash governance/tools.toml "$task_governance_sha256"
 check_advisory "$task_cargo_home/advisory-db"
 check_advisory "${task_deny_dbs[0]}"
+check_clean_candidate
+[[ "$(git rev-parse HEAD)" == "$task_candidate_sha" ]] || fail 'candidate HEAD changed during supply-chain verification'
 printf 'Candidate SBOM evidence retained under %s\n' "${task_output#"$task_root/"}"
 printf 'Redacted secret-scan evidence retained under %s\n' "$task_secret_evidence"
 
