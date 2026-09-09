@@ -24,6 +24,8 @@ Implementation commit `02c61d17c8746de31acf7f397ac8c83a9614a184` adds the reposi
 
 The 15 focused tests, 22 continuity tests, Python compilation, whitespace, and clean-checkout provenance over 193 tracked files passed. The complete `./scripts/verify-foundation` gate on the code commit exited `0`, including reproducible two-root PDF builds, the full locked/offline workspace, and clean/network-denied acceptance, hostile-input, hostile-storage, and recovery reruns.
 
+The current active head is packaged for native Windows as `WINDOWS_NATIVE_HANDOFF_f215be8`. Its manifest SHA-256 is `e30a45399c579987749dac3f938555da3a7c04210724bb38f559ad4de05dfd97`; its complete-history bundle is 4,806,257 bytes with SHA-256 `bb6584ca3057ae92766ffde076c227edc3b03211930dbfe104e861cb79f2908b`. All five transfer-file hashes and `git bundle verify` pass. This is a transfer candidate, not native Windows/NTFS evidence.
+
 The owner-requested ATHENA Grok Bot task is terminal. Its received Markdown and JSON remain ignored and immutable in `/Users/bekim/Heleos-spark/ATHENA_RESEARCH_QUARANTINE/2026-09-09-div23/`. Controller primary-source validation found 5 current seed rows, 1 held division-date row, and 5 retired/superseded rows; the packet's May 2026 UFGS bundle reference was stale against the official August 2026 release. A separate six-source controller candidate passed the new metadata grammar at SHA-256 `f97780a86717b9c9124f5ae4f8df987243cf7d099a73eab9835ac2abc91a95ba`, with every authority/verification flag still false. Nothing in that quarantine is admitted source or production truth.
 
 ## Later human and platform gates
@@ -48,7 +50,7 @@ Root agent instructions are available in [AGENTS.md](AGENTS.md), [CLAUDE.md](CLA
 | --- | --- |
 | `/Users/bekim/Heleos-spark` | Visible local `main` with the Task 7-9 chain plus Task 10 local implementation checkpoint `6157458...` and its continuity child |
 | `/Users/bekim/Heleos-spark/ACTIVE_BUILD` | Finder-visible local pointer to the clean active build at `f215be8`; the branch remains isolated from the Foundation 0.1 candidate |
-| `/Users/bekim/Heleos-spark/WINDOWS_NATIVE_HANDOFF_cf265eb` | Finder-visible exact-SHA transfer artifact; native Windows/local fixed NTFS execution remains pending |
+| `/Users/bekim/Heleos-spark/WINDOWS_NATIVE_HANDOFF_f215be8` | Finder-visible exact-current-SHA transfer artifact; native Windows/local fixed NTFS execution remains pending |
 | `/Users/bekim/Heleos-spark/ATHENA_RESEARCH_QUARANTINE/2026-09-09-div23` | Finder-visible ignored Athena artifacts, controller adjudication, and research-only six-source candidate; no admitted source or production authority |
 | `.worktrees/foundation-0.1-build/` | Closed, clean Task 7-9 implementation chain and immutable execution evidence |
 | `.worktrees/foundation-0.1-release/` | Passing local `build/foundation-0.1-release-gate` Task 10 supply-chain/SBOM implementation at `6157458...` plus this continuity child; workflow and native Windows gates remain open |
