@@ -11,8 +11,12 @@ and `run(validated_task, config)` for already-validated callers. Both return a
 typed `RunResult` or `RunError`. Provider input is a bounded generated prompt on
 stdin; the executable and ordered arguments are passed directly to `Command`.
 Only `codex`, `claude_code`, `kimi`, `grok`, and `cursor` implementation tasks
-are admitted in this slice; research providers fail before launch. Cursor has
-local executable-fixture coverage only, with no authenticated live write claim.
+are admitted in this slice; research providers fail before launch. Cursor is
+authenticated and has local executable-fixture coverage, but its five live
+attempts produced no accepted write. API-model quota blocks it until the reported
+September 14, 2026 reset or an explicit owner spend-limit action; composer-2.5
+also rejects required workspace exclusion. [Live Cursor evidence](evidence/live-cursor-run.md)
+records all five terminal attempts.
 Codex admission and its stdin adapter have local executable-fixture coverage plus one
 authenticated PUBLIC-only Codex/Astra write through the runner's explicit
 `none` containment mode. That run does not claim outer host containment; its
@@ -142,8 +146,12 @@ service rejected workspace-context exclusion for the user, team, or selected
 model. Its checkout remains clean. The fixed model is now
 `gpt-5.6-terra-high` from the controller's authenticated inventory; fixed
 `--exclude-workspace-context` and every containment/privacy/runtime control
-remain enabled. Successful generation with the new model remains unverified
-until a distinct live task completes. Tasks 001-004 must not be reused.
+remain enabled. Task `cursor-live-seatbelt-write-005` reached `GPT-5.6 Terra
+272K High` under Seatbelt but failed before any tool/write at the API-model
+monthly usage limit, reported to reset September 14, 2026. No Cursor fixture
+has been accepted. Do not retry before reset or an explicit owner spend-limit
+action, and do not reuse tasks 001-005. The native Windows/NTFS gate remains
+pending. Exact identities and hashes are in [live Cursor evidence](evidence/live-cursor-run.md).
 
 Cursor consumes piped stdin only when no positional prompt is supplied, then
 trims its surrounding whitespace internally; the adapter itself preserves
