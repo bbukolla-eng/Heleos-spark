@@ -410,25 +410,67 @@ fn grok_is_admitted_for_implementation_with_validated_handoff() {
     validate_handoff_json(result.handoff.canonical_json(), &task).unwrap();
 }
 
-// Break caught: broadening the admission gate must not launch a configured
-// Codex/Cursor command, even when its provider matches the packet exactly.
+// Break caught: Codex must remain bound to its task and resulting handoff.
 #[test]
-fn codex_and_cursor_fail_closed_before_implementation_command_runs() {
-    for (name, provider) in [("codex", Provider::Codex), ("cursor", Provider::Cursor)] {
+fn codex_is_admitted_for_implementation_with_validated_handoff() {
+    let f = Fixture::new("printf codex-fixture > allowed/new");
+    let mut config = f.config();
+    config.provider.provider = Provider::Codex;
+    let mut packet = f.packet();
+    packet["provider"] = "codex".into();
+    let task = validate(&packet);
+    let result = run(&task, &config).unwrap();
+    assert_eq!(result.handoff.document().provider, Provider::Codex);
+    assert_eq!(result.handoff.document().changed_paths, ["allowed/new"]);
+    assert_eq!(
+        result.handoff.document().terminal_state,
+        TerminalState::Blocked
+    );
+    assert_eq!(
+        fs::read(result.checkout_path().join("allowed/new")).unwrap(),
+        b"codex-fixture"
+    );
+    validate_handoff_json(result.handoff.canonical_json(), &task).unwrap();
+}
+
+#[test]
+fn codex_provider_mismatch_fails_before_launch_in_both_directions() {
+    for (task_provider, command_provider) in [
+        ("codex", Provider::ClaudeCode),
+        ("claude_code", Provider::Codex),
+    ] {
         let f = Fixture::new("printf unexpected > \"$1\"");
         let marker = f.root.path().join("provider-started");
         let mut config = f.config();
-        config.provider.provider = provider;
+        config.provider.provider = command_provider;
         config.provider.args.push(marker.clone().into_os_string());
         let mut packet = f.packet();
-        packet["provider"] = name.into();
+        packet["provider"] = task_provider.into();
         assert_eq!(
             run(&validate(&packet), &config).unwrap_err().code,
-            FailureCode::UnsupportedProvider
+            FailureCode::ProviderMismatch
         );
         assert!(!marker.exists());
         f.assert_cleaned();
     }
+}
+
+// Break caught: admitting Codex must not admit Cursor implementation commands.
+#[test]
+fn cursor_fails_closed_before_implementation_command_runs() {
+    let f = Fixture::new("printf unexpected > \"$1\"");
+    let marker = f.root.path().join("provider-started");
+    let mut config = f.config();
+    config.provider.provider = Provider::Cursor;
+    config.provider.args.push(marker.clone().into_os_string());
+    let mut packet = f.packet();
+    packet["provider"] = "cursor".into();
+    assert_eq!(
+        run(&validate(&packet), &config).unwrap_err().code,
+        FailureCode::UnsupportedProvider
+    );
+    assert!(!marker.exists());
+    f.assert_cleaned();
 }
 
 #[test]

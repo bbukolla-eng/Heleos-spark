@@ -13,7 +13,7 @@ use std::process::ExitCode;
 
 #[derive(Parser)]
 #[command(
-    about = "Run one local Claude Code, Kimi, or Grok proposal in an isolated exact-base checkout"
+    about = "Run one local Codex, Claude Code, Kimi, or Grok proposal in an isolated exact-base checkout"
 )]
 struct Arguments {
     #[arg(long)]
@@ -22,7 +22,7 @@ struct Arguments {
     source: PathBuf,
     #[arg(long)]
     workspace_root: PathBuf,
-    #[arg(long, value_parser = ["claude_code", "kimi", "grok"])]
+    #[arg(long, value_parser = ["codex", "claude_code", "kimi", "grok"])]
     provider: String,
     #[arg(long)]
     command: PathBuf,
@@ -88,6 +88,7 @@ fn execute(args: Arguments) -> Result<serde_json::Value, RunError> {
         .read_to_end(&mut input)
         .map_err(|_| RunError::new(FailureCode::InvalidTask))?;
     let provider = match args.provider.as_str() {
+        "codex" => Provider::Codex,
         "claude_code" => Provider::ClaudeCode,
         "kimi" => Provider::Kimi,
         "grok" => Provider::Grok,

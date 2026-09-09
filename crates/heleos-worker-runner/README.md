@@ -1,6 +1,6 @@
 # Local guarded worker runner
 
-This crate executes one explicitly configured Claude Code, Kimi, or Grok
+This crate executes one explicitly configured Codex, Claude Code, Kimi, or Grok
 command in an independent local Git clone detached at a validated task's exact
 base. It does not create a source worktree registration, share object
 hardlinks, fetch, push, merge, create a candidate commit, or run acceptance
@@ -10,8 +10,11 @@ The library exposes `run_json(input, config)` for preserving original JSON bytes
 and `run(validated_task, config)` for already-validated callers. Both return a
 typed `RunResult` or `RunError`. Provider input is a bounded generated prompt on
 stdin; the executable and ordered arguments are passed directly to `Command`.
-Only `claude_code`, `kimi`, and `grok` are admitted in this slice; `codex` and
-`cursor` remain unsupported. Grok has both local-fixture coverage and one
+Only `codex`, `claude_code`, `kimi`, and `grok` are admitted in this slice;
+`cursor` remains unsupported and research providers fail before launch. Codex
+admission and its stdin adapter have local executable-fixture coverage only;
+no live Codex/Astra execution, authentication, or containment compatibility is
+claimed. Grok has both local-fixture coverage and one
 PUBLIC-only live write with controller hash acceptance; the retained evidence
 and exact limits are in `evidence/live-grok-run.md`.
 
@@ -38,6 +41,37 @@ the provider receives a fixed system `PATH` and fresh local `HOME`/`TMPDIR`.
 Repeat `--inherit-env NAME` only for explicitly authorized environment names;
 values are passed directly to the child and are not placed in runner prompts
 or reports. The library also accepts explicit environment entries.
+
+For Codex CLI 0.147.0, use `--provider codex --command /absolute/python3` and
+the literal arguments after `--`:
+
+```text
+-B /absolute/repository/scripts/provider-adapters/codex-stdin.py --codex-executable /absolute/codex
+```
+
+The Python 3.9-compatible adapter requires exactly one absolute regular
+executable and fixes the provider arguments to:
+
+```text
+exec --ephemeral --ignore-user-config --ignore-rules --strict-config --model gpt-6-astra --sandbox workspace-write --json --color never -
+```
+
+The adapter validates up to 65,536 UTF-8 prompt bytes, rejects NUL and invalid
+UTF-8, and sends the original bytes through the provider's stdin pipe. The
+prompt never enters argv or a temporary file. Empty input is preserved. No
+shell, user-supplied provider flags, configuration overrides, MCP/plugin
+controls, output paths, or permission-bypass flags are added. The caller must
+verify the installed binary/version separately; the adapter does not probe it.
+Its 65,536-byte limit still applies if the outer runner permits a larger prompt.
+
+Ordinary provider exits and raw stdout/stderr pass through. Fixed adapter
+diagnostics use exit 64 for invalid arguments/executable, 65 for invalid prompt,
+70 for launch failure, 71 for provider or catchable adapter signals, and 74 for
+stdin read failure. Catchable SIGINT/SIGTERM/SIGHUP during provider execution
+terminate and reap the direct child; descendant cleanup and timeouts belong to
+the outer runner. Codex's `workspace-write` option is additional provider
+configuration, not evidence that the runner's optional host containment was
+enabled or that arbitrary inherited authority was restricted.
 
 Containment is explicit: use `--containment macos_seatbelt` on macOS or
 `--containment windows_restricted_token_job` on Windows (or select the matching
@@ -159,6 +193,8 @@ cargo +1.96.1 test -p heleos-worker-runner --locked --offline
 cargo +1.96.1 clippy -p heleos-worker-runner --all-targets --locked --offline -- -D warnings
 cargo +1.96.1 fmt -p heleos-worker-runner -- --check
 python3 -B tests/provider-adapters/test_grok_stdin.py
+python3 -B tests/provider-adapters/test_codex_stdin.py
+/usr/bin/python3 -B tests/provider-adapters/test_codex_stdin.py
 # Run only from a clean native Windows/NTFS checkout:
 pwsh -File scripts/verify-windows-worker-containment.ps1
 ```
