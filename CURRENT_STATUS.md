@@ -4,11 +4,11 @@ Updated: 2026-09-10. This snapshot records local integration through Task 9, a p
 
 <!-- active-build-authority:v1 -->
 ```json
-{"schema_version":1,"active_builds":[]}
+{"schema_version":1,"active_builds":[{"path":".worktrees/foundation-native-return-binding-2026-09-10","branch":"build/foundation-native-return-binding-2026-09-10","checkpoint":"bc5e505dacb0f4e5617f6fa8ac7285bcb7ea66b8"}]}
 ```
 <!-- /active-build-authority -->
 
-No unfinished local implementation branch is declared active. The Foundation native-evidence return packager is terminal and recorded below. The ignored Finder-visible path `/Users/bekim/Heleos-spark/ACTIVE_BUILD` remains a legacy pointer to the completed agent-controller worktree for inspection only; it is not recovery authority, a second source copy, or permission to resume writes there. New implementation must first register its exact path, branch, and committed checkpoint in this block.
+One unfinished local implementation branch is declared active above: the Foundation native-return handoff-binding verifier. The completed native-evidence return packager remains terminal and recorded below. The ignored Finder-visible path `/Users/bekim/Heleos-spark/ACTIVE_BUILD` remains a legacy pointer to the completed agent-controller worktree for inspection only; it is not recovery authority, a second source copy, or permission to resume writes there. New implementation must first register its exact path, branch, and committed checkpoint in this block.
 
 ## Local integration checkpoint - 2026-09-09
 
