@@ -63,6 +63,8 @@ class ApplyGitHubAppDecisionsTests(unittest.TestCase):
         })
         self.git("init", "--initial-branch=main")
         self.git("config", "core.autocrlf", "false")
+        # Git 2.55 detached auto-maintenance can race the fixture's full .git snapshot.
+        self.git("config", "maintenance.autoDetach", "false")
         self.write(".gitignore", ".worktrees/\n")
         self.write("README.md", "Synthetic disposable fixture.\n")
         self.write(".github/workflows/existing.yml", "name: fixture\non: workflow_dispatch\n")
