@@ -31,6 +31,7 @@ MAX_JSON_DEPTH = 32
 MAX_JSON_VALUES = 100000
 MAX_INTEGER_TOKEN_LENGTH = 16
 MAX_SAFE_INTEGER = 9007199254740991
+GIT_TIMEOUT_SECONDS = 10
 CHUNK_BYTES = 65536
 MATRIX = (
     ("core-backup-restore", ("-p", "heleos-core", "--test", "backup_restore")),
@@ -117,7 +118,6 @@ def _constant(_token):
 
 
 def strict_json(data):
-    require(len(data) <= SUMMARY_MAX_BYTES, "INPUT_LIMIT")
     try:
         text = data.decode("utf-8", errors="strict")
         require(not text.startswith("\ufeff"), "INVALID_JSON")
@@ -405,7 +405,7 @@ def _candidate(repo, candidate):
                                    stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE, env=env, shell=False)
         result = {"stdout": bytearray(), "stderr": bytearray()}
-        deadline = time.monotonic() + 10
+        deadline = time.monotonic() + GIT_TIMEOUT_SECONDS
         with selectors.DefaultSelector() as poller:
             poller.register(process.stdout, selectors.EVENT_READ, "stdout")
             poller.register(process.stderr, selectors.EVENT_READ, "stderr")
