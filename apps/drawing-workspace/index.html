@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Drawing workspace · Heleos</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#drawing-area">Skip to drawing</a>
+    <header class="app-header">
+      <a class="brand" href="./" aria-label="Heleos drawing workspace"><span class="brand-mark" aria-hidden="true">H</span>HELEOS</a>
+      <div class="project-heading">
+        <p class="eyebrow">Local drawing workspace</p>
+        <h1 id="project-name">Drawing workspace</h1>
+      </div>
+      <div class="header-actions">
+        <span class="local-label"><span aria-hidden="true"></span>Stored on this computer</span>
+        <button class="button button-primary" id="import-button" type="button" disabled><span aria-hidden="true">＋</span> Import PDF</button>
+      </div>
+      <input id="pdf-input" type="file" accept="application/pdf,.pdf" hidden>
+    </header>
+
+    <div class="notice-region">
+      <div class="error-notice" id="error-notice" role="alert" hidden>
+        <div><strong>Something needs attention</strong><p id="error-message"></p></div>
+        <button class="button button-quiet" id="dismiss-error" type="button" aria-label="Dismiss error">Dismiss</button>
+      </div>
+      <p class="activity" id="activity" role="status" aria-live="polite">Opening your workspace…</p>
+    </div>
+
+    <div class="workspace" id="workspace" aria-busy="true">
+      <aside class="sidebar" aria-label="Drawing library">
+        <section class="documents-section" aria-labelledby="documents-heading">
+          <div class="section-heading"><h2 id="documents-heading">Documents</h2><button class="button button-quiet refresh-button" id="refresh-button" type="button" disabled>Refresh</button></div>
+          <p class="section-hint" id="documents-hint">Your imported drawing sets appear here.</p>
+          <ul class="document-list" id="document-list"></ul>
+        </section>
+        <section class="sheets-section" id="sheets-section" aria-labelledby="sheets-heading" hidden>
+          <div class="section-heading"><h2 id="sheets-heading">Sheets</h2><span class="count" id="sheet-count"></span></div>
+          <p class="section-hint">Pages in the original PDF</p>
+          <ol class="sheet-list" id="sheet-list"></ol>
+        </section>
+        <div class="sidebar-note"><span class="small-rule" aria-hidden="true"></span><p>Start with the drawing.<br>Keep the original evidence.</p></div>
+      </aside>
+
+      <main class="drawing-area" id="drawing-area" tabindex="-1">
+        <section class="empty-state" id="empty-state" aria-labelledby="empty-heading">
+          <div class="paper-symbol" aria-hidden="true"><span></span><span></span><span></span></div>
+          <p class="eyebrow">Your drawings, in one place</p>
+          <h2 id="empty-heading">Bring your first drawing in.</h2>
+          <p class="empty-description">Import a PDF to browse its sheets and view the original drawing. Everything stays on this computer.</p>
+          <div class="drop-zone" id="drop-zone">
+            <button class="button button-primary" id="choose-pdf-button" type="button" disabled>Choose a PDF</button>
+            <p>or drag and drop one here</p>
+            <span class="file-limit">PDF · up to 256 MiB per file</span>
+          </div>
+          <p class="empty-footnote">Drawing scale will need verification before any measurement.</p>
+        </section>
+
+        <section class="drawing-view" id="drawing-view" aria-label="Selected drawing" hidden>
+          <div class="drawing-toolbar">
+            <div class="drawing-title"><p class="eyebrow" id="selected-document"></p><h2 id="selected-sheet"></h2></div>
+            <div class="page-controls" aria-label="Sheet navigation">
+              <button class="button button-square" id="previous-sheet" type="button" aria-label="Previous sheet">←</button>
+              <span class="page-position" id="page-position"></span>
+              <button class="button button-square" id="next-sheet" type="button" aria-label="Next sheet">→</button>
+            </div>
+            <a class="button button-outline original-link" id="open-original" target="_blank" rel="noopener">Open original PDF <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="drawing-facts" aria-label="Drawing details">
+            <div><span class="fact-label">Page size</span><span id="page-size"></span></div>
+            <div><span class="fact-label">Rotation</span><span id="page-rotation"></span></div>
+            <span class="scale-badge">Scale unverified</span>
+          </div>
+          <div class="image-controls" id="image-controls" hidden>
+            <span>Page preview <span aria-hidden="true">·</span> view only</span>
+            <div class="zoom-controls" aria-label="Preview zoom">
+              <button class="button button-quiet" id="fit-preview" type="button" disabled>Fit page</button>
+              <button class="button button-square" id="zoom-out" type="button" aria-label="Zoom out" disabled>−</button>
+              <span id="zoom-level">Fit</span>
+              <button class="button button-square" id="zoom-in" type="button" aria-label="Zoom in" disabled>＋</button>
+            </div>
+          </div>
+          <div class="pdf-stage">
+            <iframe id="pdf-preview" title="Original drawing PDF"></iframe>
+            <div class="image-viewport" id="image-viewport" tabindex="0" role="region" aria-label="Drawing preview; use arrow keys to scroll when zoomed" hidden><div class="image-canvas" id="image-canvas"></div></div>
+            <div class="image-status" id="image-status" hidden><p id="preview-message" role="status" aria-live="polite"></p><button class="button button-outline" id="retry-preview" type="button" hidden>Retry preview</button></div>
+          </div>
+          <div class="preview-footer">
+            <p>Preview unavailable? <a id="fallback-original" target="_blank" rel="noopener">Open the original PDF in a new tab.</a></p>
+            <p>Page dimensions are not drawing scale. No quantities have been calculated.</p>
+          </div>
+          <details class="evidence-details"><summary>Original evidence</summary><dl><dt>Revision SHA-256</dt><dd><code id="revision-id"></code></dd><dt>Sheet ID</dt><dd><code id="sheet-id"></code></dd></dl></details>
+        </section>
+      </main>
+    </div>
+    <noscript><p class="noscript">Enable JavaScript to import and browse drawings in this local workspace.</p></noscript>
+  </body>
+</html>
