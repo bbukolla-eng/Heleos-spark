@@ -10,6 +10,10 @@ Models and workers propose; deterministic controls and approved humans authorize
 
 ## CURRENT
 
+### Owner-directed local product development - 2026-09-10
+
+The owner deferred GitHub App decisions, reaffirmed Mac and Windows, and directed advancing the build. A local drawing-workspace developer interface now proceeds over the existing shared Rust CLI under the [scoped implementation plan](superpowers/plans/2026-09-10-drawing-workspace.md). It imports PDFs, lists existing sheet metadata, and previews verified original bytes. This narrow sequencing exception supersedes the prerequisite acceptance order only for this local interface; it does not start source/rule promotion, scale verification, quantities, release publication, or a final native shell. The existing frozen Foundation candidates and all release acceptance requirements remain unchanged.
+
 ### 0.1 - Trust foundation and release acceptance
 
 - **Entry gate:** Owner-approved clean-room design and Foundation implementation plan; scoped local implementation is already authorized.

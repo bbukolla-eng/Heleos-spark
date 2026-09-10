@@ -4,11 +4,15 @@ Updated: 2026-09-10. This snapshot records local integration through Task 9, a p
 
 <!-- active-build-authority:v1 -->
 ```json
-{"schema_version":1,"active_builds":[]}
+{"schema_version":1,"active_builds":[{"path":".worktrees/drawing-workspace-2026-09-10","branch":"build/drawing-workspace-2026-09-10","checkpoint":"1f561993f381438817064690f04069418e56ce3f"}]}
 ```
 <!-- /active-build-authority -->
 
-No unfinished local implementation branch is declared above. The Foundation native-return handoff-binding verifier and native-evidence return packager are terminal checkpoints recorded below and must not be recreated after compaction. The ignored Finder-visible path `/Users/bekim/Heleos-spark/ACTIVE_BUILD` remains a legacy pointer to the completed agent-controller worktree for inspection only; it is not recovery authority, a second source copy, or permission to resume writes there. New implementation must first register its exact path, branch, and committed checkpoint in this block.
+## Active product work - owner direction 2026-09-10
+
+The owner deferred GitHub App decisions, reaffirmed Mac and Windows, and directed advancing the product build. Local drawing-workspace development now proceeds independently of the open release gates. This owner-directed sequencing permits a local developer interface over the existing Foundation CLI; it does not accept Foundation 0.1 or promote sources, rules, scale, or quantities. The scoped plan is [drawing workspace](docs/superpowers/plans/2026-09-10-drawing-workspace.md). Its first finish line is real PDF import, project-scoped sheet browsing, and verified original-PDF preview. The final native shells remain future work.
+
+The registered worktree above is the sole active implementation location. The Foundation native-return binding verifier and return packager are terminal checkpoints and must not be recreated. The ignored Finder-visible `ACTIVE_BUILD` remains a legacy inspection pointer to the completed agent-controller worktree, not recovery authority. GitHub App decisions and native Windows evidence remain release requirements; they are not the next local product-development task.
 
 ## Local integration checkpoint - 2026-09-09
 
