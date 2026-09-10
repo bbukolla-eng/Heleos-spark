@@ -42,6 +42,9 @@ are not returned native evidence.
 
 ## Command
 
+Before export, complete the [native return binding check](#native-return-binding-before-packaging)
+against the original outbound handoff and returned summary.
+
 The CLI is exactly:
 
 ```text
@@ -92,6 +95,74 @@ These hashes need not equal each other. The exporter recomputes the transcript
 manifest digest and each transcript digest. It checks the transfer manifest
 digest and `bundle_sha256` string formats, but cannot validate their source
 bytes: the outbound manifest and bundle are not exporter inputs.
+
+### Native return binding before packaging
+
+Before packaging returned evidence, run the native return binding verifier
+against the original outbound handoff and the standalone final importer summary.
+PASS binds the candidate and the actual outbound manifest and bundle bytes.
+The embedded receipt manifest digest refers to the returned transcript manifest.
+This command does not inspect transcripts or authenticate execution. The
+Foundation importer always runs the full committed supply-chain gate,
+`scripts/verify-supply-chain.ps1`, including all seven native suites; there is
+no preflight-only Foundation mode. Worker importer summaries cannot substitute.
+
+Run from the checkout containing the verifier with Python 3.9–3.14 on POSIX:
+
+```text
+python3 scripts/verify-foundation-native-return-binding.py --repo PATH --candidate FULL_SHA --handoff PATH --summary PATH [--human]
+```
+
+Supply actual absolute canonical paths and the full lowercase 40-character
+candidate commit, which must exist locally but need not equal current main HEAD.
+`--repo` resolves the unique registered visible-main checkout. `--handoff` is
+the original ignored, untracked outbound transfer directory. The verifier
+checks its exact manifest, bundle, checksum lines, advertised branch, and local
+bundle validity; both working and handoff importer bytes must match the importer
+committed at observed main HEAD. `--summary` is one final summary object, not
+the event stream or an archive. Its root `manifest_sha256` must hash the exact
+outbound `candidate/candidate.json` bytes, and root `bundle_sha256` must hash
+the actual verified bundle. Never substitute the nested
+`gate_summary.manifest_sha256` for the outbound manifest digest.
+
+Paths may contain no traversal, aliases, or symlink/reparse-point components.
+The summary and inspected handoff sources must be regular files with one hard
+link and no group/world write bits (`mode & 0o022 == 0`). Read-only sources are
+allowed; execute bits alone do not cause rejection. Inherited `GIT_*` overrides,
+including `GIT_OPTIONAL_LOCKS`, are rejected before inspection. Git runs with a
+controlled environment, a 10-second limit per invocation, and at most 1 MiB per
+output pipe. Source bytes, file/parent identities, importer, main HEAD, and
+registration are rechecked before PASS. Observed drift fails closed; these
+checks do not lock the filesystem or provide a transactional snapshot.
+
+Binding input limits are 64 KiB per handoff text file, 16 MiB for the summary,
+and 512 MiB for the bundle, streamed in chunks of at most 1 MiB. Strict JSON
+rejects BOM, invalid UTF-8, duplicate keys, trailing data, and nonfinite numbers.
+Limits are 32 nesting levels, 100,000 values, 16 characters per integer token,
+and integers within ±9,007,199,254,740,991. Closed summary and receipt schemas
+require the successful Foundation native-suites contract described above.
+
+Default stdout is exactly one deterministic JSON object with sorted keys and
+one LF, schema `heleos.foundation-native-return-binding-result/v1`. Its fields
+are `schema`, `status`, `candidate_sha`, `outbound_manifest_sha256`,
+`bundle_sha256`, `trusted_importer_sha256`, `transcript_manifest_sha256`,
+`summary_sha256`, `authority`, `error_code`, and `error`. The summary digest
+hashes its exact bytes; the transcript-manifest digest is a validated report
+field, not a locally verified transcript hash. PASS has null errors. Every
+failure has status `FAIL`, all six identity fields null, and a fixed safe error
+code/message. `--human` emits one concise PASS or FAIL line with the authority
+boundary. Exit is 0 for binding PASS or help, and 1 for every failure; help
+performs no inspection. Both modes keep stderr empty and omit paths, events,
+logs, environment contents, raw Git output, and exception text.
+
+All five `authority` fields are always literal false:
+`independent_native_authentication`, `native_execution_independently_proven`,
+`ci_authority`, `owner_approval`, and `release_approval`. Binding is read-only:
+it performs no extraction, network access, Cargo execution, fetch, or evidence
+writes. It complements packaging without changing exporter semantics or the
+acceptance ledger. A binding PASS is not native execution or release acceptance.
+
+### Returned transcript contract
 
 The transcript manifest uses `heleos.native-suite-transcripts/v1`, the exact
 candidate, `windows-x86_64`, `NTFS`, and these ordered suites. Each `run_argv`
