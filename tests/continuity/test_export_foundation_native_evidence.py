@@ -511,6 +511,222 @@ class FoundationNativeEvidenceExportTests(unittest.TestCase):
                 self.source_paths(fixture)[3 + index].unlink()
                 self.assert_rejected(fixture, "CONTRACT_MISMATCH")
 
+    def test_gap_production_bounds_match_plan(self):
+        module = self.load_exporter()
+        expected = {
+            "SUMMARY_MAX_BYTES": 16 * 1024 * 1024,
+            "MANIFEST_MAX_BYTES": 1024 * 1024,
+            "RECEIPT_MAX_BYTES": 1024 * 1024,
+            "TRANSCRIPT_MAX_BYTES": 64 * 1024 * 1024,
+            "TOTAL_MAX_BYTES": 512 * 1024 * 1024,
+            "MAX_DIRECTORY_ENTRIES": 4096, "MAX_JSON_DEPTH": 32,
+            "MAX_JSON_VALUES": 100000, "MAX_INTEGER_TOKEN_LENGTH": 16,
+            "MAX_SAFE_INTEGER": 9007199254740991, "GIT_TIMEOUT_SECONDS": 10,
+        }
+        for name, value in expected.items():
+            with self.subTest(bound=name):
+                self.assertEqual(getattr(module, name), value)
+
+    def test_gap_exact_and_one_byte_below_payload_caps(self):
+        for name, key in (("SUMMARY_MAX_BYTES", "summary"),
+                          ("MANIFEST_MAX_BYTES", "manifest"),
+                          ("RECEIPT_MAX_BYTES", "receipt"),
+                          ("TRANSCRIPT_MAX_BYTES", None),
+                          ("TOTAL_MAX_BYTES", None)):
+            for below in (0, 1):
+                with self.subTest(bound=name, below=below):
+                    fixture = self.make_fixture()
+                    module = self.load_exporter()
+                    lengths = [len(data) for _, data in self.source_members(fixture)]
+                    if name == "TOTAL_MAX_BYTES":
+                        cap = sum(lengths)
+                    elif key is None:
+                        cap = max(lengths[3:])
+                    else:
+                        cap = len(fixture[key].read_bytes())
+                    snapshot = self.snapshot_sources(fixture)
+                    with mock.patch.object(module, name, cap - below):
+                        if below:
+                            self.assert_rejected(fixture, "INPUT_LIMIT",
+                                                 runner=lambda f, e: self.call_main(module, f, e))
+                        else:
+                            self.assert_success(fixture, self.call_main(module, fixture))
+                    self.assert_sources_unchanged(snapshot)
+
+    def test_gap_git_child_argv_environment_and_bounded_output(self):
+        required_git = {"GIT_OPTIONAL_LOCKS": "0", "GIT_NO_LAZY_FETCH": "1",
+                        "GIT_NO_REPLACE_OBJECTS": "1", "GIT_TERMINAL_PROMPT": "0",
+                        "GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": os.devnull}
+        for behavior in ("commit", "stdout-overflow", "stderr-overflow", "failed"):
+            with self.subTest(child=behavior):
+                fixture = self.make_fixture()
+                module = self.load_exporter()
+                private_bin = fixture["output"].parent.parent / "private-bin"
+                private_bin.mkdir(mode=0o700)
+                marker = private_bin / "invoked"
+                expected = ["-C", str(fixture["repo"]), "cat-file", "-t", fixture["candidate"]]
+                fake_git = private_bin / "git"
+                fake_git.write_text(
+                    "#!" + sys.executable + "\n"
+                    "import os, sys\n"
+                    "assert sys.argv[1:] == " + repr(expected) + "\n"
+                    "assert {k: v for k, v in os.environ.items() if k.startswith('GIT_')} == "
+                    + repr(required_git) + "\n"
+                    "with open(" + repr(str(marker)) + ", 'x') as stream: stream.write('checked')\n"
+                    "behavior = " + repr(behavior) + "\n"
+                    "if behavior == 'stdout-overflow': sys.stdout.write('X' * 65)\n"
+                    "elif behavior == 'stderr-overflow': sys.stderr.write('X' * 4097)\n"
+                    "elif behavior == 'failed':\n"
+                    "    sys.stderr.write(" + repr(CANARY) + ")\n"
+                    "    sys.exit(7)\n"
+                    "else: sys.stdout.write('commit\\n')\n",
+                    encoding="utf-8")
+                fake_git.chmod(0o700)
+                poisoned_env = dict(self.env, PATH=str(private_bin),
+                                    GIT_DIR=CANARY, GIT_WORK_TREE=CANARY,
+                                    GIT_CONFIG_COUNT="1", GIT_CONFIG_KEY_0=CANARY,
+                                    GIT_CONFIG_VALUE_0=CANARY, GIT_SSH_COMMAND=CANARY,
+                                    GIT_NO_REPLACE_OBJECTS="0", GIT_NO_LAZY_FETCH="0",
+                                    GIT_OPTIONAL_LOCKS="1", GIT_UNKNOWN_OVERRIDE=CANARY)
+                real_popen = subprocess.Popen
+                with mock.patch.dict(self.env, poisoned_env, clear=True), \
+                        mock.patch.object(module.subprocess, "Popen", wraps=real_popen) as child:
+                    if behavior == "commit":
+                        self.assert_success(fixture, self.call_main(module, fixture))
+                    else:
+                        self.assert_rejected(fixture, "INVALID_CANDIDATE",
+                                             runner=lambda f, e: self.call_main(module, f, e))
+                self.assertEqual(marker.read_text(), "checked")
+                self.assertEqual(child.call_count, 1)
+                self.assertEqual(child.call_args.args, (["git"] + expected,))
+                self.assertIs(child.call_args.kwargs["shell"], False)
+                self.assertEqual(child.call_args.kwargs["stdin"], subprocess.DEVNULL)
+
+    def test_gap_git_timeout_is_bounded(self):
+        fixture = self.make_fixture()
+        module = self.load_exporter()
+        private_bin = fixture["output"].parent.parent / "timeout-bin"
+        private_bin.mkdir(mode=0o700)
+        fake_git = private_bin / "git"
+        fake_git.write_text(
+            "#!" + sys.executable + "\nimport signal\nsignal.pause()\n",
+            encoding="utf-8",
+        )
+        fake_git.chmod(0o700)
+        bounded_env = dict(self.env, PATH=str(private_bin))
+        started = __import__("time").monotonic()
+        with mock.patch.dict(self.env, bounded_env, clear=True), \
+                mock.patch.object(module, "GIT_TIMEOUT_SECONDS", 0.05):
+            self.assert_rejected(fixture, "INVALID_CANDIDATE",
+                                 runner=lambda f, e: self.call_main(module, f, e))
+        self.assertLess(__import__("time").monotonic() - started, 2)
+
+    def test_gap_programmatic_nul_paths(self):
+        for key in ("repo", "summary", "manifest", "receipt", "output"):
+            with self.subTest(argument=key):
+                fixture = self.make_fixture()
+                snapshot = self.snapshot_sources(fixture)
+                output = fixture["output"]
+                fixture[key] = str(fixture[key]) + "\x00" + CANARY
+                self.assert_safe_report(self.call_main(self.load_exporter(), fixture), "INVALID_PATH")
+                self.assertFalse(output.exists())
+                self.assertEqual(list(output.parent.iterdir()), [])
+                self.assert_sources_unchanged(snapshot)
+
+    def test_gap_duplicate_and_overlapping_source_identities(self):
+        for kind in ("same-path", "lexical-alias", "transcript-overlap", "output-overlap"):
+            with self.subTest(identity=kind):
+                fixture = self.make_fixture()
+                snapshot = self.snapshot_sources(fixture)
+                original_output = fixture["output"]
+                original_summary = fixture["summary"].read_bytes()
+                if kind == "same-path":
+                    fixture["receipt"] = fixture["summary"]
+                elif kind == "lexical-alias":
+                    fixture["receipt"] = str(fixture["summary"].parent) + "/./" + fixture["summary"].name
+                elif kind == "transcript-overlap":
+                    fixture["summary"] = self.source_paths(fixture)[3]
+                else:
+                    source = original_output.parent / "source.tar"
+                    source.write_bytes(fixture["summary"].read_bytes())
+                    fixture["summary"] = fixture["output"] = source
+                before = set(original_output.parent.iterdir())
+                result = self.call_main(self.load_exporter(), fixture)
+                self.assert_safe_report(result, "INVALID_PATH" if kind == "output-overlap" else "UNSAFE_SOURCE")
+                self.assertFalse(original_output.exists())
+                self.assertEqual(set(original_output.parent.iterdir()), before)
+                self.assert_sources_unchanged(snapshot)
+                if kind == "output-overlap":
+                    self.assertEqual(source.read_bytes(), original_summary)
+
+    def test_gap_parent_rename_and_replacement_after_archive_build(self):
+        for key, code in (("manifest", "SOURCE_CHANGED"), ("output", "INVALID_PATH")):
+            for replace in (False, True):
+                with self.subTest(parent=key, replacement=replace):
+                    fixture = self.make_fixture()
+                    module = self.load_exporter()
+                    parent = fixture[key].parent
+                    moved = parent.with_name(parent.name + "-moved")
+                    before = {p.name: p.read_bytes() for p in parent.iterdir()}
+                    original_build = module.build_archive
+
+                    def move_after_build(*args, **kwargs):
+                        result = original_build(*args, **kwargs)
+                        parent.rename(moved)
+                        if replace:
+                            parent.mkdir(mode=0o700)
+                            (parent / "replacement-sentinel").write_text(CANARY)
+                        return result
+
+                    with mock.patch.object(module, "build_archive", side_effect=move_after_build), \
+                            mock.patch.object(module.os, "link", side_effect=AssertionError(CANARY)) as link:
+                        result = self.call_main(module, fixture)
+                    self.assert_safe_report(result, code)
+                    link.assert_not_called()
+                    self.assertFalse(fixture["output"].exists())
+                    self.assertEqual({p.name: p.read_bytes() for p in moved.iterdir()}, before)
+                    if replace:
+                        self.assertEqual({p.name: p.read_text() for p in parent.iterdir()},
+                                         {"replacement-sentinel": CANARY})
+                    else:
+                        self.assertFalse(parent.exists())
+                    if key == "manifest":
+                        self.assertEqual(list(fixture["output"].parent.iterdir()), [])
+
+    def test_gap_denied_private_temp_unlink_before_publication(self):
+        fixture = self.make_fixture()
+        module = self.load_exporter()
+        snapshot = self.snapshot_sources(fixture)
+        parent = fixture["output"].parent
+        sentinel = parent / "unrelated"
+        sentinel.write_bytes(CANARY.encode())
+        attempted = []
+
+        def deny_owned_unlink(name, *, dir_fd):
+            self.assertEqual(os.fstat(dir_fd).st_ino, parent.stat().st_ino)
+            self.assertRegex(name, r"^\.foundation-native-evidence-[0-9a-f]{32}\.tmp$")
+            attempted.append((name, os.stat(name, dir_fd=dir_fd, follow_symlinks=False)))
+            raise PermissionError(errno.EACCES, CANARY)
+
+        with mock.patch.object(module.os, "fsync", side_effect=OSError(errno.EIO, CANARY)), \
+                mock.patch.object(module.os, "unlink", side_effect=deny_owned_unlink), \
+                mock.patch.object(module.os, "link", side_effect=AssertionError(CANARY)) as link:
+            result = self.call_main(module, fixture)
+        self.assert_safe_report(result, "WRITE_FAILED")
+        link.assert_not_called()
+        self.assertEqual(len(attempted), 1)
+        temp = parent / attempted[0][0]
+        self.assertEqual(set(parent.iterdir()), {sentinel, temp})
+        self.assertFalse(fixture["output"].exists())
+        self.assertEqual(sentinel.read_bytes(), CANARY.encode())
+        info = temp.lstat()
+        self.assertEqual((info.st_dev, info.st_ino),
+                         (attempted[0][1].st_dev, attempted[0][1].st_ino))
+        self.assertTrue(stat.S_ISREG(info.st_mode))
+        self.assertEqual(stat.S_IMODE(info.st_mode), 0o600)
+        self.assertEqual(info.st_nlink, 1)
+        self.assert_sources_unchanged(snapshot)
+
     def test_unexpected_transcript_shaped_entries(self):
         for name, kind in [("extra.list.txt", "file"), ("extra.run.txt", "file"),
                            ("extra.LIST.TXT", "file"), ("extra.Run.Txt", "file"),
