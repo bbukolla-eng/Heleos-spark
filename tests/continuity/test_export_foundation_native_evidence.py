@@ -555,6 +555,24 @@ class FoundationNativeEvidenceExportTests(unittest.TestCase):
         self.assertNotEqual(self.git("rev-parse", "HEAD").strip(), fixture["candidate"])
         self.assert_success(fixture, self.run_export(fixture))
 
+    def test_candidate_type_cannot_be_forged_by_replace_ref(self):
+        blob = subprocess.run(
+            ["git", "-C", str(self.repo), "hash-object", "-w", "--stdin"],
+            env=self.env, input="synthetic blob\n", capture_output=True, text=True,
+            check=True,
+        ).stdout.strip()
+        replace = self.repo / ".git" / "refs" / "replace" / blob
+        replace.parent.mkdir(parents=True, exist_ok=True)
+        replace.write_text(self.candidate + "\n")
+        fixture = self.make_fixture()
+        fixture["candidate"] = blob
+        documents = self.documents(fixture)
+        documents["manifest"]["candidate_sha"] = blob
+        documents["receipt"]["candidate_sha"] = blob
+        documents["summary"]["commit"] = blob
+        self.write_documents(fixture, documents, bind_manifest=True)
+        self.assert_rejected(fixture, "INVALID_CANDIDATE")
+
     def test_invalid_paths(self):
         for key in ("repo", "summary", "manifest", "receipt", "output"):
             for value in ("relative-" + CANARY, "/", str(self.base) + "/../" + CANARY):
@@ -697,6 +715,28 @@ class FoundationNativeEvidenceExportTests(unittest.TestCase):
                 self.assertEqual(archive.extractfile(name).read(), payload)
         self.assertEqual(set(fixture["output"].parent.iterdir()), {fixture["output"]})
 
+    def test_post_link_byte_change_is_publication_uncertainty(self):
+        fixture = self.make_fixture()
+        module = self.load_exporter()
+        real_fsync = os.fsync
+        changed = []
+
+        def corrupt_before_directory_fsync(fd):
+            if stat.S_ISDIR(os.fstat(fd).st_mode) and not changed:
+                with fixture["output"].open("r+b") as stream:
+                    first = stream.read(1)
+                    stream.seek(0)
+                    stream.write(bytes([first[0] ^ 1]))
+                    stream.flush()
+                changed.append(True)
+            return real_fsync(fd)
+
+        with mock.patch.object(module.os, "fsync", side_effect=corrupt_before_directory_fsync):
+            result = self.call_main(module, fixture)
+        self.assert_safe_report(result, "PUBLISH_UNCERTAIN", created=True)
+        self.assertTrue(fixture["output"].exists())
+        self.assertEqual(set(fixture["output"].parent.iterdir()), {fixture["output"]})
+
     def test_source_mutation_after_tar_is_detected(self):
         for kind in ("same-size", "chmod", "hardlink", "truncate", "grow", "replace", "new-transcript"):
             with self.subTest(mutation=kind):
@@ -739,6 +779,18 @@ class FoundationNativeEvidenceExportTests(unittest.TestCase):
             result = self.call_main(module, fixture)
         self.assert_safe_report(result, "UNSUPPORTED_PLATFORM")
         self.assertFalse(fixture["output"].exists())
+
+    def test_help_is_available_without_platform_or_filesystem_access(self):
+        module = self.load_exporter()
+        stdout, stderr = io.StringIO(), io.StringIO()
+        with mock.patch.object(module, "is_posix_host", return_value=False), \
+                mock.patch.object(module.os, "open", side_effect=AssertionError(CANARY)), \
+                contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+            code = module.main(["--help"])
+        self.assertEqual(code, 0)
+        self.assertEqual(stderr.getvalue(), "")
+        self.assertIn("--candidate", stdout.getvalue())
+        self.assertNotIn(CANARY, stdout.getvalue())
 
     def test_unexpected_exception_is_secret_safe(self):
         fixture = self.make_fixture()
