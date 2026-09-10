@@ -91,9 +91,9 @@ Fixed errors: `UNSUPPORTED_PLATFORM`/`POSIX controller required.`; `INVALID_ARGU
 
 **Interfaces:** Black-box `sys.executable SCRIPT` with the exact CLI above; `unittest` fixtures create disposable Git repositories and copied evidence only. Fixture values must be independent of exporter constants. Later fault-injection tests load the script with `importlib.util.spec_from_file_location`, after the causal missing-script check has been recorded.
 
-- [ ] Confirm the controller separately committed the existing fixture repair. Record current branch/HEAD and `git status --short`; read `AGENTS.md`, the live active-build result, and this plan. Never stage the fixture-repair file with exporter tests.
-- [ ] Write a complete independent synthetic fixture with seven exact manifest argv records, fourteen small original transcripts, a canonical receipt with recomputed digests/counts, and a standalone importer summary. Use a real local temporary Git commit as candidate; label the module docstring that synthetic fixtures do not prove native execution. Preserve one CRLF transcript and a pretty/CRLF summary to exercise byte preservation. Make output parent a different private directory.
-- [ ] Implement the following real subprocess test first. `make_fixture` returns `candidate`, `summary`, `manifest`, `receipt`, `repo`, and `output`; `run_export` constructs all six flags and captures stdout/stderr without `check=True`:
+- [x] Confirm the controller separately committed the existing fixture repair. Record current branch/HEAD and `git status --short`; read `AGENTS.md`, the live active-build result, and this plan. Never stage the fixture-repair file with exporter tests.
+- [x] Write a complete independent synthetic fixture with seven exact manifest argv records, fourteen small original transcripts, a canonical receipt with recomputed digests/counts, and a standalone importer summary. Use a real local temporary Git commit as candidate; label the module docstring that synthetic fixtures do not prove native execution. Preserve one CRLF transcript and a pretty/CRLF summary to exercise byte preservation. Make output parent a different private directory.
+- [x] Implement the following real subprocess test first. `make_fixture` returns `candidate`, `summary`, `manifest`, `receipt`, `repo`, and `output`; `run_export` constructs all six flags and captures stdout/stderr without `check=True`:
 
 ```python
 def test_exports_exact_original_bytes(self):
@@ -107,8 +107,8 @@ def test_exports_exact_original_bytes(self):
         self.assertEqual(len(archive.getmembers()), 18)
 ```
 
-- [ ] Run `python3 -m unittest discover -s tests/continuity -p test_export_foundation_native_evidence.py -v`. Require causal RED: the subprocess cannot open the absent `scripts/export-foundation-native-evidence.py`, and the exit-zero assertion fails. A syntax/import error in the test is not accepted RED. Record actual command, exit status, failing assertion, and absent script. Fix the test harness if it fails for another reason; do not weaken the assertion.
-- [ ] Add the acceptance cases below using `subTest` tables where the same assertion applies. Keep checks externally observable; use deterministic mocks for write races/faults, never sleeps or scheduler-dependent concurrent writes. For rejection, require exit 1, exact safe code/message, absent final output before publication, unchanged input bytes, and no exporter-created temporary leftovers.
+- [x] Run `python3 -m unittest discover -s tests/continuity -p test_export_foundation_native_evidence.py -v`. Require causal RED: the subprocess cannot open the absent `scripts/export-foundation-native-evidence.py`, and the exit-zero assertion fails. A syntax/import error in the test is not accepted RED. Record actual command, exit status, failing assertion, and absent script. Fix the test harness if it fails for another reason; do not weaken the assertion.
+- [x] Add the acceptance cases below using `subTest` tables where the same assertion applies. Keep checks externally observable; use deterministic mocks for write races/faults, never sleeps or scheduler-dependent concurrent writes. For rejection, require exit 1, exact safe code/message, absent final output before publication, unchanged input bytes, and no exporter-created temporary leftovers.
 
 | Test name / case family | Exact causal checks |
 | --- | --- |
@@ -126,7 +126,7 @@ def test_exports_exact_original_bytes(self):
 | `test_secret_safe_errors` | Put a unique synthetic canary in malformed JSON, transcript name/content, exception message, path, unknown CLI argument, and fake Git stderr. Exercise default and human output; canary, source paths, traceback and arbitrary exception text never appear in stdout/stderr. Unexpected exception gives INTERNAL_ERROR. |
 | `test_candidate_and_no_network` | Reject abbreviated/uppercase/nonhex/missing/noncommit SHA and Git timeout; accept an existing commit older than HEAD. Assert the only child process is the fixed local Git inspection, with no shell, fetch, Cargo, or network client. |
 
-- [ ] Commit tests only through the controller: `git add -- tests/continuity/test_export_foundation_native_evidence.py`, then `git commit -m "test: specify native evidence export contract"`. Record the intentional RED; this commit is not a completed implementation checkpoint.
+- [x] Commit tests only through the controller: `git add -- tests/continuity/test_export_foundation_native_evidence.py`, then `git commit -m "test: specify native evidence export contract"`. Record the intentional RED; this commit is not a completed implementation checkpoint.
 
 ## Task 2: Implement minimal GREEN exporter
 
@@ -134,7 +134,7 @@ def test_exports_exact_original_bytes(self):
 
 **Interfaces:** Define `ExportError(code: str)`; `main(argv=None) -> int`; `is_posix_host() -> bool`; `strict_json(data: bytes) -> object`; `canonical_json(value: object) -> bytes`; `export(args) -> dict`. Private helpers `open_source`, `recheck_sources`, `validate_contract`, `build_archive`, and `publish_archive` own descriptor acquisition, mutation checking, typed schema checks, tar bytes, and no-replace publication respectively. Importing the module performs no I/O; guard execution with `if __name__ == "__main__": sys.exit(main())`.
 
-- [ ] Add standard-library imports and the closed constants: suite matrix, field sets, size/count bounds, tar names, safe errors, schemas, and five false authority flags. Implement strict scalar checks with `type(value) is int`/`type(value) is bool`, rather than Python equality alone. Restrict receipt scalar values before using its JCS-equivalent serializer:
+- [x] Add standard-library imports and the closed constants: suite matrix, field sets, size/count bounds, tar names, safe errors, schemas, and five false authority flags. Implement strict scalar checks with `type(value) is int`/`type(value) is bool`, rather than Python equality alone. Restrict receipt scalar values before using its JCS-equivalent serializer:
 
 ```python
 def canonical_json(value):
@@ -150,9 +150,9 @@ def reject_duplicate_pairs(pairs):
     return result
 ```
 
-- [ ] Implement safe argument parsing and platform-first validation, local Git candidate lookup, descriptor-relative directory opening, file snapshots and bounded reads, and strict JSON validation. Put cap checks before reads/parsing, use depth-aware lexical scanning that ignores brackets inside strings, and reject duplicate keys via `object_pairs_hook=reject_duplicate_pairs`. Retain all input descriptors until final prepublication rechecks complete.
-- [ ] Implement the exact manifest/receipt/summary checks in this plan. Hash original captured bytes, compare typed gate_summary semantics, and preserve opaque summary/event data. Count receipt assertions without reimplementing native transcript test semantics. Build fixed-name source member records and canonical inventory.
-- [ ] Implement explicit tar entries and full-archive SHA-256/byte count. Do not incorporate temporary file metadata:
+- [x] Implement safe argument parsing and platform-first validation, local Git candidate lookup, descriptor-relative directory opening, file snapshots and bounded reads, and strict JSON validation. Put cap checks before reads/parsing, use depth-aware lexical scanning that ignores brackets inside strings, and reject duplicate keys via `object_pairs_hook=reject_duplicate_pairs`. Retain all input descriptors until final prepublication rechecks complete.
+- [x] Implement the exact manifest/receipt/summary checks in this plan. Hash original captured bytes, compare typed gate_summary semantics, and preserve opaque summary/event data. Count receipt assertions without reimplementing native transcript test semantics. Build fixed-name source member records and canonical inventory.
+- [x] Implement explicit tar entries and full-archive SHA-256/byte count. Do not incorporate temporary file metadata:
 
 ```python
 def add_member(archive, name, data):
@@ -165,10 +165,10 @@ def add_member(archive, name, data):
     archive.addfile(item, io.BytesIO(data))
 ```
 
-- [ ] Implement the prescribed temporary/fsync/hard-link flow, parent identity checks, prepublication full source rechecks, scoped temporary cleanup, and explicit post-link uncertainty result. Close descriptors in finally blocks. Hash the actual complete temporary archive before publication; never hash only its payload stream and label that the archive hash.
-- [ ] Implement default JSON and human rendering solely from trusted result fields and the fixed error map. Catch expected OS/parser/timeout exceptions at their boundary and map to stable codes; the outer catch returns INTERNAL_ERROR without exception interpolation. Ensure stdout has exactly one result and no diagnostic leakage.
-- [ ] Run the focused exporter test file on Python 3.14 and 3.9; fix the implementation until both pass. Keep the first successful GREEN results distinct from the earlier causal RED.
-- [ ] The controller stages only `scripts/export-foundation-native-evidence.py` and any justified new-test correction, then commits `feat: export deterministic native evidence return archives`. Keep the Python source tracked mode 100644, consistent with invocation through python3; the generated archive is mode 0600.
+- [x] Implement the prescribed temporary/fsync/hard-link flow, parent identity checks, prepublication full source rechecks, scoped temporary cleanup, and explicit post-link uncertainty result. Close descriptors in finally blocks. Hash the actual complete temporary archive before publication; never hash only its payload stream and label that the archive hash.
+- [x] Implement default JSON and human rendering solely from trusted result fields and the fixed error map. Catch expected OS/parser/timeout exceptions at their boundary and map to stable codes; the outer catch returns INTERNAL_ERROR without exception interpolation. Ensure stdout has exactly one result and no diagnostic leakage.
+- [x] Run the focused exporter test file on Python 3.14 and 3.9; fix the implementation until both pass. Keep the first successful GREEN results distinct from the earlier causal RED.
+- [x] The controller stages only `scripts/export-foundation-native-evidence.py` and any justified new-test correction, then commits `feat: export deterministic native evidence return archives`. Keep the Python source tracked mode 100644, consistent with invocation through python3; the generated archive is mode 0600.
 
 ## Task 3: Operator documentation and scoped verification checkpoint
 
@@ -176,8 +176,8 @@ def add_member(archive, name, data):
 
 **Interfaces:** The guide documents the exact CLI, 18-member contract, errors and authority limits already implemented. It must not introduce a new export format, archive importer, release-status input, handoff automation, or owner decision workflow.
 
-- [ ] Write the guide with prerequisites: complete native Windows x64/NTFS importer run first, save its final standalone summary JSON separately from its event stream, preserve canonical receipt stdout as a separate file, copy summary/receipt/transcript manifest and all 14 transcripts back to a private POSIX directory, and retain the exact candidate commit locally. Never present synthetic test fixture files as returned native evidence.
-- [ ] Include this command shape, explaining that all paths are explicit absolute operator-supplied locations and output parent already exists:
+- [x] Write the guide with prerequisites: complete native Windows x64/NTFS importer run first, save its final standalone summary JSON separately from its event stream, preserve canonical receipt stdout as a separate file, copy summary/receipt/transcript manifest and all 14 transcripts back to a private POSIX directory, and retain the exact candidate commit locally. Never present synthetic test fixture files as returned native evidence.
+- [x] Include this command shape, explaining that all paths are explicit absolute operator-supplied locations and output parent already exists:
 
 ```sh
 python3 scripts/export-foundation-native-evidence.py \
@@ -189,10 +189,10 @@ python3 scripts/export-foundation-native-evidence.py \
   --output /absolute/path/to/private-return/foundation-native-evidence.tar
 ```
 
-- [ ] Explain bytes versus semantics, outbound versus transcript manifest hashes, deterministic archive order/metadata, size/mode/path bounds, no-clobber retry behavior, secret-safe errors, and PUBLISH_UNCERTAIN retention. Show inspection using `tar -tf /absolute/path/to/private-return/foundation-native-evidence.tar`; do not recommend extraction as a validation shortcut. State that the archive contains original logs/paths and should remain within the approved evidence-handling scope.
-- [ ] State explicitly: the packager validates structural and hash consistency only; it independently authenticates neither the native host nor execution; it grants no CI authority, owner approval, or release approval. Receipt counts are bound assertions, and native transcript semantic verification belongs to the existing Rust verifier. Explain that release acceptance still requires the separate governed evidence and owner process.
-- [ ] Add the README link adjacent to existing Foundation release-routing guidance and one SKILLS workflow row labelled `Native evidence return packaging`, linking this guide and the CLI help. This discoverability is justified because an operator now has a new manual return step; do not duplicate volatile gate statuses or test results there.
-- [ ] Run the exact verification commands below from the assigned worktree, recording interpreter versions, actual exit codes and counts. These are local compatibility/regression results, never Windows execution evidence:
+- [x] Explain bytes versus semantics, outbound versus transcript manifest hashes, deterministic archive order/metadata, size/mode/path bounds, no-clobber retry behavior, secret-safe errors, and PUBLISH_UNCERTAIN retention. Show inspection using `tar -tf /absolute/path/to/private-return/foundation-native-evidence.tar`; do not recommend extraction as a validation shortcut. State that the archive contains original logs/paths and should remain within the approved evidence-handling scope.
+- [x] State explicitly: the packager validates structural and hash consistency only; it independently authenticates neither the native host nor execution; it grants no CI authority, owner approval, or release approval. Receipt counts are bound assertions, and native transcript semantic verification belongs to the existing Rust verifier. Explain that release acceptance still requires the separate governed evidence and owner process.
+- [x] Add the README link adjacent to existing Foundation release-routing guidance and one SKILLS workflow row labelled `Native evidence return packaging`, linking this guide and the CLI help. This discoverability is justified because an operator now has a new manual return step; do not duplicate volatile gate statuses or test results there.
+- [x] Run the exact verification commands below from the assigned worktree, recording interpreter versions, actual exit codes and counts. These are local compatibility/regression results, never Windows execution evidence:
 
 ```sh
 python3 --version
@@ -215,14 +215,23 @@ git ls-files --stage -- scripts/export-foundation-native-evidence.py tests/conti
 git status --short
 ```
 
-- [ ] Treat the exporter acceptance tests' strict parsing of stdout and inventory as the JSON validation check; they must assert canonical LF bytes, exact keys/types, member payload hashes, and authority flags. Inspect their successful output and include their test names in the checkpoint. Run no additional broad suite after these pass unless changes/failures introduce a specific unresolved concern.
-- [ ] Inspect exact scoped diff and file modes, ensure no generated evidence/archive is tracked, and record candidate implementation commit plus source-file SHA-256 identities in the existing controller checkpoint. The controller commits guide/discoverability/plan progress separately as `docs: document native evidence return packaging`; no new checkpoint system is created.
-- [ ] Handoff distinguishes implementation complete, local checks passed, and independent native/release gates pending; record the terminal process state and next concrete action: use the CLI on genuinely returned native inputs when those are available. Do not manufacture those inputs or start another native run merely to demonstrate this packager.
+- [x] Treat the exporter acceptance tests' strict parsing of stdout and inventory as the JSON validation check; they must assert canonical LF bytes, exact keys/types, member payload hashes, and authority flags. Inspect their successful output and include their test names in the checkpoint. Run no additional broad suite after these pass unless changes/failures introduce a specific unresolved concern.
+- [x] Inspect exact scoped diff and file modes, ensure no generated evidence/archive is tracked, and record candidate implementation commit plus source-file SHA-256 identities in the existing controller checkpoint. The controller commits guide/discoverability/plan progress separately as `docs: document native evidence return packaging`; no new checkpoint system is created.
+- [x] Handoff distinguishes implementation complete, local checks passed, and independent native/release gates pending; record the terminal process state and next concrete action: use the CLI on genuinely returned native inputs when those are available. Do not manufacture those inputs or start another native run merely to demonstrate this packager.
+
+## Execution record — 2026-09-10
+
+- Causal RED: `a83c974`; the focused subprocess test exited 1 solely because the exporter file was absent. Expanded test commits are `30ecd20`, `9ba4520`, and `c407c22`.
+- Implementation: `e897b81`, followed by the bounded-parser/timeout correction `e6fbfb5`. Documentation is `2d67dc1`; the unrelated Git 2.55 fixture stabilization is separately committed as `b29e34e`.
+- Final focused checks: 41/41 passed on Python 3.14.6 and 41/41 on system Python 3.9.6. Final full continuity checks: 141/141 passed on each interpreter. Rust native-receipt compatibility: 7/7 passed. Research: 89/89 passed on Python 3.14.6.
+- The requested system-Python research command was also executed and exited 1 because `governance/agents/validate-sources.py` explicitly requires Python 3.11+ and returned `python_3_11_required`; this pre-existing research-runtime contract is unrelated to exporter compatibility. The exporter and its full continuity suite pass on system Python 3.9.6.
+- Final source SHA-256 values: exporter `2d89e947e11811984e791c5410b1fbca34b495b97ad2586192789540bbf0be36`; acceptance tests `35beb8394bc54a36a39f242a8b5c43281f6abd16fb3fe10494b310a66efddb4f`; operator guide `e9e4ce60ec3619aa3a6b7624d35720ba83cb2e1a7c8ef97776f2a42f376f8577`. All three are tracked mode `100644`.
+- No real native evidence package was generated because returned native Windows inputs do not yet exist. All worker and controller processes are terminal; no workflow, GitHub App, remote Git, account, or release-authority change occurred.
 
 ## Plan self-check
 
-- [ ] Confirm every contract above has an acceptance test; causal RED is missing-script failure, followed by real GREEN on both required interpreters.
-- [ ] Confirm existing fixture repair, tests, implementation, and documentation are separate commits; controller owns all commits.
-- [ ] Confirm no unbounded reads/enumeration, unchecked manifest paths, source rewrites, replace-based publication, network calls, or positive authority claims were introduced.
-- [ ] Confirm documentation and tests distinguish the importer's transfer manifest hash from the receipt's transcript manifest hash, and use mode `native_suites` with native_host true.
-- [ ] Confirm archive publication failure semantics accurately distinguish no output before link from uncertain durability after link.
+- [x] Confirm every contract above has an acceptance test; causal RED is missing-script failure, followed by real GREEN on both required interpreters.
+- [x] Confirm existing fixture repair, tests, implementation, and documentation are separate commits; controller owns all commits.
+- [x] Confirm no unbounded reads/enumeration, unchecked manifest paths, source rewrites, replace-based publication, network calls, or positive authority claims were introduced.
+- [x] Confirm documentation and tests distinguish the importer's transfer manifest hash from the receipt's transcript manifest hash, and use mode `native_suites` with native_host true.
+- [x] Confirm archive publication failure semantics accurately distinguish no output before link from uncertain durability after link.
