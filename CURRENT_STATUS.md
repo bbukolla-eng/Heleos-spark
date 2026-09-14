@@ -1,8 +1,291 @@
 # Current repository status
 
-Latest product delivery (2026-09-10): local drawing workspace implementation `81ea09d3380b0002f322458abdf2bf8646c4e76c` is tested and fast-forward integrated into visible local `main`. Real PDF import, sheet browsing, verified page preview, fit/zoom, and restart persistence are working on Mac. The owner's real 21-page set is saved locally and open in the viewer. Next product work is the two identified PDF intake compatibility cases, followed by scale calibration and the first takeoff interaction. Mac and Windows remain the target; native Windows execution, final native shells, and release acceptance remain open.
+Continuity checkpoint (2026-09-13): this documentation commit records
+CURRENT_STATUS.md only. Product implementation and the in-progress duct PDF
+fixtures remain uncommitted in this checkout and must be preserved. The fixture
+task's latest record is .heleos/duct-fixture-build-2026-09-13/progress.json;
+its current state is preparing, with no completed handoff. This checkpoint does
+not mark that work complete or approve the remaining duct rules. Older HEADs and
+next actions below describe their named historical checkpoints.
 
-Updated: 2026-09-10. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, the tested native-suite receipt candidate, the completed cross-platform agent-controller build through exact clean commit `f6f1bc82c2ba6f6a2fe552d9bd3adb5dc4e0c950`, visible-main public research and benchmark integration through `0dd2f77c8ecf722c4f1ac57e94acef7b9653a292`, the completed Foundation release-status implementation checkpoint `885f8d8c713773a29fbc27ee1f13d829d5d022a3`, the completed GitHub App owner-decision applier checkpoint `738aca452332e4495066f9cba2e46b6aaef6f8bf`, the completed unresolved-draft generator checkpoint `5fac3b54457d832614b837365b9c3adc7d26fcdb`, the completed deterministic native-evidence return exporter through implementation correction `e6fbfb539f5bc6e725825936e7aa5bc16e0a7ade`, and the completed Foundation native-return binding verifier through implementation checkpoint `a2a0c44404cad97eb186043d6ff7f8ff92b59378`. Native-Windows launchers, GitHub App inventory, guarded-provider evidence, terminal Cursor quota evidence, and terminal Athena quarantine/adjudication remain recorded; no owner App decision, new provider benchmark run, Cursor live write, native Windows result, Foundation 0.2 start, or production-release acceptance is claimed.
+Active product goal (2026-09-13, DUCT-CALCULATION-1): the owner activated the full
+local-first Mac/Windows Division 23 goal in session
+01a09d78-e467-7a61-99ba-be72b8f49910. The goal remains active and incomplete.
+The [remaining duct rule/example packet](docs/superpowers/specs/2026-09-13-duct-measurement-rules.md)
+and nine literal synthetic examples are prepared; arithmetic checks pass, while
+the owner's remaining-rule and example-adjudication answer is pending. These are
+not source-bound PDF fixtures or representative-project acceptance results.
+The [dataset preparation manifest](docs/research/engineering/roboflow-preparation-manifest-2026-09-13.json)
+links all nine existing candidates by hash, preserves 67 raw labels for review,
+records the observed HVAC overlap and current baseline limits, and admits none.
+Both read-only preparation agents are terminal. Exact preparation checks and
+process state are in .heleos/duct-calculation-build-2026-09-13.
+
+Dataset preparation implementation (2026-09-13, DATASET-AUDIT-1):
+scripts/mechanical_dataset_audit.py now audits explicit local COCO exports without
+changing inputs or admitting data. It retains raw label/count information, finds
+identical image bytes across declared splits, reports source-group conflicts and
+unknown ancestry, and reports the current baseline size limits without trimming
+annotations. Root-verified tests pass 21 cases on Python 3.14.6 and 3.9.6. An
+independent synthetic CLI fixture retains all 252 annotations, detects cross-split
+overlap despite different group claims, reports the 251-object image, and produces
+identical repeat/dual-runtime reports. Invalid Unicode fails with structured input
+errors. Inputs and existing product code remain unchanged. See the
+[usage guide](docs/operations/mechanical-dataset-audit.md) and
+.heleos/dataset-audit-build-2026-09-13 for exact checks and hashes. No downloaded
+archive, semantic/rights acceptance, model execution or native Windows proof is
+claimed. The implementation worker and verification commands are terminal.
+
+Confirmed calculation sequence (2026-09-13): the owner selected
+duct lengths by size, then air-device counts, then equipment counts, with imperial
+outputs. The owner approved drawn centerlines, vertical lengths supported by
+dimensions/elevations, separate fitting counts, and waste/allowances kept separate
+from measured totals. This supersedes the earlier unresolved class/unit choice;
+the historical blocked-goal audit remains preserved. The
+[calculation sequence](docs/superpowers/specs/2026-09-13-calculation-sequence-design.md)
+records the steps, remaining detailed rules, proposed checked examples and roles
+for all nine supplied dataset candidates. This is planning only: calculation code,
+training, data/model admission and formal acceptance are not newly completed.
+Next action: record the pending answer to the concrete remaining rules/examples,
+then implement the first source-bound duct observation and calculation slice.
+Automatic duct paths are not yet produced by the existing positioned-text or
+four-field box-observation adapters; add an explicit versioned observation path
+while preserving their current contracts. Dataset source/codebook and overlap
+audits remain parallel preparation; no export archive or model has been acquired.
+
+Latest build checkpoint (2026-09-11, RECONCILIATION-1): persistent bidirectional
+schedule/plan correspondence is implemented and connected to the Equipment screen.
+Unique exact normalized schedule/plan pairs match automatically. Missing sides,
+repeated references, conflicting schedule fields, unfamiliar tag identities and
+explicit logical-sheet revision conflicts remain visible. Original fields, source
+boxes, page geometry, reader/code identities and generation history are retained.
+References and declared schedule quantities do not establish physical counts.
+
+Exception decisions select a schedule and corresponding plan references, with an
+explicit disposition/reason for every omitted endpoint. Decisions are source-bound,
+append-only and withdrawable. Changed dependent evidence reopens the affected
+correspondence; unrelated groups remain current. Newly included unread pages remain
+coverage gaps. Resolved duplicate warnings retain their source/history but stop
+blocking the matching workflow. Clean matches also offer optional correction.
+Draft exports include complete graphs/events plus both edge and unmatched-group CSVs.
+
+A concrete older equipment-adapter bug is also fixed: reuse now binds the exact
+saved reading result, not only its input fingerprint. A retry with changed actual
+schedule values creates a new result. Old equipment records become stale; current
+quantities show UNKNOWN while original counts remain separately preserved in the
+saved history and equipment-history.csv.
+
+Verification: all 354 affected non-TCP cases pass on Python 3.14.6 and 3.9.6;
+Python 3.9 grammar, JavaScript syntax, focused local DOM and whitespace checks pass.
+Real Foundation/Poppler integration passes four grouped checks on an original
+three-page PDF: exact fields/references; persistent bidirectional graph and explicit
+duplicate/conflict decisions; affected-only assignment changes; complete reopen and
+JSON/CSV export without rereading. Receipt:
+.heleos/schedule-reconciliation-acceptance-2026-09-11/reconciliation-acceptance.json.
+This is original synthetic integration evidence, not measured job/AI accuracy.
+Exact commands, 67 monitored paths, worker reports and final handoff are in
+.heleos/schedule-reconciliation-build-2026-09-11. All workers and command sessions
+are terminal. Changes remain locally integrated and uncommitted on main
+HEAD15d3a0269904ffa0f7da905debc59a6a61c47fef.
+
+Next product dependency: implement duct lengths by size as the first airside class
+from the original 0.5 roadmap, connecting recognition evidence to deterministic
+quantities and current reconciliation identities. The 2026-09-13 planning checkpoint
+above records the owner choices; the detailed rule/fixture packet must be finalized
+before implementation. Preserve the full product goal. Later work
+remains correction/recalculation, formula Excel/evidence PDF, mechanical-class
+expansion and native Mac/Windows product parity. Formal 0.2-0.4 acceptance remains
+open, including real model/data admission and predecessor gates. Live local model
+execution remains unproven after the recorded connection denial; browser and the
+prior 15 denied TCP-bind cases remain unverified. No prohibited retry, private
+egress, model download, engineering-rule promotion, extra reviewer round, Git
+mutation or release action occurred. This section owns the next action.
+
+Prior build checkpoint (2026-09-11, SHEET-SCALE-1): shared sheet coordinates and
+scale lifecycle are implemented and connected to the drawing workspace. Full
+Foundation crop/rotation/transform/source identities reach the measurement code.
+Decimal distances retain original PDF points and exact scale-decision bindings.
+The saved document reader extracts explicit metric/imperial scale labels and NTS
+as unverified candidates. Assigning a view and verifying its scale are explicit;
+overlapping active detail scales, unavailable geometry and unverified/retired
+facts block dependent measurements. Withdrawal makes affected current item
+quantities unknown. Explicit recalculation creates a replacement and relinks
+affected items while preserving original measurements, scale decisions and history.
+Other page/view measurements remain current. UI and CSV distinguish current,
+blocked and superseded results; sheet-scales.json retains complete original evidence.
+
+Native integration exposed and corrected a pre-existing rotated-text defect:
+Poppler bbox headers describe the unrotated crop, but word positions already use
+displayed coordinates. Both document reading and the legacy equipment reader now
+use the shared Foundation-bound normalization. Document-reading-3 freezes full
+coordinates and rechecks them around extraction. Old unbound Poppler readings are
+preserved and shown as stale; they are not silently reused as current evidence.
+
+Final evidence: 333 affected non-TCP cases pass on Python 3.14.6 and 3.9.6; grammar,
+JavaScript syntax, local DOM behavior and whitespace checks pass. A real native
+Foundation/Poppler run passes four grouped checks on an original two-page cropped
+and rotated PDF: matrices/corners/rendering, saved label reading and independently
+expected distances, affected-only withdrawal/recalculation, full reopen and exports
+without rereading. Receipt:
+.heleos/sheet-scale-acceptance-2026-09-11-attempt-2/sheet-scale-acceptance.json.
+The first failed attempt is retained with its exact rotated-text diagnostic. Task
+reports, commands, final identities and handoff are in
+.heleos/sheet-scale-build-2026-09-11. All coding workers and command sessions are
+terminal. Local edits remain uncommitted on main HEAD15d3a0269904ffa0f7da905debc59a6a61c47fef.
+
+Next concrete coding action: complete the original 0.4 bidirectional schedule/plan
+reconciliation using the current sheet contract and existing schedule extraction.
+Persist source-linked correspondence and missing/duplicate/revision conflicts,
+then feed their resolved identities into the first owner-selected takeoff class.
+The first-class choice remains pending. Full mechanical calculations, tracing,
+formula Excel/evidence PDF, native Mac/Windows product parity and complete takeoff
+remain unfinished. This code checkpoint does not accept all of 0.2/0.3 or promote
+engineering rules or AI models. Live local model inference is still unproven after
+the session's connection denial; no retry or alternate route was attempted.
+Browser behavior and the prior 15 denied TCP-bind cases remain unverified. No
+private-data egress, model/download, extra reviewer, Git mutation or release action
+occurred. This section owns the next action; older checkpoints below are historical.
+
+Prior build checkpoint (2026-09-11, MODEL-INFERENCE-1): the local model connection
+is implemented in the drawing workspace. Frozen rendered PNGs retain original
+revision/page and renderer identity. The all-mechanical adapter returns bounded
+image observations with the complete response. Explicit jobs save page results,
+resume without repeating completed images, and generate baseline records directly.
+The interface supports prepare, identity, start, cancel and resume; opening/viewing
+saved work never starts inference. Exports retain inputs and all successful and
+failed responses. Unknown memory stays unknown and cannot pass resource thresholds.
+
+Final assembled evidence: 271 affected non-TCP cases pass on Python 3.14.6 and
+3.9.6; Python 3.9 grammar, JavaScript syntax, local DOM behavior and whitespace
+checks pass. Real Foundation/Poppler integration passes with an original synthetic
+injected adapter: frozen PNG lineage, generated baseline, full reopen and complete
+response export. Receipt:
+.heleos/model-inference-acceptance-2026-09-11/model-inference-acceptance.json.
+This proves the implemented connection, not AI accuracy. This session's loopback
+runtime connection was denied with PermissionError errno1; no model ran and no
+alternate connection was attempted. Native Windows, browser and the previously
+denied 15 TCP-bind cases remain unverified. No download, private egress, real rule
+approval, Git mutation, extra review round or release action occurred.
+
+MODEL-INFERENCE-1 workers and command sessions are terminal. Exact code identities,
+commands, failed/corrected attempts and handoff are in
+.heleos/model-inference-build-2026-09-11. Next concrete coding action: implement
+revision-bound sheet coordinates and verified scale lifecycle, including rotated
+pages, detail views, explicit scale decisions and invalidation of dependent
+measurements. Then continue schedule reconciliation, the owner-selected first
+class, correction/recalculation, formula Excel/evidence PDF, full mechanical
+expansion and native Mac/Windows parity. The first-class question remains pending;
+it does not block scale implementation. Full goal remains active; 0.2/0.3 and
+complete takeoff acceptance are not claimed. Older next actions below are historical.
+
+Prior build checkpoint (2026-09-11, MODEL-BASELINE-1): the mechanical model/data
+baseline is implemented and connected to the local drawing workspace. Immutable
+datasets bind actual source snapshot hashes, originating job groups, independent
+expected objects and train/validation/test splits. Model declarations retain source
+rights statements, artifact digests, runtime and preprocessing. Frozen plans bind
+those records and declared metrics before importing predictions. The server scores
+one-to-one matches, misses and extras; duplicate detections and negative pages
+count, absent categories retain unknown ratios, and original supplied labels stay
+unchanged. All nine mechanical categories remain visible in coverage. Source
+lifecycle and scorer changes preserve history and block reuse of stale plans.
+
+The advanced workspace panel registers local source evidence, datasets, model
+declarations, plans and saved outputs. Reopen and draft exports preserve complete
+records in model-baseline.json and model-evaluations.csv. These are local research
+records; they neither complete takeoff stages nor select/promote a production
+model. Artifact declarations and supplied timings are explicitly distinct from
+observed model execution and hardware performance. Source rights remain recorded
+provenance statements, not a permission adjudication. The document-page list
+helper collision that could prevent requirement rendering was also corrected.
+
+Fresh evidence: 227 affected non-TCP application cases pass on Python 3.14.6 and
+Python 3.9.6. JavaScript syntax, local DOM-stub behavior, Python 3.9 grammar and
+whitespace checks pass. Seven real Foundation/Poppler checks pass against the
+original synthetic PDF, with independent literal tag rectangles, actual saved
+reader predictions, exact replay, full reopen without another extraction and
+JSON/CSV export. Receipt:
+.heleos/model-baseline-acceptance-2026-09-11-attempt-2/model-baseline-acceptance.json.
+The first acceptance-script initialization failure and a fixed label-preservation
+failure remain recorded in .heleos/model-baseline-build-2026-09-11/progress.md.
+All workers and command sessions are terminal.
+
+Read-only local inspection also verified qwen3.5:9b's installed manifest and all
+four artifact digests, including the 6,594,462,816-byte model, plus the Ollama
+executable and bundle metadata. This confirms local files, not vision capability,
+model accuracy or runtime readiness. Exact evidence is in
+.heleos/model-baseline-build-2026-09-11/local-model-artifact-verification.json.
+
+Next concrete coding action: bind actual inference from the existing local vision
+adapter to frozen model/dataset records and original rendered page inputs, using
+the already installed candidate after its local capability and use basis are
+established. Then continue verified sheet/scale, schedule reconciliation, the
+owner-selected first airside class, corrections/recalculation and formula Excel /
+evidence PDF outputs, full mechanical expansion and native Mac/Windows parity.
+The first-class choice remains pending; independent baseline integration continues.
+The full product goal remains active; this does not accept all of 0.2 or establish
+complete takeoff. Actual AI inference, private-job accuracy, browser behavior,
+15 previously denied TCP-bind cases and native Windows parity remain unverified.
+No network/model call, download, extra reviewer round, Git mutation, private egress,
+real engineering approval or release action occurred in this task.
+
+Prior build checkpoint (2026-09-11, KNOWLEDGE-4): versioned requirement-rule
+validation and admission are implemented in the local drawing workspace.
+Independently specified cases are executed against the current compiler/matcher;
+inputs, expected/actual results, source lifecycle pins, exact code identities and
+disable-rule rollback behavior stay in an immutable version record. Passing checks
+do not activate it. Separate review and explicit approval/withdrawal events retain
+actor, reason and parent history. New draft versions and reviews preserve an
+existing active version until explicit replacement or withdrawal. Changed sources
+or implementation disable its effective approval; source reactivation cannot
+resurrect it. Previous-reading versions remain inspectable and exportable. Original
+project clauses and item decisions stay separate and unchanged. Admission covers
+requirement applicability only; quantity rules still require their own calculation
+implementation and validation.
+
+Fresh evidence: 174 affected non-TCP application cases pass on Python 3.14.6 and
+3.9.6. JavaScript syntax, Python 3.9 grammar and whitespace checks pass. Ten real
+Foundation/Poppler checks pass on an original synthetic three-page PDF: candidate
+reading, fixed tag cases, distinct synthetic author/reviewer/owner events, saved
+approval after full workspace reopen, withdrawal without automatic rollback, and
+rule-admission.json/rule-versions.csv export. Receipt:
+.heleos/knowledge-rule-acceptance-2026-09-11/rule-admission-acceptance.json.
+The task ledger, terminal reports and exact identities are in
+.heleos/knowledge-rule-build-2026-09-11. All workers and command sessions are terminal.
+Actor names are local audit labels, not authenticated identity proof; no real
+project engineering rule was reviewed or approved in these checks.
+
+The full takeoff product goal remains active. Next coding task: mechanical
+model/dataset manifests and a reproducible evaluation baseline binding source
+rights, data splits, pinned assets/runtime and declared result metrics. Reuse the
+existing source registry and document-reader components; coding-worker benchmarks
+do not establish mechanical model performance. Then continue verified sheet/scale,
+schedule reconciliation, the selected airside class, correction/recalculation and
+formula Excel/evidence PDF outputs, followed by full mechanical expansion and
+native parity. The first airside-class choice remains pending and does not block
+this knowledge work. This checkpoint does not accept all of 0.2 or complete takeoff.
+Browser access and 15 TCP-bind cases remain unverified after their earlier denials;
+neither was retried. Local model execution, private-job accuracy and native Windows
+parity remain open. No Git metadata write, publication, private-source transfer,
+dependency/model installation, extra reviewer round or release action occurred.
+Preserve the entire draft workspace including mechanical-knowledge; the Foundation
+release gates remain deferred.
+
+Owner correction (2026-09-10): Heleos performs the takeoffs. Rereading the approved
+design, original roadmaps and owner manual confirms that development automation
+is supporting work. Codex's recent recognition-first proposal skipped the explicit
+Division 23 knowledge prerequisite and is now marked superseded in the existing
+[engine implementation ledger](docs/superpowers/plans/2026-09-10-equipment-workflow.md).
+The original product order remains knowledge/vocabulary/rules and model baseline,
+verified sheet/scale, schedule reconciliation, a selected airside takeoff class,
+then correction/recalculation and live-formula Excel/evidence PDF. The first 0.2
+knowledge component has since been implemented as recorded above. Continue its
+unfinished dependencies without restarting completed work or dispatching the
+superseded recognition proposal. Full mechanical scope and Mac/Windows parity remain.
+The source-reading correction itself changed no implementation or prior check result.
+
+Latest product work (2026-09-10): the actual document-reading prerequisite is now implemented and connected in visible main, based on 15d3a0269904ffa0f7da905debc59a6a61c47fef. The local reader preserves positioned PDF text, extracts explicit equipment schedule fields and written mechanical requirements, matches equipment tags to plan references, and feeds saved equipment review records and exports. Equipment count review consumes these document outputs instead of rescanning text, and refuses stale or missing document readings. Source locations, original wording, unknown quantities and disagreements remain visible. These are uncommitted local product edits; the existing seven-stage interface is supporting infrastructure, not completion of the automated takeoff engine. Automatic symbol recognition, system tracing, full quantities and estimating remain unfinished. Mac and Windows remain the target; native Windows execution is not claimed.
+
+Updated: 2026-09-10. This snapshot records local integration through Task 9, a passing local Task 10 supply-chain implementation, the tested native-suite receipt candidate, the completed cross-platform agent-controller build through exact clean commit `f6f1bc82c2ba6f6a2fe552d9bd3adb5dc4e0c950`, visible-main public research and benchmark integration through `0dd2f77c8ecf722c4f1ac57e94acef7b9653a292`, the completed Foundation release-status implementation checkpoint `885f8d8c713773a29fbc27ee1f13d829d5d022a3`, the completed GitHub App owner-decision applier checkpoint `738aca452332e4495066f9cba2e46b6aaef6f8bf`, the completed unresolved-draft generator checkpoint `5fac3b54457d832614b837365b9c3adc7d26fcdb`, the completed deterministic native-evidence return exporter through implementation correction `e6fbfb539f5bc6e725825936e7aa5bc16e0a7ade`, and the completed Foundation native-return binding verifier through implementation checkpoint `a2a0c44404cad97eb186043d6ff7f8ff92b59378`. Native-Windows launchers, GitHub App inventory, guarded-provider evidence, terminal Cursor quota evidence, and terminal Athena quarantine/adjudication remain recorded; no owner App decision, new provider benchmark run, Cursor live write, native Windows result, completed Foundation 0.2 milestone, or production-release acceptance is claimed.
 
 <!-- active-build-authority:v1 -->
 ```json
@@ -10,7 +293,67 @@ Updated: 2026-09-10. This snapshot records local integration through Task 9, a p
 ```
 <!-- /active-build-authority -->
 
-## Completed drawing workspace - owner direction 2026-09-10
+## Document-reading implementation checkpoint - 2026-09-10
+
+The owner corrected the previous interpretation of workflow-first: the actual
+reading and mechanical interpretation code must precede trials, not merely stage
+screens and manual records. That correction now governs the next build order.
+New scripts/document_layout.py, document_schedule.py, document_requirements.py
+and document_pipeline.py read accepted PDFs with the existing local Poppler
+reader. Explicit schedule cells retain raw fields and locations; written
+requirements retain negation, conditions, sections and source lines. Plan links
+include header-declared equipment prefixes and preserve leading-zero identities.
+The persisted document reading feeds the equipment review engine and supplies
+schedule, requirements and equipment-register CSVs in the project ZIP. A reviewed
+physical count that disagrees with an explicit schedule quantity raises an issue.
+
+Verification is now against that implemented code: 27 document/parser cases and
+22 equipment/workflow cases passed on both Python 3.14.6 and Python 3.9.6.
+Both affected client scripts pass Node syntax checks. A real Foundation/Poppler
+run read an original synthetic three-page PDF, populated a schedule row and two
+written requirements, matched plan tags, built equipment review records and
+exported the results. Its terminal PASS receipt is
+.heleos/document-reading-acceptance-2026-09-10/document-reading-acceptance.json.
+This proves the local code path, not real-job accuracy, live model behavior,
+browser interaction, native Windows parity or release acceptance.
+
+Reader limits are explicit: embedded text and bounded horizontal table/prose
+layouts; scans, merged/staggered tables and cross-page interpretation remain
+unresolved. It does not infer geometry, accessories, physical quantities,
+contractual precedence or engineering rules. New native-acceptance processes
+and both coding workers are terminal. No installation, external data transfer,
+push, release action or production PDF intake change occurred.
+
+The earlier recognition-next instruction is superseded by the owner correction
+at the top of this status. Recognition remains required product work, after its
+knowledge, coordinate/scale and schedule prerequisites are addressed for the
+supported scope. Preserve this document-reading layer and the full mechanical
+ambition. The fuel diagnostic remains deferred; stage screens and repeated trials
+must not replace the missing engine code.
+
+## Earlier project takeoff workflow checkpoint - owner direction 2026-09-10
+
+The owner explicitly directed building the workflow before further individual drawing trials. The PDF diagnostic was stopped after compiling a bounded phase probe; the probe was not executed and no guest, intake limit or original drawing changed. Its retained receipt identifies a fuel-budget exhaustion, not a classified corrupt-PDF defect. That investigation remains deferred.
+
+New code in scripts/takeoff_workflow.py and apps/drawing-workspace/workflow.js supplies seven stages, saved page roles, equipment extraction from the document register, calibration within an explicitly chosen uniform-scale view, recorded length geometry, linked quantity calculations, records across all eight mechanical scope categories, scope review, explicit allowance review, unresolved questions and a ZIP containing actual saved records. Stage navigation never implies completion. All quantities remain draft; automatic symbol recognition, system tracing, full schedule fields, specification interpretation, pricing and labor are still to build.
+
+Fresh checks: the 12 new workflow cases and 10 equipment cases pass on Python 3.14.6 and 3.9.6, including the connected project-to-export path, aspect-ratio-aware measurement, calibration boundaries, source mismatches, persistence, stale edits, immutable history, review invalidation, unknown counts, allowance corrections, and actual HTTP handlers over local IPC. All three client scripts pass syntax checks; HTML nesting and 78 static element IDs pass structural checks. These do not establish live browser behavior or real drawing accuracy. The previously confirmed session restrictions were not retried as a substitute for building the workflow.
+
+The document-content and equipment-schedule reader named as the next item at this checkpoint is now implemented as described above. The [operator guide](docs/operations/drawing-workspace.md#project-takeoff-workflow) describes the connected steps; the existing [implementation ledger](docs/superpowers/plans/2026-09-10-equipment-workflow.md) and ignored handoff receipts own changed code identities and remaining limits.
+
+## Earlier equipment draft implementation checkpoint - 2026-09-10
+
+The owner's subsequent direction was to build the takeoff product, followed by an owner-supplied Division 23 workflow document. The current code applies its equipment-first register, duplicate handling, source records and unknown-versus-zero requirements. Full measurements, mechanical recognition, schedule field extraction, controls, accessories, specifications, revisions and estimating remain unfinished. The document is a functional reference, not a trained model or admitted engineering rule source.
+
+The ten focused equipment checks pass on Python 3.14.6 and 3.9.6. Real Foundation intake, Poppler extraction/rendering, reconciliation, persisted review and CSV export passed together on synthetic inputs. HTTP handlers were checked over local IPC; these results do not establish live browser behavior, AI recognition, native Windows parity or release acceptance. Equipment drafts currently have separate persistence and must be preserved alongside the Foundation workspace when backing up.
+
+Implementation is saved locally but is not committed, independently accepted or published. All processes started for this equipment checkpoint are terminal. The earlier drawing-only server was left untouched; its availability has not been rechecked and it does not serve these new bytes. Preserve the uncommitted files, the prior research report, and both ignored equipment workspaces. The [equipment ledger](docs/superpowers/plans/2026-09-10-equipment-workflow.md) records commands, evidence and limitations; the [operator guide](docs/operations/drawing-workspace.md#equipment-register) describes the new controls.
+
+At this historical equipment checkpoint, committed-main build discovery reported uncommitted_authority because the updated status was not committed. The earlier session could not write Git metadata. Its direct verification identified main at 15d3a0269904ffa0f7da905debc59a6a61c47fef. Preserve the saved equipment ledger and changed-file receipt; verify the live HEAD and current status when resuming instead of treating this historical failure as current or restarting completed work.
+
+The earlier intake-first next action is superseded by the owner's workflow-first instruction and current implementation checkpoint above. Existing Foundation release requirements remain deferred and unchanged.
+
+## Completed drawing-only workspace - earlier owner direction 2026-09-10
 
 The owner deferred GitHub App decisions, reaffirmed Mac and Windows, and directed advancing the product build. The first drawing-workspace slice is implementation finished, controller checked, committed, and locally integrated. It uses the existing native CLI with Python 3.9+ and local browser assets. No core, guest, dependency lock, frozen source closure, workflow, or production acceptance authority changed.
 
@@ -18,7 +361,7 @@ Final checks: 15/15 service tests pass under Python 3.14.6 and 3.9.6; all ten in
 
 The [operator guide](docs/operations/drawing-workspace.md) contains Mac/Windows launch commands and the checked Mac renderer font setup. The [execution plan](docs/superpowers/plans/2026-09-10-drawing-workspace.md) records exact file identities, CLI artifact identity, commands, failures and limits. Data is retained under visible-main `.heleos/drawing-workspace`; originals remain in their owner-supplied location. Implementation and test workers are terminal. The product server is intentionally running from the preserved clean drawing-workspace worktree at the integrated implementation commit, using the saved data in visible main. Its per-run local URL is handed to the owner separately.
 
-There is no active implementation worktree after this completed slice. Preserve `.worktrees/drawing-workspace-2026-09-10`, branch `build/drawing-workspace-2026-09-10`, checkpoint `81ea09d3380b0002f322458abdf2bf8646c4e76c`; do not recreate completed work. The next scoped task is a synthetic reproduction of the two intake compatibility findings before proposing corrections to any frozen guest source. The prior Foundation native-return binding verifier and return packager are also terminal checkpoints. The ignored Finder-visible `ACTIVE_BUILD` remains a legacy pointer, not recovery authority. GitHub App decisions and native Windows evidence remain deferred release requirements, not the next local product-development task.
+There is no active implementation worktree after this completed drawing-only slice. Preserve `.worktrees/drawing-workspace-2026-09-10`, branch `build/drawing-workspace-2026-09-10`, checkpoint `81ea09d3380b0002f322458abdf2bf8646c4e76c`; do not recreate completed work. The equipment work above is saved in visible main and supersedes the earlier viewer-only next-action scope. Intake compatibility findings still require synthetic reproduction before proposing corrections to any frozen guest source. The prior Foundation native-return binding verifier and return packager are also terminal checkpoints. The ignored Finder-visible `ACTIVE_BUILD` remains a legacy pointer, not recovery authority. GitHub App decisions and native Windows evidence remain deferred release requirements, not the next local product-development task.
 
 ## Local integration checkpoint - 2026-09-09
 
