@@ -1,7 +1,17 @@
 # Current repository status
 
-Continuity checkpoint (2026-09-13): this documentation commit records
-CURRENT_STATUS.md only. Product implementation and the in-progress duct PDF
+Completion reporting (owner direction 2026-09-13): AGENTS.md now requires the
+coordinating agent to update this file for every completed scoped task before
+reporting completion or handing off. Updates include the outcome, checkout/base
+commit, verification and evidence, remaining limits, and one next action;
+authorized completion commits include the status update. This documentation task
+uses main base 913d4308bdd12ff75e126a1f9832f8f7fefd900b. Whitespace checks pass;
+detailed checks and file identities are in .heleos/completion-status-policy-2026-09-13. Product
+implementation and acceptance are unchanged. Next action remains the in-progress
+duct fixture preparation recorded below.
+
+Continuity checkpoint 913d430 (2026-09-13) records CURRENT_STATUS.md only.
+Product implementation and the in-progress duct PDF
 fixtures remain uncommitted in this checkout and must be preserved. The fixture
 task's latest record is .heleos/duct-fixture-build-2026-09-13/progress.json;
 its current state is preparing, with no completed handoff. This checkpoint does
