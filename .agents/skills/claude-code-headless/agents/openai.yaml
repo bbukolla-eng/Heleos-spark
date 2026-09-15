@@ -1,0 +1,6 @@
+interface:
+  display_name: "Claude Code Headless"
+  short_description: "Delegate bounded Heleos work to Claude with NotebookLM research"
+  default_prompt: "Use $claude-code-headless to give Claude Code a bounded task through the guarded worker runner, with Codex-owned NotebookLM verification when knowledge is required."
+policy:
+  allow_implicit_invocation: true
