@@ -6,6 +6,8 @@ direction to give every section/subsection and task an explicit endpoint.
 
 ## Freeze the finish line before implementation
 
+A catalogue heading is not a completed mechanical taxonomy. Section identity comes from the edition-pinned CSI hierarchy; each source body is separately qualified evidence.
+
 Every executable task records these fields in its task brief or ledger:
 
 | Field | Required content |
@@ -129,14 +131,12 @@ model experiment does not reopen unrelated calculation, correction or export wor
 ## Section-specific task contracts
 
 The [master section delivery plan](../superpowers/plans/2026-09-16-division23-section-delivery.md)
-and [224 named task contracts](../plans/division-23-task-contracts.json) bind each
-known guide to DEFINE (D01–D06), RESULT (R01–R06), CONNECT (C01–C08) and QUALIFY
+and [CSI-bound task frames](../plans/division-23-task-contracts.json) bind each
+CSI node to DEFINE (D01–D06), RESULT (R01–R06), CONNECT (C01–C08) and QUALIFY
 (Q01–Q05). IDs are section-qualified; they do not replace approved duct D rules.
-Each linked section card names its artifacts, source/edition, case subjects,
-required producer outputs, exact check procedure and terminal record.
+Each linked section card binds its source/edition, required children, deliverables and criterion IDs. These are planning frames; DEFINE produces the exact fixtures, numerical oracles, implementation paths and checks before dependent code is admitted.
 
-DEFINE is accepted only after its exact primary source is pinned and every
-paragraph is accounted for. It can record specific unresolved referenced inputs,
+DEFINE is accepted only after the CSI node and its declared mechanical scope are pinned, the applicable source bodies are verified, and every required source passage and child relationship is accounted for. A classification-only index cannot satisfy body evidence. It can record specific unresolved referenced inputs,
 new policies or fixture requirements with a responsible next action. Those gaps
 remain explicit input gates for affected downstream code/evaluation. Only ready,
 independently expected cases are released. Acceptance of a definition packet does

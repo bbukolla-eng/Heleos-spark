@@ -8,6 +8,8 @@ only in [CURRENT_STATUS.md](../../CURRENT_STATUS.md), not in the goal.
 
 Build and verify the connected product on Mac first; retain portable shared code and complete Windows delivery verification afterward. Heleos identifies mechanical items and service obligations, measures supported geometry, calculates quantities, reconciles requirements, supports corrections and revisions, and produces source-linked estimator Excel and evidence PDF outputs. The user reviews exceptions and corrects results without first performing the takeoff themselves.
 
+Use CSI MasterFormat numbers, titles and parent-child structure as the scope backbone. Keep the catalogue edition explicit and reconcile newer editions without substituting an agency guide inventory. Organize NotebookLM by the same CSI hierarchy; reference publishers remain evidence providers, not section identities.
+
 Cover the complete source-backed taxonomy of each section: required types, variants, attributes, relationships, exclusions, service obligations and child sections. Include equipment, air devices, ductwork, piping, fittings, accessories, controls, insulation, common work, fuel systems, heating/cooling systems, demolition and specification-driven services. Project-specific absence does not complete product coverage.
 
 Resume from CURRENT_STATUS.md, docs/superpowers/plans/2026-09-16-division23-section-delivery.md, the selected section plan and the task's ledger. Reuse completed foundations, approved D01–D10, A01–A12 and E01–E12 with their approved examples, imperial outputs and accepted evidence. Work by actual required inputs; unfinished recognition or another category does not block unrelated tasks. Follow the NotebookLM source-verification and bounded Claude implementation workflows in AGENTS.md; Codex independently reviews, verifies, integrates and owns commits.
@@ -33,5 +35,6 @@ changed for this planning task.
 
 The [delivery structure](../superpowers/specs/2026-09-16-division23-delivery-structure.md)
 and [maintenance plan](../superpowers/plans/2026-09-16-division23-delivery-maintenance.md)
-address demonstrated record and instruction conflicts. Their proposed validator
-is not installed or running. CURRENT_STATUS.md remains the single live queue.
+address demonstrated record and instruction conflicts. The installed read-only
+checker is `scripts/verify-csi-division23.py`; it checks changed structure on
+demand and does not schedule work. CURRENT_STATUS.md remains the single live queue.

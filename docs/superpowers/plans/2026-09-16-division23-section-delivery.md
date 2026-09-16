@@ -1,361 +1,482 @@
-# Division 23 Section Delivery Implementation Plan
+# CSI Division 23 Section Delivery Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** Use superpowers:subagent-driven-development or superpowers:executing-plans for ready bounded tasks. Steps use checkbox syntax. Read the selected card and required contracts, not every card on continuation.
 
-**Goal:** Deliver each of the 56 known Division 23 guide sections through its complete declared taxonomy, connected takeoff behavior and fixed Mac acceptance endpoint, with every task and pass criterion visible.
+**Goal:** Deliver Division 23 and every actual section/subsection using the CSI hierarchy as the master scope, with complete source-backed mechanical taxonomy, connected Mac behavior and finite acceptance.
 
-**Architecture:** Each linked section plan defines four reviewable deliveries: source/expected-results packet, section result behavior, connected lifecycle/outputs, and representative section qualification. Dependencies consume exact scoped outputs, allowing accepted shared components and independent section work to advance. The full authoritative CSI catalogue remains a separate explicit extension to this known-guide set.
+**Architecture:** The verified April 2016 CSI/CSC catalogue supplies the complete baseline classification tree: **432 nodes including the Division root, 431 nonroot entries, 14 direct branches**. Each node has a compact delivery card and four planned task frames. Mechanical sources and already accepted software support those CSI addresses; they do not define a competing guide-based hierarchy. Current-2026 catalogue reconciliation is a separate visible version update.
 
-**Tech Stack:** Existing Rust Foundation, Python/JavaScript drawing workspace, JSON contracts, unittest/Node tests, Excel and evidence PDF; no new scheduler or service.
+**Tech Stack:** Existing Heleos local application; deterministic calculations; JSON register/contracts; Markdown section cards; read-only structural verification.
 
-**Spec:** [Section task and acceptance contracts](../specs/2026-09-16-division23-section-task-contracts.md).
+**Spec:** [Section task contracts](../specs/2026-09-16-division23-section-task-contracts.md), [delivery/acceptance structure](../specs/2026-09-16-division23-delivery-structure.md), [acceptance policy](../../operations/acceptance.md).
 
 ## Global Constraints
 
-- Mac is the current implementation and section acceptance target; Windows delivery is separate.
-- Preserve approved D01–D10, A01–A12, E01–E12 and imperial outputs; new quantity policy needs its own recorded decision.
-- A section means its complete declared source-backed taxonomy, including physical work, services, exclusions and required children.
-- Guide identity and project adoption remain distinct; agency numbers do not establish an unverified CSI hierarchy.
-- Reuse accepted evidence for unchanged inputs; new requirements create explicit extension tasks or contract versions.
-- Codex is the only commit owner; each worker has exact named write paths and returns a candidate.
-- Use verified NotebookLM source passages before knowledge-dependent implementation; log external submissions and preserve source identities.
-- The cancelled 4specs adoption remains cancelled; an illustrative example does not select a priority.
-- No new hook, scheduler, provider access, push or release is authorized by this plan.
+- Mac is the current implementation and section engineering acceptance target; Windows delivery follows the connected workflow.
+- Approved D01–D10, A01–A12, E01–E12 and imperial outputs retain their approved scope.
+- Preserve completed software and unchanged accepted evidence. Section acceptance requires full required mechanical scope and descendants.
+- Classification is verified for **MasterFormat 2016 Numbers & Titles, April 2016**, not represented as complete current-2026 coverage.
+- The cancelled 4specs adoption remains cancelled. No unverified agency crosswalk, numbering or parentage is introduced.
+- One writer per named path; Codex independently verifies, integrates and remains the only commit owner.
+- Use the recorded CSI NotebookLM routing and verify mechanical source passages; source titles and model answers do not establish rules.
+- No automatic scheduling, background build, hook change, push or release follows from this plan.
 
----
+## Source authority and maintained records
 
-## What this plan now contains
+[Official CSI/CSC catalogue](https://higherlogicdownload.s3.amazonaws.com/CSIRESOURCES/143a718d-6df6-484a-8a79-76d79635b741/UploadedImages/PDFs/MasterFormat_2016_Numbers%26Titles.pdf), PDF pages 85–94; PDF SHA-256 `a8431feef5ef80eed4d6e52e2125797d8be61d99e42017fef8ff607fe68f0bc3`. Ordered numbers, titles and parent relations were checked against retained source text and displayed typography. Source-level labels and navigation depth remain separate where special Level 2 headings contain other Level 2 headings. The 2016 baseline includes 55 normal/special Level 2 headings, 208 Level 3 headings and 168 Level 4 headings.
 
-**56 section plans, 224 named delivery tasks and 1,400 section-qualified mandatory
-criterion bindings.** These are 25 scoped checks per section, not 25 separate approvals or compulsory test runs; existing accepted evidence can satisfy the exact covered checks. Each card contains exact deliverables, output dependencies,
-case subjects, pass/fail criteria, check procedure, evidence location and review
-responsibility. The prior 448 stage entries remain coverage addresses. The
-[maintenance-tool plan](2026-09-16-division23-delivery-maintenance.md) is optional
-support and is not the section execution plan.
+- [Canonical register](../../plans/division-23-section-register.json): exact identities, parent/child graph, edition/page provenance and card links.
+- [Task contracts](../../plans/division-23-task-contracts.json): **1,728 planned task frames** and **10,800 mandatory criterion bindings**. These counts describe planned coverage, not implementation readiness or completed work.
+- [Completion matrix](../../plans/division-23-completion-matrix.md): complete CSI baseline view and current coverage states.
+- [Work breakdown](../../plans/division-23-section-work-breakdown.md): task-to-taxonomy and child completion semantics.
+- [NotebookLM findings](../../research/notebooklm/csi-division23-findings-2026-09-16.json) and [CSI routing](../../research/notebooklm/csi-division23-routing.json): source verification and notebook organization.
+- Root `CURRENT_STATUS.md`: sole live execution queue. Existing equipment work is a supporting implementation priority, not a gate for every CSI section.
 
-This is the source-dependent delivery plan. DEFINE is actual bounded work with
-its own finite contract; it produces each section's source-qualified code-level
-implementation packet and independent numeric oracles before dependent code.
-The result/workflow/qualification tasks have specified deliverables and criteria
-now; a missing body, rule decision or original fixture remains an explicit input,
-not a fabricated source fact or threshold. Do not dispatch an unready numeric or
-recognition task simply because its plan exists.
+The former agency-format cards/register are removed from active planning. Their original bytes and receipts remain in Git history and historical evidence; they are not copied into another active taxonomy. Mechanical findings may be reused only after an explicit source-to-CSI scope binding, without changing the catalogue title or claiming agency numbers are CSI leaves.
 
-## Acceptance, plainly
+## How execution advances
 
-A task is accepted when **every mandatory criterion in its fixed contract passes,
-independent review accepts the recorded candidate, and integration/evidence are
-recorded**. Review findings name their criterion, actual/expected result and
-reproducer. Optional improvements get separate work. The owner does not need to
-approve routine engineering completion again.
+1. Select the next ready bounded deliverable from root status and read its CSI card. Source order below is navigation, not a requirement to finish every earlier number first.
+2. DEFINE the mechanical scope and independent expected cases for the selected behavior; bind exact code/test paths and output dependencies. Missing sources/rules affect only their dependent scope.
+3. Implement RESULT/CONNECT work under those frozen criteria, using accepted shared code and child evidence when applicable. Record actual commands, candidate identities and independent review.
+4. QUALIFY the complete required section/descendant scope when its frozen representative Mac dossier is ready. A parent aggregates accepted child evidence without replaying the child's review.
+5. Record the terminal outcome and next executable action in root status in the same completion checkpoint. Do not substitute recurring metadata work for product delivery.
 
-A section is accepted when its **entire declared taxonomy and required children**
-have the evidence, applicable rules, deterministic results/obligations,
-reconciliation, correction/reopen and Excel/evidence PDF behavior required by
-SC01–SC08, and its frozen representative Mac qualification passes. A source
-inventory, shared counter or generic workbook does not complete a section.
+`CSI-CATALOGUE-2026-RECONCILE` requires an authorized complete current catalogue and explicit comparison of changed numbers/titles/relationships. It blocks a complete-current-edition claim; it does not block implementation under the verified baseline. The source's commercial redistribution rights are not admitted by this internal planning migration.
 
-Definition completion and feature acceptance are separate. DEFINE may identify a
-missing referenced source, policy or oracle with an exact resolution action.
-That accepted definition output cannot be used to pass the missing feature;
-required section gaps still block section closure. Missing **primary** body or
-unaccounted-for paragraphs fail DEFINE itself.
+## Complete verified CSI baseline hierarchy
 
-## Work order and independent delivery
+Every entry links to its own task and acceptance card. **No mechanical section is accepted by this classification migration.**
 
-The next approved product implementation stays **EQUIPMENT-COUNT-1**. Bind its
-accepted E01–E12/EC01–EC20 behavior to the actual equipment taxons/section tasks it
-supports; no blanket claim that it closes equipment guides. It can proceed while
-section DEFINE tasks and EVIDENCE-PDF-1 advance on non-overlapping paths.
-
-Within each section: DEFINE releases precise admitted case/source outputs;
-RESULT and evidence-only CONNECT work may proceed by those inputs; CONNECT
-consumes numeric outputs only where necessary; QUALIFY aggregates full required
-scope. An unqualified model blocks its claimed recognition result and final
-qualification, not independently verified calculation or evidence-review work.
-
-There is no new global order among all56 rows. Row order is source order.
-Illustrative examples select no priority. At each handoff, the coordinator picks
-a ready scoped action under CURRENT_STATUS, assigns exact paths and records the
-next action. The complete catalogue task adds verified missing sections with the
-same plan/acceptance structure.
-
-## File structure and writer ownership
-
-| File / directory | Purpose |
-| --- | --- |
-| `docs/plans/division-23-task-contracts.json` | Versioned planned contracts, profile distinctions, section/task/case bindings; coordinator owns changes |
-| `docs/superpowers/plans/division23-sections/` | Complete readable section cards linked below |
-| `docs/engineering/division23/<registered section directory>/` | Named source/taxonomy/rule/verification artifacts; exact expanded paths appear in each card |
-| `tests/fixtures/division23/<registered section directory>/` | Approved/public fixture inputs, independent case oracle and acceptance contract |
-| `tests/drawing-workspace/test_section_<section slug>.py` | Section-specific deterministic test file, exact path in each card |
-| `tests/drawing-workspace/acceptance_section_<section slug>.py` | Real connected/original-source acceptance driver, exact path in each card |
-| Existing calculation, source, workflow, UI and export modules | Reuse/extend only under the exact selected implementation packet; one writer per shared path |
-| `CURRENT_STATUS.md`, register and completion matrix | Live queue, covered-scope states and prominent plan navigation; Codex only |
-
-Shared paths are not granted to56 concurrent writers. DEFINE's executable child
-packet names the actual changed modules and signatures after examining current
-interfaces; it does not grant ownership of every reuse surface. Preserve the
-existing architecture and accepted evidence. A new reusable engine must have a
-bounded component contract and actual consumers, rather than one duplicate
-engine per guide or a generic engine claiming unimplemented categories.
-
-## Existing integration interfaces
-
-| Surface | Actual interface to preserve |
-| --- | --- |
-| Source requirements | `document_requirements.section_headings(page, lines=None)` and `parse_requirements(page)` |
-| Verified readings | `DocumentPipeline.start(selections)`, `verified_result(run_id)`, `build_knowledge(run_id)` |
-| Section projection | `mechanical_scope.build_view(reading, reviews)` |
-| Schedule correspondence | `project_schedule_reconciliation.refresh(workspace, data, sheets)`, `decide(workspace, data, sheets, values, actor, reason)`, `view(workspace, data, sheets, documents)` |
-| Application command | `TakeoffWorkflow.command(action, payload)` with `version`, `actor`, `reason`, `values`; preserve version conflict and history behavior |
-| Connected results | `TakeoffWorkflow.view()` and `export()`; add only admitted scoped projections |
-| Adapter pattern | `project_air_device_takeoff.initialize(data)`, `apply(workspace, data, sheets, action, values, actor, reason)`, `view(workspace, data, sheets)`, `export_files(workspace, data, sheets)`; reuse persistence pattern, not air-device estimating rules |
-| Excel | `takeoff_workbook.workbook_sheets(view)` and `workbook_bytes(view)`; current duct/air-device support is not complete general-section export |
-
-Every new producer/consumer signature must be written in the section's
-`implementation-plan.md` before its writer starts; both sides use the same
-versioned record schema. Original-source recognition and deterministic result
-verification have separate evidence fields. A parser success is not a quantity
-or recognition acceptance.
-
-## All section plans and endpoints
-
-Each link opens that row's entire task/acceptance sequence. The four suffixes are
-`-DEFINE`, `-RESULT`, `-CONNECT`, `-QUALIFY`; the final delivery closes the existing
-`-ACCEPT` coverage endpoint only when its complete criteria pass.
-
-| Guide and edition | Section plan / scope | Task stem |
-| --- | --- | --- |
-| UFGS 23 01 30.41 (05/22) | [HVAC SYSTEM CLEANING](division23-sections/ufgs-230130-41.md) | `D23-UFGS-230130.41` |
-| UFGS 23 03 00 (11/25) | [BASIC MECHANICAL MATERIALS AND METHODS](division23-sections/ufgs-230300.md) | `D23-UFGS-230300` |
-| UFGS 23 05 15 (05/22, CHG 2: 08/24) | [COMMON PIPING FOR HVAC](division23-sections/ufgs-230515.md) | `D23-UFGS-230515` |
-| UFGS 23 05 48.19 (02/25) | [SEISMIC BRACING FOR MECHANICAL SYSTEMS](division23-sections/ufgs-230548-19.md) | `D23-UFGS-230548.19` |
-| UFGS 23 05 93 (05/25) | [TESTING, ADJUSTING, AND BALANCING FOR HVAC](division23-sections/ufgs-230593.md) | `D23-UFGS-230593` |
-| UFGS 23 07 00 (08/24) | [THERMAL INSULATION FOR MECHANICAL SYSTEMS](division23-sections/ufgs-230700.md) | `D23-UFGS-230700` |
-| UFGS 23 08 00 (05/23, CHG 1: 08/24) | [COMMISSIONING OF MECHANICAL[ AND PLUMBING] SYSTEMS](division23-sections/ufgs-230800.md) | `D23-UFGS-230800` |
-| UFGS 23 08 01.00 20 (04/06) | [TESTING INDUSTRIAL VENTILATION SYSTEMS](division23-sections/ufgs-230801-00-20.md) | `D23-UFGS-230801.00-20` |
-| UFGS 23 09 00 (08/24, CHG 1: 08/25) | [INSTRUMENTATION AND CONTROL FOR HVAC](division23-sections/ufgs-230900.md) | `D23-UFGS-230900` |
-| UFGS 23 09 13 (11/15, CHG 2: 05/21) | [INSTRUMENTATION AND CONTROL DEVICES FOR HVAC](division23-sections/ufgs-230913.md) | `D23-UFGS-230913` |
-| UFGS 23 09 23.01 (08/24) | [LONWORKS DIRECT DIGITAL CONTROL FOR HVAC AND OTHER BUILDING CONTROL SYSTEMS](division23-sections/ufgs-230923-01.md) | `D23-UFGS-230923.01` |
-| UFGS 23 09 23.02 (08/24) | [BACNET DIRECT DIGITAL CONTROL FOR HVAC AND OTHER BUILDING CONTROL SYSTEMS](division23-sections/ufgs-230923-02.md) | `D23-UFGS-230923.02` |
-| UFGS 23 09 53.00 20 (02/10, CHG 3: 08/24) | [SPACE TEMPERATURE CONTROL SYSTEMS](division23-sections/ufgs-230953-00-20.md) | `D23-UFGS-230953.00-20` |
-| UFGS 23 09 93 (11/15) | [SEQUENCES OF OPERATION FOR HVAC CONTROL](division23-sections/ufgs-230993.md) | `D23-UFGS-230993` |
-| UFGS 23 11 20 (05/20) | [FACILITY GAS PIPING](division23-sections/ufgs-231120.md) | `D23-UFGS-231120` |
-| UFGS 23 21 13.00 20 (04/06, CHG 2: 11/19) | [LOW TEMPERATURE WATER (LTW) HEATING SYSTEM](division23-sections/ufgs-232113-00-20.md) | `D23-UFGS-232113.00-20` |
-| UFGS 23 21 13.23 20 (07/07, CHG 1: 11/19) | [[HIGH][MEDIUM] TEMPERATURE WATER SYSTEM WITHIN BUILDINGS](division23-sections/ufgs-232113-23-20.md) | `D23-UFGS-232113.23-20` |
-| UFGS 23 21 23 (05/25) | [HYDRONIC PUMPS](division23-sections/ufgs-232123.md) | `D23-UFGS-232123` |
-| UFGS 23 22 26.00 20 (02/10, CHG 1: 05/15) | [STEAM SYSTEM AND TERMINAL UNITS](division23-sections/ufgs-232226-00-20.md) | `D23-UFGS-232226.00-20` |
-| UFGS 23 23 00 (08/21) | [REFRIGERANT PIPING](division23-sections/ufgs-232300.md) | `D23-UFGS-232300` |
-| UFGS 23 25 00 (05/21) | [CHEMICAL TREATMENT OF WATER FOR MECHANICAL SYSTEMS](division23-sections/ufgs-232500.md) | `D23-UFGS-232500` |
-| UFGS 23 30 00 (02/25) | [HVAC AIR DISTRIBUTION](division23-sections/ufgs-233000.md) | `D23-UFGS-233000` |
-| UFGS 23 35 16 (02/25) | [MECHANICAL ENGINE[ AND WELDING FUME] EXHAUST SYSTEMS](division23-sections/ufgs-233516.md) | `D23-UFGS-233516` |
-| UFGS 23 35 19.00 20 (02/10, CHG 3: 11/24) | [INDUSTRIAL VENTILATION AND EXHAUST](division23-sections/ufgs-233519-00-20.md) | `D23-UFGS-233519.00-20` |
-| UFGS 23 44 00.00 10 (02/16) | [CHEMICAL, BIOLOGICAL, AND RADIOLOGICAL (CBR) AIR FILTRATION SYSTEM](division23-sections/ufgs-234400-00-10.md) | `D23-UFGS-234400.00-10` |
-| UFGS 23 50 52 (08/26) | [CENTRAL HIGH TEMPERATURE WATER (HTW) GENERATING PLANTS](division23-sections/ufgs-235052.md) | `D23-UFGS-235052` |
-| UFGS 23 52 00.01 (08/26) | [LOW PRESSURE (<260 PSIG) WATER HEATING BOILERS (UNDER 6,000,000 BTU/HR INPUT)](division23-sections/ufgs-235200-01.md) | `D23-UFGS-235200.01` |
-| UFGS 23 52 00.02 (08/26) | [LOW PRESSURE (<260 PSIG) WATER HEATING BOILERS (OVER 6,000,000 BTU/HR INPUT)](division23-sections/ufgs-235200-02.md) | `D23-UFGS-235200.02` |
-| UFGS 23 52 00.03 (08/26) | [STEAM BOILERS AND EQUIPMENT (400,000 - 6,000,000 BTU/HR INPUT)](division23-sections/ufgs-235200-03.md) | `D23-UFGS-235200.03` |
-| UFGS 23 52 00.04 (08/26) | [STEAM BOILERS AND EQUIPMENT (OVER 6,000,000 BTU/HR) INPUT](division23-sections/ufgs-235200-04.md) | `D23-UFGS-235200.04` |
-| UFGS 23 52 30 (08/26) | [HEAT RECOVERY BOILERS](division23-sections/ufgs-235230.md) | `D23-UFGS-235230` |
-| UFGS 23 52 33.01 (08/26) | [STEAM HEATING PLANT WATERTUBE COAL/OIL OR COAL](division23-sections/ufgs-235233-01.md) | `D23-UFGS-235233.01` |
-| UFGS 23 52 33.02 (08/26) | [CENTRAL STEAM GENERATING SYSTEM - COMBINATION GAS AND OIL-FIRED](division23-sections/ufgs-235233-02.md) | `D23-UFGS-235233.02` |
-| UFGS 23 54 19 (08/21) | [BUILDING HEATING SYSTEMS, WARM AIR](division23-sections/ufgs-235419.md) | `D23-UFGS-235419` |
-| UFGS 23 57 10.00 10 (11/19) | [FORCED HOT WATER HEATING SYSTEMS USING WATER AND STEAM HEAT EXCHANGERS](division23-sections/ufgs-235710-00-10.md) | `D23-UFGS-235710.00-10` |
-| UFGS 23 63 00.00 (08/22) | [COLD STORAGE REFRIGERATION SYSTEMS](division23-sections/ufgs-236300-00.md) | `D23-UFGS-236300.00` |
-| UFGS 23 64 10 (05/25) | [WATER CHILLERS, VAPOR COMPRESSION TYPE](division23-sections/ufgs-236410.md) | `D23-UFGS-236410` |
-| UFGS 23 64 26 (11/25) | [CHILLED, CHILLED-HOT, AND CONDENSER WATER PIPING SYSTEMS](division23-sections/ufgs-236426.md) | `D23-UFGS-236426` |
-| UFGS 23 65 00 (05/25) | [COOLING TOWERS AND REMOTE EVAPORATIVELY-COOLED CONDENSERS](division23-sections/ufgs-236500.md) | `D23-UFGS-236500` |
-| UFGS 23 71 19 (05/18) | [THERMAL ENERGY STORAGE SYSTEM: ICE-ON-COIL](division23-sections/ufgs-237119.md) | `D23-UFGS-237119` |
-| UFGS 23 72 00 (05/24) | [ENERGY RECOVERY SYSTEMS](division23-sections/ufgs-237200.md) | `D23-UFGS-237200` |
-| UFGS 23 74 33 (05/24) | [DEDICATED OUTDOOR AIR SYSTEMS (DOAS)](division23-sections/ufgs-237433.md) | `D23-UFGS-237433` |
-| UFGS 23 75 15 (02/20, CHG 1: 05/24) | [CUSTOM-PACKAGED, AIRCRAFT PRE-CONDITIONED AIR UNITS](division23-sections/ufgs-237515.md) | `D23-UFGS-237515` |
-| UFGS 23 76 00 (08/21) | [EVAPORATIVE COOLING SYSTEMS](division23-sections/ufgs-237600.md) | `D23-UFGS-237600` |
-| UFGS 23 80 20.00 10 (05/20) | [GAS-FIRED HEATING EQUIPMENT](division23-sections/ufgs-238020-00-10.md) | `D23-UFGS-238020.00-10` |
-| UFGS 23 81 00 (05/24) | [DECENTRALIZED UNITARY HVAC EQUIPMENT](division23-sections/ufgs-238100.md) | `D23-UFGS-238100` |
-| UFGS 23 81 23 (11/20) | [COMPUTER ROOM AIR CONDITIONING UNITS](division23-sections/ufgs-238123.md) | `D23-UFGS-238123` |
-| UFGS 23 81 29 (02/20) | [VARIABLE REFRIGERANT FLOW HVAC SYSTEMS](division23-sections/ufgs-238129.md) | `D23-UFGS-238129` |
-| UFGS 23 81 47 (02/25) | [WATER-LOOP AND GROUND-LOOP HEAT PUMP SYSTEMS](division23-sections/ufgs-238147.md) | `D23-UFGS-238147` |
-| UFGS 23 82 00.00 20 (02/16, CHG 1: 08/18) | [TERMINAL HEATING UNITS](division23-sections/ufgs-238200-00-20.md) | `D23-UFGS-238200.00-20` |
-| UFGS 23 83 00.00 20 (04/06) | [ELECTRIC SPACE HEATING EQUIPMENT](division23-sections/ufgs-238300-00-20.md) | `D23-UFGS-238300.00-20` |
-| UFGS 23 84 19.00 (02/18) | [DESICCANT COOLING SYSTEMS](division23-sections/ufgs-238419-00.md) | `D23-UFGS-238419.00` |
-| VA 23 05 93.01 (11-01-21) | [DVA/USACE PROJECTS TESTING, ADJUSTING, AND BALANCING FOR HVAC](division23-sections/va-230593-01.md) | `D23-VA-230593.01` |
-| VA 23 09 23 (03-01-23) | [DIRECT-DIGITAL CONTROL SYSTEM FOR HVAC](division23-sections/va-230923.md) | `D23-VA-230923` |
-| VA 23 21 13 (03-01-23) | [HYDRONIC PIPING](division23-sections/va-232113.md) | `D23-VA-232113` |
-| VA 23 36 00 (03-01-23) | [AIR TERMINAL UNITS](division23-sections/va-233600.md) | `D23-VA-233600` |
-
-## Freeze the expected results before dependent code
-
-Each section's DEFINE packet includes these actual data shapes:
-
-- `source-manifest.json`: primary source edition/body hash, notebook/source IDs or
-  official URL, source/page/span locators, project-adoption distinctions.
-- `taxonomy.json`: independently checked paragraph inventory, nodes/attributes,
-  relationships/children, options/exclusions and services, every source disposition.
-- `rule-bindings.json`: behavior/taxon to approved rule version/hash or specific
-  missing decision with its dependent scope.
-- `cases.json`: stable case ID, exact inputs/hashes, independent expected records,
-  source/rule bindings, applicable dimensions and original versus injected origin.
-- `acceptance-contract.json`: section/task/version, mandatory case/criterion IDs,
-  expected outputs, tolerances/metrics, candidate scope, check commands, reviewer.
-- `unresolved-inputs.json`: stable gap ID, missing fact/source/policy, dependent
-  output IDs, responsible actor, resolution task ID, resolution pass condition, next action and history.
-- `implementation-plan.md`: exact allowed paths, consumed/produced signatures,
-  executable failing tests, implementation code steps, checks and handoff. These
-  code-level instructions depend on the verified section packet; do not copy a
-  generic category implementation across unsupported guide variants.
-
-Every “missing” value creates named work; it cannot silently drop a required
-case. Use `<section-id>-INPUT-<gap-id>` and the `input_resolution_contracts`
-in the task-contract index. Source gaps close on a verified exact body; rule gaps
-close on the applicable decision and checked examples; fixture gaps close on
-pinned originals and independent truth; metric gaps close on fixed numerical
-criteria before evaluation; interface gaps close on exact code/test steps and
-compatible producer/consumer schemas. Each resolution task names its own scope,
-output and pass condition, so “needs research” cannot become an indefinite gate. Numerical tolerances are not filled from a failing run. Example arithmetic
-below tests the comparison mechanism only; it sets no mechanical tolerance.
-
-**Reference comparison code for section test drivers:**
-
-```python
-from decimal import Decimal
-
-
-def assert_case(expected, actual):
-    """Compare a frozen test projection; not an application result schema."""
-    assert set(expected) == {"rows", "issues"}
-    assert set(actual) == {"rows", "issues"}
-    assert expected["issues"] == actual["issues"]
-    ids = [row["id"] for row in expected["rows"]]
-    actual_ids = [row["id"] for row in actual["rows"]]
-    assert len(ids) == len(set(ids))
-    assert len(actual_ids) == len(set(actual_ids))
-    assert set(ids) == set(actual_ids)
-    got = {row["id"]: row for row in actual["rows"]}
-    for oracle in expected["rows"]:
-        row = got[oracle["id"]]
-        for key in ("id", "kind", "unit", "source_ids", "rule_ids", "state"):
-            assert row[key] == oracle[key], (oracle["id"], key)
-        if oracle["state"] == "unknown":
-            assert row["value"] is None
-            assert oracle["value"] is None
-        elif oracle["kind"] == "count":
-            assert type(row["value"]) is int
-            assert type(oracle["value"]) is int
-            assert row["value"] == oracle["value"]
-        elif oracle["kind"] == "measure":
-            tolerance = Decimal(oracle["absolute_tolerance"])
-            expected_value, actual_value = Decimal(oracle["value"]), Decimal(row["value"])
-            assert tolerance.is_finite() and tolerance >= 0
-            assert expected_value.is_finite() and actual_value.is_finite()
-            assert abs(actual_value - expected_value) <= tolerance
-        elif oracle["kind"] == "obligation":
-            assert row["value"] == oracle["value"]
-        else:
-            raise AssertionError("Unsupported projection kind: " + oracle["kind"])
-```
-
-**Meaningful tests for that comparison contract:**
-
-```python
-import copy
-import unittest
-
-
-class OracleComparisonTests(unittest.TestCase):
-    def setUp(self):
-        self.expected = {"rows": [{"id": "one", "kind": "count", "unit": "ea",
-                         "source_ids": ["source-A"], "rule_ids": ["approved-rule"],
-                         "state": "known", "value": 2}], "issues": []}
-
-    def test_exact_count_and_source_identity(self):
-        assert_case(self.expected, copy.deepcopy(self.expected))
-        wrong = copy.deepcopy(self.expected)
-        wrong["rows"][0]["source_ids"] = ["source-B"]
-        with self.assertRaises(AssertionError):
-            assert_case(self.expected, wrong)
-
-    def test_unknown_cannot_be_zero(self):
-        self.expected["rows"][0].update(state="unknown", value=None)
-        assert_case(self.expected, copy.deepcopy(self.expected))
-        wrong = copy.deepcopy(self.expected)
-        wrong["rows"][0]["value"] = 0
-        with self.assertRaises(AssertionError):
-            assert_case(self.expected, wrong)
-
-    def test_case_bound_tolerance(self):
-        self.expected["rows"][0].update(kind="measure", unit="ft", value="10.00",
-                                       absolute_tolerance="0.01")
-        actual = copy.deepcopy(self.expected)
-        actual["rows"][0]["value"] = "10.01"
-        assert_case(self.expected, actual)
-        actual["rows"][0]["value"] = "10.02"
-        with self.assertRaises(AssertionError):
-            assert_case(self.expected, actual)
-
-
-if __name__ == "__main__":
-    unittest.main()
-```
-
-Concatenate the two blocks into a scratch Python file and run it with `python3`;
-expected three passing tests. Section implementers use their independently
-adjudicated source cases and a documented comparison projection. No arbitrary
-sample count or example value above is accepted as a real mechanical quantity.
-
-The connected driver accepts `--phase connected|representative`, `--contract`
-and `--output`, as spelled out in each card. It reads candidate/fixture paths
-from the pinned contract. Its JSON receipt includes exact input/candidate hashes,
-nonempty executed case IDs, per-criterion expected/actual results, exits and
-original-source versus injected evidence. Exit0 requires all selected mandatory
-criteria pass; missing inputs, skipped checks or empty discovery cannot pass.
-
-## Execute one admitted implementation assignment
-
-- [ ] Read the selected section card and its DEFINE output, current source/rule/
-  approval identities and the exact current checkout. Record the bounded task
-  brief and one writer per allowed path.
-- [ ] Codex reuses verified NotebookLM findings or queries only changed/missing
-  source knowledge, verifies passages and logs public submissions. Commit and
-  hash-pin the research/implementation packet before a Claude dispatch.
-- [ ] Use the owner-selected bounded Claude runner when its authentication and
-  containment are available. Codex continues independent work on other paths.
-  Record a provider failure and use the authorized fallback; no repeated unchanged
-  provider/model attempt is part of section acceptance.
-- [ ] Worker implements the frozen child packet using its shown failing test,
-  minimal code and exact checks; it returns the complete candidate inventory,
-  diff and terminal report without a commit.
-- [ ] Codex independently checks the candidate and closes criterion-bound findings,
-  then integrates accepted changes and updates the affected task receipt,
-  section coverage and CURRENT_STATUS in the same commit. Preserve all unfinished
-  siblings and choose the next executable output; do not repeat accepted checks.
-
-## Maintenance that keeps these plans visible
-
-Read this index to select the work, then read only that section card and its task-contract subset. Do not load all56 plans or replay the complete source inventory on each continuation.
-
-AGENTS and CURRENT_STATUS link here directly. Each register row has its own
-`delivery_plan` and four `delivery_task_ids`; each matrix row links its section
-card. The goal points to this section plan, without carrying a stale immediate
-feature assignment. The acceptance policy names the same criteria and definitions.
-
-Change the task-contract source and corresponding section card together when
-scope or criteria change; bump the contract version and record why. Record live
-execution only in the task ledger and CURRENT_STATUS, then map accepted evidence
-to the existing section coverage cells. Planning states in this index describe
-this baseline, not a competing live queue. No automatic hook or scheduler is
-claimed. The structural verification checks that every guide remains linked,
-all224 tasks have criteria/dependencies/output paths, and every acceptance endpoint
-has a corresponding QUALIFY delivery.
-
-## Plan self-review and execution handoff
-
-Codex checks the specification against all56 cards, checks the criterion/template
-bindings and source/edition identities, scans for unspecified steps, verifies
-producer/output and driver-interface consistency, and verifies the comparison
-examples. Gaps in source-derived numerical rules remain explicit DEFINE outputs
-and downstream input gates; they are not marked as completed mechanical design.
-
-The existing owner preference is bounded Claude implementation with independent
-Codex verification. Inline Codex execution remains the approved provider fallback.
-This plan does not require another generic approval of that workflow.
+- [23 00 00 — Heating, Ventilating, and Air Conditioning (HVAC)](division23-sections/csi-23-00-00.md)
+  - [23 01 00 — Operation and Maintenance of HVAC Systems](division23-sections/csi-23-01-00.md)
+    - [23 01 10 — Operation and Maintenance of Facility Fuel Systems](division23-sections/csi-23-01-10.md)
+    - [23 01 20 — Operation and Maintenance of HVAC Piping and Pumps](division23-sections/csi-23-01-20.md)
+    - [23 01 30 — Operation and Maintenance of HVAC Air Distribution](division23-sections/csi-23-01-30.md)
+      - [23 01 30.51 — HVAC Air-Distribution System Cleaning](division23-sections/csi-23-01-30-51.md)
+    - [23 01 50 — Operation and Maintenance of Central Heating Equipment](division23-sections/csi-23-01-50.md)
+    - [23 01 60 — Operation and Maintenance of Central Cooling Equipment](division23-sections/csi-23-01-60.md)
+      - [23 01 60.71 — Refrigerant Recovery/Recycling](division23-sections/csi-23-01-60-71.md)
+    - [23 01 70 — Operation and Maintenance of Central HVAC Equipment](division23-sections/csi-23-01-70.md)
+    - [23 01 80 — Operation and Maintenance of Decentralized HVAC Equipment](division23-sections/csi-23-01-80.md)
+    - [23 01 90 — Diagnostic Systems for HVAC](division23-sections/csi-23-01-90.md)
+  - [23 05 00 — Common Work Results for HVAC](division23-sections/csi-23-05-00.md)
+    - [23 05 05 — Selective Demolition for Heating, Ventilating, and Air Conditioning (HVAC)](division23-sections/csi-23-05-05.md)
+    - [23 05 13 — Common Motor Requirements for HVAC Equipment](division23-sections/csi-23-05-13.md)
+    - [23 05 16 — Expansion Fittings and Loops for HVAC Piping](division23-sections/csi-23-05-16.md)
+    - [23 05 17 — Sleeves and Sleeve Seals for HVAC Piping](division23-sections/csi-23-05-17.md)
+    - [23 05 19 — Meters and Gages for HVAC Piping](division23-sections/csi-23-05-19.md)
+    - [23 05 23 — General-Duty Valves for HVAC Piping](division23-sections/csi-23-05-23.md)
+    - [23 05 29 — Hangers and Supports for HVAC Piping and Equipment](division23-sections/csi-23-05-29.md)
+    - [23 05 33 — Heat Tracing for HVAC Piping](division23-sections/csi-23-05-33.md)
+    - [23 05 48 — Vibration and Seismic Controls for HVAC](division23-sections/csi-23-05-48.md)
+      - [23 05 48.13 — Vibration Controls for HVAC](division23-sections/csi-23-05-48-13.md)
+    - [23 05 53 — Identification for HVAC Piping and Equipment](division23-sections/csi-23-05-53.md)
+    - [23 05 63 — Anti-Microbial Coatings for HVAC Ducts and Equipment](division23-sections/csi-23-05-63.md)
+    - [23 05 66 — Anti-Microbial Ultraviolet Emitters for HVAC Ducts and Equipment](division23-sections/csi-23-05-66.md)
+    - [23 05 93 — Testing, Adjusting, and Balancing for HVAC](division23-sections/csi-23-05-93.md)
+  - [23 06 00 — Schedules for HVAC](division23-sections/csi-23-06-00.md)
+    - [23 06 10 — Schedules for Facility Fuel Service Systems](division23-sections/csi-23-06-10.md)
+    - [23 06 20 — Schedules for HVAC Piping and Pumps](division23-sections/csi-23-06-20.md)
+      - [23 06 20.13 — Hydronic Pump Schedule](division23-sections/csi-23-06-20-13.md)
+    - [23 06 30 — Schedules for HVAC Air Distribution](division23-sections/csi-23-06-30.md)
+      - [23 06 30.13 — HVAC Fan Schedule](division23-sections/csi-23-06-30-13.md)
+      - [23 06 30.16 — Air Terminal Unit Schedule](division23-sections/csi-23-06-30-16.md)
+      - [23 06 30.19 — Air Outlet and Inlet Schedule](division23-sections/csi-23-06-30-19.md)
+      - [23 06 30.23 — HVAC Air Cleaning Device Schedule](division23-sections/csi-23-06-30-23.md)
+    - [23 06 50 — Schedules for Central Heating Equipment](division23-sections/csi-23-06-50.md)
+      - [23 06 50.13 — Heating Boiler Schedule](division23-sections/csi-23-06-50-13.md)
+    - [23 06 60 — Schedules for Central Cooling Equipment](division23-sections/csi-23-06-60.md)
+      - [23 06 60.13 — Refrigerant Condenser Schedule](division23-sections/csi-23-06-60-13.md)
+      - [23 06 60.16 — Packaged Water Chiller Schedule](division23-sections/csi-23-06-60-16.md)
+    - [23 06 70 — Schedules for Central HVAC Equipment](division23-sections/csi-23-06-70.md)
+      - [23 06 70.13 — Indoor, Central-Station Air-Handling Unit Schedule](division23-sections/csi-23-06-70-13.md)
+      - [23 06 70.16 — Packaged Outdoor HVAC Equipment Schedule](division23-sections/csi-23-06-70-16.md)
+    - [23 06 80 — Schedules for Decentralized HVAC Equipment](division23-sections/csi-23-06-80.md)
+      - [23 06 80.13 — Decentralized Unitary HVAC Equipment Schedule](division23-sections/csi-23-06-80-13.md)
+      - [23 06 80.16 — Convection Heating and Cooling Unit Schedule](division23-sections/csi-23-06-80-16.md)
+      - [23 06 80.19 — Radiant Heating Unit Schedule](division23-sections/csi-23-06-80-19.md)
+  - [23 07 00 — HVAC Insulation](division23-sections/csi-23-07-00.md)
+    - [23 07 13 — Duct Insulation](division23-sections/csi-23-07-13.md)
+    - [23 07 16 — HVAC Equipment Insulation](division23-sections/csi-23-07-16.md)
+    - [23 07 19 — HVAC Piping Insulation](division23-sections/csi-23-07-19.md)
+  - [23 08 00 — Commissioning of HVAC](division23-sections/csi-23-08-00.md)
+  - [23 09 00 — Instrumentation and Control for HVAC](division23-sections/csi-23-09-00.md)
+    - [23 09 13 — Instrumentation and Control Devices for HVAC](division23-sections/csi-23-09-13.md)
+      - [23 09 13.13 — Actuators and Operators](division23-sections/csi-23-09-13-13.md)
+      - [23 09 13.23 — Sensors and Transmitters](division23-sections/csi-23-09-13-23.md)
+      - [23 09 13.33 — Control Valves](division23-sections/csi-23-09-13-33.md)
+      - [23 09 13.43 — Control Dampers](division23-sections/csi-23-09-13-43.md)
+    - [23 09 23 — Direct-Digital Control System for HVAC](division23-sections/csi-23-09-23.md)
+      - [23 09 23.11 — Control Valves](division23-sections/csi-23-09-23-11.md)
+      - [23 09 23.12 — Control Dampers](division23-sections/csi-23-09-23-12.md)
+      - [23 09 23.13 — Energy Meters](division23-sections/csi-23-09-23-13.md)
+      - [23 09 23.14 — Flow Instruments](division23-sections/csi-23-09-23-14.md)
+      - [23 09 23.16 — Gas Instruments](division23-sections/csi-23-09-23-16.md)
+      - [23 09 23.17 — Level Instruments](division23-sections/csi-23-09-23-17.md)
+      - [23 09 23.18 — Leak Detection Instruments](division23-sections/csi-23-09-23-18.md)
+      - [23 09 23.19 — Moisture Instruments](division23-sections/csi-23-09-23-19.md)
+      - [23 09 23.21 — Motion Instruments](division23-sections/csi-23-09-23-21.md)
+      - [23 09 23.22 — Position Instruments](division23-sections/csi-23-09-23-22.md)
+      - [23 09 23.23 — Pressure Instruments](division23-sections/csi-23-09-23-23.md)
+      - [23 09 23.24 — Speed Instruments](division23-sections/csi-23-09-23-24.md)
+      - [23 09 23.27 — Temperature Instruments](division23-sections/csi-23-09-23-27.md)
+      - [23 09 23.33 — Vibration Instruments](division23-sections/csi-23-09-23-33.md)
+      - [23 09 23.43 — Weather Stations](division23-sections/csi-23-09-23-43.md)
+    - [23 09 33 — Electric and Electronic Control System for HVAC](division23-sections/csi-23-09-33.md)
+    - [23 09 43 — Pneumatic Control System for HVAC](division23-sections/csi-23-09-43.md)
+    - [23 09 53 — Pneumatic and Electric Control System for HVAC](division23-sections/csi-23-09-53.md)
+    - [23 09 93 — Sequence of Operations for HVAC Controls](division23-sections/csi-23-09-93.md)
+      - [23 09 93.11 — Sequence of Operation for HVAC DDC](division23-sections/csi-23-09-93-11.md)
+  - [23 10 00 — Facility Fuel Systems](division23-sections/csi-23-10-00.md)
+    - [23 11 00 — Facility Fuel Piping](division23-sections/csi-23-11-00.md)
+      - [23 11 13 — Facility Fuel-Oil Piping](division23-sections/csi-23-11-13.md)
+      - [23 11 16 — Facility Gasoline Piping](division23-sections/csi-23-11-16.md)
+      - [23 11 23 — Facility Natural-Gas Piping](division23-sections/csi-23-11-23.md)
+      - [23 11 26 — Facility Liquefied-Petroleum Gas Piping](division23-sections/csi-23-11-26.md)
+    - [23 12 00 — Facility Fuel Pumps](division23-sections/csi-23-12-00.md)
+      - [23 12 13 — Facility Fuel-Oil Pumps](division23-sections/csi-23-12-13.md)
+      - [23 12 16 — Facility Gasoline Dispensing Pumps](division23-sections/csi-23-12-16.md)
+      - [23 12 26 — Facility Liquefied-Petroleum Gas Pumps](division23-sections/csi-23-12-26.md)
+    - [23 13 00 — Facility Fuel-Storage Tanks](division23-sections/csi-23-13-00.md)
+      - [23 13 13 — Facility Underground Fuel-Oil, Storage Tanks](division23-sections/csi-23-13-13.md)
+        - [23 13 13.13 — Double-Wall Steel, Underground Fuel-Oil, Storage Tanks](division23-sections/csi-23-13-13-13.md)
+        - [23 13 13.16 — Composite, Steel, Underground Fuel-Oil, Storage Tanks](division23-sections/csi-23-13-13-16.md)
+        - [23 13 13.19 — Jacketed, Steel, Underground Fuel-Oil, Storage Tanks](division23-sections/csi-23-13-13-19.md)
+        - [23 13 13.23 — Glass-Fiber-Reinforced-Plastic, Underground Fuel-Oil, Storage Tanks](division23-sections/csi-23-13-13-23.md)
+        - [23 13 13.33 — Fuel-Oil Storage Tank Pumps](division23-sections/csi-23-13-13-33.md)
+      - [23 13 23 — Facility Aboveground Fuel-Oil, Storage Tanks](division23-sections/csi-23-13-23.md)
+        - [23 13 23.13 — Vertical, Steel, Aboveground Fuel-Oil, Storage Tanks](division23-sections/csi-23-13-23-13.md)
+        - [23 13 23.16 — Horizontal, Steel, Aboveground Fuel-Oil, Storage Tanks](division23-sections/csi-23-13-23-16.md)
+        - [23 13 23.19 — Containment-Dike, Steel, Aboveground Fuel-Oil, Storage Tanks](division23-sections/csi-23-13-23-19.md)
+        - [23 13 23.23 — Insulated, Steel, Aboveground Fuel-Oil, Storage Tanks](division23-sections/csi-23-13-23-23.md)
+        - [23 13 23.26 — Concrete-Vaulted, Steel, Aboveground Fuel-Oil, Storage Tanks](division23-sections/csi-23-13-23-26.md)
+      - [23 13 26 — Facility Aboveground Liquefied-Petroleum Gas Storage Tanks](division23-sections/csi-23-13-26.md)
+  - [23 20 00 — HVAC Piping and Pumps](division23-sections/csi-23-20-00.md)
+    - [23 21 00 — Hydronic Piping and Pumps](division23-sections/csi-23-21-00.md)
+      - [23 21 13 — Hydronic Piping](division23-sections/csi-23-21-13.md)
+        - [23 21 13.13 — Underground Hydronic Piping](division23-sections/csi-23-21-13-13.md)
+        - [23 21 13.23 — Aboveground Hydronic Piping](division23-sections/csi-23-21-13-23.md)
+        - [23 21 13.33 — Ground-Loop Heat-Pump Piping](division23-sections/csi-23-21-13-33.md)
+      - [23 21 16 — Hydronic Piping Specialties](division23-sections/csi-23-21-16.md)
+      - [23 21 23 — Hydronic Pumps](division23-sections/csi-23-21-23.md)
+        - [23 21 23.13 — In-Line Centrifugal Hydronic Pumps](division23-sections/csi-23-21-23-13.md)
+        - [23 21 23.16 — Base-Mounted, Centrifugal Hydronic Pumps](division23-sections/csi-23-21-23-16.md)
+        - [23 21 23.19 — Vertical-Mounted, Double-Suction Centrifugal Hydronic Pumps](division23-sections/csi-23-21-23-19.md)
+        - [23 21 23.23 — Vertical-Turbine Hydronic Pumps](division23-sections/csi-23-21-23-23.md)
+      - [23 21 29 — Automatic Condensate Pump Units](division23-sections/csi-23-21-29.md)
+    - [23 22 00 — Steam and Condensate Piping and Pumps](division23-sections/csi-23-22-00.md)
+      - [23 22 13 — Steam and Condensate Heating Piping](division23-sections/csi-23-22-13.md)
+        - [23 22 13.13 — Underground Steam and Condensate Heating Piping](division23-sections/csi-23-22-13-13.md)
+        - [23 22 13.23 — Aboveground Steam and Condensate Heating Piping](division23-sections/csi-23-22-13-23.md)
+      - [23 22 16 — Steam and Condensate Heating Piping Specialties](division23-sections/csi-23-22-16.md)
+      - [23 22 23 — Steam Condensate Pumps](division23-sections/csi-23-22-23.md)
+        - [23 22 23.13 — Electric-Driven Steam Condensate Pumps](division23-sections/csi-23-22-23-13.md)
+        - [23 22 23.23 — Pressure-Powered Steam Condensate Pumps](division23-sections/csi-23-22-23-23.md)
+    - [23 23 00 — Refrigerant Piping](division23-sections/csi-23-23-00.md)
+      - [23 23 13 — Refrigerant Piping Valves](division23-sections/csi-23-23-13.md)
+      - [23 23 16 — Refrigerant Piping Specialties](division23-sections/csi-23-23-16.md)
+      - [23 23 19 — Refrigerant Safety Relief Valve Discharge Piping](division23-sections/csi-23-23-19.md)
+      - [23 23 23 — Refrigerants](division23-sections/csi-23-23-23.md)
+    - [23 24 00 — Internal-Combustion Engine Piping](division23-sections/csi-23-24-00.md)
+      - [23 24 13 — Internal-Combustion Engine Remote-Radiator Coolant Piping](division23-sections/csi-23-24-13.md)
+      - [23 24 16 — Internal-Combustion Engine Exhaust Piping](division23-sections/csi-23-24-16.md)
+    - [23 25 00 — HVAC Water Treatment](division23-sections/csi-23-25-00.md)
+      - [23 25 13 — Water Treatment for Closed-Loop Hydronic Systems](division23-sections/csi-23-25-13.md)
+      - [23 25 16 — Water Treatment for Open Hydronic Systems](division23-sections/csi-23-25-16.md)
+      - [23 25 19 — Water Treatment for Steam System Feedwater](division23-sections/csi-23-25-19.md)
+      - [23 25 23 — Water Treatment for Humidification Steam System Feedwater](division23-sections/csi-23-25-23.md)
+      - [23 25 33 — HVAC Makeup-Water Filtration Equipment](division23-sections/csi-23-25-33.md)
+  - [23 30 00 — HVAC Air Distribution](division23-sections/csi-23-30-00.md)
+    - [23 31 00 — HVAC Ducts and Casings](division23-sections/csi-23-31-00.md)
+      - [23 31 13 — Metal Ducts](division23-sections/csi-23-31-13.md)
+        - [23 31 13.13 — Rectangular Metal Ducts](division23-sections/csi-23-31-13-13.md)
+        - [23 31 13.16 — Round and Flat-Oval Spiral Ducts](division23-sections/csi-23-31-13-16.md)
+        - [23 31 13.19 — Metal Duct Fittings](division23-sections/csi-23-31-13-19.md)
+      - [23 31 16 — Nonmetal Ducts](division23-sections/csi-23-31-16.md)
+        - [23 31 16.13 — Fibrous-Glass Ducts](division23-sections/csi-23-31-16-13.md)
+        - [23 31 16.16 — Thermoset Fiberglass-Reinforced Plastic Ducts](division23-sections/csi-23-31-16-16.md)
+        - [23 31 16.19 — PVC Ducts](division23-sections/csi-23-31-16-19.md)
+        - [23 31 16.26 — Concrete Ducts](division23-sections/csi-23-31-16-26.md)
+      - [23 31 19 — HVAC Casings](division23-sections/csi-23-31-19.md)
+    - [23 32 00 — Air Plenums and Chases](division23-sections/csi-23-32-00.md)
+      - [23 32 13 — Fabricated, Metal Air Plenums](division23-sections/csi-23-32-13.md)
+      - [23 32 33 — Air-Distribution Ceiling Plenums](division23-sections/csi-23-32-33.md)
+      - [23 32 36 — Air-Distribution Floor Plenums](division23-sections/csi-23-32-36.md)
+      - [23 32 39 — Air-Distribution Wall Plenums](division23-sections/csi-23-32-39.md)
+      - [23 32 43 — Air-Distribution Chases Formed by General Construction](division23-sections/csi-23-32-43.md)
+      - [23 32 48 — Acoustical Air Plenums](division23-sections/csi-23-32-48.md)
+    - [23 33 00 — Air Duct Accessories](division23-sections/csi-23-33-00.md)
+      - [23 33 13 — Dampers](division23-sections/csi-23-33-13.md)
+        - [23 33 13.13 — Volume-Control Dampers](division23-sections/csi-23-33-13-13.md)
+        - [23 33 13.16 — Fire Dampers](division23-sections/csi-23-33-13-16.md)
+        - [23 33 13.19 — Smoke-Control Dampers](division23-sections/csi-23-33-13-19.md)
+        - [23 33 13.23 — Backdraft Dampers](division23-sections/csi-23-33-13-23.md)
+      - [23 33 19 — Duct Silencers](division23-sections/csi-23-33-19.md)
+      - [23 33 23 — Turning Vanes](division23-sections/csi-23-33-23.md)
+      - [23 33 33 — Duct-Mounting Access Doors](division23-sections/csi-23-33-33.md)
+      - [23 33 38 — Duct Security Bars](division23-sections/csi-23-33-38.md)
+      - [23 33 43 — Flexible Connectors](division23-sections/csi-23-33-43.md)
+      - [23 33 46 — Flexible Ducts](division23-sections/csi-23-33-46.md)
+      - [23 33 53 — Duct Liners](division23-sections/csi-23-33-53.md)
+    - [23 34 00 — HVAC Fans](division23-sections/csi-23-34-00.md)
+      - [23 34 13 — Axial HVAC Fans](division23-sections/csi-23-34-13.md)
+      - [23 34 16 — Centrifugal HVAC Fans](division23-sections/csi-23-34-16.md)
+      - [23 34 23 — HVAC Power Ventilators](division23-sections/csi-23-34-23.md)
+      - [23 34 33 — Air Curtains](division23-sections/csi-23-34-33.md)
+      - [23 34 39 — High-Volume, Low-Speed Propeller Fans](division23-sections/csi-23-34-39.md)
+    - [23 35 00 — Special Exhaust Systems](division23-sections/csi-23-35-00.md)
+      - [23 35 13 — Dust Collection Systems](division23-sections/csi-23-35-13.md)
+        - [23 35 13.13 — Sawdust Collection Systems](division23-sections/csi-23-35-13-13.md)
+      - [23 35 16 — Engine Exhaust Systems](division23-sections/csi-23-35-16.md)
+        - [23 35 16.13 — Positive-Pressure Engine Exhaust Systems](division23-sections/csi-23-35-16-13.md)
+        - [23 35 16.16 — Mechanical Engine Exhaust Systems](division23-sections/csi-23-35-16-16.md)
+      - [23 35 33 — Listed Kitchen Ventilation Exhaust System](division23-sections/csi-23-35-33.md)
+    - [23 36 00 — Air Terminal Units](division23-sections/csi-23-36-00.md)
+      - [23 36 13 — Constant-Air-Volume Units](division23-sections/csi-23-36-13.md)
+      - [23 36 16 — Variable-Air-Volume Units](division23-sections/csi-23-36-16.md)
+    - [23 37 00 — Air Outlets and Inlets](division23-sections/csi-23-37-00.md)
+      - [23 37 13 — Diffusers, Registers, and Grilles](division23-sections/csi-23-37-13.md)
+        - [23 37 13.43 — Security Registers and Grilles](division23-sections/csi-23-37-13-43.md)
+      - [23 37 16 — Fabric Air Distribution Devices](division23-sections/csi-23-37-16.md)
+      - [23 37 23 — HVAC Gravity Ventilators](division23-sections/csi-23-37-23.md)
+        - [23 37 23.13 — HVAC Gravity Dome Ventilators](division23-sections/csi-23-37-23-13.md)
+        - [23 37 23.16 — HVAC Gravity Louvered-Penthouse Ventilators](division23-sections/csi-23-37-23-16.md)
+        - [23 37 23.19 — HVAC Gravity Upblast Ventilators](division23-sections/csi-23-37-23-19.md)
+    - [23 38 00 — Ventilation Hoods](division23-sections/csi-23-38-00.md)
+      - [23 38 13 — Commercial-Kitchen Hoods](division23-sections/csi-23-38-13.md)
+        - [23 38 13.13 — Listed Commercial-Kitchen Hoods](division23-sections/csi-23-38-13-13.md)
+        - [23 38 13.16 — Standard Commercial-Kitchen Hoods](division23-sections/csi-23-38-13-16.md)
+      - [23 38 16 — Fume Hoods](division23-sections/csi-23-38-16.md)
+  - [23 40 00 — HVAC Air Cleaning Devices](division23-sections/csi-23-40-00.md)
+    - [23 41 00 — Particulate Air Filtration](division23-sections/csi-23-41-00.md)
+      - [23 41 13 — Panel Air Filters](division23-sections/csi-23-41-13.md)
+      - [23 41 16 — Renewable-Media Air Filters](division23-sections/csi-23-41-16.md)
+      - [23 41 19 — Washable Air Filters](division23-sections/csi-23-41-19.md)
+      - [23 41 23 — Extended Surface Filters](division23-sections/csi-23-41-23.md)
+      - [23 41 33 — High-Efficiency Particulate Filtration](division23-sections/csi-23-41-33.md)
+      - [23 41 43 — Ultra-Low Penetration Filtration](division23-sections/csi-23-41-43.md)
+      - [23 41 46 — Super Ultra-Low Penetration Filtration](division23-sections/csi-23-41-46.md)
+    - [23 42 00 — Gas-Phase Air Filtration](division23-sections/csi-23-42-00.md)
+      - [23 42 13 — Activated-Carbon Air Filtration](division23-sections/csi-23-42-13.md)
+      - [23 42 16 — Chemically-Impregnated Adsorption Air Filtration](division23-sections/csi-23-42-16.md)
+      - [23 42 19 — Catalytic-Adsorption Air Filtration](division23-sections/csi-23-42-19.md)
+    - [23 43 00 — Electronic Air Cleaners](division23-sections/csi-23-43-00.md)
+      - [23 43 13 — Washable Electronic Air Cleaners](division23-sections/csi-23-43-13.md)
+      - [23 43 16 — Agglomerator Electronic Air Cleaners](division23-sections/csi-23-43-16.md)
+      - [23 43 23 — Self-Contained Electronic Air Cleaners](division23-sections/csi-23-43-23.md)
+  - [23 50 00 — Central Heating Equipment](division23-sections/csi-23-50-00.md)
+    - [23 51 00 — Breechings, Chimneys, and Stacks](division23-sections/csi-23-51-00.md)
+      - [23 51 13 — Draft Control Devices](division23-sections/csi-23-51-13.md)
+        - [23 51 13.11 — Draft Control Fans](division23-sections/csi-23-51-13-11.md)
+        - [23 51 13.13 — Draft-Induction Fans](division23-sections/csi-23-51-13-13.md)
+        - [23 51 13.16 — Vent Dampers](division23-sections/csi-23-51-13-16.md)
+        - [23 51 13.19 — Barometric Dampers](division23-sections/csi-23-51-13-19.md)
+      - [23 51 16 — Fabricated Breechings and Accessories](division23-sections/csi-23-51-16.md)
+      - [23 51 19 — Fabricated Stacks](division23-sections/csi-23-51-19.md)
+      - [23 51 23 — Gas Vents](division23-sections/csi-23-51-23.md)
+      - [23 51 33 — Insulated Sectional Chimneys](division23-sections/csi-23-51-33.md)
+      - [23 51 43 — Flue-Gas Filtration Equipment](division23-sections/csi-23-51-43.md)
+        - [23 51 43.13 — Gaseous Filtration](division23-sections/csi-23-51-43-13.md)
+        - [23 51 43.16 — Particulate Filtration](division23-sections/csi-23-51-43-16.md)
+    - [23 52 00 — Heating Boilers](division23-sections/csi-23-52-00.md)
+      - [23 52 13 — Electric Boilers](division23-sections/csi-23-52-13.md)
+      - [23 52 16 — Condensing Boilers](division23-sections/csi-23-52-16.md)
+        - [23 52 16.13 — Stainless-Steel Condensing Boilers](division23-sections/csi-23-52-16-13.md)
+        - [23 52 16.16 — Aluminum Condensing Boilers](division23-sections/csi-23-52-16-16.md)
+      - [23 52 17 — Low Mass Boilers](division23-sections/csi-23-52-17.md)
+      - [23 52 19 — Pulse Combustion Boilers](division23-sections/csi-23-52-19.md)
+      - [23 52 23 — Cast-Iron Boilers](division23-sections/csi-23-52-23.md)
+      - [23 52 33 — Water-Tube Boilers](division23-sections/csi-23-52-33.md)
+        - [23 52 33.13 — Finned Water-Tube Boilers](division23-sections/csi-23-52-33-13.md)
+        - [23 52 33.14 — Flexible Water-Tube Boilers](division23-sections/csi-23-52-33-14.md)
+        - [23 52 33.16 — Steel Water-Tube Boilers](division23-sections/csi-23-52-33-16.md)
+        - [23 52 33.19 — Copper Water-Tube Boilers](division23-sections/csi-23-52-33-19.md)
+      - [23 52 39 — Fire-Tube Boilers](division23-sections/csi-23-52-39.md)
+        - [23 52 39.13 — Scotch Marine Boilers](division23-sections/csi-23-52-39-13.md)
+        - [23 52 39.16 — Steel Fire-Tube Boilers](division23-sections/csi-23-52-39-16.md)
+      - [23 52 83 — Boiler Blowdown Systems](division23-sections/csi-23-52-83.md)
+    - [23 53 00 — Heating Boiler Feedwater Equipment](division23-sections/csi-23-53-00.md)
+      - [23 53 13 — Boiler Feedwater Pumps](division23-sections/csi-23-53-13.md)
+      - [23 53 16 — Deaerators](division23-sections/csi-23-53-16.md)
+    - [23 54 00 — Furnaces](division23-sections/csi-23-54-00.md)
+      - [23 54 13 — Electric-Resistance Furnaces](division23-sections/csi-23-54-13.md)
+      - [23 54 16 — Fuel-Fired Furnaces](division23-sections/csi-23-54-16.md)
+        - [23 54 16.13 — Gas-Fired Furnaces](division23-sections/csi-23-54-16-13.md)
+        - [23 54 16.16 — Oil-Fired Furnaces](division23-sections/csi-23-54-16-16.md)
+    - [23 55 00 — Fuel-Fired Heaters](division23-sections/csi-23-55-00.md)
+      - [23 55 13 — Fuel-Fired Duct Heaters](division23-sections/csi-23-55-13.md)
+        - [23 55 13.13 — Oil-Fired Duct Heaters](division23-sections/csi-23-55-13-13.md)
+        - [23 55 13.16 — Gas-Fired Duct Heaters](division23-sections/csi-23-55-13-16.md)
+      - [23 55 23 — Gas-Fired Radiant Heaters](division23-sections/csi-23-55-23.md)
+        - [23 55 23.13 — Low-Intensity Gas-Fired Radiant Heaters](division23-sections/csi-23-55-23-13.md)
+        - [23 55 23.16 — High-Intensity Gas-Fired Radiant Heaters](division23-sections/csi-23-55-23-16.md)
+      - [23 55 33 — Fuel-Fired Unit Heaters](division23-sections/csi-23-55-33.md)
+        - [23 55 33.13 — Oil-Fired Unit Heaters](division23-sections/csi-23-55-33-13.md)
+        - [23 55 33.16 — Gas-Fired Unit Heaters](division23-sections/csi-23-55-33-16.md)
+    - [23 56 00 — Solar Energy Heating Equipment](division23-sections/csi-23-56-00.md)
+      - [23 56 13 — Heating Solar Collectors](division23-sections/csi-23-56-13.md)
+        - [23 56 13.13 — Heating Solar Flat-Plate Collectors](division23-sections/csi-23-56-13-13.md)
+        - [23 56 13.16 — Heating Solar Concentrating Collectors](division23-sections/csi-23-56-13-16.md)
+        - [23 56 13.19 — Heating Solar Vacuum-Tube Collectors](division23-sections/csi-23-56-13-19.md)
+      - [23 56 16 — Packaged Solar Heating Equipment](division23-sections/csi-23-56-16.md)
+      - [23 56 23 — Solar Air-Heating Panels](division23-sections/csi-23-56-23.md)
+    - [23 57 00 — Heat Exchangers for HVAC](division23-sections/csi-23-57-00.md)
+      - [23 57 13 — Steam-to-Steam Heat Exchangers](division23-sections/csi-23-57-13.md)
+      - [23 57 16 — Steam-to-Water Heat Exchangers](division23-sections/csi-23-57-16.md)
+      - [23 57 19 — Liquid-to-Liquid Heat Exchangers](division23-sections/csi-23-57-19.md)
+        - [23 57 19.13 — Plate-Type, Liquid-to-Liquid Heat Exchangers](division23-sections/csi-23-57-19-13.md)
+        - [23 57 19.16 — Shell-Type, Liquid-to-Liquid Heat Exchangers](division23-sections/csi-23-57-19-16.md)
+      - [23 57 33 — Direct Geoexchange Heat Exchangers](division23-sections/csi-23-57-33.md)
+  - [23 60 00 — Central Cooling Equipment](division23-sections/csi-23-60-00.md)
+    - [23 61 00 — Refrigerant Compressors](division23-sections/csi-23-61-00.md)
+      - [23 61 13 — Centrifugal Refrigerant Compressors](division23-sections/csi-23-61-13.md)
+        - [23 61 13.13 — Non-Condensable Gas Purge Equipment](division23-sections/csi-23-61-13-13.md)
+      - [23 61 16 — Reciprocating Refrigerant Compressors](division23-sections/csi-23-61-16.md)
+      - [23 61 19 — Scroll Refrigerant Compressors](division23-sections/csi-23-61-19.md)
+      - [23 61 23 — Rotary-Screw Refrigerant Compressors](division23-sections/csi-23-61-23.md)
+    - [23 62 00 — Packaged Compressor and Condenser Units](division23-sections/csi-23-62-00.md)
+      - [23 62 13 — Packaged Air-Cooled Refrigerant Compressor and Condenser Units](division23-sections/csi-23-62-13.md)
+      - [23 62 23 — Packaged Water-Cooled Refrigerant Compressor and Condenser Units](division23-sections/csi-23-62-23.md)
+      - [23 62 46 — Packaged Variable-Refrigerant-Flow Air-Conditioning Systems](division23-sections/csi-23-62-46.md)
+    - [23 63 00 — Refrigerant Condensers](division23-sections/csi-23-63-00.md)
+      - [23 63 13 — Air-Cooled Refrigerant Condensers](division23-sections/csi-23-63-13.md)
+      - [23 63 23 — Water-Cooled Refrigerant Condensers](division23-sections/csi-23-63-23.md)
+      - [23 63 33 — Evaporative Refrigerant Condensers](division23-sections/csi-23-63-33.md)
+    - [23 64 00 — Packaged Water Chillers](division23-sections/csi-23-64-00.md)
+      - [23 64 13 — Absorption Water Chillers](division23-sections/csi-23-64-13.md)
+        - [23 64 13.13 — Direct-Fired Absorption Water Chillers](division23-sections/csi-23-64-13-13.md)
+        - [23 64 13.16 — Indirect-Fired Absorption Water Chillers](division23-sections/csi-23-64-13-16.md)
+      - [23 64 16 — Centrifugal Water Chillers](division23-sections/csi-23-64-16.md)
+        - [23 64 16.13 — Air-Cooled Centrifugal Water Chillers](division23-sections/csi-23-64-16-13.md)
+        - [23 64 16.16 — Water-Cooled Centrifugal Water Chillers](division23-sections/csi-23-64-16-16.md)
+      - [23 64 19 — Reciprocating Water Chillers](division23-sections/csi-23-64-19.md)
+      - [23 64 23 — Scroll Water Chillers](division23-sections/csi-23-64-23.md)
+        - [23 64 23.13 — Air-Cooled Scroll Water Chillers](division23-sections/csi-23-64-23-13.md)
+        - [23 64 23.16 — Water-Cooled Scroll Water Chillers](division23-sections/csi-23-64-23-16.md)
+      - [23 64 26 — Rotary-Screw Water Chillers](division23-sections/csi-23-64-26.md)
+        - [23 64 26.13 — Air-Cooled, Rotary-Screw Water Chillers](division23-sections/csi-23-64-26-13.md)
+        - [23 64 26.16 — Water-Cooled, Rotary-Screw Water Chillers](division23-sections/csi-23-64-26-16.md)
+      - [23 64 33 — Modular Water Chillers](division23-sections/csi-23-64-33.md)
+        - [23 64 33.13 — Air-Cooled, Modular Water Chillers](division23-sections/csi-23-64-33-13.md)
+        - [23 64 33.16 — Water-Cooled, Modular Water Chillers](division23-sections/csi-23-64-33-16.md)
+    - [23 65 00 — Cooling Towers](division23-sections/csi-23-65-00.md)
+      - [23 65 13 — Forced-Draft Cooling Towers](division23-sections/csi-23-65-13.md)
+        - [23 65 13.13 — Open-Circuit, Forced-Draft Cooling Towers](division23-sections/csi-23-65-13-13.md)
+        - [23 65 13.16 — Closed-Circuit, Forced-Draft Cooling Towers](division23-sections/csi-23-65-13-16.md)
+      - [23 65 14 — Induced-Draft Cooling Towers](division23-sections/csi-23-65-14.md)
+        - [23 65 14.13 — Open-Circuit, Induced-Draft Counterflow Cooling Towers](division23-sections/csi-23-65-14-13.md)
+        - [23 65 14.14 — Open-Circuit, Induced-Draft Crossflow Cooling Towers](division23-sections/csi-23-65-14-14.md)
+        - [23 65 14.16 — Closed-Circuit, Induced-Draft Counterflow Cooling Towers](division23-sections/csi-23-65-14-16.md)
+        - [23 65 14.17 — Closed-Circuit, Induced-Draft Combined-Flow Cooling Towers](division23-sections/csi-23-65-14-17.md)
+      - [23 65 16 — Natural-Draft Cooling Towers](division23-sections/csi-23-65-16.md)
+      - [23 65 23 — Field-Erected Cooling Towers](division23-sections/csi-23-65-23.md)
+      - [23 65 33 — Liquid Coolers](division23-sections/csi-23-65-33.md)
+  - [23 70 00 — Central HVAC Equipment](division23-sections/csi-23-70-00.md)
+    - [23 71 00 — Thermal Storage](division23-sections/csi-23-71-00.md)
+      - [23 71 13 — Thermal Heat Storage](division23-sections/csi-23-71-13.md)
+        - [23 71 13.13 — Room Storage Heaters for Thermal Storage](division23-sections/csi-23-71-13-13.md)
+        - [23 71 13.16 — Heat-Pump Boosters for Thermal Storage](division23-sections/csi-23-71-13-16.md)
+        - [23 71 13.19 — Central Furnace Heat-Storage Units](division23-sections/csi-23-71-13-19.md)
+        - [23 71 13.23 — Pressurized-Water Thermal Storage Tanks](division23-sections/csi-23-71-13-23.md)
+      - [23 71 16 — Chilled-Water Thermal Storage](division23-sections/csi-23-71-16.md)
+      - [23 71 19 — Ice Storage](division23-sections/csi-23-71-19.md)
+        - [23 71 19.13 — Internal Ice-on-Coil Thermal Storage](division23-sections/csi-23-71-19-13.md)
+        - [23 71 19.16 — External Ice-on-Coil Thermal Storage](division23-sections/csi-23-71-19-16.md)
+        - [23 71 19.19 — Encapsulated-Ice Thermal Storage](division23-sections/csi-23-71-19-19.md)
+        - [23 71 19.23 — Ice-Harvesting Thermal Storage](division23-sections/csi-23-71-19-23.md)
+        - [23 71 19.26 — Ice-Slurry Thermal Storage](division23-sections/csi-23-71-19-26.md)
+    - [23 72 00 — Air-to-Air Energy Recovery Equipment](division23-sections/csi-23-72-00.md)
+      - [23 72 13 — Heat-Wheel Air-to-Air Energy-Recovery Equipment](division23-sections/csi-23-72-13.md)
+      - [23 72 16 — Heat-Pipe Air-to-Air Energy-Recovery Equipment](division23-sections/csi-23-72-16.md)
+      - [23 72 19 — Fixed-Plate Air-to-Air Energy-Recovery Equipment](division23-sections/csi-23-72-19.md)
+      - [23 72 23 — Packaged Air-to-Air Energy-Recovery Units](division23-sections/csi-23-72-23.md)
+    - [23 73 00 — Indoor Central-Station Air-Handling Units](division23-sections/csi-23-73-00.md)
+      - [23 73 13 — Modular Indoor Central-Station Air-Handling Units](division23-sections/csi-23-73-13.md)
+      - [23 73 23 — Custom Indoor Central-Station Air-Handling Units](division23-sections/csi-23-73-23.md)
+      - [23 73 33 — Indoor Indirect Fuel-Fired Heating and Ventilating Units](division23-sections/csi-23-73-33.md)
+        - [23 73 33.13 — Indoor Indirect Oil-Fired Heating and Ventilating Units](division23-sections/csi-23-73-33-13.md)
+        - [23 73 33.16 — Indoor Indirect Gas-Fired Heating and Ventilating Units](division23-sections/csi-23-73-33-16.md)
+      - [23 73 39 — Indoor, Direct Gas-Fired Heating and Ventilating Units](division23-sections/csi-23-73-39.md)
+    - [23 74 00 — Packaged Outdoor HVAC Equipment](division23-sections/csi-23-74-00.md)
+      - [23 74 13 — Packaged, Outdoor, Central-Station Air-Handling Units](division23-sections/csi-23-74-13.md)
+      - [23 74 16 — Packaged Rooftop Air-Conditioning Units](division23-sections/csi-23-74-16.md)
+        - [23 74 16.11 — Packaged, Small-Capacity, Rooftop Air-Conditioning Units](division23-sections/csi-23-74-16-11.md)
+        - [23 74 16.12 — Packaged, Intermediate-Capacity, Rooftop Air-Conditioning Units](division23-sections/csi-23-74-16-12.md)
+        - [23 74 16.13 — Packaged, Large-Capacity, Rooftop Air-Conditioning Units](division23-sections/csi-23-74-16-13.md)
+      - [23 74 23 — Packaged, Outdoor, Heating-Only Makeup-Air Units](division23-sections/csi-23-74-23.md)
+        - [23 74 23.13 — Packaged, Direct-Fired, Outdoor, Heating-Only Makeup-Air Units](division23-sections/csi-23-74-23-13.md)
+        - [23 74 23.16 — Packaged, Indirect-Fired, Outdoor, Heating-Only Makeup-Air Units](division23-sections/csi-23-74-23-16.md)
+      - [23 74 33 — Dedicated Outdoor-Air Units](division23-sections/csi-23-74-33.md)
+    - [23 75 00 — Custom-Packaged Outdoor HVAC Equipment](division23-sections/csi-23-75-00.md)
+      - [23 75 13 — Custom-Packaged, Outdoor, Central-Station Air-Handling Units](division23-sections/csi-23-75-13.md)
+      - [23 75 16 — Custom-Packaged, Rooftop Air-Conditioning Units](division23-sections/csi-23-75-16.md)
+      - [23 75 23 — Custom-Packaged, Outdoor, Heating and Ventilating Makeup-Air Units](division23-sections/csi-23-75-23.md)
+      - [23 75 33 — Custom-Packaged, Outdoor, Heating and Cooling Makeup Air￾Conditioners](division23-sections/csi-23-75-33.md)
+    - [23 76 00 — Evaporative Air-Cooling Equipment](division23-sections/csi-23-76-00.md)
+      - [23 76 13 — Direct Evaporative Air Coolers](division23-sections/csi-23-76-13.md)
+      - [23 76 16 — Indirect Evaporative Air Coolers](division23-sections/csi-23-76-16.md)
+      - [23 76 19 — Combined Direct and Indirect Evaporative Air Coolers](division23-sections/csi-23-76-19.md)
+  - [23 80 00 — Decentralized HVAC Equipment](division23-sections/csi-23-80-00.md)
+    - [23 81 00 — Decentralized Unitary HVAC Equipment](division23-sections/csi-23-81-00.md)
+      - [23 81 13 — Packaged Terminal Air-Conditioners](division23-sections/csi-23-81-13.md)
+        - [23 81 13.11 — Packaged Terminal Air-Conditioners, Through-Wall Units](division23-sections/csi-23-81-13-11.md)
+        - [23 81 13.12 — Packaged Terminal Air-Conditioners, Freestanding Units](division23-sections/csi-23-81-13-12.md)
+        - [23 81 13.13 — Packaged Terminal Air-Conditioners, Outdoor, Wall-Mounted Units](division23-sections/csi-23-81-13-13.md)
+      - [23 81 16 — Room Air-Conditioners](division23-sections/csi-23-81-16.md)
+      - [23 81 19 — Self-Contained Air-Conditioners](division23-sections/csi-23-81-19.md)
+        - [23 81 19.13 — Small-Capacity Self-Contained Air-Conditioners](division23-sections/csi-23-81-19-13.md)
+        - [23 81 19.16 — Large-Capacity Self-Contained Air-Conditioners](division23-sections/csi-23-81-19-16.md)
+      - [23 81 23 — Computer-Room Air-Conditioners](division23-sections/csi-23-81-23.md)
+        - [23 81 23.11 — Small-Capacity, Computer-Room Air-Conditioners, Floor Mounted Units](division23-sections/csi-23-81-23-11.md)
+        - [23 81 23.12 — Large-Capacity, Computer-Room Air-Conditioners, Floor-Mounted Units](division23-sections/csi-23-81-23-12.md)
+        - [23 81 23.13 — Computer-Room Air-Conditioners, Ceiling Mounted Units](division23-sections/csi-23-81-23-13.md)
+        - [23 81 23.14 — Computer-Room Air-Conditioners, Console Units](division23-sections/csi-23-81-23-14.md)
+        - [23 81 23.16 — Computer-Room Air-Conditioners, Rack Mounted, Space-Cooling Units](division23-sections/csi-23-81-23-16.md)
+        - [23 81 23.18 — Computer-Room, Rack-Cooling Equipment](division23-sections/csi-23-81-23-18.md)
+      - [23 81 26 — Split-System Air-Conditioners](division23-sections/csi-23-81-26.md)
+        - [23 81 26.13 — Small-Capacity Split-System Air-Conditioners](division23-sections/csi-23-81-26-13.md)
+        - [23 81 26.16 — Large-Capacity Split-System Air-Conditioners](division23-sections/csi-23-81-26-16.md)
+      - [23 81 29 — Variable Refrigerant Flow HVAC Systems](division23-sections/csi-23-81-29.md)
+      - [23 81 43 — Air-Source Unitary Heat Pumps](division23-sections/csi-23-81-43.md)
+      - [23 81 46 — Water-Source Unitary Heat Pumps](division23-sections/csi-23-81-46.md)
+      - [23 81 49 — Ground-Source Unitary Heat Pumps](division23-sections/csi-23-81-49.md)
+    - [23 82 00 — Convection Heating and Cooling Units](division23-sections/csi-23-82-00.md)
+      - [23 82 13 — Valance Heating and Cooling Units](division23-sections/csi-23-82-13.md)
+      - [23 82 14 — Chilled Beams](division23-sections/csi-23-82-14.md)
+      - [23 82 16 — Air Coils](division23-sections/csi-23-82-16.md)
+        - [23 82 16.11 — Hydronic Air Coils](division23-sections/csi-23-82-16-11.md)
+        - [23 82 16.12 — Steam Air Coils](division23-sections/csi-23-82-16-12.md)
+        - [23 82 16.13 — Refrigerant Air Coils](division23-sections/csi-23-82-16-13.md)
+        - [23 82 16.14 — Electric-Resistance Air Coils](division23-sections/csi-23-82-16-14.md)
+      - [23 82 19 — Fan Coil Units](division23-sections/csi-23-82-19.md)
+      - [23 82 23 — Unit Ventilators](division23-sections/csi-23-82-23.md)
+      - [23 82 26 — Induction Units](division23-sections/csi-23-82-26.md)
+      - [23 82 29 — Radiators](division23-sections/csi-23-82-29.md)
+      - [23 82 33 — Convectors](division23-sections/csi-23-82-33.md)
+      - [23 82 36 — Finned-Tube Radiation Heaters](division23-sections/csi-23-82-36.md)
+      - [23 82 39 — Unit Heaters](division23-sections/csi-23-82-39.md)
+        - [23 82 39.13 — Cabinet Unit Heaters](division23-sections/csi-23-82-39-13.md)
+        - [23 82 39.16 — Propeller Unit Heaters](division23-sections/csi-23-82-39-16.md)
+        - [23 82 39.19 — Wall and Ceiling Unit Heaters](division23-sections/csi-23-82-39-19.md)
+      - [23 82 41 — Water-to-Water Heat Pumps](division23-sections/csi-23-82-41.md)
+    - [23 83 00 — Radiant Heating Units](division23-sections/csi-23-83-00.md)
+      - [23 83 13 — Radiant-Heating Electric Cables](division23-sections/csi-23-83-13.md)
+        - [23 83 13.16 — Radiant-Heating Electric Mats](division23-sections/csi-23-83-13-16.md)
+      - [23 83 16 — Radiant-Heating Hydronic Piping](division23-sections/csi-23-83-16.md)
+      - [23 83 23 — Radiant-Heating Electric Panels](division23-sections/csi-23-83-23.md)
+      - [23 83 33 — Electric Radiant Heaters](division23-sections/csi-23-83-33.md)
+    - [23 84 00 — Humidity Control Equipment](division23-sections/csi-23-84-00.md)
+      - [23 84 13 — Humidifiers](division23-sections/csi-23-84-13.md)
+        - [23 84 13.13 — Heated-Pan Humidifiers](division23-sections/csi-23-84-13-13.md)
+        - [23 84 13.16 — Wetted-Element Humidifiers](division23-sections/csi-23-84-13-16.md)
+        - [23 84 13.19 — Atomizing Humidifiers](division23-sections/csi-23-84-13-19.md)
+        - [23 84 13.23 — Direct-Steam-Injection Humidifiers](division23-sections/csi-23-84-13-23.md)
+        - [23 84 13.26 — Jacketed, Steam Humidifiers](division23-sections/csi-23-84-13-26.md)
+        - [23 84 13.29 — Self-Contained Steam Humidifiers](division23-sections/csi-23-84-13-29.md)
+        - [23 84 13.33 — Portable Humidifiers](division23-sections/csi-23-84-13-33.md)
+      - [23 84 16 — Mechanical Dehumidification Units](division23-sections/csi-23-84-16.md)
+        - [23 84 16.13 — Outdoor, Mechanical Dehumidification Units](division23-sections/csi-23-84-16-13.md)
+        - [23 84 16.16 — Indoor, Mechanical Dehumidification Units](division23-sections/csi-23-84-16-16.md)
+        - [23 84 16.33 — Portable Dehumidifiers](division23-sections/csi-23-84-16-33.md)
+      - [23 84 19 — Desiccant Dehumidification Units](division23-sections/csi-23-84-19.md)

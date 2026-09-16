@@ -1,0 +1,307 @@
+{
+  "schema_version": 1,
+  "task_id": "CSI23-HIERARCHY-MIGRATION-1",
+  "verified_at": "2026-09-16T19:31:09.181Z",
+  "scope": "CSI Division 23; other CSI divisions are outside this build scope.",
+  "canonical_notebook": {
+    "id": "53cebee4-b959-406d-930c-fc697a3d9e61",
+    "title": "CSI Division 23 — Sections, Subsections & Takeoff Research",
+    "url": "https://notebooklm.google.com/notebook/53cebee4-b959-406d-930c-fc697a3d9e61",
+    "catalogue_source_id": "0dfe7542-777b-4619-a3c6-2831406459dd",
+    "edition": "April 2016",
+    "complete_for_edition": true,
+    "current_edition_complete": false,
+    "nodes_including_root": 432,
+    "nonroot_nodes": 431,
+    "root_label": "f8a6a6b9-ed16-47ac-8b4a-4f3c46a666e9",
+    "note_id": "30e30951-70e5-4fe8-9ffb-fe4850693809",
+    "source_count_observed": 16,
+    "branches": [
+      {
+        "number": "23 01 00",
+        "title": "Operation and Maintenance of HVAC Systems",
+        "nodes_including_branch": 11,
+        "label_id": "755bfed4-e7f0-496f-94e8-40cddb4c0f84",
+        "index_source_id": "0f81d186-caf5-4a86-8a70-4a86848756b9",
+        "source_role": "derived_navigation_index_not_independent_mechanical_evidence"
+      },
+      {
+        "number": "23 05 00",
+        "title": "Common Work Results for HVAC",
+        "nodes_including_branch": 15,
+        "label_id": "7875c5fd-5c8e-4d74-9929-7201b522be37",
+        "index_source_id": "8ac68653-a900-45fd-9aa4-43e4115fddde",
+        "source_role": "derived_navigation_index_not_independent_mechanical_evidence"
+      },
+      {
+        "number": "23 06 00",
+        "title": "Schedules for HVAC",
+        "nodes_including_branch": 21,
+        "label_id": "667837dc-013a-496d-8d93-4e55838d5059",
+        "index_source_id": "8c2e0e31-d0c9-49f1-921f-6e59dd251d30",
+        "source_role": "derived_navigation_index_not_independent_mechanical_evidence"
+      },
+      {
+        "number": "23 07 00",
+        "title": "HVAC Insulation",
+        "nodes_including_branch": 4,
+        "label_id": "935e9fab-6516-41fb-a913-df8426d70756",
+        "index_source_id": "36168fb0-380c-4a87-b067-e74828359bf7",
+        "source_role": "derived_navigation_index_not_independent_mechanical_evidence"
+      },
+      {
+        "number": "23 08 00",
+        "title": "Commissioning of HVAC",
+        "nodes_including_branch": 1,
+        "label_id": "648db421-f62e-4f1b-91cc-a509df35b004",
+        "index_source_id": "0f1d698a-0c62-4c45-916d-19504dc187c4",
+        "source_role": "derived_navigation_index_not_independent_mechanical_evidence"
+      },
+      {
+        "number": "23 09 00",
+        "title": "Instrumentation and Control for HVAC",
+        "nodes_including_branch": 27,
+        "label_id": "0f91a0fa-1edf-4810-b01c-fae2fd936983",
+        "index_source_id": "0b6b3642-47f4-4f69-b390-78dd62cb40b6",
+        "source_role": "derived_navigation_index_not_independent_mechanical_evidence"
+      },
+      {
+        "number": "23 10 00",
+        "title": "Facility Fuel Systems",
+        "nodes_including_branch": 24,
+        "label_id": "ff740f06-8949-4227-9446-f617442c43ec",
+        "index_source_id": "3678d5af-269a-4169-9ea0-4fdf3627f7f3",
+        "source_role": "derived_navigation_index_not_independent_mechanical_evidence"
+      },
+      {
+        "number": "23 20 00",
+        "title": "HVAC Piping and Pumps",
+        "nodes_including_branch": 35,
+        "label_id": "ba8deb08-b719-4e2e-8007-233b424e1b48",
+        "index_source_id": "dedb2685-6a00-4171-b63f-f14552d8362c",
+        "source_role": "derived_navigation_index_not_independent_mechanical_evidence"
+      },
+      {
+        "number": "23 30 00",
+        "title": "HVAC Air Distribution",
+        "nodes_including_branch": 61,
+        "label_id": "61ff95f5-93e2-4399-9bdd-fdf873eee9e0",
+        "index_source_id": "e457095f-e17f-4970-bb0d-a441ecc3ecda",
+        "source_role": "derived_navigation_index_not_independent_mechanical_evidence"
+      },
+      {
+        "number": "23 40 00",
+        "title": "HVAC Air Cleaning Devices",
+        "nodes_including_branch": 17,
+        "label_id": "f09b91ca-df13-416b-af46-e767b43fbabf",
+        "index_source_id": "ef56b39e-6c30-485e-a7b5-a16a0711c8f8",
+        "source_role": "derived_navigation_index_not_independent_mechanical_evidence"
+      },
+      {
+        "number": "23 50 00",
+        "title": "Central Heating Equipment",
+        "nodes_including_branch": 63,
+        "label_id": "7a3a8a26-ed73-4ea4-8024-5915b587c370",
+        "index_source_id": "8d9954e0-ddbc-477a-b83d-9c20c3539a27",
+        "source_role": "derived_navigation_index_not_independent_mechanical_evidence"
+      },
+      {
+        "number": "23 60 00",
+        "title": "Central Cooling Equipment",
+        "nodes_including_branch": 44,
+        "label_id": "6443837a-5388-4d50-937d-e336cf74972b",
+        "index_source_id": "d9fb9dd1-b9e6-4db8-836c-14469ae67021",
+        "source_role": "derived_navigation_index_not_independent_mechanical_evidence"
+      },
+      {
+        "number": "23 70 00",
+        "title": "Central HVAC Equipment",
+        "nodes_including_branch": 45,
+        "label_id": "6bf64710-79a0-4376-84ac-2010fc7922c2",
+        "index_source_id": "c351aef6-657f-4f76-b425-cdd82ed359b3",
+        "source_role": "derived_navigation_index_not_independent_mechanical_evidence"
+      },
+      {
+        "number": "23 80 00",
+        "title": "Decentralized HVAC Equipment",
+        "nodes_including_branch": 63,
+        "label_id": "efb69ff0-ce8f-4e8a-8c89-4271dfc2e85b",
+        "index_source_id": "206e1784-833f-4296-9781-5197e4229376",
+        "source_role": "derived_navigation_index_not_independent_mechanical_evidence"
+      }
+    ]
+  },
+  "reference_libraries": [
+    {
+      "id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "title": "CSI 23 — Takeoff Methods Reference Library",
+      "previous_title": "N10 — HVAC Takeoff Methods",
+      "source_count": 247,
+      "all_baseline_source_ids_preserved": true,
+      "role": "Supporting evidence selected by applicability; does not establish catalogue identity, hierarchy or mechanical rule approval."
+    },
+    {
+      "id": "932527dc-c37a-40ed-89de-4240e8197609",
+      "title": "CSI 23 30 00 — HVAC Air Distribution References",
+      "previous_title": "N11 — Ductwork & Air Distribution",
+      "source_count": 234,
+      "all_baseline_source_ids_preserved": true,
+      "role": "Supporting evidence selected by applicability; does not establish catalogue identity, hierarchy or mechanical rule approval."
+    },
+    {
+      "id": "f7ec321c-1beb-492f-a23f-7e9f5042967a",
+      "title": "CSI 23 20 00 — HVAC Piping and Pumps References",
+      "previous_title": "N12 — Hydronic & Mechanical Piping",
+      "source_count": 45,
+      "all_baseline_source_ids_preserved": true,
+      "role": "Supporting evidence selected by applicability; does not establish catalogue identity, hierarchy or mechanical rule approval."
+    },
+    {
+      "id": "de27662e-a94d-4d30-bbd7-0e084fb02798",
+      "title": "CSI 23 — Equipment and Controls Reference Library",
+      "previous_title": "N13 — Equipment & Controls",
+      "source_count": 30,
+      "all_baseline_source_ids_preserved": true,
+      "role": "Supporting evidence selected by applicability; does not establish catalogue identity, hierarchy or mechanical rule approval."
+    },
+    {
+      "id": "95e2d393-9c12-46d1-97c2-ab8dc4efef39",
+      "title": "CSI 23 05 / 23 07 — Supports and Insulation References",
+      "previous_title": "N14 — Insulation, Supports & Seismic",
+      "source_count": 47,
+      "all_baseline_source_ids_preserved": true,
+      "role": "Supporting evidence selected by applicability; does not establish catalogue identity, hierarchy or mechanical rule approval."
+    }
+  ],
+  "unmapped_references": [
+    {
+      "source_id": "3979ae53-ab5a-4acb-bdd3-16ad87dc535f",
+      "title": "New York State Office of General Services.pdf",
+      "role": "Agency-specific MF24 guide index observed after notebook creation; not added by this task and preserved. Not authoritative full CSI catalogue.",
+      "label_id": "7a27f029-1d53-4a23-a153-1594e767ede5",
+      "label": "Unmapped reference — verification pending",
+      "catalogue_admission": false
+    }
+  ],
+  "verification": [
+    {
+      "source_id": "0f81d186-caf5-4a86-8a70-4a86848756b9",
+      "number": "23 01 00",
+      "expected_count": 11,
+      "indexed_row_count": 11,
+      "exact_rows_match": true,
+      "whitespace_normalized_content_match": true
+    },
+    {
+      "source_id": "8ac68653-a900-45fd-9aa4-43e4115fddde",
+      "number": "23 05 00",
+      "expected_count": 15,
+      "indexed_row_count": 15,
+      "exact_rows_match": true,
+      "whitespace_normalized_content_match": true
+    },
+    {
+      "source_id": "8c2e0e31-d0c9-49f1-921f-6e59dd251d30",
+      "number": "23 06 00",
+      "expected_count": 21,
+      "indexed_row_count": 21,
+      "exact_rows_match": true,
+      "whitespace_normalized_content_match": true
+    },
+    {
+      "source_id": "36168fb0-380c-4a87-b067-e74828359bf7",
+      "number": "23 07 00",
+      "expected_count": 4,
+      "indexed_row_count": 4,
+      "exact_rows_match": true,
+      "whitespace_normalized_content_match": true
+    },
+    {
+      "source_id": "0f1d698a-0c62-4c45-916d-19504dc187c4",
+      "number": "23 08 00",
+      "expected_count": 1,
+      "indexed_row_count": 1,
+      "exact_rows_match": true,
+      "whitespace_normalized_content_match": true
+    },
+    {
+      "source_id": "0b6b3642-47f4-4f69-b390-78dd62cb40b6",
+      "number": "23 09 00",
+      "expected_count": 27,
+      "indexed_row_count": 27,
+      "exact_rows_match": true,
+      "whitespace_normalized_content_match": true
+    },
+    {
+      "source_id": "3678d5af-269a-4169-9ea0-4fdf3627f7f3",
+      "number": "23 10 00",
+      "expected_count": 24,
+      "indexed_row_count": 24,
+      "exact_rows_match": true,
+      "whitespace_normalized_content_match": true
+    },
+    {
+      "source_id": "dedb2685-6a00-4171-b63f-f14552d8362c",
+      "number": "23 20 00",
+      "expected_count": 35,
+      "indexed_row_count": 35,
+      "exact_rows_match": true,
+      "whitespace_normalized_content_match": true
+    },
+    {
+      "source_id": "e457095f-e17f-4970-bb0d-a441ecc3ecda",
+      "number": "23 30 00",
+      "expected_count": 61,
+      "indexed_row_count": 61,
+      "exact_rows_match": true,
+      "whitespace_normalized_content_match": true
+    },
+    {
+      "source_id": "ef56b39e-6c30-485e-a7b5-a16a0711c8f8",
+      "number": "23 40 00",
+      "expected_count": 17,
+      "indexed_row_count": 17,
+      "exact_rows_match": true,
+      "whitespace_normalized_content_match": true
+    },
+    {
+      "source_id": "8d9954e0-ddbc-477a-b83d-9c20c3539a27",
+      "number": "23 50 00",
+      "expected_count": 63,
+      "indexed_row_count": 63,
+      "exact_rows_match": true,
+      "whitespace_normalized_content_match": true
+    },
+    {
+      "source_id": "d9fb9dd1-b9e6-4db8-836c-14469ae67021",
+      "number": "23 60 00",
+      "expected_count": 44,
+      "indexed_row_count": 44,
+      "exact_rows_match": true,
+      "whitespace_normalized_content_match": true
+    },
+    {
+      "source_id": "c351aef6-657f-4f76-b425-cdd82ed359b3",
+      "number": "23 70 00",
+      "expected_count": 45,
+      "indexed_row_count": 45,
+      "exact_rows_match": true,
+      "whitespace_normalized_content_match": true
+    },
+    {
+      "source_id": "206e1784-833f-4296-9781-5197e4229376",
+      "number": "23 80 00",
+      "expected_count": 63,
+      "indexed_row_count": 63,
+      "exact_rows_match": true,
+      "whitespace_normalized_content_match": true
+    }
+  ],
+  "evidence_directory": ".heleos/csi-hierarchy-migration-2026-09-16",
+  "deletions": {
+    "notebooks": 0,
+    "sources": 0,
+    "reason": "Owner requested removal of the agency organizing format. Existing bibliographic evidence retained; active agency work cards removed separately."
+  },
+  "next_action": "Select exact CSI node and relevant full source body for knowledge-dependent implementation; do not query the whole reference library or reconstruct the hierarchy each turn."
+}

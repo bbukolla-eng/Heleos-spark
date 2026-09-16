@@ -1,3 +1,5 @@
+> Historical research snapshot. Its agency-based lineup is superseded by the [CSI master hierarchy](../superpowers/plans/2026-09-16-division23-section-delivery.md). Retained source findings are evidence only; this document does not assign current work.
+
 # Full Division 23 scope audit and proposed work lineup
 
 Execution update, 2026-09-16: the owner requires complete taxonomy and task

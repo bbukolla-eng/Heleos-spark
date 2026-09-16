@@ -1,76 +1,84 @@
 # Current Status
 
 Updated 2026-09-16. Checkout `/Users/bekim/Heleos-spark`, branch `main`.
-**Resume here is the single live queue.** The goal defines the outcome; the section
-register defines coverage; historical receipts and archived “next” lines do not
-assign work. Current priority is **complete Division 23 capability on Mac**.
-Windows delivery remains a separate later milestone.
+**Resume here is the single live queue.** The goal defines the product outcome;
+the CSI register defines scope. Current delivery priority is complete Division 23
+capability on **Mac first**; native Windows delivery follows the connected workflow.
 
 ## Resume here
 
-**Required section work plan:** [Master Division 23 delivery index](docs/superpowers/plans/2026-09-16-division23-section-delivery.md), with **56 individual section plans, 224 named delivery tasks and 1,400 mandatory criterion bindings**. Every matrix/register row links its DEFINE → RESULT/CONNECT → QUALIFY tasks and section-specific case inventory. Read the selected section card, not only this status summary. The [task-contract index](docs/plans/division-23-task-contracts.json) fixes planned deliverables and criteria; live execution remains in the selected task ledger. The optional maintenance-tool plan is not the mechanical work plan.
+**Scope authority:** [Full CSI Division 23 hierarchy and section plans](docs/superpowers/plans/2026-09-16-division23-section-delivery.md).
+The verified **April 2016 CSI/CSC catalogue** contains **432 nodes including the
+Division 23 root, 431 entries below it, and 14 direct branches**. Every node has
+its own card, four planned delivery frames and finite criterion bindings. Read
+only the selected card and required contract subset. The old agency-guide
+organizing format and its 56 active cards have been removed. It is not the live
+scope or a second roadmap.
 
-**Primary: EQUIPMENT-COUNT-1.** Implement the already approved physical-equipment
-counting workflow using E01–E12 and EC01–EC20. Deliver physical-instance,
+**Primary product task: EQUIPMENT-COUNT-1.** Implement the already approved
+physical-equipment workflow under E01–E12 and EC01–EC20, with physical-instance,
 package/procurement and installation quantities, known-plus-unknown results,
-correction/recalculation, reopening/history and source-linked exports on Mac.
+correction/recalculation, reopening/history and source-linked Mac exports.
 
-**Next executable action:** bind the [approved cases](tests/fixtures/equipment-takeoff/2026-09-16-owner-decision.json)
+**Next executable action:** bind the [approved equipment cases](tests/fixtures/equipment-takeoff/2026-09-16-owner-decision.json)
 and [verified findings](docs/research/notebooklm/equipment-counting-findings-2026-09-16.json)
-to the current interfaces, sole-writer code/test paths and named connected
-correction/reopen/export cases in the implementation brief; then implement.
-This is normal scoped preparation, **not another rule approval or a new equipment
-research project**. Reuse accepted source, calculation, reconciliation and export
-components. Original-source recognition has its own qualification contract.
+to current interfaces, sole-writer code/test paths and the connected
+correction/reopen/export expectations. Map supported outcomes to their exact CSI
+scope without inventing an agency-to-CSI equivalence. Then implement the bounded
+connected capability. This is ordinary implementation preparation; the approved
+rules do not require another approval. Equipment is shared support, not the full
+Division 23 scope or a prerequisite for every section.
 
-| Independent work | Next deliverable / actual prerequisite |
+| Independent work | Finite next deliverable and actual prerequisite |
 | --- | --- |
-| EVIDENCE-PDF-1 | Freeze specimen rows, source destinations and unknown/stale display for supported results; connect consolidated evidence PDF. No dependence on successful new recognition. |
-| Full section taxonomy and rule preparation | Use each row's full source scope and [completion address](docs/plans/division-23-completion-matrix.md). Select a bounded deliverable; verify source passages and define expected cases. Do not promote all template slots to assignments. |
-| D23-CSI-CATALOGUE-1 | Obtain an authorized complete edition-specific hierarchy and reconcile guide mappings. Missing catalogue blocks the full-coverage claim, not known-scope implementation. |
-| DELIVERY-LEDGER-1 / DELIVERY-VIEW-1, optional parallel maintenance | Implement the [two bounded read-only tooling tasks](docs/superpowers/plans/2026-09-16-division23-delivery-maintenance.md) on non-overlapping paths. These are planned tools, not product prerequisites or an installed scheduler. |
+| Selected CSI section DEFINE | Verified full mechanical taxonomy and independent expected cases for that section's selected behavior; use its linked card and applicable source bodies. Catalogue titles alone do not satisfy mechanical definition. |
+| EVIDENCE-PDF-1 | Freeze specimen results/source destinations and unknown/stale presentation; connect the consolidated evidence PDF using accepted supported outputs. |
+| CSI-CATALOGUE-2026-RECONCILE | Obtain an authorized complete newer-edition catalogue and record exact additions, removals and hierarchy changes against 2016. This blocks a current-edition completeness claim, not work under verified scope. |
 
-**Parked:** AIR-DEVICE-COUNT-1-RECOGNITION requires a materially different bounded
-experiment and frozen metrics after eight terminal runs; AC01 returned 0 physical
-symbols against 3 expected. Its accepted software child stays closed. Claude's
-last dispatch reported expired authentication; retry only with changed login
-state, or use the authorized Codex fallback. No Claude Code invocation was started
-by this planning task.
+**NotebookLM entrypoint:** [CSI Division 23 notebook](https://notebooklm.google.com/notebook/53cebee4-b959-406d-930c-fc697a3d9e61),
+with the primary catalogue and 14 indexed branches. The [current routing record](docs/research/notebooklm/csi-division23-routing.json)
+records source/label IDs and the five renamed reference libraries. Guide
+publishers are evidence providers; their inventories do not define section
+identity or product coverage. All previous reference source IDs remain intact.
 
-A missing input blocks only its dependent output. Duct and air-device acceptance
-never gate unrelated mechanical sections. Initial class priority does not create
-a universal serial dependency. The owner's hydronic illustration selected no
-priority or permanent worked example. Cancelled 4specs adoption remains cancelled.
+**Parked:** AIR-DEVICE-COUNT-1-RECOGNITION needs a materially different bounded
+experiment and frozen metrics after eight terminal runs; AC01 found 0 of 3
+physical symbols. Its accepted software child stays closed. Claude's fresh
+contained request failed with expired OAuth even though the CLI reported logged
+in; the migration validator used the authorized Codex fallback. Do not repeat
+that provider request without a changed usable login state.
 
-## Full section coverage and finite completion
+A missing prerequisite blocks only its dependent behavior. Duct/air-device
+acceptance never gates unrelated sections. The owner's hydronic illustration
+selected no priority or permanent example. Cancelled 4specs adoption remains
+cancelled. Do not replay this completed structure migration or turn its checker
+into a recurring status-only task.
 
-The [register](docs/plans/division-23-section-register.json) and [completion matrix](docs/plans/division-23-completion-matrix.md)
-list **56 known agency guides: 52 UFGS and 4 VA**, with **448 planned coverage
-slots**, 224 explicitly planned delivery contracts and zero accepted sections. DEFINE source-definition actions are available; dependent implementation consumes only their ready scoped outputs. This is not
-yet the complete verified CSI section/subsection hierarchy. The original 448 coverage addresses are not executable assignments; use the linked four delivery contracts and named acceptance criteria for each section.
+## Coverage and completion
 
-Every section requires its complete declared types, variants, attributes,
-relationships, exclusions, services and child scope. The matrix includes common
-work, cleaning, testing/balancing/commissioning, insulation, controls, fuel,
-piping/pumps, air distribution/cleaning, heating/cooling plant, central and
-terminal/decentralized equipment. Titles are source-verified; most full taxonomies
-are still open. Do not invent missing CSI numbers or parentage.
+The [CSI register](docs/plans/division-23-section-register.json),
+[task frames](docs/plans/division-23-task-contracts.json) and
+[completion matrix](docs/plans/division-23-completion-matrix.md) now share the same
+CSI hierarchy. **432 cards and 1,728 task frames are planned coverage, not 1,728
+ready assignments. Zero mechanical sections are accepted.** DEFINE freezes
+applicable source bodies, full taxonomy, rules, independent expected results,
+numerical tolerances, interfaces and exact implementation checks before dependent
+work. The 2016 classification baseline is complete for that edition; it is not
+claimed to be the complete 2026 catalogue.
 
-**Task complete:** its fixed mandatory criteria pass for recorded bytes,
-independent review accepts the defined deliverable, and integration/evidence are
-recorded. An expected UNKNOWN passes only its named case. Optional improvements
-become separate tasks; no recurring owner approval is needed for authorized work.
+A task is complete when its frozen mandatory criteria pass for the recorded
+bytes, independent review accepts that deliverable, and integration/evidence and
+the next action are recorded. Expected UNKNOWN passes only its named case.
+Optional improvements get separate tasks. No recurring owner approval is needed
+within existing authority.
 
-**Section complete:** SC01–SC08 cover its full declared taxonomy, evidence, rules,
-quantities/obligations, reconciliation, corrections/reopening, Excel/evidence PDF
-and frozen representative Mac acceptance. These are eight coverage dimensions,
-not eight compulsory worker assignments or reviews per taxon. Shared helpers can
-satisfy scoped cells but cannot close a whole section by themselves.
-
-Follow [acceptance](docs/operations/acceptance.md), the [delivery structure](docs/superpowers/specs/2026-09-16-division23-delivery-structure.md)
-and [section work breakdown](docs/plans/division-23-section-work-breakdown.md).
-Freeze the selected task's contract; do not wait for all 448 definitions. Bind
-actual dependencies to producer/output/scope, not completion of an entire category.
+A section is complete when SC01–SC08 cover its entire required own taxonomy and
+children: source evidence, approved rules, supported quantities or service
+obligations, reconciliation, corrections/reopening, Excel/evidence PDF and a
+frozen representative Mac dossier. Parent nodes reuse accepted child evidence;
+they do not demand repeated child review. Shared software and project-specific
+absence cannot close a whole section. Follow [acceptance](docs/operations/acceptance.md)
+and the [section work breakdown](docs/plans/division-23-section-work-breakdown.md).
 
 ## Accepted capabilities and remaining product work
 
@@ -83,7 +91,7 @@ actual dependencies to producer/output/scope, not completion of an entire catego
 | Air-device software | Approved A01–A12 calculation, producer transport, review/correction/reopen/history and source exports | Recognition child parked; software acceptance is preserved |
 | Equipment | E01–E12/EC01–EC20 approved; draft tag review exists | Primary connected physical counting task above |
 | Estimator output | Source-linked Excel/formulas with supported result projection and local package checks | Consolidated evidence PDF, desktop spreadsheet/representative estimator proof |
-| Remaining Division 23 | Known sections have explicit coverage addresses | Every unfinished required taxonomy and connected behavior stays open |
+| Remaining Division 23 | Every CSI baseline node has a linked task and acceptance card | Every unfinished required taxonomy and connected behavior stays open |
 | Platform/product | Mac implementation and local verification; portable shared code | Later WINDOWS-DELIVERY-1, representative product and final owner release acceptance |
 
 The [terminal checkpoint](docs/operations/delivery-checkpoint-2026-09-16.json)
@@ -94,41 +102,38 @@ and Mac/Windows product acceptance remain outstanding.
 
 ## Latest checkpoint and continuity
 
-**DIV23-SECTION-CONTRACTS-1:** planning base
-`5e6beb8add22ba161858bdd3a32b48444591c557` in this main checkout. Delivered the master
-section plan, 56 individual plans, 224 named delivery contracts and 1,400 mandatory
-criterion bindings. Every section has named case subjects, output dependencies,
-exact artifact/test paths, check procedures and finite completion records.
-Registry/matrix/goal/policy links now lead directly to these section tasks.
+**CSI23-HIERARCHY-MIGRATION-1**, base
+`1adf57af329c3d228db83703b75638fcba39ef18`, main checkout above:
+replaced the 56-guide active format with the verified CSI hierarchy, cards,
+contracts and matrix; updated goal/instructions/research routing; created the
+CSI NotebookLM index and renamed five supporting libraries. Public-source
+additions, note/label changes and readbacks are recorded in
+`.heleos/csi-hierarchy-migration-2026-09-16/` and the
+[CSI research record](docs/research/notebooklm/csi-division23-findings-2026-09-16.json).
+No accepted application code or approved calculation rule was changed. Historical
+agency-source receipts remain evidence, not active planning instructions.
 
-One public-source NotebookLM query reused retained bodies; six supporting
-planning findings were verified. Generated labor-hour, blanket trade-allocation,
-insulation-override and ERP-blocking suggestions were rejected. The recorded
-source map locates candidate guide sources for 35 rows and retained indexed text
-for 11; no additional taxonomy or source fidelity is claimed from retention.
-Existing source identities, approved mechanical rules, all coverage slots and
-accepted code remain unchanged. No application or planned maintenance tool was
-implemented; no section is claimed accepted.
+The read-only `scripts/verify-csi-division23.py` checks schema, CSI identities,
+parent/child consistency, task/criterion bindings and card paths. Its 28 focused
+positive/negative tests and live structure validation pass independently. Source
+verification compared all 432 ordered identities/pages and titles with the
+publisher PDF; NotebookLM readbacks match every branch row. Final migration
+review/integration evidence is recorded in
+`docs/operations/csi-hierarchy-migration-2026-09-16.json`.
 
-Verification and live task evidence: `.heleos/div23-section-planning-2026-09-16/`.
-Structural checks cover all section/task/criterion/output bindings, source
-identity preservation, local links, exact entrypoints and preserved unrelated
-work. Three comparison-example tests pass; these are planning examples, not
-mechanical or product qualification. Code-level section instructions and numeric
-oracles are explicit DEFINE outputs before their dependent implementation.
-Next product action: EQUIPMENT-COUNT-1's approved connected implementation packet;
-independent section DEFINE and evidence-PDF work may advance by actual inputs.
+Current-edition reconciliation, full mechanical definitions/implementations,
+representative acceptance and later Windows delivery remain outstanding. The
+catalogue reference is admitted for this internal planning/research; commercial
+redistribution permission is not established. The next product action is the
+approved equipment implementation packet above; independent CSI definitions and
+evidence-PDF work may advance by actual required inputs.
 
-The preceding coordination correction at `5e6beb8` remains accepted. Its exact
-prior status archive and terminal workbook/air-device receipts remain linked
-above; do not repeat that audit or optional maintenance work as a substitute for
-this section lineup.
-
-`get_goal` returned **null** during this checkpoint; older paused-goal prose is
-historical. The [stable goal text](docs/operations/build-goal.md) was updated only
-in the repository. No goal or automation was created, resumed or completed. No
-verified hook trace establishes the repeated-work cause. `active-build-status.py`
-checks committed Git checkout authority; it does not choose or schedule work.
+No goal, automation or hook was created or changed. The repository goal was
+amended; no running app goal is claimed. `active-build-status.py` validates
+committed checkout/worktree authority and does not schedule the build. Read
+status again for changed bytes, handoff or recovery; unchanged rereads are not
+progress. Earlier exact checkpoints remain in Git history and the
+[historical status archive](docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md).
 
 <!-- active-build-authority:v1 -->
 ```json
@@ -136,8 +141,6 @@ checks committed Git checkout authority; it does not choose or schedule work.
 ```
 <!-- /active-build-authority -->
 
-This authority block tracks registered development worktrees, not child processes.
-Before handoff, record each terminal result and next action, update the queue in
-the same completion commit, and proceed to unfinished product work. Read status
-again only on changed bytes, handoff or context recovery; unchanged rereads are
-not progress. Detailed older checkpoints remain in the linked archive.
+The authority block tracks registered development worktrees, not child processes.
+Record each terminal worker result and advance the live action in the same
+completion checkpoint.

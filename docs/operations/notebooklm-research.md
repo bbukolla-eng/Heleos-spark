@@ -6,6 +6,16 @@ relevant sources, query them for requirements and exceptions, and verify useful
 claims against their supporting text. The owner's approved rules, source evidence
 and deterministic calculation code retain authority.
 
+## Current CSI organization
+
+The [current routing inventory](../research/notebooklm/csi-division23-routing.json) supersedes title-based N10/N11 routing below. Start at **CSI Division 23 — Sections, Subsections & Takeoff Research** (`53cebee4-b959-406d-930c-fc697a3d9e61`). Its primary CSI/CSC catalogue and 14 source-backed branch indexes cover every published Division 23 entry in the verified April 2016 baseline. Branch indexes are derived navigation notes, not independent evidence or mechanical rules. Reconciliation with newer editions remains explicit.
+
+Use exact CSI number, title, parent and edition for research and implementation. The [CSI findings record](../research/notebooklm/csi-division23-findings-2026-09-16.json) pins the source, hierarchy checks, notebook query and rejected level-label claims. Reference libraries may contain agency publications, but neither their guide numbers nor their inventories determine section coverage. The prior guide-based work format has been removed from the active plan. Preserve source identities and accepted implementation evidence; do not relabel agency text as CSI authority.
+
+For a selected CSI section, search the canonical branch index, then select applicable full reference bodies from the routed libraries and verify their passages. Missing body evidence creates a scoped definition task; it does not reopen the catalogue migration or block unrelated ready work. Do not refill notebooks merely because their titles changed.
+
+## Historical inventories and expansion
+
 The initial [inventory](../research/notebooklm/notebook-inventory.json) records
 59 notebooks returned on 2026-09-14. It includes source IDs for N10 HVAC Takeoff
 Methods, N11 Ductwork & Air Distribution, and N05 Drawing Intelligence. Topics are
