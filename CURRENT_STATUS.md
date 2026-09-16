@@ -55,6 +55,16 @@ capabilities. No new duct refinement is a prerequisite without a blocking defect
 
 ## Live work and evidence
 
+- WORKBOOK-EXPORT-1 is in progress at base
+  `4f0ca41ffd00bbd828cd8d83ad4d843cc2ad2c94`. The connected workbook
+  [contract](docs/superpowers/specs/2026-09-16-takeoff-workbook-contract.md) and
+  [verified research](docs/research/notebooklm/workbook-export-findings-2026-09-16.json)
+  are prepared for a bounded Claude writer assignment. NotebookLM ZIP passages
+  and primary SpreadsheetML documentation were checked; previous source-link and
+  rounding findings were reused. Implementation and workbook verification remain
+  pending. Current ledger: `.heleos/workbook-export-2026-09-16/`.
+  Next action: dispatch the two-file writer and connect the takeoff projection on
+  non-overlapping paths. Air-device recognition remains open as recorded below.
 - Accepted attribute/policy prerequisite: `f2a12387bc1d73406949867f233acb3322193f26`;
   [implementation record](docs/research/notebooklm/air-device-attributes-implementation-2026-09-16.json).
   Accepted duct evidence remains in `.heleos/duct-topology-2026-09-15/`; all18
