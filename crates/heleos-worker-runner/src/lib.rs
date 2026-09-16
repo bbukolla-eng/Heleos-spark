@@ -71,6 +71,9 @@ pub struct RunnerConfig {
     /// Opt-in cleanup of this run's identity-checked directory after failure.
     pub cleanup_on_failure: bool,
     pub containment: ContainmentMode,
+    /// Controller-supplied approval of exact raw INTERNAL Claude task bytes.
+    /// Never derive this from untrusted task content or use without owner authority.
+    pub approved_internal_task_sha256: Option<String>,
 }
 impl RunnerConfig {
     pub fn new(
@@ -88,6 +91,7 @@ impl RunnerConfig {
             max_output_bytes: 65_536,
             cleanup_on_failure: false,
             containment: ContainmentMode::None,
+            approved_internal_task_sha256: None,
         }
     }
 }
@@ -197,6 +201,7 @@ pub struct RunResult {
     pub elapsed_milliseconds: u128,
     checkout: PathBuf,
     containment: ContainmentMode,
+    approved_internal_task_sha256: Option<String>,
 }
 impl RunResult {
     pub fn checkout_path(&self) -> &Path {
@@ -209,6 +214,7 @@ impl RunResult {
             "handoff": self.handoff.document(), "changed_files": self.changed_files,
             "provider_exit_code": 0, "provider_invocations": 1,
             "internal_provider_actions_attested": false, "elapsed_milliseconds": self.elapsed_milliseconds,
+            "approved_internal_task_sha256": self.approved_internal_task_sha256,
             "containment": {
                 "mode": self.containment,
                 "host_path_writes_restricted": self.containment != ContainmentMode::None,
@@ -228,13 +234,27 @@ impl RunResult {
 
 /// Validate and preserve the original JSON representation before local execution.
 pub fn run_json(input: &[u8], config: &RunnerConfig) -> Result<RunResult, RunError> {
-    let task = heleos_worker_protocol::validate_task_json(input)
-        .map_err(|_| RunError::new(FailureCode::InvalidTask))?;
+    let task = validate_for_run(input, config)?;
     run_inner(&task, input, config)
 }
 /// Execute an immutable validated assignment; retain its canonical representation.
+/// An internal approval here must bind those canonical bytes, not another encoding.
 pub fn run(task: &Validated<Task>, config: &RunnerConfig) -> Result<RunResult, RunError> {
+    // A prevalidated task cannot carry authorization across controller contexts.
+    validate_for_run(task.canonical_json(), config)?;
     run_inner(task, task.canonical_json(), config)
+}
+
+fn validate_for_run(input: &[u8], config: &RunnerConfig) -> Result<Validated<Task>, RunError> {
+    if let Some(approval) = &config.approved_internal_task_sha256 {
+        if config.containment == ContainmentMode::None {
+            return Err(RunError::new(FailureCode::InvalidConfiguration));
+        }
+        heleos_worker_protocol::validate_task_json_with_internal_claude_approval(input, approval)
+    } else {
+        heleos_worker_protocol::validate_task_json(input)
+    }
+    .map_err(|_| RunError::new(FailureCode::InvalidTask))
 }
 
 #[cfg(not(any(unix, windows)))]
@@ -287,6 +307,9 @@ fn run_inner(
         owned.write("task.original.json", original)?;
         owned.write("task.canonical.json", task.canonical_json())?;
         owned.write("task.sha256", task.digest().as_bytes())?;
+        if let Some(approval) = &config.approved_internal_task_sha256 {
+            owned.write("approved-internal-task.sha256", approval.as_bytes())?;
+        }
         containment::validate(config.containment)?;
         #[cfg(windows)]
         let writable_roots = containment::prepare_windows_roots(&run_directory)?;
@@ -457,6 +480,7 @@ fn run_inner(
             run_directory: run_directory.clone(),
             elapsed_milliseconds: started.elapsed().as_millis(),
             containment: config.containment,
+            approved_internal_task_sha256: config.approved_internal_task_sha256.clone(),
         })
     };
     match work() {
@@ -673,6 +697,7 @@ mod evidence_tests {
                 elapsed_milliseconds: 0,
                 checkout: PathBuf::from("synthetic-run/checkout"),
                 containment: serde_json::from_value(serde_json::json!(mode)).unwrap(),
+                approved_internal_task_sha256: None,
             };
             assert_eq!(
                 result.summary()["containment"],

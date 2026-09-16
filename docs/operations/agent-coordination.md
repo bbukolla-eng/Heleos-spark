@@ -94,7 +94,15 @@ The CLI returns one `heleos.worker-validation/v1` envelope on standard output fo
 
 Task schema `heleos.worker-task/v1` binds `task_id`, `provider`, `mode`, `base_commit`, `objective`, `allowed_paths`, `forbidden_paths`, `input_data_class`, `egress_policy`, `instruction_sha256`, `acceptance_commands`, and `limits`. Limits contain nonzero `max_actions` and `max_duration_seconds`. Unknown fields are rejected. Keep paths portable, project-relative, sorted, and unique; a path entry covers its component-boundary descendants, and forbidden paths take precedence. Keep acceptance commands ordered and unique. Instructions map project-relative paths to lowercase SHA-256 values; the base is exactly 40 lowercase Git hexadecimal characters.
 
-`SECRET` input is rejected. `INTERNAL` and `PROJECT_CONFIDENTIAL` require `local_only`; `PUBLIC` can use `local_only` or `approved_external` with the explicit packet provider. A packet's declared policy does not independently grant provider approval or prove network isolation.
+`SECRET` input is rejected. Default validation requires `local_only` for
+`INTERNAL` and `PROJECT_CONFIDENTIAL`; `PUBLIC` can use `local_only` or
+`approved_external`. A controller with independently recorded owner authorization
+may supply `--approved-internal-task-sha256` for an exact INTERNAL Claude task
+using approved_external. This exception binds raw task bytes, is separate from
+packet contents, and is rejected for other providers/classes/policies. The runner
+requires containment and retains the approval digest. See the
+[internal Claude contract](claude-code-headless.md#owner-authorized-internal-claude-tasks).
+A packet or digest alone does not grant owner approval or prove network isolation.
 
 Handoff schema `heleos.worker-handoff/v1` binds `task_digest`, `provider`, `terminal_state`, `changed_paths`, `checks`, optional/null `candidate_commit`, and `unresolved_items`. Each check contains `command`, `exit_code`, and `output_sha256`. Terminal states are `completed`, `blocked`, `failed`, and `cancelled`. A completed handoff contains every acceptance command in the original order, all with exit code zero, and no unresolved items. Other terminal states require an unresolved item and may report an ordered subset of checks. Validate the handoff against the original task: its provider and task digest must match, and every changed path must remain inside the task scope after forbidden paths are applied. Use JCS canonical bytes for protocol digests; a hash of the indented JSON file is a different identity. Editing a task requires a new digest and a reconciled handoff.
 

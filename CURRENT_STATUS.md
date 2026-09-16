@@ -1,4 +1,1059 @@
-# Current repository status
+# Current Status
+
+Claude build authorization (2026-09-15, CLAUDE-INTERNAL-AUTHORIZATION-1):
+implemented, independently reviewed and accepted locally in
+/Users/bekim/Heleos-spark on main, starting from
+adcdd2934fa39bd0712c15a7bab74060838b2ae9. The owner completed Xcode's license flow;
+the pinned locked/offline runner build now succeeds. Claude 2.1.261 reports an
+authenticated claude.ai session. No provider has yet received this task.
+
+The controller can authorize one INTERNAL Claude task using a separate SHA-256
+of its exact raw task file. Default validation still rejects unapproved internal
+external submissions. Confidential/secret input remains rejected; the exception
+requires containment and retains its digest. Changed task bytes require renewed
+controller verification. Strict parsing, exact source/instruction identities,
+allowed-path inventory and limits remain active. This implements the owner's
+standing bounded delegation instruction, not a blanket egress exception.
+
+All 65 protocol/runner tests pass with the pinned Rust toolchain and locked/offline
+dependencies, including native Mac containment checks. Fresh runner/protocol builds,
+formatting and diff checks pass. Independent review reports no actionable finding.
+The first reviewer failed to start due to its configured unsupported model; the
+replacement read-only review completed. Original build, rejected policy preflight
+and two development compile failures remain retained. No native Windows acceptance
+is claimed. Ledger: .heleos/claude-headless-build-2026-09-15/, especially
+internal-authorization-verification.json and internal-authorization-review.json.
+
+DUCT-CURVE-DISTANCE-1 is prepared as the first circular/span evaluation dependency:
+Claude owns only scripts/duct_curve_distance.py and its named test file. Codex
+owns independent checks, integration and commits. NotebookLM verified four public
+indexed sources/five passages with five logged external calls; the packet flags
+unsupported sagitta/connectivity claims and distinguishes context from the local
+mathematical derivation. Existing standalone geometry passes 16 tests each on
+Python 3.14.6 and 3.12.14. Codex's 78 closed-form reference cases pass their reference
+self-checks on both runtimes. No curve-distance implementation is accepted yet.
+Research: docs/research/notebooklm/duct-curve-distance-findings-2026-09-15.json.
+Plan: docs/superpowers/plans/2026-09-15-duct-curve-distance.md.
+
+This local checkpoint includes the reviewed authorization route, standing workflow,
+source-backed packet and existing pure geometry prerequisite/test. Other prior
+product implementation remains uncommitted and preserved. Quantity rules and the
+full Division 23 Mac/Windows goal remain unchanged and unfinished.
+
+Next: dispatch the exact-base two-file Claude assignment, independently test and
+review its candidate, and connect circular/span and topology evaluation in order.
+All preparation/review/build processes are terminal; no worker is running.
+
+Retained circular checks across drawing revisions (2026-09-15,
+DUCT-ARC-REVISION-1): implementation finished, independently reviewed and locally
+integrated uncommitted in /Users/bekim/Heleos-spark, main base/live HEAD
+adcdd2934fa39bd0712c15a7bab74060838b2ae9. Prior completed work and exact checkpoint
+bytes were verified before edits. The known uncommitted_authority routing result
+was reconciled without Git mutation; no earlier task was restarted.
+
+Drawing replacement now requires an explicit mapping, unresolved decision or
+source-backed retirement for every saved circular check. Current applicability
+uses the new drawing's own geometry and verified scale while preserving immutable
+original readings and source history. Later review supports planar and multiple
+dependent targets, source-supported circular intervals, foreign-page evidence,
+affected recalculation and sealed export/reopen history. Shared checks cannot be
+released by partial selection or a family-local edit that omits another current
+page. Approved D05 conflicts, D07 rounding and D08 identity remain authoritative.
+
+Root final verification passed 475 Python 3.14.6 tests with 182 frozen inputs stable;
+159 UI tests passed. Bundled Python 3.12.14 passed 7 final affected checks after the
+review fixes; its earlier 69-test run passed on pre-fix bytes and is retained
+separately. No final full 3.12 run is claimed. Python 3.9 remains unavailable through
+the installed Xcode license gate (prior exit 69); no license action or retry.
+Independent review closed two scope findings, and root's real-producer evidence
+finding is fixed. No scoped review finding remains open.
+
+Native Mac attempt01 passed four original synthetic lifecycle groups using actual
+Foundation/Poppler with inert v2 responses. R0 Q1 measures 6.28 ft; R1's independently
+calibrated Q1 measures 9.42 ft (2.872672 stored meters). U1 remains 4.00 ft. The separate
+half-arc check measures 1.436336 m without adding quantity. Unresolved save/reopen,
+old-value D05 conflicts, explicit corrections, source/check retirement, seven
+later events, replay/rejection atomicity, source history, ZIP and final reopen all
+passed. Root verified 30 artifacts, 29 runtime pins, 4 source pins and all 3 actual
+source renders. A source-only last-decimal typo was corrected before product use;
+the original draft and failed preflight remain preserved. This synthetic proof
+does not establish representative-project or live-model accuracy.
+
+A separate 58-payload preview passed exact source/folder/archive closure, 14
+isolated imports and Mac readiness. Native runtime bytes match the package; a
+new relocation lifecycle was not rerun. 339 protected earlier package, approved
+rule, model-adapter and owner-review XLSX/PDF files remain unchanged.
+Candidate: output/workspace-package/Heleos-preview-arc-revision-candidate.zip
+SHA-256: bfa378467d82fa9fb0e44aeb598c091f275969b97a01594817771adb6dbacda7
+Package ID: workspace_94c62ab276417dc366f26c8428b9819c05f174e6f1b74b502d50da798681fbf3
+
+NotebookLM research reused six verified source bodies/eight passages and the
+existing bounded query, with zero new external submissions. Exact source-to-code/
+test adoption and unadopted conflicts are recorded in
+docs/research/notebooklm/duct-arc-revision-implementation-2026-09-15.json.
+Plan: docs/superpowers/plans/2026-09-15-duct-arc-revision.md.
+Ledger and exact checks/hashes: .heleos/duct-arc-revision-2026-09-15/root-handoff.json.
+Native receipt: .heleos/duct-arc-revision-native-2026-09-15-attempt-01/duct-arc-revision-verification.json.
+All task workers and verification processes are terminal. No private upload,
+model/listener retry, Git mutation, account change or publication occurred.
+
+Next: add circular/span and topology-aware evaluation metrics to the existing
+planar evaluation workflow. Other curves, pending air-device and final export
+approvals, remaining mechanical categories, Python 3.9, representative projects and
+native Windows/NTFS remain outstanding. The full Division 23 Mac/Windows app goal
+is active and unfinished. Earlier checkpoints below retain their historical
+results and then-current next actions; this checkpoint supersedes their
+cross-revision retained-check limitation.
+
+Saved circular family correction (2026-09-15, DUCT-ARC-REPARTITION-1):
+implementation finished, independently reviewed and locally integrated uncommitted
+in /Users/bekim/Heleos-spark, main base/live HEAD
+adcdd2934fa39bd0712c15a7bab74060838b2ae9. The commit after the historical 47d7c5b
+checkpoint adds only Claude delegation documents; earlier build work is preserved.
+The known active-build uncommitted_authority result was reconciled against the
+exact live checkout and recorded working state without Git mutation.
+
+Saved circular roots and size boundaries can now be corrected together, including
+removing every cut. Every consumed dimension/radius check requires an explicit
+retained, reassigned, unresolved or source-backed not-applicable decision. Original
+measurement intervals remain separate checks without creating extra quantities.
+Unresolved checks block dependent quantities and can later be resolved in the
+same editor. Source links, foreign-page applicability, affected recalculation,
+physical-correspondence review and sealed before/after history remain connected.
+Approved D05 conflicts, D07 rounding and D08 identity decisions remain authoritative.
+
+Root final verification passes 456 Python 3.14.6 tests with 173 frozen inputs
+stable, and 134 UI tests. Python 3.12.14 coverage comprises 413 unaffected passes
+from the initial full run plus 43 fresh affected scorer/evaluation passes after
+the dependency fix; this is not a single final full-suite run. Both initial
+Python runs exposed the same missing explicit scorer dependency and retain their
+13-error results. The exact dependency addition passed independent source-loader
+and evaluation-boundary review. Independent family review also closed legacy
+mutation bypass and unchecked-history findings; no scoped finding remains open.
+Python 3.9 did not start (installed Xcode license gate, exit 69); its verification
+remains outstanding. No license acceptance or alternate Xcode entrypoint occurred.
+
+Native Mac proof passed four original synthetic scenarios using actual
+Foundation/Poppler and inert v2 responses. A moved size boundary measures
+1.130558 m and 0.784557 m while retaining the old 0.957557 m interval solely as a
+check. Zero cuts, root correction, unresolved save/resolution, unchanged unrelated
+ducts, producer/raw source retention, history, draft ZIP and reopen passed. Root
+independently checked the literal truth and actual source render, all 16 artifacts,
+28 runtime pins and four source pins. This does not establish live-model or
+representative-project accuracy. The scorer fix is separately verified; scoring
+was not exercised by this native takeoff fixture.
+
+A separate 56-payload preview passed source/folder/archive closure, 13 isolated
+packaged imports and Mac readiness. The native takeoff runtime bytes match this
+package; a new relocation lifecycle was not rerun. Four earlier package folders/
+archives, approved rules, model adapters and owner-review XLSX/PDF are preserved.
+The first repartition package is retained but superseded by the corrected v2:
+output/workspace-package/Heleos-preview-arc-repartition-candidate-v2.zip
+SHA-256: cfa23ed7a551ca7ddd85da10d6a878b41713a31a3e057891fe63e4e3cd6f750e
+Package ID: workspace_65558aedf44181578b15111959cc1f4c339c9e6667ef97e54d893a7c5163569d
+
+NotebookLM research reused seven verified bodies and fifteen passages with zero
+new external submissions. Source-to-code/tests and rejected claims are recorded
+in docs/research/notebooklm/duct-arc-repartition-implementation-2026-09-15.json.
+Plan: docs/superpowers/plans/2026-09-15-duct-arc-repartition.md.
+Ledger and exact checks/hashes: .heleos/duct-arc-repartition-2026-09-14/root-handoff.json.
+Native receipt: .heleos/duct-arc-repartition-native-2026-09-15-attempt-03/duct-arc-repartition-verification.json.
+All task workers and verification processes are terminal. No private upload,
+model/listener retry, Git mutation, account change or publication occurred.
+
+Next: add explicit retained-check disposition and mapping across source revisions.
+Such revisions of newly corrected families currently fail closed with
+duct_revision_arc_checks; existing pre-obligation revision flows remain available.
+Arc/topology evaluation metrics, other curves, pending air-device and final export
+approvals, remaining mechanical categories, Python 3.9, representative projects
+and native Windows/NTFS remain outstanding. The full Division 23 Mac/Windows goal
+is unfinished; its app goal record currently reports usageLimited. Earlier
+checkpoints below describe retained versions and their then-current next actions.
+
+Circular duct size-change splitting (2026-09-14, DUCT-ARC-SPLITTING-1):
+implementation finished, independently reviewed and locally integrated uncommitted
+in /Users/bekim/Heleos-spark, main base/live HEAD
+47d7c5b139b0ea22f661b5668021d53b3f3d51af. Approved D03/D06 now connect supported
+circular centerlines to source-backed size/group boundaries. Derived portions keep
+the original circle and exact directed interval; nested splits retain their
+parent radius, whole-length and graphic obligations. Explicit rereads, group/
+evidence correction, parent repair, affected recalculation and source history
+remain connected. D05 conflicts and D07 stored-meter rounding remain authoritative.
+
+Root final checks passed 442 tests on each of Python 3.14.6 and 3.9.6 with
+all 163 frozen input hashes stable, plus 118 UI tests. Independent geometry
+review passed 1,934 assertions per runtime and 104 outward length certificates;
+independent engine review passed 16 probes. UI review closed crop-offset rounding
+and admitted Unicode decimal-display findings; its earlier exponent-limit claim
+was corrected to distinguish sheet-coordinate and duct-observation contracts.
+Original v1/v2 input contracts, model adapters and planar-only evaluation remain
+unchanged; models cannot emit derived portion or quantity authority.
+
+Native Mac verification passed using the frozen original two-page size-change PDF,
+actual Foundation/Poppler and inert v2 responses. Root inspected both actual source
+renders. Quarter 45+45 and major 45+90+135 portions sum stored meters to 7.660458 and
+display 25.13 ft. Separate parent checks remain 1.915115 m and 5.745345 m; no residual is
+allocated to force rounded child sums to equal rounded parent lengths. Nested
+reread, conflict/repair, graphics, rejection atomicity, history, draft ZIP and
+reopen passed. The rotated repeated Q1 used a separate project. This proves the
+original synthetic lifecycle, not representative-project or live-model accuracy.
+
+A separate preview with 53 payload files passed source/folder/archive closure,
+isolated imports and Mac readiness. Its Python application bytes match the native
+flow; a new package relocation lifecycle was not rerun. All three previous package
+folders/archives and the pending owner-review XLSX/PDF remain byte-preserved.
+Candidate: output/workspace-package/Heleos-preview-arc-splitting-candidate.zip
+SHA-256: e3367774356461d2bca657b911a116f4abab1ca8f0ff96574fdc73a465b62845
+Package ID: workspace_1f6cfbce6623e907d6a06b4d5628b2ae8a862a19e024d1dc4ad910440e5ec9bf
+
+NotebookLM used one bounded N05 query, two reused indexed bodies and eleven verified
+passages; the before/after submission pair and rejected claims are preserved.
+Source-to-code/tests: docs/research/notebooklm/duct-arc-splitting-implementation-2026-09-14.json.
+Task ledger: .heleos/duct-arc-splitting-2026-09-14/.
+Native receipt: .heleos/duct-arc-splitting-native-2026-09-14-attempt-1/duct-arc-split-verification.json.
+All task workers and verification processes are terminal. The known active-build
+uncommitted_authority routing result is reconciled with the exact live checkout;
+no reset, Git mutation, private upload, model/listener retry or publication occurred.
+
+Next: atomic same-page family repartition so already-saved arc size boundaries can
+be corrected with explicit reading disposition and intact history. Reuse recorded
+findings; query and verify new source evidence when needed. Saved-family movement,
+arc/topology metrics, other curves, air-device and final export approvals, remaining
+mechanical categories, representative projects and native Windows/NTFS stay open.
+The full Division 23 Mac and Windows build goal remains active. The secret-key
+notebook recheck and five completed inventories of 250 entries each remain recorded below;
+no repeat expansion or unrelated credential investigation is needed.
+
+NotebookLM expansion (2026-09-14, NOTEBOOKLM-EXPAND-250): complete with recorded
+quality and receipt limits. Root independently confirmed 250 entries in each of
+N05 Drawing Intelligence, N07 Software Engineering, N10 HVAC Takeoff Methods,
+N11 Ductwork & Air Distribution, and Secret Key Leakage in Hugging Face Spaces.
+All 402 original source IDs remain. There are 848 net additions, all provider-ready;
+1,250 total entries comprise 1,219 ready entries and 31 pre-existing failed imports.
+Three newly failed imports were removed and replaced under the recorded own-new
+correction scope. Existing duplicate aliases, unavailable landing pages and old
+editions remain identified; entry counts are not independent source counts.
+
+The secret-key notebook contains public drawing/CAD/BIM/takeoff and model research
+as well as the title paper on historical credential exposure. Its 87 additions
+have retained indexed bodies and source-bound findings; no credential investigation
+or private upload occurred. N05 retained all 180 new bodies; N11 all 189 content
+responses, including three image-only sources whose actual publisher pages root
+visually checked. N07/N10 used 12/10 substantive body samples. Two original N11
+web-discovery response bodies were lost to an early receipt-ID collision; original
+hashes and recovered requests remain, and every mutation retains exact request/
+result bytes. All five writers and discovery helpers are terminal; no pending
+import/query or further mutation remains.
+
+Human inventory: docs/research/notebooklm/expansion-summary-2026-09-14.md.
+Machine-readable summary: docs/research/notebooklm/expansion-summary-2026-09-14.json.
+Root receipts and handoff: .heleos/notebooklm-expansion-2026-09-14/.
+The standing research guide now records the completed inventory, source-quality
+checks, image-only handling and reuse workflow. Approved mechanical rules remain
+authoritative. All 83 product/test/rule paths in the final arc verification still
+match, as do the arc package, earlier packages and owner-review export specimens.
+No product tests were repeated for the research-only expansion.
+
+Circular arc duct capability (2026-09-14, DUCT-CIRCULAR-ARC-1): implementation
+finished, independently reviewed and locally integrated uncommitted in
+/Users/bekim/Heleos-spark, main base/live HEAD
+47d7c5b139b0ea22f661b5668021d53b3f3d51af. Approved D03 permits supported true curves
+with a validated method. Exact original duct rules, examples and owner decisions
+remain unchanged. Explicit v2 observations add three-point circular centerlines,
+whole-curve source/scale coverage and rational interval measurement; v1 adapter
+bytes and replay retain their original meaning. Radius and whole-length checks
+remain separate. Corrections, rereads, affected recalculation, source overlays,
+raw responses and saved history are connected. D05 conflicts remain unresolved;
+there is no chord fallback for unsupported or indeterminate geometry.
+
+Root final checks passed 361 tests on each of Python 3.14.6 and 3.9.6 with stable
+source snapshots, plus 99 UI tests. Independent geometry, engine and UI/scorer/
+package reviews closed all scoped findings, including the retained split-leaf
+reread rejection and v2 legacy-parser provenance. The new native Mac flow passed
+against a frozen original two-page PDF with actual Foundation/Poppler and inert
+v2 transport. Quarter and major arcs total 25.13 ft from 7.660460 stored meters;
+conflict/recovery, reread omissions, history, draft ZIP export/reopen and a rotated
+nonsquare crop all passed. Root visually checked both actual rendered pages.
+These are original synthetic fixtures, not representative-project accuracy.
+
+A separate 53-payload preview folder/ZIP passed source/folder/archive byte closure,
+isolated packaged imports and Mac readiness. Its application bytes match the
+native source flow; a new relocation lifecycle was not rerun. Candidate ZIP:
+output/workspace-package/Heleos-preview-circular-arc-candidate.zip
+(1,393,986 bytes), SHA-256
+075ea46a98c1436272dd579f218d9499f2afd0213813e6cb986f666ae52eb769.
+Package ID: workspace_98bf0a3360d0a1968ba9afb3815e7451fcae94229c122fedbca3b42e3751570d.
+Manifest SHA-256: 05c4abee1f46d50d8ba3f9daa4e20abe7e4863bb2b6604d300458f45329455d6.
+Both earlier preview folders/archives and their proof remain unchanged.
+
+NotebookLM research reused the inventory, one N05 query and two prior source
+bodies; two new public bodies supplied 11 verified passages. Root checked actual
+OpenStax/ezdxf text, rejected generated tolerances/code/precedence and independently
+verified the numerical method. Seven before/after submission pairs remain logged.
+Source-to-code/tests/adoption: docs/research/notebooklm/duct-circular-arc-implementation-2026-09-14.json.
+All arc workers and verification processes are terminal. Root handoff/receipts:
+.heleos/duct-circular-arc-2026-09-14/; native proof:
+.heleos/duct-circular-arc-native-2026-09-14-attempt-1/duct-circular-arc-verification.json.
+
+Arc splits/topology/evaluation metrics, unsupported curve classes, live-model
+accuracy, representative projects, remaining mechanical categories and complete
+Mac/Windows acceptance stay open. Air-device counting and final workbook/PDF
+schema/layout decisions remain pending. No native Windows, listener/model retry,
+private upload, Git mutation or publication occurred. Full build goal remains
+active. Next: resume the approved sequence at
+docs/superpowers/specs/2026-09-13-calculation-sequence-design.md, using the recorded
+NotebookLM sources before the next knowledge-dependent implementation and retaining
+pending owner/platform gates. Earlier checkpoints below describe retained versions.
+
+
+Windows launcher cleanup candidate (2026-09-14, WINDOWS-LAUNCHER-CLEANUP-1):
+implemented, independently reviewed and locally integrated uncommitted in
+/Users/bekim/Heleos-spark, main base/live HEAD
+47d7c5b139b0ea22f661b5668021d53b3f3d51af. The candidate addresses WP-R4 with a
+fresh noninheritable Windows Job Object, verified exact child membership before
+application startup, whole-job cleanup and bounded active-process verification.
+It covers cleanup after the main child exits and retains kill-on-close behavior.
+Windows interruption is forceful. There is no PID lookup or console-break stop
+path. Windows requires 64-bit CPython and its guarded private retained
+subprocess.Handle; unknown or closed handle shapes keep startup blocked.
+
+Root checks pass 15 focused Windows-contract tests, 13 existing launcher tests
+and 18 package tests on each of Python 3.14.6 and 3.9.6. Independent review passes
+12 separate probes on each runtime, with no open implementation finding.
+WL-R1 removed the proposed PID-based console signal before the final candidate.
+Mac process-group behavior remains unchanged. These are Mac/inert API checks,
+not native Windows API or operational acceptance.
+
+The authored Windows harness uses the actual launcher/helper and original inert
+application fixtures. Its seven cases cover exact output/exit, exited leaders,
+stubborn descendants, parent termination at three startup stages and unrelated
+process survival. Portable fixture checks pass on both runtimes. Native Windows
+is explicitly NOT_RUN; the default Mac invocation refuses native acceptance.
+The harness does not execute the real application, Foundation/Poppler or a model.
+Full Windows application/NTFS proof remains separate and outstanding.
+
+A new 51-file candidate package and archive pass exact closure, byte comparison
+and Mac readiness checks. Only launch.py and README.txt differ from the original
+preview. All 48 application/assets/approved-rule files match the source, original
+delivered folder/ZIP and native-tested Mac copy. The original preview and all
+previous proof remain intact; the unchanged Mac duct lifecycle was not rerun.
+Candidate ZIP: output/workspace-package/Heleos-preview-windows-cleanup-candidate.zip
+(1,346,415 bytes), SHA-256
+4ea32824f22b2a128d6bbff4941d0fe7484086a1b0d1fe7af12d7e1a27675b7c.
+Package ID: workspace_e3ff6ea6d71250b8b17a918b2b098056f9edc3b7cd090d61aa874736381a3c33.
+
+NotebookLM research reused the 59-notebook inventory and N07, added five public
+Microsoft references, completed two bounded queries, and retained 17 core plus
+13 followup passage references. Root verified actual supporting text and hashes;
+generated overclaims remain rejected. Thirteen NotebookLM before/after egress
+pairs and supplementary official API reads are logged. No private upload or
+mechanical rule change occurred. Source-to-code/test adoption:
+docs/research/notebooklm/windows-launcher-cleanup-implementation-2026-09-14.json.
+Exact identities, terminal reports and checks:
+.heleos/windows-launcher-cleanup-2026-09-14/root-handoff.json.
+Guide and native command: docs/operations/workspace-package.md.
+
+All scoped workers and checks are terminal. No application listener, model or
+native Windows process is running; no Git mutation or publication occurred.
+Next: run the seven-case native harness on an actual Windows environment with
+the pinned launcher/helper, then complete Windows application/NTFS verification.
+Windows operational acceptance remains open. The full Division 23 goal is active;
+remaining mechanical categories, representative truth/accuracy, final installers
+and release gates remain outstanding. Air-device A01-A12/AC01-AC17 and the already
+presented workbook schema/PDF layout decisions remain pending. Do not infer
+approval, repeat completed research, overwrite the original package or restart
+unchanged duct work. Earlier checkpoints below describe their retained versions.
+
+Relocatable workspace preview (2026-09-14, WORKSPACE-PACKAGING-PROOF-1): the
+explicit application package and bounded native Mac relocation proof are verified
+in /Users/bekim/Heleos-spark, main base/live HEAD
+47d7c5b139b0ea22f661b5668021d53b3f3d51af. The existing application, assets and three
+approved duct rule records remain byte-identical. The package contains 51 payload
+files with a canonical manifest and deterministic optional ZIP. Python, Foundation
+and Poppler remain installed external prerequisites with their native libraries.
+This is a relocatable preview, not a standalone or final native installer.
+
+The launcher configures a new external machine profile, checks exact package/tool
+identities and external project/cache paths, then delegates to the existing local
+service through isolated Python and explicit argv. Configure/check execute no
+native tools, application listener or model. Isolated startup verifies helper
+source before loading it, and rejects extra modules/bytecode. Mac interruption
+checks cover child creation, successful wait return and surviving descendants.
+
+Root verification passes 18 builder and 13 launcher tests on each of Python 3.14.6
+and 3.9.6. Independent probes verify actual manifest/archive bytes, closure,
+no-overwrite, injected executable cache/source rejection and relocated fake-child
+behavior. Native Mac attempt 2 passes real Foundation/Poppler import, scale,
+render/text, unchanged four-foot calculation, explicit unresolved/restored review
+corrections, history and draft export. Fresh processes after two package moves
+reopen the same external project. Audit guards reject original repository
+production reads, package mutations and sockets. Attempt 1 is preserved: the root
+fake transport lacked its required local model format field; no product or truth
+fixture was changed to fix it. No live browser/listener/model acceptance is claimed.
+
+OPEN WP-R4: Windows forceful descendant-process cleanup is missing. CTRL_BREAK
+and direct-child termination do not guarantee cleanup after the leader exits or
+ignores the break. The Windows launch path remains an unaccepted candidate, not
+merely a completed implementation awaiting tests. Native Windows/NTFS parity,
+final shell/installers, library/distribution review and existing release gates
+remain outstanding. The full Mac/Windows product goal is active and incomplete.
+
+Preview ZIP: output/workspace-package/Heleos-preview.zip (1,335,684 bytes), SHA-256
+7c72ba4363d7adb534a0b2780225ca546a74b5ca45dbf9bb72e781c3d7b4203a.
+Package ID: workspace_31f579965b16ef42a8b68443c2e0812d526fb9cb0d2b71d919cb775d78e83a4f.
+The delivered manifest/payload equals the native-tested copy. Actual configure
+and readiness checks reuse one external profile at delivered/relocated paths
+without creating the supplied new project. Guide: docs/operations/workspace-package.md.
+
+NotebookLM inventory was reused: one N07 query, four official indexed bodies,
+14 verified passages and nine before/after public egress pairs. Source context
+informed explicit dependency paths and platform artifact distinctions; Python
+launcher semantics remain a tested engineering contract. No private upload,
+source/note addition, mechanical rule change or installer choice occurred.
+Source-to-code/test record:
+docs/research/notebooklm/workspace-packaging-implementation-2026-09-14.json.
+Receipts and exact identities: .heleos/workspace-packaging-proof-2026-09-14/.
+Native receipt: .heleos/workspace-package-native-2026-09-14-attempt-2/package-native-verification.json.
+
+The preview is locally integrated and uncommitted; no Git mutation/publication.
+Next: implement Windows owned-process-tree cleanup using verified applicable
+sources, then obtain actual native Windows evidence. Preserve completed Mac/package
+work. The already-presented workbook schema/PDF layout and air-device A01-A12/
+AC01-AC17 decisions remain pending; do not infer approval or restart completed duct
+work. Remaining categories, representative truth/thresholds and model accuracy
+remain full-goal work. Earlier checkpoints below remain historical.
+
+Saved duct path evaluation (2026-09-14, DUCT-EVALUATION-1): implemented,
+independently reviewed and locally verified in /Users/bekim/Heleos-spark, main
+base/live HEAD 47d7c5b139b0ea22f661b5668021d53b3f3d51af. The Advanced local model
+evidence panel now retains independent planar duct truth, frozen explicit criteria
+and evaluations of original uncorrected producer results. Path misses/extras,
+size/work-status diagnostics and supported length error are reported separately.
+Topology remains unavailable because the producer has no connection-edge output.
+Non-planar candidates remain explicitly unscored. This is evaluation preparation,
+not a new mechanical quantity rule, model approval or complete takeoff acceptance.
+
+Exact original PDF/page/geometry/PNG, model/runtime, raw response and relevant-page
+scale identities bind each experiment. Unrelated-sheet scales and subsequent
+takeoff corrections cannot rewrite its original report. Affected scale changes
+mark it stale while preserving all source artifacts through draft ZIP export and
+reopen. Existing absent-task bbox datasets, plans, reports and scorer identity
+retain their behavior. Cross-task split leakage remains rejected. Missing or
+broken duct scorer loading preserves sealed history and blocks new evaluation.
+
+The engineering contract uses bounded rational paper-distance intervals and
+geometry-only maximum-cardinality assignment. Indeterminate distances and alternate
+maximum assignments prevent misleading criterion success. Length coverage includes
+all independently known truth lengths, including missed paths. Candidate lengths
+use unchanged approved calculation helpers, and errors are compared before display
+rounding. Selected splits require at least one annotated planar truth; mixed
+negative pages are supported. Detail/riser and other existing prepared page roles
+retain exact role binding. No production thresholds are supplied by this feature.
+
+Root verification passes 175 affected tests on each of Python 3.14 and 3.9,
+82 Node checks, and native Mac Foundation/Poppler attempt 1. The original N1
+four-foot source and literal expectations were frozen before fake producer runs.
+Perfect, wrong-size, duplicate and truncated outputs produce the expected distinct
+diagnostics. Model/substituted-result imports reject atomically; source corrections,
+unrelated/withdrawn scales, export and reopen pass. The actual interface renders
+all four saved reports and opens their exact source identities in a fake DOM.
+Independent review includes 136 rational square-root bounds, all 512 three-by-three
+matching graphs, exact ratio thresholds and mixed legacy-history recovery on both
+Python runtimes. No live model, browser or native Windows acceptance is claimed.
+
+NotebookLM's 59-notebook inventory was reused. One bounded N05 query and three
+indexed source bodies yielded 13 verified passages, with six before/after egress
+log pairs. These sources support distinct evaluation targets and expose corpus
+limitations; they establish no transferable HVAC metric or acceptance threshold.
+Unsupported geometry/topology formulas and proximity-based semantic replacement
+remain unadopted. No private upload or source/note addition occurred. The exact
+source-to-code/test record is
+docs/research/notebooklm/duct-evaluation-implementation-2026-09-14.json.
+
+All scoped findings are closed and processes terminal. Final receipts, exact
+byte identities, preserved failed checks and root handoff are under
+.heleos/duct-evaluation-2026-09-14/. Native receipt:
+.heleos/duct-evaluation-native-2026-09-14-attempt-1/duct-evaluation-verification.json.
+Changes are locally integrated and uncommitted; no Git mutation/publication.
+Approved mechanical rules, calculation core, producer, original fixtures and
+review XLSX/PDF bytes remain preserved. The full goal stays active and incomplete.
+Next: resolve the already-presented workbook schema/PDF layout decision and connect
+the approved exports; continue the calculation order with the pending air-device
+A01-A12/AC01-AC17 decision. Representative truth/thresholds, local model accuracy,
+topology, remaining categories and native Windows acceptance remain outstanding.
+Do not infer either pending approval or restart this completed evaluation slice.
+Earlier checkpoints below remain historical.
+
+Duct export review preparation (2026-09-14, DUCT-EXPORT-PREPARATION-1): one
+four-sheet XLSX and a 12-page evidence PDF are implemented, independently reviewed
+and locally verified in /Users/bekim/Heleos-spark, main base/live HEAD
+47d7c5b139b0ea22f661b5668021d53b3f3d51af. This is a concrete review specimen;
+the application does not yet generate these estimator outputs. The proposal is
+docs/superpowers/specs/2026-09-14-duct-export-review-contract.md. Its workbook
+schema and evidence-PDF layout await the owner's decision under roadmap 0.6.
+
+The read-only specimen normalizer binds the accepted native revision receipt,
+saved current generation, source bytes, scales and exact evidence identities.
+Current portions remain 2/2/4 feet plus a separate 4-foot neighbor, grouped as
+2/2/8 feet. The known subtotal is 12.00 feet; partial coverage leaves the final
+total Unknown. Original six-decimal meter text is retained. Live workbook formulas
+use bounded integer micrometers, sum before half-even display and preserve
+unknown/stale/excluded/duplicate and work-status distinctions. Nine generations
+and six events remain historical; they do not accumulate into current quantities.
+
+The PDF contains original vector evidence, each view's own scale, current portion
+locators, source/observation identities, retained parent checks and revision
+history. All 34 evidence bounds, 84 named destinations and 115 internal links pass
+root verification. All 12 pages and nine workbook views were visually checked.
+Workbook evidence references use printed PDF pages and locators; PDF internal
+links are clickable. Workbook edits do not update the static PDF or application.
+
+Root verification passes 26 normalizer tests on each of Python 3.14 and 3.9 and
+exact deterministic replay. The artifact engine passes 22 input-change,
+recalculation and restore cases, export/reopen validation and a saved XML audit
+with zero error cells. Independent review includes 10,054 mathematical rounding
+cases. Mac Excel 16.112.4 opens the workbook without a repair dialog; an isolated
+copy recalculated 12 to 11 to 12 feet as one input was changed and restored,
+while the final total stayed Unknown. The QA copy closed without saving and
+deliverable bytes are unchanged. This does not establish native Windows or
+representative-project acceptance. All scoped implementation findings are closed.
+
+NotebookLM's 59-notebook inventory was reused. One bounded N10 query and one new
+source read, alongside retained bodies, yielded eight verified passages. Four
+before/after external-submission pairs are retained; no private upload or source
+or note addition occurred. Source context informed traceability, snapshot/formula
+distinctions and retained history. Unsupported export mechanics and existing
+mechanical conflicts remain unadopted. Exact source-to-code/test/output adoption:
+docs/research/notebooklm/duct-export-implementation-2026-09-14.json.
+
+Final XLSX: outputs/01a09d78-e467-7a61-99ba-be72b8f49910/duct-takeoff-review.xlsx,
+SHA-256 0b2f113205013082f8dc81026d9fe889ceb05b2dce618055992a4d377032c544.
+Final PDF: output/pdf/duct-takeoff-evidence-review.pdf,
+SHA-256 156b9a24013b2540ef847f6feabdb218635c3c943724697102ea27457f9aacc1.
+Receipts, failed candidate checks and final handoff remain under
+.heleos/duct-export-preparation-2026-09-14/. Completed production calculation,
+workflow, UI, source fixtures and previous verification bytes remain preserved.
+Existing changes are local and uncommitted; no Git mutation or publication occurred.
+The known uncommitted_authority routing result is resolved for this task by exact
+checkout/HEAD verification, not by resetting the status file. The full goal remains
+active: connected exports, air-device approval, remaining mechanical categories,
+curves/flex, model accuracy, representative-project truth/thresholds and native
+Windows acceptance remain outstanding. Next: owner review of the concrete output
+schema/layout, then implement connected exports. Do not infer approval of pending
+air-device A01-A12/AC01-AC17. Earlier checkpoints below remain historical.
+
+Explicit duct revision source review (2026-09-14, DUCT-REVISION-1): implemented,
+independently reviewed and locally verified in /Users/bekim/Heleos-spark, main
+base/live HEAD 47d7c5b139b0ea22f661b5668021d53b3f3d51af. New drawing sources now
+stage a comparison before quantities change. Explicit add/replace/retain/exclude
+decisions account for every incoming portion and cite every selected old/new
+source. Replacement requires the complete split/active-correspondence family,
+uses fresh incoming identities and its own geometry/scale/readings, and retains
+all prior observations, corrections, evidence and decisions. Pending/stale/rejected
+reviews cannot silently add or restore quantities. Reverse review is explicit.
+
+Explicit old-source retirement follows remaining current evidence uses, including
+shared foreign readings. Rejected correspondence history no longer keeps a retired
+page active. The interface preserves retired reading evidence and exact original
+regions. Derived evidence ordering remains identical after reopen, preserving the
+view fingerprint. Draft ZIP exports include revision stages/decisions and retained
+responses/images; this is not yet an estimator-ready workbook or evidence PDF.
+
+Root checks pass 280 Python tests on each of Python 3.14 and 3.9, 94 Node checks,
+syntax, and native Mac Foundation/Poppler attempt 3 on frozen backend 3. Original
+R0/R1 PDFs establish 8 feet split 2/2/4 plus a separate 4-foot neighbor. Reviewed
+replacement measures 10 feet at its own different scale: 14 feet current, not 22.
+Scale withdrawal makes the affected length unknown. Explicit reverse produces
+fresh raw 8-foot geometry and fresh later splits; prior corrections never revive
+automatically. D06 retains the raw reverse 12-foot known subtotal despite unknown
+size; every final scope total remains unknown because coverage is partial.
+Three actual native views render and open exact old/new decision source regions.
+Final native receipt: .heleos/duct-revision-verification-2026-09-14-attempt-3/duct-revision-verification.json.
+
+All independent findings are closed. Preserved native attempt 1 exposed an oracle
+error (unresolved size does not erase D06 known length); independent adjudication
+corrected only that expectation. Attempt 2 exposed evidence ordering on reopen;
+a focused regression and derived-view sorting repair closed it. The deterministic
+core, approved D01-D10/E01-E09, producer/prompt/parser and previous refresh/reading
+modules remain unchanged. All checks/workers are terminal. Exact changed bytes,
+commands, failed attempts and final verification are in .heleos/duct-revision-2026-09-14.
+
+NotebookLM's 59-notebook inventory was reused and relevant N10 identities refreshed.
+One bounded query and four source reads supplied six verified new passages; two
+retained conflict passages remain unadopted. Two bodies were substantive; an empty
+Procore body and Autodesk navigation page supply no rules. Seven before/after
+external-submission records are retained; no private upload or source/note addition
+occurred. Source-to-code/test adoption is recorded in
+docs/research/notebooklm/duct-revision-implementation-2026-09-14.json.
+Standing AGENTS.md and the research operations workflow retain this practice.
+
+Changes are locally integrated and uncommitted. Existing work is preserved; no Git
+mutation, push, deployment or release occurred. Known uncommitted_authority routing
+remains resolved through explicit checkout/HEAD verification. The full goal remains
+active and incomplete: air-device approval, remaining mechanical categories,
+curves/flex, model accuracy and representative-project truth/thresholds, estimator
+outputs, and native Windows acceptance remain outstanding. Next: prepare one
+reviewable Excel formula workbook and source-linked evidence PDF from accepted duct
+fixtures (DUCT-EXPORT-PREPARATION-1), then connect the approved output contract.
+Do not infer approval of pending air-device A01-A12/AC01-AC17. This is verified
+product progress; earlier checkpoints below remain historical.
+
+Retained parent duct graphic repair (2026-09-14, DUCT-PARENT-GRAPHIC-1):
+implemented, independently reviewed and locally verified in /Users/bekim/Heleos-spark,
+main base/live HEAD 47d7c5b139b0ea22f661b5668021d53b3f3d51af. A retained split
+parent can now add current graphic citations or explicitly withdraw known original
+citations on its exact source. The bounded action changes only parent evidence,
+its fingerprint and its exact immediate enclosing member pin. Routes, scales,
+readings/checks, grouping, cuts, children and other parent observations stay fixed.
+
+Every still-consumed foreign reading requires explicit review against the resulting
+parent. Same-page parents need no foreign relationship. Partial current graphic
+support and removal-only withdrawal are valid saved changes; missing/incomplete
+coverage remains unknown. Full support cannot erase a written/scaled dimension
+conflict. Stale removed captures retain trustworthy pinned metadata, while additions
+need current evidence. Shared citations remain required by other portions and
+history is never deleted. Parent-only repair does not excuse stale child evidence.
+
+The interface provides explicit graphic selection/capture on the original page,
+renewed acknowledgment, preserved failed drafts and exact added/removed source
+history. The workflow appends graphic events and all foreign-review events
+atomically with its replacement generation. Coverage reopens for review; pending
+rereads become stale. Prior generations, captures, responses and source images
+survive draft export and normal local reopen without inference.
+
+Root verification passes 260 focused Python checks on each of Python 3.14 and 3.9,
+71 Node checks, syntax and native Mac Foundation/Poppler verification on frozen
+backend revision 1. The previously authored PR101/PR201 drawing is reused unchanged.
+Each child obtains its own current graphic before parent repair. Partial parent
+support leaves the nested portions unknown. Full support preserves the wrong
+9-foot whole-run conflict; the explicit source correction to 8 feet restores
+2-, 2- and 4-foot portions. Withdrawal returns those portions to unknown and
+restoration restores them. The separate 4-foot neighbor and all child observations
+stay exact. Global totals remain unknown because grouping and coverage are partial.
+Three actual native views also render through the UI and open every historical
+graphic at its exact source region. Thirteen code identities and 16 native
+artifacts were checked. Final native receipt:
+.heleos/duct-parent-graphic-verification-2026-09-14-attempt-1/duct-parent-graphics-verification.json.
+
+Independent backend, interface and source reviews have no open scoped finding.
+Two native-harness gaps were closed before execution: explicit proof of child
+current support and exact append-only event metadata. All scoped verification
+processes are terminal. Exact commands, file identities and terminal receipts are
+in .heleos/duct-parent-graphic-2026-09-14; root-final-verification.json is PASS.
+
+NotebookLM's recorded 59-notebook inventory and five snapshot/response pairs were
+reused, representing four unique bodies and seven verified passages. Source review
+preceded implementation. No new query, external submission or private upload occurred.
+Source context informs evidence review; unsupported physical matching and conflicting
+dimension precedence remain unadmitted. The source-to-code/test record is
+docs/research/notebooklm/duct-parent-graphic-implementation-2026-09-14.json.
+AGENTS.md and the operations workflow retain this research process for later builds.
+
+Approved D01-D10/E01-E09, deterministic core, producer/prompt/parser, prior fixtures
+and pending air-device rules remain unchanged. Existing uncommitted work is preserved;
+no Git mutation, publication or release occurred. The known routing-helper
+uncommitted_authority condition remains; explicit checkout and HEAD were verified.
+The full goal remains active and incomplete. Explicit duct revision replacement,
+curves/flex, supported datum equivalence, actual model accuracy, representative-project
+truth/thresholds, other mechanical categories, estimator-ready Excel/evidence PDF
+and native Windows acceptance remain outstanding. Next: source research and a bounded
+implementation plan for explicit revision supersession that preserves the prior
+revision and prevents old/new drawing quantities from accumulating. Keep air-device
+A01-A12/AC01-AC17 pending the owner's decision. This turn made verified product progress.
+
+Retained parent duct reading correction (2026-09-14, DUCT-PARENT-READING-1):
+implemented and locally verified in /Users/bekim/Heleos-spark, main base/live HEAD
+47d7c5b139b0ea22f661b5668021d53b3f3d51af. A written whole-run dimension can now
+be repaired after a route has been split. The server changes only the value,
+unit or evidence of named existing length checks. It preserves every check and
+reading identity, route, scale, size group, split boundary and child observation.
+It updates only the selected parent fingerprint and its exact enclosing member
+pin. Existing whole-run conflicts remain deterministic D05 exceptions.
+
+Every remaining foreign reading on the changed parent requires explicit review
+against the resulting parent and reading identities. Fresh source captures can
+replace stale supplemental references atomically. Obsolete captures remain in
+history; current source validation follows actual retained obligations. Replacing
+one parent's reference preserves its use by another portion. Saved selected source
+geometry survives temporary source staleness for recovery, while calculation still
+requires independently validated current bytes and source assignments.
+
+The interface offers bounded parent dimension edits and before/after evidence
+history. Fully local replacements reopen without reviving an obsolete foreign
+link; missing references remain unresolved. Parent corrections, original captures,
+relationships, prior generations and raw responses remain in draft export/reopen.
+Coverage needs renewed review. No inference runs when reopening or exporting.
+
+Final root verification passes 243 focused Python checks on each of Python 3.14
+and 3.9, 66 Node checks, and native Mac Foundation/Poppler verification on frozen
+backend revision 2. The independently checked original two-page drawing supports
+nested 2-, 2- and 4-foot portions plus a separate 4-foot neighbor. Repairing a wrong
+9-foot whole-run reading to 8 feet restores those quantities; 96 inches agrees.
+A supplemental assignment change makes only dependent quantities unavailable;
+fresh dimension/marker captures restore them, clear obsolete source errors and
+permit context review. The neighbor and all child observations remain unchanged.
+Global totals stay unknown because group properties and coverage are partial.
+Final actual native views render through the UI and open exact original/corrected
+dimension regions and both reference-marker sources. Twelve module identities and
+13 native artifacts were checked. Final native receipt:
+.heleos/duct-parent-reading-verification-2026-09-14-attempt-2/duct-parent-readings-verification.json.
+
+Independent review closed shared-reference cleanup, captured-only source geometry
+recovery, obsolete UI link initialization and four native-harness assertion gaps.
+No open finding remains in this scoped capability. Earlier failures and the passing
+native run on the first code version remain historical evidence; final checks bind
+the corrected bytes. All workers and native/check processes are terminal.
+Exact commands, identities and review receipts are in
+.heleos/duct-parent-reading-2026-09-14; root-final-verification.json is PASS.
+
+NotebookLM's 59-notebook inventory and four verified source snapshots were reused.
+Eight passages were checked before implementation; no new query, external submission
+or private upload occurred. Source context informs review and evidence feedback;
+the dimension-precedence conflict and unsupported physical/datum matching remain
+unadmitted. The adoption record is
+docs/research/notebooklm/duct-parent-reading-implementation-2026-09-14.json.
+Standing project instructions retain the NotebookLM workflow for later sessions.
+
+Approved D01-D10/E01-E09, deterministic core, producer/prompt/parser bytes, prior
+source fixtures and the pending air-device packet remain unchanged. All 480 baseline
+paths are preserved. Changes remain uncommitted; the known routing-helper
+uncommitted_authority condition remains, with explicit checkout/HEAD verified.
+
+Inherited same-page child evidence stays required when unavailable; no automatic
+lineage exemption or child rewrite was added. Missing retained-parent graphic
+support, cross-datum equivalence, revision correspondence, curves/flex, actual model
+accuracy, representative-project truth/thresholds, later mechanical categories,
+estimator-ready Excel/evidence PDF and native Windows acceptance remain outstanding.
+Next: support source-bound repair of missing graphic evidence on retained split
+parents, preserving their routes, children and whole-run constraints. Keep prepared
+air-device A01-A12/AC01-AC17 pending the owner's decision. This turn made verified
+product progress; the full goal remains active and incomplete.
+
+Cross-page duct reading applicability (2026-09-14, DUCT-CROSS-PAGE-1):
+implemented and locally verified in /Users/bekim/Heleos-spark, main base/live HEAD
+47d7c5b139b0ea22f661b5668021d53b3f3d51af. A consumed dimension or elevation on
+another sheet now has an explicit reviewed relationship to the exact duct portion,
+reading, both source identities and retained reference markers. Missing, conflicting,
+stale or withdrawn applicability leaves the affected length unknown. Target-page
+graphics, grouping, admissions and split boundaries remain source-specific. Scales
+are not transferred, datum text does not establish equivalence, and supplemental
+views do not create another physical portion.
+
+The connected interface captures supplemental readings and markers, saves active
+corrections plus links atomically, re-reviews current retained split parents, and
+shows withdrawal and source history with exact marker regions. A review acknowledgment
+is bound to the complete proposed observation and reopens after route/support changes.
+Split descendants preserve whole-run constraints on their original parent; rereads
+cannot silently renew changed reading identities. Obsolete foreign links remain in
+history while a replacement supported wholly on the target page no longer depends
+on the former foreign markers or source assignment.
+
+Root verification passes 230 focused Python checks on each of Python 3.14 and 3.9,
+59 Node checks, and final native Mac Foundation/Poppler verification. The independently
+checked original two-page PDF has 36 text regions and seven graphics. Supplied fake
+plan observations start with 8- and 4-foot portions plus unknown rise/slope; explicit
+cross-page review adds a 5-foot rise and a 3-4-5-foot slope. Size-group known subtotals
+progress 12/17/22/17 feet through review/withdrawal, with global totals unknown because
+group properties and coverage are partial. Changing the supplemental assignment
+stales only its dependent readings. Export/reopen retain both original source images,
+raw response, captured evidence, prior calculations and append-only relationships
+without inference. Actual final native views also render and open exact marker bounds
+through the UI. Final native receipt:
+.heleos/duct-cross-page-verification-2026-09-14-attempt-5/duct-cross-page-verification.json.
+
+Independent review closed per-reading sibling diagnostics, obsolete-link dependencies,
+route-change acknowledgment reuse and historical stale-marker display. The old secondary
+scale regression fixture was corrected to supply the detail's own labels/support;
+its expected quantity remains unchanged. Failed harness assertions and a native attempt
+invalidated by concurrent helper edits are retained and explained; final checks bind
+frozen module bytes. All workers and native/check handles are terminal. Exact identities,
+commands, review findings and evidence are in .heleos/duct-cross-page-2026-09-14.
+
+NotebookLM's existing 59-notebook inventory was reused. One new bounded N10 query,
+one source-identity refresh and one body read completed through directly callable MCP
+tools; two bodies were reused. Eleven citations and three source snapshots were checked.
+The public sources support view/scale context but do not establish cross-page physical,
+marker, endpoint or datum matching mechanics. The educational dimension-precedence
+conflict remains unadmitted under D05. No private upload or source/note addition occurred.
+Research adoption: docs/research/notebooklm/duct-cross-page-implementation-2026-09-14.json.
+The standing instructions and access guidance preserve this workflow for later sessions.
+
+Approved D01-D10/E01-E09, prior PDFs, model prompt/schema/parser/producer replay, and the
+pending air-device packet remain unchanged. All 469 baseline paths are preserved;
+changes remain uncommitted. The known routing-helper uncommitted_authority condition
+remains, with explicit checkout/HEAD verified.
+
+Retained parent reviews bind current immutable parent readings; replacing their source
+readings or captures remains outstanding correction work. Cross-datum equivalence,
+revision correspondence, curves/flex, actual model accuracy, representative-project
+truth and thresholds, later mechanical categories, estimator-ready Excel/evidence PDF
+outputs and native Windows acceptance remain outstanding. Next: support source-bound
+replacement of retained whole-run parent readings while preserving split constraints
+and historical evidence; keep the prepared air-device A01-A12/AC01-AC17 decision pending.
+This turn made verified product progress; the full goal remains active and incomplete.
+
+Duct source reread review (2026-09-14, DUCT-REFRESH-1): implemented and locally
+verified in /Users/bekim/Heleos-spark, main base/live HEAD
+47d7c5b139b0ea22f661b5668021d53b3f3d51af. Rereading a source already represented
+in the draft now stages a source-linked comparison without changing saved
+quantities. This also protects portions added from captured source evidence before
+that page's first model reading. The estimator explicitly retains, replaces,
+adds or excludes proposals; unmatched saved portions remain. Ordered one-to-many
+planar replacement preserves whole-run dimensions, nested split constraints,
+source exceptions, unrelated row bytes and original producer observations.
+
+Pending comparisons reopen scope review. Changed draft/source/scale dependencies
+require explicit restaging, which supersedes only obsolete comparisons of the same
+reading. Invalid mappings fail atomically. Pending, applied, rejected and superseded
+records preserve their original responses, source images and decision history on
+export/reopen. The connected UI provides source overlays, including pathless
+vertical proposals, evidence selection and supported partition boundaries.
+
+Root verification passes 199 focused Python tests on each of Python 3.14 and 3.9,
+12 additional shared workflow checks on Python 3.9, and 47 Node checks. Native Mac
+Foundation/Poppler verification uses the original PDF and two supplied fake
+responses: a corrected 8-foot run remains intact while its reread is pending,
+then explicit replacement yields two 4-foot portions with the separate 4-foot
+neighbor unchanged. Pending and resolved exports/reopens preserve both readings
+without another inference. Actual native views also render through the duct UI.
+
+Independent review closed captured-only source overlap, prior-source-issue loss,
+pending/superseded review handling and a nonplanar proposal highlight gap. No open
+findings remain in the reviewed scope. The native harness's initial opaque-job
+list-position assumption was corrected to identify the newly created job exactly;
+its failed attempt is preserved. Final native evidence is
+.heleos/duct-refresh-verification-2026-09-14-attempt-3/duct-refresh-verification.json.
+
+Three retained NotebookLM source snapshots and six passages were reused and checked;
+no duplicate query, external submission or private upload occurred. The separate
+source-to-code/test adoption record is
+docs/research/notebooklm/duct-refresh-implementation-2026-09-14.json. Approved
+D01-D10, original source PDFs, model prompt/schema/parser/producer replay and the
+pending air-device packet are unchanged. Exact file hashes, commands, terminal
+processes and independent review are in .heleos/duct-refresh-2026-09-14.
+Changes remain uncommitted; the known routing-helper uncommitted_authority condition
+remains, with explicit checkout and HEAD verified.
+
+Ambiguous many-to-one/many-to-many replacement and nonplanar reading applicability
+still require source correction. Cross-page supplemental measurements, revision
+correspondence, curves/flex, actual model accuracy, representative-project truth
+and thresholds, later mechanical categories, estimator-ready exports and native
+Windows acceptance remain outstanding. Next: implement source-bound cross-page
+duct reading applicability under the approved measurement basis; keep the prepared
+air-device A01-A12/AC01-AC17 decision pending before count implementation.
+This turn made verified product progress; the full goal remains active.
+
+Duct graphic evidence validation (2026-09-14, DUCT-EVIDENCE-ROLES-1): implemented
+and locally verified in /Users/bekim/Heleos-spark, main base/live HEAD
+47d7c5b139b0ea22f661b5668021d53b3f3d51af. A label-only proposal previously produced
+a duct length despite the existing graphic-reference requirement. Included planar
+paths and scaled slope projections now require cited graphic regions on their
+exact original source to cover every path segment. Exact interval unions permit
+touching regions and reject gaps; retained split-parent measurements use the same
+check. Missing support leaves the affected portion unresolved and visible for
+source capture/correction. Approved D01-D10 and dimension-derived rules are unchanged.
+
+Root verification passes 176 focused Python tests on each of Python 3.14 and 3.9,
+36 Node tests, and actual native-result rendering through the duct UI. Native Mac
+Foundation/Poppler verification preserves a historical calculation and its raw
+response, marks old quantities stale, recalculates a label-only portion as unknown,
+then restores its corrected 8-foot length from captured graphics while a separate
+4-foot portion stays unchanged. Export/reopen preserve original source images,
+responses, calculations and corrections without another inference. The original
+split/rise/slope correction lifecycle also passes a native regression run.
+
+Independent review checked 9,868 exact segment/box cases and found one compatibility
+issue: newly invalid legacy capture kinds initially blocked historical export.
+The fix separates current-use eligibility from frozen-byte export verification;
+old blank label captures remain stale and export unchanged. New captures require
+graphic/null-text or text/nonempty-transcription pairing. Supporting regressions
+cover rejected current use, retained export/reopen and source-byte integrity.
+
+NotebookLM findings and four existing source snapshots were reused and checked;
+no duplicate query, external submission or private upload occurred. The separate
+source-to-code/test record is docs/research/notebooklm/duct-evidence-implementation-2026-09-14.json.
+Model prompt/schema/parser and producer replay bytes, original PDFs, approved
+answers and the pending air-device packet remain unchanged. Evidence and terminal
+process records are in .heleos/duct-evidence-roles-2026-09-14; final native receipt:
+.heleos/duct-graphic-verification-2026-09-14-attempt-2/duct-graphic-verification.json.
+Changes remain uncommitted. The known routing-helper uncommitted_authority condition
+remains, with explicit checkout/HEAD verified.
+
+Null-text region coverage is structural evidence, not semantic recognition proof.
+Legacy split parents missing their own graphics cannot borrow newly captured child
+support. Cross-page applicability, corrected-proposal reconciliation, curves/flex,
+actual model accuracy, representative-project quantities/thresholds, native Windows,
+later categories and estimator-ready outputs remain outstanding. Next: continue
+the connected air-device implementation after the pending A01-A12/AC01-AC17 owner
+decision. This turn made verified product progress; the full goal stays active.
+
+Air-device source and rule preparation (2026-09-14, AIR-DEVICE-PREPARATION-1):
+completed and independently checked in /Users/bekim/Heleos-spark, main base/live
+HEAD 47d7c5b139b0ea22f661b5668021d53b3f3d51af. The proposed A01-A12 rules and
+AC01-AC17 literal answers are ready for the owner's separate air-device decision.
+Class order and imperial/each units are settled; the prior D01-D10 approval remains
+duct-specific. No air-device rule admission or production count engine was added.
+The packet is docs/superpowers/specs/2026-09-14-air-device-counting-rules.md, with
+separate source/answer records in tests/fixtures/air-device-takeoff.
+
+Four original synthetic pages cover eight cases; nine cases still have only
+literal semantic/lifecycle inputs. Independent visual review and native Mac
+Foundation/Poppler import pass all four page dimensions, renders, 87 positioned
+text regions and graphic/view coordinate round trips without calibration or a
+detector. Initial native verification caught four clipped title metadata bounds;
+only their descent margins changed. Original PDF bytes and proposed answers are
+unchanged, and both failed and successful attempts remain evidence. The builder
+reproduces PDF/geometry on Python 3.14 and 3.9. Independent semantic review closed
+the supported-system-grouping and same-view scale-lifecycle gaps; no findings remain.
+
+The standing NotebookLM workflow was reused: one new N11 question and four source
+body reads, including two empty manufacturer entries. Verified legend/view/schedule
+context informed the original examples. Unsupported counting mechanics remain
+explicit owner-policy proposals. Exact research sources and preparation mapping
+are in docs/research/notebooklm/air-device-findings-2026-09-14.json and the separate
+air-device-preparation-2026-09-14.json. The nine Roboflow candidates retain all 67
+raw label entries, unknown labels and unadmitted status in the air-device dataset
+map; no download, training, model run or private upload occurred.
+
+Current receipts, source/code hashes, external submission pairs, independent
+reviews and terminal process records are in .heleos/air-device-preparation-2026-09-14.
+Native receipt: .heleos/air-device-source-verification-2026-09-14-attempt-2/air-device-source-verification.json.
+Preparation processes are terminal; changes remain uncommitted. Prior production
+code and duct verification identities remain preserved. The known routing-helper
+uncommitted_authority condition remains; explicit checkout/HEAD is verified.
+Next: obtain the concrete A01-A12/AC01-AC17 decision, then implement the separate
+source-bound air-device contract, deterministic counts, automatic draft and
+correction/recalculation in the connected app. Original/scanned/revision fixtures
+for the other nine cases, actual model accuracy, representative-project answers
+and thresholds, full mechanical scope, Excel/evidence PDF outputs and native
+Windows acceptance remain outstanding. The full goal is active and incomplete.
+
+Source-bound duct corrections (2026-09-14, DUCT-CORRECTION-1): implemented and
+locally verified in /Users/bekim/Heleos-spark, main base/live HEAD
+47d7c5b139b0ea22f661b5668021d53b3f3d51af. The connected duct workflow now captures
+immutable source regions, adds missed portions after an automatic draft, edits
+polyline vertices, repairs supported vertical/slope readings and splits paths at
+evidenced size changes. The backend derives the partition, preserves whole-run
+dimension checks through nested splits and corrections, retains previous results,
+and recalculates affected dependency groups. Unused captures leave quantities
+unchanged. Detector refresh cannot silently discard user corrections.
+
+Root verification passes 159 focused Python tests on each of Python 3.14 and 3.9,
+35 Node tests, actual static serving and final native-result UI rendering.
+Independent engine/backend/event review found and resolved foreign-page parent
+dimension support and a bent-path to straight-projection editor failure. Native
+Mac Foundation/Poppler acceptance passes original PDF import/verified scale,
+automatic supplied draft, 8/4-foot split, documented 5-foot rise, supported 5-foot
+NTS slope, and export/reopen with ten operator captures, two original page images,
+history and the original fake response retained without another inference.
+Independent fixture views are not joined; coverage remains explicitly partial.
+
+The requested NotebookLM workflow is in active use: the 59-notebook inventory was
+reused, one new correction-specific query completed, two supporting public texts
+were verified and the existing Bluebeam snapshot was reused. The unchanged
+research snapshot and separate final implementation/test mapping are under
+docs/research/notebooklm. Unsupported generated claims and missing mechanical
+coverage are explicit; approved D01-D10 remain authoritative. No private upload,
+public source/note addition, new mechanical tolerance or rule admission occurred.
+
+Exact code hashes, commands, independent reviews, source references and terminal
+process records are in .heleos/duct-correction-build-2026-09-14. Native receipt:
+.heleos/duct-correction-verification-2026-09-14-attempt-1/duct-correction-verification.json.
+All assigned implementation/review processes and checks are terminal. Changes
+remain uncommitted; the known routing-helper uncommitted_authority condition
+remains, with explicit checkout/HEAD verified. Cross-page supplemental-reading
+applicability, corrected-source proposal reconciliation, curves/flex, actual model
+accuracy, representative-project truth/thresholds, later mechanical categories,
+estimator-ready Excel/evidence PDF, live browser and native Windows acceptance
+remain outstanding. The full goal is active and incomplete. Next: prepare the
+air-device counting requirements and checked examples in the approved order,
+using the recorded notebook inventory and source-verification workflow.
+
+NotebookLM build workflow (2026-09-14, NOTEBOOKLM-WORKFLOW-1): added the owner's
+standing research instructions to AGENTS.md and SKILLS.md, with the operating
+guide at docs/operations/notebooklm-research.md. Using the configured
+gemini-notebook-mcp server through its registered stdio connection, inventoried
+59 notebooks and 200 source records in the three initially relevant notebooks:
+N10 HVAC Takeoff Methods, N11 Ductwork & Air Distribution and N05 Drawing
+Intelligence. Relevant notebook IDs/topics and source IDs are retained in
+docs/research/notebooklm/notebook-inventory.json. Six indexed source texts were
+checked and five reusable findings recorded in docs/research/notebooklm/findings.json.
+
+The source check corroborates existing verified-scale behavior and flags a
+contextual dimension-precedence conflict with D05 without changing the approved
+rule. Four selected duct references are catalog/metadata texts and do not supply
+full mechanical takeoff rules. The N11 query completed; the N10 generated query
+timed out, remains explicitly unanswered, and was not retried. Its selected
+source texts were independently retrieved. Source verification is against indexed
+snapshots, not current publisher/licensing acceptance. No private uploads, source
+additions or research-note publication occurred. External call receipts, source
+hashes, checks and terminal process records are in
+.heleos/notebooklm-workflow-2026-09-14. Checkout/base:
+/Users/bekim/Heleos-spark, main 47d7c5b139b0ea22f661b5668021d53b3f3d51af.
+Root checked inventory/source lineage, supporting passages, links to existing
+implementation/tests and policy references; all local checks pass. Research and
+documentation processes are terminal; these changes remain uncommitted. Next:
+reuse the recorded findings before the next knowledge-dependent correction task;
+obtain applicable full source text when an unresolved mechanical rule requires it.
+
+Connected duct draft calculation (2026-09-14, DUCT-CALCULATION-1): implemented
+and locally verified in /Users/bekim/Heleos-spark, main base/live HEAD
+47d7c5b139b0ea22f661b5668021d53b3f3d51af. Source-produced observations now
+calculate provisional imperial lengths automatically, with size/work-status
+grouping, incomplete coverage, source overlays, corrections, selective
+recalculation and retained export/reopen history. Independent review found and
+resolved partial path retracing, conflicting duplicate depictions, lost secondary
+scale dependencies and producer terminal-state failures. The engine, producer,
+project adapter and UI worker tasks are terminal; their code remains uncommitted.
+
+Root verification passes 117 focused Python checks on each of Python 3.14 and
+3.9, 11 Node checks, actual static-asset handling and rendering the native result
+through the duct UI module. Original-PDF native Mac Foundation/Poppler acceptance
+passes import/verified scale, frozen image and fake response retention, automatic
+partial quantities, affected-only correction, scale withdrawal/replacement,
+export and reopen without another inference. Source context absent from the
+drawing remains unknown. Exact commands, code hashes, independent findings and
+handoff are in .heleos/duct-calculation-implementation-2026-09-14; native receipt:
+.heleos/duct-takeoff-verification-2026-09-14-attempt-1/duct-takeoff-verification.json.
+The main routing helper still reports the known uncommitted_authority condition;
+explicit checkout/HEAD and all preserved before-file identities were checked.
+
+This is a connected draft capability, not full duct or Division 23 acceptance.
+Actual model accuracy, representative projects, native Windows and the desktop
+delivery remain unverified. UI editing still lacks missed-observation/new-evidence
+capture, polyline vertices, size-change splits and complete slope/datum correction.
+Graphic evidence is not structurally distinguished from label evidence in model
+proposals; source interpretation accuracy is not established by retained hashes.
+Curves/flex, later mechanical classes and estimator Excel/evidence PDF remain
+outstanding. Next product action: complete source-bound observation correction
+for missed portions and the supported geometry types, using the recorded research
+workflow, then continue the approved class order. The full product goal is active.
+
+Owner decision (2026-09-14, DUCT-CALCULATION-1): "Duct rules approved." The
+submitted D01-D10 packet is now the basis for implementing the duct calculation
+and verifying its checked synthetic examples. This supersedes the pending-rule
+dependency in the historical checkpoints below. The goal was not marked blocked.
+The approved class order, imperial units, centerlines, supported rises and separate
+fittings/allowances remain unchanged. Exact approval/source identities and the
+implementation checkpoint are in .heleos/duct-calculation-implementation-2026-09-14.
+The frozen preparation artifacts retain their original historical status fields;
+the new approval record records the current decision without rewriting evidence.
+Current work is the source-bound observation/calculation contract followed by the
+connected engine, exception review and recalculation. Representative-project
+acceptance, automatic extraction accuracy and both-platform delivery remain open.
+
+Continuation check (2026-09-14, CONTINUATION-AUDIT-1): completed read-only audit in
+/Users/bekim/Heleos-spark on main base
+47d7c5b139b0ea22f661b5668021d53b3f3d51af. The documented Mac font setup already
+solves the preview configuration issue and matches its committed bytes; no new
+renderer implementation is warranted. Final duct fixture bytes are unchanged.
+Independent review found the next product implementation is the duct observation
+and calculation slice, pending the existing D01-D10/E01-E09 owner decision under
+roadmap 0.5. No product code or new acceptance tests changed. Exact checks and
+terminal process state are in .heleos/continuation-audit-2026-09-14. This status
+update is uncommitted. The full goal remains active; the preceding fixture turn
+made progress. Next action: record the owner's approval or amendments to the
+remaining rules/examples, then implement the connected duct calculation.
 
 Completion reporting (owner direction 2026-09-13): AGENTS.md now requires the
 coordinating agent to update this file for every completed scoped task before
@@ -7,14 +1062,14 @@ commit, verification and evidence, remaining limits, and one next action;
 authorized completion commits include the status update. This documentation task
 uses main base 913d4308bdd12ff75e126a1f9832f8f7fefd900b. Whitespace checks pass;
 detailed checks and file identities are in .heleos/completion-status-policy-2026-09-13. Product
-implementation and acceptance are unchanged. Next action remains the in-progress
-duct fixture preparation recorded below.
+implementation and acceptance are unchanged. Its next action was the duct fixture
+preparation; the completed DUCT-FIXTURES-1 checkpoint below now owns that result.
 
 Continuity checkpoint 913d430 (2026-09-13) records CURRENT_STATUS.md only.
-Product implementation and the in-progress duct PDF
-fixtures remain uncommitted in this checkout and must be preserved. The fixture
-task's latest record is .heleos/duct-fixture-build-2026-09-13/progress.json;
-its current state is preparing, with no completed handoff. This checkpoint does
+At that checkpoint, product implementation and the in-progress duct PDF
+fixtures remained uncommitted and required preservation. The fixture task was
+then preparing, with no completed handoff; its newer completion record is below.
+The task ledger remains .heleos/duct-fixture-build-2026-09-13. This checkpoint does
 not mark that work complete or approve the remaining duct rules. Older HEADs and
 next actions below describe their named historical checkpoints.
 
@@ -24,12 +1079,46 @@ local-first Mac/Windows Division 23 goal in session
 The [remaining duct rule/example packet](docs/superpowers/specs/2026-09-13-duct-measurement-rules.md)
 and nine literal synthetic examples are prepared; arithmetic checks pass, while
 the owner's remaining-rule and example-adjudication answer is pending. These are
-not source-bound PDF fixtures or representative-project acceptance results.
+literal specification records, not representative-project acceptance results.
+Separate source fixture coverage is recorded below.
 The [dataset preparation manifest](docs/research/engineering/roboflow-preparation-manifest-2026-09-13.json)
 links all nine existing candidates by hash, preserves 67 raw labels for review,
 records the observed HVAC overlap and current baseline limits, and admits none.
 Both read-only preparation agents are terminal. Exact preparation checks and
 process state are in .heleos/duct-calculation-build-2026-09-13.
+
+Original duct source preparation (2026-09-14, DUCT-FIXTURES-1): three original PDF
+pages and a separate frozen answer manifest cover five proposed examples: size
+changes, supported and unknown rises, one dimensioned slope, and crossing ducts
+beside a wall. The [fixture guide](tests/fixtures/duct-takeoff/README.md) records
+exact coverage and reproduction commands. Native Mac Foundation/Poppler checks
+pass source import, three page renders, 22 positioned evidence regions and nine
+literal centerline paths. Both Python runtimes generate identical PDF bytes.
+All final pages were visually inspected. Independent source review confirmed the
+drawn paths, separate answer inputs and explicit source coverage limits.
+Checkout: /Users/bekim/Heleos-spark, main; task base
+15d3a0269904ffa0f7da905debc59a6a61c47fef. Concurrent documentation commits moved
+HEAD to 47d7c5b139b0ea22f661b5668021d53b3f3d51af. Their status-reporting policy
+was read and reconciled; no product-code bytes changed. Fixture files and this
+completion update remain uncommitted.
+
+The final PDF hash is
+712e2beddb49906964f3d4f5f1c76293dc971ec054f09194ea35e01c709799e6.
+The native receipt is
+.heleos/duct-source-verification-2026-09-13-attempt-3/duct-source-verification.json;
+exact commands, prior failed attempts, reviewed source snapshots and handoff are
+under .heleos/duct-fixture-build-2026-09-13. A missing relocated Poppler font
+configuration caused the first preview timeout; the check explicitly configures
+the bundled fonts.conf and retains the product timeout. The next attempt exposed
+font encoding changing foot marks; the original PDF now declares WinAnsiEncoding.
+The E01 source is a straight variant: polyline/elbow source coverage and E06-E09
+PDF coverage remain open. Observation paths/roles are author-supplied references.
+No extraction, duct quantity implementation, owner rule admission, representative
+project accuracy or native Windows result is claimed. Existing product code is
+unchanged; the source reviewer and native checks are terminal. The remaining
+rule/example approval is still pending before the duct calculation implementation.
+Next action: record the owner's pending rule/example answer, then implement the
+source-bound duct observation and calculation slice in the approved imperial order.
 
 Dataset preparation implementation (2026-09-13, DATASET-AUDIT-1):
 scripts/mechanical_dataset_audit.py now audits explicit local COCO exports without

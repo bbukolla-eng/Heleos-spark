@@ -116,6 +116,17 @@ string, shell interpolation, `eval`, or execution of text returned by a worker.
 Task/prompt data is passed as data through the documented adapter input, with no
 secret values embedded in prompts, arguments, reports, or logs.
 
+## Explicit internal Claude authorization
+
+An owner-authorized internal Claude task requires a separate controller argument:
+`--approved-internal-task-sha256`, containing the SHA-256 of the exact raw task
+file bytes. The same option is supported by protocol `task` and `handoff`
+validation. Default validation still rejects internal external submissions; this
+exception accepts only INTERNAL + claude_code + approved_external, and the runner
+requires containment. It does not admit confidential project data or secrets.
+The controller must establish actual owner authority and log the submission before
+supplying the digest. See [the complete contract](claude-code-headless.md#owner-authorized-internal-claude-tasks).
+
 ## During execution
 
 Enforce the task's elapsed-time limit. On timeout, terminate the launched process

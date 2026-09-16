@@ -165,6 +165,25 @@ pub enum ValidationError {
 
 /// Parse strict JSON, validate all assignment constraints, and hash JCS bytes.
 pub fn validate_task_json(input: &[u8]) -> Result<Validated<Task>, ValidationError> {
+    validate_task(input, None)
+}
+
+/// Controller-only exception for an owner-authorized INTERNAL Claude submission.
+/// The approval is the SHA-256 of the exact input bytes, supplied separately from
+/// the untrusted packet. It is not a credential or proof of owner authorization;
+/// the controller must establish and record that authority before calling.
+/// Default validation and PROJECT_CONFIDENTIAL/SECRET restrictions are unchanged.
+pub fn validate_task_json_with_internal_claude_approval(
+    input: &[u8],
+    approved_task_sha256: &str,
+) -> Result<Validated<Task>, ValidationError> {
+    validate_task(input, Some(approved_task_sha256))
+}
+
+fn validate_task(
+    input: &[u8],
+    approved_task_sha256: Option<&str>,
+) -> Result<Validated<Task>, ValidationError> {
     let task: Task = parse(input)?;
     if task.schema != TASK_SCHEMA {
         return Err(ValidationError::InvalidSchema);
@@ -188,7 +207,22 @@ pub fn validate_task_json(input: &[u8]) -> Result<Validated<Task>, ValidationErr
     {
         return Err(ValidationError::ProviderMode);
     }
-    if task.input_data_class != DataClass::Public && task.egress_policy != EgressPolicy::LocalOnly {
+    if let Some(approval) = approved_task_sha256 {
+        hex_identity(approval, 64, "approved_internal_task_sha256")?;
+        if task.provider != Provider::ClaudeCode
+            || task.input_data_class != DataClass::Internal
+            || task.egress_policy != EgressPolicy::ApprovedExternal
+            || Sha256::digest(input)
+                .iter()
+                .map(|b| format!("{b:02x}"))
+                .collect::<String>()
+                != approval
+        {
+            return Err(ValidationError::EgressPolicy);
+        }
+    } else if task.input_data_class != DataClass::Public
+        && task.egress_policy != EgressPolicy::LocalOnly
+    {
         return Err(ValidationError::EgressPolicy);
     }
     count(task.instruction_sha256.len(), true, "instruction_sha256")?;

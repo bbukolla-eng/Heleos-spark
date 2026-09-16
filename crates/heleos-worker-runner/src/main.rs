@@ -40,6 +40,9 @@ struct Arguments {
     /// Explicit environment names to inherit; values never enter the prompt/report.
     #[arg(long)]
     inherit_env: Vec<OsString>,
+    /// Explicit controller approval of exact INTERNAL Claude task-file bytes; requires containment.
+    #[arg(long)]
+    approved_internal_task_sha256: Option<String>,
     /// Literal provider arguments, placed after --.
     #[arg(last = true)]
     args: Vec<OsString>,
@@ -107,6 +110,7 @@ fn execute(args: Arguments) -> Result<serde_json::Value, RunError> {
     config.max_output_bytes = args.max_output_bytes;
     config.cleanup_on_failure = args.cleanup_on_failure;
     config.containment = args.containment;
+    config.approved_internal_task_sha256 = args.approved_internal_task_sha256;
     Ok(run_json(&input, &config)?.summary())
 }
 fn emit_error(error: RunError) -> ExitCode {

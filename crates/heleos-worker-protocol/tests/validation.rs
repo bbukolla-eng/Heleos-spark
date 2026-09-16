@@ -3,6 +3,70 @@ mod common;
 use common::{CANONICAL_TASK, bytes, handoff, task};
 use heleos_worker_protocol::{validate_handoff_json, validate_task_json};
 use serde_json::{Value, json};
+use sha2::{Digest, Sha256};
+
+#[test]
+fn internal_claude_approval_is_external_to_and_bound_to_exact_task_bytes() {
+    use heleos_worker_protocol::validate_task_json_with_internal_claude_approval as approved;
+    let mut packet = task();
+    packet["provider"] = json!("claude_code");
+    packet["input_data_class"] = json!("INTERNAL");
+    packet["egress_policy"] = json!("approved_external");
+    let raw = bytes(&packet);
+    let digest = Sha256::digest(&raw)
+        .iter()
+        .map(|b| format!("{b:02x}"))
+        .collect::<String>();
+    assert!(validate_task_json(&raw).is_err());
+    let accepted = approved(&raw, &digest).unwrap();
+    assert_eq!(
+        accepted.document().input_data_class,
+        heleos_worker_protocol::DataClass::Internal
+    );
+    assert!(approved(&raw, &"0".repeat(64)).is_err());
+    assert!(approved(&raw, "malformed").is_err());
+    assert!(approved(&serde_json::to_vec_pretty(&packet).unwrap(), &digest).is_err());
+    for (field, value) in [
+        ("base_commit", json!("b".repeat(40))),
+        ("allowed_paths", json!(["wider"])),
+        (
+            "limits",
+            json!({"max_actions": 1, "max_duration_seconds": 1}),
+        ),
+        ("objective", json!("Changed assignment")),
+        ("instruction_sha256", json!({"AGENTS.md": "c".repeat(64)})),
+    ] {
+        let mut changed = packet.clone();
+        changed[field] = value;
+        assert!(approved(&bytes(&changed), &digest).is_err(), "{field}");
+    }
+    // Matching digests cannot admit a different class, provider, policy or malformed scope.
+    for (field, value) in [
+        ("input_data_class", json!("PROJECT_CONFIDENTIAL")),
+        ("input_data_class", json!("SECRET")),
+        ("input_data_class", json!("PUBLIC")),
+        ("provider", json!("kimi")),
+        ("egress_policy", json!("local_only")),
+        ("allowed_paths", json!(["../escape"])),
+        ("unexpected", json!(true)),
+    ] {
+        let mut changed = packet.clone();
+        changed[field] = value;
+        let raw = bytes(&changed);
+        assert!(
+            approved(
+                &raw,
+                &Sha256::digest(&raw)
+                    .iter()
+                    .map(|b| format!("{b:02x}"))
+                    .collect::<String>()
+            )
+            .is_err(),
+            "{field}"
+        );
+    }
+    assert!(approved(&vec![b' '; 1_048_577], &digest).is_err());
+}
 
 fn reject_task(value: Value) {
     assert!(

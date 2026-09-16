@@ -37,6 +37,32 @@ Do not dispatch against the current working tree when the needed instructions or
 code exist only as uncommitted changes. Commit an authorized base first or defer
 the worker task.
 
+## Owner-authorized internal Claude tasks
+
+Default v1 validation still rejects `INTERNAL` with `approved_external`. For the
+owner's explicitly authorized bounded Claude build task, the controller may use
+`--approved-internal-task-sha256 EXACT_RAW_TASK_FILE_SHA256` on both the protocol
+validator and worker runner. This is a separate controller argument; a packet
+cannot authorize itself. The digest binds every byte of the task, including its
+provider, exact base, instruction hashes, allowed/forbidden paths and limits.
+Changing whitespace also requires a newly reviewed digest. Do not automatically
+approve a task supplied by a worker or external document.
+
+The exception admits only `claude_code`, `INTERNAL`, `approved_external` and a
+matching digest. It rejects PUBLIC, confidential and secret inputs under that
+exception. The runner additionally requires a supported containment mode and
+retains `approved-internal-task.sha256` beside the original task, including on
+post-preparation failures. Successful run summaries also retain the digest.
+`run_json` binds raw input; the prevalidated `run` API requires a separate approval
+of its canonical input bytes and cannot inherit approval from another context.
+
+The hash records a controller assertion, not a cryptographic owner signature.
+Establish the owner's provider/data/scope authorization and log the external
+submission before supplying it. Never relabel internal code PUBLIC or describe
+an external Claude invocation as local_only. Native Windows acceptance remains a
+separate gate. Source/instruction checks, allowed-path inventory, elapsed limits
+and containment apply unchanged.
+
 ## macOS read-only review
 
 Use absolute paths. Replace the example values with the recorded task, source,

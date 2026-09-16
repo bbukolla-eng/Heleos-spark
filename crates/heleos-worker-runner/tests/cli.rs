@@ -5,6 +5,132 @@ use common::Fixture;
 use std::fs;
 use std::process::Command;
 
+#[cfg(target_os = "macos")]
+#[test]
+fn internal_claude_cli_requires_exact_controller_grant_and_containment() {
+    use sha2::{Digest, Sha256};
+    for scenario in [
+        "missing",
+        "wrong",
+        "no-containment",
+        "confidential",
+        "approved",
+        "out-of-scope",
+    ] {
+        let f = Fixture::new(if scenario == "out-of-scope" {
+            "printf forbidden > protected.txt"
+        } else {
+            "printf authorized > allowed/new.txt"
+        });
+        let mut packet = f.packet();
+        packet["input_data_class"] = if scenario == "confidential" {
+            "PROJECT_CONFIDENTIAL"
+        } else {
+            "INTERNAL"
+        }
+        .into();
+        packet["egress_policy"] = "approved_external".into();
+        let raw = serde_json::to_vec(&packet).unwrap();
+        let grant = Sha256::digest(&raw)
+            .iter()
+            .map(|b| format!("{b:02x}"))
+            .collect::<String>();
+        let packet_path = f.root.path().join("task.json");
+        fs::write(&packet_path, &raw).unwrap();
+        let mut command = Command::new(env!("CARGO_BIN_EXE_heleos-worker-runner"));
+        command
+            .arg("--task")
+            .arg(&packet_path)
+            .arg("--source")
+            .arg(&f.source)
+            .arg("--workspace-root")
+            .arg(&f.workspace)
+            .args(["--provider", "claude_code", "--git", "/usr/bin/git"])
+            .arg("--command")
+            .arg(&f.provider)
+            .args([
+                "--containment",
+                if scenario == "no-containment" {
+                    "none"
+                } else {
+                    "macos_seatbelt"
+                },
+            ]);
+        if scenario != "missing" {
+            command
+                .arg("--approved-internal-task-sha256")
+                .arg(if scenario == "wrong" {
+                    "0".repeat(64)
+                } else {
+                    grant.clone()
+                });
+        }
+        let output = command.output().unwrap();
+        let value: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
+        if scenario == "approved" {
+            assert!(output.status.success(), "{value}");
+            assert_eq!(value["approved_internal_task_sha256"], grant);
+            assert_eq!(value["containment"]["mode"], "macos_seatbelt");
+            let run = std::path::Path::new(value["run_directory"].as_str().unwrap());
+            assert_eq!(fs::read(run.join("task.original.json")).unwrap(), raw);
+            assert_eq!(
+                fs::read_to_string(run.join("approved-internal-task.sha256")).unwrap(),
+                grant
+            );
+            assert_eq!(
+                fs::read(run.join("checkout/allowed/new.txt")).unwrap(),
+                b"authorized"
+            );
+        } else {
+            assert_eq!(output.status.code(), Some(2), "{scenario}: {value}");
+            if scenario == "out-of-scope" {
+                assert_eq!(value["code"], "out_of_scope");
+            } else {
+                f.assert_cleaned(); // No checkout or provider launch on denied approval.
+            }
+        }
+        assert_eq!(
+            fs::read(f.source.join("protected.txt")).unwrap(),
+            b"protected bytes\n"
+        );
+        assert!(!f.source.join("allowed/new.txt").exists());
+    }
+}
+
+#[test]
+fn prevalidated_internal_task_cannot_transfer_approval_to_another_runner_context() {
+    use sha2::{Digest, Sha256};
+    let f = Fixture::new("printf unexpected > allowed/new.txt");
+    let mut packet = f.packet();
+    packet["input_data_class"] = "INTERNAL".into();
+    packet["egress_policy"] = "approved_external".into();
+    let raw = serde_json::to_vec(&packet).unwrap();
+    let task = heleos_worker_protocol::validate_task_json_with_internal_claude_approval(
+        &raw,
+        &Sha256::digest(&raw)
+            .iter()
+            .map(|b| format!("{b:02x}"))
+            .collect::<String>(),
+    )
+    .unwrap();
+    let mut config = f.config();
+    assert_eq!(
+        heleos_worker_runner::run(&task, &config).unwrap_err().code,
+        heleos_worker_runner::FailureCode::InvalidTask
+    );
+    config.approved_internal_task_sha256 = Some(
+        Sha256::digest(task.canonical_json())
+            .iter()
+            .map(|b| format!("{b:02x}"))
+            .collect::<String>(),
+    );
+    assert_eq!(
+        heleos_worker_runner::run(&task, &config).unwrap_err().code,
+        heleos_worker_runner::FailureCode::InvalidConfiguration
+    );
+    f.assert_cleaned();
+}
+
 #[test]
 fn cli_reads_packet_and_retains_checkout_with_protocol_handoff() {
     let f = Fixture::new("printf cli > allowed/new.txt");

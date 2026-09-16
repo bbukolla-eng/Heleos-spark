@@ -3,7 +3,7 @@
 use clap::{Parser, Subcommand};
 use heleos_worker_protocol::{
     HANDOFF_SCHEMA, MAX_DOCUMENT_BYTES, TASK_SCHEMA, VALIDATION_SCHEMA, validate_handoff_json,
-    validate_task_json,
+    validate_task_json, validate_task_json_with_internal_claude_approval,
 };
 use serde::Serialize;
 use std::fs::File;
@@ -22,11 +22,15 @@ struct Arguments {
 enum Command {
     Task {
         file: PathBuf,
+        #[arg(long)]
+        approved_internal_task_sha256: Option<String>,
     },
     Handoff {
         #[arg(long)]
         task: PathBuf,
         file: PathBuf,
+        #[arg(long)]
+        approved_internal_task_sha256: Option<String>,
     },
 }
 
@@ -58,14 +62,29 @@ fn main() -> ExitCode {
 
 fn run(arguments: Arguments) -> Result<(), String> {
     let (schema, digest) = match arguments.command {
-        Command::Task { file } => {
-            let task =
-                validate_task_json(&read_document(&file)?).map_err(|error| error.to_string())?;
+        Command::Task {
+            file,
+            approved_internal_task_sha256,
+        } => {
+            let raw = read_document(&file)?;
+            let task = match approved_internal_task_sha256 {
+                Some(approval) => validate_task_json_with_internal_claude_approval(&raw, &approval),
+                None => validate_task_json(&raw),
+            }
+            .map_err(|error| error.to_string())?;
             (TASK_SCHEMA, task.digest().to_owned())
         }
-        Command::Handoff { task, file } => {
-            let task =
-                validate_task_json(&read_document(&task)?).map_err(|error| error.to_string())?;
+        Command::Handoff {
+            task,
+            file,
+            approved_internal_task_sha256,
+        } => {
+            let raw = read_document(&task)?;
+            let task = match approved_internal_task_sha256 {
+                Some(approval) => validate_task_json_with_internal_claude_approval(&raw, &approval),
+                None => validate_task_json(&raw),
+            }
+            .map_err(|error| error.to_string())?;
             let handoff = validate_handoff_json(&read_document(&file)?, &task)
                 .map_err(|error| error.to_string())?;
             (HANDOFF_SCHEMA, handoff.digest().to_owned())

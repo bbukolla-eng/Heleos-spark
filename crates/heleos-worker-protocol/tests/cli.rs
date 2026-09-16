@@ -6,6 +6,55 @@ use std::fs;
 use std::path::Path;
 use std::process::{Command, Output};
 
+#[test]
+fn cli_internal_approval_validates_task_and_handoff_without_changing_default() {
+    use sha2::{Digest, Sha256};
+    let root = tempfile::tempdir().unwrap();
+    let mut packet = task();
+    packet["provider"] = json!("claude_code");
+    packet["input_data_class"] = json!("INTERNAL");
+    packet["egress_policy"] = json!("approved_external");
+    let raw = bytes(&packet);
+    let approval = Sha256::digest(&raw)
+        .iter()
+        .map(|b| format!("{b:02x}"))
+        .collect::<String>();
+    fs::write(root.path().join("task.json"), &raw).unwrap();
+    assert!(!run(root.path(), &["task", "task.json"]).status.success());
+    let accepted = envelope(&run(
+        root.path(),
+        &[
+            "task",
+            "task.json",
+            "--approved-internal-task-sha256",
+            &approval,
+        ],
+    ));
+    let mut result = handoff(accepted["digest"].as_str().unwrap());
+    result["provider"] = json!("claude_code");
+    result["task_digest"] = accepted["digest"].clone();
+    fs::write(root.path().join("handoff.json"), bytes(&result)).unwrap();
+    envelope(&run(
+        root.path(),
+        &[
+            "handoff",
+            "--task",
+            "task.json",
+            "handoff.json",
+            "--approved-internal-task-sha256",
+            &approval,
+        ],
+    ));
+    assert!(
+        !run(
+            root.path(),
+            &["handoff", "--task", "task.json", "handoff.json"]
+        )
+        .status
+        .success()
+    );
+}
+
 fn run(root: &Path, args: &[&str]) -> Output {
     Command::new(env!("CARGO_BIN_EXE_heleos-worker-protocol"))
         .current_dir(root)
