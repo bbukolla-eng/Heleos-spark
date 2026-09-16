@@ -1,5 +1,74 @@
 # Current Status
 
+Connected circular/span evaluation (2026-09-15, DUCT-CURVE-EVALUATION-1):
+implemented, independently reviewed and accepted locally in
+/Users/bekim/Heleos-spark on main, base
+579b19aaaeb144be7452aa7e20ef2233382dd38c. Versioned independent truth now supports
+planar paths, complete circular arcs and exact selected spans. Saved producer
+geometry is compared with continuous distance bounds in canonical source
+coordinates; a tolerance crossed by those bounds remains indeterminate.
+Approved duct rules, source geometry and deterministic quantities are unchanged.
+
+The connected importer, reports, UI, reopen and draft exports retain source
+identities and separate geometry, size, status and length diagnostics. Scorer
+changes mark old plans/runs stale without rewriting their reports. A real report
+made with the prior scorer was sealed, reopened under v2 and preserved byte for
+byte. Missing dependencies keep sealed history readable. Invalid truth and
+exhausted cover/distance budgets leave workflow and SQLite records unchanged.
+
+All 85 affected Python tests pass on each of Python 3.9.6, 3.12.14 and 3.14.6.
+Another 46 compatibility tests and all 160 UI tests pass. The accepted helper
+passes 11 tests and 32 independent oracle cases with 3,864 exact circle probes
+and 12 rejection cases on each runtime. The relocated package verifies 60 exact
+payloads and 14 isolated imports on each runtime. Independent review found no
+remaining blocking issue. One fixture rounding mistake and one receipt filename
+mistake were corrected with their original failures retained; neither changed
+production calculations.
+
+NotebookLM findings, source passages, external submissions, Claude's exact-base
+two-file candidate, Codex's small guard clarification and verification evidence
+are recorded in .heleos/duct-curve-evaluation-2026-09-15/ and
+ docs/research/notebooklm/duct-curve-evaluation-implementation-2026-09-15.json.
+Claude exited successfully; its reported usage exceeded the advisory token
+ceiling, which was not an enforced provider limit. All worker, review and check
+processes are terminal. Codex remains the only commit owner.
+
+The helper and its standalone checks are checkpointed in Git. Connected
+application changes and earlier product work remain locally integrated but
+uncommitted, with accepted hashes and a relocated package snapshot retained.
+No push, private-project upload, release approval, native Windows execution or
+representative-project accuracy is claimed. Full Division 23 remains unfinished.
+
+Next: add explicit source-linked topology assertions and independently reviewed
+truth, keeping geometric crossings separate from physical connections; then
+continue the approved mechanical category order. Remaining categories and
+representative Mac/Windows acceptance stay outstanding.
+
+Circular-cover helper (2026-09-15, DUCT-ARC-COVER-1): implemented by the
+bounded Claude Code assignment, independently reviewed and accepted locally in
+/Users/bekim/Heleos-spark on main, base 579b19aaaeb144be7452aa7e20ef2233382dd38c.
+The provider exited successfully after 1208 seconds under macos_seatbelt, with only
+the two assigned paths changed and no truncated output. Codex added one reviewed
+explicit L1-sum bit guard in a separate preserved candidate; no mathematical
+change or demonstrated prior public resource escape was found.
+
+The adjusted helper passes 11 tests and an independent 32-case oracle with 3,864
+exact circle probes and 12 rejection cases on each of Python 3.9, 3.12 and 3.14.
+Existing geometry/distance tests pass. Independent review also exercised 262-bit
+internal subdivision rays and exact/one-less resource bounds. Four source bodies
+and five passages remain pinned; the cover derivation is locally proved and
+verified, not attributed to a NotebookLM algorithm. Quantity rules are unchanged.
+
+Evidence: .heleos/duct-curve-evaluation-2026-09-15/cover-acceptance.json and retained
+original provider run. Claude used its configured default; reported model usage
+and the advisory-token overrun are retained. Codex is the only commit owner.
+
+Next: verify the prepared connected circular/span scorer, frozen report history,
+UI, exports and package closure. That integration and earlier product work remain
+uncommitted and unaccepted pending the declared runtime checks. The worker and
+helper checks are terminal; all 160 UI tests pass. Full Division23, topology,
+representative accuracy and native Windows acceptance remain outstanding.
+
 Circular/span evaluation preparation (2026-09-15, DUCT-CURVE-EVALUATION-1):
 resumed in /Users/bekim/Heleos-spark on main from
  e48a7c5081504890f76e9e13e9f33bfe25633623. Prior completed work remains intact.
