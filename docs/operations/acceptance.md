@@ -46,11 +46,9 @@ only to this task's contract; unfinished work in other tasks does not block it.
 It is a finite checklist, with no requirement to prove that future defects are
 impossible.
 
-For example, a missing paragraph fails the hydronic source audit's 37-paragraph
-coverage check. A source conflict recorded correctly as `UNKNOWN` passes a check
-that explicitly expects that result. Unbuilt piping calculations and pending
-Windows tests belong to their own tasks and do not prevent closing this source
-audit. A required calculation that expects a supported quantity cannot pass by
+A source conflict recorded correctly as `UNKNOWN` passes a check
+that explicitly expects that result. Unfinished work outside the task's declared
+dependencies does not prevent closing it. A required calculation that expects a supported quantity cannot pass by
 substituting `UNKNOWN`. New suggestions and non-mandatory improvements get
 separate tasks; changing a mandatory criterion requires an explicit contract
 revision and reason, never a silent waiver of a failed check.
@@ -75,21 +73,6 @@ acceptance. Existing D01–D10, A01–A12 and E01–E12 approvals remain settled
 Passing a test written to mirror implementation output is not independent expected
 truth. Case expectations come from approved examples, independently calculated
 values or adjudicated source evidence.
-
-## Hydronic example: bounded audit versus complete section
-
-The retained VA 23 21 13 guide dated 03-01-23 contains 37 numbered paragraphs. A
-bounded audit of that guide closes when all 37 are accounted for, every identified
-entity/variant/attribute/relationship/service obligation is recorded with its
-paragraph, and references, guide options and conflicts are explicit. The count
-37 is fixed by that source snapshot; it is not a count of all hydronic taxons.
-
-That audit supports `D23-VA-232113-TAX`. It does not establish the complete
-hydronic taxonomy required by the verified Division 23 register. The section TAX task must identify its complete
-declared scope and evidence set, reconcile other required sources/variants and
-resolve required coverage gaps before it can close. The separate full CSI
-catalogue task prevents a partial government guide inventory from being called
-all Division 23.
 
 ## Whole-section and product acceptance
 
