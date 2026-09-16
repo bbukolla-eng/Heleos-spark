@@ -1,5 +1,22 @@
 # Current Status
 
+Air-device count kernel preparation (2026-09-16, AIR-DEVICE-COUNT-KERNEL-1):
+resumed on main in /Users/bekim/Heleos-spark from
+f2a12387bc1d73406949867f233acb3322193f26. All seven accepted prerequisite
+identities match. The previous goal turn made verified implementation progress.
+The committed kernel contract and verified NotebookLM packet remain the basis;
+A01–A12 and all 17 examples are approved. No repeated research query is needed.
+
+The next bounded Claude assignment owns only the pure calculation module and
+its test, with exact-base accepted attribute/policy dependencies. Codex owns local
+source-reading integration on separate paths. Claude 2.1.261 is authenticated;
+no new worker is running at this preparation checkpoint.
+Evidence: .heleos/air-device-count-2026-09-16/.
+Next: dispatch the kernel, implement the local-reader adapter in parallel, then
+independently review and verify both before connecting saved workflow counts.
+Prior application work remains uncommitted. Full Division 23, representative
+projects and native Windows acceptance remain outstanding.
+
 Air-device attributes and approved policy (2026-09-16, AIR-DEVICE-ATTRIBUTES-1):
 implemented, independently reviewed, accepted and locally integrated in
 /Users/bekim/Heleos-spark on main, base
