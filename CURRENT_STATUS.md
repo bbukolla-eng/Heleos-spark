@@ -1,5 +1,41 @@
 # Current Status
 
+Air-device attributes and approved policy (2026-09-16, AIR-DEVICE-ATTRIBUTES-1):
+implemented, independently reviewed, accepted and locally integrated in
+/Users/bekim/Heleos-spark on main, base
+30b3e7fc81c5110ab36a40d4a1f2ee36dbba7a8d. This completes the first prerequisite
+of AIR-DEVICE-COUNT-1; automatic air-device counts are not yet connected.
+
+Qualified face/neck/opening sizes, assembly length and slots remain separate.
+Source units/text and evidence refs are preserved; exact rational inches determine
+attribute equivalence, while six-place imperial display never determines it.
+Unknown/not-supplied/not-applicable states stay distinct. The policy loader verifies
+exact owner-approved packet, receipt and example bytes after relocation and fails
+closed on drift. Presentation headings and drawing scale cannot alter that policy.
+
+All 31 attribute/policy tests and 44 independent numerical assertions pass on
+each of Python 3.9.6, 3.12.14 and 3.14.6. Root import/policy smoke passed, and
+all 18 previously accepted topology input hashes still match. Independent review
+has no remaining finding. Original Claude test-fixture failure and two repaired
+implementation issues (Unicode spaces, early reference bounds) remain recorded
+with an untouched original candidate and a separately accepted repaired copy.
+
+Claude's named two-file assignment exited 0 under macos_seatbelt, 428.554 seconds,
+with no output truncation or extra candidate paths. Reported output exceeded the
+advisory token ceiling; that ceiling was not a provider-enforced usage limit.
+Codex built policy verification separately, reviewed repairs, ran every declared
+check and remains the sole commit owner. All processes are terminal.
+
+Evidence: .heleos/air-device-build-2026-09-16/ and
+ docs/research/notebooklm/air-device-attributes-implementation-2026-09-16.json.
+The helpers, tests, count contract and this completion record are checkpointed.
+Earlier connected application work remains uncommitted and preserved.
+Next: implement the source-bound count kernel and all 17 approved semantic cases
+under docs/superpowers/specs/2026-09-16-air-device-count-contract.md, then connect
+source production, correction/history, UI and exports. Multiplicity/relocation
+combination support remains explicit outstanding work. Representative projects,
+live-model accuracy, native Windows and full Division 23 acceptance remain open.
+
 Air-device counting preparation (2026-09-16, AIR-DEVICE-COUNT-1): resumed in
 /Users/bekim/Heleos-spark on main from
 e252ebd0d0c28bbc20dc1dad50c0ee5d38760c15. All 18 previously accepted topology
