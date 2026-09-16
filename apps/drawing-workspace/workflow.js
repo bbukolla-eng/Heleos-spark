@@ -1884,7 +1884,7 @@
     content.append(list);
   }
   function exportForm() {
-    hint("Download the saved project records: equipment, measurements, mechanical items, unresolved questions and change history. Incomplete work stays visible in the package.");
+    hint("Download the Excel workbook with supported duct lengths and air-device counts, source references, saved records and change history. Unknown quantities and incomplete work stay visible. Correct in Heleos and regenerate; workbook edits do not update the project.");
     content.append(node("p", view.items.length + " mechanical items · " + view.measurements.length + " measurements · " + view.equipment_rows.length + " equipment tags", "workflow-export-summary"));
     const link = node("a", "Download draft takeoff package", "button button-primary");
     link.href = "api/workflow/export.zip"; link.download = "heleos-draft-takeoff.zip";

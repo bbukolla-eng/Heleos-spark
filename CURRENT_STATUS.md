@@ -21,7 +21,7 @@ usable deliverable; repair only that dependency.
 | 0.3 Drawing coordinates and scale | Revision-bound geometry, scale review and invalidation connected locally. | Native parity and representative drawings remain to verify. | Reuse for source identity; each counts have no scale dependency. |
 | 0.4 Schedule reconciliation | Source-linked schedule extraction and plan correspondence, decisions/history and exceptions connected locally. | Broader schedule fields/types and representative acceptance remain open. | Feed air-device attributes/declarations and then equipment counts. |
 | 0.5 Mechanical takeoff | Duct capability preserved. Air-device approved calculation, source producer, review UI and application connection independently verified locally; corrections, reopening and source exports work. Equipment draft tag review exists. | **Air-device recognition remains unqualified:** the installed local model missed all three physical symbols in AC01. Physical equipment counts, piping, fittings, accessories, controls, insulation and demolition remain outstanding. | Improve the bounded recognition path; advance independent supported-output work without repeating duct refinements. |
-| 0.6 Correction, recalculation and estimator outputs | Duct and air-device correction/recalculation, append-only history and draft source-linked CSV/JSON/evidence paths connected locally. | Estimator-ready Excel with formulas and consolidated evidence PDF remain unfinished. | **Next independent implementation: source-linked Excel for supported duct/air-device results**, preserving unknown quantities and review state. |
+| 0.6 Correction, recalculation and estimator outputs | Duct and air-device correction/recalculation, append-only history, CSV/JSON and source-linked Excel with live formulas connected locally. Workbook projection, formula recalculation, stale/unknown states and portable packaging verified. | Consolidated evidence PDF, native Excel/Windows and representative estimator acceptance remain unfinished. | **Next independent implementation: consolidated evidence PDF for supported results**, reusing current source identities and unknown/review state. |
 | 0.7 Mac/Windows product | Local Mac drawing/takeoff preview and relocatable package; Windows launch/package implementation prepared. | Native Windows execution, desktop shell/parity and install/update/recovery acceptance remain open. | Advance shared local workflow and independent platform verification alongside supported takeoff classes. |
 | 0.8 iPhone and bounded automation | Supporting automation contracts exist; no completed companion claim. | Companion/synchronization/approval scope and native device acceptance remain future work. | Preserve original roadmap scope; do not make companion work a new Mac/Windows delivery prerequisite. |
 | 1.0 Representative production pilot | No production acceptance claimed. | Freeze representative projects/truth/thresholds, verify full requested Division 23 scope and native platforms, then record human release acceptance. | Usable, traceable takeoffs demonstrated on representative Mac and Windows projects. |
@@ -48,23 +48,41 @@ success. Keep this concrete model limitation visible while independent output an
 platform work advances. Physical equipment class rules still need a concrete
 owner-approved packet before quantity implementation; A01–A12 cover air devices.
 
-Next independent implementation: source-linked Excel for supported duct/air-device
-results, with separate known subtotals, unknown finals and original evidence
-references. Equipment counts and consolidated evidence PDF remain next product
-capabilities. No new duct refinement is a prerequisite without a blocking defect.
+WORKBOOK-EXPORT-1 is locally implemented and independently accepted. The draft
+package contains `takeoff.xlsx` with formula-linked supported quantities, unknown
+finals, exact source links and separate history. Native Excel/Windows acceptance
+is outstanding. Next independent implementation: consolidated evidence PDF for
+supported duct/air-device results, using the same verified source identities.
+Equipment counts remain next in the approved quantity-class order. No new duct
+refinement is a prerequisite without a blocking defect.
 
 ## Live work and evidence
 
-- WORKBOOK-EXPORT-1 is in progress at base
-  `4f0ca41ffd00bbd828cd8d83ad4d843cc2ad2c94`. The connected workbook
+- WORKBOOK-EXPORT-1 is independently accepted locally in
+  `/Users/bekim/Heleos-spark`, `main`, implementation base
+  `bfc7cc6a07a11bd42ab13e875dc35a97f7960eb2`. The connected workbook
   [contract](docs/superpowers/specs/2026-09-16-takeoff-workbook-contract.md) and
   [verified research](docs/research/notebooklm/workbook-export-findings-2026-09-16.json)
-  are prepared for a bounded Claude writer assignment. NotebookLM ZIP passages
-  and primary SpreadsheetML documentation were checked; previous source-link and
-  rounding findings were reused. Implementation and workbook verification remain
-  pending. Current ledger: `.heleos/workbook-export-2026-09-16/`.
-  Next action: dispatch the two-file writer and connect the takeoff projection on
-  non-overlapping paths. Air-device recognition remains open as recorded below.
+  bind the implementation. NotebookLM ZIP passages and primary SpreadsheetML
+  documentation were checked; previous source-link and rounding findings reused.
+  The bounded Claude invocation `workbook-writer-claude-001` terminated before
+  inference with an expired OAuth token (provider exit1, runner exit2). The
+  failed invocation is retained at `heleos-worker-zkn0bT`; no candidate was
+  produced or accepted. Codex implemented independently under existing authority;
+  Claude login refresh is pending and does not block independent product work.
+  Checks: 47 focused Python checks passed on 3.9/3.12/3.14; independent reviewer
+  found no blockers and reproduced stale-source invalidation and exact exported
+  source locators. The independent spreadsheet engine verified 20 formulas,
+  12 mutation/restoration cases, stale/mixed cases and nine inspected views of
+  all five sheets. Clean staged archive
+  `24900f5ab54f4a6b71e48e48f3c7f38cafbe1448` passed the 47 checks, a relocated
+  75-file package and workbook/workflow imports. The existing ZIP inventory test
+  was updated for the two intentionally added files; original failure logs remain.
+  JavaScript syntax and diff checks passed. Final implementation record:
+  [workbook export](docs/research/notebooklm/workbook-export-implementation-2026-09-16.json).
+  Current ledger: `.heleos/workbook-export-2026-09-16/`; all processes terminal.
+  Next action: implement consolidated evidence PDF; retain recognition, remaining
+  mechanical classes and native/release gates as outstanding work.
 - Accepted attribute/policy prerequisite: `f2a12387bc1d73406949867f233acb3322193f26`;
   [implementation record](docs/research/notebooklm/air-device-attributes-implementation-2026-09-16.json).
   Accepted duct evidence remains in `.heleos/duct-topology-2026-09-15/`; all18
@@ -96,7 +114,7 @@ capabilities. No new duct refinement is a prerequisite without a blocking defect
   It does not grant native Windows, production, clean-release or representative
   recognition acceptance. Other research/evaluation work outside that inventory
   remains uncommitted and preserved. No remote push is authorized.
-- Active ledger: `.heleos/air-device-count-2026-09-16/resume-state.json` and
+- Prior air-device ledger: `.heleos/air-device-count-2026-09-16/resume-state.json` and
   `claude-submission.json`; exact run, failure, test and acceptance evidence stays
   there. Preserve all prior runs and remaining uncommitted paths.
 - NotebookLM uses the committed verified air-device findings; no repeated query

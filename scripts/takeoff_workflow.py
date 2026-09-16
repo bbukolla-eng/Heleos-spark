@@ -75,6 +75,7 @@ duct_takeoff = _sheet_module("project_duct_takeoff")
 duct_source = _sheet_module("duct_source_producer")
 duct_evaluation = _sheet_module("project_duct_evaluation")
 duct_vision = _sheet_module("local_duct_vision_v3")
+takeoff_workbook = _sheet_module("takeoff_workbook")
 
 STAGES = ("setup", "documents", "equipment", "measurements", "takeoff", "exceptions", "export")
 TITLES = ("Project setup", "Document review", "Equipment", "Measurements",
@@ -1115,10 +1116,16 @@ class TakeoffWorkflow:
             reading = view["document_reading"]
             if reading and reading["state"] == "completed":
                 self.workspace.documents.verified_result(reading["id"])
+            try:
+                workbook = takeoff_workbook.workbook_bytes(view)
+            except ValueError as error:
+                raise WorkflowError("workbook_projection", str(error), 409) from None
             output = io.BytesIO()
             with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED) as archive:
                 archive.writestr("README.txt", "HELEOS DRAFT TAKEOFF\nThis package contains the saved workflow, source references, operator measurements, mechanical records and unresolved work. It is not a bid or an approved estimate.\nIncomplete stages: " + ", ".join(v["title"] for v in view["stages"][:-1] if v["status"] != "reviewed") + "\n")
                 archive.writestr("workflow.json", packed(view))
+                archive.writestr("takeoff.xlsx", workbook)
+                archive.writestr("WORKBOOK.txt", "HELEOS DRAFT WORKBOOK\nOpen takeoff.xlsx for supported duct lengths and air-device counts, formula-linked subtotals, conditional complete totals, saved history and exact source references. UNKNOWN means unresolved, not zero. Other Division 23 quantities remain outstanding.\nThe workbook is a snapshot. Edits in Excel do not correct Heleos or update source evidence. Correct and review in Heleos, then regenerate this package. Live formulas support inspection; the deterministic application remains quantity authority.\nSources names JSON records in this extracted package. Complete original-source identities and retained evidence remain there. This is not a bid or approved estimate.\n")
                 for name, payload in air_files.items():
                     archive.writestr(name, payload)
                 if view["duct_takeoff"]["available"]:
