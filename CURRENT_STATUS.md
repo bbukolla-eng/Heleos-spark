@@ -13,66 +13,77 @@ they do not define mechanical takeoff completion. Product coverage must be track
 against the complete verified section hierarchy and the applicable project
 specifications. A section absent from one pilot is not automatically a completed
 product capability. Settled decisions:
-imperial output; duct lengths → air-device counts → equipment counts; approved
-D01–D10 and A01–A12/AC01–AC17. Do not reopen those choices. Accepted duct work is
+imperial output; initial priority duct lengths → air-device counts → equipment
+counts; approved D01–D10, A01–A12/AC01–AC17 and E01–E12/EC01–EC20. Do not reopen those choices. Accepted duct work is
 preserved. Further duct refinements, geometry/evaluation expansions or repeated
 test cycles are deferred unless a recorded concrete defect blocks the active
 usable deliverable; repair only that dependency.
 
 ## Resume here
 
-**Primary ready task: EQUIPMENT-RULES-1 — prepare the physical-equipment counting
-rules and checked assembly examples.** This advances the approved next quantity
-class; it does not reopen the completed duct calculation or air-device rules.
+**Duct and air-device acceptance do not gate the other Division 23 categories.**
+The owner explicitly rejected that bottleneck on 2026-09-16. The initial class
+order is delivery priority; work advances from its actual inputs and class rules.
+Do not return to duct/air-device refinement to fill a gap in another task.
 
-1. Reuse the recorded NotebookLM inventory and verified equipment/assembly
-   findings; query only missing requirements and verify the supporting passages.
-2. Produce one bounded equipment rule packet with worked expected counts,
-   source references, duplicate/tag-versus-assembly cases, bundled accessories,
-   schedule conflicts, and new/existing/demolition distinctions. Flag unresolved
-   decisions rather than choosing unsupported quantity rules.
-3. Present the concrete packet for the genuinely missing equipment-class
-   approval. That decision gates equipment quantity implementation only. Move
-   to the ready independent task while it is pending; do not repeat preparation.
+**Primary ready task: EQUIPMENT-COUNT-1 — implement connected physical-equipment
+counts under the approved E01–E12 and EC01–EC20.** The owner approved the
+[equipment packet](docs/superpowers/specs/2026-09-16-equipment-counting-rules.md)
+and its 20 examples on 2026-09-16; the
+[exact decision and hashes](tests/fixtures/equipment-takeoff/2026-09-16-owner-decision.json)
+are recorded. Do not ask again or repeat rule preparation.
 
-**Ready independent implementation: EVIDENCE-PDF-1 — connect a consolidated
-source-linked evidence PDF for supported results to the existing export flow.**
-Reuse accepted quantities, source identities and stale/unknown states. Verify
-correction/revision effects and the packaged export; preserve incomplete states.
-This task can advance while equipment rules await review or a provider is unavailable.
+First executable action: bind the approved inputs and implement the deterministic
+equipment count projection plus focused checks, reusing source identities and
+keeping instance, package and installation outputs separate. Then connect it to
+existing equipment observations, reconciliation, corrections/reopen/history and
+exports. The fixed finish line is that connected workflow with visible known and
+unresolved quantities; a standalone kernel is an intermediate checkpoint only.
+The task contract and research receipts are in
+`.heleos/equipment-rules-2026-09-16/resume-state.json`. No equipment quantity engine
+or representative/native acceptance is claimed yet.
 
-**Additional bounded preparation: DIV23-COVERAGE-1 — establish the verified
-section/subsection coverage register and map the proposed packages to it.**
-Record the source edition and project applicability separately from product
-completion. Missing authoritative hierarchy evidence remains explicit; do not
-invent section numbers or treat the nine-category vocabulary as complete CSI.
+**Ready independent preparation: PIPING-RULES-1 — prepare the hydronic piping
+rule/example packet.** Reuse N10's recorded public source inventory; verify
+applicable pipe/service/material/size, fittings/valves, vertical/dimension and
+work-status requirements. Keep steam/condensate, refrigerant and fuel variants
+explicit as separate subsequent packets. Coordinates, scale and source identity
+are reusable prerequisites; duct/air-device recognition is not. Do not transfer
+duct rules to piping without the appropriate class basis.
 
-Use one primary task and at most two independent tracks, with non-overlapping
-write paths. Owner project-type feedback may prioritize representative fixtures;
-it is optional for the already authorized preparation and supported-output work.
-The remaining equipment, airside, piping, insulation, common-work, controls and
-service-obligation packages are lined up in the
-[full Division 23 audit](docs/research/div23-scope-and-proposed-lineup-2026-09-16.md).
-They remain outstanding until implemented and accepted.
+**Ready independent implementation: EVIDENCE-PDF-1 — connect consolidated,
+source-linked PDF evidence to the existing export flow.** Use current supported
+quantities and preserve stale/unknown states. This output task must not indefinitely
+displace the remaining mechanical categories.
 
-**Parked conditions, not instructions to retry:** air-device original-drawing
-recognition needs a materially different bounded experiment after eight terminal
-runs; Claude needs a refreshed login after the recorded expired-token failure;
-native Windows and representative-project acceptance need their platform/project
-evidence. Each condition blocks its dependent action only. Record changed inputs
-and an acceptance condition before retrying. No provider process is running.
+**Other ready independent lanes:** section/subsection coverage mapping;
+insulation/liner/jacket requirements; controls and supply/installation
+responsibility; common-work/support requirements; TAB, commissioning and O&M
+obligations. Their [actual dependencies and work lineup](docs/research/div23-scope-and-proposed-lineup-2026-09-16.md)
+are recorded individually. Specification requirement extraction can precede final
+host quantities; missing quantities block only their dependent calculations.
+Full hierarchy verification and project applicability remain distinct from
+product completion. Do not invent CSI section numbers or treat the nine-category
+vocabulary as full coverage.
 
-**Closed locally; reuse the evidence:** duct calculation and accepted topology;
-schedule reconciliation; the air-device software connection and approved rules;
-source-linked Excel export; the full-scope wording/audit; and this continuation
-correction. Air-device recognition and native/representative acceptance remain
-open. Do not rerun accepted implementations or maintenance tasks to fill a turn.
+Use bounded assignments, one writer per path and available execution capacity.
+Optional representative-project feedback does not block authorized preparation.
+All remaining categories stay outstanding until connected and accepted.
 
-The saved goal's obsolete immediate duct instruction is superseded by this
-queue. A [durable replacement goal](docs/operations/build-goal.md) is ready to copy;
-its text has not been installed in the app. Reading this file is startup
-orientation, not the deliverable. Execute the unfinished action, then record the
-result and advance this section in the same completion update.
+**Parked conditions:** air-device original-drawing recognition needs a materially
+different bounded experiment after eight terminal runs; Claude needs a refreshed
+login after the recorded expired-token failure; native Windows and representative
+acceptance need their own evidence. Each blocks only its dependent action.
+Record changed inputs and acceptance criteria before retrying. No provider process
+is running. A synthetic-reader demonstration is not recognition acceptance.
+
+**Reuse accepted work:** duct calculation/topology, schedule reconciliation,
+air-device software and approved rules, and source-linked Excel. Do not rerun
+accepted implementations, unchanged tests or status maintenance to fill a turn.
+The [replacement goal](docs/operations/build-goal.md) now states the same
+independence; it has not been installed in the app. The historical “first/next”
+wording in the calculation plan is explicitly superseded. Execute ready work,
+record its evidence and advance this section in the same completion update.
 
 ## Roadmap coverage snapshot
 
@@ -83,7 +94,7 @@ result and advance this section in the same completion update.
 | 0.2 Knowledge, taxonomy, source/evaluation registry | Versioned sources, mechanical vocabulary, requirement/rule review and model baseline connected locally. Notebook inventory/research retained; relevant notebooks expanded. | Complete mechanical coverage, dataset rights/labels and representative truth/thresholds remain open. | Reuse verified findings for each active class; research only concrete implementation needs. |
 | 0.3 Drawing coordinates and scale | Revision-bound geometry, scale review and invalidation connected locally. | Native parity and representative drawings remain to verify. | Reuse for source identity; each counts have no scale dependency. |
 | 0.4 Schedule reconciliation | Source-linked schedule extraction and plan correspondence, decisions/history and exceptions connected locally. | Broader schedule fields/types and representative acceptance remain open. | Feed air-device attributes/declarations and then equipment counts. |
-| 0.5 Full CSI Division 23 mechanical takeoff | Partial implementation: duct capability preserved; air-device calculation, source producer, review/correction UI and exports verified locally; equipment draft tag review exists. | Complete section/subsection coverage remains open across common work, O&M, schedules, insulation, commissioning, controls, fuel systems, piping/pumps, air distribution/cleaning, central heating/cooling and central/decentralized HVAC equipment. Cross-cutting demolition, relocation and revision scope remains open. **Air-device recognition remains unqualified:** the installed model missed all three physical symbols in AC01. | Prepare the next physical-equipment rules/examples in the approved class order; use the full-section coverage audit and proposed work lineup below. Keep recognition and output work bounded and independent. |
+| 0.5 Full CSI Division 23 mechanical takeoff | Partial implementation: duct capability preserved; air-device calculation, source producer, review/correction UI and exports verified locally; equipment draft tag review exists. | Complete section/subsection coverage remains open across common work, O&M, schedules, insulation, commissioning, controls, fuel systems, piping/pumps, air distribution/cleaning, central heating/cooling and central/decentralized HVAC equipment. Cross-cutting demolition, relocation and revision scope remains open. **Air-device recognition remains unqualified:** the installed model missed all three physical symbols in AC01. | Equipment rules/examples approved; connected equipment count implementation is ready. Advance piping and other categories against their actual dependencies; no duct/air-device acceptance gate. |
 | 0.6 Correction, recalculation and estimator outputs | Duct and air-device correction/recalculation, append-only history, CSV/JSON and source-linked Excel with live formulas connected locally. Workbook projection, formula recalculation, stale/unknown states and portable packaging verified. | Consolidated evidence PDF, native Excel/Windows and representative estimator acceptance remain unfinished. | **Next independent implementation: consolidated evidence PDF for supported results**, reusing current source identities and unknown/review state. |
 | 0.7 Mac/Windows product | Local Mac drawing/takeoff preview and relocatable package; Windows launch/package implementation prepared. | Native Windows execution, desktop shell/parity and install/update/recovery acceptance remain open. | Advance shared local workflow and independent platform verification alongside supported takeoff classes. |
 | 0.8 iPhone and bounded automation | Supporting automation contracts exist; no completed companion claim. | Companion/synchronization/approval scope and native device acceptance remain future work. | Preserve original roadmap scope; do not make companion work a new Mac/Windows delivery prerequisite. |
@@ -94,8 +105,8 @@ result and advance this section in the same completion update.
 The [full Division 23 audit](docs/research/div23-scope-and-proposed-lineup-2026-09-16.md)
 records the owner's complete section/subsection scope. Its later package order is
 proposed; it does not approve new quantity rules. Existing class order and
-independent output work are authorized. Physical-equipment counting requires its
-own concrete approved rules/examples before quantity implementation.
+independent output work are authorized. E01–E12 and EC01–EC20 now supply the
+approved physical-equipment basis; that class decision is no longer outstanding.
 
 AIR-DEVICE-COUNT-1 remains incomplete as a recognition capability: the connected
 software passed local checks, but the final original-drawing run found zero
@@ -111,6 +122,21 @@ Consolidated evidence PDF and all remaining Division 23 categories remain work.
 ## Completed checkpoints and retained evidence
 
 These records preserve outcomes and limits. Only **Resume here** selects work.
+
+- EQUIPMENT-RULES-1 / DIV23-UNBLOCK-1: at main base
+  `7edc0964139d4431e88ade3f6367b4bbe038d495`, completed the E01–E12
+  packet and EC01–EC20 semantic examples; the owner approved both. One logged N10 query, three source
+  reads and seven verified passages support the packet. Source hashes/offsets,
+  literal arithmetic, rule/case references and exact approval bindings checked. Rejected generated
+  universal-guide and AHU filter-rack claims. Updated execution wording in the
+  calculation plan, scope lineup, goal template and `AGENTS.md` so duct/air-device
+  acceptance is not an all-category gate. No product calculation behavior changed.
+  [Research](docs/research/notebooklm/equipment-counting-findings-2026-09-16.json);
+  ledger `.heleos/equipment-rules-2026-09-16/`; all research calls terminal.
+  Original-page fixtures, equipment implementation, model/native acceptance and
+  remaining categories stay open. No Claude dispatch while its recorded auth
+  failure awaits refresh; no private upload. Next ready action: EQUIPMENT-COUNT-1;
+  piping preparation and supported PDF work remain independent.
 
 - CONTINUATION-CURSOR-1: at main base
   `17b4d6e3e4fa229faff24226d1732b532c88df9a`, replaced competing immediate

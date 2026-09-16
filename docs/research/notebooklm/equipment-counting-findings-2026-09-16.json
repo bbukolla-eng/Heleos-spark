@@ -1,0 +1,120 @@
+{
+  "task_id": "EQUIPMENT-RULES-1",
+  "at": "2026-09-16T13:49:10.651Z",
+  "base_commit": "7edc0964139d4431e88ade3f6367b4bbe038d495",
+  "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+  "inventory_reused": "docs/research/notebooklm/expansion-n10-2026-09-14.json",
+  "source_receipts": "/Users/bekim/Heleos-spark/.heleos/equipment-rules-2026-09-16",
+  "findings": [
+    {
+      "id": "EQ-S1",
+      "source_id": "e80b3502-dbf7-4227-a223-90fe6b01d731",
+      "title": "VA 23 21 23 Hydronic Pumps",
+      "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2021%2023.pdf",
+      "edition": "03-01-23",
+      "section": "2.1.A.2",
+      "indexed_text_character_offset": 8250,
+      "passage": "Provide pumps of size, type and capacity as indicated, complete with \n\nelectric motor and drive assembly, unless otherwise indicated. \n\nDesign pump casings for the indicated working pressure and factory \n\ntest at 1-1/2 times the designed pressure. \n\n3. Provide pumps of the same type, the p",
+      "verified_claim": "The selected guide provides a pump complete with motor and drive unless otherwise indicated; included components need explicit package relationships.",
+      "proposed_rule_examples": "E04,E05; EC07",
+      "adoption_state": "verified source context; counting policy proposed and not yet owner-approved",
+      "indexed_text_sha256": "6af66205ee4ce027f3f0d54245ddc171e9874991b4d1ff17d02e96cf56051c07"
+    },
+    {
+      "id": "EQ-S2",
+      "source_id": "e80b3502-dbf7-4227-a223-90fe6b01d731",
+      "title": "VA 23 21 23 Hydronic Pumps",
+      "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2021%2023.pdf",
+      "edition": "03-01-23",
+      "section": "1.7.A",
+      "indexed_text_character_offset": 7856,
+      "passage": "one spare seal and casing gasket for each pump to the //COR// \n\n//Project Manager//. \n\n03-01-23 \n\n \n\nPA",
+      "verified_claim": "The guide explicitly lists spare seals and gaskets per pump; spare materials differ from installed pumps. A project must adopt the requirement before applying it.",
+      "proposed_rule_examples": "E07; EC12",
+      "adoption_state": "verified source context; counting policy proposed and not yet owner-approved",
+      "indexed_text_sha256": "6af66205ee4ce027f3f0d54245ddc171e9874991b4d1ff17d02e96cf56051c07"
+    },
+    {
+      "id": "EQ-S3",
+      "source_id": "6df01e85-0806-4a32-a910-0b89bf85fdc7",
+      "title": "VA 23 73 00 Indoor Central-Station Air-Handling Units",
+      "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2073%2000.pdf",
+      "edition": "03-01-23",
+      "section": "1.1.C",
+      "indexed_text_character_offset": 709,
+      "passage": "Definition of Air Handling Unit (AHU): A factory-fabricated and tested \n\nassembly of modular sections consisting of //housed-centrifugal fan \n\nwith V-belt drive// //single or multiple plenum fans with direct-\n\ndrive//, coils, filters, and other necessary equipment to perform one \n\nor more of the following functions of circulating, cleaning, heating, \n\ncooling, humidifying, dehumidifying, and mixing of air. Design \n\ncapacities of units shall be as scheduled in the contract documents. \n\n1.2 RELATED WORK \n\nA. Secti",
+      "verified_claim": "The guide describes an AHU as an assembly of modular sections and components; modules are not automatically multiple AHUs.",
+      "proposed_rule_examples": "E04; EC05",
+      "adoption_state": "verified source context; counting policy proposed and not yet owner-approved",
+      "indexed_text_sha256": "2798a2daf1695fd574ecef4ccb95563fdbad0550965cbfd24170a2b70cb466af"
+    },
+    {
+      "id": "EQ-S4",
+      "source_id": "6df01e85-0806-4a32-a910-0b89bf85fdc7",
+      "title": "VA 23 73 00 Indoor Central-Station Air-Handling Units",
+      "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2073%2000.pdf",
+      "edition": "03-01-23",
+      "section": "1.4.E.2-3",
+      "indexed_text_character_offset": 9087,
+      "passage": "If not shipped in one (1) piece, provide manufacturer approved \n\nshipping splits where required for installation or to meet shipping \n\nand/or job site rigging requirements in modular sections. Indicate \n\nclearly that the shipping splits shown in the submittals have been \n\nverified to accommodate the construction constraints for rigging as \n\nrequired to complete installation and removal of any section for \n\nreplacement through available access without adversely affecting \n\nother sections. \n\n3. If shipping splits are provided, each component shall be \n\nindividually shrink wrapped to protect the unit and all necessary \n\nhardware (e.g., bolts, gaskets etc.) will be included to assemble \n\nunit onsite. \n\n4. Lifting lugs will be provided to facilitate rigging on shipping \n\nsplits and joining of segments. If the unit cannot be shipped in one \n\npiece, the contractor shall indicate the number of pieces that each \n\nunit will have to be broken into to meet shipping and job",
+      "verified_claim": "Shipping splits can be supplied with hardware to assemble the unit on site; shipping piece count is distinct from equipment assembly count.",
+      "proposed_rule_examples": "E04; EC05",
+      "adoption_state": "verified source context; counting policy proposed and not yet owner-approved",
+      "indexed_text_sha256": "2798a2daf1695fd574ecef4ccb95563fdbad0550965cbfd24170a2b70cb466af"
+    },
+    {
+      "id": "EQ-S5",
+      "source_id": "6df01e85-0806-4a32-a910-0b89bf85fdc7",
+      "title": "VA 23 73 00 Indoor Central-Station Air-Handling Units",
+      "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2073%2000.pdf",
+      "edition": "03-01-23",
+      "section": "2.1.N.1",
+      "indexed_text_character_offset": 34360,
+      "passage": "Filters including one complete set for temporary use at site shall \n\nbe provided independent of the AHU. The AHU manufacturer shall \n\ninstall filter housings and racks in filter section compatible with \n\nfilters furnished. The AHU manufacturer shall be responsible for \n\nfurnishing temporary filters (pre-filters and after-filters, as \n\nshown in the contract documents) required for AHU testing. \n\n2. Factory-fabricated filter section shall be of the same constructio",
+      "verified_claim": "Final/site filters have independent provision, while the AHU manufacturer installs housings/racks and supplies factory test filters in this guide. Supplier, installation and use-stage relationships matter.",
+      "proposed_rule_examples": "E05; EC14",
+      "adoption_state": "verified source context; counting policy proposed and not yet owner-approved",
+      "indexed_text_sha256": "2798a2daf1695fd574ecef4ccb95563fdbad0550965cbfd24170a2b70cb466af"
+    },
+    {
+      "id": "EQ-S6",
+      "source_id": "fa1b5f84-4128-4ba8-b196-75feb0bd4975",
+      "title": "VA 23 64 00 Packaged Water Chillers",
+      "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2064%2000.pdf",
+      "edition": "03-01-24",
+      "section": "2.1.A",
+      "indexed_text_character_offset": 11279,
+      "passage": "General: Chiller shall be factory assembled and factory tested, \n\ncomplete with evaporator, condenser, marine water boxes for condenser \n\nand evaporator, compressor, motor, starter, oil heater and cooler, \n\neconomizer or intercooler, purge system (if required), refrigerant \n\npiping, instrumentation and control piping, operating and safety \n\ncontrols mounted on the chiller, and other auxiliaries necessary for \n\nsafe and proper operation of the unit. Chiller operation shall be fully \n\nautomatic. Make provision for space and design piping layout",
+      "verified_claim": "The specified chiller package includes multiple components; those components do not automatically become separately purchased equipment.",
+      "proposed_rule_examples": "E04,E05; EC06",
+      "adoption_state": "verified source context; counting policy proposed and not yet owner-approved",
+      "indexed_text_sha256": "eefdc0b7dc88c8bebd32994a627a240cebc73ecf39219b3a18ebc4c2fbf57bfd"
+    },
+    {
+      "id": "EQ-S7",
+      "source_id": "fa1b5f84-4128-4ba8-b196-75feb0bd4975",
+      "title": "VA 23 64 00 Packaged Water Chillers",
+      "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2064%2000.pdf",
+      "edition": "03-01-24",
+      "section": "3.2.A.5",
+      "indexed_text_character_offset": 59165,
+      "passage": "Install accessories and any other equipment furnished loose by the \n\nmanufacturer, including remote starter, remote control panel, and \n\nremote flow switches, according to the manufacturer written \n\ninstructions and electrical requirements. \n\n6. Chillers shall be installed in a manner as to provid",
+      "verified_claim": "Equipment furnished loose by the manufacturer may need field installation. Field-installed does not by itself mean separately procured.",
+      "proposed_rule_examples": "E05; EC08",
+      "adoption_state": "verified source context; counting policy proposed and not yet owner-approved",
+      "indexed_text_sha256": "eefdc0b7dc88c8bebd32994a627a240cebc73ecf39219b3a18ebc4c2fbf57bfd"
+    }
+  ],
+  "conflicts_and_limits": [
+    "Rejected generated claim that unbracketed VA guide text applies universally to all projects. All three sources instruct spec writers to delete inapplicable items; actual project requirements control.",
+    "Rejected generated AHU table that places filter racks in field-supplied scope: the inspected 2.1.N.1 assigns installation of housings/racks to the AHU manufacturer. Temporary site filters and AHU test filters have distinct wording; do not merge them into one default.",
+    "No selected text establishes physical counting, repeated-view identity, schedule conflict precedence, relocation or general spare-equipment rules. E01-E12 are explicit proposed project policies, not standards quotations.",
+    "No complete CSI hierarchy, quantity engine, source-page recognition accuracy, native platform or full-system acceptance is established.",
+    "Character offsets identify retrieved indexed text, not original PDF page numbers. Guide editions are dated references, not assumed current project contract editions."
+  ],
+  "implementation": "No new quantity calculation implemented. This packet supports E01-E12 and EC01-EC20 for a class-specific owner decision; independent categories remain authorized.",
+  "reuse": {
+    "existing_source_packet": "docs/research/notebooklm/div23-scope-findings-2026-09-16.json",
+    "note": "Existing terminal-controller example retained as context; new equipment packet queried distinct pump/AHU/chiller source identities from the expanded N10 inventory."
+  }
+}

@@ -69,11 +69,14 @@ Maintain two distinct records:
 
 ## Proposed implementation queue
 
-The settled duct → air-device → equipment quantity-class order remains intact.
-The equipment packet is the next class preparation. Full Division 23 remains the
-finish line; the rows below are delivery packages, not scope exclusions.
+Owner execution clarification, 2026-09-16: the initial duct → air-device →
+equipment order is priority, not a completion gate. The owner explicitly rejected
+duct/air-device bottlenecks. Packages proceed from their actual dependencies;
+neither recognition quality nor unfinished edge cases in those classes blocks
+unrelated categories. Full Division 23 remains the finish line. The numbering
+below suggests delivery priority, not mandatory predecessor relationships.
 
-| Order | Work package | Concrete finish line |
+| Priority | Work package | Concrete finish line |
 | --- | --- | --- |
 | 0, alongside delivery | Section coverage and specification obligations | Versioned section register with explicit product/project status, source locators and linked implementation tasks; complete hierarchy verification recorded separately |
 | 1 | Physical equipment counts and assembly rules | Counts from original plans/schedules/specs, exact instance reconciliation, factory-vs-field accessories, new/existing/demolition/relocation, corrections and source-linked exports |
@@ -89,6 +92,24 @@ Central heating/cooling, central/decentralized HVAC, fuel and specialist systems
 must have explicit child tasks under their relevant packages. A generic equipment
 counter does not finish those systems' piping, insulation, controls or services.
 
+## Dependencies that actually gate work
+
+| Work lane | Actual dependency | Work available independently of duct/air-device recognition |
+| --- | --- | --- |
+| Equipment | Equipment instance evidence, assembly relationships, approved equipment rules | Equipment rules/examples, existing tag/schedule reconciliation integration preparation; quantity implementation after its own rule decision |
+| Piping and fuel services | Piping-specific system/material/size evidence, applicable route scale, approved piping rules | Separate hydronic, steam/condensate, refrigerant and fuel source/rule packets; reuse verified coordinate and scale infrastructure |
+| Fittings, valves, accessories and air cleaning | Source-supported component identity and package inclusion; class rules | Component definitions, supplied/installed responsibility and duplicate assembly cases |
+| Insulation, liner and jackets | Project specifications and supported host quantities for computed amounts | Extract material/thickness/finish requirements, exclusions and host applicability before every host category is complete |
+| Controls | Project sequences, points/devices and supply/installation responsibility | Device/point distinction, packaged controls relationships, scope and wiring/tubing requirements; routes need their own evidence |
+| Common work and supports | Project scope, explicit components or separately approved derivation | Support/isolation/seismic, sleeves/seals and identification requirements; do not invent default spacings |
+| TAB, commissioning and O&M | Applicable specification clauses and system/equipment scope | Source-linked service and deliverable obligations; no symbol detector prerequisite for reading a specified obligation |
+| Section coverage and outputs | Verified section/source identities and current supported result contracts | Record all known scope and unknown coverage, consolidate exports; full hierarchy verification remains explicit |
+
+Only a dependent quantity waits for missing input. For example, unknown pipe
+length prevents its final insulation amount; it does not prevent recording the
+specified insulation type or preparing equipment and controls work. Work shared
+between lanes retains one writer per path and independent acceptance.
+
 ## Keep work moving
 
 - Primary product work: prepare the next equipment rules/examples and then deliver
@@ -100,11 +121,13 @@ counter does not finish those systems' piping, insulation, controls or services.
 - Bounded recognition work: evaluate a deliberate alternative to the failed
   reader against frozen original-source examples. Record accuracy and omissions;
   do not repeat unbounded prompt tuning or block all independent implementation.
-- Research ahead by one package: NotebookLM query, source-passage verification,
-  rules/examples packet, then bounded Claude assignment once authentication works.
+- Research ready packages using bounded NotebookLM queries, source-passage
+  verification and rules/examples packets, then bounded Claude assignments once authentication works.
   Provider unavailability does not block independently authorized Codex work.
-- Keep one primary implementation and at most two useful independent tracks.
-  Publish completed capability, acceptance limits and the next three ready tasks.
+- Limit simultaneous execution to work that has independent paths, an available
+  writer and meaningful acceptance checks; do not turn this resource limit into
+  a mechanical-category dependency. Publish completed capability, acceptance
+  limits and the next ready tasks.
 - Do not reopen accepted duct geometry without a concrete blocking defect.
   Do not interpret full Division 23 as approval for new pricing/labor rules.
 
