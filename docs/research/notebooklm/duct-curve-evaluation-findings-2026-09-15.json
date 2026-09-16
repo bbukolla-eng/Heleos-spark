@@ -1,0 +1,185 @@
+{
+  "task_id": "DUCT-CURVE-EVALUATION-1",
+  "at": "2026-09-16T02:56:41.477363+00:00",
+  "provider": "NotebookLM",
+  "classification": "PUBLIC",
+  "policy_decision": "Standing owner authorization; public source query only, no code or project data submitted",
+  "sources": [
+    {
+      "id": "ahmsys",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "notebook_topic": "N05 Drawing Intelligence",
+      "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d",
+      "url": "https://arxiv.org/html/2407.01987v1",
+      "edition": "arXiv2407.01987v1,2024-07-02",
+      "indexed_text_sha256": "7f610e7022e7439f6b6e4b81abffb5061a4ffca8dcb2a50a9565b8a1a7d8e663",
+      "local_body": ".heleos/claude-headless-build-2026-09-15/research-ahmsys-text.txt",
+      "raw_response": ".heleos/claude-headless-build-2026-09-15/research-ahmsys-result.json",
+      "verified_passages": [
+        {
+          "lines": [
+            213,
+            215
+          ],
+          "section": "2.1 preprocessing",
+          "sha256": "1b3d203f14125c4bdbaf153e82638cfa650889444e0a257be21848193f45f7d7",
+          "serialization": "UTF8 selected indexed lines joined by LF with final LF",
+          "verified": true
+        },
+        {
+          "lines": [
+            251,
+            307
+          ],
+          "section": "3 results and Table2",
+          "sha256": "94881b7ff3e2cad5496b40163c105d885a25d038ea35eb99733acb8cee49d630",
+          "serialization": "UTF8 selected indexed lines joined by LF with final LF",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "digitize-pid",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "notebook_topic": "N05 Drawing Intelligence",
+      "source_id": "8b629240-2c89-40fa-a964-8a534e753948",
+      "url": "https://arxiv.org/pdf/2109.03794.pdf",
+      "edition": "Indexed PDF edition/page markers incomplete",
+      "indexed_text_sha256": "f90836c4ab98eb729a69445685ce5bd66eb9da9d134659cbb24ed21dd4fc1664",
+      "local_body": ".heleos/claude-headless-build-2026-09-15/research-digitize-pid-text.txt",
+      "raw_response": ".heleos/claude-headless-build-2026-09-15/research-digitize-pid-result.json",
+      "verified_passages": [
+        {
+          "lines": [
+            185,
+            213
+          ],
+          "section": "4 experimental results, Tables2/3",
+          "sha256": "56183006024b0cf72f5f639e3e6a78e845a915e1b15b8abd4606999c5fa16f77",
+          "serialization": "UTF8 selected indexed lines joined by LF with final LF",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "openstax",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "notebook_topic": "N05 Drawing Intelligence",
+      "source_id": "457f0d9c-d900-45cb-8b40-9a8a8a5d8101",
+      "url": "https://openstax.org/books/precalculus-2e/pages/5-1-angles",
+      "edition": "Precalculus2e,2021-12-21",
+      "indexed_text_sha256": "a4c5869bbfd4af70a5213de07282287817bbbc83bfca72a474be744deb4228d8",
+      "local_body": ".heleos/claude-headless-build-2026-09-15/research-openstax-text.txt",
+      "raw_response": ".heleos/claude-headless-build-2026-09-15/research-openstax-result.json",
+      "verified_passages": [
+        {
+          "lines": [
+            1157,
+            1177
+          ],
+          "section": "5.1 Determining the Length of an Arc",
+          "sha256": "5da6db301976b7e8683eadd8e4c2cdc9453ba5a78168ce8c23aa065a70f6d024",
+          "serialization": "UTF8 selected indexed lines joined by LF with final LF",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "ezdxf",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "notebook_topic": "N05 Drawing Intelligence",
+      "source_id": "fb38a435-ce85-408f-afe4-2a9384877bc5",
+      "url": "https://ezdxf.readthedocs.io/en/stable/math/core.html",
+      "edition": "ezdxf1.4.4",
+      "indexed_text_sha256": "76097f9285913dcb66d9a046a774ed158811c98abe857d9ce52427843e869109",
+      "local_body": ".heleos/claude-headless-build-2026-09-15/research-ezdxf-text.txt",
+      "raw_response": ".heleos/claude-headless-build-2026-09-15/research-ezdxf-result.json",
+      "verified_passages": [
+        {
+          "lines": [
+            9037,
+            9065
+          ],
+          "section": "ConstructionArc.from_3p",
+          "sha256": "05dc0819120b0381905ae8248e8dc7f6ce2773eabf37b0434e4ceb6dcf62b256",
+          "serialization": "UTF8 selected indexed lines joined by LF with final LF",
+          "verified": true
+        }
+      ]
+    }
+  ],
+  "query": {
+    "provider": "NotebookLM",
+    "purpose": "Circular/span evaluation source requirements and limits",
+    "classification": "PUBLIC",
+    "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+    "source_ids": [
+      "9f6f06e6-2449-42ff-84ea-f81b15b5e76d",
+      "8b629240-2c89-40fa-a964-8a534e753948",
+      "457f0d9c-d900-45cb-8b40-9a8a8a5d8101",
+      "fb38a435-ce85-408f-afe4-2a9384877bc5"
+    ],
+    "source_body_identities": {
+      "9f6f06e6-2449-42ff-84ea-f81b15b5e76d": "7f610e7022e7439f6b6e4b81abffb5061a4ffca8dcb2a50a9565b8a1a7d8e663",
+      "8b629240-2c89-40fa-a964-8a534e753948": "f90836c4ab98eb729a69445685ce5bd66eb9da9d134659cbb24ed21dd4fc1664",
+      "457f0d9c-d900-45cb-8b40-9a8a8a5d8101": "a4c5869bbfd4af70a5213de07282287817bbbc83bfca72a474be744deb4228d8",
+      "fb38a435-ce85-408f-afe4-2a9384877bc5": "76097f9285913dcb66d9a046a774ed158811c98abe857d9ce52427843e869109"
+    },
+    "policy_decision": "Standing owner authorization for public technical research, no internal code or project data submitted",
+    "at": "2026-09-16T02:50:40.450185+00:00",
+    "query": "For evaluation of circular HVAC centerlines and selected arc spans, what do these sources directly support about distinguishing full curve geometry from chords or sampled points, evaluating geometry separately from labels and connectivity, and avoiding universal acceptance tolerances from corpus accuracy? Cite exact passages, state exceptions and missing support. Do they supply a certified continuous Hausdorff-distance or bounding-cover algorithm, or must such mathematics be independently derived and verified? Do not infer physical connections from geometric crossings.",
+    "result_reference": ".heleos/duct-curve-evaluation-2026-09-15/research-query-result.json"
+  },
+  "response_reference": ".heleos/duct-curve-evaluation-2026-09-15/research-query-result.json",
+  "response_sha256": "145c26c4861522d6ff1eac4e3c1cef43587a141e430b2056db1d257643bfce69",
+  "conversation_id": "2f31acab-423f-4b5a-833d-f0aa66815bcf",
+  "verification": "Existing four indexed bodies and all five selected passages rehashed and reread; current query requirements differ from point distance and justify this query. No new source bodies needed.",
+  "adopted_context": [
+    {
+      "source_ids": [
+        "ahmsys",
+        "digitize-pid"
+      ],
+      "finding": "Report geometry, labels/dimensions and connectivity as separate targets. Published accuracy is conditional on the source corpus and preparation; it does not supply product acceptance thresholds.",
+      "implementation_boundary": "This primitive only returns geometric distance bounds. It supplies no quantity, graph edge, model admission or threshold."
+    },
+    {
+      "source_ids": [
+        "openstax",
+        "ezdxf"
+      ],
+      "finding": "A directed circular arc depends on its actual circle and selected angular interval. Arc length follows the curve; replacing it with its chord changes geometry.",
+      "implementation_boundary": "Use existing canonical circle/span definitions. Validate direction, minor/major/semicircle scope and irrational ray endpoints; preserve approved quantity code."
+    }
+  ],
+  "short_excerpts": {
+    "ahmsys": "This dataset contains 63,629 HVAC objects from 110 CAD drawings.",
+    "ezdxf": "Create arc from three points.",
+    "openstax": "Determining the Length of an Arc",
+    "digitize-pid": "Performance of Digitize-PID on synthetic Dataset-P&ID"
+  },
+  "unsupported_or_conflicting": [
+    "The answer provides no certified continuous Hausdorff or cover algorithm. No such claim is established by the verified passages. The proposed interval mathematics is a local derivation requiring independent verification.",
+    "The answer repeats ambiguous center-of-arc sagitta terminology. This implementation does not use sagitta or adopt that wording.",
+    "Do not adopt a universal threshold, assertions that source systems cannot support any curves, or a mandatory decoupling theorem from these limited passages. Separate metrics and explicit topology gaps are local evaluation design choices informed by the sources.",
+    "Geometric crossings do not establish source-backed physical connections. Connectivity remains unavailable until explicit truth and assertions are implemented."
+  ],
+  "local_derivation": [
+    "Split each directed circular span at interior cardinal rays. Each resulting closed arc has coordinate monotonicity, so endpoint coordinate intervals bound its entire image.",
+    "Outward rational square-root bounds enclose true endpoint coordinates. A rational box midpoint lies within its L1 half-width sum of the true point.",
+    "The maximum L1 distance from the start approximation to the enclosing leaf box bounds every point in the arc leaf. Subdivide until that cover radius is within requested spacing.",
+    "L1-normalized ray bisection uses primitive(u*norm1(v)+v*norm1(u)); for a positive at-most-quadrant interval this is a strict interior direction.",
+    "If samples approximate source-curve points within delta and cover the entire source within G, directed distance lies between max(0,max(sample target lower)-delta) and max(sample target upper)+G. Take the maximum of both directions for symmetric bounds.",
+    "No finite sample set alone certifies continuous distance. Never return success when sample, bit or arithmetic limits are exhausted."
+  ],
+  "planned_mapping": {
+    "scripts/duct_arc_cover.py": "Bounded whole-curve coverage with exact interval arithmetic",
+    "scripts/duct_path_scoring.py": "Circular/span truth and saved-result comparison, versioned report, indeterminate bounds and separate metrics",
+    "tests": "Independent algebraic endpoint/coverage tests and connected save/reopen/export cases"
+  },
+  "mechanical_authority": "No approved D01-D10, quantity, scale, fitting, topology or model-admission rule is changed.",
+  "egress_calls": 1,
+  "external_submission_records": [
+    ".heleos/duct-curve-evaluation-2026-09-15/research-query-before.json"
+  ]
+}

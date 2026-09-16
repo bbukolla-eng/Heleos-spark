@@ -1,5 +1,28 @@
 # Current Status
 
+Circular/span evaluation preparation (2026-09-15, DUCT-CURVE-EVALUATION-1):
+resumed in /Users/bekim/Heleos-spark on main from
+ e48a7c5081504890f76e9e13e9f33bfe25633623. Prior completed work remains intact.
+One bounded NotebookLM query completed; four retained indexed source bodies and
+five passages were reread and rehashed. The packet records source limitations:
+no certified continuous-distance algorithm or universal acceptance tolerance is
+established by these passages. Quantity rules remain unchanged.
+
+The first bounded Claude deliverable is the new circular-cover helper and its
+named test. The committed plan records exact paths, interval certificates,
+resource limits and acceptance commands. Codex owns evaluator integration and
+independent verification on separate paths. Read-only mathematical review found
+no blocker after requiring up to five cardinal-partition leaves and exact
+micropoint conversion. Its 10,560 span / 19,706 leaf checks support the design;
+no new implementation is accepted yet. Claude 2.1.261 is authenticated.
+
+Ledger: .heleos/duct-curve-evaluation-2026-09-15/. Research packet:
+docs/research/notebooklm/duct-curve-evaluation-findings-2026-09-15.json.
+Next: dispatch the exact-base bounded Claude assignment, implement connected
+scoring, and independently review and verify the candidate. No worker is running
+at this preparation checkpoint. Earlier product work remains uncommitted.
+Full Division23, topology and representative Mac/Windows acceptance remain open.
+
 Certified curved-path distance dependency (2026-09-15, DUCT-CURVE-DISTANCE-1):
 completed by controller recovery, independently reviewed and locally integrated in
 /Users/bekim/Heleos-spark on main, base
