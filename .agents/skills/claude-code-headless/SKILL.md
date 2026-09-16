@@ -117,7 +117,11 @@ and home values required by the owner-authorized Claude session, normally
    provider exit, timeout/truncation flags, containment mode, and complete changed
    path inventory.
 3. Reject any forbidden or unlisted change, instruction mismatch, Git metadata
-   violation, unresolved item, or unsupported claim.
+   violation, unresolved mandatory contract defect, or unsupported claim.
+   An expected UNKNOWN can pass its named criterion; unrelated unfinished work
+   and optional suggestions do not reject the candidate. A required supported
+   quantity cannot be replaced by UNKNOWN. Cite criterion IDs or the violated
+   shared policy in each blocking finding.
 4. Run every declared acceptance command independently on the retained candidate
    and record exact exits and output hashes. Claude's test claims are not proof.
 5. Review the diff against the task and verified NotebookLM findings. Adopt only

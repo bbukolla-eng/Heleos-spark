@@ -78,7 +78,7 @@ values or adjudicated source evidence.
 
 A section is engineering-accepted for the recorded platform scope when its complete declared taxonomy and every required
 child section/taxon are covered; all mandatory TAX, EVID, RULE, CALC, RECON, EDIT,
-OUT and ACCEPT tasks have accepted evidence; the frozen representative expectations
+OUT and ACCEPT coverage dimensions have accepted evidence; the frozen representative expectations
 and current Mac workflow criteria pass; and no required mechanical scope is left unresolved.
 Source conflicts and missing quantities remain honest exceptions while working,
 but they do not silently satisfy a required section completion criterion.
@@ -108,3 +108,20 @@ acceptance of the delivered workflow.
   unrelated accepted work or reset the whole section's implementation.
 - Report completed tasks, open tasks and failed named criteria. Do not invent a
   completion percentage while the full catalogue or denominator is unverified.
+
+## Review findings and coverage reuse
+
+Every blocking review finding names the frozen criterion ID (or violated shared
+policy), actual and expected behavior, reproducer/evidence and affected paths.
+Correct that finding and check its affected regression surface; record why a
+broader rerun is required. Once the named findings close, Codex records acceptance
+and integration without requiring another general review by default. Optional
+features get separate task IDs. If the same issue persists for two correction
+rounds, diagnose the oracle/input/implementation assumption and choose a bounded
+new action; never waive a mandatory failure merely to end review.
+
+SC01–SC08 in the [delivery structure](../superpowers/specs/2026-09-16-division23-delivery-structure.md)
+are eight coverage obligations, not eight compulsory tasks or review rounds per
+taxon. Link accepted shared output to the exact cells and scope it supports.
+Recognition qualification remains separate from accepted software; one failed
+model experiment does not reopen unrelated calculation, correction or export work.

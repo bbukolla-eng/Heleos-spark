@@ -1,10 +1,10 @@
 # Division 23 Section Work Breakdown Implementation Plan
 
-> **For agentic workers:** Use `executing-plans` for the assigned task, with the root coordinator assigning exact write paths and independently accepting each result. This register is the section queue; it does not authorize a worker to change estimating rules, commit, or restart completed work.
+> **For agentic workers:** Use `executing-plans` for the assigned task, with the root coordinator assigning exact write paths and independently accepting each result. This register records section coverage; CURRENT_STATUS.md Resume here is the live queue; it does not authorize a worker to change estimating rules, commit, or restart completed work.
 
 **Goal:** Deliver every actual Division 23 section/subsection and its complete source-backed taxonomy through evidence, approved deterministic quantities, reconciliation, corrections, exports and fixed acceptance endpoints on Mac and Windows.
 
-**Architecture:** [The machine-readable register](division-23-section-register.json) separates authority-qualified section identities, reusable stage contracts and section-specific task instances. Source paragraphs generate typed taxons and obligations, each with its own completion endpoint; shared infrastructure satisfies only the behavior it actually covers.
+**Architecture:** [The machine-readable register](division-23-section-register.json) separates authority-qualified section identities, reusable stage contracts and section-specific planned coverage slots. Source paragraphs generate typed taxons and obligations, each with its own completion endpoint; shared infrastructure satisfies only the behavior it actually covers.
 
 **Tech stack:** The existing local evidence/source-identity stores, deterministic calculation and review workflow, JSON work records, Excel/evidence-PDF outputs, and native Mac/Windows packages. This plan changes no application code or quantity authority.
 
@@ -22,7 +22,7 @@ The owner's hydronic mention explained the requested planning structure. It sele
 
 ## What is verified and what remains open
 
-The register has **56 separate agency guide records and 448 named section-stage tasks**, all open: **52 UFGS entries** from the live **August 2026** table of contents and **four individually verified VA guides**. These are known implementation inputs, not 56 authoritative CSI leaves. The complete CSI Division 23 denominator and hierarchy remain unresolved; no completion percentage is reported.
+The register has **56 separate agency guide records and 448 named coverage slots**, all planned: **52 UFGS entries** from the live **August 2026** table of contents and **four individually verified VA guides**. These are known implementation inputs, not 56 authoritative CSI leaves. The complete CSI Division 23 denominator and hierarchy remain unresolved; no completion percentage is reported.
 
 | Source | Exact boundary and retained identity |
 | --- | --- |
@@ -37,7 +37,7 @@ Only supported Division 23 parentage is recorded. Decimal extensions and agency 
 
 ## Named catalogue and supporting work
 
-- [ ] **`D23-CSI-CATALOGUE-1`** — obtain an authorized complete edition-specific CSI Division 23 source, pin its identity and permitted use, import its real numbers/titles/parentage, reconcile every guide mapping, and instantiate eight stage tasks for every newly verified actual section/subsection. Endpoint: no unaccounted-for authoritative entry or silently forced mapping. Missing authorized catalogue blocks the all-sections claim; known-guide work continues.
+- [ ] **`D23-CSI-CATALOGUE-1`** — obtain an authorized complete edition-specific CSI Division 23 source, pin its identity and permitted use, import its real numbers/titles/parentage, reconcile every guide mapping, and instantiate eight coverage dimensions for every newly verified actual section/subsection. Endpoint: no unaccounted-for authoritative entry or silently forced mapping. Missing authorized catalogue blocks the all-sections claim; known-guide work continues.
 
 - [ ] **`D23-VA-INVENTORY-1`** — supplement the four individual VA records when a readable official inventory becomes available. Endpoint: exact dated source rows and explicit differences are recorded. It cannot replace the CSI task; no further retry is needed to execute this plan.
 
@@ -45,9 +45,11 @@ Only supported Division 23 parentage is recorded. Decimal extensions and agency 
 
 Duct and air-device acceptance are not gates for these tasks. Only actual required inputs block a dependent action: an unknown pipe length blocks its calculated insulation amount, while its insulation requirement, controls responsibility and service scope can still be prepared. Claude's recorded expired OAuth affects that dispatch only; this plan used the authorized Codex fallback.
 
-## Eight concrete tasks for every section
+## Eight coverage dimensions for every section
 
-Each section's task stem below owns **`-TAX`, `-EVID`, `-RULE`, `-CALC`, `-RECON`, `-EDIT`, `-OUT`, `-ACCEPT`**. All 448 full IDs, actual artifact paths, source boundaries and dependency IDs are directly inspectable in the JSON. A dependency means the relevant taxon's output; it does not force all taxons or sections into a single serial lane. Each task uses the following contract once, bound to its exact section title and specific subject.
+Each section retains stable **`-TAX`, `-EVID`, `-RULE`, `-CALC`, `-RECON`, `-EDIT`, `-OUT`, `-ACCEPT`** coverage addresses. The 448 JSON objects are planned slots, not 448 ready tasks or required review rounds. The eight dimensions map to SC01–SC08 in the [delivery contract](../superpowers/specs/2026-09-16-division23-delivery-structure.md). One independently testable implementation may satisfy several scoped cells.
+
+The dependency IDs express coverage relationships. Before an actual assignment, bind only required inputs to producer task, output, scope and identity. Partial accepted output can unblock consumers without completing the producer's whole section. No automatic scheduler may treat the template arrows as execution prerequisites. Freeze the selected task's contract as normal preparation; no all-register approval ceremony is required.
 
 | Stage | Concrete delivered artifact and pass condition | Actual prerequisite |
 | --- | --- | --- |
@@ -60,11 +62,11 @@ Each section's task stem below owns **`-TAX`, `-EVID`, `-RULE`, `-CALC`, `-RECON
 | **OUT** | `export-verification.json` with Excel/evidence-PDF specimens: every expected row/total matches core and required links open the correct source; unknown/stale states remain visible. | Current evidence/requirements; CALC only for exported quantities. Partial known and unresolved scope can export. |
 | **ACCEPT** | `acceptance.json`: all mandatory taxons/children/stages close; frozen estimator/representative and current Mac workflow criteria pass against exact bytes; independent reviewer records Mac engineering acceptance. | All mandatory taxon/stage results, frozen representative oracles and the current Mac workflow. No Windows prerequisite. |
 
-Exact source/fixture sets and numerical recognition or representative thresholds have not been frozen for these section tasks. Their gate state is **`acceptance_definition_pending`**. Prepare and freeze those definitions before the relevant run; do not invent an accuracy target or select tolerance after seeing a failure.
+Exact source/fixture sets and numerical recognition or representative thresholds have not been frozen for these section coverage slots. Their gate state is **`acceptance_definition_pending`**. Prepare and freeze those definitions before the relevant run; do not invent an accuracy target or select tolerance after seeing a failure.
 
 ## The 56 section work packages
 
-Every row remains **open**. The full body must establish actual types/variants and required child scope; the title-derived work prompts in JSON are preparation subjects, not verified mechanical requirements. All task paths are planned outputs rather than claims that implementation artifacts exist.
+Every section remains **open**, with planned coverage slots. The [completion matrix](division-23-completion-matrix.md) exposes every known row and its scoped endpoint. The full body must establish actual types/variants and required child scope; the title-derived work prompts in JSON are preparation subjects, not verified mechanical requirements. All task paths are planned outputs rather than claims that implementation artifacts exist.
 
 | Authority / section | Verified title | Edition | Task stem |
 | --- | --- | --- | --- |
@@ -131,7 +133,7 @@ Every section uses its own source-qualified task stem and output directory. Simi
 
 Every reviewed taxon receives a stable source-qualified ID, an exact source span, kind/type/subtype, applicable service/material/size/joint and other attributes, supported relationships, exclusions/options, output basis and responsibility. Keep physical items, assembly parts, temporary work, consumables, tools/spares, services, references and deliverables distinct. Do not create a speculative service × material × size × joint cross-product.
 
-Its task IDs follow `<taxon-id>-TAX` through `<taxon-id>-ACCEPT`. The last is the explicit completion endpoint: all relevant frozen stage checks pass, representative expected results cover the required variants/exceptions, and the current Mac workflow evidence is accepted. Supporting engineering tasks may close earlier under their own finite contracts. Nonphysical taxons use an obligation/document/responsibility projection and applicable tests; they are not omitted because they lack a material quantity.
+Its coverage addresses follow `<taxon-id>-TAX` through `<taxon-id>-ACCEPT`; these do not require eight implementation tasks. The last is the explicit completion endpoint: all relevant frozen stage checks pass, representative expected results cover the required variants/exceptions, and the current Mac workflow evidence is accepted. Supporting engineering tasks may close earlier under their own finite contracts. Nonphysical taxons use an obligation/document/responsibility projection and applicable tests; they are not omitted because they lack a material quantity.
 
 An **UNKNOWN obligation** must carry its source clause, missing input/document, affected taxon/results, next action and resolution history. Examples are an unchosen guide option, missing host, unshown field-work extent, unavailable referenced section or unknown supply responsibility. UNKNOWN is not zero. A mentioned section is not a supplied document. A repeated plan/schedule/spec appearance is not another physical object. Package purchase, internal physical part and installation work retain separate relationships and outputs.
 
@@ -139,6 +141,6 @@ A section reaches Mac engineering acceptance when its complete declared taxonomy
 
 ## Execution and handoff
 
-Before each implementation assignment, the coordinator records exact checkout/base, source and rule hashes, sole-writer code/test paths, one deliverable, the fixed checks and output location. Shared paths remain singly owned. Workers report terminal results; the coordinator independently accepts/integrates, updates root `CURRENT_STATUS.md` and advances to the next unfinished task. This planning worker owns only the two plan files and makes no commits.
+Before each implementation assignment, the coordinator records exact checkout/base, source and rule hashes, sole-writer code/test paths, one deliverable, the fixed checks and output location. Shared paths remain singly owned. Workers report terminal results; the coordinator independently accepts/integrates, updates root `CURRENT_STATUS.md` and advances to the next unfinished task. Implementation workers own only their assigned paths and make no commits; Codex owns integration.
 
 Prepared artifacts: this readable plan and the JSON register. Source identities and task definitions do not establish new quantity rules, complete CSI coverage, completed taxonomies or product acceptance. Resume the already approved physical-equipment implementation on Mac.
