@@ -32,21 +32,48 @@ jobs:
           BRANCH: ${{ github.ref_name }}
         run: |
           set -euo pipefail
+          deny_msg="GitHub Actions is not permitted to create or approve pull requests."
+          handle_pr_write_error() {
+            local log_path="$1"
+            local status="$2"
+            if grep -Fq "${deny_msg}" "${log_path}"; then
+              echo "repository setting blocks pull request writes for Actions; skipping draft PR write"
+              return 0
+            fi
+            cat "${log_path}" >&2
+            return "${status}"
+          }
           pr_number="$(gh api "repos/${GH_REPO}/pulls" -f state=open -f head="${GH_OWNER}:${BRANCH}" -f base=main --jq '.[0].number // empty')"
           body="Automated draft PR for branch \`${BRANCH}\`.\n\nThis PR is managed by \`.github/workflows/pr-automation.yml\`."
           if [ -z "${pr_number}" ]; then
+            log_path="${RUNNER_TEMP}/pr-automation-create-pr.log"
+            set +e
             gh api "repos/${GH_REPO}/pulls" \
               -f title="chore: draft PR for ${BRANCH}" \
               -f head="${BRANCH}" \
               -f base=main \
               -f body="${body}" \
-              -F draft=true >/dev/null
+              -F draft=true >/dev/null 2>"${log_path}"
+            status=$?
+            set -e
+            if [ "${status}" -ne 0 ]; then
+              handle_pr_write_error "${log_path}" "${status}" || exit $?
+              exit 0
+            fi
             echo "created draft PR for ${BRANCH}"
             exit 0
           fi
           is_draft="$(gh api "repos/${GH_REPO}/pulls/${pr_number}" --jq '.draft')"
           if [ "${is_draft}" = "true" ]; then
-            gh api -X PATCH "repos/${GH_REPO}/pulls/${pr_number}" -f body="${body}" >/dev/null
+            log_path="${RUNNER_TEMP}/pr-automation-update-pr.log"
+            set +e
+            gh api -X PATCH "repos/${GH_REPO}/pulls/${pr_number}" -f body="${body}" >/dev/null 2>"${log_path}"
+            status=$?
+            set -e
+            if [ "${status}" -ne 0 ]; then
+              handle_pr_write_error "${log_path}" "${status}" || exit $?
+              exit 0
+            fi
             echo "updated draft PR #${pr_number}"
           else
             echo "open PR #${pr_number} is ready; no draft update applied"
