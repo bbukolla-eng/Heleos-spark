@@ -1,5 +1,28 @@
 # Current Status
 
+Air-device counting preparation (2026-09-16, AIR-DEVICE-COUNT-1): resumed in
+/Users/bekim/Heleos-spark on main from
+e252ebd0d0c28bbc20dc1dad50c0ee5d38760c15. All 18 previously accepted topology
+input hashes still match. A01–A12 and AC01–AC17 are approved; no rule choice is
+outstanding. The exact approved draft packet is now retained beside its receipt
+and examples with an explicit immutable binding manifest. Historical pending
+labels are superseded by the receipt, with no expected answer changed.
+
+Both nonempty NotebookLM source bodies and six passages were reverified by
+Codex and a separate read-only agent. The committed research packet reuses those
+findings and records their limits. Claude 2.1.261 is authenticated. The plan
+assigns only the qualified-attributes helper and its tests to Claude; Codex owns
+policy verification and subsequent deterministic counts and application wiring.
+No provider is running at this preparation checkpoint. Generic manual each
+entries will not satisfy the new automatic count readiness.
+
+Evidence: .heleos/air-device-build-2026-09-16/ and
+ docs/research/notebooklm/air-device-build-findings-2026-09-16.json.
+Next: dispatch the exact-base helper, implement non-overlapping policy binding,
+then independently accept these prerequisites before connecting source counts.
+Earlier application work remains uncommitted and preserved. Connected air-device
+counts, representative projects, native Windows and full Division 23 remain open.
+
 Explicit duct connection diagnostics (2026-09-15, DUCT-TOPOLOGY-1):
 implemented, independently reviewed and accepted locally in
 /Users/bekim/Heleos-spark on main, base
