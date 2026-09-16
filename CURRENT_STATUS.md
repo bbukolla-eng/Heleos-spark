@@ -20,8 +20,8 @@ usable deliverable; repair only that dependency.
 | 0.2 Knowledge, taxonomy, source/evaluation registry | Versioned sources, mechanical vocabulary, requirement/rule review and model baseline connected locally. Notebook inventory/research retained; relevant notebooks expanded. | Complete mechanical coverage, dataset rights/labels and representative truth/thresholds remain open. | Reuse verified findings for each active class; research only concrete implementation needs. |
 | 0.3 Drawing coordinates and scale | Revision-bound geometry, scale review and invalidation connected locally. | Native parity and representative drawings remain to verify. | Reuse for source identity; each counts have no scale dependency. |
 | 0.4 Schedule reconciliation | Source-linked schedule extraction and plan correspondence, decisions/history and exceptions connected locally. | Broader schedule fields/types and representative acceptance remain open. | Feed air-device attributes/declarations and then equipment counts. |
-| 0.5 Mechanical takeoff | Duct calculation/correction/evidence capability accepted locally. Air-device attributes/policy accepted; count kernel, reader and producer in active implementation. Equipment draft tag review exists. | Finish connected air-device counts, then physical equipment counts. Piping, fittings, accessories, controls, insulation and demolition coverage remain outstanding; deferred duct edge cases remain recorded. | **Connected air-device takeoff workflow**, then equipment. |
-| 0.6 Correction, recalculation and estimator outputs | Duct correction/recalculation and draft source-linked CSV/JSON/PDF paths exist. | Air-device correction/history/export connection now; estimator-ready Excel with formulas and consolidated evidence PDF remain unfinished. | Deliver outputs for supported classes without waiting for every later mechanical category. |
+| 0.5 Mechanical takeoff | Duct capability preserved. Air-device approved calculation, source producer, review UI and application connection independently verified locally; corrections, reopening and source exports work. Equipment draft tag review exists. | **Air-device recognition remains unqualified:** the installed local model missed all three physical symbols in AC01. Physical equipment counts, piping, fittings, accessories, controls, insulation and demolition remain outstanding. | Improve the bounded recognition path; advance independent supported-output work without repeating duct refinements. |
+| 0.6 Correction, recalculation and estimator outputs | Duct and air-device correction/recalculation, append-only history and draft source-linked CSV/JSON/evidence paths connected locally. | Estimator-ready Excel with formulas and consolidated evidence PDF remain unfinished. | **Next independent implementation: source-linked Excel for supported duct/air-device results**, preserving unknown quantities and review state. |
 | 0.7 Mac/Windows product | Local Mac drawing/takeoff preview and relocatable package; Windows launch/package implementation prepared. | Native Windows execution, desktop shell/parity and install/update/recovery acceptance remain open. | Advance shared local workflow and independent platform verification alongside supported takeoff classes. |
 | 0.8 iPhone and bounded automation | Supporting automation contracts exist; no completed companion claim. | Companion/synchronization/approval scope and native device acceptance remain future work. | Preserve original roadmap scope; do not make companion work a new Mac/Windows delivery prerequisite. |
 | 1.0 Representative production pilot | No production acceptance claimed. | Freeze representative projects/truth/thresholds, verify full requested Division 23 scope and native platforms, then record human release acceptance. | Usable, traceable takeoffs demonstrated on representative Mac and Windows projects. |
@@ -39,9 +39,19 @@ not finish the capability. Unsupported combinations remain visible exceptions an
 outstanding work; neither they nor unrelated later categories justify indefinite
 delay of the usable connection. Once necessary checks pass, checkpoint and advance.
 
-Then advance to physical equipment counts and estimator-ready Excel/evidence PDF
-for supported results. Native Mac/Windows work may proceed independently. No new
-duct refinement is a prerequisite without a documented blocking defect.
+The software connection is verified; the original-drawing recognition condition
+is **not satisfied**, so AIR-DEVICE-COUNT-1 remains open. Eight bounded local runs
+are terminal, with their failures retained. The last run returned valid records
+but found no physical assemblies where the original drawing contains three.
+Do not repeat prompt/sampling loops or relabel transport validity as recognition
+success. Keep this concrete model limitation visible while independent output and
+platform work advances. Physical equipment class rules still need a concrete
+owner-approved packet before quantity implementation; A01–A12 cover air devices.
+
+Next independent implementation: source-linked Excel for supported duct/air-device
+results, with separate known subtotals, unknown finals and original evidence
+references. Equipment counts and consolidated evidence PDF remain next product
+capabilities. No new duct refinement is a prerequisite without a blocking defect.
 
 ## Live work and evidence
 
@@ -50,16 +60,35 @@ duct refinement is a prerequisite without a documented blocking defect.
   Accepted duct evidence remains in `.heleos/duct-topology-2026-09-15/`; all18
   accepted input hashes were checked unchanged before air-device work.
 - Kernel assignment `air-device-count-claude-001` at exact base
-  `73976966d94b6036eb833bf39b9711f777f11075` is running under the guarded runner.
-  Live PID65395 was verified after the interruption; resume session1406.
-  Preserve this invocation—do not restart from a quiet output or stale chat.
-- Codex owns `local_air_device_vision.py`, application connection and commits;
-  `airdevice_map` owns the named source-producer/test candidate. Initial adapter
-  checks pass; producer has two concrete source-binding/cancellation repairs in
-  progress. These are air-device dependencies, not duct refinement work.
+  `73976966d94b6036eb833bf39b9711f777f11075` terminated at its 1800-second
+  bound (runner exit2/timeout). Both allowed files are retained in provider run
+  `heleos-worker-luOdpA`; no report or test claim is accepted. Original bytes and
+  failure evidence are preserved; the repaired count kernel is independently accepted locally
+  (90 tests on Python 3.9/3.12/3.14 and closed review). Exact accepted files are
+  recorded in `kernel-acceptance.json`.
+  Do not restart this invocation.
+- Codex reviewed and integrated the count kernel, project state, source producer,
+  reader, UI, workflow and package connection at base
+  `b724a9a0f4778b1988be84d79e915ee841781ef7`. Checks: 90 kernel tests and
+  73 reader/producer/project/workflow tests on Python 3.9/3.12/3.14; 23 Node UI
+  tests; 12 existing workflow checks; package checks and relocated imports.
+  The clean index archive verified 193 Python checks (175 unchanged checks plus
+  18 package checks after repairing a host-only test fixture dependency), 23 Node
+  checks and the 73-file relocatable runtime with six imports and the owner rule
+  binding. This removes uncommitted runtime dependencies from future assignments.
+  Independent review closed the recorded findings. The browser demonstrated
+  correction, reopening, coverage review and history using a synthetic reader.
+  It is software evidence, not model accuracy. All workers and test/model
+  processes are terminal. Exact final checks, file identities, local model
+  outcome and checkpoint inventory are in the task ledger.
+- This local application checkpoint includes the explicit runtime package and
+  air-device test dependency closure, preserving accepted prior runtime bytes.
+  It does not grant native Windows, production, clean-release or representative
+  recognition acceptance. Other research/evaluation work outside that inventory
+  remains uncommitted and preserved. No remote push is authorized.
 - Active ledger: `.heleos/air-device-count-2026-09-16/resume-state.json` and
   `claude-submission.json`; exact run, failure, test and acceptance evidence stays
-  there. Earlier application edits remain uncommitted and must be preserved.
+  there. Preserve all prior runs and remaining uncommitted paths.
 - NotebookLM uses the committed verified air-device findings; no repeated query
   or private upload is needed. Claude candidates require independent checks and
   integration. Codex remains the sole commit owner; no push is authorized.
@@ -77,4 +106,5 @@ implementation. No reset, scope reduction or false completion is authorized.
 <!-- /active-build-authority -->
 
 The authority list tracks registered development worktrees, not provider child
-processes. The live provider invocation is recorded in the active ledger above.
+processes. No provider invocation is currently running; terminal results are in
+the active ledger above.

@@ -1,0 +1,70 @@
+{
+  "task": "AIR-DEVICE-COUNT-1",
+  "at": "2026-09-16T05:43:51.426285+00:00",
+  "state": "software independently accepted and locally integrated; air-device original recognition remains outstanding",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "base": "b724a9a0f4778b1988be84d79e915ee841781ef7",
+  "source_research": {
+    "record": "docs/research/notebooklm/air-device-build-findings-2026-09-16.json",
+    "notebook": "932527dc-c37a-40ed-89de-4240e8197609",
+    "reuse": "verified supporting passages and approvedA01-A12; no repeated query/inventory or private upload",
+    "precedence": "owner approvedpacket/receipt plus exactdeterministic calculations remain authoritative"
+  },
+  "behavior": [
+    "Every installed physical assembly counted once; same tag is not physical correspondence",
+    "No scale dependency for each counts; imperial qualified attributes retained",
+    "Current source/geometry/evidence binding; stale known attributes cannot become quantity authority",
+    "Explicit duplicate/multiplicity/relocation/schedule review; observed and declared quantities separate",
+    "Known subtotals remain visible; final requires reviewed current coverage and resolved exceptions",
+    "Corrections and history append; unaffected dependencies stable, stale edit pins reject",
+    "Reopened workflows replay, source exports retain PNG/raw/receipts and CSV/JSON",
+    "Saved air-device records cannot be hidden by removing scope; no final authority from generic manual items",
+    "Compact local-reader inline claims, deterministic evidence IDs, fixed1000-grid conversion and omitted fields unknown",
+    "Pinned model sampling avoids greedy repetition; raw completion retained; only OCR line separators normalized in derived evidence",
+    "Physical recognition is not accepted from syntactically valid model output"
+  ],
+  "verification": {
+    "kernel": "90tests eachPython3.9/3.12/3.14; independentlyclosed4semanticfindings and codeidentity",
+    "project": "24 project tests each runtime, including final sampling identity; review closed",
+    "reader": "21 reader + 23 producer tests each Python3.9/3.12/3.14; compact transport/identity changes independently reviewed",
+    "workflow": "5 connected tests each runtime; 12 existing workflow regression tests passed",
+    "ui": "23 Node tests; browser correction/reopen/coverage/history proof with synthetic reader",
+    "package": "73 runtime files built from clean staged archive;6 relocated imports and ownerbinding verified;18 package tests passed after replacing host-only test inventory with versioned original path fixture",
+    "clean_checkpoint": "193 Python tests:175 unchanged air/workflow checks plus18 repaired package checks;23 Node checks passed. Runtime code unchanged between initial and final clean trees."
+  },
+  "files": {
+    "scripts/air_device_calculation.py": "7d0a1ad55ec3c98abd8b81771d7a50f03204173d4bc5c7f05c212545173f580a",
+    "tests/drawing-workspace/test_air_device_calculation.py": "ebfcfdc527b0ea16f51db98032723c00325704cb75caa75d7ca93b85b9c6363f",
+    "scripts/project_air_device_takeoff.py": "74e8a5d7f28a250886e94417a458414b0eddef406b71ab3ce89497c8d26e4c41",
+    "tests/drawing-workspace/test_project_air_device_takeoff.py": "6c05675955f7b98bdeb1fd83e1621121689afecd67bb6e99b70fa3a58371f95d",
+    "apps/drawing-workspace/air_devices.js": "b5ba62892339b4db6cc664366ef357710b7356962d606576c1a0ef14cc80e6d2",
+    "tests/drawing-workspace/air_devices.test.js": "45aeb7417af9f38a1aff724fff6f02aa3b37e3f48f4b531d65d7d6d6c186482f",
+    "scripts/local_air_device_vision.py": "4b3fe00831e5fb842fa666798e8acae41d502724c8abb0821e232fa9664bc848",
+    "tests/drawing-workspace/test_local_air_device_vision.py": "8777bae5bd1ab4f45199e2651a068173c167a4258ae0688658cf7d5ad7c54b9a",
+    "scripts/air_device_source_producer.py": "d6a1f3406cdbfc5db340d04e04acf9339612a121a4f5691152fe34378a79d5b1",
+    "tests/drawing-workspace/test_air_device_source_producer.py": "76da0b52b56f3e027d15f55d0ef4c136b1bb780ee2a29278ea3671cac269f916",
+    "scripts/takeoff_workflow.py": "da2d3f654e8df7db353c2e88308e6c94cd47f620e0c58f6aceec2a140c141660",
+    "tests/drawing-workspace/test_air_device_workflow.py": "ae5df8392ef14f39fb608dcffa1a0adafcac515609ecc1964d1a0b0015ab6326",
+    "scripts/workspace_package.py": "1deae94ec7a40c522f9ae3a8aa6fce7ab36a8a12e29cabc0f8cd49422e3329ee",
+    "tests/drawing-workspace/test_workspace_package.py": "a29e65f1fa9e5081ec5ce80c13073487f66fbdc19537d03fbd2bb86af2c2f3d2",
+    "scripts/drawing-workspace.py": "0b6b9a10d4e3d9d0ba7561135add6c6613af0391a0111b456d1fb2729121b7ac",
+    "apps/drawing-workspace/index.html": "bd35560052eea8562069edbb84b469f37dc6c667bb1b08046c2d9c2d347ac143",
+    "apps/drawing-workspace/workflow.js": "87a245ec8ea40ecde5ceeef2508bb567aabb7f573bd190c9a3827820896ba0a1",
+    "tests/fixtures/workspace-package/initial-runtime-paths.json": "f378f507d54ac4a7587407c89d12e938592302f078c04262956de6088ff54fdc"
+  },
+  "limits": [
+    "Installed qwen3.5:9b final local run returned valid records but zero physical occurrences on AC01 with three visible plan symbols; no coverage approval or recognition acceptance",
+    "AIR-DEVICE-COUNT-1 original-source recognition finish line remains open; all17-case local reader coverage, representative projects, nativeWindows and release acceptance outstanding",
+    "Estimator-ready Excel/consolidated evidencePDF, physicalequipment and otherDivision23 categories unfinished"
+  ],
+  "evidence": ".heleos/air-device-count-2026-09-16",
+  "next": "Implement source-linked Excel for supported results as independent work; preserve concrete recognition gap and prepare equipment rules without reopening approved duct/air rules",
+  "evidence_records": {
+    "kernel": "kernel-acceptance.json",
+    "final_checks": "final-software-checks.json",
+    "browser": "browser-proof.json",
+    "recognition": "local-recognition-outcome.json",
+    "checkpoint": "checkpoint-inventory.json",
+    "clean_verification": "clean-checkpoint-verification.json"
+  }
+}

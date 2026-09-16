@@ -7,6 +7,7 @@ handles one request at a time and also holds an OS lock for its whole lifetime.
 """
 import argparse
 import hashlib
+import importlib.util
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import os
@@ -29,6 +30,29 @@ CLI_TIMEOUT = 150
 DIGEST = re.compile(r"[0-9a-f]{64}\Z")
 ASSETS = Path(__file__).resolve().parents[1] / "apps" / "drawing-workspace"
 ASSET_TYPES = {"index.html": "text/html; charset=utf-8", "app.js": "text/javascript; charset=utf-8", "styles.css": "text/css; charset=utf-8"}
+ASSET_TYPES["equipment.js"] = "text/javascript; charset=utf-8"
+ASSET_TYPES["workflow.js"] = "text/javascript; charset=utf-8"
+ASSET_TYPES["ducts.js"] = "text/javascript; charset=utf-8"
+ASSET_TYPES["air_devices.js"] = "text/javascript; charset=utf-8"
+ASSET_TYPES["path_editor.js"] = "text/javascript; charset=utf-8"
+_equipment_spec = importlib.util.spec_from_file_location(
+    "heleos_equipment_takeoff", Path(__file__).with_name("equipment_takeoff.py"))
+_equipment_module = importlib.util.module_from_spec(_equipment_spec)
+_equipment_spec.loader.exec_module(_equipment_module)
+EquipmentEngine = _equipment_module.EquipmentEngine
+TakeoffError = _equipment_module.TakeoffError
+_workflow_spec = importlib.util.spec_from_file_location(
+    "heleos_takeoff_workflow", Path(__file__).with_name("takeoff_workflow.py"))
+_workflow_module = importlib.util.module_from_spec(_workflow_spec)
+_workflow_spec.loader.exec_module(_workflow_module)
+TakeoffWorkflow = _workflow_module.TakeoffWorkflow
+WorkflowError = _workflow_module.WorkflowError
+_document_spec = importlib.util.spec_from_file_location(
+    "heleos_document_pipeline", Path(__file__).with_name("document_pipeline.py"))
+_document_module = importlib.util.module_from_spec(_document_spec)
+_document_spec.loader.exec_module(_document_module)
+DocumentPipeline = _document_module.DocumentPipeline
+DocumentError = _document_module.DocumentError
 
 
 class WorkspaceError(Exception):
@@ -52,9 +76,14 @@ def display_name(value):
 
 
 class Workspace:
-    def __init__(self, cli, root, cli_timeout=CLI_TIMEOUT, renderer=None, render_timeout=30):
+    def __init__(self, cli, root, cli_timeout=CLI_TIMEOUT, renderer=None, render_timeout=30,
+                 text_reader=None, vision=None, vision_runtime_executable=None):
         self.cli = list(cli)
+        self.equipment = None
+        self.workflow = None
+        self.documents = None
         self.renderer = list(renderer) if renderer else None
+        self.vision_runtime_executable = vision_runtime_executable
         self.render_timeout = render_timeout
         self.root = Path(root).expanduser().resolve()
         self.cli_timeout = cli_timeout
@@ -94,7 +123,10 @@ class Workspace:
                 self._save_metadata()
             # Reopen is verified against the core, not trusted display metadata.
             self.state()
-        except WorkspaceError:
+            self.equipment = EquipmentEngine(self, text_reader=text_reader, vision=vision)
+            self.documents = DocumentPipeline(self, text_reader=text_reader)
+            self.workflow = TakeoffWorkflow(self)
+        except (WorkspaceError, TakeoffError, WorkflowError, DocumentError):
             self.close()
             raise
         except (OSError, ValueError, KeyError, TypeError):
@@ -121,6 +153,15 @@ class Workspace:
             raise WorkspaceError("workspace_busy", "This drawing workspace is already open in another server.", 409) from None
 
     def close(self):
+        if self.workflow is not None:
+            self.workflow.close()
+            self.workflow = None
+        if self.documents is not None:
+            self.documents.close()
+            self.documents = None
+        if self.equipment is not None:
+            self.equipment.close()
+            self.equipment = None
         if self.lock_file is not None:
             # Closing the handle releases its OS lock, including after a crash.
             self.lock_file.close()
@@ -192,6 +233,11 @@ class Workspace:
                         raise ValueError("invalid sheet dimensions")
                     if projected["width_micropoints"] <= 0 or projected["height_micropoints"] <= 0 or projected["rotation_degrees"] not in (0, 90, 180, 270):
                         raise ValueError("invalid dimensions")
+                    # Carry the exact Foundation coordinate contract into the
+                    # takeoff engine; never reconstruct crop origins or rotation.
+                    for field in ("unit", "transform", "parent_content_sha256"):
+                        projected[field] = sheet[field]
+                    _workflow_module.sheet_geometry.sheet_geometry(projected, revision)
                     grouped[revision].append(projected)
                 documents = []
                 for revision in sorted(grouped):
@@ -308,7 +354,7 @@ class Workspace:
             with snapshot, tempfile.TemporaryDirectory(prefix="drawing-page-") as directory:
                 prefix = Path(directory).resolve() / "page"
                 arguments = self.renderer + ["-f", str(index + 1), "-l", str(index + 1),
-                                             "-singlefile", "-scale-to", "2000", "-png", "-", str(prefix)]
+                                             "-singlefile", "-cropbox", "-scale-to", "2000", "-png", "-", str(prefix)]
                 try:
                     # Renderer diagnostics can repeat without bound; they are not
                     # exposed to the browser and must not accumulate in memory.
@@ -387,6 +433,12 @@ class DrawingHandler(BaseHTTPRequestHandler):
     def _handle(self, write=False):
         try:
             route, query = self._route(write)
+            if route == "api/workflow" or route.startswith("api/workflow/"):
+                self._workflow(route, query, write)
+                return
+            if route == "api/equipment" or route.startswith("api/equipment/"):
+                self._equipment(route, query, write)
+                return
             if write:
                 if route != "api/import":
                     raise WorkspaceError("not_found", "This local workspace route was not found.", 404)
@@ -417,14 +469,14 @@ class DrawingHandler(BaseHTTPRequestHandler):
                 payload = self.server.workspace.rendered_page(selected[1], int(selected[2]))
                 self._headers(200, "image/png", len(payload))
                 self.wfile.write(payload)
-            elif route in ("", "index.html", "app.js", "styles.css"):
+            elif route == "" or route in ASSET_TYPES:
                 asset = route or "index.html"
                 payload = (ASSETS / asset).read_bytes()
                 self._headers(200, ASSET_TYPES[asset], len(payload))
                 self.wfile.write(payload)
             else:
                 raise WorkspaceError("not_found", "This local workspace route was not found.", 404)
-        except WorkspaceError as error:
+        except (WorkspaceError, TakeoffError, WorkflowError, DocumentError) as error:
             self._json({"error": {"code": error.code, "message": error.message}}, error.status)
         except (BrokenPipeError, ConnectionResetError):
             pass
@@ -432,6 +484,92 @@ class DrawingHandler(BaseHTTPRequestHandler):
             self._json({"error": {"code": "upload_timeout", "message": "The upload timed out before all PDF bytes arrived."}}, 408)
         except (OSError, ValueError, TypeError):
             self._json({"error": {"code": "local_io", "message": "A local workspace file operation failed."}}, 500)
+
+    def _workflow(self, route, query, write):
+        if query or self.server.workspace.workflow is None:
+            raise WorkspaceError("not_found", "This workflow operation was not found.", 404)
+        engine = self.server.workspace.workflow
+        if not write and route == "api/workflow":
+            self._json(engine.view())
+        elif not write and route == "api/workflow/export.zip":
+            payload = engine.export()
+            self._headers(200, "application/zip", len(payload))
+            self.wfile.write(payload)
+        elif write and re.fullmatch(r"api/workflow/[a-z_]+", route):
+            self._json(engine.command(route.rsplit("/", 1)[1], self._json_body()))
+        else:
+            raise WorkspaceError("not_found", "This workflow operation was not found.", 404)
+
+    def _json_body(self):
+        if self.headers.get("Content-Type", "").split(";", 1)[0].strip().lower() != "application/json":
+            raise WorkspaceError("media_type", "This operation requires JSON.", 415)
+        lengths = self.headers.get_all("Content-Length", [])
+        if (self.headers.get("Transfer-Encoding") or len(lengths) != 1
+                or not re.fullmatch(r"[0-9]{1,6}", lengths[0])):
+            raise WorkspaceError("body_length", "Provide one bounded request length.", 411)
+        length = int(lengths[0])
+        if not 1 <= length <= 64 * 1024:
+            raise WorkspaceError("body_length", "The request exceeds its limit.", 413)
+        payload = self.rfile.read(length)
+        if len(payload) != length:
+            raise WorkspaceError("body_length", "The request was incomplete.", 400)
+        try:
+            data = json.loads(payload)
+            if not isinstance(data, dict):
+                raise ValueError()
+            return data
+        except (ValueError, TypeError):
+            raise WorkspaceError("invalid_json", "The request is not valid JSON.", 400) from None
+
+    def _equipment(self, route, query, write):
+        engine = self.server.workspace.equipment
+        if query or engine is None:
+            raise WorkspaceError("not_found", "This equipment operation was not found.", 404)
+        data = None
+        if write:
+            if self.headers.get("Content-Type", "").split(";", 1)[0].strip().lower() != "application/json":
+                raise WorkspaceError("media_type", "Equipment operations require JSON.", 415)
+            lengths = self.headers.get_all("Content-Length", [])
+            if (self.headers.get("Transfer-Encoding") or len(lengths) != 1
+                    or not re.fullmatch(r"[0-9]{1,6}", lengths[0])):
+                raise WorkspaceError("body_length", "Provide one bounded request length.", 411)
+            length = int(lengths[0])
+            if not 1 <= length <= 64 * 1024:
+                raise WorkspaceError("body_length", "The equipment request exceeds its limit.", 413)
+            payload = self.rfile.read(length)
+            if len(payload) != length:
+                raise WorkspaceError("body_length", "The equipment request was incomplete.", 400)
+            try:
+                data = json.loads(payload)
+                if not isinstance(data, dict):
+                    raise ValueError("object required")
+            except (ValueError, TypeError):
+                raise WorkspaceError("invalid_json", "The equipment request is not valid JSON.", 400) from None
+        match = re.fullmatch(r"api/equipment/runs/([0-9a-f]{32})(?:/(review|add|export.csv))?", route)
+        if not write and route == "api/equipment":
+            self._json(engine.summary())
+        elif write and route == "api/equipment/runs":
+            if set(data) != {"selections", "mode"}:
+                raise WorkspaceError("invalid_request", "Provide selected pages and a reader.", 400)
+            self._json(engine.start(data["selections"], data["mode"]), 202)
+        elif match and not write and match[2] is None:
+            self._json(engine.result(match[1]))
+        elif match and not write and match[2] == "export.csv":
+            payload = engine.export(match[1])
+            self._headers(200, "text/csv; charset=utf-8", len(payload))
+            self.wfile.write(payload)
+        elif match and write and match[2] == "review":
+            required = {"finding_id", "version", "state", "tag", "reason", "actor"}
+            if set(data) != required:
+                raise WorkspaceError("invalid_request", "Provide the item, correction and reviewer.", 400)
+            self._json(engine.review(match[1], **data))
+        elif match and write and match[2] == "add":
+            required = {"version", "revision_id", "index", "bbox", "tag", "reason", "actor"}
+            if set(data) != required:
+                raise WorkspaceError("invalid_request", "Provide the tag, drawing region and reviewer.", 400)
+            self._json(engine.add(match[1], **data))
+        else:
+            raise WorkspaceError("not_found", "This equipment operation was not found.", 404)
 
     def do_GET(self):
         self._handle()
@@ -450,9 +588,17 @@ def main():
     parser.add_argument("--workspace", required=True, type=Path, help="New empty directory or existing drawing workspace")
     parser.add_argument("--port", type=int, default=0, help="Local port; 0 chooses an unused port")
     parser.add_argument("--pdftoppm", type=Path, help="Optional existing Poppler executable for local page images")
+    parser.add_argument("--pdftotext", type=Path, help="Existing Poppler executable for equipment tags in PDF text")
+    parser.add_argument("--vision-model", help="Installed local Ollama vision model with an explicit tag")
+    parser.add_argument("--vision-digest", help="Exact SHA-256 from the local model inventory")
+    parser.add_argument("--vision-port", type=int, default=11434, help="Local Ollama port, always on 127.0.0.1")
+    parser.add_argument("--vision-runtime-executable", type=Path,
+                        help="Installed Ollama executable to pin for mechanical inference; defaults to local PATH")
     args = parser.parse_args()
     if not 0 <= args.port <= 65535:
         parser.error("--port must be between 0 and 65535")
+    if bool(args.vision_model) != bool(args.vision_digest):
+        parser.error("--vision-model and --vision-digest must be supplied together")
     workspace = None
     server = None
     def interrupted(signum, frame):
@@ -460,13 +606,17 @@ def main():
     signal.signal(signal.SIGTERM, interrupted)
     try:
         renderer = [str(args.pdftoppm.expanduser().resolve())] if args.pdftoppm else None
-        workspace = Workspace([str(args.heleos.expanduser().resolve())], args.workspace, renderer=renderer)
+        text_reader = _equipment_module.TextReader(args.pdftotext) if args.pdftotext else None
+        vision = _equipment_module.LocalVision(args.vision_model, args.vision_digest, args.vision_port) if args.vision_model else None
+        workspace = Workspace([str(args.heleos.expanduser().resolve())], args.workspace,
+                              renderer=renderer, text_reader=text_reader, vision=vision,
+                              vision_runtime_executable=args.vision_runtime_executable)
         server = create_server(workspace, args.port)
         print("WORKSPACE_URL=" + server.workspace_url, flush=True)
         server.serve_forever(poll_interval=0.2)
     except KeyboardInterrupt:
         return 0
-    except WorkspaceError as error:
+    except (WorkspaceError, TakeoffError, WorkflowError) as error:
         print(error.code + ": " + error.message, file=sys.stderr)
         return 1
     except OSError:

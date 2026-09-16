@@ -4,16 +4,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light">
-    <title>Drawing workspace · Heleos</title>
+    <title>Mechanical takeoff · Heleos</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="path_editor.js" defer></script>
     <script src="app.js" defer></script>
+    <script src="equipment.js" defer></script>
+    <script src="arc_family_editor.js" defer></script>
+    <script src="revision_checks_editor.js" defer></script>
+    <script src="ducts.js" defer></script>
+    <script src="air_devices.js" defer></script>
+    <script src="workflow.js" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#drawing-area">Skip to drawing</a>
     <header class="app-header">
       <a class="brand" href="./" aria-label="Heleos drawing workspace"><span class="brand-mark" aria-hidden="true">H</span>HELEOS</a>
       <div class="project-heading">
-        <p class="eyebrow">Local drawing workspace</p>
+        <p class="eyebrow">Mechanical takeoff workspace</p>
         <h1 id="project-name">Drawing workspace</h1>
       </div>
       <div class="header-actions">
@@ -31,6 +38,10 @@
       <p class="activity" id="activity" role="status" aria-live="polite">Opening your workspace…</p>
     </div>
 
+    <section class="workflow-strip" aria-label="Project takeoff workflow">
+      <div class="workflow-overview"><div><p class="eyebrow">Your project workflow</p><h2 id="workflow-project-title">Set up your mechanical project</h2></div><p id="workflow-progress" role="status">Opening saved progress…</p></div>
+      <nav aria-label="Takeoff stages"><ol id="workflow-navigation" class="workflow-navigation"></ol></nav>
+    </section>
     <div class="workspace" id="workspace" aria-busy="true">
       <aside class="sidebar" aria-label="Drawing library">
         <section class="documents-section" aria-labelledby="documents-heading">
@@ -73,10 +84,10 @@
           <div class="drawing-facts" aria-label="Drawing details">
             <div><span class="fact-label">Page size</span><span id="page-size"></span></div>
             <div><span class="fact-label">Rotation</span><span id="page-rotation"></span></div>
-            <span class="scale-badge">Scale unverified</span>
+            <span class="scale-badge">Scale applies only within a calibrated view</span>
           </div>
           <div class="image-controls" id="image-controls" hidden>
-            <span>Page preview <span aria-hidden="true">·</span> view only</span>
+            <span>Page preview <span aria-hidden="true">·</span> select a workflow tool to measure</span>
             <div class="zoom-controls" aria-label="Preview zoom">
               <button class="button button-quiet" id="fit-preview" type="button" disabled>Fit page</button>
               <button class="button button-square" id="zoom-out" type="button" aria-label="Zoom out" disabled>−</button>
@@ -91,11 +102,58 @@
           </div>
           <div class="preview-footer">
             <p>Preview unavailable? <a id="fallback-original" target="_blank" rel="noopener">Open the original PDF in a new tab.</a></p>
-            <p>Page dimensions are not drawing scale. No quantities have been calculated.</p>
+            <p>Measurements require a known distance and a confirmed drawing view.</p>
           </div>
           <details class="evidence-details"><summary>Original evidence</summary><dl><dt>Revision SHA-256</dt><dd><code id="revision-id"></code></dd><dt>Sheet ID</dt><dd><code id="sheet-id"></code></dd></dl></details>
         </section>
       </main>
+      <aside class="takeoff-panel" aria-labelledby="workflow-stage-title">
+        <div class="workflow-panel-heading"><p class="eyebrow" id="workflow-stage-number">Stage 1 of 7</p><h2 id="workflow-stage-title">Project setup</h2><span class="draft-label">Draft project records</span></div>
+        <label class="field-label" for="workflow-actor">Operator / reviewer</label><input id="workflow-actor" maxlength="100" autocomplete="name" placeholder="Your name">
+        <p id="workflow-message" class="equipment-message" role="status" aria-live="polite"></p>
+        <p id="workflow-error" class="equipment-error" role="alert" hidden></p>
+        <div id="workflow-content"></div>
+        <section id="workflow-equipment-tools" hidden aria-labelledby="equipment-heading">
+        <div class="takeoff-heading"><p class="eyebrow">Mechanical takeoff</p><h2 id="equipment-heading">Equipment register</h2><span class="draft-label">Working draft</span></div>
+        <p class="takeoff-intro">Find equipment tags on plan and schedule pages. Compare them, inspect the source, and review the count.</p>
+        <div class="takeoff-source-actions">
+          <button class="button button-outline" id="equipment-add-plan" type="button" disabled>Add plan page</button>
+          <button class="button button-outline" id="equipment-add-schedule" type="button" disabled>Add schedule page</button>
+        </div>
+        <ul id="equipment-pages" class="equipment-pages" aria-label="Pages selected for equipment extraction"></ul>
+        <label class="field-label" for="equipment-reader">Read with</label>
+        <select id="equipment-reader"><option value="text">PDF text</option><option value="vision" disabled>Local AI</option></select>
+        <p id="equipment-reader-status" class="section-hint">Checking available readers…</p>
+        <button class="button button-primary" id="equipment-run" type="button" disabled>Find equipment</button>
+        <p id="equipment-message" class="equipment-message" role="status" aria-live="polite"></p>
+        <p id="equipment-error" class="equipment-error" role="alert" hidden></p>
+        <div class="equipment-history">
+          <label class="field-label" for="equipment-history">Saved extractions</label>
+          <select id="equipment-history"><option value="">No extractions yet</option></select>
+        </div>
+        <section id="equipment-results" hidden aria-label="Equipment extraction results">
+          <div class="equipment-result-heading"><h3 id="equipment-summary"></h3><a id="equipment-export" class="button button-outline" download="heleos-equipment-review.csv">Export CSV</a></div>
+          <p class="section-hint">A tag on a page is a finding. Include one plan occurrence only after checking that it represents the physical equipment. Unknown counts remain unknown.</p>
+          <label class="field-label" for="equipment-reviewer">Reviewer</label>
+          <input id="equipment-reviewer" maxlength="100" placeholder="Your name" autocomplete="name">
+          <div id="equipment-warnings"></div>
+          <div id="equipment-rows"></div>
+          <details class="manual-equipment">
+            <summary>Add missed equipment</summary>
+            <p class="section-hint">Open one of this extraction's pages, enter the tag, then draw a box around the item.</p>
+            <label class="field-label" for="equipment-manual-tag">Equipment tag</label>
+            <input id="equipment-manual-tag" maxlength="40" placeholder="For example EF-3">
+            <label class="field-label" for="equipment-manual-reason">Reason</label>
+            <input id="equipment-manual-reason" maxlength="500" placeholder="For example tag missed by the reader">
+            <button id="equipment-place" class="button button-outline" type="button">Place on drawing</button>
+            <button id="equipment-cancel-place" class="button button-quiet" type="button" hidden>Cancel</button>
+          </details>
+          <details class="equipment-audit"><summary>Extraction and correction history</summary><pre id="equipment-audit"></pre></details>
+        </section>
+        </section>
+        <div id="workflow-review-controls"></div>
+        <details class="workflow-history"><summary>Saved changes and remaining capabilities</summary><ul id="workflow-capabilities"></ul><ol id="workflow-history"></ol></details>
+      </aside>
     </div>
     <noscript><p class="noscript">Enable JavaScript to import and browse drawings in this local workspace.</p></noscript>
   </body>
