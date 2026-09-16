@@ -1,0 +1,17 @@
+{
+  "schema": "heleos.status-archive/v1",
+  "at": "2026-09-16T04:48:30.957370+00:00",
+  "source_checkout": "/Users/bekim/Heleos-spark",
+  "source_head": "73976966d94b6036eb833bf39b9711f777f11075",
+  "reason": "Owner-directed advancement beyond duct refinements; single current roadmap view. Exact historical status bytes retained. Relative links inside archives are relative to their original project locations. Historical Next statements are not current assignments.",
+  "records": {
+    "CURRENT_STATUS.md": {
+      "archive": "docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md",
+      "sha256": "50fa5a099369e85cc4035b9e199d6e01df0115f97531d2c5396eef0fb13d771d"
+    },
+    "docs/roadmap.md": {
+      "archive": "docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md",
+      "sha256": "4e1e215e6177129af97d6e7f72e4946c3f79c371499db3e66efb562893e08b2a"
+    }
+  }
+}
