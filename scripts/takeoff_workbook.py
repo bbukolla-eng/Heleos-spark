@@ -228,12 +228,79 @@ def workbook_sheets(view):
                 'each',item.get('actor',''),item.get('reason','')])
     else:
         summary.append(['Air-device scope','No current air-device calculation','each','NOT AVAILABLE','NOT AVAILABLE','NOT AVAILABLE'])
+    equipment = _sheet('Equipment', 'Reviewed physical assemblies; components, procurement and installation remain separate. History never feeds current totals.',
+        ['Assembly row','Group ID','Requested scope','Physical each','Contribution each','Procurement each','Install each','Remove each','Reinstall each','Component each','Source','Family / status','Issues','Generation'],
+        [35,35,20,17,21,22,18,18,18,20,20,50,50,35])
+    declarations = _sheet('Equipment declarations', 'Schedule quantities are requirements, not observed physical instances. Conflicts remain unresolved.',
+        ['Declaration','Family','Work status','Declared each','Observed each','State','Issues','Source'], [35,25,22,20,20,22,55,20])
+    counts = view.get('equipment_count_takeoff') or {}
+    result = counts.get('result')
+    if counts.get('available') and result:
+        generation = counts['generation']; generations = _unique(counts['history'], 'id')
+        if generation not in generations: raise ValueError('Current equipment generation is missing.')
+        observations = _unique([o['observation'] for o in counts['observations']], 'id')
+        rows = _unique(result['rows'], 'row_id'); groups = _unique(result['groups'], 'group_id')
+        membership = {}; values = {}; erows = equipment['rows']
+        for group in groups.values():
+            for identifier in group['row_ids']:
+                if identifier in membership or identifier not in rows:
+                    raise ValueError('Equipment group membership differs from current rows.')
+                membership[identifier] = group['group_id']
+        for row in rows.values():
+            quantities = [row[key] for key in ('physical_each','procurement_each','installation_each','remove_each','reinstall_each','component_each')]
+            if any(q is not None and (type(q) is not int or not 0 <= q < LIMIT) for q in quantities):
+                raise ValueError('Invalid equipment quantity.')
+            requested = row['requested']; count = row['physical_each']
+            if requested is not None and type(requested) is not bool: raise ValueError('Invalid equipment requested scope.')
+            if requested is True and row['row_id'] not in membership:
+                raise ValueError('Requested equipment row is missing its group.')
+            requested_text = 'YES' if requested is True else 'NO' if requested is False else UNKNOWN
+            value = count if requested is True and count is not None else 0
+            values[row['row_id']] = value
+            n = len(erows) + 1
+            guard = ('AND(ISNUMBER(D'+str(n)+'),D'+str(n)+'>=0,D'+str(n)+'<'+str(LIMIT)+',MOD(D'+str(n)+',1)=0)'
+                     if count is not None else 'D'+str(n)+'="UNKNOWN"')
+            formula = 'IFERROR(IF(AND(C'+str(n)+'="'+requested_text+'",B'+str(n)+'="'+membership.get(row['row_id'],'')+'",'+guard+'),'+('D'+str(n) if requested is True and count is not None else '0')+',"INVALID"),"INVALID")'
+            links = []
+            for identifier in row['member_ids']:
+                if identifier not in observations: raise ValueError('Equipment source member is missing.')
+                obs = observations[identifier]
+                evidence = [e for e in counts['evidence'] if e['id'] in obs['evidence_ids']]
+                links.append(source_link(obs,'Equipment','equipment-counts.json#/observations/'+str(list(observations).index(identifier)),evidence))
+            erows.append([row['row_id'],membership.get(row['row_id'],''),requested_text,_number(count,'input'),
+                _formula(formula,value),*[_number(q) for q in quantities[1:]],
+                links[0] if links else 'No source',row['family']+' / '+row['work_status'],
+                '; '.join(row['issues']),generation])
+        if len(erows) == 5: erows.append([])
+        for group in groups.values():
+            add_summary('Equipment group',_group_label(group['key']),'each','Equipment',group['group_id'],6,len(erows),
+                group['known_subtotal_each'],group['total_each'],group['complete'],sum(values[i] for i in group['row_ids']),len(group['row_ids']))
+        add_summary('Equipment scope','Selected physical assemblies; purchase and installation shown separately','each','Equipment',None,6,len(erows),
+                    result['known_subtotal_each'],result['total_each'],result['complete'],sum(values.values()))
+        for item in generations.values():
+            saved = item['result']
+            hrows.append(['Equipment',item['id'],'current reference' if item['id']==generation else 'superseded',
+                item.get('at',''),item.get('action',''),_number(saved['known_subtotal_each']),_number(saved['total_each']),
+                'each',item.get('actor',''),item.get('reason','')])
+        schedule_inputs = _unique(counts['request']['schedules'],'id')
+        for declaration in result['declarations']:
+            declared = schedule_inputs[declaration['id']]
+            links = []
+            for eid in declared['evidence_ids']:
+                e = next((v for v in counts['evidence'] if v['id'] == eid), None)
+                if e is None: raise ValueError('Equipment schedule evidence is missing.')
+                links.append(source_link(dict(e, evidence_ids=[eid]), 'Equipment schedule', 'equipment-counts.json#/evidence', [e]))
+            declarations['rows'].append([declaration['id'],declared['family'],declared['work_status'],
+                _number(declaration['declared_each']),_number(declaration['observed_each']),declaration['state'],
+                '; '.join(declaration['issues']),links[0] if links else 'No source'])
+    else:
+        summary.append(['Equipment scope','No current physical equipment calculation','each','NOT AVAILABLE','NOT AVAILABLE','NOT AVAILABLE'])
     # Remaining Division 23 categories are explicit outstanding scope, never zero.
-    summary.append(['Other Division 23','Equipment, piping, fittings, accessories, controls, insulation and demolition quantity coverage remains outstanding.',
+    summary.append(['Other Division 23','Full section coverage, equipment recognition, piping, fittings, accessories, controls, insulation and demolition quantity coverage remains outstanding.',
                     '', 'NOT AVAILABLE','NOT AVAILABLE','OUTSTANDING'])
-    for sheet in (measurements,devices,history,sources):
+    for sheet in (measurements,devices,history,sources,equipment,declarations):
         if len(sheet['rows'])==5: sheet['rows'].append(['No records'])
-    return [takeoff,measurements,devices,history,sources]
+    return [takeoff,measurements,devices,history,sources,equipment,declarations]
 
 
 def workbook_bytes(view):

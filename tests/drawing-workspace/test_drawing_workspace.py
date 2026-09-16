@@ -51,7 +51,7 @@ elif a[:2] == ['inspect', 'foundation']:
     result = {'project_id': state['project_id'], 'revision_ids': state['revisions'], 'sheets': []}
     for rev in state['revisions']:
         for index in range(2):
-            result['sheets'].append({'revision_id': rev, 'sheet_id': hashlib.sha256((rev+str(index)).encode()).hexdigest(), 'index': index, 'width_micropoints': 612000000, 'height_micropoints': 792000000, 'rotation_degrees': 0})
+            result['sheets'].append({'revision_id': rev, 'sheet_id': hashlib.sha256((rev+str(index)).encode()).hexdigest(), 'index': index, 'width_micropoints': 612000000, 'height_micropoints': 792000000, 'rotation_degrees': 0, 'unit': 'pt', 'parent_content_sha256': rev, 'transform': {'m11': 1, 'm12': 0, 'm21': 0, 'm22': -1, 'tx_micropoints': 0, 'ty_micropoints': 792000000}})
 elif a[0] == 'verify':
     if (root/'verify-failure').exists(): sys.exit(20)
     rev = arg('--revision'); key = 'objects/sha256/'+rev[:2]+'/'+rev[2:4]+'/'+rev
@@ -155,6 +155,12 @@ class DrawingWorkspaceTests(unittest.TestCase):
         self.assertEqual(document["name"], "Mechanical plan.pdf")
         self.assertEqual(document["page_count"], 2)
         self.assertEqual([s["index"] for s in document["sheets"]], [0, 1])
+        for sheet in document["sheets"]:
+            self.assertEqual(sheet["unit"], "pt")
+            self.assertEqual(sheet["parent_content_sha256"], hashlib.sha256(PDF).hexdigest())
+            self.assertEqual(sheet["transform"], {"m11": 1, "m12": 0, "m21": 0,
+                                                "m22": -1, "tx_micropoints": 0,
+                                                "ty_micropoints": 792000000})
         self.stop()
         self.start()
         self.assertEqual(json.loads(self.request()[1])["documents"], [document])
@@ -234,7 +240,7 @@ class DrawingWorkspaceTests(unittest.TestCase):
         call = json.loads((self.root / "renderer-call.json").read_text())
         self.assertEqual(call["sha256"], hashlib.sha256(PDF).hexdigest())
         self.assertEqual(call["byte_length"], len(PDF))
-        self.assertEqual(call["args"][:-1], ["-f", "2", "-l", "2", "-singlefile", "-scale-to", "2000", "-png", "-"])
+        self.assertEqual(call["args"][:-1], ["-f", "2", "-l", "2", "-singlefile", "-cropbox", "-scale-to", "2000", "-png", "-"])
         output_prefix = Path(call["args"][-1])
         self.assertTrue(output_prefix.is_absolute())
         self.assertFalse(output_prefix.parent.exists(), "page rendering scratch must be cleaned before response")

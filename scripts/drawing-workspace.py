@@ -34,6 +34,7 @@ ASSET_TYPES["equipment.js"] = "text/javascript; charset=utf-8"
 ASSET_TYPES["workflow.js"] = "text/javascript; charset=utf-8"
 ASSET_TYPES["ducts.js"] = "text/javascript; charset=utf-8"
 ASSET_TYPES["air_devices.js"] = "text/javascript; charset=utf-8"
+ASSET_TYPES["equipment_counts.js"] = "text/javascript; charset=utf-8"
 ASSET_TYPES["path_editor.js"] = "text/javascript; charset=utf-8"
 _equipment_spec = importlib.util.spec_from_file_location(
     "heleos_equipment_takeoff", Path(__file__).with_name("equipment_takeoff.py"))

@@ -3,7 +3,7 @@
 (() => {
   const byId = (id) => document.getElementById(id);
   const content = byId("workflow-content");
-  const scopes = ["ductwork", "air_devices", "piping", "fittings", "insulation", "controls", "accessories", "demolition"];
+  const scopes = ["ductwork", "air_devices", "equipment", "piping", "fittings", "insulation", "controls", "accessories", "demolition"];
   const roles = ["plan", "schedule", "specification", "detail", "riser", "legend", "addendum", "excluded"];
   const label = (value) => value.replaceAll("_", " ").replace(/^\w/, (c) => c.toUpperCase());
   let view = null;
@@ -37,6 +37,11 @@
     getActor: () => byId("workflow-actor").value.trim(),
     newId: () => "air-review-" + crypto.randomUUID() });
   let airPreparation = false;
+  const equipmentCountPanel = window.HeleosEquipmentCounts.createPanel({ document, getView: () => view,
+    getSelection: () => selection, isBusy: () => busy, save, render, error, showSource,
+    getActor: () => byId("workflow-actor").value.trim(),
+    newId: () => "equipment-review-" + crypto.randomUUID(),
+    pickRegion: (active) => window.dispatchEvent(new CustomEvent("heleos:pick-region", { detail: active })) });
 
   async function prepareCompletedAirReadings() {
     if (busy || airPreparation || !view || !byId("workflow-actor").value.trim()) return;
@@ -1073,6 +1078,7 @@
     window.dispatchEvent(new CustomEvent("heleos:pick-line", { detail: false }));
     pickingView = false;
     ductPanel.cancelPicking();
+    equipmentCountPanel.cancelRegion();
     if (await save("navigate", { stage: next }, "Opened " + next)) {
       stage = next;
       window.dispatchEvent(new CustomEvent("heleos:workflow-stage", { detail: stage }));
@@ -1584,6 +1590,7 @@
   }
   function equipmentForm() {
     if (!byId("equipment-reviewer").value) byId("equipment-reviewer").value = byId("workflow-actor").value;
+    equipmentCountPanel.render(content);
     readingSummary();
     knowledgeSummary();
     const hasCorrespondence = appendScheduleReconciliation();
@@ -1624,17 +1631,17 @@
       if (hasCorrespondence) content.append(register);
     }
     if (view.equipment?.stale) hint("Equipment results use an earlier document reading. Current reviewed quantities are unknown; build current review records to continue. Earlier reviewed values remain in history.");
-    hint("Build count-review records from the document reading above. The saved schedule fields and plan links supply the equipment; review resolves the physical counts.");
+    hint("Draft tag review links equipment references in plans and schedules. Physical assembly quantities come from the source-region review above.");
     const f = form();
     const mode = field(f, "Equipment source", "mode", "text", [["text", "Saved document reading"], ["vision", "Configured local AI"]]);
-    f.append(button("Build equipment review records", async () => {
+    f.append(button("Build draft tag review", async () => {
       if (await save("extract_equipment", { mode: mode.value }, "Built equipment review records from the project sources")) {
         render();
         window.dispatchEvent(new CustomEvent("heleos:open-equipment-run", { detail: view.equipment_run }));
       }
     }));
     if (view.equipment_run) {
-      content.append(button("Open project equipment results", () => {
+      content.append(button("Open draft tag results", () => {
         window.dispatchEvent(new CustomEvent("heleos:open-equipment-run", { detail: view.equipment_run }));
       }, true));
     }
@@ -2001,14 +2008,18 @@
     if (!view) return;
     if (view.project.name) byId("project-name").textContent = view.project.name;
     const changed = previous?.revision !== selection.revision || previous?.index !== selection.index;
-    if (changed) { pickedLine = null; pickedView = null; measurementDraft = { calibration: {}, measurement: {}, declared: {} }; }
+    if (changed) { equipmentCountPanel.cancelRegion(); pickedLine = null; pickedView = null; measurementDraft = { calibration: {}, measurement: {}, declared: {} }; }
     for (const entry of document.querySelectorAll(".workflow-current-source")) entry.textContent = sourceName();
-    if (changed && ["documents", "measurements"].includes(stage) && !busy) render();
+    if (changed && ["documents", "measurements", "equipment"].includes(stage) && !busy) render();
     if (selection.state.documents.reduce((n, v) => n + v.page_count, 0) !== view.inventory.length && !busy) {
       load().catch((e) => error(e.message));
     }
   });
-  window.addEventListener("heleos:region-picked", (event) => {
+  window.addEventListener("heleos:region-picked", async (event) => {
+    if (stage === "equipment") {
+      try { await equipmentCountPanel.regionPicked(event.detail); } catch (e) { error(e.message); }
+      return;
+    }
     if (stage === "takeoff") {
       try { ductPanel.pickRegion(event.detail); } catch (e) { error(e.message); }
       return;

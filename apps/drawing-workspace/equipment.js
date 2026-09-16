@@ -16,7 +16,7 @@
   const issueNames = { plan_only: "Not found in the selected schedule pages",
     schedule_only: "Not found on the selected plan pages", repeated_plan_tag: "Repeated plan tag",
     repeated_schedule_tag: "Repeated schedule tag", count_conflict: "More than one occurrence included",
-    schedule_quantity_mismatch: "Reviewed physical count differs from the written schedule quantity" };
+    schedule_quantity_mismatch: "Draft tag quantity differs from the written schedule quantity" };
 
   function text(tag, value, className = "") {
     const node = document.createElement(tag);
@@ -115,7 +115,7 @@
       const wrapper = text("label", label, "field-label");
       const input = document.createElement(key === "state" ? "select" : "input");
       if (key === "state") {
-        for (const [value, name] of [["pending", "Needs review"], ["include", item.role === "plan" ? "Count this equipment" : "Use this schedule entry"], ["exclude", "Exclude this occurrence"]]) {
+        for (const [value, name] of [["pending", "Needs review"], ["include", item.role === "plan" ? "Use this plan reference" : "Use this schedule entry"], ["exclude", "Exclude this occurrence"]]) {
           const option = text("option", name); option.value = value; input.append(option);
         }
       } else {
@@ -148,7 +148,7 @@
     }
     const included = run.rows.reduce((sum, row) => sum + (row.reviewed_quantity ?? 0), 0);
     const unknown = run.rows.filter((row) => row.reviewed_quantity === null).length;
-    ui.summary.textContent = run.rows.length + " tags · " + included + " reviewed units · " + unknown + " unknown";
+    ui.summary.textContent = run.rows.length + " tags · " + included + " draft tag quantities · " + unknown + " unknown";
     ui.export.href = "api/equipment/runs/" + run.id + "/export.csv";
     ui.warnings.replaceChildren();
     for (const warning of run.warnings) {
@@ -160,7 +160,7 @@
     }
     for (const row of run.rows) {
       const group = text("details", "", "equipment-row");
-      const heading = text("summary", row.tag + " · count " + (row.reviewed_quantity ?? "UNKNOWN"));
+      const heading = text("summary", row.tag + " · draft tag quantity " + (row.reviewed_quantity ?? "UNKNOWN"));
       group.append(heading);
       const status = row.issues.length ? row.issues.map((issue) => issueNames[issue] || issue).join("; ") :
         row.pending ? "Plan and schedule tags match; review required." : "Plan and schedule reviewed.";

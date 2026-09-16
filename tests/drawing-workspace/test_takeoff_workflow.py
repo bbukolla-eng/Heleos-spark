@@ -223,6 +223,9 @@ class WorkflowTests(unittest.TestCase):
         self.project()
         self.register()
         run = self.complete_equipment()
+        # Legacy tag review does not establish physical assemblies. This fixture
+        # explicitly excludes the empty physical scope before stage review.
+        self.command("scope_review", {"scope": "equipment", "disposition": "not_applicable"})
         for stage in ("setup", "documents", "equipment"):
             self.command("review", {"stage": stage})
         finding = run["findings"][0]

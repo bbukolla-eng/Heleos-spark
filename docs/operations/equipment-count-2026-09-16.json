@@ -1,0 +1,334 @@
+{
+  "schema_version": 1,
+  "task": "EQUIPMENT-COUNT-1-SOFTWARE",
+  "parent": "EQUIPMENT-COUNT-1",
+  "state": "accepted_local_software",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base": "05c55645fdf01a3238c13097c2f100dfa653799a",
+  "integration": "Local completion commit containing this record and CURRENT_STATUS.md; Codex is sole commit owner. No push authorized or performed.",
+  "platform_scope": "Current Mac Python application, actual in-app browser workflow and portable package; not native Windows or representative-project acceptance.",
+  "contract": {
+    "path": ".heleos/equipment-count-2026-09-16/contract.md",
+    "sha256": "76c875c29c0505cafe2d3ba5a9d0a2f903ea8301cb3250093949d5480b230849"
+  },
+  "approval": "Existing owner-approved E01-E12 and EC01-EC20; no new mechanical rule or renewed approval introduced.",
+  "research": {
+    "record": "docs/research/notebooklm/equipment-count-implementation-2026-09-16.json",
+    "reuse": "Three retained supporting text hashes and all seven passages independently rechecked; historical findings joined to later owner approval. CSI identities only from pinned register.",
+    "external_submissions": []
+  },
+  "provider": "Claude actual guarded request previously returned expired OAuth. No changed usable login evidence; authorized Codex fallback used, original failure preserved.",
+  "criteria": {
+    "EQ01": {
+      "outcome": "pass",
+      "evidence": [
+        "core-review.md",
+        "python-suite.log"
+      ],
+      "basis": "20 calculation tests execute all EC01-EC20 literal approved cases and concrete review regressions; separate quantity channels and unknowns preserved."
+    },
+    "EQ02": {
+      "outcome": "pass",
+      "evidence": [
+        "core-review.md",
+        "python-suite.log"
+      ],
+      "basis": "Strict current source, geometry and reviewer bindings; unknown/tag-only input cannot establish a physical assembly."
+    },
+    "EQ03": {
+      "outcome": "pass",
+      "evidence": [
+        "core-review.md",
+        "integration-review.md",
+        "mac-browser-result.json"
+      ],
+      "basis": "Eight adapter and eight connected cases cover immutable history, exact replay and stale changed writes; real browser reopened saved correction."
+    },
+    "EQ04": {
+      "outcome": "pass",
+      "evidence": [
+        "integration-review.md",
+        "mac-browser-result.json"
+      ],
+      "basis": "Literal three-pump plus AHU becomes two pumps plus AHU; affected-only stale invalidation preserves unrelated results."
+    },
+    "EQ05": {
+      "outcome": "pass",
+      "evidence": [
+        "integration-review.md",
+        "all-ui-tests.log",
+        "mac-browser-result.json"
+      ],
+      "basis": "21 equipment DOM cases; actual Mac browser correction, coverage re-review, history and reload. Live coverage selector defect fixed and independently rechecked."
+    },
+    "EQ06": {
+      "outcome": "pass",
+      "evidence": [
+        "integration-review.md",
+        "python-suite.log",
+        "package-check.json"
+      ],
+      "basis": "Eight connected, 13 workbook and 18 package checks; CSV/JSON/Excel source-linked quantities, separate channels and actual 83-file package rule loading."
+    },
+    "EQ07": {
+      "outcome": "pass",
+      "evidence": [
+        "core-review.md",
+        "integration-review.md",
+        "regression-fixture-report.md"
+      ],
+      "basis": "Separate core and integration/UI reviewers accepted the frozen task; Codex independently ran relevant checks, actual browser and package. No unresolved concrete finding in this contract."
+    }
+  },
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s tests/drawing-workspace -p 'test_*.py'",
+      "exit_code": 1,
+      "tests": 1260,
+      "passes": 1250,
+      "failures": 10,
+      "evidence": ".heleos/equipment-count-2026-09-16/python-suite.log",
+      "disposition": "All ten failures traced to two pre-existing outdated fixture modules. Production guards were preserved. Failed run retained; no all-green full rerun claimed."
+    },
+    {
+      "command": "python3 -m unittest discover -s tests/drawing-workspace -p 'test_document_layout_geometry.py'",
+      "exit_code": 0,
+      "tests": 11,
+      "evidence": ".heleos/equipment-count-2026-09-16/fixture-checks.log",
+      "scope": "Independent controller check after one-line version correction; whole pre-existing untracked module remains uncommitted."
+    },
+    {
+      "command": "python3 -m unittest discover -s tests/drawing-workspace -p 'test_drawing_workspace.py'",
+      "exit_code": 0,
+      "tests": 15,
+      "evidence": ".heleos/equipment-count-2026-09-16/fixture-checks.log",
+      "scope": "Independent controller check after fake Foundation metadata and existing cropbox expectation repaired."
+    },
+    {
+      "command": "node --test tests/drawing-workspace/*.test.js tests/drawing-workspace/test_*.js",
+      "exit_code": 0,
+      "tests": 51,
+      "evidence": ".heleos/equipment-count-2026-09-16/all-ui-tests.log"
+    },
+    {
+      "command": "python3 scripts/package-drawing-workspace.py --source /Users/bekim/Heleos-spark --output /Users/bekim/Heleos-spark/.heleos/equipment-count-2026-09-16/package --zip /Users/bekim/Heleos-spark/.heleos/equipment-count-2026-09-16/package.zip",
+      "exit_code": 0,
+      "payload_files": 83,
+      "package_id": "workspace_2259177146455515221f861cd3055862fa70eb9723ea6d49211ef265e9835720",
+      "evidence": ".heleos/equipment-count-2026-09-16/package-check.json",
+      "additional_check": "Packaged calculation kernel loads its pinned E01-E12 rule set."
+    },
+    {
+      "command": "Actual Mac in-app browser: exclude third pump, re-review Complete coverage, save, reload, export",
+      "outcome": "pass",
+      "expected": "2 pumps + 1 AHU, complete total 3, three immutable generations",
+      "evidence": ".heleos/equipment-count-2026-09-16/mac-browser-result.json",
+      "limitation": "Synthetic source fixture exercises software; no automatic recognition or representative original project qualification."
+    }
+  ],
+  "changed_payload": [
+    {
+      "path": "apps/drawing-workspace/equipment.js",
+      "sha256": "cd4ebfb39334db6ac8b8d36bd9972fb4a9d819b6e6ce77a2b400cf39eddb6202"
+    },
+    {
+      "path": "apps/drawing-workspace/equipment_counts.js",
+      "sha256": "0202bca7b4ab5a7fe22ebc6c0e838cd0826e3aabbec24ad6fe90f2af15de27b0"
+    },
+    {
+      "path": "apps/drawing-workspace/index.html",
+      "sha256": "0f4fbde4820cea2ada1db0ecbafd803d489d72ec5fbc26517c4413c979f86660"
+    },
+    {
+      "path": "apps/drawing-workspace/workflow.js",
+      "sha256": "8eb2e33a72b127b57506f07743fb911d4423e8ff12b65edb0f9c324678c19d4e"
+    },
+    {
+      "path": "scripts/drawing-workspace.py",
+      "sha256": "ad60ed9d77cddc66107c7df19f46a358ad89b7c2ce5eb847143febbd1a57f50b"
+    },
+    {
+      "path": "scripts/equipment_count_rules.py",
+      "sha256": "c7640e217dcbfdfceff048f7bcfb7bab5e097970055cf12f81b41139405abb48"
+    },
+    {
+      "path": "scripts/equipment_calculation.py",
+      "sha256": "d9d237eeb8155b3af607e31b0040a23150db1f85d70dd2bcb77258063a89e551"
+    },
+    {
+      "path": "scripts/project_equipment_takeoff.py",
+      "sha256": "531bb8006d5a0ebb3096173b3da95904cba5545592ab217e17254f0934a4569f"
+    },
+    {
+      "path": "scripts/takeoff_workbook.py",
+      "sha256": "288be02e6f195de16d3ff6da262836466cccafab69c77fe749c9025697b73c77"
+    },
+    {
+      "path": "scripts/takeoff_workflow.py",
+      "sha256": "05e854c1dd2a23ff6578f15e3c033a15a8ae587fb953533380af17d7b3507375"
+    },
+    {
+      "path": "scripts/workspace_package.py",
+      "sha256": "f6c19580eb6f7b3f89b6f5a7a41b0263930faab901a703a6339f6ba901c27dad"
+    },
+    {
+      "path": "tests/drawing-workspace/equipment_counts.test.js",
+      "sha256": "3ebeae1cacb57ba12c6532a0a6f14d30dab6f36e4fef417e8470d07bcb080ce1"
+    },
+    {
+      "path": "tests/drawing-workspace/test_equipment_calculation.py",
+      "sha256": "1b34308a88c4c68f5af95c6f2461a4401bb1bff9a48436e71ce214b13c98bac2"
+    },
+    {
+      "path": "tests/drawing-workspace/test_project_equipment_takeoff.py",
+      "sha256": "b9ff59aea2268d3a39ebc29c828bc422b973cb04709b4233f53a2f3add65ed2d"
+    },
+    {
+      "path": "tests/drawing-workspace/test_equipment_count_workflow.py",
+      "sha256": "81d04d321cd97b09252f5c380bc5f1045fc78a3be0286b340a7de6fe65f98a68"
+    },
+    {
+      "path": "tests/drawing-workspace/test_drawing_workspace.py",
+      "sha256": "cd6edc5ccb1b8465ebfe4ac802542747d6affb5a69dda7298dec9ff1c856bcbd"
+    },
+    {
+      "path": "tests/drawing-workspace/test_mechanical_scope_ui.js",
+      "sha256": "80879a8ae725f3fb66a08b818062b265eb08baf59bfb079ce3aee39f578a02ca"
+    },
+    {
+      "path": "tests/drawing-workspace/test_takeoff_workbook.py",
+      "sha256": "053de4a676becce128c71842fd4c935ce2b41dd220ca92738ce1f24fb9c4baea"
+    },
+    {
+      "path": "tests/drawing-workspace/test_takeoff_workflow.py",
+      "sha256": "1b2f70c174acc89de95c70c4d6f0e062b5f5d527049f97afc5a305eb65efd9c8"
+    },
+    {
+      "path": "tests/drawing-workspace/test_workspace_package.py",
+      "sha256": "9944918f30e9e31676690dd9f8aa4b6eadaaef40b2f287ed7bc5e15cb08a2565"
+    },
+    {
+      "path": "tests/fixtures/equipment-takeoff/connected-equipment-cases.json",
+      "sha256": "aab8be464018df6f319ce436795e53a3027019b28d175a51b74a2172ebe125c9"
+    },
+    {
+      "path": "docs/research/notebooklm/equipment-count-implementation-2026-09-16.json",
+      "sha256": "84f2cb1c2ae150603c61725b9b850bac734ee3a9166a2ae5adcb952d56312fc5"
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".heleos/equipment-count-2026-09-16/contract.md",
+      "sha256": "76c875c29c0505cafe2d3ba5a9d0a2f903ea8301cb3250093949d5480b230849"
+    },
+    {
+      "path": ".heleos/equipment-count-2026-09-16/api.md",
+      "sha256": "00f92c6780211d0be3e0b38d62671f697d833695ee90e9db374bd1a0138a7d02"
+    },
+    {
+      "path": ".heleos/equipment-count-2026-09-16/core-review.md",
+      "sha256": "1c5985f1982185b5e5ca79c1eb8d15f551dfa2c2f070376f5af5306fdcde3db2"
+    },
+    {
+      "path": ".heleos/equipment-count-2026-09-16/integration-review.md",
+      "sha256": "1636f933c379f334bd112aeef678bd2980cd3e902aa92b8727d9d747769f6baf"
+    },
+    {
+      "path": ".heleos/equipment-count-2026-09-16/regression-fixture-report.md",
+      "sha256": "623bc6ac882fa640eb0ef449a9fd25e4022b6ca67dfc7ab0a26f4abc74efe03d"
+    },
+    {
+      "path": ".heleos/equipment-count-2026-09-16/worker-terminals.json",
+      "sha256": "2cee9df60f899a6b37b44120d8a5933275c74da66e04b67c8565c1a409d538a3"
+    },
+    {
+      "path": ".heleos/equipment-count-2026-09-16/fixture-checks.log",
+      "sha256": "949e96b84130133f141e32a2acbcde1577a5c5189b1e2aa7f126bc6ee83fda70"
+    },
+    {
+      "path": ".heleos/equipment-count-2026-09-16/python-suite.log",
+      "sha256": "4ad11fd7b1d707f33f8fc83d3c8ba2b9e9a4633d9055b2a9dd5856b34f9be312"
+    },
+    {
+      "path": ".heleos/equipment-count-2026-09-16/all-ui-tests.log",
+      "sha256": "cc84cb790ba197f31796090e298fe6c1519ab3bdd2dd3a2bbd39bf24b277f2ca"
+    },
+    {
+      "path": ".heleos/equipment-count-2026-09-16/ui-checks.log",
+      "sha256": "ff8fb8bdf18a14dc0e21f7a09de258a4691d9d4b2f8394c5f7bbef33501f0fb8"
+    },
+    {
+      "path": ".heleos/equipment-count-2026-09-16/package-check.json",
+      "sha256": "bc60a33b8e98c40c39325c6aa6c1cbae4401d01fe228ed87c606990b2ff4749c"
+    },
+    {
+      "path": ".heleos/equipment-count-2026-09-16/browser-fixture.py",
+      "sha256": "3783a8b1934a185b0a3f3102af13cebfd73aaa44e74181e050437801545a8329"
+    },
+    {
+      "path": ".heleos/equipment-count-2026-09-16/mac-browser-result.json",
+      "sha256": "901a6b96adf06b82c76013670d981278622d9de27340e35c023daccb32915407"
+    },
+    {
+      "path": ".heleos/equipment-count-2026-09-16/ui-worker-terminal.json",
+      "sha256": "ed3dc3d40f8a236afa13ea9f9dbd74a3817179348b9be5f7f25bf09346e9bd1c"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": ".heleos/equipment-count-2026-09-16/mac-browser-export.zip",
+      "sha256": "41eea9fbad31c18ff6ee4424d1ea2932d299110fe4ddc7bea89f391d73b0df6e",
+      "committed": false
+    },
+    {
+      "path": ".heleos/equipment-count-2026-09-16/package.zip",
+      "sha256": "dfac7665e26a66d9fcc33f17ed336b2c00d1713fca4e2abc4b9b8d53543031fd",
+      "committed": false
+    },
+    {
+      "path": ".heleos/equipment-count-2026-09-16/package/package.json",
+      "sha256": "8336e229a29f85a5f6bba5f05bf8be00ce208ad65cffde3105be51e68c52299a",
+      "committed": false
+    }
+  ],
+  "preserved_unrelated_tracked_changes": [
+    {
+      "path": "SKILLS.md",
+      "sha256": "939b8aac16ee926c9775efb2465ae3178d9f5365dc5cd2fe4df3aa46a52d017f"
+    },
+    {
+      "path": "docs/operations/drawing-workspace.md",
+      "sha256": "53ab3b9a296cafd001b8f07e91311ae4b4af05a913fa34111de2109fe28b38cd"
+    }
+  ],
+  "local_fixture_correction": {
+    "path": "tests/drawing-workspace/test_document_layout_geometry.py",
+    "preexisting_untracked": true,
+    "included_in_completion_commit": false,
+    "before_sha256": "1ee900b4b065861c9018066c1f48a3a65ac78a8d732146ac3364b8706383eba2",
+    "after_sha256": "98be7e0a64306fea7508e7e75ac0b9c17740bf46fcc83ce24fb527f2770fd9a0",
+    "patch_record": ".heleos/equipment-count-2026-09-16/regression-fixture-report.md"
+  },
+  "limits": [
+    "Automatic physical equipment recognition remains unqualified; reviewed source regions exercise the accepted path.",
+    "Representative Mac equipment/project acceptance remains outstanding.",
+    "Shared software closes no CSI section or taxonomy.",
+    "Consolidated evidence PDF and later native Windows delivery remain outstanding.",
+    "Cross-category ownership requires explicit common producer identities; no fuzzy geometry deduplication.",
+    "Original attribute text and units are retained; dimensional normalization is separate work."
+  ],
+  "process_state": "All equipment writers, reviewers, test runs, package build and browser fixture terminated; no running implementation process. Initial unsupported hook-audit worker failed before execution; read-only fallback finished.",
+  "next_task": {
+    "id": "EVIDENCE-PDF-1",
+    "action": "Freeze fixed specimen rows, source revision/page/region destinations and unknown/stale presentation; implement consolidated PDF from accepted producers and independently inspect text, links and rendered Mac pages.",
+    "depends_on": "Accepted duct, air-device and equipment result/export interfaces; no new recognition prerequisite.",
+    "independent_work": "Selected CSI section DEFINE contracts and behavior work with actual required inputs. No completed duct/air/equipment replay."
+  },
+  "continuity_guard_audit": {
+    "installed": false,
+    "finding": "No configured core.hooksPath or active repository hook; AGENTS completion/status instruction is not enforced. active-build-status.py checks committed authority and cannot be wired directly into pre-commit because it rejects dirty status.",
+    "recommendation": "One read-only staged checkpoint validator, reused in CI, for status/receipt/task/outcome/evidence/hash/next-action consistency. Validate staged or committed files, not untracked working-tree existence. Do not auto-rewrite status, launch agents or rerun completed work.",
+    "limitation": "Structural checks reduce omissions; they do not prove mechanical truth or narrative completeness. Recommendation recorded, no hook/automation installed."
+  }
+}

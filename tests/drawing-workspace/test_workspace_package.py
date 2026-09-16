@@ -59,6 +59,12 @@ class WorkspacePackageTests(unittest.TestCase):
         self.mapping.update({"scripts/workspace_package.py": "scripts/workspace_package.py",
             "launch.py": "scripts/launch-drawing-workspace.py",
             "README.txt": "apps/drawing-workspace/package-readme.txt"})
+        self.mapping.update({name: name for name in (
+            "apps/drawing-workspace/equipment_counts.js", "scripts/equipment_count_rules.py",
+            "scripts/equipment_calculation.py", "scripts/project_equipment_takeoff.py",
+            "docs/superpowers/specs/2026-09-16-equipment-counting-rules.md",
+            "tests/fixtures/equipment-takeoff/2026-09-16-rule-examples.json",
+            "tests/fixtures/equipment-takeoff/2026-09-16-owner-decision.json")})
         self.expected = {}
         for destination, origin in self.mapping.items():
             raw = ("Original synthetic payload: " + origin + "\n").encode()
@@ -77,7 +83,7 @@ class WorkspacePackageTests(unittest.TestCase):
         secret.write_bytes(b"Do not package project data")
         output, manifest = self.build()
         self.assertEqual(manifest["entrypoint"], "scripts/drawing-workspace.py")
-        self.assertEqual(len(manifest["files"]), 76)
+        self.assertEqual(len(manifest["files"]), 83)
         self.assertEqual({item["path"] for item in manifest["files"]}, set(self.expected))
         self.assertIn("tests/fixtures/duct-takeoff/2026-09-14-owner-decision.json", self.expected)
         for item in manifest["files"]:

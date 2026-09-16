@@ -87,7 +87,7 @@ class ProjectionTests(unittest.TestCase):
 
     def test_no_calculation_is_unavailable_not_zero(self):
         rows=workbook.workbook_sheets({'project':{'name':'New project'}})[0]['rows'][5:]
-        self.assertEqual([value(r[3]) for r in rows],['NOT AVAILABLE']*3)
+        self.assertEqual([value(r[3]) for r in rows],['NOT AVAILABLE']*4)
 
 
 class ConnectedWorkbookTests(air_fixtures.AirDeviceWorkflowTests):

@@ -66,6 +66,7 @@ async function fixture(view = fixtureView(), response = null) {
     querySelectorAll: () => [] };
   const window = { HeleosDucts: require("../../apps/drawing-workspace/ducts.js"),
     HeleosAirDevices: require("../../apps/drawing-workspace/air_devices.js"),
+    HeleosEquipmentCounts: require("../../apps/drawing-workspace/equipment_counts.js"),
     addEventListener(name, listener) { listeners.set(name, listener); },
     dispatchEvent(event) { events.push(event); listeners.get(event.type)?.(event); } };
   vm.runInNewContext(code, { window, document, location: { pathname: "/mechanical-scope-fixture/" },

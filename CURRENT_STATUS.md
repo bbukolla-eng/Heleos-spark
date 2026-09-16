@@ -15,24 +15,50 @@ only the selected card and required contract subset. The old agency-guide
 organizing format and its 56 active cards have been removed. It is not the live
 scope or a second roadmap.
 
-**Primary product task: EQUIPMENT-COUNT-1.** Implement the already approved
-physical-equipment workflow under E01–E12 and EC01–EC20, with physical-instance,
-package/procurement and installation quantities, known-plus-unknown results,
-correction/recalculation, reopening/history and source-linked Mac exports.
+**Primary product task: EVIDENCE-PDF-1.** Deliver a consolidated, source-linked
+evidence PDF for the already supported duct, air-device and equipment results.
 
-**Next executable action:** bind the [approved equipment cases](tests/fixtures/equipment-takeoff/2026-09-16-owner-decision.json)
-and [verified findings](docs/research/notebooklm/equipment-counting-findings-2026-09-16.json)
-to current interfaces, sole-writer code/test paths and the connected
-correction/reopen/export expectations. Map supported outcomes to their exact CSI
-scope without inventing an agency-to-CSI equivalence. Then implement the bounded
-connected capability. This is ordinary implementation preparation; the approved
-rules do not require another approval. Equipment is shared support, not the full
-Division 23 scope or a prerequisite for every section.
+**Next executable action:** freeze the PDF contract and literal expected specimen
+rows from accepted producers: separate quantity channels, known/unknown and stale
+states, source revision/page/region destinations, correction history and project
+scope limits. Reuse retained verified findings, then implement the PDF export and
+independently inspect its text, links and rendered pages on Mac. The finish line
+is a reproducible export matching those fixed cases and independent review; new
+mechanical recognition or complete section acceptance is not its prerequisite.
+Record the bounded contract in the task ledger before dependent implementation.
+
+**Completed — EQUIPMENT-COUNT-1-SOFTWARE:** approved E01–E12 / EC01–EC20 now drive
+source-bound physical counts, separate package/procurement/installation channels,
+known-plus-unknown results, corrections, reopening/history and CSV/JSON/Excel.
+The [frozen contract](.heleos/equipment-count-2026-09-16/contract.md),
+[API](.heleos/equipment-count-2026-09-16/api.md) and
+[completion record](docs/operations/equipment-count-2026-09-16.json) bind EQ01–EQ07,
+exact candidate identities, independent reviews and check results. Accepted local
+software; integrated by the completion commit containing this status, based on
+`05c55645fdf01a3238c13097c2f100dfa653799a` in the main checkout above.
+
+Verification: all 20 approved cases, adapter and connected workflow tests passed;
+51 JavaScript checks passed; the Mac browser correction/reopen case changed three
+pumps plus one AHU to two pumps plus one AHU while preserving history. The actual
+83-file portable package built and loaded its pinned equipment rules. The broad
+Python run had 1,250 passes and 10 failures from two outdated fixture modules;
+those fixtures were repaired and all 26 affected tests then passed independently.
+The failed run is retained; no all-green 1,260-test rerun is claimed. The pre-existing
+untracked geometry test's one-line correction remains local, with its patch and
+before/after hashes recorded. Unrelated existing changes remain preserved.
+
+The equipment parent remains open for qualified automatic physical recognition
+and representative-project proof. This accepted software admits explicitly
+reviewed physical regions; draft tags do not establish physical quantities. It
+closes no CSI section. All 432 CSI cards and their finite task/acceptance frames
+remain the Division 23 lineup, with agency guides used only as supporting sources.
+Use actual dependencies to advance independent section definitions and behavior;
+do not reopen the completed equipment, duct or air-device software without a
+recorded relevant change or defect.
 
 | Independent work | Finite next deliverable and actual prerequisite |
 | --- | --- |
 | Selected CSI section DEFINE | Verified full mechanical taxonomy and independent expected cases for that section's selected behavior; use its linked card and applicable source bodies. Catalogue titles alone do not satisfy mechanical definition. |
-| EVIDENCE-PDF-1 | Freeze specimen results/source destinations and unknown/stale presentation; connect the consolidated evidence PDF using accepted supported outputs. |
 | CSI-CATALOGUE-2026-RECONCILE | Obtain an authorized complete newer-edition catalogue and record exact additions, removals and hierarchy changes against 2016. This blocks a current-edition completeness claim, not work under verified scope. |
 
 **NotebookLM entrypoint:** [CSI Division 23 notebook](https://notebooklm.google.com/notebook/53cebee4-b959-406d-930c-fc697a3d9e61),
@@ -45,7 +71,7 @@ identity or product coverage. All previous reference source IDs remain intact.
 experiment and frozen metrics after eight terminal runs; AC01 found 0 of 3
 physical symbols. Its accepted software child stays closed. Claude's fresh
 contained request failed with expired OAuth even though the CLI reported logged
-in; the migration validator used the authorized Codex fallback. Do not repeat
+in; the migration validator and equipment assignment used the authorized Codex fallback. Do not repeat
 that provider request without a changed usable login state.
 
 A missing prerequisite blocks only its dependent behavior. Duct/air-device
@@ -89,7 +115,7 @@ and the [section work breakdown](docs/plans/division-23-section-work-breakdown.m
 | Source and schedule review | Source-linked extraction, correspondence, decisions/history, section and requirement review | Full section taxonomies and broader supported types |
 | Duct | Approved D01–D10 connected calculation/correction and evidence | Recognition/representative scope; no repeated refinements without a recorded defect |
 | Air-device software | Approved A01–A12 calculation, producer transport, review/correction/reopen/history and source exports | Recognition child parked; software acceptance is preserved |
-| Equipment | E01–E12/EC01–EC20 approved; draft tag review exists | Primary connected physical counting task above |
+| Equipment software | E01–E12/EC01–EC20 connected counts, separate quantity channels, correction/reopen/history and CSV/JSON/Excel independently verified on Mac | Automatic physical recognition, representative qualification and full CSI section bindings remain open |
 | Estimator output | Source-linked Excel/formulas with supported result projection and local package checks | Consolidated evidence PDF, desktop spreadsheet/representative estimator proof |
 | Remaining Division 23 | Every CSI baseline node has a linked task and acceptance card | Every unfinished required taxonomy and connected behavior stays open |
 | Platform/product | Mac implementation and local verification; portable shared code | Later WINDOWS-DELIVERY-1, representative product and final owner release acceptance |
@@ -101,6 +127,15 @@ preserves original receipts and adds no new product acceptance. Complete section
 and Mac/Windows product acceptance remain outstanding.
 
 ## Latest checkpoint and continuity
+
+**EQUIPMENT-COUNT-1-SOFTWARE**, base
+`05c55645fdf01a3238c13097c2f100dfa653799a`: accepted connected software, with the
+[completion record](docs/operations/equipment-count-2026-09-16.json) preserving
+review dispositions, source-research reuse, browser/export/package evidence,
+fixture repairs, verification limits and terminal worker/process states. Codex
+reviewed and integrated the candidate; no worker committed or submitted private
+data externally. The next task is EVIDENCE-PDF-1 above. The completed CSI migration
+below remains scope authority, not a task to replay.
 
 **CSI23-HIERARCHY-MIGRATION-1**, base
 `1adf57af329c3d228db83703b75638fcba39ef18`, main checkout above:
@@ -125,8 +160,8 @@ Current-edition reconciliation, full mechanical definitions/implementations,
 representative acceptance and later Windows delivery remain outstanding. The
 catalogue reference is admitted for this internal planning/research; commercial
 redistribution permission is not established. The next product action is the
-approved equipment implementation packet above; independent CSI definitions and
-evidence-PDF work may advance by actual required inputs.
+evidence-PDF contract and implementation above; independent CSI definitions and
+behaviors may advance by actual required inputs.
 
 No goal, automation or hook was created or changed. The repository goal was
 amended; no running app goal is claimed. `active-build-status.py` validates

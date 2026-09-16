@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "task": "EQUIPMENT-COUNT-1-SOFTWARE",
+  "state": "accepted_local_software",
+  "record": "docs/operations/equipment-count-2026-09-16.json",
+  "sha256": "65af2bf5c37cf36bc9e94e947fd5763ae4af2507d1eaf0e1484d1c6ece0182b4",
+  "next_task": "EVIDENCE-PDF-1"
+}

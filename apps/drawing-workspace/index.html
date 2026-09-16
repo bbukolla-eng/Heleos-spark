@@ -13,6 +13,7 @@
     <script src="revision_checks_editor.js" defer></script>
     <script src="ducts.js" defer></script>
     <script src="air_devices.js" defer></script>
+    <script src="equipment_counts.js" defer></script>
     <script src="workflow.js" defer></script>
   </head>
   <body>
@@ -114,8 +115,8 @@
         <p id="workflow-error" class="equipment-error" role="alert" hidden></p>
         <div id="workflow-content"></div>
         <section id="workflow-equipment-tools" hidden aria-labelledby="equipment-heading">
-        <div class="takeoff-heading"><p class="eyebrow">Mechanical takeoff</p><h2 id="equipment-heading">Equipment register</h2><span class="draft-label">Working draft</span></div>
-        <p class="takeoff-intro">Find equipment tags on plan and schedule pages. Compare them, inspect the source, and review the count.</p>
+        <div class="takeoff-heading"><p class="eyebrow">Mechanical takeoff</p><h2 id="equipment-heading">Draft equipment tag review</h2><span class="draft-label">Supporting references</span></div>
+        <p class="takeoff-intro">Find equipment tags on plan and schedule pages. Compare their references and inspect the source.</p>
         <div class="takeoff-source-actions">
           <button class="button button-outline" id="equipment-add-plan" type="button" disabled>Add plan page</button>
           <button class="button button-outline" id="equipment-add-schedule" type="button" disabled>Add schedule page</button>
@@ -133,7 +134,7 @@
         </div>
         <section id="equipment-results" hidden aria-label="Equipment extraction results">
           <div class="equipment-result-heading"><h3 id="equipment-summary"></h3><a id="equipment-export" class="button button-outline" download="heleos-equipment-review.csv">Export CSV</a></div>
-          <p class="section-hint">A tag on a page is a finding. Include one plan occurrence only after checking that it represents the physical equipment. Unknown counts remain unknown.</p>
+          <p class="section-hint">These records review tag references. Use physical equipment review above to establish assemblies, package contents and quantities.</p>
           <label class="field-label" for="equipment-reviewer">Reviewer</label>
           <input id="equipment-reviewer" maxlength="100" placeholder="Your name" autocomplete="name">
           <div id="equipment-warnings"></div>

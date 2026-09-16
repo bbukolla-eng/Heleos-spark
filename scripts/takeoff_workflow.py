@@ -65,6 +65,7 @@ def _air_module(name):
 
 
 air_takeoff = _air_module("project_air_device_takeoff")
+equipment_counts = _air_module("project_equipment_takeoff")
 air_source = _air_module("air_device_source_producer")
 air_vision = _air_module("local_air_device_vision")
 sheet_geometry = _sheet_module("sheet_geometry")
@@ -81,7 +82,7 @@ mechanical_scope = _sheet_module("mechanical_scope")
 STAGES = ("setup", "documents", "equipment", "measurements", "takeoff", "exceptions", "export")
 TITLES = ("Project setup", "Document review", "Equipment", "Measurements",
           "Mechanical takeoff", "Unresolved items", "Export")
-SCOPES = ("ductwork", "air_devices", "piping", "fittings", "insulation", "controls",
+SCOPES = ("ductwork", "air_devices", "equipment", "piping", "fittings", "insulation", "controls",
           "accessories", "demolition")
 ROLES = ("plan", "schedule", "specification", "detail", "riser", "legend", "addendum", "excluded")
 CLASSES = ("drawn", "document_required", "derived", "allowance", "unmeasurable")
@@ -233,6 +234,7 @@ class TakeoffWorkflow:
         schedule_reconciliation.initialize(self.data)
         duct_takeoff.initialize(self.data)
         air_takeoff.initialize(self.data)
+        equipment_counts.initialize(self.data)
         self.model_baseline = model_baseline.BaselineStore(workspace.documents.knowledge_store)
         configured_vision = getattr(workspace.equipment, "vision", None)
         adapter = (mechanical_vision.MechanicalVision(configured_vision,
@@ -337,18 +339,23 @@ class TakeoffWorkflow:
             run["stale"] = run["stale"] or bool(run["coordinate_issues"])
         return run
 
-    def _scope_fingerprint(self, data, scope, duct=None, air=None):
+    def _scope_fingerprint(self, data, scope, duct=None, air=None, equipment=None):
         if scope == "ductwork" and duct is None:
             _, sheets = self._inventory()
             duct = duct_takeoff.view(self.workspace, data, sheets)
         if scope == "air_devices" and air is None:
             _, sheets = self._inventory()
             air = air_takeoff.view(self.workspace, data, sheets)
+        if scope == "equipment" and equipment is None:
+            _, sheets = self._inventory()
+            equipment = equipment_counts.view(self.workspace, data, sheets)
         basis = {"items": [v for v in data["items"] if v["scope"] == scope],
                        "measurements": [v for v in data["measurements"] if v["scope"] == scope],
                        "duct_state": duct["state_fingerprint"] if scope == "ductwork" and duct else None}
         if scope == "air_devices":
             basis["air_device_state"] = air["fingerprint"] if air else None
+        if scope == "equipment":
+            basis["equipment_count_state"] = equipment["fingerprint"] if equipment else None
         return digest(basis)
 
     @staticmethod
@@ -484,6 +491,7 @@ class TakeoffWorkflow:
         documents = self._documents(data, sheets)
         duct = duct_takeoff.view(self.workspace, data, sheets, documents)
         air = air_takeoff.view(self.workspace, data, sheets)
+        physical_equipment = equipment_counts.view(self.workspace, data, sheets)
         if run and run.get("document_run_id") and (not documents or documents.get("stale")):
             run = dict(run, stale=True)
         try:
@@ -508,10 +516,11 @@ class TakeoffWorkflow:
         inputs = {
             "setup": data["project"],
             "documents": [inventory, data["pages"], document_identity, data["requirement_reviews"]],
-            "equipment": [inventory, data["pages"], run_identity, document_identity, reconciliation["state_fingerprint"]],
-            "measurements": [inventory, data["calibrations"], data["measurements"], duct["state_fingerprint"]],
+            "equipment": [inventory, data["pages"], run_identity, document_identity, reconciliation["state_fingerprint"],
+                          physical_equipment["fingerprint"], data["project"]["scopes"], data["scope_reviews"].get("equipment")],
+            "measurements": [inventory, data["project"]["scopes"], data["calibrations"], data["measurements"], duct["state_fingerprint"]],
             "takeoff": [data["project"]["scopes"], data["items"], data["scope_reviews"], data["measurements"],
-                        duct["state_fingerprint"], air["fingerprint"],
+                        duct["state_fingerprint"], air["fingerprint"], physical_equipment["fingerprint"],
                         applicability["state_fingerprint"] if applicability else None,
                         admission["state_fingerprint"] if admission else None],
         }
@@ -522,6 +531,12 @@ class TakeoffWorkflow:
         problems = [problem for problem in problems if problem["id"] not in resolved_reading]
         problems.extend(schedule_reconciliation.issues(reconciliation))
         problems.extend(duct_takeoff.issues(duct))
+        if "equipment" in data["project"]["scopes"]:
+            for index, issue in enumerate(physical_equipment["issues"]):
+                problems.append({"id": "equipment-count:" + str(index),
+                    "message": issue if isinstance(issue, str) else issue.get("message", issue.get("code", "Equipment review required")),
+                    "source": issue.get("source") if isinstance(issue, dict) else None,
+                    "state": "open", "automatic": True})
         if "air_devices" in data["project"]["scopes"]:
             for index, issue in enumerate(air["issues"]):
                 problems.append({"id": "air-device:" + str(index),
@@ -557,7 +572,7 @@ class TakeoffWorkflow:
         for scope in active_scopes:
             review = data["scope_reviews"].get(scope)
             scope_status[scope] = {"count": sum(v["scope"] == scope for v in data["items"]),
-                                   "reviewed": bool(review and review["fingerprint"] == self._scope_fingerprint(data, scope, duct, air)),
+                                   "reviewed": bool(review and review["fingerprint"] == self._scope_fingerprint(data, scope, duct, air, physical_equipment)),
                                    "disposition": review["disposition"] if review else None}
             if scope == "ductwork" and duct["available"]:
                 scope_status[scope]["count"] += len(duct["segments"])
@@ -570,17 +585,23 @@ class TakeoffWorkflow:
                 scope_status[scope]["reviewed"] = bool(scope_status[scope]["reviewed"] and
                     (excluded_empty or (air["available"] and not air["stale"] and
                      (air.get("result") or {}).get("complete"))))
+            if scope == "equipment":
+                scope_status[scope]["count"] = len((physical_equipment.get("result") or {}).get("rows", []))
+                excluded_empty = bool(review and review["disposition"] == "not_applicable" and
+                    not physical_equipment["available"] and not any(v["scope"] == scope for v in data["items"]))
+                scope_status[scope]["reviewed"] = bool(scope_status[scope]["reviewed"] and
+                    (excluded_empty or (physical_equipment["available"] and not physical_equipment["stale"] and
+                     (physical_equipment.get("result") or {}).get("complete"))))
         ready = {
             "setup": bool(data["project"]["name"]),
             "documents": bool(sheets) and all(k in data["pages"] for k in sheets) and
                 bool(documents and documents["state"] == "completed" and not documents["stale"] and
                      all(p["state"] == "read" for p in documents["pages"])),
-            "equipment": bool(run and not run.get("stale") and run["state"] == "completed" and rows and
-                              (not reconciliation["available"] or
-                               (not reconciliation["needs_refresh"] and
-                                all(group["validity"] == "current" and group["status"] != "blocked" for group in reconciliation["groups"]))) and
-                              all(not v["pending"] and not v["issues"] and v["reviewed_quantity"] is not None for v in rows)),
-            "measurements": (any(v["validity"] == "current" for v in data["measurements"]) or
+            "equipment": ("equipment" not in active_scopes or
+                          bool(scope_status["equipment"]["reviewed"])),
+            "measurements": (bool(active_scopes) and set(active_scopes) <= {"equipment", "air_devices"} and
+                             not data["measurements"] and not duct["segments"]) or
+                            (any(v["validity"] == "current" for v in data["measurements"]) or
                              any(v["status"] == "current" for v in duct["segments"])) and
                             all(v["validity"] != "blocked" for v in data["measurements"]) and
                             all(v["status"] not in ("stale", "unresolved") for v in duct["segments"]),
@@ -588,8 +609,9 @@ class TakeoffWorkflow:
             "exceptions": not any(v["state"] == "open" for v in problems),
         }
         counts = {"setup": int(bool(data["project"]["name"])), "documents": len(data["pages"]),
-                  "equipment": len(rows), "measurements": len(data["measurements"]) + len(duct["segments"]),
-                  "takeoff": len(data["items"]) + len(duct["segments"]) + len((air.get("result") or {}).get("rows", [])),
+                  "equipment": len((physical_equipment.get("result") or {}).get("rows", [])),
+                  "measurements": len(data["measurements"]) + len(duct["segments"]),
+                  "takeoff": len(data["items"]) + len(duct["segments"]) + len((air.get("result") or {}).get("rows", [])) + len((physical_equipment.get("result") or {}).get("rows", [])),
                   "exceptions": sum(v["state"] == "open" for v in problems)}
         for key, title in zip(STAGES[:-1], TITLES[:-1]):
             review = data["reviews"].get(key)
@@ -608,6 +630,7 @@ class TakeoffWorkflow:
                       duct_takeoff=duct,
                       duct_producer=self.workspace.duct_producer.view(),
                       air_device_takeoff=air,
+                      equipment_count_takeoff=physical_equipment,
                       air_device_producer=self.workspace.air_device_producer.view(),
                       rule_applicability=applicability,
                       rule_decision_evidence=decision_evidence,
@@ -679,7 +702,8 @@ class TakeoffWorkflow:
                 raise WorkflowError("invalid_scope", "Choose the project's units and mechanical scope.")
             if (any(v["scope"] not in scopes for v in data["items"] + data["measurements"]) or
                     (data["duct_generations"] and "ductwork" not in scopes) or
-                    (data.get("air_device_readings") and "air_devices" not in scopes)):
+                    (data.get("air_device_readings") and "air_devices" not in scopes) or
+                    (equipment_counts.view(self.workspace, data, sheets)["available"] and "equipment" not in scopes)):
                 raise WorkflowError("scope_has_records", "A scope with saved records must stay included.", 409)
             data["project"] = {"name": text(value["name"], 160), "location": text(value["location"], 200, False),
                                "units": value["units"], "scopes": scopes}
@@ -849,6 +873,11 @@ class TakeoffWorkflow:
         elif action.startswith("air_device_"):
             air_takeoff.apply(self.workspace, data, sheets, action, value, actor, reason)
             data["selected_stage"] = "takeoff"
+        elif action.startswith("equipment_count_"):
+            if "equipment" not in data["project"]["scopes"]:
+                raise WorkflowError("equipment_scope_excluded", "Include equipment in the project scope before reviewing physical assemblies.", 409)
+            equipment_counts.apply(self.workspace, data, sheets, action, value, actor, reason)
+            data["selected_stage"] = "equipment"
         elif action == "duct_find":
             exact("source")
             source, _, key = self._source(value["source"], sheets)
@@ -1036,6 +1065,15 @@ class TakeoffWorkflow:
             duct = duct_takeoff.view(self.workspace, data, sheets) if scope == "ductwork" else None
             duct_available = bool(duct and duct["available"])
             air = air_takeoff.view(self.workspace, data, sheets) if scope == "air_devices" else None
+            if scope == "equipment":
+                equipment = equipment_counts.view(self.workspace, data, sheets)
+                excluded_empty = value["disposition"] == "not_applicable" and not equipment["available"] and not items
+                if not excluded_empty and (value["disposition"] != "reviewed" or not equipment["available"] or
+                        equipment["stale"] or not (equipment.get("result") or {}).get("complete")):
+                    raise WorkflowError("scope_incomplete", "Finish physical equipment review and coverage before reviewing this scope.", 409)
+                data["scope_reviews"][scope] = {"disposition": value["disposition"], "reason": reason,
+                    "actor": actor, "fingerprint": self._scope_fingerprint(effective, scope, equipment=equipment)}
+                return
             if air is not None:
                 excluded_empty = (value["disposition"] == "not_applicable" and
                     not data.get("air_device_readings") and not air["available"] and not items)
@@ -1091,6 +1129,8 @@ class TakeoffWorkflow:
             duct_source_records = duct_takeoff.verify_export(self.workspace, self.data, sheets)
             air_files = (air_takeoff.export_files(self.workspace, self.data, sheets)
                          if self.data.get("air_device_readings") else {})
+            equipment_files = (equipment_counts.export_files(self.workspace, self.data, sheets)
+                               if view["equipment_count_takeoff"]["available"] else {})
             evaluation_sources = duct_evaluation.export_records(self, view["model_baseline"])
             all_duct_sources = {record["id"]: record for record in duct_source_records}
             for record in evaluation_sources:
@@ -1127,8 +1167,10 @@ class TakeoffWorkflow:
                 archive.writestr("README.txt", "HELEOS DRAFT TAKEOFF\nThis package contains the saved workflow, source references, operator measurements, mechanical records and unresolved work. It is not a bid or an approved estimate.\nIncomplete stages: " + ", ".join(v["title"] for v in view["stages"][:-1] if v["status"] != "reviewed") + "\n")
                 archive.writestr("workflow.json", packed(view))
                 archive.writestr("takeoff.xlsx", workbook)
-                archive.writestr("WORKBOOK.txt", "HELEOS DRAFT WORKBOOK\nOpen takeoff.xlsx for supported duct lengths and air-device counts, formula-linked subtotals, conditional complete totals, saved history and exact source references. UNKNOWN means unresolved, not zero. Other Division 23 quantities remain outstanding.\nThe workbook is a snapshot. Edits in Excel do not correct Heleos or update source evidence. Correct and review in Heleos, then regenerate this package. Live formulas support inspection; the deterministic application remains quantity authority.\nSources names JSON records in this extracted package. Complete original-source identities and retained evidence remain there. This is not a bid or approved estimate.\n")
+                archive.writestr("WORKBOOK.txt", "HELEOS DRAFT WORKBOOK\nOpen takeoff.xlsx for supported duct lengths, air-device counts and reviewed physical equipment counts, formula-linked subtotals, conditional complete totals, saved history and exact source references. UNKNOWN means unresolved, not zero. Other Division 23 quantities remain outstanding.\nThe workbook is a snapshot. Edits in Excel do not correct Heleos or update source evidence. Correct and review in Heleos, then regenerate this package. Live formulas support inspection; the deterministic application remains quantity authority.\nEquipment columns keep physical assemblies, components, purchase and installation quantities separate. Legacy equipment.csv is draft tag review only and is not physical quantity authority. Sources names JSON records in this extracted package. Complete original-source identities and retained evidence remain there. This is not a bid or approved estimate.\n")
                 for name, payload in air_files.items():
+                    archive.writestr(name, payload)
+                for name, payload in equipment_files.items():
                     archive.writestr(name, payload)
                 if view["duct_takeoff"]["available"]:
                     duct = view["duct_takeoff"]

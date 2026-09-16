@@ -26,6 +26,7 @@ SOURCE_FILES = (
     "apps/drawing-workspace/app.js",
     "apps/drawing-workspace/ducts.js",
     "apps/drawing-workspace/air_devices.js",
+    "apps/drawing-workspace/equipment_counts.js",
     "apps/drawing-workspace/arc_family_editor.js",
     "apps/drawing-workspace/revision_checks_editor.js",
     "apps/drawing-workspace/equipment.js",
@@ -54,6 +55,9 @@ SOURCE_FILES = (
     "scripts/duct_path_scoring.py",
     "scripts/duct_source_producer.py",
     "scripts/equipment_takeoff.py",
+    "scripts/equipment_count_rules.py",
+    "scripts/equipment_calculation.py",
+    "scripts/project_equipment_takeoff.py",
     "scripts/local_duct_vision.py",
     "scripts/local_duct_vision_v2.py",
     "scripts/local_duct_vision_v3.py",
@@ -96,6 +100,9 @@ SOURCE_FILES = (
     "tests/fixtures/air-device-takeoff/2026-09-15-owner-decision.json",
     "tests/fixtures/air-device-takeoff/2026-09-16-rule-binding.json",
     "tests/fixtures/air-device-takeoff/approved-rule-packet.md",
+    "docs/superpowers/specs/2026-09-16-equipment-counting-rules.md",
+    "tests/fixtures/equipment-takeoff/2026-09-16-rule-examples.json",
+    "tests/fixtures/equipment-takeoff/2026-09-16-owner-decision.json",
 )
 PAYLOAD_SOURCES = {path: path for path in SOURCE_FILES}
 PAYLOAD_SOURCES.update({
