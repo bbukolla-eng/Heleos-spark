@@ -614,6 +614,8 @@
       "sha256": "8bd1bf975100bbff4ff232ac3d6c48fd3aa14c82603c673326e7f99b386b4251"
     }
   ],
+  "delivery_contract_index": "docs/plans/division-23-task-contracts.json",
+  "delivery_master_plan": "docs/superpowers/plans/2026-09-16-division23-section-delivery.md",
   "sections": [
     {
       "id": "D23-UFGS-230130.41",
@@ -646,6 +648,8 @@
       "source_boundary": "Cleaning tasks can be inventoried from specifications before system extents are measured; scope and verification criteria require the actual guide and project adoption.",
       "work_profile": "service_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-230130-41",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-230130-41.md",
+      "delivery_task_ids": ["D23-UFGS-230130.41-DEFINE", "D23-UFGS-230130.41-RESULT", "D23-UFGS-230130.41-CONNECT", "D23-UFGS-230130.41-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-230130.41-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-230130-41/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-230130.41-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-230130-41/evidence-producer-contract.json","depends_on": ["D23-UFGS-230130.41-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -697,6 +701,8 @@
       "source_boundary": "Do not manufacture missing child section numbers from this umbrella title or count the same common-work item in every host section.",
       "work_profile": "common_requirements",
       "artifact_directory": "docs/engineering/division23/ufgs-230300",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-230300.md",
+      "delivery_task_ids": ["D23-UFGS-230300-DEFINE", "D23-UFGS-230300-RESULT", "D23-UFGS-230300-CONNECT", "D23-UFGS-230300-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-230300-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-230300/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-230300-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-230300/evidence-producer-contract.json","depends_on": ["D23-UFGS-230300-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -748,6 +754,8 @@
       "source_boundary": "Identify which piping systems are covered and which are delegated; shared pipe capabilities are only reusable implementations.",
       "work_profile": "piping_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-230515",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-230515.md",
+      "delivery_task_ids": ["D23-UFGS-230515-DEFINE", "D23-UFGS-230515-RESULT", "D23-UFGS-230515-CONNECT", "D23-UFGS-230515-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-230515-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-230515/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-230515-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-230515/evidence-producer-contract.json","depends_on": ["D23-UFGS-230515-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -799,6 +807,8 @@
       "source_boundary": "No default brace spacing or automatically derived quantity without an approved project-specific basis.",
       "work_profile": "common_requirements",
       "artifact_directory": "docs/engineering/division23/ufgs-230548-19",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-230548-19.md",
+      "delivery_task_ids": ["D23-UFGS-230548.19-DEFINE", "D23-UFGS-230548.19-RESULT", "D23-UFGS-230548.19-CONNECT", "D23-UFGS-230548.19-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-230548.19-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-230548-19/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-230548.19-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-230548-19/evidence-producer-contract.json","depends_on": ["D23-UFGS-230548.19-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -851,6 +861,8 @@
       "source_boundary": "Service records can precede physical quantities; do not treat every test point or prerequisite as a separately purchased component.",
       "work_profile": "service_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-230593",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-230593.md",
+      "delivery_task_ids": ["D23-UFGS-230593-DEFINE", "D23-UFGS-230593-RESULT", "D23-UFGS-230593-CONNECT", "D23-UFGS-230593-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-230593-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-230593/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-230593-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-230593/evidence-producer-contract.json","depends_on": ["D23-UFGS-230593-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -903,6 +915,8 @@
       "source_boundary": "Preserve factory versus field insulation and optional timing clauses. Host quantity gaps block derived amounts only.",
       "work_profile": "host_requirement_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-230700",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-230700.md",
+      "delivery_task_ids": ["D23-UFGS-230700-DEFINE", "D23-UFGS-230700-RESULT", "D23-UFGS-230700-CONNECT", "D23-UFGS-230700-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-230700-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-230700/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-230700-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-230700/evidence-producer-contract.json","depends_on": ["D23-UFGS-230700-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -958,6 +972,8 @@
       "source_boundary": "The bracketed plumbing scope is an unresolved guide choice until adopted; system participation is not a material count.",
       "work_profile": "service_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-230800",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-230800.md",
+      "delivery_task_ids": ["D23-UFGS-230800-DEFINE", "D23-UFGS-230800-RESULT", "D23-UFGS-230800-CONNECT", "D23-UFGS-230800-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-230800-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-230800/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-230800-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-230800/evidence-producer-contract.json","depends_on": ["D23-UFGS-230800-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1009,6 +1025,8 @@
       "source_boundary": "Retain the entire UFGS identifier and industrial-test boundary; do not merge automatically with general TAB.",
       "work_profile": "service_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-230801-00-20",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-230801-00-20.md",
+      "delivery_task_ids": ["D23-UFGS-230801.00-20-DEFINE", "D23-UFGS-230801.00-20-RESULT", "D23-UFGS-230801.00-20-CONNECT", "D23-UFGS-230801.00-20-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-230801.00-20-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-230801-00-20/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-230801.00-20-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-230801-00-20/evidence-producer-contract.json","depends_on": ["D23-UFGS-230801.00-20-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1060,6 +1078,8 @@
       "source_boundary": "Software points, devices, installation and supply are separate records; source-defined interfaces govern links.",
       "work_profile": "control_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-230900",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-230900.md",
+      "delivery_task_ids": ["D23-UFGS-230900-DEFINE", "D23-UFGS-230900-RESULT", "D23-UFGS-230900-CONNECT", "D23-UFGS-230900-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-230900-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-230900/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-230900-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-230900/evidence-producer-contract.json","depends_on": ["D23-UFGS-230900-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1112,6 +1132,8 @@
       "source_boundary": "The guide body must establish actual device variants and which components belong to packages.",
       "work_profile": "control_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-230913",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-230913.md",
+      "delivery_task_ids": ["D23-UFGS-230913-DEFINE", "D23-UFGS-230913-RESULT", "D23-UFGS-230913-CONNECT", "D23-UFGS-230913-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-230913-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-230913/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-230913-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-230913/evidence-producer-contract.json","depends_on": ["D23-UFGS-230913-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1164,6 +1186,8 @@
       "source_boundary": "Protocol-specific support requires this guide's taxonomy and fixtures; BACnet coverage does not close it.",
       "work_profile": "control_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-230923-01",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-230923-01.md",
+      "delivery_task_ids": ["D23-UFGS-230923.01-DEFINE", "D23-UFGS-230923.01-RESULT", "D23-UFGS-230923.01-CONNECT", "D23-UFGS-230923.01-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-230923.01-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-230923-01/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-230923.01-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-230923-01/evidence-producer-contract.json","depends_on": ["D23-UFGS-230923.01-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1216,6 +1240,8 @@
       "source_boundary": "Protocol-specific support requires this guide's taxonomy and fixtures; LONWORKS coverage does not close it.",
       "work_profile": "control_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-230923-02",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-230923-02.md",
+      "delivery_task_ids": ["D23-UFGS-230923.02-DEFINE", "D23-UFGS-230923.02-RESULT", "D23-UFGS-230923.02-CONNECT", "D23-UFGS-230923.02-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-230923.02-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-230923-02/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-230923.02-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-230923-02/evidence-producer-contract.json","depends_on": ["D23-UFGS-230923.02-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1267,6 +1293,8 @@
       "source_boundary": "Do not infer device quantities from room counts or collapse agency suffixes.",
       "work_profile": "control_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-230953-00-20",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-230953-00-20.md",
+      "delivery_task_ids": ["D23-UFGS-230953.00-20-DEFINE", "D23-UFGS-230953.00-20-RESULT", "D23-UFGS-230953.00-20-CONNECT", "D23-UFGS-230953.00-20-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-230953.00-20-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-230953-00-20/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-230953.00-20-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-230953-00-20/evidence-producer-contract.json","depends_on": ["D23-UFGS-230953.00-20-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1318,6 +1346,8 @@
       "source_boundary": "A sequence step is a requirement record; it is not automatically a physical device.",
       "work_profile": "control_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-230993",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-230993.md",
+      "delivery_task_ids": ["D23-UFGS-230993-DEFINE", "D23-UFGS-230993-RESULT", "D23-UFGS-230993-CONNECT", "D23-UFGS-230993-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-230993-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-230993/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-230993-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-230993/evidence-producer-contract.json","depends_on": ["D23-UFGS-230993-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1369,6 +1399,8 @@
       "source_boundary": "Gas-specific scope and rules must be sourced; hydronic approval does not authorize fuel-gas rules.",
       "work_profile": "piping_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-231120",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-231120.md",
+      "delivery_task_ids": ["D23-UFGS-231120-DEFINE", "D23-UFGS-231120-RESULT", "D23-UFGS-231120-CONNECT", "D23-UFGS-231120-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-231120-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-231120/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-231120-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-231120/evidence-producer-contract.json","depends_on": ["D23-UFGS-231120-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1421,6 +1453,8 @@
       "source_boundary": "Keep this UFGS guide separate from the VA 23 21 13 hydronic guide and from medium/high-temperature systems.",
       "work_profile": "piping_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-232113-00-20",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-232113-00-20.md",
+      "delivery_task_ids": ["D23-UFGS-232113.00-20-DEFINE", "D23-UFGS-232113.00-20-RESULT", "D23-UFGS-232113.00-20-CONNECT", "D23-UFGS-232113.00-20-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-232113.00-20-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-232113-00-20/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-232113.00-20-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-232113-00-20/evidence-producer-contract.json","depends_on": ["D23-UFGS-232113.00-20-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1473,6 +1507,8 @@
       "source_boundary": "Preserve [HIGH][MEDIUM] alternatives until project adoption; neither choice is universal.",
       "work_profile": "piping_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-232113-23-20",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-232113-23-20.md",
+      "delivery_task_ids": ["D23-UFGS-232113.23-20-DEFINE", "D23-UFGS-232113.23-20-RESULT", "D23-UFGS-232113.23-20-CONNECT", "D23-UFGS-232113.23-20-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-232113.23-20-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-232113-23-20/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-232113.23-20-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-232113-23-20/evidence-producer-contract.json","depends_on": ["D23-UFGS-232113.23-20-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1524,6 +1560,8 @@
       "source_boundary": "Approved equipment rules may power counts, but this section's complete pump/assembly/service taxonomy still needs acceptance.",
       "work_profile": "equipment_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-232123",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-232123.md",
+      "delivery_task_ids": ["D23-UFGS-232123-DEFINE", "D23-UFGS-232123-RESULT", "D23-UFGS-232123-CONNECT", "D23-UFGS-232123-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-232123-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-232123/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-232123-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-232123/evidence-producer-contract.json","depends_on": ["D23-UFGS-232123-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1575,6 +1613,8 @@
       "source_boundary": "Steam/condensate-specific decisions are required; a hydronic or equipment count does not cover the whole system.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-232226-00-20",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-232226-00-20.md",
+      "delivery_task_ids": ["D23-UFGS-232226.00-20-DEFINE", "D23-UFGS-232226.00-20-RESULT", "D23-UFGS-232226.00-20-CONNECT", "D23-UFGS-232226.00-20-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-232226.00-20-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-232226-00-20/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-232226.00-20-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-232226-00-20/evidence-producer-contract.json","depends_on": ["D23-UFGS-232226.00-20-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1626,6 +1666,8 @@
       "source_boundary": "Do not transfer hydronic size, material, joint or measurement rules without this section's source and approval.",
       "work_profile": "piping_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-232300",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-232300.md",
+      "delivery_task_ids": ["D23-UFGS-232300-DEFINE", "D23-UFGS-232300-RESULT", "D23-UFGS-232300-CONNECT", "D23-UFGS-232300-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-232300-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-232300/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-232300-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-232300/evidence-producer-contract.json","depends_on": ["D23-UFGS-232300-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1678,6 +1720,8 @@
       "source_boundary": "Record supplied-versus-installed treatment components and crosslinks to piping without duplicate purchases.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-232500",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-232500.md",
+      "delivery_task_ids": ["D23-UFGS-232500-DEFINE", "D23-UFGS-232500-RESULT", "D23-UFGS-232500-CONNECT", "D23-UFGS-232500-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-232500-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-232500/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-232500-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-232500/evidence-producer-contract.json","depends_on": ["D23-UFGS-232500-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1729,6 +1773,8 @@
       "source_boundary": "Reuse accepted duct/air-device work only for mapped taxons; recognition gaps do not block other sections.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-233000",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-233000.md",
+      "delivery_task_ids": ["D23-UFGS-233000-DEFINE", "D23-UFGS-233000-RESULT", "D23-UFGS-233000-CONNECT", "D23-UFGS-233000-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-233000-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-233000/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-233000-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-233000/evidence-producer-contract.json","depends_on": ["D23-UFGS-233000-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1781,6 +1827,8 @@
       "source_boundary": "Keep bracketed welding-fume scope conditional and verify specialist system variants from the guide body.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-233516",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-233516.md",
+      "delivery_task_ids": ["D23-UFGS-233516-DEFINE", "D23-UFGS-233516-RESULT", "D23-UFGS-233516-CONNECT", "D23-UFGS-233516-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-233516-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-233516/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-233516-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-233516/evidence-producer-contract.json","depends_on": ["D23-UFGS-233516-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1832,6 +1880,8 @@
       "source_boundary": "Do not infer specialist industrial coverage from general HVAC air distribution.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-233519-00-20",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-233519-00-20.md",
+      "delivery_task_ids": ["D23-UFGS-233519.00-20-DEFINE", "D23-UFGS-233519.00-20-RESULT", "D23-UFGS-233519.00-20-CONNECT", "D23-UFGS-233519.00-20-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-233519.00-20-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-233519-00-20/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-233519.00-20-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-233519-00-20/evidence-producer-contract.json","depends_on": ["D23-UFGS-233519.00-20-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1884,6 +1934,8 @@
       "source_boundary": "Specialist guide taxonomy and representative fixtures are required; a generic filter count is insufficient.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-234400-00-10",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-234400-00-10.md",
+      "delivery_task_ids": ["D23-UFGS-234400.00-10-DEFINE", "D23-UFGS-234400.00-10-RESULT", "D23-UFGS-234400.00-10-CONNECT", "D23-UFGS-234400.00-10-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-234400.00-10-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-234400-00-10/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-234400.00-10-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-234400-00-10/evidence-producer-contract.json","depends_on": ["D23-UFGS-234400.00-10-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1936,6 +1988,8 @@
       "source_boundary": "Use August 2026 guide identity; plant completion requires more than boiler instance counts.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-235052",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-235052.md",
+      "delivery_task_ids": ["D23-UFGS-235052-DEFINE", "D23-UFGS-235052-RESULT", "D23-UFGS-235052-CONNECT", "D23-UFGS-235052-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-235052-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-235052/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-235052-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-235052/evidence-producer-contract.json","depends_on": ["D23-UFGS-235052-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -1988,6 +2042,8 @@
       "source_boundary": "August 2026 number/title are retained exactly; capacity boundary interpretation remains a source-backed rule task.",
       "work_profile": "equipment_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-235200-01",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-235200-01.md",
+      "delivery_task_ids": ["D23-UFGS-235200.01-DEFINE", "D23-UFGS-235200.01-RESULT", "D23-UFGS-235200.01-CONNECT", "D23-UFGS-235200.01-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-235200.01-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-235200-01/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-235200.01-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-235200-01/evidence-producer-contract.json","depends_on": ["D23-UFGS-235200.01-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2040,6 +2096,8 @@
       "source_boundary": "Do not reuse obsolete February 2026 boiler numbering or silently assign equality at a title threshold.",
       "work_profile": "equipment_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-235200-02",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-235200-02.md",
+      "delivery_task_ids": ["D23-UFGS-235200.02-DEFINE", "D23-UFGS-235200.02-RESULT", "D23-UFGS-235200.02-CONNECT", "D23-UFGS-235200.02-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-235200.02-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-235200-02/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-235200.02-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-235200-02/evidence-producer-contract.json","depends_on": ["D23-UFGS-235200.02-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2092,6 +2150,8 @@
       "source_boundary": "Retain this August 2026 variant and confirm included equipment and capacity-boundary semantics in its body.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-235200-03",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-235200-03.md",
+      "delivery_task_ids": ["D23-UFGS-235200.03-DEFINE", "D23-UFGS-235200.03-RESULT", "D23-UFGS-235200.03-CONNECT", "D23-UFGS-235200.03-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-235200.03-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-235200-03/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-235200.03-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-235200-03/evidence-producer-contract.json","depends_on": ["D23-UFGS-235200.03-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2145,6 +2205,8 @@
       "source_boundary": "The exact TOC title wraps across pages 9–10; do not replace its source spelling or parentage.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-235200-04",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-235200-04.md",
+      "delivery_task_ids": ["D23-UFGS-235200.04-DEFINE", "D23-UFGS-235200.04-RESULT", "D23-UFGS-235200.04-CONNECT", "D23-UFGS-235200.04-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-235200.04-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-235200-04/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-235200.04-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-235200-04/evidence-producer-contract.json","depends_on": ["D23-UFGS-235200.04-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2196,6 +2258,8 @@
       "source_boundary": "Generic boiler counts do not establish heat-source interfaces or heat-recovery-specific acceptance.",
       "work_profile": "equipment_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-235230",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-235230.md",
+      "delivery_task_ids": ["D23-UFGS-235230-DEFINE", "D23-UFGS-235230-RESULT", "D23-UFGS-235230-CONNECT", "D23-UFGS-235230-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-235230-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-235230/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-235230-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-235230/evidence-producer-contract.json","depends_on": ["D23-UFGS-235230-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2248,6 +2312,8 @@
       "source_boundary": "Preserve source fuel alternatives, current August 2026 identity and plant-level relationships.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-235233-01",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-235233-01.md",
+      "delivery_task_ids": ["D23-UFGS-235233.01-DEFINE", "D23-UFGS-235233.01-RESULT", "D23-UFGS-235233.01-CONNECT", "D23-UFGS-235233.01-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-235233.01-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-235233-01/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-235233.01-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-235233-01/evidence-producer-contract.json","depends_on": ["D23-UFGS-235233.01-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2300,6 +2366,8 @@
       "source_boundary": "Dual-fuel and central-system coverage require explicit source-backed taxons and assembly boundaries.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-235233-02",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-235233-02.md",
+      "delivery_task_ids": ["D23-UFGS-235233.02-DEFINE", "D23-UFGS-235233.02-RESULT", "D23-UFGS-235233.02-CONNECT", "D23-UFGS-235233.02-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-235233.02-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-235233-02/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-235233.02-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-235233-02/evidence-producer-contract.json","depends_on": ["D23-UFGS-235233.02-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2351,6 +2419,8 @@
       "source_boundary": "Inventory the whole source section; do not equate furnace counts with system completion.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-235419",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-235419.md",
+      "delivery_task_ids": ["D23-UFGS-235419-DEFINE", "D23-UFGS-235419-RESULT", "D23-UFGS-235419-CONNECT", "D23-UFGS-235419-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-235419-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-235419/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-235419-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-235419/evidence-producer-contract.json","depends_on": ["D23-UFGS-235419-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2403,6 +2473,8 @@
       "source_boundary": "Retain water-side and steam-side responsibility crosslinks; shared equipment counts are partial.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-235710-00-10",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-235710-00-10.md",
+      "delivery_task_ids": ["D23-UFGS-235710.00-10-DEFINE", "D23-UFGS-235710.00-10-RESULT", "D23-UFGS-235710.00-10-CONNECT", "D23-UFGS-235710.00-10-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-235710.00-10-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-235710-00-10/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-235710.00-10-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-235710-00-10/evidence-producer-contract.json","depends_on": ["D23-UFGS-235710.00-10-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2454,6 +2526,8 @@
       "source_boundary": "Coordinate specialist cold-storage boundaries from actual sources rather than general comfort-HVAC assumptions.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-236300-00",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-236300-00.md",
+      "delivery_task_ids": ["D23-UFGS-236300.00-DEFINE", "D23-UFGS-236300.00-RESULT", "D23-UFGS-236300.00-CONNECT", "D23-UFGS-236300.00-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-236300.00-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-236300-00/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-236300.00-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-236300-00/evidence-producer-contract.json","depends_on": ["D23-UFGS-236300.00-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2505,6 +2579,8 @@
       "source_boundary": "Keep physical equipment, procurement package, and installation quantities distinct under approved rules.",
       "work_profile": "equipment_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-236410",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-236410.md",
+      "delivery_task_ids": ["D23-UFGS-236410-DEFINE", "D23-UFGS-236410-RESULT", "D23-UFGS-236410-CONNECT", "D23-UFGS-236410-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-236410-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-236410/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-236410-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-236410/evidence-producer-contract.json","depends_on": ["D23-UFGS-236410-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2557,6 +2633,8 @@
       "source_boundary": "Preserve service distinctions and guide-specific material/size/joint decisions; VA hydronic is supporting input only.",
       "work_profile": "piping_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-236426",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-236426.md",
+      "delivery_task_ids": ["D23-UFGS-236426-DEFINE", "D23-UFGS-236426-RESULT", "D23-UFGS-236426-CONNECT", "D23-UFGS-236426-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-236426-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-236426/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-236426-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-236426/evidence-producer-contract.json","depends_on": ["D23-UFGS-236426-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2609,6 +2687,8 @@
       "source_boundary": "Separate tower/condenser variants and included components before counting field purchases.",
       "work_profile": "equipment_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-236500",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-236500.md",
+      "delivery_task_ids": ["D23-UFGS-236500-DEFINE", "D23-UFGS-236500-RESULT", "D23-UFGS-236500-CONNECT", "D23-UFGS-236500-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-236500-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-236500/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-236500-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-236500/evidence-producer-contract.json","depends_on": ["D23-UFGS-236500-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2661,6 +2741,8 @@
       "source_boundary": "Thermal-storage taxonomy and system fixtures are independent of generic chiller acceptance.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-237119",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-237119.md",
+      "delivery_task_ids": ["D23-UFGS-237119-DEFINE", "D23-UFGS-237119-RESULT", "D23-UFGS-237119-CONNECT", "D23-UFGS-237119-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-237119-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-237119/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-237119-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-237119/evidence-producer-contract.json","depends_on": ["D23-UFGS-237119-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2712,6 +2794,8 @@
       "source_boundary": "Do not assume the guide's recovery technologies from its title; retrieve and enumerate them.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-237200",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-237200.md",
+      "delivery_task_ids": ["D23-UFGS-237200-DEFINE", "D23-UFGS-237200-RESULT", "D23-UFGS-237200-CONNECT", "D23-UFGS-237200-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-237200-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-237200/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-237200-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-237200/evidence-producer-contract.json","depends_on": ["D23-UFGS-237200-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2763,6 +2847,8 @@
       "source_boundary": "DOAS unit counts do not close connected ventilation, controls, insulation or testing scope.",
       "work_profile": "equipment_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-237433",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-237433.md",
+      "delivery_task_ids": ["D23-UFGS-237433-DEFINE", "D23-UFGS-237433-RESULT", "D23-UFGS-237433-CONNECT", "D23-UFGS-237433-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-237433-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-237433/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-237433-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-237433/evidence-producer-contract.json","depends_on": ["D23-UFGS-237433-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2815,6 +2901,8 @@
       "source_boundary": "Aircraft-specific guide scope and fixtures remain separate from ordinary unitary HVAC.",
       "work_profile": "equipment_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-237515",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-237515.md",
+      "delivery_task_ids": ["D23-UFGS-237515-DEFINE", "D23-UFGS-237515-RESULT", "D23-UFGS-237515-CONNECT", "D23-UFGS-237515-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-237515-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-237515/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-237515-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-237515/evidence-producer-contract.json","depends_on": ["D23-UFGS-237515-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2866,6 +2954,8 @@
       "source_boundary": "Retrieve direct/indirect or other actual source variants; do not invent them from this title.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-237600",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-237600.md",
+      "delivery_task_ids": ["D23-UFGS-237600-DEFINE", "D23-UFGS-237600-RESULT", "D23-UFGS-237600-CONNECT", "D23-UFGS-237600-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-237600-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-237600/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-237600-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-237600/evidence-producer-contract.json","depends_on": ["D23-UFGS-237600-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2917,6 +3007,8 @@
       "source_boundary": "Source-specific supply, installation, fuel, exhaust and package boundaries determine outputs.",
       "work_profile": "equipment_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-238020-00-10",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-238020-00-10.md",
+      "delivery_task_ids": ["D23-UFGS-238020.00-10-DEFINE", "D23-UFGS-238020.00-10-RESULT", "D23-UFGS-238020.00-10-CONNECT", "D23-UFGS-238020.00-10-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-238020.00-10-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-238020-00-10/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-238020.00-10-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-238020-00-10/evidence-producer-contract.json","depends_on": ["D23-UFGS-238020.00-10-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -2968,6 +3060,8 @@
       "source_boundary": "Every verified variant needs tests; one generic equipment counter does not complete unitary HVAC.",
       "work_profile": "equipment_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-238100",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-238100.md",
+      "delivery_task_ids": ["D23-UFGS-238100-DEFINE", "D23-UFGS-238100-RESULT", "D23-UFGS-238100-CONNECT", "D23-UFGS-238100-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-238100-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-238100/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-238100-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-238100/evidence-producer-contract.json","depends_on": ["D23-UFGS-238100-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -3019,6 +3113,8 @@
       "source_boundary": "Keep specialist duty/controls/service conditions explicit and require representative examples.",
       "work_profile": "equipment_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-238123",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-238123.md",
+      "delivery_task_ids": ["D23-UFGS-238123-DEFINE", "D23-UFGS-238123-RESULT", "D23-UFGS-238123-CONNECT", "D23-UFGS-238123-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-238123-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-238123/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-238123-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-238123/evidence-producer-contract.json","depends_on": ["D23-UFGS-238123-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -3070,6 +3166,8 @@
       "source_boundary": "Record system and component relationships; do not double count a system package and its supplied units.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-238129",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-238129.md",
+      "delivery_task_ids": ["D23-UFGS-238129-DEFINE", "D23-UFGS-238129-RESULT", "D23-UFGS-238129-CONNECT", "D23-UFGS-238129-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-238129-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-238129/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-238129-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-238129/evidence-producer-contract.json","depends_on": ["D23-UFGS-238129-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -3122,6 +3220,8 @@
       "source_boundary": "Distinct loop variants and distribution requirements need their own evidence and approval.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-238147",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-238147.md",
+      "delivery_task_ids": ["D23-UFGS-238147-DEFINE", "D23-UFGS-238147-RESULT", "D23-UFGS-238147-CONNECT", "D23-UFGS-238147-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-238147-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-238147/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-238147-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-238147/evidence-producer-contract.json","depends_on": ["D23-UFGS-238147-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -3173,6 +3273,8 @@
       "source_boundary": "Do not collapse terminal-unit, valve, control, piping and installation ownership into one equipment total.",
       "work_profile": "equipment_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-238200-00-20",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-238200-00-20.md",
+      "delivery_task_ids": ["D23-UFGS-238200.00-20-DEFINE", "D23-UFGS-238200.00-20-RESULT", "D23-UFGS-238200.00-20-CONNECT", "D23-UFGS-238200.00-20-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-238200.00-20-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-238200-00-20/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-238200.00-20-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-238200-00-20/evidence-producer-contract.json","depends_on": ["D23-UFGS-238200.00-20-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -3224,6 +3326,8 @@
       "source_boundary": "Power and installation division boundaries require actual source responsibility, not a numbering inference.",
       "work_profile": "equipment_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-238300-00-20",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-238300-00-20.md",
+      "delivery_task_ids": ["D23-UFGS-238300.00-20-DEFINE", "D23-UFGS-238300.00-20-RESULT", "D23-UFGS-238300.00-20-CONNECT", "D23-UFGS-238300.00-20-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-238300.00-20-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-238300-00-20/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-238300.00-20-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-238300-00-20/evidence-producer-contract.json","depends_on": ["D23-UFGS-238300.00-20-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -3275,6 +3379,8 @@
       "source_boundary": "Enumerate the specialist guide body and its variants before claiming section coverage.",
       "work_profile": "mixed_system_scope",
       "artifact_directory": "docs/engineering/division23/ufgs-238419-00",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/ufgs-238419-00.md",
+      "delivery_task_ids": ["D23-UFGS-238419.00-DEFINE", "D23-UFGS-238419.00-RESULT", "D23-UFGS-238419.00-CONNECT", "D23-UFGS-238419.00-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-UFGS-238419.00-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/ufgs-238419-00/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-UFGS-238419.00-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/ufgs-238419-00/evidence-producer-contract.json","depends_on": ["D23-UFGS-238419.00-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -3325,6 +3431,8 @@
       "source_boundary": "A VA/USACE-specific substitute for 23 05 93 in its stated context. It is not evidence of CSI parentage or automatic applicability.",
       "work_profile": "service_scope",
       "artifact_directory": "docs/engineering/division23/va-230593-01",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/va-230593-01.md",
+      "delivery_task_ids": ["D23-VA-230593.01-DEFINE", "D23-VA-230593.01-RESULT", "D23-VA-230593.01-CONNECT", "D23-VA-230593.01-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-VA-230593.01-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/va-230593-01/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-VA-230593.01-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/va-230593-01/evidence-producer-contract.json","depends_on": ["D23-VA-230593.01-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -3375,6 +3483,8 @@
       "source_boundary": "Retain supply/install/low-voltage/line-power columns and guide choices; source references do not prove supplied project scope.",
       "work_profile": "control_scope",
       "artifact_directory": "docs/engineering/division23/va-230923",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/va-230923.md",
+      "delivery_task_ids": ["D23-VA-230923-DEFINE", "D23-VA-230923-RESULT", "D23-VA-230923-CONNECT", "D23-VA-230923-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-VA-230923-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/va-230923/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-VA-230923-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/va-230923/evidence-producer-contract.json","depends_on": ["D23-VA-230923-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -3425,6 +3535,8 @@
       "source_boundary": "The worked checklist covers this dated VA guide only. It is neither a universal hydronic rule set nor the full CSI taxonomy.",
       "work_profile": "piping_scope",
       "artifact_directory": "docs/engineering/division23/va-232113",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/va-232113.md",
+      "delivery_task_ids": ["D23-VA-232113-DEFINE", "D23-VA-232113-RESULT", "D23-VA-232113-CONNECT", "D23-VA-232113-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-VA-232113-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/va-232113/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-VA-232113-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/va-232113/evidence-producer-contract.json","depends_on": ["D23-VA-232113-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
@@ -3473,6 +3585,8 @@
       "source_boundary": "Header/description verified live and prior source-backed assembly finding reused; full-body taxonomy remains open. Factory-mounted control does not automatically mean separately purchased equipment.",
       "work_profile": "equipment_scope",
       "artifact_directory": "docs/engineering/division23/va-233600",
+      "delivery_plan": "docs/superpowers/plans/division23-sections/va-233600.md",
+      "delivery_task_ids": ["D23-VA-233600-DEFINE", "D23-VA-233600-RESULT", "D23-VA-233600-CONNECT", "D23-VA-233600-QUALIFY"],
       "tasks": {
         "TAX": {"id": "D23-VA-233600-TAX","contract": "stage_contracts.TAX","artifact": "docs/engineering/division23/va-233600/taxonomy.json","depends_on": [],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},
         "EVID": {"id": "D23-VA-233600-EVID","contract": "stage_contracts.EVID","artifact": "docs/engineering/division23/va-233600/evidence-producer-contract.json","depends_on": ["D23-VA-233600-TAX"],"status": "planned","kind": "coverage_slot","acceptance_definition": "acceptance_definition_pending"},

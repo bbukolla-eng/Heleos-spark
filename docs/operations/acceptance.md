@@ -125,3 +125,25 @@ are eight coverage obligations, not eight compulsory tasks or review rounds per
 taxon. Link accepted shared output to the exact cells and scope it supports.
 Recognition qualification remains separate from accepted software; one failed
 model experiment does not reopen unrelated calculation, correction or export work.
+
+## Section-specific task contracts
+
+The [master section delivery plan](../superpowers/plans/2026-09-16-division23-section-delivery.md)
+and [224 named task contracts](../plans/division-23-task-contracts.json) bind each
+known guide to DEFINE (D01–D06), RESULT (R01–R06), CONNECT (C01–C08) and QUALIFY
+(Q01–Q05). IDs are section-qualified; they do not replace approved duct D rules.
+Each linked section card names its artifacts, source/edition, case subjects,
+required producer outputs, exact check procedure and terminal record.
+
+DEFINE is accepted only after its exact primary source is pinned and every
+paragraph is accounted for. It can record specific unresolved referenced inputs,
+new policies or fixture requirements with a responsible next action. Those gaps
+remain explicit input gates for affected downstream code/evaluation. Only ready,
+independently expected cases are released. Acceptance of a definition packet does
+not imply complete taxonomy, quantity behavior or section acceptance.
+
+RESULT/CONNECT consume exact accepted output scopes, not completion of an entire
+category. QUALIFY needs every required section/child/taxon dimension and the
+frozen original-source Mac contract. Numerical oracles and thresholds are outputs
+of DEFINE before dependent work; they cannot be guessed or filled after failure.
+Keep these plans prominently linked in status, the register/matrix and the goal.

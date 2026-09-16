@@ -1,5 +1,8 @@
 # Division 23 Delivery Maintenance Implementation Plan
 
+**Optional maintenance only.** The [master section delivery plan](2026-09-16-division23-section-delivery.md) and its 56 section cards define mechanical work and acceptance. Do not select these tooling tasks as a substitute for section implementation.
+
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Make accepted work, the live queue and full known section coverage inspectable without replaying completed tasks or inventing new review gates.

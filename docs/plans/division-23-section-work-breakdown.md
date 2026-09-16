@@ -1,5 +1,8 @@
 # Division 23 Section Work Breakdown Implementation Plan
 
+**Execution entrypoint:** [Master section delivery plan](../superpowers/plans/2026-09-16-division23-section-delivery.md), with **56 individual section cards and 224 named delivery tasks**. Use each card's DEFINE/RESULT/CONNECT/QUALIFY criteria and scoped output dependencies. This document and the original 448 stage addresses describe coverage; the optional maintenance-tool plan does not replace mechanical section work.
+
+
 > **For agentic workers:** Use `executing-plans` for the assigned task, with the root coordinator assigning exact write paths and independently accepting each result. This register records section coverage; CURRENT_STATUS.md Resume here is the live queue; it does not authorize a worker to change estimating rules, commit, or restart completed work.
 
 **Goal:** Deliver every actual Division 23 section/subsection and its complete source-backed taxonomy through evidence, approved deterministic quantities, reconciliation, corrections, exports and fixed acceptance endpoints on Mac and Windows.

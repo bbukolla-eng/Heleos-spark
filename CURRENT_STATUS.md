@@ -8,6 +8,8 @@ Windows delivery remains a separate later milestone.
 
 ## Resume here
 
+**Required section work plan:** [Master Division 23 delivery index](docs/superpowers/plans/2026-09-16-division23-section-delivery.md), with **56 individual section plans, 224 named delivery tasks and 1,400 mandatory criterion bindings**. Every matrix/register row links its DEFINE → RESULT/CONNECT → QUALIFY tasks and section-specific case inventory. Read the selected section card, not only this status summary. The [task-contract index](docs/plans/division-23-task-contracts.json) fixes planned deliverables and criteria; live execution remains in the selected task ledger. The optional maintenance-tool plan is not the mechanical work plan.
+
 **Primary: EQUIPMENT-COUNT-1.** Implement the already approved physical-equipment
 counting workflow using E01–E12 and EC01–EC20. Deliver physical-instance,
 package/procurement and installation quantities, known-plus-unknown results,
@@ -32,7 +34,7 @@ components. Original-source recognition has its own qualification contract.
 experiment and frozen metrics after eight terminal runs; AC01 returned 0 physical
 symbols against 3 expected. Its accepted software child stays closed. Claude's
 last dispatch reported expired authentication; retry only with changed login
-state, or use the authorized Codex fallback. No provider invocation was started
+state, or use the authorized Codex fallback. No Claude Code invocation was started
 by this planning task.
 
 A missing input blocks only its dependent output. Duct and air-device acceptance
@@ -44,9 +46,8 @@ priority or permanent worked example. Cancelled 4specs adoption remains cancelle
 
 The [register](docs/plans/division-23-section-register.json) and [completion matrix](docs/plans/division-23-completion-matrix.md)
 list **56 known agency guides: 52 UFGS and 4 VA**, with **448 planned coverage
-slots**, zero ready section assignments and zero accepted sections. This is not
-yet the complete verified CSI section/subsection hierarchy. The prior “448 tasks”
-wording overstated readiness; it did not represent 448 frozen executable contracts.
+slots**, 224 explicitly planned delivery contracts and zero accepted sections. DEFINE source-definition actions are available; dependent implementation consumes only their ready scoped outputs. This is not
+yet the complete verified CSI section/subsection hierarchy. The original 448 coverage addresses are not executable assignments; use the linked four delivery contracts and named acceptance criteria for each section.
 
 Every section requires its complete declared types, variants, attributes,
 relationships, exclusions, services and child scope. The matrix includes common
@@ -93,20 +94,35 @@ and Mac/Windows product acceptance remain outstanding.
 
 ## Latest checkpoint and continuity
 
-**DELIVERY-STRUCTURE-PLAN-1:** audit base
-`c1143a7c1bc75339cdd8dd71cfe0580dd0d611ca` in this main checkout. Corrected conflicting
-review/provider instructions, distinguished planned slots from executable tasks,
-exposed all known section endpoints, shortened live status and goal wording,
-and retained the exact prior status in the [archive](docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md).
-No application code, mechanical rule, source adoption, model or hook changed.
+**DIV23-SECTION-CONTRACTS-1:** planning base
+`5e6beb8add22ba161858bdd3a32b48444591c557` in this main checkout. Delivered the master
+section plan, 56 individual plans, 224 named delivery contracts and 1,400 mandatory
+criterion bindings. Every section has named case subjects, output dependencies,
+exact artifact/test paths, check procedures and finite completion records.
+Registry/matrix/goal/policy links now lead directly to these section tasks.
 
-Verification/evidence: `.heleos/delivery-structure-2026-09-16/` contains the task
-brief, source/receipt identities, independent scoped review and structural checks.
-Eight plan-example tests pass in isolated scratch; the proposed tools are **not
-installed**. Register identities/source boundaries, all 448 coverage addresses,
-acyclic coverage references, matrix rows, archive bytes and unrelated dirty files
-are checked. Product tests were not repeated for documentation-only changes.
-Next product action remains the equipment implementation brief and connected code.
+One public-source NotebookLM query reused retained bodies; six supporting
+planning findings were verified. Generated labor-hour, blanket trade-allocation,
+insulation-override and ERP-blocking suggestions were rejected. The recorded
+source map locates candidate guide sources for 35 rows and retained indexed text
+for 11; no additional taxonomy or source fidelity is claimed from retention.
+Existing source identities, approved mechanical rules, all coverage slots and
+accepted code remain unchanged. No application or planned maintenance tool was
+implemented; no section is claimed accepted.
+
+Verification and live task evidence: `.heleos/div23-section-planning-2026-09-16/`.
+Structural checks cover all section/task/criterion/output bindings, source
+identity preservation, local links, exact entrypoints and preserved unrelated
+work. Three comparison-example tests pass; these are planning examples, not
+mechanical or product qualification. Code-level section instructions and numeric
+oracles are explicit DEFINE outputs before their dependent implementation.
+Next product action: EQUIPMENT-COUNT-1's approved connected implementation packet;
+independent section DEFINE and evidence-PDF work may advance by actual inputs.
+
+The preceding coordination correction at `5e6beb8` remains accepted. Its exact
+prior status archive and terminal workbook/air-device receipts remain linked
+above; do not repeat that audit or optional maintenance work as a substitute for
+this section lineup.
 
 `get_goal` returned **null** during this checkpoint; older paused-goal prose is
 historical. The [stable goal text](docs/operations/build-goal.md) was updated only
