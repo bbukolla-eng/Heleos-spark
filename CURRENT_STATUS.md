@@ -6,7 +6,12 @@ This is the single current work queue; historical “Next” statements in the
 are evidence, not assignments. Exact archived bytes and original locations are
 recorded in the [archive manifest](docs/operations/status-archive/2026-09-16-archive-manifest.json).
 
-The full local-first Division 23 Mac/Windows goal is unchanged. Settled decisions:
+The full local-first **CSI Division 23, including all sections and subsections,**
+Mac/Windows goal is unchanged. Ducts and air devices are partial delivery slices;
+they do not define mechanical takeoff completion. Product coverage must be tracked
+against the complete verified section hierarchy and the applicable project
+specifications. A section absent from one pilot is not automatically a completed
+product capability. Settled decisions:
 imperial output; duct lengths → air-device counts → equipment counts; approved
 D01–D10 and A01–A12/AC01–AC17. Do not reopen those choices. Accepted duct work is
 preserved. Further duct refinements, geometry/evaluation expansions or repeated
@@ -20,13 +25,26 @@ usable deliverable; repair only that dependency.
 | 0.2 Knowledge, taxonomy, source/evaluation registry | Versioned sources, mechanical vocabulary, requirement/rule review and model baseline connected locally. Notebook inventory/research retained; relevant notebooks expanded. | Complete mechanical coverage, dataset rights/labels and representative truth/thresholds remain open. | Reuse verified findings for each active class; research only concrete implementation needs. |
 | 0.3 Drawing coordinates and scale | Revision-bound geometry, scale review and invalidation connected locally. | Native parity and representative drawings remain to verify. | Reuse for source identity; each counts have no scale dependency. |
 | 0.4 Schedule reconciliation | Source-linked schedule extraction and plan correspondence, decisions/history and exceptions connected locally. | Broader schedule fields/types and representative acceptance remain open. | Feed air-device attributes/declarations and then equipment counts. |
-| 0.5 Mechanical takeoff | Duct capability preserved. Air-device approved calculation, source producer, review UI and application connection independently verified locally; corrections, reopening and source exports work. Equipment draft tag review exists. | **Air-device recognition remains unqualified:** the installed local model missed all three physical symbols in AC01. Physical equipment counts, piping, fittings, accessories, controls, insulation and demolition remain outstanding. | Improve the bounded recognition path; advance independent supported-output work without repeating duct refinements. |
+| 0.5 Full CSI Division 23 mechanical takeoff | Partial implementation: duct capability preserved; air-device calculation, source producer, review/correction UI and exports verified locally; equipment draft tag review exists. | Complete section/subsection coverage remains open across common work, O&M, schedules, insulation, commissioning, controls, fuel systems, piping/pumps, air distribution/cleaning, central heating/cooling and central/decentralized HVAC equipment. Cross-cutting demolition, relocation and revision scope remains open. **Air-device recognition remains unqualified:** the installed model missed all three physical symbols in AC01. | Prepare the next physical-equipment rules/examples in the approved class order; use the full-section coverage audit and proposed work lineup below. Keep recognition and output work bounded and independent. |
 | 0.6 Correction, recalculation and estimator outputs | Duct and air-device correction/recalculation, append-only history, CSV/JSON and source-linked Excel with live formulas connected locally. Workbook projection, formula recalculation, stale/unknown states and portable packaging verified. | Consolidated evidence PDF, native Excel/Windows and representative estimator acceptance remain unfinished. | **Next independent implementation: consolidated evidence PDF for supported results**, reusing current source identities and unknown/review state. |
 | 0.7 Mac/Windows product | Local Mac drawing/takeoff preview and relocatable package; Windows launch/package implementation prepared. | Native Windows execution, desktop shell/parity and install/update/recovery acceptance remain open. | Advance shared local workflow and independent platform verification alongside supported takeoff classes. |
 | 0.8 iPhone and bounded automation | Supporting automation contracts exist; no completed companion claim. | Companion/synchronization/approval scope and native device acceptance remain future work. | Preserve original roadmap scope; do not make companion work a new Mac/Windows delivery prerequisite. |
 | 1.0 Representative production pilot | No production acceptance claimed. | Freeze representative projects/truth/thresholds, verify full requested Division 23 scope and native platforms, then record human release acceptance. | Usable, traceable takeoffs demonstrated on representative Mac and Windows projects. |
 
 ## Active deliverable and fixed finish line
+
+Owner scope clarification on 2026-09-16 is recorded in the
+[full Division 23 scope audit and proposed work lineup](docs/research/div23-scope-and-proposed-lineup-2026-09-16.md).
+The current nine-category vocabulary is not a complete section register.
+The audit proposes explicit product/project coverage tracking and packages for
+equipment, remaining airside items, piping/system variants, insulation, common
+work, controls and service obligations. Every verified section/subsection needs
+linked work and acceptance evidence; broad category labels cannot close it.
+This is a planning proposal, not newly approved class rules or completed code.
+Owner feedback on the first representative project type is pending. The existing
+equipment-next class order, approved rules and independent output work remain
+authorized. Next class preparation: source-backed equipment rules and checked
+assembly examples, alongside the already authorized evidence-PDF capability.
 
 AIR-DEVICE-COUNT-1 is finished locally only when the application can read selected
 original drawings with the configured local reader, retain evidence, calculate
@@ -58,6 +76,16 @@ refinement is a prerequisite without a blocking defect.
 
 ## Live work and evidence
 
+- DIV23-SCOPE-LINEUP-1: owner clarified full section/subsection coverage at main
+  base `2757d31ff93f60ed567ddd8bc9257c29a0e52fa8`. Updated scope wording and
+  recorded the audit/proposed queue; no application changes or new quantity
+  rules. NotebookLM inventory reused; three public VA/UFGS supporting bodies
+  queried/read and consequential passages verified. CSI/publisher references
+  checked for edition context. Full current hierarchy verification remains open.
+  [Findings and limits](docs/research/notebooklm/div23-scope-findings-2026-09-16.json);
+  ledger `.heleos/div23-scope-lineup-2026-09-16/`. Source/logging processes are
+  terminal. Documentation links, JSON and diff checks passed. Next discussion:
+  representative project priority; then finalize bounded next-class assignments.
 - WORKBOOK-EXPORT-1 is independently accepted locally in
   `/Users/bekim/Heleos-spark`, `main`, implementation base
   `bfc7cc6a07a11bd42ab13e875dc35a97f7960eb2`. The connected workbook

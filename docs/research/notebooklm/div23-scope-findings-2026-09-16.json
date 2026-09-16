@@ -1,0 +1,73 @@
+{
+  "task": "DIV23-SCOPE-LINEUP-1",
+  "at": "2026-09-16T13:27:21.746653+00:00",
+  "base": "2757d31ff93f60ed567ddd8bc9257c29a0e52fa8",
+  "notebook_inventory_reused": "docs/research/notebooklm/notebook-inventory.json and expansion-n11-2026-09-14.json",
+  "public_query": "For a complete HVAC quantity takeoff, which explicit requirements in these selected sources go beyond drawn duct lengths and air outlet counts? Identify air terminal assembly components, separately supplied accessories, insulation and jackets, and testing/adjusting/balancing service obligations. Cite sections and short supporting passages, distinguish stated requirements from inferred takeoff methods, and flag what these sources cannot establish about all Division 23 sections. Do not propose quantities or default allowances.",
+  "findings": [
+    {
+      "id": "D23-S1",
+      "source_id": "39f7afb0-4319-45a3-a467-82629aa67a0c",
+      "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+      "title": "VA 23 36 00 Air Terminal Units",
+      "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2036%2000.pdf",
+      "retrieved_text_sha256": "a83abc586fd7900cb5a75fcfc70fb08df650361863a99616428ca5fab7d8ba8b",
+      "prior_text_sha256": "a83abc586fd7900cb5a75fcfc70fb08df650361863a99616428ca5fab7d8ba8b",
+      "same_as_expansion_text": true,
+      "source_locator": "indexed text character 12323; not a PDF page number",
+      "verified_passage_context": "ow rate table pasted to box. \n\nG. Provide static pressure tubes. \n\nH. Externally powered DDC variable air volume controller and damper \n\nactuator to be furnished under Section 23 09 23, DIRECT-DIGITAL CONTROL \n\nSYSTEM FOR HVAC for factory mounting on air terminal units. The DDC \n\ncontroller shall be electrically actuated. \n\nSPEC WRITER NOTE: Use of fan-powered \n\nterminal units is prohibited for the \n\nNursing Wing and Special Treatment Spaces \n\ninvolving patient care and monitoring. \n\n \n\nI. Fan Powered Terminal Units: \n\n1. General: The fan will be in a series configuration inside the unit \n\ncasing. \n\n2. ",
+      "finding": "Terminal controls can be furnished under a separate controls section for factory mounting. Track supplied-by and installed-by responsibility; do not automatically count factory components as separate purchases.",
+      "state": "verified_for_scope_planning_only",
+      "implementation": "No mechanical rule or code adopted; future requirement extraction and assembly-boundary examples."
+    },
+    {
+      "id": "D23-S2",
+      "source_id": "86d55e24-93fa-4932-ad5a-0a1bf2ada6d9",
+      "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+      "title": "UFGS 23 07 00 Thermal Insulation for Mechanical Systems",
+      "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2007%2000.pdf",
+      "retrieved_text_sha256": "09bba01d75b40abbb1f90c0e98f85b6b17c9efb470cd5c0bbb258fb86665798c",
+      "prior_text_sha256": "644f78d7a837cdd5a50e1a1b8be42cb399d27db7759fe333695b39b02a4ca187",
+      "same_as_expansion_text": false,
+      "source_locator": "indexed text character 282019; not a PDF page number",
+      "verified_passage_context": ".5   Equipment Exposed to Weather \n\n3.4.5.1   Installation \n\nInsulate equipment exposed to weather and finish in accordance with the requirements for ducts exposed to weather in paragraph DUCT INSULATION INSTALLATION. \n\n3.4.5.2   Optional Panels \n\nAt the option of the Contractor, prefabricated metal insulation panels may be used in lieu of the insulation and finish previously specified.  Thermal performance must be equal to or better than that specified for field applied insulation.  Provide panels that are the standard catalog product of a manufacturer of metal insulation panels.  Provide fastenings, f",
+      "finding": "Insulation scope extends to equipment and weather exposure, with exclusions such as factory-insulated equipment requiring project-specific interpretation.",
+      "state": "verified_for_scope_planning_only",
+      "implementation": "No mechanical rule or code adopted; future requirement extraction and assembly-boundary examples."
+    },
+    {
+      "id": "D23-S3",
+      "source_id": "ddc2fd9d-f560-4987-b61e-2e3675a90fa4",
+      "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+      "title": "UFGS 23 05 93 Testing, Adjusting, and Balancing for HVAC",
+      "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2005%2093.pdf",
+      "retrieved_text_sha256": "959b95d872f91d1b08168a47a7021141418a1d2bf7c5c5ef293b587f7d92fdf7",
+      "prior_text_sha256": "1c6c0ebbf2077f9edc7d81254c038067dc1ac22ee7d5cb4bdabe7b4bd6465cb6",
+      "same_as_expansion_text": false,
+      "source_locator": "indexed text character 107300; not a PDF page number",
+      "verified_passage_context": "ld Work and obtain approval of the Certified Final DALT Report. \n\nb.  Installation of pressure and temperature test ports adjacent to inlet and outlet of every pump, heat exchanger, chiller, boiler, and coil, and as required by the TAB Team Supervisor. \n\nc.  Work items and inspections indicated in the Pre-TAB Field Work Checklist, including providing new air filters and cleaning screens of hydronic system strainers. \n\nd.  Enclosure of the building envelope according to the contract documents with the Air Barrier Pressure Test completed and the Air Leakage Test Reports and Diagnostic Test Reports approve",
+      "finding": "TAB includes prerequisite field work, test ports and certified reporting. These are service/requirement records as well as potential material items.",
+      "state": "verified_for_scope_planning_only",
+      "implementation": "No mechanical rule or code adopted; future requirement extraction and assembly-boundary examples."
+    }
+  ],
+  "web_sources": [
+    {
+      "url": "https://www.csiresources.org/standards/overview",
+      "verified": "CSI lists MasterFormat2026, edition-aware official access via its authorized partner; detailed full hierarchy was not retrieved."
+    },
+    {
+      "url": "https://theconstructionstandard.com/masterformat-division-23-heating-ventilating-and-air-conditioning-hvac",
+      "verified": "Primary authorized publisher orientation confirms broad HVAC equipment/distribution/piping/controls/testing and coordination with adjacent divisions; guide is not a complete subsection list."
+    }
+  ],
+  "conflicts_or_limits": [
+    "Notebook answer overgeneralizes some guide specification options as universal mandates. Bracketed options, spec-writer notes and VA-specific conditions are not adopted as universal rules.",
+    "Notebook answer assertion that accessory components must all be separately itemized is not adopted. Assembly boundaries, procurement responsibility and scope evidence are required to avoid double counting.",
+    "Two newly retrieved indexed source hashes differ from expansion snapshots. Current retrieved passages were reverified and both identities retained; no claim that earlier body bytes are unchanged.",
+    "Public orientation does not prove full MasterFormat2026 leaf coverage. Freeze the applicable edition and verify its complete section register before claiming all-subdivision coverage.",
+    "N12 Hydronic & Mechanical Piping notebook f7ec321c-1beb-492f-a23f-7e9f5042967a is in the inventory; its source inventory remains to select/verify before piping rule implementation."
+  ],
+  "authority": "Full Division23 goal already owner-approved. D01-D10/A01-A12 remain authoritative. Proposed queue is for discussion; no application or new calculation changes.",
+  "next": "Owner feedback on first representative project type; prepare equipment rules and section coverage backlog without blocking independent evidence-PDF work."
+}
