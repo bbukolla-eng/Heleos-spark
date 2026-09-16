@@ -25,6 +25,15 @@ These files do not install, authenticate, launch, sandbox, or grant tools to an 
 4. After an agent or command terminates, record its terminal result and next action immediately. Do not leave a completed or failed process marked running, and do not relaunch a quiet process without checking its actual state.
 5. Resolve these shared documents from the project root, not from a similarly named file in an older candidate checkout. The controller supplies their exact paths and content identities with the assignment; a material instruction change during a run requires reconciliation before affected writes continue.
 
+## Continue without replaying completed work
+
+- After startup verification, select work from the **Resume here** section of root `CURRENT_STATUS.md`. Its primary task and ready independent work determine execution; roadmap tables describe coverage, and completed evidence records are not assignments. An obsolete immediate step in a saved goal does not reopen an accepted task. Preserve the goal's full scope and current owner decisions.
+- Read status and the selected task ledger to orient, then perform the recorded unfinished action. Re-read for changed bytes, new owner direction, a worker handoff or recovery after context loss; repeatedly rereading unchanged status is not progress.
+- Reuse accepted evidence for unchanged inputs. Repeat checks only for changed relevant bytes, a concrete defect, newly available platform evidence or a specifically recorded unresolved acceptance condition. Record which condition justifies a retry before repeating a failed model/provider run; unchanged failed inputs are not a new experiment.
+- Keep one primary task. A missing decision, credential or platform blocks only its dependent action; choose the next ready independent task listed in status. Optional prioritization feedback must not block already authorized preparation. If no authorized action is ready, state the exact missing prerequisite instead of cycling completed work.
+- When a bounded task finishes, record its outcome/evidence and move the primary task or next action forward in the same status update. A task awaiting approval must name the decision and a ready independent action. Preserve incomplete categories and acceptance gates; do not mark them complete merely to advance.
+- Status, ledger and hook work serves a concrete routing defect. Once repaired and verified, resume product work; do not create recurring status-only tasks. Do not disable verification, approval or provenance checks to force continuation.
+
 ## Assignment and write authority
 
 Implementation workers may write code, tests, and documentation in their assigned paths. They are not restricted to read-only analysis by this policy. A review-only assignment remains read-only. A tool's actual permissions must support the assignment; Markdown cannot turn a read-only connector into a writer.

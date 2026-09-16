@@ -1,7 +1,8 @@
 # Current Status
 
 Updated 2026-09-16. Work in `/Users/bekim/Heleos-spark`, branch `main`.
-This is the single current work queue; historical “Next” statements in the
+The **Resume here** section is the single current work queue. Roadmap targets and
+completed evidence below are context, not assignments. Historical “Next” statements in the
 [archived status](docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md)
 are evidence, not assignments. Exact archived bytes and original locations are
 recorded in the [archive manifest](docs/operations/status-archive/2026-09-16-archive-manifest.json).
@@ -18,7 +19,64 @@ preserved. Further duct refinements, geometry/evaluation expansions or repeated
 test cycles are deferred unless a recorded concrete defect blocks the active
 usable deliverable; repair only that dependency.
 
-| Roadmap section | Local implementation state | Remaining acceptance/work | Next usable product outcome |
+## Resume here
+
+**Primary ready task: EQUIPMENT-RULES-1 — prepare the physical-equipment counting
+rules and checked assembly examples.** This advances the approved next quantity
+class; it does not reopen the completed duct calculation or air-device rules.
+
+1. Reuse the recorded NotebookLM inventory and verified equipment/assembly
+   findings; query only missing requirements and verify the supporting passages.
+2. Produce one bounded equipment rule packet with worked expected counts,
+   source references, duplicate/tag-versus-assembly cases, bundled accessories,
+   schedule conflicts, and new/existing/demolition distinctions. Flag unresolved
+   decisions rather than choosing unsupported quantity rules.
+3. Present the concrete packet for the genuinely missing equipment-class
+   approval. That decision gates equipment quantity implementation only. Move
+   to the ready independent task while it is pending; do not repeat preparation.
+
+**Ready independent implementation: EVIDENCE-PDF-1 — connect a consolidated
+source-linked evidence PDF for supported results to the existing export flow.**
+Reuse accepted quantities, source identities and stale/unknown states. Verify
+correction/revision effects and the packaged export; preserve incomplete states.
+This task can advance while equipment rules await review or a provider is unavailable.
+
+**Additional bounded preparation: DIV23-COVERAGE-1 — establish the verified
+section/subsection coverage register and map the proposed packages to it.**
+Record the source edition and project applicability separately from product
+completion. Missing authoritative hierarchy evidence remains explicit; do not
+invent section numbers or treat the nine-category vocabulary as complete CSI.
+
+Use one primary task and at most two independent tracks, with non-overlapping
+write paths. Owner project-type feedback may prioritize representative fixtures;
+it is optional for the already authorized preparation and supported-output work.
+The remaining equipment, airside, piping, insulation, common-work, controls and
+service-obligation packages are lined up in the
+[full Division 23 audit](docs/research/div23-scope-and-proposed-lineup-2026-09-16.md).
+They remain outstanding until implemented and accepted.
+
+**Parked conditions, not instructions to retry:** air-device original-drawing
+recognition needs a materially different bounded experiment after eight terminal
+runs; Claude needs a refreshed login after the recorded expired-token failure;
+native Windows and representative-project acceptance need their platform/project
+evidence. Each condition blocks its dependent action only. Record changed inputs
+and an acceptance condition before retrying. No provider process is running.
+
+**Closed locally; reuse the evidence:** duct calculation and accepted topology;
+schedule reconciliation; the air-device software connection and approved rules;
+source-linked Excel export; the full-scope wording/audit; and this continuation
+correction. Air-device recognition and native/representative acceptance remain
+open. Do not rerun accepted implementations or maintenance tasks to fill a turn.
+
+The saved goal's obsolete immediate duct instruction is superseded by this
+queue. A [durable replacement goal](docs/operations/build-goal.md) is ready to copy;
+its text has not been installed in the app. Reading this file is startup
+orientation, not the deliverable. Execute the unfinished action, then record the
+result and advance this section in the same completion update.
+
+## Roadmap coverage snapshot
+
+| Roadmap section | Local implementation state | Remaining acceptance/work | Target product outcome |
 | --- | --- | --- | --- |
 | 0.1 Trust foundation | Rust core, immutable vault, intake, SQLite, recovery/backup and supply-chain implementation integrated; local macOS evidence retained. | Native Windows/NTFS, exact release candidate/CI, GitHub App decisions and release dossier remain open. They do not block authorized independent product implementation. | Reuse the core for local takeoff; preserve release gates. |
 | Engineering coordination | Guarded workers and provider controls implemented; bounded Claude workflow in use. | Native Windows containment/platform evidence remains open. | Support the current product task; no new orchestration redesign. |
@@ -31,50 +89,38 @@ usable deliverable; repair only that dependency.
 | 0.8 iPhone and bounded automation | Supporting automation contracts exist; no completed companion claim. | Companion/synchronization/approval scope and native device acceptance remain future work. | Preserve original roadmap scope; do not make companion work a new Mac/Windows delivery prerequisite. |
 | 1.0 Representative production pilot | No production acceptance claimed. | Freeze representative projects/truth/thresholds, verify full requested Division 23 scope and native platforms, then record human release acceptance. | Usable, traceable takeoffs demonstrated on representative Mac and Windows projects. |
 
-## Active deliverable and fixed finish line
+## Acceptance boundaries
 
-Owner scope clarification on 2026-09-16 is recorded in the
-[full Division 23 scope audit and proposed work lineup](docs/research/div23-scope-and-proposed-lineup-2026-09-16.md).
-The current nine-category vocabulary is not a complete section register.
-The audit proposes explicit product/project coverage tracking and packages for
-equipment, remaining airside items, piping/system variants, insulation, common
-work, controls and service obligations. Every verified section/subsection needs
-linked work and acceptance evidence; broad category labels cannot close it.
-This is a planning proposal, not newly approved class rules or completed code.
-Owner feedback on the first representative project type is pending. The existing
-equipment-next class order, approved rules and independent output work remain
-authorized. Next class preparation: source-backed equipment rules and checked
-assembly examples, alongside the already authorized evidence-PDF capability.
+The [full Division 23 audit](docs/research/div23-scope-and-proposed-lineup-2026-09-16.md)
+records the owner's complete section/subsection scope. Its later package order is
+proposed; it does not approve new quantity rules. Existing class order and
+independent output work are authorized. Physical-equipment counting requires its
+own concrete approved rules/examples before quantity implementation.
 
-AIR-DEVICE-COUNT-1 is finished locally only when the application can read selected
-original drawings with the configured local reader, retain evidence, calculate
-source-bound each counts under A01–A12, present known subtotals and exceptions,
-review/correct/recalculate without duplicate replay, reopen saved history and
-export counts with original-source references. The user reviews exceptions rather
-than entering the takeoff first. All 17 approved cases, necessary source/lifecycle
-checks and independent review support this finish line. Helpers/tests alone do
-not finish the capability. Unsupported combinations remain visible exceptions and
-outstanding work; neither they nor unrelated later categories justify indefinite
-delay of the usable connection. Once necessary checks pass, checkpoint and advance.
+AIR-DEVICE-COUNT-1 remains incomplete as a recognition capability: the connected
+software passed local checks, but the final original-drawing run found zero
+physical assemblies where AC01 contains three. All eight runs are terminal and
+retained. A synthetic-reader UI demonstration is software evidence, not model
+accuracy. Preserve this gap while ready independent capabilities advance.
 
-The software connection is verified; the original-drawing recognition condition
-is **not satisfied**, so AIR-DEVICE-COUNT-1 remains open. Eight bounded local runs
-are terminal, with their failures retained. The last run returned valid records
-but found no physical assemblies where the original drawing contains three.
-Do not repeat prompt/sampling loops or relabel transport validity as recognition
-success. Keep this concrete model limitation visible while independent output and
-platform work advances. Physical equipment class rules still need a concrete
-owner-approved packet before quantity implementation; A01–A12 cover air devices.
+WORKBOOK-EXPORT-1 is locally implemented and independently accepted; native
+Excel/Windows and representative estimator acceptance remain open. Accepted
+source-bound calculations, corrections, history and exports are reusable.
+Consolidated evidence PDF and all remaining Division 23 categories remain work.
 
-WORKBOOK-EXPORT-1 is locally implemented and independently accepted. The draft
-package contains `takeoff.xlsx` with formula-linked supported quantities, unknown
-finals, exact source links and separate history. Native Excel/Windows acceptance
-is outstanding. Next independent implementation: consolidated evidence PDF for
-supported duct/air-device results, using the same verified source identities.
-Equipment counts remain next in the approved quantity-class order. No new duct
-refinement is a prerequisite without a blocking defect.
+## Completed checkpoints and retained evidence
 
-## Live work and evidence
+These records preserve outcomes and limits. Only **Resume here** selects work.
+
+- CONTINUATION-CURSOR-1: at main base
+  `17b4d6e3e4fa229faff24226d1732b532c88df9a`, replaced competing immediate
+  directions with one primary task, ready independent work and explicit parked
+  conditions. Added anti-replay guidance to `AGENTS.md` and a copyable replacement
+  goal. No application, calculation, model, hook or saved-goal state was changed.
+  Ledger: `.heleos/continuation-cursor-2026-09-16/`; local documentation/authority
+  verification is recorded there. No external submission or worker invocation.
+  Remaining limit: app-side goal wording is still obsolete and paused; no local
+  continuation hook cause was established. Next action: **EQUIPMENT-RULES-1** above.
 
 - DIV23-SCOPE-LINEUP-1: owner clarified full section/subsection coverage at main
   base `2757d31ff93f60ed567ddd8bc9257c29a0e52fa8`. Updated scope wording and
@@ -84,8 +130,8 @@ refinement is a prerequisite without a blocking defect.
   checked for edition context. Full current hierarchy verification remains open.
   [Findings and limits](docs/research/notebooklm/div23-scope-findings-2026-09-16.json);
   ledger `.heleos/div23-scope-lineup-2026-09-16/`. Source/logging processes are
-  terminal. Documentation links, JSON and diff checks passed. Next discussion:
-  representative project priority; then finalize bounded next-class assignments.
+  terminal. Documentation links, JSON and diff checks passed. Optional representative
+  project-priority feedback is pending; it does not block authorized work.
 - WORKBOOK-EXPORT-1 is independently accepted locally in
   `/Users/bekim/Heleos-spark`, `main`, implementation base
   `bfc7cc6a07a11bd42ab13e875dc35a97f7960eb2`. The connected workbook
@@ -108,9 +154,9 @@ refinement is a prerequisite without a blocking defect.
   was updated for the two intentionally added files; original failure logs remain.
   JavaScript syntax and diff checks passed. Final implementation record:
   [workbook export](docs/research/notebooklm/workbook-export-implementation-2026-09-16.json).
-  Current ledger: `.heleos/workbook-export-2026-09-16/`; all processes terminal.
-  Next action: implement consolidated evidence PDF; retain recognition, remaining
-  mechanical classes and native/release gates as outstanding work.
+  Completed-task ledger: `.heleos/workbook-export-2026-09-16/`; all processes
+  terminal. Recognition, remaining mechanical classes and native/release gates
+  remain outstanding as described in the current queue.
 - Accepted attribute/policy prerequisite: `f2a12387bc1d73406949867f233acb3322193f26`;
   [implementation record](docs/research/notebooklm/air-device-attributes-implementation-2026-09-16.json).
   Accepted duct evidence remains in `.heleos/duct-topology-2026-09-15/`; all18
@@ -152,8 +198,8 @@ refinement is a prerequisite without a blocking defect.
 The stored goal still contains an obsolete immediate duct-next-step paragraph.
 Current owner direction and this queue supersede it. Available goal controls can
 read/create or mark complete/blocked, but cannot edit wording or resume a paused
-goal. The last goal snapshot reported paused; this owner-directed turn continues
-implementation. No reset, scope reduction or false completion is authorized.
+goal. The last goal snapshot reported paused; owner-directed work can still continue
+under the current queue. No reset, scope reduction or false completion is authorized.
 
 <!-- active-build-authority:v1 -->
 ```json
@@ -163,4 +209,4 @@ implementation. No reset, scope reduction or false completion is authorized.
 
 The authority list tracks registered development worktrees, not provider child
 processes. No provider invocation is currently running; terminal results are in
-the active ledger above.
+their task ledgers above.
