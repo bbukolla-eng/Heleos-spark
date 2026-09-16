@@ -6,7 +6,7 @@ name: auto-merge
 # Converting the pull request to a draft also cancels it, which GitHub does by itself.
 on:
   pull_request:
-    types: [labeled, unlabeled, ready_for_review, synchronize]
+    types: [labeled, unlabeled, ready_for_review, synchronize, reopened]
 permissions:
   contents: write
   pull-requests: write

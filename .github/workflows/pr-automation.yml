@@ -1,0 +1,116 @@
+name: pr-automation
+# Automates draft PR creation for branch pushes and applies the `automerge`
+# label when policy signals are green. This workflow holds a write-capable
+# token, so repository logic is checked out from the trusted base SHA only.
+on:
+  push:
+    branches-ignore: [main]
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review, labeled, unlabeled]
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  checks: read
+concurrency:
+  group: pr-automation-${{ github.event_name }}-${{ github.ref || github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  ensure-draft-pr:
+    if: github.event_name == 'push' && github.ref_name != 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Open or update draft PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          GH_OWNER: ${{ github.repository_owner }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          pr_number="$(gh api "repos/${GH_REPO}/pulls" -f state=open -f head="${GH_OWNER}:${BRANCH}" -f base=main --jq '.[0].number // empty')"
+          body="Automated draft PR for branch \`${BRANCH}\`.\n\nThis PR is managed by \`.github/workflows/pr-automation.yml\`."
+          if [ -z "${pr_number}" ]; then
+            gh api "repos/${GH_REPO}/pulls" \
+              -f title="chore: draft PR for ${BRANCH}" \
+              -f head="${BRANCH}" \
+              -f base=main \
+              -f body="${body}" \
+              -F draft=true >/dev/null
+            echo "created draft PR for ${BRANCH}"
+            exit 0
+          fi
+          is_draft="$(gh api "repos/${GH_REPO}/pulls/${pr_number}" --jq '.draft')"
+          if [ "${is_draft}" = "true" ]; then
+            gh api -X PATCH "repos/${GH_REPO}/pulls/${pr_number}" -f body="${body}" >/dev/null
+            echo "updated draft PR #${pr_number}"
+          else
+            echo "open PR #${pr_number} is ready; no draft update applied"
+          fi
+
+  automerge-policy:
+    if: github.event_name == 'pull_request' && github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      checks: read
+    env:
+      REQUEST_LABEL: automerge-request
+      AUTO_LABEL: automerge
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 1
+      - name: Apply automerge label policy
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          WORK="${RUNNER_TEMP}/pr-automation"
+          mkdir -p "${WORK}"
+          gh api --paginate "repos/${GH_REPO}/commits/${HEAD_SHA}/check-runs" --jq '.check_runs[]' | jq -s '.' > "${WORK}/check-runs.json"
+          set +e
+          python3 tools/github/pr_automation_gate.py evaluate \
+            --check-runs "${WORK}/check-runs.json" \
+            --required checks \
+            --required codex \
+            --required copilot \
+            --required ecc \
+            --required amazon-q
+          status=$?
+          set -e
+
+          has_request="$(gh api "repos/${GH_REPO}/issues/${PR_NUMBER}" --jq '[.labels[].name] | index(env.REQUEST_LABEL) != null')"
+          has_auto="$(gh api "repos/${GH_REPO}/issues/${PR_NUMBER}" --jq '[.labels[].name] | index(env.AUTO_LABEL) != null')"
+
+          if [ "${has_request}" = "true" ] && [ "${status}" -eq 0 ]; then
+            if [ "${has_auto}" != "true" ]; then
+              gh api "repos/${GH_REPO}/issues/${PR_NUMBER}/labels" -f labels[]="${AUTO_LABEL}" >/dev/null
+              echo "added ${AUTO_LABEL} label"
+            else
+              echo "${AUTO_LABEL} label already present"
+            fi
+            exit 0
+          fi
+
+          if [ "${has_auto}" = "true" ]; then
+            gh api -X DELETE "repos/${GH_REPO}/issues/${PR_NUMBER}/labels/${AUTO_LABEL}" >/dev/null || true
+            echo "removed ${AUTO_LABEL} label"
+          fi
+
+          if [ "${has_request}" != "true" ]; then
+            echo "request label ${REQUEST_LABEL} is absent; automerge is not enabled"
+          else
+            echo "required checks are not all green; automerge not enabled"
+          fi
