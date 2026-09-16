@@ -1,5 +1,48 @@
 # Current Status
 
+Certified curved-path distance dependency (2026-09-15, DUCT-CURVE-DISTANCE-1):
+completed by controller recovery, independently reviewed and locally integrated in
+/Users/bekim/Heleos-spark on main, base
+e7c06d68a498da7bd74715ccdf8a6527c1d486f6. This primitive encloses the distance from
+an exact point to a closed circular root/span, preserving direction and irrational
+endpoints. It rejects invalid inputs and exhausted precision/resource budgets.
+It does not yet change application evaluation reports or takeoff quantities.
+
+Actual Claude Code produced only its two assigned files under macos_seatbelt and
+an exact-task INTERNAL authorization. Attempt001 stopped before provider launch
+because the 66,647 instruction bytes exceeded the default prompt cap. Attempt002
+used a measured 131,072-byte cap and reached its 900-second deadline after writing
+both files, without a final report. Both failures and original files remain intact;
+no successful Claude completion or actual model identity is claimed. Codex inspected
+the complete tracked/untracked/ignored inventory, recovered only those named files,
+and fixed one reviewed preallocation-budget ordering issue in a separate copy.
+
+Final repaired bytes pass 11 candidate tests, the 16 existing geometry tests,
+78 independent closed-form cases and 38 invalid/resource rejection cases on each
+of Python 3.9.6, 3.12.14 and 3.14.6. Independent review found no remaining issue;
+its additional 3,362 exact algebraic cases passed on original candidate bytes,
+with the one-line repair reviewed separately. Existing approved geometry bytes
+remain unchanged. The authorization route also passes locked/offline Windows MSVC
+cross-compilation; no native Windows result or representative accuracy is claimed.
+
+The owner-completed Xcode license flow also restored the previously blocked
+Python3.9 check: all 475 prior duct tests now pass in 656.56 seconds with frozen
+source identities unchanged. That result is separate from the new helper checks.
+The earlier runtime-gate notes below remain historical. Source-backed implementation
+record: docs/research/notebooklm/duct-curve-distance-implementation-2026-09-15.json.
+Controller oracle: tests/drawing-workspace/verify_duct_curve_distance.py.
+Task ledger: .heleos/claude-headless-build-2026-09-15/.
+
+The original Claude timeout remains failed; acceptance applies to the reviewed
+controller recovery. Codex is the only commit owner. Other earlier product work
+remains uncommitted and preserved; no push, private-project upload, quantity-rule
+change or release acceptance occurred. All worker/test/review processes are terminal.
+
+Next: connect bounded circular/span path comparison to a versioned evaluation
+truth/report contract, then add explicit topology assertions and independently
+reviewed truth. Remaining Division23 categories and representative Mac/Windows
+acceptance are outstanding; the full goal is unfinished.
+
 Claude build authorization (2026-09-15, CLAUDE-INTERNAL-AUTHORIZATION-1):
 implemented, independently reviewed and accepted locally in
 /Users/bekim/Heleos-spark on main, starting from
