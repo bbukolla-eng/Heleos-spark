@@ -1,0 +1,72 @@
+{
+  "task": "DIV23-SCOPE-REVIEW-1",
+  "base": "ab438ee4e846d0e987f4ef85922c769d4acbe1e5",
+  "research": "div23-scope-review-findings-2026-09-16.json",
+  "mapping": [
+    {
+      "findings": [
+        "MS-S1",
+        "MS-S2",
+        "MS-S3",
+        "MS-S8"
+      ],
+      "behavior": "Dynamic source section inventory includes material and service clauses, heading-only and unknown-section gaps.",
+      "paths": [
+        "scripts/mechanical_scope.py",
+        "scripts/document_pipeline.py",
+        "apps/drawing-workspace/workflow.js"
+      ],
+      "checks": [
+        "test_mechanical_scope.py",
+        "test_document_pipeline.py",
+        "test_mechanical_scope_ui.js",
+        "acceptance_mechanical_scope.py"
+      ]
+    },
+    {
+      "findings": [
+        "MS-S5",
+        "MS-S6",
+        "MS-S7"
+      ],
+      "behavior": "Preserve suffix and conditional/negative source clauses; references do not establish supplied sections.",
+      "paths": [
+        "scripts/document_requirements.py"
+      ],
+      "checks": [
+        "test_document_requirements.py",
+        "acceptance_mechanical_scope.py"
+      ]
+    },
+    {
+      "findings": [
+        "MS-S4"
+      ],
+      "behavior": "No inferred procurement responsibility, quantity or catalogue completeness. Project/product coverage unverified. Existing review applies only to exact current clause.",
+      "paths": [
+        "scripts/mechanical_scope.py",
+        "scripts/takeoff_workflow.py"
+      ],
+      "checks": [
+        "test_mechanical_scope.py",
+        "test_document_pipeline.py"
+      ]
+    }
+  ],
+  "verification_ledger": ".heleos/div23-scope-review-2026-09-16/",
+  "native_windows": false,
+  "representative_acceptance": false,
+  "section_completed": false,
+  "taxonomy_completion": "Section implementation tasks remain in docs/plans/division-23-section-register.json; this is a shared supporting capability only.",
+  "additional_source_identity_verification": {
+    "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+    "edition": "August 2026",
+    "locator": "PDF pages 9-10",
+    "finding": "Government guide section identifiers include agency suffixes after dotted extensions. Preserve full displayed identity; do not infer CSI parentage.",
+    "behavior": "Literal agency suffixes survive parser and scope grouping separately",
+    "tests": [
+      "test_agency_suffix_remains_part_of_explicit_section_identity",
+      "test_agency_suffixes_stay_separate_without_inferred_parentage"
+    ]
+  }
+}

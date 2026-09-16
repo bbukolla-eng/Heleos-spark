@@ -10,15 +10,15 @@ import math
 import re
 
 
-PARSER_VERSION = 1
+PARSER_VERSION = 2
 MAX_LINES = 10000
 MAX_TEXT = 2 * 1024 * 1024
 SUPPORTED_ROLES = frozenset({"specification", "plan", "detail", "riser", "legend",
                              "addendum", "schedule"})
 
 _NUMBER = re.compile(r"^\s*(?:(?:\d+(?:\.\d+)*|[A-Z])[.)]|[\u2022\u2023\u25e6-])\s+")
-_SECTION = re.compile(r"^\s*(?:SECTION\s+)?(23(?:[ .-]\d{2}){2})(?=\s|$|[:\u2013\u2014-])", re.I)
-_SECTION_ANY = re.compile(r"^\s*SECTION\s+(\d{2}(?:[ .-]\d{2}){2})(?=\s|$|[:\u2013\u2014-])", re.I)
+_SECTION = re.compile(r"^\s*(?:SECTION\s+)?(23(?:[ .-]\d{2}){2}(?:(?:\.\d{2})+(?: \d{2})?)?)(?=\s|$|[:\u2013\u2014-])", re.I)
+_SECTION_ANY = re.compile(r"^\s*(?:SECTION\s+)?(\d{2}(?:[ .-]\d{2}){2}(?:(?:\.\d{2})+(?: \d{2})?)?)(?=\s|$|[:\u2013\u2014-])", re.I)
 _ACTION = re.compile(
     r"\b(?:shall|must|shall\s+not|must\s+not|is\s+required|are\s+required|"
     r"not\s+required|is\s+prohibited|are\s+prohibited)\b|"
@@ -101,8 +101,6 @@ def _is_directive(text):
 
 def _heading(text):
     value = text.strip()
-    if _SECTION.match(value) or _SECTION_ANY.match(value):
-        return True
     if _is_directive(value) or _CONTINUATION.match(_body(value)) or len(value) > 180:
         return False
     letters = [c for c in value if c.isalpha()]
@@ -219,6 +217,51 @@ def _record(page, lines, section, context, issues):
     return result
 
 
+def _close_unfinished(previous, line):
+    height = max(previous["bbox"][3] - previous["bbox"][1], line["bbox"][3] - line["bbox"][1])
+    gap = line["bbox"][1] - previous["bbox"][3]
+    return (-height * 0.2 <= gap <= height * 1.5 and
+            not previous["text"].rstrip().endswith((".", ";", "!", "?")) and
+            not _NUMBER.match(line["text"]))
+
+
+def _section_matches(lines):
+    matches = {}
+    for lane in _lanes(lines):
+        previous = None
+        unfinished_directive = False
+        for line in lane["lines"]:
+            text = line["text"]
+            continuing = previous is not None and _close_unfinished(previous, line)
+            continuation = continuing and unfinished_directive
+            match = _SECTION.match(text) or _SECTION_ANY.match(text)
+            if match:
+                tail = text[match.end():].strip(" :\u2013\u2014-")
+                prose = (text.rstrip().endswith((".", ";", ",")) or
+                         bool(re.match(r"(?:for|under|as|is|are|shall|must|applies|requires|and|or)\b", tail, re.I)))
+                if not prose and not continuation:
+                    matches[line["ordinal"]] = match
+            unfinished_directive = (line["ordinal"] not in matches and
+                                    (continuation or _is_directive(text)))
+            previous = line
+    return matches
+
+
+def section_headings(page, lines=None):
+    """Retain explicit heading occurrences even without an extracted directive."""
+    if page.get("role") not in SUPPORTED_ROLES:
+        return []
+    lines = _normal_lines(page, []) if lines is None else lines
+    matches = _section_matches(lines)
+    result = []
+    for line in lines:
+        match = matches.get(line["ordinal"])
+        if match:
+            result.append({"section": match.group(1), "text": line["text"],
+                           "source": _source(page, line["bbox"])})
+    return result
+
+
 def parse_requirements(page):
     """Return explicit requirement/reference proposals and unresolved layout issues.
 
@@ -231,11 +274,18 @@ def parse_requirements(page):
     issues = []
     requirements = []
     if page.get("role") not in SUPPORTED_ROLES:
-        return {"requirements": [], "issues": []}
+        return {"requirements": [], "sections": [], "issues": []}
     lines = _normal_lines(page, issues)
+    sections = section_headings(page, lines)
+    section_matches = _section_matches(lines)
+    for line in lines:
+        if line["ordinal"] not in section_matches and (_SECTION.match(line["text"]) or _SECTION_ANY.match(line["text"])):
+            issues.append(_issue(page, "section_reference_or_ambiguous_heading",
+                                 "A section-number line appears to be a reference or continuation; it was not counted as a supplied section heading.",
+                                 line["bbox"]))
     # Full-width explicit section headings apply to both columns below them.
-    shared_sections = [line for line in lines if (_SECTION.match(line["text"]) or
-                       _SECTION_ANY.match(line["text"])) and line["bbox"][2] - line["bbox"][0] >= 0.6]
+    shared_sections = [line for line in lines if line["ordinal"] in section_matches and
+                       line["bbox"][2] - line["bbox"][0] >= 0.6]
     for lane in _lanes(lines):
         section = None
         section_line = None
@@ -258,9 +308,9 @@ def parse_requirements(page):
                 if section_line is None or candidate["bbox"][1] > section_line["bbox"][1]:
                     flush()
                     section_line = candidate
-                    section = (_SECTION.match(candidate["text"]) or _SECTION_ANY.match(candidate["text"])).group(1)
+                    section = section_matches[candidate["ordinal"]].group(1)
                     heading_lines = []
-            match = _SECTION.match(text) or _SECTION_ANY.match(text)
+            match = section_matches.get(line["ordinal"])
             if match:
                 flush()
                 section = match.group(1)
@@ -269,13 +319,7 @@ def parse_requirements(page):
                 continue
             close_unfinished = False
             if paragraph:
-                previous = paragraph[-1]
-                height = max(previous["bbox"][3] - previous["bbox"][1],
-                             line["bbox"][3] - line["bbox"][1])
-                gap = line["bbox"][1] - previous["bbox"][3]
-                close_unfinished = (-height * 0.2 <= gap <= height * 1.5 and
-                                    not previous["text"].rstrip().endswith((".", ";", "!", "?")) and
-                                    not _NUMBER.match(text))
+                close_unfinished = _close_unfinished(paragraph[-1], line)
             if _heading(text) and not close_unfinished:
                 flush()
                 heading_lines = [line]
@@ -304,4 +348,4 @@ def parse_requirements(page):
                 flush()
         flush()
     requirements.sort(key=lambda item: (item["source"]["bbox"][1], item["source"]["bbox"][0], item["id"]))
-    return {"requirements": requirements, "issues": issues}
+    return {"requirements": requirements, "sections": sections, "issues": issues}

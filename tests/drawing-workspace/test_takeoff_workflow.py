@@ -154,6 +154,7 @@ class WorkflowTests(unittest.TestCase):
                 "measurements.csv", "takeoff.csv", "unresolved-items.csv", "document-reading.json", "sheet-scales.json",
         "schedule-fields.csv", "requirements.csv", "equipment-register.csv",
         "mechanical-knowledge.json", "mechanical-rule-candidates.csv",
+        "mechanical-scope.json", "mechanical-sections.csv", "mechanical-requirements.csv",
         "rule-applicability.json", "rule-scope-matches.csv", "requirement-decisions.csv",
         "rule-admission.json", "rule-versions.csv"})
             self.assertIn("16.404199", archive.read("takeoff.csv").decode("utf-8-sig"))

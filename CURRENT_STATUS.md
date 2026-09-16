@@ -21,82 +21,94 @@ usable deliverable; repair only that dependency.
 
 ## Resume here
 
-**Duct and air-device acceptance do not gate the other Division 23 categories.**
-The owner explicitly rejected that bottleneck on 2026-09-16. The initial class
-order is delivery priority; work advances from its actual inputs and class rules.
-Do not return to duct/air-device refinement to fill a gap in another task.
+**Work and completion are organized by actual Division 23 section/subsection and
+its entire taxonomy.** The owner clarified this explicitly on 2026-09-16. Use the
+[section task register](docs/plans/division-23-section-register.json) and
+[work breakdown with completion endpoints](docs/plans/division-23-section-work-breakdown.md).
+[Acceptance is a frozen pass/fail contract](docs/operations/acceptance.md): named
+inputs, independently expected results, numerical tolerances, checks and review.
+Once every mandatory criterion passes, close the task; new requirements get new
+tasks or explicit contract versions. Undefined criteria get named definition work.
+The checklist applies to that task only. Correctly recording an expected unknown
+or source conflict can pass its check; unrelated unfinished tasks do not block it.
 
-**Primary ready task: EQUIPMENT-COUNT-1 — implement connected physical-equipment
-counts under the approved E01–E12 and EC01–EC20.** The owner approved the
-[equipment packet](docs/superpowers/specs/2026-09-16-equipment-counting-rules.md)
-and its 20 examples on 2026-09-16; the
-[exact decision and hashes](tests/fixtures/equipment-takeoff/2026-09-16-owner-decision.json)
-are recorded. Do not ask again or repeat rule preparation.
+**Current build focus: Division 23 capabilities on Mac.** Accept each mechanical
+task against its defined Mac checks and advance. Keep shared code portable;
+`WINDOWS-DELIVERY-1` is a separate later delivery check after the connected workflow
+is ready, not a section/taxon acceptance dependency. Its deferred state is recorded
+under roadmap 0.7; it is not a reason to revisit completed work.
 
-First executable action: bind the approved inputs and implement the deterministic
-equipment count projection plus focused checks, reusing source identities and
-keeping instance, package and installation outputs separate. Then connect it to
-existing equipment observations, reconciliation, corrections/reopen/history and
-exports. The fixed finish line is that connected workflow with visible known and
-unresolved quantities; a standalone kernel is an intermediate checkpoint only.
-The task contract and research receipts are in
-`.heleos/equipment-rules-2026-09-16/resume-state.json`. No equipment quantity engine
-or representative/native acceptance is claimed yet.
+A generic category, parser, counter or export does not complete a section. Each
+required type, variant, attribute, relationship, exclusion and service obligation
+must have evidence and an explicit implementation/acceptance disposition.
+Project not-applicable decisions do not close product scope.
 
-**Ready independent preparation: PIPING-RULES-1 — prepare the hydronic piping
-rule/example packet.** Reuse N10's recorded public source inventory; verify
-applicable pipe/service/material/size, fittings/valves, vertical/dimension and
-work-status requirements. Keep steam/condensate, refrigerant and fuel variants
-explicit as separate subsequent packets. Coordinates, scale and source identity
-are reusable prerequisites; duct/air-device recognition is not. Do not transfer
-duct rules to piping without the appropriate class basis.
+**Primary next task: `D23-VA-232113-TAX` — complete the hydronic piping taxonomy
+artifact for the section's full scope.** Start from the verified VA 23 21 13 source
+and all 37 numbered paragraphs, including general requirements, products and
+execution. Build the typed entity/variant/attribute/relationship inventory, connect
+referenced work to its own section tasks, preserve optional clauses and unresolved
+conflicts, and provide coverage fixtures for every identified taxon. The next executable
+child is `D23-VA-232113-TAX-AUDIT-1`: deliver the source audit against its frozen
+HA01–HA08 criteria. Passing that audit closes the child only; full TAX coverage
+remains a separate endpoint. This is a
+section taxonomy task, not another duct or air-device refinement. The worked
+checklist and exact endpoint are in the section work breakdown. Source receipts:
+`.heleos/div23-section-work-plan-2026-09-16/`.
 
-**Ready independent implementation: EVIDENCE-PDF-1 — connect consolidated,
-source-linked PDF evidence to the existing export flow.** Use current supported
-quantities and preserve stale/unknown states. This output task must not indefinitely
-displace the remaining mechanical categories.
+Each registered section has separate **TAX → evidence/rules → calculation and
+reconciliation → corrections/outputs → acceptance** task endpoints. Those arrows
+represent actual input dependencies within that work; they do not require every
+section to run serially. All section and subsection coverage remains open until
+its complete required task set and child scope are accepted. Shared implementations
+must link to section tasks that reuse them and leave the remaining work visible.
 
-**Other ready independent lanes:** section/subsection coverage mapping;
-insulation/liner/jacket requirements; controls and supply/installation
-responsibility; common-work/support requirements; TAB, commissioning and O&M
-obligations. Their [actual dependencies and work lineup](docs/research/div23-scope-and-proposed-lineup-2026-09-16.md)
-are recorded individually. Specification requirement extraction can precede final
-host quantities; missing quantities block only their dependent calculations.
-Full hierarchy verification and project applicability remain distinct from
-product completion. Do not invent CSI section numbers or treat the nine-category
-vocabulary as full coverage.
+| Work available alongside the primary section task | Concrete next endpoint |
+| --- | --- |
+| `D23-CSI-CATALOGUE-1` | Obtain and verify the complete authoritative edition-specific CSI Division 23 section/subsection hierarchy; reconcile government/project aliases and omissions. Public guide inventories are a working seed, not a complete CSI list. |
+| `EQUIPMENT-COUNT-1`, shared by the relevant section CALC tasks | Implement and connect physical-equipment counts under already approved E01–E12/EC01–EC20, preserving instance/package/installation separation, unresolved quantities, correction/reopen/history and exports. Do not repeat approval or packet preparation. |
+| Registered controls, insulation, common-work, fuel, piping variants, plant/equipment and service sections | Execute their named TAX/EVID/RULE tasks from their own verified sources and inputs. Missing host quantities block only dependent calculations. Use the register's section-specific subjects and endpoints, not a single generic “other categories” task. |
+| Section OUT tasks / `EVIDENCE-PDF-1` shared support | Connect consolidated source-linked evidence PDF for supported results, then verify each section's required outputs as its data becomes available. |
 
-Use bounded assignments, one writer per path and available execution capacity.
-Optional representative-project feedback does not block authorized preparation.
-All remaining categories stay outstanding until connected and accepted.
+**Just delivered: `DIV23-SCOPE-REVIEW-1`.** The Documents stage now groups
+explicit supplied mechanical section headings and written requirements, preserves
+decimal suffixes, shows unknown/unclassified/heading-only scope and stale reviews,
+links original source locations, and reopens/exports JSON and CSV. It is a shared
+source-review capability, **not completion of any section's full taxonomy or
+takeoff**. Reuse this implementation; do not repeatedly polish it while the section
+work register remains unfinished.
 
-**Parked conditions:** air-device original-drawing recognition needs a materially
-different bounded experiment after eight terminal runs; Claude needs a refreshed
-login after the recorded expired-token failure; native Windows and representative
-acceptance need their own evidence. Each blocks only its dependent action.
-Record changed inputs and acceptance criteria before retrying. No provider process
-is running. A synthetic-reader demonstration is not recognition acceptance.
+Duct and air-device acceptance do not gate any unrelated section. The initial
+class order is priority, not an all-section dependency chain. Reuse accepted
+coordinates/scale, reconciliation, calculation, correction and Excel capabilities.
+The [equipment approval](tests/fixtures/equipment-takeoff/2026-09-16-owner-decision.json)
+remains authoritative; the next rule decision for another class blocks only that
+class's dependent calculation.
 
-**Reuse accepted work:** duct calculation/topology, schedule reconciliation,
-air-device software and approved rules, and source-linked Excel. Do not rerun
-accepted implementations, unchanged tests or status maintenance to fill a turn.
-The [replacement goal](docs/operations/build-goal.md) now states the same
-independence; it has not been installed in the app. The historical “first/next”
-wording in the calculation plan is explicitly superseded. Execute ready work,
-record its evidence and advance this section in the same completion update.
+**Parked conditions:** air-device recognition needs a materially different bounded
+experiment after eight terminal runs; Claude needs a refreshed login after the
+recorded expired-token failure. Record changed inputs before retrying. Provider unavailability
+does not block authorized Codex implementation. No provider process is running.
+
+Before handoff, record the completed child task, evidence, exact bytes and next
+unfinished child task; update this section in the same completion commit. Do not
+return to historical “next” statements. The [replacement goal](docs/operations/build-goal.md)
+now includes section/taxonomy closure; its text is prepared in the repository and
+has not changed or resumed the saved app goal. No build-continuation hook was
+identified or modified.
 
 ## Roadmap coverage snapshot
 
 | Roadmap section | Local implementation state | Remaining acceptance/work | Target product outcome |
 | --- | --- | --- | --- |
-| 0.1 Trust foundation | Rust core, immutable vault, intake, SQLite, recovery/backup and supply-chain implementation integrated; local macOS evidence retained. | Native Windows/NTFS, exact release candidate/CI, GitHub App decisions and release dossier remain open. They do not block authorized independent product implementation. | Reuse the core for local takeoff; preserve release gates. |
-| Engineering coordination | Guarded workers and provider controls implemented; bounded Claude workflow in use. | Native Windows containment/platform evidence remains open. | Support the current product task; no new orchestration redesign. |
-| 0.2 Knowledge, taxonomy, source/evaluation registry | Versioned sources, mechanical vocabulary, requirement/rule review and model baseline connected locally. Notebook inventory/research retained; relevant notebooks expanded. | Complete mechanical coverage, dataset rights/labels and representative truth/thresholds remain open. | Reuse verified findings for each active class; research only concrete implementation needs. |
+| 0.1 Trust foundation | Rust core, immutable vault, intake, SQLite, recovery/backup and supply-chain implementation integrated; local macOS evidence retained. | Task 10 release-candidate/CI, GitHub App decisions and release dossier remain open; platform delivery is tracked under 0.7. These are separate from current mechanical implementation. | Reuse the core for local takeoff; preserve release gates. |
+| Engineering coordination | Guarded workers and provider controls implemented; bounded Claude workflow in use. | Remaining platform qualification is tracked under 0.7. | Support the current product task; no new orchestration redesign. |
+| 0.2 Knowledge, taxonomy, source/evaluation registry | Versioned sources, requirement review and source-linked section projection connected locally. Section/subsection task register now defines taxonomy and acceptance endpoints. | Full authoritative hierarchy reconciliation, full taxonomy per section, dataset rights/labels and representative truth remain open. | Complete the hydronic section taxonomy; advance other registered section tasks independently. |
 | 0.3 Drawing coordinates and scale | Revision-bound geometry, scale review and invalidation connected locally. | Native parity and representative drawings remain to verify. | Reuse for source identity; each counts have no scale dependency. |
 | 0.4 Schedule reconciliation | Source-linked schedule extraction and plan correspondence, decisions/history and exceptions connected locally. | Broader schedule fields/types and representative acceptance remain open. | Feed air-device attributes/declarations and then equipment counts. |
-| 0.5 Full CSI Division 23 mechanical takeoff | Partial implementation: duct capability preserved; air-device calculation, source producer, review/correction UI and exports verified locally; equipment draft tag review exists. | Complete section/subsection coverage remains open across common work, O&M, schedules, insulation, commissioning, controls, fuel systems, piping/pumps, air distribution/cleaning, central heating/cooling and central/decentralized HVAC equipment. Cross-cutting demolition, relocation and revision scope remains open. **Air-device recognition remains unqualified:** the installed model missed all three physical symbols in AC01. | Equipment rules/examples approved; connected equipment count implementation is ready. Advance piping and other categories against their actual dependencies; no duct/air-device acceptance gate. |
-| 0.6 Correction, recalculation and estimator outputs | Duct and air-device correction/recalculation, append-only history, CSV/JSON and source-linked Excel with live formulas connected locally. Workbook projection, formula recalculation, stale/unknown states and portable packaging verified. | Consolidated evidence PDF, native Excel/Windows and representative estimator acceptance remain unfinished. | **Next independent implementation: consolidated evidence PDF for supported results**, reusing current source identities and unknown/review state. |
-| 0.7 Mac/Windows product | Local Mac drawing/takeoff preview and relocatable package; Windows launch/package implementation prepared. | Native Windows execution, desktop shell/parity and install/update/recovery acceptance remain open. | Advance shared local workflow and independent platform verification alongside supported takeoff classes. |
+| 0.5 Full CSI Division 23 mechanical takeoff | Partial implementation: duct capability preserved; air-device calculation, source producer, review/correction UI and exports verified locally; equipment draft tag review exists. | Complete section/subsection coverage remains open across common work, O&M, schedules, insulation, commissioning, controls, fuel systems, piping/pumps, air distribution/cleaning, central heating/cooling and central/decentralized HVAC equipment. Cross-cutting demolition, relocation and revision scope remains open. **Air-device recognition remains unqualified:** the installed model missed all three physical symbols in AC01. | Execute full section/subsection task sets and acceptance endpoints. Shared equipment rules/count infrastructure and section review support them; no section is closed by a generic helper. |
+| 0.6 Correction, recalculation and estimator outputs | Duct and air-device correction/recalculation, append-only history, CSV/JSON and source-linked Excel with live formulas connected locally. Workbook projection, formula recalculation, stale/unknown states and portable packaging verified. | Consolidated evidence PDF, desktop spreadsheet and representative estimator verification remain unfinished. | Consolidated evidence PDF is shared support for registered section OUT tasks, reusing current source identities and unknown/review state. |
+| 0.7 Mac/Windows product | Current implementation and validation target: Mac. Local drawing/takeoff preview and relocatable package; Windows launch/package implementation prepared. | `WINDOWS-DELIVERY-1` is deferred until the connected workflow is ready: native execution, containment/NTFS, desktop parity and install/update/recovery evidence. No Windows acceptance claimed. | Complete current mechanical capabilities on Mac, then verify Windows delivery as a separate milestone; it does not gate section/taxon engineering acceptance. |
 | 0.8 iPhone and bounded automation | Supporting automation contracts exist; no completed companion claim. | Companion/synchronization/approval scope and native device acceptance remain future work. | Preserve original roadmap scope; do not make companion work a new Mac/Windows delivery prerequisite. |
 | 1.0 Representative production pilot | No production acceptance claimed. | Freeze representative projects/truth/thresholds, verify full requested Division 23 scope and native platforms, then record human release acceptance. | Usable, traceable takeoffs demonstrated on representative Mac and Windows projects. |
 
@@ -122,6 +134,48 @@ Consolidated evidence PDF and all remaining Division 23 categories remain work.
 ## Completed checkpoints and retained evidence
 
 These records preserve outcomes and limits. Only **Resume here** selects work.
+
+- DIV23-SECTION-WORK-PLAN-1: at main base
+  `ab438ee4e846d0e987f4ef85922c769d4acbe1e5`, prepared a section/subsection work
+  register and fixed [acceptance policy](docs/operations/acceptance.md). The seed
+  contains 52 UFGS August 2026 and four independently identified VA guide records,
+  with 448 section-stage tasks and a hydronic worked breakdown across 37 numbered
+  paragraphs. The 222 hydronic taxon seeds require normalization and review;
+  they are not a completed taxonomy. Full authoritative CSI hierarchy acquisition
+  and reconciliation is explicit task `D23-CSI-CATALOGUE-1`; the two recorded
+  NotebookLM CSI sources were checked and contain duplicate orientation pages,
+  not the full hierarchy. One public N10 hydronic query reused its verified body;
+  source spans/identities and external retrievals are recorded. No section is
+  accepted and no completion percentage is asserted. Engineering acceptance now
+  requires fixed criteria and independent evidence; new requirements create new
+  tasks/contract versions. Independent review and structural checks passed: all
+  52 retained UFGS rows, 37 exact hydronic heading/spans, unique IDs, resolved
+  dependencies and an acyclic task graph. The owner reaffirmed **Mac first**;
+  section/taxon engineering acceptance now targets Mac, with no Windows task
+  dependency. Final policy review passed. Planning workers are terminal.
+  Ledger `.heleos/div23-section-work-plan-2026-09-16/`, including
+  `final-plan-checks.json` and `handoff.json`.
+  Next: the fixed hydronic source-audit child, then the remaining section TAX work;
+  approved equipment implementation remains independently ready.
+
+
+- DIV23-SCOPE-REVIEW-1: at main base
+  `ab438ee4e846d0e987f4ef85922c769d4acbe1e5`, connected supplied section/requirement
+  review, exact-source heading validation, existing applicability decisions,
+  reopening and JSON/CSV exports. Preserves decimal/agency suffixes; distinguishes
+  wrapped cross-references, non-23 boundaries, unclassified pages, heading-only
+  scope and current/stale/pending review. One logged N10 query and four source
+  reads yielded eight verified findings; no new quantity rules were adopted.
+  Independent review findings were corrected and checked. Local focused checks
+  pass on Python 3.9/3.12/3.14; browser section/source navigation, original five-page
+  Foundation/Poppler integration and isolated relocated-package reopen/export
+  pass. Exact commands, counts, runtime candidate identities and file hashes are
+  retained in `.heleos/div23-scope-review-2026-09-16/`.
+  [Source adoption record](docs/research/notebooklm/div23-scope-review-implementation-2026-09-16.json).
+  Full taxonomies, representative acceptance and native Windows remain open;
+  **no Division 23 section is marked complete by this feature.** All verification
+  processes are terminal. Next: `D23-VA-232113-TAX` in the section work register.
+
 
 - EQUIPMENT-RULES-1 / DIV23-UNBLOCK-1: at main base
   `7edc0964139d4431e88ade3f6367b4bbe038d495`, completed the E01–E12

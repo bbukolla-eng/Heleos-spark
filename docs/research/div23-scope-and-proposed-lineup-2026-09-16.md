@@ -1,5 +1,12 @@
 # Full Division 23 scope audit and proposed work lineup
 
+Execution update, 2026-09-16: the owner requires complete taxonomy and task
+endpoints for each actual section/subsection. The
+[section work register](../plans/division-23-section-register.json) and
+[section work breakdown](../plans/division-23-section-work-breakdown.md) now supply
+that structure. The category priorities below are historical planning context;
+select executable work from root `CURRENT_STATUS.md` and its named section task.
+
 Owner clarification, 2026-09-16: mechanical takeoff covers all CSI Division 23
 sections and subsections. Duct and air-device implementation are partial delivery
 slices. This restates the existing full Mac/Windows goal; it is not a scope change.

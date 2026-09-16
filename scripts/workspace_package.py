@@ -60,6 +60,7 @@ SOURCE_FILES = (
     "scripts/duct_topology.py",
     "scripts/local_mechanical_vision.py",
     "scripts/mechanical_knowledge.py",
+    "scripts/mechanical_scope.py",
     "scripts/mechanical_model_baseline.py",
     "scripts/mechanical_model_inference.py",
     "scripts/mechanical_model_scoring.py",

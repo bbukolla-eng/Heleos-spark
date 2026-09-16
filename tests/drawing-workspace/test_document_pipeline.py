@@ -129,6 +129,61 @@ class DocumentPipelineTests(unittest.TestCase):
             self.assertIn("1200", archive.read("schedule-fields.csv").decode("utf-8-sig"))
             self.assertIn("UNKNOWN", archive.read("equipment-register.csv").decode("utf-8-sig"))
 
+    def test_mechanical_sections_review_reopen_export_and_source_change(self):
+        original_read = self.reader.read
+        statements = [
+            ["SECTION 23 21 13 - HYDRONIC PIPING", "Provide isolation valves where shown."],
+            ["SECTION 23 09 23 - CONTROLS", "Submit the controls validation report."],
+            ["SECTION 23 07 19 - PIPING INSULATION", "Do not insulate existing piping unless noted."],
+            ["SECTION 23 05 93.01 - TESTING AND BALANCING", "Submit final balancing results.",
+             "SECTION 23 25 00 - WATER TREATMENT"],
+        ]
+        def read_scope(snapshot, index):
+            if snapshot.read() != b"synthetic verified PDF":
+                raise AssertionError("Wrong verified source")
+            return xhtml([schedule.line(.05 + i * .08, [(.05, value)])
+                          for i, value in enumerate(statements[index])])
+        self.reader.read = read_scope
+        self.addCleanup(setattr, self.reader, "read", original_read)
+        for index in range(4):
+            self.command("page", {"source": {"revision_id": REVISION, "index": index},
+                "role": "specification", "label": "SPEC-" + str(index),
+                "building": "", "level": "", "note": "Original scope fixture"})
+        view = self.command("read_documents", {})
+        self.engine.thread.join(timeout=5)
+        self.assertFalse(self.engine.thread.is_alive())
+        view = self.flow.view()
+        coverage = view.get("mechanical_scope", {})
+        self.assertEqual([s["section"] for s in coverage.get("sections", [])],
+                         ["23 05 93.01", "23 07 19", "23 09 23", "23 21 13", "23 25 00"])
+        self.assertEqual(coverage["sections"][-1]["review_state"], "no_requirements_identified")
+        requirement = next(r for r in view["document_reading"]["requirements"] if r["section"] == "23 21 13")
+        reviewed = self.command("requirement_review", {"requirement_id": requirement["id"], "disposition": "applicable"})
+        row = next(r for r in reviewed["mechanical_scope"]["sections"] if r["section"] == "23 21 13")
+        self.assertEqual(row["counts"]["applicable"], 1)
+        reopened = drawing.TakeoffWorkflow(self.workspace).view()
+        self.assertEqual(reopened["mechanical_scope"], reviewed["mechanical_scope"])
+        with zipfile.ZipFile(io.BytesIO(self.flow.export())) as archive:
+            exported = json.loads(archive.read("mechanical-scope.json"))
+            self.assertEqual(exported, reviewed["mechanical_scope"])
+            self.assertIn("23 05 93.01", archive.read("mechanical-sections.csv").decode("utf-8-sig"))
+            self.assertIn("controls validation report", archive.read("mechanical-requirements.csv").decode("utf-8-sig"))
+        self.command("page", {"source": {"revision_id": REVISION, "index": 0},
+            "role": "addendum", "label": "Changed", "building": "", "level": "", "note": "Role changed"})
+        stale = self.flow.view()["mechanical_scope"]
+        row = next(r for r in stale["sections"] if r["section"] == "23 21 13")
+        self.assertEqual(row["counts"]["applicable"], 0)
+        self.assertEqual(row["requirements"][0]["review_state"], "stale")
+        self.assertFalse(stale["project_coverage_verified"])
+
+    def test_section_record_must_match_retained_original_lines(self):
+        run = self.read()
+        self.assertTrue(run.get("sections"), "Explicit section headings must be retained")
+        run["sections"][0]["text"] = "SECTION 23 21 13 - FABRICATED HEADING"
+        self.engine._save(run)
+        with self.assertRaises(pipeline.DocumentError):
+            self.engine.verified_result(run["id"])
+
     def test_reading_is_a_prerequisite_and_changes_make_it_stale(self):
         self.register()
         with self.assertRaisesRegex(drawing.WorkflowError, "Read the current project documents first"):

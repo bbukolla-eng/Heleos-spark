@@ -1158,6 +1158,7 @@
       if (await save("read_documents", {}, "Read project content into schedule and requirement records")) render();
     }));
     readingSummary();
+    const groupedRequirements = mechanicalScopeSummary();
     knowledgeSummary();
     appendModelBaseline(content);
     const current = sourceName();
@@ -1185,42 +1186,128 @@
     }
     content.append(pageList);
     const reading = view.document_reading;
-    if (reading?.requirements.length) {
+    const remaining = list(reading?.requirements).filter((requirement) => !groupedRequirements.has(requirement.id));
+    if (remaining.length) {
       content.append(node("h3", "Requirements read from the job"));
-      for (const requirement of reading.requirements) {
-        const detail = node("details", "", "workflow-record");
-        detail.append(node("summary", label(requirement.categories.join(", ")) + " · " + requirement.text.slice(0, 110)));
-        detail.append(node("p", requirement.text));
-        if (requirement.section) detail.append(node("small", "Section " + requirement.section));
-        if (requirement.qualifiers.length) detail.append(node("p", requirement.qualifiers.join(" · ")));
-        if (requirement.knowledge) {
-          detail.append(node("p", knowledgeDescription(requirement.knowledge)));
-          detail.append(node("p", candidateApplicabilityDescription(requirement)));
-          for (const sourceEntry of sourceIssuesFor(requirement.knowledge)) {
-            detail.append(node("p", "Source issue: " + (sourceEntry.metadata?.title || "Linked source") +
-              " is " + label(sourceEntry.state) + ".", "error"));
-          }
-          const linkedRule = list(view.project_knowledge?.rules).find((rule) => rule?.id === requirement.knowledge.rule_id);
-          if (list(linkedRule?.issues).length && !sourceIssuesFor(requirement.knowledge).length) {
-            detail.append(node("p", "Source issue: a cited source requires resolution before this candidate can be used.", "error"));
-          }
-        }
-        appendApplicability(requirement, detail);
-        detail.append(button("Show written source", () => showSource(requirement.source), true));
-        const saved = view.requirement_reviews[requirement.id];
-        detail.append(node("p", saved ? label(saved.disposition) + ": " + saved.reason : "Awaiting applicability review"));
-        const f = node("div", "", "workflow-form");
-        const disposition = field(f, "Applies to this job", "disposition", saved?.disposition || "pending",
-          [["pending", "Pending"], ["applicable", "Applies"], ["excluded", "Does not apply"]]);
-        const reason = field(f, "Review reason", "reason", "");
-        f.append(button("Save requirement review", async () => {
-          if (!reason.value.trim()) throw new Error("Enter a reason for this requirement review.");
-          if (await save("requirement_review", { requirement_id: requirement.id, disposition: disposition.value }, reason.value)) render();
-        }, true));
-        detail.append(f);
-        content.append(detail);
+      for (const requirement of remaining) appendWrittenRequirement(requirement, content);
+    }
+  }
+  function mechanicalScopeSummary() {
+    const scope = view.mechanical_scope, rendered = new Set();
+    if (!scope || typeof scope !== "object") return rendered;
+    const panel = node("section", "", "workflow-scope-summary");
+    panel.setAttribute("aria-label", "Mechanical specification scope");
+    panel.append(node("h3", "Mechanical specification scope"), node("p",
+      "This list reflects extracted project requirements; it does not establish full Division 23 coverage or a completed takeoff.", "section-hint"));
+    if (scope.state === "stale") panel.append(node("p",
+      "The document set has changed. Read project documents again before reviewing these requirements.", "error"));
+    else if (scope.state === "reading") panel.append(node("p",
+      "Document reading is in progress. Section scope will update when it finishes."));
+    else if (["failed", "interrupted"].includes(scope.state)) panel.append(node("p",
+      "Document reading " + scope.state + ". Read project documents again to refresh section scope.", "error"));
+    else if (!scope.available) panel.append(node("p", "Read project documents to identify written section requirements."));
+    if (scope.available && !scope.section_index_available) panel.append(node("p",
+      "Read project documents again to identify section headings. Earlier requirements remain available below.", "section-hint"));
+    const originals = new Map(list(view.document_reading?.requirements).map((requirement) => [requirement.id, requirement]));
+    function appendRows(rows, target) {
+      for (const row of list(rows)) {
+        if (rendered.has(row.id)) continue;
+        appendWrittenRequirement({ ...originals.get(row.id), ...row }, target, row);
+        rendered.add(row.id);
       }
     }
+    for (const section of list(scope.sections)) {
+      const detail = node("details", "", "workflow-record");
+      const counts = section.counts || {};
+      detail.append(node("summary", "Section " + section.section + " · " + Number(counts.requirements || 0) + " requirements"));
+      const status = ({
+        requirements_reviewed: "Extracted requirements reviewed",
+        needs_review: "Requirements need review",
+        no_requirements_identified: "Section scope unverified · no requirements identified",
+        stale: "Earlier reading · refresh required",
+      })[section.review_state] || "Section scope unverified";
+      detail.append(node("p", status), node("p", Number(counts.applicable || 0) + " applies · " +
+        Number(counts.excluded || 0) + " excluded · " + Number(counts.pending || 0) + " pending · " + Number(counts.stale || 0) + " stale"));
+      for (const heading of list(section.headings)) {
+        const line = node("p", heading.text);
+        if (sourceRef(heading.source)) line.append(button("Show section heading", () => showSource(heading.source), true));
+        detail.append(line);
+      }
+      appendRows(section.requirements, detail);
+      panel.append(detail);
+    }
+    if (scope.section_index_available && !list(scope.sections).length) panel.append(node("p",
+      "No Division 23 section headings were identified in this reading. Section scope remains unverified."));
+    if (list(scope.unassigned_requirements).length) {
+      panel.append(node("h4", "Requirements without an identified section"));
+      appendRows(scope.unassigned_requirements, panel);
+    }
+    if (scope.other_division_requirement_count) panel.append(node("p", scope.other_division_requirement_count +
+      " requirement(s) from other divisions remain in document review."));
+    if (list(scope.unread_pages).length) {
+      panel.append(node("h4", "Pages needing further reading"));
+      for (const page of scope.unread_pages) {
+        const status = ({ needs_ocr: "Needs image reading", failed: "Reading failed", unassigned: "Page role unassigned" })[page.state] || label(page.state);
+        const line = node("p", status);
+        if (sourceRef(page.source)) line.append(button("Show unread page", () => showSource(page.source), true));
+        panel.append(line);
+      }
+    }
+    for (const issue of list(scope.issues)) {
+      const line = node("p", issue.message, "error");
+      if (sourceRef(issue.source)) line.append(button("Show scope issue source", () => showSource(issue.source), true));
+      panel.append(line);
+    }
+    content.append(panel);
+    return rendered;
+  }
+  function appendWrittenRequirement(requirement, target, projection = null) {
+    const detail = node("details", "", "workflow-record");
+    detail.append(node("summary", label(list(requirement.categories).join(", ")) + " · " + requirement.text.slice(0, 110)));
+    detail.append(node("p", requirement.text));
+    if (requirement.section) detail.append(node("small", "Section " + requirement.section));
+    if (list(requirement.qualifiers).length) detail.append(node("p", requirement.qualifiers.join(" · ")));
+    if (requirement.knowledge) {
+      detail.append(node("p", knowledgeDescription(requirement.knowledge)));
+      detail.append(node("p", candidateApplicabilityDescription(requirement)));
+      for (const sourceEntry of sourceIssuesFor(requirement.knowledge)) {
+        detail.append(node("p", "Source issue: " + (sourceEntry.metadata?.title || "Linked source") +
+          " is " + label(sourceEntry.state) + ".", "error"));
+      }
+      const linkedRule = list(view.project_knowledge?.rules).find((rule) => rule?.id === requirement.knowledge.rule_id);
+      if (list(linkedRule?.issues).length && !sourceIssuesFor(requirement.knowledge).length) {
+        detail.append(node("p", "Source issue: a cited source requires resolution before this candidate can be used.", "error"));
+      }
+    }
+    appendApplicability(requirement, detail);
+    detail.append(button("Show written source", () => showSource(requirement.source), true));
+    const canReview = view.document_reading?.state === "completed" && !view.document_reading.stale &&
+      (!projection || view.mechanical_scope.state === "current");
+    const saved = view.requirement_reviews?.[requirement.id];
+    let dispositionValue = saved?.disposition || "pending";
+    if (projection) {
+      const reviewState = projection.review_state === "current" && !canReview ? "stale" : projection.review_state;
+      dispositionValue = reviewState === "current" ? projection.disposition : "pending";
+      const dispositionName = (value) => ({ applicable: "Applies", excluded: "Does not apply" })[value] || "Pending";
+      const reason = projection.reason ? ": " + projection.reason : "";
+      if (reviewState === "current") detail.append(node("p", "Current review · " + dispositionName(projection.disposition) + reason));
+      else if (reviewState === "stale") detail.append(node("p", "Stale review · needs review. Previously " +
+        dispositionName(projection.stored_disposition || projection.disposition) + reason, "error"));
+      else detail.append(node("p", "Awaiting applicability review"));
+    } else detail.append(node("p", saved ? label(saved.disposition) + ": " + saved.reason : "Awaiting applicability review"));
+    const f = node("div", "", "workflow-form");
+    const disposition = field(f, "Applies to this job", "disposition", dispositionValue,
+      [["pending", "Pending"], ["applicable", "Applies"], ["excluded", "Does not apply"]]);
+    const reason = field(f, "Review reason", "reason", "");
+    const saveReview = button("Save requirement review", async () => {
+      if (!canReview) throw new Error("Read the current project documents before reviewing this requirement.");
+      if (!reason.value.trim()) throw new Error("Enter a reason for this requirement review.");
+      if (await save("requirement_review", { requirement_id: requirement.id, disposition: disposition.value }, reason.value)) render();
+    }, true);
+    disposition.disabled = reason.disabled = saveReview.disabled = busy || !canReview;
+    f.append(saveReview);
+    detail.append(f);
+    target.append(detail);
   }
   function readingSummary() {
     const reading = view.document_reading;

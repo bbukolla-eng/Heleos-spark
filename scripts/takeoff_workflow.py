@@ -76,6 +76,7 @@ duct_source = _sheet_module("duct_source_producer")
 duct_evaluation = _sheet_module("project_duct_evaluation")
 duct_vision = _sheet_module("local_duct_vision_v3")
 takeoff_workbook = _sheet_module("takeoff_workbook")
+mechanical_scope = _sheet_module("mechanical_scope")
 
 STAGES = ("setup", "documents", "equipment", "measurements", "takeoff", "exceptions", "export")
 TITLES = ("Project setup", "Document review", "Equipment", "Measurements",
@@ -602,6 +603,7 @@ class TakeoffWorkflow:
         result.update(stages=stages, issues_view=problems, scopes=scope_status,
                       inventory=[dict(v, key=k, assignment=data["pages"].get(k)) for k, v in sheets.items()],
                       equipment=run_identity, equipment_rows=rows, document_reading=documents, project_knowledge=knowledge,
+                      mechanical_scope=mechanical_scope.build_view(documents, data["requirement_reviews"]),
                       schedule_reconciliation=reconciliation,
                       duct_takeoff=duct,
                       duct_producer=self.workspace.duct_producer.view(),
@@ -1292,6 +1294,25 @@ class TakeoffWorkflow:
                     archive.writestr("equipment-history.csv", equipment_history_csv)
                 if reading and reading["state"] == "completed":
                     archive.writestr("document-reading.json", packed(reading))
+                    coverage = view["mechanical_scope"]
+                    archive.writestr("mechanical-scope.json", packed(coverage))
+                    archive.writestr("mechanical-sections.csv", csv_bytes(
+                        ["Section", "Headings", "Requirements", "Applicable", "Excluded", "Pending", "Stale reviews", "Review state", "Sources", "Coverage"],
+                        [[row["section"], " | ".join(h["text"] for h in row["headings"]),
+                          row["counts"]["requirements"], row["counts"]["applicable"],
+                          row["counts"]["excluded"], row["counts"]["pending"], row["counts"]["stale"],
+                          row["review_state"], json.dumps([h["source"] for h in row["headings"]], ensure_ascii=False),
+                          "SUPPLIED SECTIONS ONLY - COMPLETENESS UNVERIFIED"]
+                         for row in coverage["sections"]]))
+                    scope_requirements = [(row["section"], requirement) for row in coverage["sections"]
+                                          for requirement in row["requirements"]]
+                    scope_requirements.extend(("UNASSIGNED", r) for r in coverage["unassigned_requirements"])
+                    archive.writestr("mechanical-requirements.csv", csv_bytes(
+                        ["Section", "Requirement", "Qualifiers", "Disposition", "Review state", "Stored disposition", "Reason", "Revision", "Page", "Location"],
+                        [[section, r["text"], "; ".join(r["qualifiers"]), r["disposition"],
+                          r["review_state"], r["stored_disposition"], r["reason"],
+                          r["source"]["revision_id"], r["source"]["index"] + 1,
+                          json.dumps(r["source"].get("bbox"))] for section, r in scope_requirements]))
                     knowledge = view["project_knowledge"]
                     if knowledge:
                         archive.writestr("mechanical-knowledge.json", packed(knowledge))

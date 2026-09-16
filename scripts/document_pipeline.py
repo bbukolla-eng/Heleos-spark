@@ -29,7 +29,7 @@ schedule_reader = module("document_schedule")
 requirement_reader = module("document_requirements")
 equipment_hints = module("equipment_takeoff")
 project_knowledge = module("project_knowledge")
-VERSION = "document-reading-3"
+VERSION = "document-reading-4"
 MAX_PAGES = 256
 MAX_RUN = 64 * 1024 * 1024
 MAX_EVIDENCE = 256 * 1024 * 1024
@@ -264,7 +264,7 @@ class DocumentPipeline:
                    "version": VERSION, "created_at": now(), "state": "queued", "fingerprint": fingerprint,
                    "reader": identity, "implementation": implementation, "sources": sources,
                    "pages": [], "progress": 0, "total_pages": len(sources), "schedule_rows": [],
-                   "requirements": [], "equipment_register": [], "issues": [], "quantity_authority": "draft_only"}
+                   "requirements": [], "sections": [], "equipment_register": [], "issues": [], "quantity_authority": "draft_only"}
             self._save(run)
             initial = copy.deepcopy(run)
             self.thread = threading.Thread(target=self._execute, args=(run,), name="document-reading", daemon=True)
@@ -311,6 +311,7 @@ class DocumentPipeline:
                     requirements = requirement_reader.parse_requirements(requirement_layout(page, schedules["rows"]))
                     run["schedule_rows"].extend(schedules["rows"])
                     run["requirements"].extend(requirements["requirements"])
+                    run["sections"].extend(requirement_reader.section_headings(page))
                     run["issues"].extend(schedules["issues"] + requirements["issues"])
                     if not page["word_count"]:
                         run["issues"].append({"code": "needs_ocr", "message": "This page needs image reading; no embedded text was found.", "source": source})
@@ -381,6 +382,14 @@ class DocumentPipeline:
         return run
 
     def knowledge_for(self, run):
+        if "sections" in run:
+            sections = []
+            for page in run["pages"]:
+                if "layout" in page:
+                    layout = json.loads(self._artifact_bytes(page["layout"]))
+                    sections.extend(requirement_reader.section_headings(layout))
+            if run["sections"] != sections:
+                raise DocumentError("section_lineage", "A section heading no longer matches its retained source lines.", 409)
         try:
             return project_knowledge.inspect_reading(run, self.knowledge_store)
         except project_knowledge.storage.KnowledgeError as error:
