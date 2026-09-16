@@ -1,0 +1,75 @@
+{
+  "task_id": "DUCT-TOPOLOGY-1",
+  "at": "2026-09-16T03:59:22.972592+00:00",
+  "state": "implemented, independently reviewed and accepted locally",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_commit": "2b3f612fcbb98823e91d619ae9f08d75e0176367",
+  "research_packet": "docs/research/notebooklm/duct-topology-findings-2026-09-15.json",
+  "research_packet_sha256": "2a3595fd860e2d9407a25a393277fab1474773cfa91abd930e518e6d46822936",
+  "adopted_findings": [
+    {
+      "source_id": "8b629240-2c89-40fa-a964-8a534e753948",
+      "passages": "sections2.2,2.3,4; exact lines/hashes in packet",
+      "behavior": "Separate explicit path-pair proposals and independent partial truth; source evidence, no crossing/proximity inference; graph diagnostics distinct from geometry and quantities",
+      "code": [
+        "scripts/duct_topology.py",
+        "scripts/local_duct_vision_v3.py",
+        "scripts/duct_source_producer.py",
+        "scripts/duct_path_scoring.py"
+      ],
+      "tests": [
+        "test_duct_topology.py",
+        "test_duct_topology_producer.py",
+        "test_duct_topology_scoring.py",
+        "test_project_duct_topology.py"
+      ]
+    }
+  ],
+  "verification": {
+    "affected_tests": 210,
+    "runtimes": [
+      "Python3.9.6",
+      "Python3.12.14",
+      "Python3.14.6"
+    ],
+    "all_runtime_exits": 0,
+    "ui_tests": 166,
+    "ui_exit": 0,
+    "independent_review": "No outstanding findings; CSV repair and imported-dependency identity repair rechecked",
+    "sealed_v2_replay": "Original v2 report bytes retained; scorer_changed blocks new run, reopen equal",
+    "relocated_package": {
+      "payloads": 62,
+      "isolated_imports_per_runtime": 16,
+      "manifest_sha256": "0c3c8f22947d9ad156b680da52018d78ecf29dee3c3efd10c98de1500a5bc9da"
+    }
+  },
+  "source_and_quantity_authority": "D01-D10, calculation, canonical geometry, distance/cover and legacy parser bytes unchanged; see unchanged-authority-identities.json",
+  "candidate": {
+    "provider": "Claude Code",
+    "run": "/Users/bekim/Heleos-spark/.worktrees/provider-runs/heleos-worker-LoowAU",
+    "exit": 0,
+    "seconds": 372.146,
+    "allowed_paths": [
+      "scripts/duct_topology.py",
+      "tests/drawing-workspace/test_duct_topology.py"
+    ],
+    "production_helper_unchanged": true,
+    "test_only_controller_repair": "Preserve invalid tuple inputs in test wrapper",
+    "model_reported": "claude-opus-5[1m]",
+    "advisory_token_limit_exceeded": true,
+    "output_tokens_reported": 36138,
+    "actions_attested": false,
+    "commits": "Codex only"
+  },
+  "failure_evidence": "Original candidate tests, initial209-test suite failures, test fixture race, CSV finding and corrections retained in ledger",
+  "remaining_limits": [
+    "Only explicit same-sheet undirected path-pair diagnostics, not full port/network topology or fitting quantities",
+    "No live configured-model accuracy or representative project acceptance claimed",
+    "No native Windows or release acceptance",
+    "Connected application integrations and earlier product work remain uncommitted; exact hashes and relocated package retained"
+  ],
+  "next_action": "Implement connected air-device counts under owner-approved A01-A12 and AC01-AC17; reuse applicable verified NotebookLM findings and bounded Claude assignments",
+  "goal_status": "active, full Division23 remains unfinished",
+  "ledger": ".heleos/duct-topology-2026-09-15/"
+}

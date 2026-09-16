@@ -1,5 +1,46 @@
 # Current Status
 
+Explicit duct connection diagnostics (2026-09-15, DUCT-TOPOLOGY-1):
+implemented, independently reviewed and accepted locally in
+/Users/bekim/Heleos-spark on main, base
+2b3f612fcbb98823e91d619ae9f08d75e0176367. The v3 local reader retains explicit
+same-sheet path-pair claims and original evidence. Frozen independent topology
+truth compares only named pairs under definite, unambiguous path matching.
+Missing or uncertain claims remain unresolved; unlisted pairs stay unknown.
+Source links, saved reports and draft CSV/JSON exports preserve those distinctions.
+No assertion changes an approved measurement, fitting count or physical identity.
+
+All 210 affected Python tests pass on each of Python 3.9, 3.12 and 3.14. All 166
+UI tests pass. A real prior v2 report was sealed and reopened under v3 without
+changing its bytes; changed scorer identity prevents reuse for a new run. The
+relocated 62-payload package verifies 16 isolated imports on each runtime.
+Independent review has no remaining finding. A missing unavailable-truth CSV
+row and actual-dependency hashing regression were repaired and rechecked; original
+failures and two test-fixture corrections remain recorded separately.
+
+Claude's two-file helper assignment exited successfully under macos_seatbelt.
+Codex independently reviewed it, corrected only its test wrapper, ran its checks,
+and integrated the helper. The reported output exceeded the advisory token
+ceiling; elapsed-time containment remained active. All worker, reviewer and
+verification processes are terminal. Codex remains the only commit owner.
+
+Evidence: .heleos/duct-topology-2026-09-15/ and
+ docs/research/notebooklm/duct-topology-implementation-2026-09-15.json.
+The standalone helper, its tests, research and this completion record are
+checkpointed. Connected application changes and earlier product work remain
+uncommitted, with accepted input hashes and the relocated package retained.
+No push, private project upload, live-model accuracy, native Windows result or
+release acceptance is claimed. Full Division 23 remains unfinished; detailed
+ports, cross-page topology and other mechanical categories remain open.
+
+The owner has now explicitly approved air-device rules A01–A12 and all 17
+AC01–AC17 examples. Exact pre-approval packet and example hashes are recorded in
+ tests/fixtures/air-device-takeoff/2026-09-15-owner-decision.json. The rules and
+examples are the settled counting basis; air-device implementation is outstanding.
+Next: implement the connected air-device count capability, using those approved
+rules and verified NotebookLM findings, with bounded Claude assignments and
+independent acceptance. Representative Mac/Windows projects remain required.
+
 Explicit topology preparation (2026-09-15, DUCT-TOPOLOGY-1): resumed in
 /Users/bekim/Heleos-spark on main from
 e88fc9bb99b931d69cbd1a3df59c4f783614dd31. All 14 prior accepted input hashes
