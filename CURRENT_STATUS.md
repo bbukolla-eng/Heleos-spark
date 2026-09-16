@@ -1,5 +1,24 @@
 # Current Status
 
+Explicit topology preparation (2026-09-15, DUCT-TOPOLOGY-1): resumed in
+/Users/bekim/Heleos-spark on main from
+e88fc9bb99b931d69cbd1a3df59c4f783614dd31. All 14 prior accepted input hashes
+still match. The Xcode license no longer blocks version reporting; its separate
+first-launch status probe exits 69 without diagnostics, which is not recorded as
+a successful setup check. Claude 2.1.261 reports an authenticated session.
+
+One bounded NotebookLM query and indexed-source retrieval completed. Four
+Digitize-PID passages verify separate geometry, graph association and domain
+validation. Generated crossover-specific claims not established by those passages
+are excluded. The committed plan defines explicit same-sheet path-pair diagnostics;
+missing relations remain unknown and approved quantities stay unchanged.
+
+Next: dispatch the two-file Claude helper assignment, then connect versioned
+source proposals, independent truth, reports, UI and exports. No worker is yet
+running at this checkpoint. Evidence: .heleos/duct-topology-2026-09-15/.
+Earlier application work remains preserved and uncommitted. Full Division 23,
+representative projects and native Windows acceptance remain outstanding.
+
 Connected circular/span evaluation (2026-09-15, DUCT-CURVE-EVALUATION-1):
 implemented, independently reviewed and accepted locally in
 /Users/bekim/Heleos-spark on main, base
