@@ -1,0 +1,54 @@
+Exact staged tree 154cbf81c1a0be35482b4a6f07dd70fa4839dbfc materialized into a disposable Git checkout; no untracked/unstaged project files supplied.
+$ python3 tools/ci/checks.py
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/notebook-inventory.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/expansion-summary-2026-09-14.md
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/findings.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-correction-findings-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-correction-implementation-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/air-device-findings-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/air-device-preparation-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-evidence-implementation-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-refresh-findings-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-refresh-implementation-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-cross-page-findings-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-cross-page-implementation-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-parent-reading-findings-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-parent-reading-implementation-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-parent-graphic-findings-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-parent-graphic-implementation-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-revision-findings-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-revision-implementation-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-export-findings-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-export-implementation-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-evaluation-findings-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-evaluation-implementation-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/workspace-packaging-findings-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/workspace-packaging-implementation-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/windows-launcher-cleanup-findings-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/windows-launcher-cleanup-implementation-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-circular-arc-findings-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-circular-arc-implementation-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-arc-splitting-findings-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-arc-splitting-implementation-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-arc-repartition-findings-2026-09-14.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-arc-repartition-implementation-2026-09-15.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-arc-revision-findings-2026-09-15.json
+link: docs/operations/notebooklm-research.md: ../research/notebooklm/duct-arc-revision-implementation-2026-09-15.json
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/research/engineering/roboflow-preparation-manifest-2026-09-13.json
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: tests/fixtures/duct-takeoff/README.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/operations/mechanical-dataset-audit.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/superpowers/plans/2026-09-10-equipment-workflow.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/superpowers/plans/2026-09-10-equipment-workflow.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/superpowers/plans/2026-09-10-equipment-workflow.md
+link: docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md: superpowers/plans/2026-09-10-equipment-workflow.md
+link: docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md: research/engineering/local-model-data-options-2026-09-10.md
+link: docs/superpowers/specs/2026-09-13-calculation-sequence-design.md: ../plans/2026-09-10-equipment-workflow.md
+link: docs/superpowers/specs/2026-09-13-calculation-sequence-design.md: ../../research/engineering/roboflow-six-dataset-comparison-2026-09-13.md
+link: docs/superpowers/specs/2026-09-13-calculation-sequence-design.md: ../../research/engineering/roboflow-floor-plan-context-2026-09-13.md
+link: docs/superpowers/specs/2026-09-13-calculation-sequence-design.md: ../../research/engineering/roboflow-signs-recognition-2026-09-13.md
+link: docs/superpowers/specs/2026-09-13-calculation-sequence-design.md: ../../research/engineering/roboflow-pid-two-classes-2026-09-13.md
+link: docs/superpowers/specs/2026-09-14-air-device-counting-rules.md: ../../research/notebooklm/air-device-findings-2026-09-14.json
+link: tests/fixtures/air-device-takeoff/approved-rule-packet.md: ../../research/notebooklm/air-device-findings-2026-09-14.json
+962 tracked files checked, 49 failures
+
+exit_code=1

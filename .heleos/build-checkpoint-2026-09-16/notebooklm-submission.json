@@ -1,0 +1,16 @@
+{
+  "task_id": "BUILD-CHECKPOINT-GUARD-1",
+  "provider": "NotebookLM via Gemini Notebook MCP",
+  "purpose": "Delayed public-source cross-check after correcting initial tool discovery mistake",
+  "data_class": "PUBLIC",
+  "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+  "source_ids": [
+    "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "4ed811a9-c317-4126-8255-2cba4425c440"
+  ],
+  "query": "Using only the selected Python standard-library sources, explain the requirements and pitfalls for a local verification script that invokes Git with an argument list and checks process exit codes, then computes SHA-256 over exact file bytes. Identify relevant exceptions and small examples. Cite source passages. Do not infer Git hook or GitHub Actions semantics from Python documentation.",
+  "policy_decision": "Standing public research authorization; no private code, drawings or project documents submitted",
+  "time": "2026-09-16T20:48:01.762Z",
+  "state": "request_recorded",
+  "result_ref": ".heleos/build-checkpoint-2026-09-16/notebooklm-query.json"
+}

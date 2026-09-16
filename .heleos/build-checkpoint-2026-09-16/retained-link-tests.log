@@ -1,0 +1,35 @@
+$ python3 -m unittest discover -s tests -p test_ci_checks.py -v
+test_a_null_policy_decision_is_reported_not_raised (test_ci_checks.EgressLedgerChecks.test_a_null_policy_decision_is_reported_not_raised) ... ok
+test_a_real_recorder_line_passes (test_ci_checks.EgressLedgerChecks.test_a_real_recorder_line_passes)
+The recorder serialises with sort_keys, so the validator must not compare key order. ... ok
+test_absent_ledger_is_not_a_failure (test_ci_checks.EgressLedgerChecks.test_absent_ledger_is_not_a_failure) ... ok
+test_an_unknown_data_class_fails (test_ci_checks.EgressLedgerChecks.test_an_unknown_data_class_fails) ... ok
+test_empty_source_hashes_fail (test_ci_checks.EgressLedgerChecks.test_empty_source_hashes_fail) ... ok
+test_record_missing_a_spec_field_fails (test_ci_checks.EgressLedgerChecks.test_record_missing_a_spec_field_fails) ... ok
+test_record_naming_a_missing_decision_fails (test_ci_checks.EgressLedgerChecks.test_record_naming_a_missing_decision_fails) ... ok
+test_refused_outcome_fails (test_ci_checks.EgressLedgerChecks.test_refused_outcome_fails) ... ok
+test_well_formed_record_passes (test_ci_checks.EgressLedgerChecks.test_well_formed_record_passes) ... ok
+test_broken_image_destination_is_reported (test_ci_checks.LinkAndProseChecks.test_broken_image_destination_is_reported) ... ok
+test_broken_relative_link_is_reported_and_good_link_is_not (test_ci_checks.LinkAndProseChecks.test_broken_relative_link_is_reported_and_good_link_is_not) ... ok
+test_dash_rule_applies_only_to_repository_documents (test_ci_checks.LinkAndProseChecks.test_dash_rule_applies_only_to_repository_documents) ... ok
+test_registry_hash_mismatch_is_reported (test_ci_checks.LinkAndProseChecks.test_registry_hash_mismatch_is_reported) ... ok
+test_duplicate_copies_and_malformed_records_fail_without_raising (test_ci_checks.RetainedDocumentLinks.test_duplicate_copies_and_malformed_records_fail_without_raising) ... ok
+test_main_checks_the_selected_repository_and_its_origin_registry (test_ci_checks.RetainedDocumentLinks.test_main_checks_the_selected_repository_and_its_origin_registry) ... ok
+test_malformed_registry_reports_failure_without_raising (test_ci_checks.RetainedDocumentLinks.test_malformed_registry_reports_failure_without_raising) ... ok
+test_missing_target_still_fails_in_a_mapped_document (test_ci_checks.RetainedDocumentLinks.test_missing_target_still_fails_in_a_mapped_document) ... ok
+test_only_exact_retained_bytes_use_original_link_location (test_ci_checks.RetainedDocumentLinks.test_only_exact_retained_bytes_use_original_link_location) ... ok
+test_origin_paths_cannot_escape_or_use_ambiguous_separators (test_ci_checks.RetainedDocumentLinks.test_origin_paths_cannot_escape_or_use_ambiguous_separators) ... ok
+test_registry_and_mapped_paths_must_be_regular_files (test_ci_checks.RetainedDocumentLinks.test_registry_and_mapped_paths_must_be_regular_files) ... ok
+test_registry_entries_are_validated_even_when_copy_is_not_selected (test_ci_checks.RetainedDocumentLinks.test_registry_entries_are_validated_even_when_copy_is_not_selected) ... ok
+test_symlink_escape_is_rejected (test_ci_checks.RetainedDocumentLinks.test_symlink_escape_is_rejected) ... ok
+test_unmapped_live_document_keeps_normal_relative_resolution (test_ci_checks.RetainedDocumentLinks.test_unmapped_live_document_keeps_normal_relative_resolution) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.050s
+
+OK
+4 tracked files checked, 0 failures
+retained origins: entry 1: sha256 mismatch for archives/retained.md: 8dcc0108ec6f1650f15e97909392fb8839e0757e6c48c3d30c3896006db450f1
+4 tracked files checked, 1 failures
+
+exit_code=0

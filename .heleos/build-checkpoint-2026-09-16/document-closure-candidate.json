@@ -1,0 +1,319 @@
+{
+  "task_id": "CI-DOCUMENT-CLOSURE-1",
+  "reason": "Clean staged snapshot exposed existing Markdown references to untracked prior documentation. No code or original source drawings included. Candidate requires read-only independent review before exact-path staging.",
+  "documents": [
+    {
+      "path": "docs/operations/mechanical-dataset-audit.md",
+      "sha256": "2675e09cebe7776c5e003a754c923e9fd6e300dfe6074ebe0d0a09692292633b",
+      "bytes": 4481,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/engineering/dataset-candidates/roboflow-floor-plans-zeb7z.json",
+      "sha256": "2c9f7eee97076866d9c2af054880d1a666f6be2d71f84e582f8d3562c4a3f252",
+      "bytes": 5120,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/engineering/dataset-candidates/roboflow-p-id-2-classes-er8vf.json",
+      "sha256": "5777e3877b940a94f23d16e00f63fda5eea5e8b0335aac09fb63a35906e688fd",
+      "bytes": 4358,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/engineering/dataset-candidates/roboflow-signs-recongnition.json",
+      "sha256": "30025d352b778792c4e3c0ec6a83511944b25305bc11161dc51c08bd6a5ab145",
+      "bytes": 4259,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/engineering/local-model-data-options-2026-09-10.md",
+      "sha256": "207fda053c0c3dfe24cbf7f17587ff886fd9183038f6e4e55f98fe31c555b7bf",
+      "bytes": 15829,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/engineering/roboflow-floor-plan-context-2026-09-13.md",
+      "sha256": "3f02b4f89dcfbfcc403762d65f645a52d64772b913becdf2e0c386611eb3109a",
+      "bytes": 2947,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/engineering/roboflow-pid-two-classes-2026-09-13.md",
+      "sha256": "73a02fcb6688bdfe01be8c0431d59fa313ef9869b55f8518499cd1894e6ece73",
+      "bytes": 5597,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/engineering/roboflow-preparation-manifest-2026-09-13.json",
+      "sha256": "7f71081766b70ad3fb3726706fd14d3180658cb5e4d17bb36d1d0d7769d0f107",
+      "bytes": 26586,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/engineering/roboflow-signs-recognition-2026-09-13.md",
+      "sha256": "bfee2a7d7c3b0eeeeaa9a965e20f62848475173cdda5016b201fbcca25a323b3",
+      "bytes": 2297,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/engineering/roboflow-six-dataset-comparison-2026-09-13.md",
+      "sha256": "16e22a3b3ead57845bd5fbfa5ddb877634e1c8684bc45987abaa593eab624745",
+      "bytes": 6165,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/air-device-findings-2026-09-14.json",
+      "sha256": "4b8c43c7f60fc80e1513c003853aa1bbe4395a51b2105256512d0f9a24b44a0d",
+      "bytes": 20746,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/air-device-preparation-2026-09-14.json",
+      "sha256": "65be61109ad87ce7e11b11172f7485e8932161af141a7bb78a7b1c7742ec0a92",
+      "bytes": 5368,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-arc-repartition-findings-2026-09-14.json",
+      "sha256": "cab238ec0707abcc1cfa65e48ceff4aa1a586ff2ed8a4abbccf3fae731046f19",
+      "bytes": 23327,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-arc-repartition-implementation-2026-09-15.json",
+      "sha256": "235059e2006583848a29ade3ba2187be0f1af40632708a3fbab40f182803575a",
+      "bytes": 8732,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-arc-revision-findings-2026-09-15.json",
+      "sha256": "8fb224365ea5702b2b0c99ddceebb60aaca281f5b1e05063dc765b96aeb51c22",
+      "bytes": 13766,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-arc-revision-implementation-2026-09-15.json",
+      "sha256": "da6ebc505e7b2e6647af9e14692148fd1d942e2ed1626f8a9eb09dad3d6e00c2",
+      "bytes": 6330,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-arc-splitting-findings-2026-09-14.json",
+      "sha256": "c8275ad08c368df28ac7ceb74cd7c4fcb428819a823d9c5a1f7bb931b126ab0d",
+      "bytes": 12927,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-arc-splitting-implementation-2026-09-14.json",
+      "sha256": "28b7ae87c5fb0cb5a7dacd1815d36651d891601643bcab49899a2cae2ba69d75",
+      "bytes": 19001,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-circular-arc-findings-2026-09-14.json",
+      "sha256": "182dc170bd23247e3922e1f35c5b5b293689a6214f023f39618c35fffb58fbe2",
+      "bytes": 13107,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-circular-arc-implementation-2026-09-14.json",
+      "sha256": "8b90b4f4a8e38bb4ad0afe6f2ae946829255f4c0b9c9088e9f1c00cba9ebf64b",
+      "bytes": 17172,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-correction-findings-2026-09-14.json",
+      "sha256": "b1b8520ae1a2b0a561b91f6547ea397debb9f1796fe5f7541a53883ddeafd28c",
+      "bytes": 14694,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-correction-implementation-2026-09-14.json",
+      "sha256": "adf04240bd5c47ae9c8093286e7c4a27fa517c49c42fddf0ae1a5a15e85527ad",
+      "bytes": 10304,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-cross-page-findings-2026-09-14.json",
+      "sha256": "b175abbb3d6e72292ed582bc2f3dcafee8824c414763f2001cdb18e3e02428a5",
+      "bytes": 18823,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-cross-page-implementation-2026-09-14.json",
+      "sha256": "8ef967c42cccffb4cdbaf134b145690dee9aa380677286de171f2e7bb0a285f7",
+      "bytes": 7115,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-evaluation-findings-2026-09-14.json",
+      "sha256": "074f28f2ede99b35c75bbf072a29aa58f2f8c541a8e90143c954bed8ed11ba6a",
+      "bytes": 34582,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-evaluation-implementation-2026-09-14.json",
+      "sha256": "65074b872e3621dd29bedad25e9bfc107c4867709ed17b2c30e4460e47b40c51",
+      "bytes": 10049,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-evidence-implementation-2026-09-14.json",
+      "sha256": "bb585d3e5b38be780c39d3cd284dd567128e68ef4aae2ad4772b5070267bdf3d",
+      "bytes": 11478,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-export-findings-2026-09-14.json",
+      "sha256": "4330a3300a7d7e48f382943fd720194fbbaea356c4526317cb0417bd00cb0e24",
+      "bytes": 24676,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-export-implementation-2026-09-14.json",
+      "sha256": "894abb492e569ec899c09a4d053748ec506f971f9d3a5d230a9a6a16495c247d",
+      "bytes": 14422,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-parent-graphic-findings-2026-09-14.json",
+      "sha256": "4a1471366dc5deaabffe61cdfb04e2f801d2e772ce7839e720dc31342064190b",
+      "bytes": 19972,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-parent-graphic-implementation-2026-09-14.json",
+      "sha256": "482c319a785d7ded54207aa7d759fcb00a37a9a50a297c4fe6bb6768a5deb10a",
+      "bytes": 7733,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-parent-reading-findings-2026-09-14.json",
+      "sha256": "06be3bdaf2bc8a907015821ec90c427a1eec678e128b64de56b7e81d35c7f191",
+      "bytes": 21134,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-parent-reading-implementation-2026-09-14.json",
+      "sha256": "b7e89436c34911154dc0221be06c85c5405e5da591a8b0e0bf7f998116e15d0a",
+      "bytes": 8616,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-refresh-findings-2026-09-14.json",
+      "sha256": "5d88fdba208d69466251ad6672ddd55cec3795359e8941e541516ef642bb749d",
+      "bytes": 15595,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-refresh-implementation-2026-09-14.json",
+      "sha256": "ae58d9356b851c71fdf8d2adf731bf61ce884f667a2060b3d275e564c6076826",
+      "bytes": 8254,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-revision-findings-2026-09-14.json",
+      "sha256": "06f84062356f533273d6feb58e2a7fc129bafbd9acb726c26c1baa93bbee3521",
+      "bytes": 35778,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-revision-implementation-2026-09-14.json",
+      "sha256": "5212f4c2a79e6e176b1e354ef7088c974212d9cb22a35fb4769182f0a5eadf21",
+      "bytes": 15154,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/expansion-n05-2026-09-14.json",
+      "sha256": "0cc9680fb4cc6168a05d2913f2cd77f42592eab0fb7554013adff26a280146ac",
+      "bytes": 316716,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/expansion-n07-2026-09-14.json",
+      "sha256": "18977f666139017b93c7f83b94480730d79bcc4132f9cc89e95b9fd4d9326d58",
+      "bytes": 339451,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/expansion-n10-2026-09-14.json",
+      "sha256": "2df7e67d7fce0a4f458e74065912288541ac8d15df265e0b0dc3909266b99d22",
+      "bytes": 412850,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/expansion-n11-2026-09-14.json",
+      "sha256": "570f4da7724221fcef77a9e7b8d20184acfc89e915b7a3d19baf5c093b347947",
+      "bytes": 164052,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/expansion-secret-key-2026-09-14.json",
+      "sha256": "44a7c07d54df1edb7759f70786279e478107edf3b141077a43f5cc6ae399610d",
+      "bytes": 205221,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/expansion-summary-2026-09-14.json",
+      "sha256": "9ae6be0d3b9503be922019297d57d3e0bda97feb7774c6a6418de78321ec4a47",
+      "bytes": 9400,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/expansion-summary-2026-09-14.md",
+      "sha256": "34177f86ab66b473fcc9b4fea118d1e2f6e2aa428f2e6858a22a83d34743c065",
+      "bytes": 4416,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/findings.json",
+      "sha256": "4a924acd2d2cfb4f55c34f057100195ebc3bc16a50bc00c0ec3cf32cad00a7ed",
+      "bytes": 16508,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/notebook-inventory.json",
+      "sha256": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a",
+      "bytes": 81157,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/windows-launcher-cleanup-findings-2026-09-14.json",
+      "sha256": "85d08f13a0fb13bc2db144ed0bbe61bf523e3ece9e0f33f919e79b936403548a",
+      "bytes": 18275,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/windows-launcher-cleanup-implementation-2026-09-14.json",
+      "sha256": "5a5ddcdd5f83262c24c346f97629fa832ee00bd5cb4f0e8e82395f99d287039b",
+      "bytes": 11654,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/workspace-packaging-findings-2026-09-14.json",
+      "sha256": "4e05662dbde15216d31bcc619d67b655c2f1c28c912841644e8e8b05a3b2978d",
+      "bytes": 14462,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/research/notebooklm/workspace-packaging-implementation-2026-09-14.json",
+      "sha256": "ab74cd07d71b0ff198898a9f4faab1377ce3d1c411eb8991bb2732f25c1a2dd6",
+      "bytes": 10849,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-09-10-equipment-workflow.md",
+      "sha256": "cf48a5924a2afdade69613eac5170472e9013bbee029726b3d7b241fb8ad9641",
+      "bytes": 59796,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    },
+    {
+      "path": "tests/fixtures/duct-takeoff/README.md",
+      "sha256": "51fa4e2e1105d0b296e73df67fbb373819154fbdbc226f49ae2cdfb25607bc01",
+      "bytes": 3104,
+      "role": "Retained pre-existing project documentation/research history; no new mechanical authority"
+    }
+  ],
+  "unresolved": []
+}

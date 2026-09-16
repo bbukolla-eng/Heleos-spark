@@ -1,0 +1,66 @@
+{
+  "task_id": "BUILD-CHECKPOINT-GUARD-1",
+  "base": "db695750d095c6845f0689e3cc4da79d09333935",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "contract_sha256": "0500709ad45f87b3d5a3f24e90bcbf4aa8edae4efa8949deea29aa79b7acb94c",
+  "research_sha256": "eb2889bffa9841647475141d86e7db96bdd48efa59bd49177d29b3905d0f02c6",
+  "data_class": "INTERNAL repository context in authorized Codex workers; no external Claude submission",
+  "provider_state": "Claude expired OAuth unchanged; authorized Codex fallback. Initial NotebookLM discovery mistake corrected; N07 delayed source cross-check succeeded.",
+  "ownership": {
+    "checkpoint_validator": [
+      "scripts/verify-build-checkpoint.py",
+      "tests/test_build_checkpoint.py",
+      ".heleos/build-checkpoint-2026-09-16/validator-worker.md"
+    ],
+    "checkpoint_ci": [
+      "tools/ci/check_build_checkpoints.py",
+      "tests/test_checkpoint_ci.py",
+      ".github/workflows/ci.yml",
+      ".heleos/build-checkpoint-2026-09-16/ci-worker.md"
+    ],
+    "checkpoint_review": [
+      ".heleos/build-checkpoint-2026-09-16/review.md"
+    ],
+    "root": [
+      ".githooks/pre-commit",
+      "scripts/install-build-hooks.py",
+      "tests/test_build_checkpoint_hooks.py",
+      "docs/operations/build-checkpoints.md",
+      "docs/operations/build-checkpoint.json",
+      "CURRENT_STATUS.md",
+      "AGENTS.md",
+      "remaining task ledger files"
+    ],
+    "ci_retained_links": [
+      "tools/ci/checks.py",
+      "tests/test_ci_checks.py",
+      ".heleos/build-checkpoint-2026-09-16/retained-links-review.md"
+    ],
+    "ci_document_closure_review": [
+      ".heleos/build-checkpoint-2026-09-16/document-closure-review.md"
+    ]
+  },
+  "delegation_note": "Root delegated its CI implementation responsibility named in original contract to checkpoint_ci; criteria unchanged. No overlapping writers or worker commits.",
+  "instruction_update": "AGENTS adds the accepted checkpoint workflow instruction as part of this task; all workers notified.",
+  "forbidden": [
+    "Unrelated tracked or untracked edits",
+    "Git commits by workers",
+    "External submissions",
+    "Credential inspection",
+    "Push/deploy/settings changes"
+  ],
+  "limits": {
+    "root_verification": "Declared boundary tests and actual local installation; no mechanical suite reruns.",
+    "stop": "Concrete scope conflict or violated criterion only"
+  },
+  "acceptance": "V01-V07 in frozen contract; independent root checks and reviewer acceptance.",
+  "next_product_task": "EVIDENCE-PDF-1",
+  "initial_provider_state": "Claude expired OAuth unchanged; NotebookLM unavailable; Codex fallback",
+  "initial_research_sha256": "48ba2c3ef26d04fa5cac5926c8364d96778e02f34cef74fd739e3eb4d4e884b6",
+  "related_tasks": [
+    "CI-RETAINED-LINKS-1",
+    "CI-DOCUMENT-CLOSURE-1"
+  ],
+  "terminal_state": "All workers finished; coordinator finalizes exact-path local integration."
+}

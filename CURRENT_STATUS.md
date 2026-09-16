@@ -34,7 +34,7 @@ The [frozen contract](.heleos/equipment-count-2026-09-16/contract.md),
 [API](.heleos/equipment-count-2026-09-16/api.md) and
 [completion record](docs/operations/equipment-count-2026-09-16.json) bind EQ01–EQ07,
 exact candidate identities, independent reviews and check results. Accepted local
-software; integrated by the completion commit containing this status, based on
+software; integrated in `db695750d095c6845f0689e3cc4da79d09333935`, based on
 `05c55645fdf01a3238c13097c2f100dfa653799a` in the main checkout above.
 
 Verification: all 20 approved cases, adapter and connected workflow tests passed;
@@ -128,6 +128,49 @@ and Mac/Windows product acceptance remain outstanding.
 
 ## Latest checkpoint and continuity
 
+**BUILD-CHECKPOINT-GUARD-1 complete:** the repository-local pre-commit hook is
+installed, and the CI definition now checks every new checkpoint commit. The
+validator binds staged or committed status, task outcome, exact changed-file and
+evidence hashes, review and next action. It permits honest in-progress checkpoints;
+it does not rewrite status, commit, push, schedule tasks or reopen accepted work.
+The [current receipt](docs/operations/build-checkpoint.json),
+[independent review](.heleos/build-checkpoint-2026-09-16/review.md) and
+[operating workflow](docs/operations/build-checkpoints.md) preserve the contract,
+verification and usage. Base `db695750d095c6845f0689e3cc4da79d09333935`; integrated
+by the completion commit containing this checkpoint. All 190 top-level CI unit
+tests passed locally, including 61 guard boundary tests. Actual Git tests reject
+missing checkpoints and accept correctly recorded progress. No product quantity
+rule changed. All implementation/test workers are terminal.
+
+**CI-RETAINED-LINKS-1 complete:** the existing repository CI checker exposed
+56 relocated-document link errors and four roadmap prose errors. A bounded
+repair preserves archived/approved bytes, pins their original link locations and
+continues checking every target. All 23 affected tests passed independently and
+the scoped review accepted the repair. Earlier failed results remain recorded;
+the enlarged full test suite was not rerun or claimed as rerun.
+
+**CI-DOCUMENT-CLOSURE-1 complete:** the clean staged snapshot exposed references to
+pre-existing untracked documentation. An independent audit accepted exactly 52
+hash-pinned research/history documents for local retention. Their old next actions
+remain historical; they add no mechanical authority and do not replace this queue.
+The [closure review](.heleos/build-checkpoint-2026-09-16/document-closure-review.md)
+records the scope and provenance limits. The resulting clean staged snapshot
+passed the repository CI checker: 1,025 tracked files, zero failures. Its
+[exact-tree log](.heleos/build-checkpoint-2026-09-16/staged-repository-checks-final.log)
+preserves the tested identity; the earlier failed snapshot remains recorded.
+
+**Remaining limits:** local hooks can be bypassed; the checker establishes record
+consistency, not mechanical truth. CI publication and a successful GitHub run are
+not claimed; no push or remote settings change was made. New clones must run the
+installer. The initial NotebookLM lookup was too narrow: the connected tool is
+named Gemini Notebook MCP. A delayed N07 query and raw-source verification now
+confirm the limited Python process/hash findings; this is recorded honestly as
+post-implementation research, with the initial mistake preserved. Primary
+Git/Actions references were verified before implementation. Existing Claude
+authentication failure remains unchanged.
+This bounded guard setup returns execution to EVIDENCE-PDF-1 above; it is not a
+recurring status-only assignment.
+
 **EQUIPMENT-COUNT-1-SOFTWARE**, base
 `05c55645fdf01a3238c13097c2f100dfa653799a`: accepted connected software, with the
 [completion record](docs/operations/equipment-count-2026-09-16.json) preserving
@@ -163,12 +206,26 @@ redistribution permission is not established. The next product action is the
 evidence-PDF contract and implementation above; independent CSI definitions and
 behaviors may advance by actual required inputs.
 
-No goal, automation or hook was created or changed. The repository goal was
-amended; no running app goal is claimed. `active-build-status.py` validates
+The earlier CSI migration amended the repository goal. This checkpoint installs
+only the local completion hook and CI validation; no app goal or recurring
+automation was created. `active-build-status.py` validates
 committed checkout/worktree authority and does not schedule the build. Read
 status again for changed bytes, handoff or recovery; unchanged rereads are not
 progress. Earlier exact checkpoints remain in Git history and the
 [historical status archive](docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md).
+
+<!-- build-checkpoint:v1 -->
+```json
+{
+  "schema_version": 1,
+  "receipt": "docs/operations/build-checkpoint.json",
+  "task_id": "BUILD-CHECKPOINT-GUARD-1",
+  "outcome": "complete",
+  "next_task_id": "EVIDENCE-PDF-1",
+  "next_action": "freeze the PDF contract and literal expected specimen rows from accepted producers: separate quantity channels, known/unknown and stale states, source revision/page/region destinations, correction history and project scope limits. Reuse retained verified findings, then implement the PDF export and independently inspect its text, links and rendered pages on Mac. The finish line is a reproducible export matching those fixed cases and independent review; new mechanical recognition or complete section acceptance is not its prerequisite. Record the bounded contract in the task ledger before dependent implementation."
+}
+```
+<!-- /build-checkpoint -->
 
 <!-- active-build-authority:v1 -->
 ```json

@@ -1,0 +1,388 @@
+{
+  "schema_version": 1,
+  "task_id": "DUCT-CROSS-PAGE-1-RESEARCH",
+  "recorded_at": "2026-09-14T07:30:17.250067+00:00",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_commit": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "task_brief": {
+    "path": ".heleos/duct-cross-page-2026-09-14/research-brief.json",
+    "sha256": "7706ff674d95c3ea62eeed41c8b93125f5be2a7e24a9efe9b2b2742b670a2f6e"
+  },
+  "instruction_identity_checks": [
+    {
+      "path": "AGENTS.md",
+      "expected_sha256": "f1e8ca69afc99a02647b9509acf73fbf3bfb7c7c73029f7a20852a1cf33bb8a6",
+      "actual_sha256": "f1e8ca69afc99a02647b9509acf73fbf3bfb7c7c73029f7a20852a1cf33bb8a6",
+      "state": "unchanged"
+    },
+    {
+      "path": "SKILLS.md",
+      "expected_sha256": "939b8aac16ee926c9775efb2465ae3178d9f5365dc5cd2fe4df3aa46a52d017f",
+      "actual_sha256": "939b8aac16ee926c9775efb2465ae3178d9f5365dc5cd2fe4df3aa46a52d017f",
+      "state": "unchanged"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-13-calculation-sequence-design.md",
+      "expected_sha256": "6ae8b6a5a8a43b638b7cfae8f67c676de59a495e8aae8ca00eeb8870fd85d7b8",
+      "actual_sha256": "6ae8b6a5a8a43b638b7cfae8f67c676de59a495e8aae8ca00eeb8870fd85d7b8",
+      "state": "unchanged"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+      "expected_sha256": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6",
+      "actual_sha256": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6",
+      "state": "unchanged"
+    }
+  ],
+  "notebook_inventory_reused": {
+    "path": "docs/research/notebooklm/notebook-inventory.json",
+    "sha256": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a"
+  },
+  "inventory_snapshot": {
+    "notebooks": 59,
+    "selected_source_records": 200,
+    "retrieved_at": "2026-09-14T05:01:59.112065+00:00"
+  },
+  "current_notebook_identity_check": {
+    "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+    "source_count": 71,
+    "evidence": {
+      "path": ".heleos/duct-cross-page-2026-09-14/research-N10-current-sources-result.json",
+      "sha256": "ae9fd44111c93df37e8f07201ef7350cb2bcc0139f711eacf89ec24c46d3e6df"
+    }
+  },
+  "query": {
+    "state": "completed",
+    "access_method": "Direct callable mcp__gemini_notebook_mcp__notebook_query; no stdio fallback",
+    "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+    "source_ids": [
+      "b5c5a26e-ff2d-4275-be5f-2afdedfaedb9",
+      "2bc99eed-82b9-444a-8bab-450f5be0aa32"
+    ],
+    "conversation_id": "6d935a90-528d-4b1e-9292-c8b8e6b4533f",
+    "evidence": {
+      "path": ".heleos/duct-cross-page-2026-09-14/research-cross-page-query-result.json",
+      "sha256": "2101e0137645efec0c43db65b6297b190d94b8da89026793c603bfa6f2d40fb1"
+    },
+    "query_count": 1,
+    "timeout_requested_seconds": 45,
+    "old_N10_timed_out_query_retried": false,
+    "new_question_reason": "New cross-page dimension/elevation applicability requirement; differs from prior scale/takeoff question.",
+    "source_citation_checks": [
+      {
+        "citation_number": 1,
+        "source_id": "b5c5a26e-ff2d-4275-be5f-2afdedfaedb9",
+        "state": "verified_text_match",
+        "method": "whitespace normalization plus omission of standalone navigation URL lines"
+      },
+      {
+        "citation_number": 2,
+        "source_id": "b5c5a26e-ff2d-4275-be5f-2afdedfaedb9",
+        "state": "verified_text_match",
+        "method": "whitespace normalization"
+      },
+      {
+        "citation_number": 3,
+        "source_id": "b5c5a26e-ff2d-4275-be5f-2afdedfaedb9",
+        "state": "verified_text_match",
+        "method": "whitespace normalization"
+      },
+      {
+        "citation_number": 4,
+        "source_id": "b5c5a26e-ff2d-4275-be5f-2afdedfaedb9",
+        "state": "verified_text_match",
+        "method": "whitespace normalization"
+      },
+      {
+        "citation_number": 5,
+        "source_id": "b5c5a26e-ff2d-4275-be5f-2afdedfaedb9",
+        "state": "verified_text_match",
+        "method": "whitespace normalization"
+      },
+      {
+        "citation_number": 6,
+        "source_id": "b5c5a26e-ff2d-4275-be5f-2afdedfaedb9",
+        "state": "verified_text_match",
+        "method": "whitespace normalization"
+      },
+      {
+        "citation_number": 7,
+        "source_id": "2bc99eed-82b9-444a-8bab-450f5be0aa32",
+        "state": "verified_text_match",
+        "method": "whitespace normalization"
+      },
+      {
+        "citation_number": 8,
+        "source_id": "2bc99eed-82b9-444a-8bab-450f5be0aa32",
+        "state": "verified_text_match",
+        "method": "whitespace normalization"
+      },
+      {
+        "citation_number": 9,
+        "source_id": "2bc99eed-82b9-444a-8bab-450f5be0aa32",
+        "state": "verified_text_match",
+        "method": "whitespace normalization"
+      },
+      {
+        "citation_number": 10,
+        "source_id": "2bc99eed-82b9-444a-8bab-450f5be0aa32",
+        "state": "verified_text_match",
+        "method": "whitespace normalization"
+      },
+      {
+        "citation_number": 11,
+        "source_id": "2bc99eed-82b9-444a-8bab-450f5be0aa32",
+        "state": "verified_text_match",
+        "method": "whitespace normalization"
+      }
+    ],
+    "untrusted_followup": "Generated suggestion to inspect additional sources was not followed; this bounded task stops at verified context and explicit gaps."
+  },
+  "sources": [
+    {
+      "key": "blueprint-tutorial-N10",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "b5c5a26e-ff2d-4275-be5f-2afdedfaedb9",
+      "title": "Mastering Mechanical Blueprint Reading with Floor Plans, Sections, Isometrics, and Schedules - Free Video Tutorial",
+      "original_url": "https://vdci.edu/learn/blueprint-reading/mastering-mechanical-blueprint-reading",
+      "edition_or_date": "Page shows December 29, 2025 and author Matt F.; indexed lines 963-969",
+      "original_page_numbers": null,
+      "retrieved_at": "2026-09-14T07:27:05.596Z",
+      "text_location": ".heleos/duct-cross-page-2026-09-14/research-tutorial-N10-indexed-text.txt",
+      "content_sha256": "f014c7fb961c7a8e86c318c605115a14b99724fea320c7dba37fc791b4b00b44",
+      "result_evidence": {
+        "path": ".heleos/duct-cross-page-2026-09-14/research-tutorial-N10-source-result.json",
+        "sha256": "e66e562b64c0d40d26efc5774d2c4e1a5b85439b0cbf0b0ee19982cdb32dbe1d"
+      },
+      "verification_this_task": "New direct MCP source read; body verified; same bytes as prior N11 VDCI snapshot, so not independent corroboration.",
+      "classification": "Original educational article; contextual drawing interpretation, not a mechanical measurement standard"
+    },
+    {
+      "key": "drawing-scales",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "2bc99eed-82b9-444a-8bab-450f5be0aa32",
+      "title": "https://www.usfa.fema.gov/downloads/pdf/nfa/engineer-architect-scales.pdf",
+      "original_url": "https://www.usfa.fema.gov/downloads/pdf/nfa/engineer-architect-scales.pdf",
+      "retrieved_at": "2026-09-14T05:04:42.747743+00:00",
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-indexed-text.txt",
+      "content_sha256": "f10a1b00608efaec7e2144a84f03f514a0d1eb5bb0520c16935acf602b8085b4",
+      "result_evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-source-result.json",
+        "sha256": "0c58a27e4176d58b83df0e4e983c34519cd57e49f8bddc9090e0c0f5fc347ecf"
+      },
+      "edition_or_date": null,
+      "original_page_numbers": null,
+      "verification_this_task": "Retained indexed text and response hashes revalidated locally; no new source retrieval or publisher refresh.",
+      "classification": "FEMA training text for fire-inspection scale use"
+    },
+    {
+      "key": "mepdetect",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "4a7e4472-4c73-49fa-9e01-e33e1b9e20f5",
+      "title": "GitHub - DynMEP/MEPdetect: Symbol detection and circuit tracing for MEP construction drawings. Detects electrical symbols with YOLO11, traces how they are wired, and exports netlists and per-circuit counts to CSV, Excel, DXF or PDF. Hosted at mepdetect.com. \u00b7 GitHub",
+      "original_url": "https://github.com/DynMEP/MEPdetect",
+      "retrieved_at": "2026-09-14T05:18:04.078655+00:00",
+      "text_location": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-indexed-text.txt",
+      "content_sha256": "939ce39f0fba5ad26e084303b4d9918236ed516a080b77ee8f5eb917633db26e",
+      "result_evidence": {
+        "path": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-source-result.json",
+        "sha256": "b6e0065d7a3f0760b436a08e29295f3898a8c8f036f0808b642497d74f7ce832"
+      },
+      "edition_or_date": null,
+      "original_page_numbers": null,
+      "verification_this_task": "Retained indexed text and response hashes revalidated locally; no new source retrieval or publisher refresh.",
+      "classification": "Primary GitHub README for an electrical tracing tool; electrical conventions are not transferred to duct authority"
+    }
+  ],
+  "duplicate_source_observation": {
+    "new_N10_source_id": "b5c5a26e-ff2d-4275-be5f-2afdedfaedb9",
+    "earlier_N11_source_id": "6e8c87b2-685a-4b33-ba79-b643692192fd",
+    "indexed_content_sha256": "f014c7fb961c7a8e86c318c605115a14b99724fea320c7dba37fc791b4b00b44",
+    "equal_bytes_checked": true,
+    "independent_support": false
+  },
+  "prior_findings_reused": [
+    {
+      "path": "docs/research/notebooklm/findings.json",
+      "sha256": "4a924acd2d2cfb4f55c34f057100195ebc3bc16a50bc00c0ec3cf32cad00a7ed"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-correction-findings-2026-09-14.json",
+      "sha256": "b1b8520ae1a2b0a561b91f6547ea397debb9f1796fe5f7541a53883ddeafd28c"
+    },
+    {
+      "path": "docs/research/notebooklm/air-device-findings-2026-09-14.json",
+      "sha256": "4b8c43c7f60fc80e1513c003853aa1bbe4395a51b2105256512d0f9a24b44a0d"
+    }
+  ],
+  "findings": [
+    {
+      "id": "DUCT-CROSS-PAGE-RESEARCH-01",
+      "state": "verified_applicable",
+      "claim": "The VDCI source describes enlarged plans as closer views of main-plan areas, sections as views of vertical relationships/elevations/clearances, isometrics as spatial diagrams, schematics as logical relationships and details as instructions for particular conditions.",
+      "support": [
+        {
+          "source_key": "blueprint-tutorial-N10",
+          "indexed_text_lines": [
+            1053,
+            1085
+          ],
+          "section": "Enlarged Plans; Sections and Isometrics; Schematics; Details",
+          "passage_sha256": "67304bd959b0208b60eeab6fd2977aea7d7f3cacb7558ad90359201d2bbef9d1"
+        }
+      ],
+      "applicability": "Preserve the source view type and relevant region when presenting a reading from another page. View type alone proves neither same-portion identity nor reading applicability.",
+      "production_rule_admission": false,
+      "adopted_implementation_or_tests": null
+    },
+    {
+      "id": "DUCT-CROSS-PAGE-RESEARCH-02",
+      "state": "verified_applicable",
+      "claim": "FEMA training describes different scales within a plan set and multiple scales on a sheet with details, and advises checking the selected scale because reproduction can change image size.",
+      "support": [
+        {
+          "source_key": "drawing-scales",
+          "indexed_text_lines": [
+            27,
+            31
+          ],
+          "section": "Scales",
+          "passage_sha256": "7167841402080013b1bb24f63edb0061a8cf1c72af6ef4c686e363cae7025bc4"
+        },
+        {
+          "source_key": "drawing-scales",
+          "indexed_text_lines": [
+            89,
+            99
+          ],
+          "section": "Using the tool and interpreting the results",
+          "passage_sha256": "2c76d5443d51393e047188a19ad258285ede2aedceab38b7d514a61632c2545b"
+        }
+      ],
+      "applicability": "Do not transfer a floor-plan scale to a section/detail. Scaled geometry needs the existing source/view-specific verified scale; explicit dimensions/elevations remain their own readings under the approved rules.",
+      "production_rule_admission": false,
+      "adopted_implementation_or_tests": null
+    },
+    {
+      "id": "DUCT-CROSS-PAGE-RESEARCH-03",
+      "state": "conflict_not_adopted",
+      "claim": "FEMA training gives written dimensions precedence over scaled measurements and illustrates a sprinkler-layout disagreement resolved to 8 feet 6 inches rather than the scaled 10 feet.",
+      "support": [
+        {
+          "source_key": "drawing-scales",
+          "indexed_text_lines": [
+            183,
+            199
+          ],
+          "section": "Scale versus dimensions; fire-sprinkler teaching example",
+          "passage_sha256": "7b6623ec43596d23d3ec8e89b0d2d327b892e29111e1eb1e85d8f315be2ca012"
+        }
+      ],
+      "resolution": "Retain the already-recorded contextual conflict with approved D05. This task does not adopt the precedence rule or let cross-page linkage suppress dimension/scale conflicts.",
+      "generated_claim_qualification": "The generated answer calls the statement a universal blueprint principle. The verified evidence is this particular training document, not proof of universal contractual or mechanical precedence.",
+      "production_rule_admission": false,
+      "adopted_implementation_or_tests": null
+    },
+    {
+      "id": "DUCT-CROSS-PAGE-RESEARCH-04",
+      "state": "unsupported",
+      "claim": "The selected query bodies do not document an explicit cross-page same-physical-portion rule, section/detail reference-marker syntax and destination convention, elevation datum identity or endpoint correspondence.",
+      "support": [
+        {
+          "source_key": "blueprint-tutorial-N10",
+          "scope": "Full indexed instructional body checked; requested linking/datum conventions absent."
+        },
+        {
+          "source_key": "drawing-scales",
+          "scope": "Full retained training text checked; scale/dimension teaching does not establish cross-page applicability."
+        }
+      ],
+      "applicability": "Keep source/reference/datum/endpoint links explicit under the local approved source-evidence contract; uncertain linkage remains unresolved. Do not fabricate a matching algorithm or infer identity from common tags, equal values, proximity or similar views.",
+      "production_rule_admission": false,
+      "adopted_implementation_or_tests": null
+    },
+    {
+      "id": "DUCT-CROSS-PAGE-RESEARCH-05",
+      "state": "conflict_not_adopted",
+      "claim": "The earlier MEPdetect source describes using matching electrical circuit tags across matchlines.",
+      "support": [
+        {
+          "source_key": "mepdetect",
+          "indexed_text_lines": [
+            973,
+            973
+          ],
+          "section": "Electrical drawing conventions",
+          "passage_sha256": "e7056d1f11361531b0591b9ebe0c40f1ad7a02bced219d8e7bc382574ee3d097"
+        }
+      ],
+      "resolution": "Reuse DUCT-CORR-RESEARCH-05. This electrical workflow does not authorize physical duct identity or cross-page dimension/elevation applicability from matching tags. Approved D08 remains unchanged.",
+      "production_rule_admission": false,
+      "adopted_implementation_or_tests": null
+    }
+  ],
+  "implementation_guidance": [
+    {
+      "guidance": "Bind any admitted supplemental reading to exact current source/revision/page/geometry and retained evidence, plus explicit applicability to the target portion and endpoint/datum roles.",
+      "authority": "Existing approved D03-D05/D08 and local source-evidence contract; public sources only provide contextual view guidance.",
+      "verification_to_add": "Wrong/changed source, destination, reading, target portion or datum remains unresolved; retained unrelated rows stay unchanged."
+    },
+    {
+      "guidance": "Keep cross-page applicability separate from duplicate physical correspondence, graphic evidence, and scale admission.",
+      "authority": "Existing exact source/quantity boundaries; no new linkage authority inferred from NotebookLM.",
+      "verification_to_add": "A linked detail cannot cause an additional duct count, replace target-path graphics, transfer a scale, or clear a dimension conflict."
+    },
+    {
+      "guidance": "Preserve the original reading text and source plus prior result/history on correction or revocation.",
+      "authority": "Existing correction/history contract.",
+      "verification_to_add": "Withdraw or revise applicability and verify affected-only staleness/recalculation and retained export/reopen evidence."
+    }
+  ],
+  "unsupported_details": [
+    "Actual section/detail marker conventions and destination parsing for the target drawing set",
+    "Proof of physical endpoint/portion applicability across pages",
+    "Cross-page datum equivalence and ambiguity/conflict resolution",
+    "Numeric tolerances, source precedence, inferred rises, NTS scaling or automatic same-tag correspondence"
+  ],
+  "verification_limits": [
+    "Snapshot indexed text and retrieved body verified; current publisher freshness, licenses, representative drawings and product interpretation accuracy not established.",
+    "Original PDF pagination is unknown; all given locations are indexed text line spans.",
+    "Structural source/applicability links are not semantic proof that the reading applies to the physical duct.",
+    "Public descriptions do not admit themselves into mechanical rule authority."
+  ],
+  "external_activity": {
+    "notebook_identity_reads": 1,
+    "new_queries": 1,
+    "new_source_body_reads": 1,
+    "reused_source_bodies": 2,
+    "source_or_note_additions": 0,
+    "private_uploads": 0,
+    "egress_evidence": {
+      "path": ".heleos/duct-cross-page-2026-09-14/research-egress.jsonl",
+      "sha256": "91a92c7192e3124a6dc1f50f61b661acb57895ab6c9b7267413dae44b1f03214"
+    }
+  },
+  "checks": {
+    "result": "PASS",
+    "instruction_hashes": 4,
+    "source_text_hashes": 3,
+    "source_response_hashes": 3,
+    "citation_text_matches": 11,
+    "support_passages": 5,
+    "egress_before_after_pairs": 3,
+    "current_selected_source_ids_verified": true,
+    "same_title_duplicate_bytes_compared": true
+  },
+  "production_rule_admission": false,
+  "implementation_or_tests_changed": false,
+  "independent_acceptance": "pending coordinator review",
+  "process": {
+    "state": "terminal",
+    "direct_query": "success",
+    "direct_source_read": "success",
+    "live_handles": [],
+    "pending_new_external_jobs": []
+  },
+  "next_action": "Coordinator implements explicit cross-page source applicability under the approved rules and records actual code/test adoption separately; unsupported linkage remains visible."
+}

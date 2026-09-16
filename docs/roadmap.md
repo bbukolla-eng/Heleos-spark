@@ -10,19 +10,20 @@ Models and workers propose; deterministic controls and approved humans authorize
 
 ## CURRENT
 
-### Owner-directed advancement — 2026-09-16
+### Owner-directed advancement - 2026-09-16
 
 The owner directs advancing beyond ducts now. The single current table and usable
 finish line are in [CURRENT_STATUS.md](../CURRENT_STATUS.md). Historical progress
 is preserved in the [roadmap archive](operations/status-archive/roadmap-through-2026-09-16-7397696.md).
 The full Division23 local-first Mac/Windows objective remains unchanged.
 
-Imperial outputs, duct → air-device → equipment order, D01–D10 and
-A01–A12/AC01–AC17 are settled. Complete the connected air-device application flow
-now, preserving its running bounded kernel assignment, then advance to equipment
-and estimator-ready Excel/evidence PDF. Additional duct refinement is deferred
-unless a concrete defect demonstrably blocks that deliverable. Record and bound
-any such repair. No repeated research/check cycle is a new class-entry gate.
+Imperial outputs, the initial duct → air-device → equipment delivery order,
+D01-D10, A01-A12/AC01-AC17 and E01-E12/EC01-EC20 are settled. Preserve accepted
+connected duct, air-device and equipment software and its verification. Resume
+the next unfinished action in CURRENT_STATUS.md, which records supported outputs
+and remaining section work. This historical class order is not an all-category
+dependency chain. Additional refinements require a concrete recorded defect;
+unchanged research or checks are not a new class-entry gate.
 
 Local implementation completion, representative-project acceptance and native or
 release acceptance are separate states. All unfinished Division23 categories and
@@ -92,7 +93,7 @@ The product order is 0.2 → 0.3 → 0.4 → 0.5 → 0.6 → 0.7 → 0.8 → 1.0
 ### 0.5 - Evidence-backed mechanical takeoff classes
 
 - **Full coverage target:** All CSI Division 23 sections and subsections, verified against the applicable edition and project specifications. Duct and air-device work are initial slices. Common work, O&M, schedules, insulation, commissioning, controls, fuel, piping/pumps, air distribution/cleaning and central/decentralized heating/cooling equipment retain explicit outstanding work. Track product section coverage separately from applicability in one project; broad categories or a successful small pilot cannot close unsupported sections. See the [scope audit and proposed delivery lineup](research/div23-scope-and-proposed-lineup-2026-09-16.md) for the owner-requested planning discussion.
-- **Entry gate:** Implemented source/reconciliation dependencies and class-specific approved rules/examples. The owner selected imperial duct → air-device → equipment delivery and approved D01–D10 and A01–A12/AC01–AC17. These decisions are not pending. Broader Division23 scope is already the active goal; freeze each later class basis before its deterministic calculation.
+- **Entry gate:** Implemented source/reconciliation dependencies and class-specific approved rules/examples. The owner selected imperial duct → air-device → equipment delivery and approved D01-D10, A01-A12/AC01-AC17 and E01-E12/EC01-EC20. These decisions are not pending. Broader Division23 scope is already the active goal; freeze each later class basis before its deterministic calculation.
 - **Build outcome:** Deterministic quantities for that class with document revision, verified scale where needed, evidence crops/overlays, geometry, rule/run versions, and separate measured, rule-derived, context-required, allowance, clarification, and accepted-estimate states.
 - **Deterministic acceptance:** Frozen geometry/rule inputs reproduce exact expected quantities and evidence links; model proposals meet the predeclared bakeoff thresholds before admission. Missing scale, ambiguous geometry/tags, broken lineage, or material context conflict blocks affected lines. Replay cannot duplicate an authoritative result.
 - **Parallel work allowed:** Correction/export fixtures and isolated research on later classes.

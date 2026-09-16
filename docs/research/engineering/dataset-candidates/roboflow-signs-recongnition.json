@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "record_kind": "research_candidate_metadata",
+  "candidate_id": "roboflow:plan-training/signs-recongnition",
+  "status": "research_only_not_admitted",
+  "observed_at_utc": "2026-09-14 01:49:39 UTC",
+  "data_class": "PUBLIC",
+  "identity": {
+    "project_url": "https://universe.roboflow.com/plan-training/signs-recongnition",
+    "workspace_slug": "plan-training",
+    "project_slug": "signs-recongnition",
+    "display_name": "Signs recongnition",
+    "publisher_display_name": "Plan training"
+  },
+  "project_metadata": {
+    "source_url": "https://universe.roboflow.com/plan-training/signs-recongnition",
+    "reported_images": 27,
+    "independent_original_drawing_count": null,
+    "task": "instance_segmentation",
+    "classes": [
+      "Door",
+      "Detail",
+      "eLEVATION4",
+      "Grid",
+      "Level",
+      "SectionD",
+      "SectionDEMPTY",
+      "SectionL",
+      "SectionLEMPTY",
+      "SectionR",
+      "SectionReMPTY",
+      "Sections",
+      "SectionU",
+      "SectionUeMPTY",
+      "Wall1"
+    ],
+    "reported_versions": 4,
+    "reported_dataset_specific_models": 3,
+    "project_description_available": false
+  },
+  "version_metadata": {
+    "source_url": "https://universe.roboflow.com/plan-training/signs-recongnition/dataset/3",
+    "version": 3,
+    "is_latest_version": false,
+    "inspection_reason": "Version linked by the overview's displayed model.",
+    "generated_date": "2025-03-23",
+    "reported_images": 107,
+    "split_counts": {
+      "train": 100,
+      "validation": 5,
+      "test": 2
+    },
+    "preprocessing": [
+      "auto-orient",
+      "stretch resize to 640x640"
+    ],
+    "augmentation": {
+      "outputs_per_training_example": 5,
+      "cutout_boxes": 22,
+      "cutout_size_percent": 7
+    },
+    "archive_retrieved": false,
+    "archive_sha256": null,
+    "original_document_groups_and_split_independence_verified": false
+  },
+  "sample_observation": {
+    "source_url": "https://universe.roboflow.com/plan-training/signs-recongnition/images/OiuHDF0sSC8F741qu04r?queryText=&pageSize=50&startingIndex=0&browseQuery=true",
+    "source_surface": "Public current-gallery image, Labels and Raw Data panels.",
+    "image_name": "11-pdf_page_1.png",
+    "image_id": "OiuHDF0sSC8F741qu04r",
+    "width_px": 2448,
+    "height_px": 1584,
+    "displayed_split": "train",
+    "displayed_group": "Sections",
+    "annotation_type": "polygon",
+    "annotation_count": 13,
+    "class_counts": {
+      "Detail": 1,
+      "Grid": 8,
+      "SectionL": 3,
+      "SectionU": 1
+    },
+    "observation": "Polygons localize reference markers on a floor-plan image. Door and wall features are visible, while Door and Wall1 are listed as unused for this sample.",
+    "coverage_caveat": "One sample does not establish class completeness or dataset-wide annotation quality.",
+    "observation_bound_to_frozen_version_archive": false,
+    "evidence_form": "Investigator-derived metadata from rendered public UI; raw archive bytes not preserved."
+  },
+  "rights": {
+    "declared_license": "CC-BY-4.0",
+    "declaration_source": "https://universe.roboflow.com/plan-training/signs-recongnition",
+    "underlying_drawing_origin_verified": false,
+    "licensor_authority_verified": false,
+    "training_use_approved": false
+  },
+  "assessment": {
+    "proposed_role": "Drawing-reference marker localization research.",
+    "possible_uses": [
+      "Locate detail and section callouts before reading their reference text.",
+      "Locate grid and level markers for sheet navigation."
+    ],
+    "downstream_dependencies": [
+      "OCR or source text extraction",
+      "Exact sheet and view identity",
+      "Verified destination matching"
+    ],
+    "class_semantics_and_mapping_verified": false,
+    "dataset_wide_annotation_quality_verified": false,
+    "full_wall_door_or_mechanical_annotation_coverage_verified": false,
+    "local_model_accuracy_measured": false,
+    "physical_quantity_authority_established": false,
+    "next_action": "Audit original drawing provenance, annotation completeness and document-group split independence before admitting an exact version for a scoped marker-localization experiment."
+  },
+  "report": "docs/research/engineering/roboflow-signs-recognition-2026-09-13.md"
+}

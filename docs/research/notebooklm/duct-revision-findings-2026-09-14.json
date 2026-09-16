@@ -1,0 +1,734 @@
+{
+  "schema_version": 1,
+  "task_id": "DUCT-REVISION-1-RESEARCH",
+  "worker": "/root/airdevice_research",
+  "recorded_at": "2026-09-14T09:12:40.010897+00:00",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_commit": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "task_brief": {
+    "path": ".heleos/duct-revision-2026-09-14/research-brief.json",
+    "sha256": "4667ce4cea2434a3e9a5dff54ebaf687e3f63a207469036a629c5742fe14bab7"
+  },
+  "instruction_identities": {
+    "AGENTS.md": "f1e8ca69afc99a02647b9509acf73fbf3bfb7c7c73029f7a20852a1cf33bb8a6",
+    "SKILLS.md": "939b8aac16ee926c9775efb2465ae3178d9f5365dc5cd2fe4df3aa46a52d017f",
+    "docs/superpowers/specs/2026-09-13-calculation-sequence-design.md": "6ae8b6a5a8a43b638b7cfae8f67c676de59a495e8aae8ca00eeb8870fd85d7b8",
+    "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6"
+  },
+  "dependency_map": {
+    "path": ".heleos/duct-parent-graphic-2026-09-14/next-dependency-map.json",
+    "sha256": "b9645cd0f5879f9d5549bdb66b65a87291feb58ec1ba15c654913baa5a248e2c"
+  },
+  "inventory_reused": {
+    "path": "docs/research/notebooklm/notebook-inventory.json",
+    "sha256": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a",
+    "retrieved_at": "2026-09-14T05:01:59.112065+00:00",
+    "notebook_count": 59
+  },
+  "current_identity_check": {
+    "path": ".heleos/duct-revision-2026-09-14/research-n10-notebook-result.json",
+    "sha256": "ae9fd44111c93df37e8f07201ef7350cb2bcc0139f711eacf89ec24c46d3e6df",
+    "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+    "source_count": 71,
+    "scope": "Only relevant N10 refreshed; unrelated notebooks not opened."
+  },
+  "query": {
+    "query_id": "b8e14eb38080",
+    "conversation_id": "66653dd8-f02a-4333-bf75-e88dd89c656e",
+    "state": "completed",
+    "request": {
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_ids": [
+        "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "6bca9972-2389-4935-9c47-31261542ee70",
+        "3c27ba58-fb6e-4fb0-b049-84ef4acc71d8",
+        "b051e586-42db-4276-b438-de3a03000e2f"
+      ],
+      "query": "For construction/mechanical quantity takeoff, what do these selected public sources explicitly say about handling a revised drawing versus a repeated depiction of the same physical work? Extract only documented requirements, cautions and examples concerning identifying the applicable drawing issue (sheet/revision/date/addendum/status), comparing old and new drawings, changed/removed/added quantities, partial replacement versus an additional sheet, retaining prior measurements/evidence/history, and checking revised scale/units or transferred markups. Distinguish an explicit authorized supersession decision from visual overlay similarity, equal tags/quantities or filenames. Cite supporting source passages. If revision precedence, partial supersession, physical correspondence, conflict resolution or immutable history mechanics are not described, mark each unsupported rather than infer a rule. Do not treat a product feature claim or catalog description as a mechanical or contractual standard.",
+      "new_conversation": true,
+      "timeout": 180
+    },
+    "result": {
+      "path": ".heleos/duct-revision-2026-09-14/research-query-status-1-result.json",
+      "sha256": "6326109143e12119ceee262134bf42f634e4028a458aa161fc8fbb05d08e59d5"
+    },
+    "source_ids_used": [
+      "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+      "6bca9972-2389-4935-9c47-31261542ee70"
+    ],
+    "is_new_query": true,
+    "prior_timed_out_query_retried": false
+  },
+  "sources": [
+    {
+      "key": "bluebeam-guide",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+      "title": "Construction Takeoffs: Complete Guide to Quantity & Material Takeoffs in 2026 | Bluebeam",
+      "original_url": "https://www.bluebeam.com/resources/construction-takeoffs-guide-2026/",
+      "url_basis": "Indexed source line [43, 43]",
+      "edition_or_date": "2026 guide named in title; exact publication date not provided",
+      "original_pdf_pages": null,
+      "classification": "substantive public vendor guide",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "content_sha256": "372ef5ad88ec0ae83af888943a72903076eff498bd01b4ab5baccd9f9e96cc9c",
+      "character_count": 67447,
+      "result_evidence": {
+        "path": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-source-result.json",
+        "sha256": "9aaad6d34d183d0f4a421fc0b55052dcc06159202d0b675124a681d655aa69ef"
+      },
+      "retrieved_at": "2026-09-14T09:08:04.041Z",
+      "verification": "Body matches original successful source response and current notebook source ID. Publication page not independently browsed; empty/navigation bodies supply no substantive authority."
+    },
+    {
+      "key": "bluebeam-estimation",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "6bca9972-2389-4935-9c47-31261542ee70",
+      "title": "How to Use Revu for Estimation to Make Quantity Takeoffs Easier",
+      "original_url": "https://blog.bluebeam.com/revu-estimation-quantity-takeoffs/",
+      "url_basis": "Indexed source line [11, 11]",
+      "edition_or_date": "By Frank Kalman, May 11 2026 (lines 14483-14487); originally March 2020, updated 2026 (line 14511)",
+      "original_pdf_pages": null,
+      "classification": "substantive vendor article, preceded by extensive cookie/navigation text",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-estimation-indexed-text.txt",
+      "content_sha256": "a0c343e6cdfd12cfe785d753cada193c3227f81245a078deb1aa77d04a4f390a",
+      "character_count": 181451,
+      "result_evidence": {
+        "path": ".heleos/duct-revision-2026-09-14/research-bluebeam-estimation-source-result.json",
+        "sha256": "cd6d7aea9e3a48abf4ff7af46f033b1f987a1ee5f3fad737adb9bcd7c793e0cd"
+      },
+      "retrieved_at": "2026-09-14T09:08:04.051Z",
+      "verification": "Body matches original successful source response and current notebook source ID. Publication page not independently browsed; empty/navigation bodies supply no substantive authority."
+    },
+    {
+      "key": "autodesk-help",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "3c27ba58-fb6e-4fb0-b049-84ef4acc71d8",
+      "title": "TAKEOFF Help | Autodesk",
+      "original_url": "https://help.autodesk.com/view/TAKEOFF/ENU/",
+      "url_basis": "Indexed source line [5, 5]",
+      "edition_or_date": null,
+      "original_pdf_pages": null,
+      "classification": "navigation-only help landing page; no revision requirements verified",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-autodesk-help-indexed-text.txt",
+      "content_sha256": "f904e0b0931001bf661e0e46ccb3c9f51942e39c90e6633b9515d515753f205d",
+      "character_count": 2247,
+      "result_evidence": {
+        "path": ".heleos/duct-revision-2026-09-14/research-autodesk-help-source-result.json",
+        "sha256": "54c5525cd47f0a44af52b05acddfa1487b5337726bec2cf8d5fd07c5b12379b8"
+      },
+      "retrieved_at": "2026-09-14T09:08:04.054Z",
+      "verification": "Body matches original successful source response and current notebook source ID. Publication page not independently browsed; empty/navigation bodies supply no substantive authority."
+    },
+    {
+      "key": "procore-guide",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "b051e586-42db-4276-b438-de3a03000e2f",
+      "title": "https://www.procore.com/library/what-is-a-construction-takeoff",
+      "original_url": "https://www.procore.com/library/what-is-a-construction-takeoff",
+      "url_basis": "Retained source title; empty body",
+      "edition_or_date": null,
+      "original_pdf_pages": null,
+      "classification": "successful response with empty indexed content; verification incomplete",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-procore-guide-indexed-text.txt",
+      "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "character_count": 0,
+      "result_evidence": {
+        "path": ".heleos/duct-revision-2026-09-14/research-procore-guide-source-result.json",
+        "sha256": "ef75f7fa3566cc76cfc1b22ee77c8da2111fd1201f8642c7dacc222c3a600449"
+      },
+      "retrieved_at": "2026-09-14T09:08:04.058Z",
+      "verification": "Body matches original successful source response and current notebook source ID. Publication page not independently browsed; empty/navigation bodies supply no substantive authority."
+    }
+  ],
+  "verified_passages": [
+    {
+      "source_key": "bluebeam-guide",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "indexed_text_lines": [
+        955,
+        969
+      ],
+      "section": "Drawing intake and scope context",
+      "query_citations": [
+        1
+      ],
+      "passage_sha256": "e76639cac477e334cb700c4f787c72d887e5e9606e06aaedcb2daedddbcecb29",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "bluebeam-guide",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "indexed_text_lines": [
+        973,
+        985
+      ],
+      "section": "Calibration",
+      "query_citations": [
+        14
+      ],
+      "passage_sha256": "6851d951db992d3664cc3b6bf3cab6308ea370fb4d4c02fee641301c2b3f676e",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "bluebeam-guide",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "indexed_text_lines": [
+        1063,
+        1069
+      ],
+      "section": "Revision management",
+      "query_citations": [
+        2
+      ],
+      "passage_sha256": "37b869f509b86aaed4565d370b143b2e44f0dde3ed4bdcc528041fef350bd181",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "bluebeam-guide",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "indexed_text_lines": [
+        1287,
+        1315
+      ],
+      "section": "Auditability; revision and addenda handling",
+      "query_citations": [
+        4,
+        24
+      ],
+      "passage_sha256": "d9baab61731ace0ae65e58a9da0d0f762c818501c9a84769ccb2829bb356950f",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "bluebeam-guide",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "indexed_text_lines": [
+        925,
+        945
+      ],
+      "section": "Automation requires review; legends/reused details",
+      "query_citations": [
+        22
+      ],
+      "passage_sha256": "7046d94ef337c41b8faf7b51615194dd8ddca9874f0225238997ebfd7834f2aa",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "bluebeam-estimation",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-estimation-indexed-text.txt",
+      "indexed_text_lines": [
+        14623,
+        14629
+      ],
+      "section": "Managing Drawing Revisions",
+      "query_citations": [
+        5,
+        6
+      ],
+      "passage_sha256": "dd6323989d4a5434b17453c25102b21f8e400b459fde9b46e5b5b01846f2fd02",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    }
+  ],
+  "query_reference_checks": {
+    "count": 25,
+    "all_matched": true,
+    "normalization": "Omit standalone URL-only source lines and collapse whitespace; no other source text replacement. Matching citation text verifies its location, not all generated inferences or product claims.",
+    "references": [
+      {
+        "citation_number": 1,
+        "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "quoted_text_sha256": "ed23edcabefc79d322fccd42d923105ff6d36f052ca51b5d4729f6bf29b7bcdd",
+        "match": true
+      },
+      {
+        "citation_number": 2,
+        "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "quoted_text_sha256": "cdca8e556e793777049d77fd650503d5ea513e659549593beab2926ef8a4cc47",
+        "match": true
+      },
+      {
+        "citation_number": 3,
+        "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "quoted_text_sha256": "c6f3d2d1c32cf9c3fd1d7ce5a18c843dd41df8c921616289f0b9defefeb5808f",
+        "match": true
+      },
+      {
+        "citation_number": 4,
+        "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "quoted_text_sha256": "f61aec602c550b5cbc83bee6de9da4d9a1d82df3297397aedfe60fd7fea2e99e",
+        "match": true
+      },
+      {
+        "citation_number": 5,
+        "source_id": "6bca9972-2389-4935-9c47-31261542ee70",
+        "quoted_text_sha256": "19a9c8144b7189015f21d648d3c83d98d9ec29a285f2cac287c1ce0981b34b8b",
+        "match": true
+      },
+      {
+        "citation_number": 6,
+        "source_id": "6bca9972-2389-4935-9c47-31261542ee70",
+        "quoted_text_sha256": "29e0fbb2b2b1afbd3f76a1bdd43b52f36a44c2f20f2b8c479c3cd62ff3a369a2",
+        "match": true
+      },
+      {
+        "citation_number": 7,
+        "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "quoted_text_sha256": "67cce0cd96a84d6b02549679fa830e1aaa0b2824df6f6aac1684918a7ab2e0d5",
+        "match": true
+      },
+      {
+        "citation_number": 8,
+        "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "quoted_text_sha256": "ae010b41a0c4a3e882f9bfe394e8c5071edb1ba90cf17bc83c4f14ffefd8f3d5",
+        "match": true
+      },
+      {
+        "citation_number": 9,
+        "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "quoted_text_sha256": "39c7b335366018a3284fdb69511ef379e187e69f9d9846516dc5e59aae7df170",
+        "match": true
+      },
+      {
+        "citation_number": 10,
+        "source_id": "6bca9972-2389-4935-9c47-31261542ee70",
+        "quoted_text_sha256": "4523a4a579519a413e3810d14109f306abd476bb4e69de5351b1bb1ac0e38486",
+        "match": true
+      },
+      {
+        "citation_number": 11,
+        "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "quoted_text_sha256": "0d0a4fdcc8cdeab7c7953237ab790968162a8a9a03b04959e34dfccbf4ca7513",
+        "match": true
+      },
+      {
+        "citation_number": 12,
+        "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "quoted_text_sha256": "40c2c8eca9ac9a508c97a18a11deaa4295914486eea7144a37efe58b051021df",
+        "match": true
+      },
+      {
+        "citation_number": 13,
+        "source_id": "6bca9972-2389-4935-9c47-31261542ee70",
+        "quoted_text_sha256": "495204c711bfe80cfe9204346a2b755d078036e70bd22aa89b79512e31bf6be4",
+        "match": true
+      },
+      {
+        "citation_number": 14,
+        "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "quoted_text_sha256": "28aa8eefb74c0f21d445a7765e5697b6ac8c617bc372cccb6e6c5b317f1ad912",
+        "match": true
+      },
+      {
+        "citation_number": 15,
+        "source_id": "6bca9972-2389-4935-9c47-31261542ee70",
+        "quoted_text_sha256": "0030c95695ca42a2655a9580ce9364ff9100d60f54b8c52df708fb5070625673",
+        "match": true
+      },
+      {
+        "citation_number": 16,
+        "source_id": "6bca9972-2389-4935-9c47-31261542ee70",
+        "quoted_text_sha256": "a9c547361b37a1eb0bb2ff4611c56175e274baf848372dcfb831f49d1d94ad15",
+        "match": true
+      },
+      {
+        "citation_number": 17,
+        "source_id": "6bca9972-2389-4935-9c47-31261542ee70",
+        "quoted_text_sha256": "95228d030b9fc83e1da464b6f5f517078f83143ac02260cb5dfe432957494f0d",
+        "match": true
+      },
+      {
+        "citation_number": 18,
+        "source_id": "6bca9972-2389-4935-9c47-31261542ee70",
+        "quoted_text_sha256": "568676b481677d8b89492f4a3e77e8ed83371188fce6d90f9ba6cfac05e960a2",
+        "match": true
+      },
+      {
+        "citation_number": 19,
+        "source_id": "6bca9972-2389-4935-9c47-31261542ee70",
+        "quoted_text_sha256": "68546191109477b990f3fc9bbce0738328b17cca76f9c99dc971e468b0f97abb",
+        "match": true
+      },
+      {
+        "citation_number": 20,
+        "source_id": "6bca9972-2389-4935-9c47-31261542ee70",
+        "quoted_text_sha256": "b1dd105cbb1825fbbf24722a4dea9e65e4b05431f3073fb57cd0709e1ef3162d",
+        "match": true
+      },
+      {
+        "citation_number": 21,
+        "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "quoted_text_sha256": "382962a2c8f5203d08cb67d8b3c3fab8bfd84cde9378510ef2bf5f8206adcf18",
+        "match": true
+      },
+      {
+        "citation_number": 22,
+        "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "quoted_text_sha256": "80eb24915026a0fd5183bf8987cfdaea61d3ed801f50810df39d0b4715001b8f",
+        "match": true
+      },
+      {
+        "citation_number": 23,
+        "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "quoted_text_sha256": "5ab275ef86e333214fae0ae97c66eed544fd97737b6080e94b0e80d37adce40c",
+        "match": true
+      },
+      {
+        "citation_number": 24,
+        "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "quoted_text_sha256": "38a3f0eb4400294e233c1ebd2e786ef39de1af88218504b9dc32cba261d7671e",
+        "match": true
+      },
+      {
+        "citation_number": 25,
+        "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "quoted_text_sha256": "d3ef6d79a4ccc52f42836cd3f788e6619286dc5750fb220ab3d926943d28839a",
+        "match": true
+      }
+    ]
+  },
+  "prior_findings_reused": [
+    {
+      "path": "docs/research/notebooklm/duct-parent-reading-findings-2026-09-14.json",
+      "sha256": "06be3bdaf2bc8a907015821ec90c427a1eec678e128b64de56b7e81d35c7f191"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-refresh-findings-2026-09-14.json",
+      "sha256": "5d88fdba208d69466251ad6672ddd55cec3795359e8941e541516ef642bb749d"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-cross-page-findings-2026-09-14.json",
+      "sha256": "b175abbb3d6e72292ed582bc2f3dcafee8824c414763f2001cdb18e3e02428a5"
+    }
+  ],
+  "reused_conflict_sources": [
+    {
+      "source": {
+        "key": "drawing-scales",
+        "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+        "source_id": "2bc99eed-82b9-444a-8bab-450f5be0aa32",
+        "title": "https://www.usfa.fema.gov/downloads/pdf/nfa/engineer-architect-scales.pdf",
+        "original_url": "https://www.usfa.fema.gov/downloads/pdf/nfa/engineer-architect-scales.pdf",
+        "retrieved_at": "2026-09-14T05:04:42.747743+00:00",
+        "text_location": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-indexed-text.txt",
+        "content_sha256": "f10a1b00608efaec7e2144a84f03f514a0d1eb5bb0520c16935acf602b8085b4",
+        "result_evidence": {
+          "path": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-source-result.json",
+          "sha256": "0c58a27e4176d58b83df0e4e983c34519cd57e49f8bddc9090e0c0f5fc347ecf"
+        },
+        "edition_or_date": null,
+        "original_page_numbers": null,
+        "verification": "Retained indexed body and original successful response hashes match; response content equals body; source ID exists in retained inventory. No publisher refresh or new retrieval."
+      },
+      "support": {
+        "source_key": "drawing-scales",
+        "indexed_text_lines": [
+          183,
+          199
+        ],
+        "section": "Scale versus dimensions; fire-sprinkler teaching example",
+        "passage_sha256": "7b6623ec43596d23d3ec8e89b0d2d327b892e29111e1eb1e85d8f315be2ca012",
+        "reuses": "DUCT-CROSS-PAGE-RESEARCH-03",
+        "text_location": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-indexed-text.txt",
+        "hash_serialization": "UTF-8 selected indexed lines joined with LF and one final LF",
+        "verified": true
+      },
+      "verification": "Retained body/response/passage hashes rechecked locally; no new retrieval or source freshness claim."
+    },
+    {
+      "source": {
+        "key": "mepdetect",
+        "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+        "source_id": "4a7e4472-4c73-49fa-9e01-e33e1b9e20f5",
+        "title": "GitHub - DynMEP/MEPdetect: Symbol detection and circuit tracing for MEP construction drawings. Detects electrical symbols with YOLO11, traces how they are wired, and exports netlists and per-circuit counts to CSV, Excel, DXF or PDF. Hosted at mepdetect.com. \u00b7 GitHub",
+        "original_url": "https://github.com/DynMEP/MEPdetect",
+        "retrieved_at": "2026-09-14T05:18:04.078655+00:00",
+        "text_location": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-indexed-text.txt",
+        "content_sha256": "939ce39f0fba5ad26e084303b4d9918236ed516a080b77ee8f5eb917633db26e",
+        "result_evidence": {
+          "path": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-source-result.json",
+          "sha256": "b6e0065d7a3f0760b436a08e29295f3898a8c8f036f0808b642497d74f7ce832"
+        },
+        "edition_or_date": null,
+        "original_page_numbers": null,
+        "verification": "Retained indexed body and original successful response hashes match; response content equals body; source ID exists in retained inventory. No publisher refresh or new retrieval."
+      },
+      "support": {
+        "source_key": "mepdetect",
+        "indexed_text_lines": [
+          973,
+          973
+        ],
+        "section": "Electrical drawing conventions",
+        "passage_sha256": "e7056d1f11361531b0591b9ebe0c40f1ad7a02bced219d8e7bc382574ee3d097",
+        "reuses": "DUCT-CROSS-PAGE-RESEARCH-05",
+        "text_location": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-indexed-text.txt",
+        "hash_serialization": "UTF-8 selected indexed lines joined with LF and one final LF",
+        "verified": true
+      },
+      "verification": "Retained body/response/passage hashes rechecked locally; no new retrieval or source freshness claim."
+    }
+  ],
+  "findings": [
+    {
+      "id": "DUCT-REVISION-RESEARCH-01",
+      "state": "verified_applicable",
+      "claim": "The Bluebeam guide describes visual revision comparison, selective remeasurement of changed areas, and preserving original quantities for comparison.",
+      "support": [
+        "bluebeam-guide:1063-1069",
+        "bluebeam-guide:1287-1315"
+      ],
+      "application": "Present old/new drawing evidence and preserve baseline results while applying an explicitly selected changed scope. This supports review/history context; it does not define project supersession authority, an automatic mapping or the required split-family closure."
+    },
+    {
+      "id": "DUCT-REVISION-RESEARCH-02",
+      "state": "verified_contextual_example",
+      "claim": "The Revu article warns that revised drawing measurements can remain outdated and that recalibration can accidentally alter already-correct pages. Its viewport example keeps independent scale and updates only affected measurements after comparison.",
+      "support": [
+        "bluebeam-estimation:14623-14629",
+        "bluebeam-guide:973-985"
+      ],
+      "application": "A replacement drawing needs its own validated source geometry/scale; unaffected current measurements remain. Do not treat the source product feature or page-range calibration option as authority to copy old scale facts, coordinates, captures or reading links to a new revision."
+    },
+    {
+      "id": "DUCT-REVISION-RESEARCH-03",
+      "state": "verified_applicable",
+      "claim": "The guide calls for quantities traceable to visible markup on specific sheets and warns that legends and reused details require interpretation and review.",
+      "support": [
+        "bluebeam-guide:925-945",
+        "bluebeam-guide:1287-1299",
+        "bluebeam-guide:955-969"
+      ],
+      "application": "Keep drawing issue/context and every source-backed quantity accessible. Similarity, equal labels/quantities or duplicate-looking details are proposals for review, not physical identity or revision precedence."
+    },
+    {
+      "id": "DUCT-REVISION-RESEARCH-04",
+      "state": "unsupported",
+      "claim": "The selected substantive bodies do not specify a sheet/revision/date/addendum precedence hierarchy, issue-authorization schema, partial supersession versus additional-sheet decision rule, physical-portion mapping, markup coordinate transfer algorithm, or conflict-resolution mechanics.",
+      "verification_scope": "Bounded complete article-context review and generated query gaps; absence only in these selected documents, not universal absence.",
+      "application": "An explicit operator declaration under local approved source-applicability rules must govern the selected scope. Do not infer supersession from filenames, dates, tags, visual similarity, equal quantities or hash sorting."
+    },
+    {
+      "id": "DUCT-REVISION-RESEARCH-05",
+      "state": "unsupported",
+      "claim": "Preserving original quantities is documented; immutable event schemas, atomic replacement, append-only evidence retention, withdrawal/restore semantics and old/new split-tree closure are not defined by these sources.",
+      "application": "Use the existing local correction/history contract to implement those invariants. Public source context does not authorize deleting superseded evidence or carrying corrections/admissions/links into a new revision automatically."
+    },
+    {
+      "id": "DUCT-REVISION-RESEARCH-06",
+      "state": "conflict_not_adopted",
+      "reuses": [
+        "DUCT-CROSS-PAGE-RESEARCH-03",
+        "DUCT-PARENT-READING-RESEARCH-03"
+      ],
+      "claim": "The retained FEMA teaching example gives written dimensions precedence over conflicting scaled geometry.",
+      "support": [
+        "drawing-scales:183-199"
+      ],
+      "resolution": "Keep D05 conflict behavior; a revision decision does not choose contractual measurement precedence or clear a remaining new-source conflict."
+    },
+    {
+      "id": "DUCT-REVISION-RESEARCH-07",
+      "state": "conflict_not_adopted",
+      "reuses": [
+        "DUCT-CORR-RESEARCH-05",
+        "DUCT-CROSS-PAGE-RESEARCH-05"
+      ],
+      "claim": "The retained MEPdetect README describes matching electrical circuit tags across matchlines.",
+      "support": [
+        "mepdetect:973-973"
+      ],
+      "resolution": "Do not transfer electrical same-tag handling into physical duct revision matching; retain D08 and explicit source applicability."
+    }
+  ],
+  "generated_claim_qualifications": [
+    "The answer intro mentions Autodesk, but sources_used and all25 references point only to the two Bluebeam bodies; Autodesk was a navigation landing page.",
+    "Query status labels in progress/reviewed/verified refer to measurement/markup review, not drawing issue authorization.",
+    "The answer says calibration errors are often10% or more, while the vendor source says can introduce10% or more. No prevalence, accuracy guarantee, ROI or model-quality claim adopted.",
+    "The vendor assertion of100% correct scale, feature speed gains and visual AI precision are product claims; none proves drawing semantics or source applicability."
+  ],
+  "implementation_authority": {
+    "approved_rules": {
+      "path": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+      "sha256": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6",
+      "lines": [
+        24,
+        35
+      ],
+      "rules": [
+        "D05",
+        "D08"
+      ]
+    },
+    "sequence": {
+      "path": "docs/superpowers/specs/2026-09-13-calculation-sequence-design.md",
+      "sha256": "6ae8b6a5a8a43b638b7cfae8f67c676de59a495e8aae8ca00eeb8870fd85d7b8",
+      "lines": [
+        49,
+        56
+      ]
+    },
+    "basis": "Explicit source applicability/supersession decision and existing deterministic quantity/history rules; no new formula or automatic authority from public research."
+  },
+  "adoption_guidance": [
+    {
+      "behavior": "Stage exact old/new sources and compare reviewed affected scope before an explicit replacement declaration.",
+      "basis": "Verified revision comparison context plus local D08/source-scope authority.",
+      "verification_to_add": "Different old/new quantities are revision alternatives, not simultaneous duplicate-depiction equality. Pending or uncertain correspondence cannot silently add both or replace either."
+    },
+    {
+      "behavior": "Validate new source geometry, scale, graphic and reading evidence independently, preserving unaffected current rows.",
+      "basis": "Verified scale caution/context and existing source lifecycle.",
+      "verification_to_add": "Changed sheet/scale/captures reject inherited authority; unrelated rows stay unchanged and new unresolved inputs stay unknown."
+    },
+    {
+      "behavior": "Preserve superseded observations, corrections, split trees, links, captures and calculations as history; make affected scope replacement atomic.",
+      "basis": "Public baseline-comparison context; exact retention/closure rules remain local implementation authority.",
+      "verification_to_add": "Explicit full selected family replacement, withdrawal/restore and export/reopen retain original evidence without inference; invalid partial mappings fail atomically."
+    }
+  ],
+  "external_activity": {
+    "calls": 7,
+    "notebook_identity_reads": 1,
+    "new_queries": 1,
+    "source_reads": 4,
+    "status_reads": 1,
+    "source_or_note_additions": 0,
+    "private_uploads": 0,
+    "receipts": [
+      {
+        "before": {
+          "path": ".heleos/duct-revision-2026-09-14/research-egress-001-before.json",
+          "sha256": "37b885ac76092b05d2d21e76908742f5b24aa86312e023198f054d58cb9a3a6c"
+        },
+        "after": {
+          "path": ".heleos/duct-revision-2026-09-14/research-egress-001-after.json",
+          "sha256": "e4e1cfc12d81390d5604908e604cc93ade27f7e199af4fd8adbf1471f662dfb2"
+        },
+        "result": {
+          "path": ".heleos/duct-revision-2026-09-14/research-n10-notebook-result.json",
+          "sha256": "ae9fd44111c93df37e8f07201ef7350cb2bcc0139f711eacf89ec24c46d3e6df"
+        }
+      },
+      {
+        "before": {
+          "path": ".heleos/duct-revision-2026-09-14/research-egress-002-before.json",
+          "sha256": "568b62d94cc1318fd56401d19a4c78be234f065e69b9fc1170b6b01ccb6f7209"
+        },
+        "after": {
+          "path": ".heleos/duct-revision-2026-09-14/research-egress-002-after.json",
+          "sha256": "3ea0681d2803bf69aab70970a417c8c8b9e0710082ef2a2cd60a57bfdbcb8af7"
+        },
+        "result": {
+          "path": ".heleos/duct-revision-2026-09-14/research-query-start-result.json",
+          "sha256": "8608e0f679024cb231564c89767ad024bf132544cf6ebcfa519b347d82e3a86d"
+        }
+      },
+      {
+        "before": {
+          "path": ".heleos/duct-revision-2026-09-14/research-egress-003-before.json",
+          "sha256": "ba9595d2f83118a1fdfe1a35901e4bef066cf2973f38da04895ac6257018ea69"
+        },
+        "after": {
+          "path": ".heleos/duct-revision-2026-09-14/research-egress-003-after.json",
+          "sha256": "493216fdf283cddae974bf8fed7a0217f0b924bc73dc9c7dbd44302a81eb9edd"
+        },
+        "result": {
+          "path": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-source-result.json",
+          "sha256": "9aaad6d34d183d0f4a421fc0b55052dcc06159202d0b675124a681d655aa69ef"
+        }
+      },
+      {
+        "before": {
+          "path": ".heleos/duct-revision-2026-09-14/research-egress-004-before.json",
+          "sha256": "9b62e165757b19379dc96da5e8f4b419c22c66d0adaaac242b980fd488e9f7bb"
+        },
+        "after": {
+          "path": ".heleos/duct-revision-2026-09-14/research-egress-004-after.json",
+          "sha256": "5c60f4e9680b2013061af4acd83240b57e8f12326e5c66c8b4b47d33777b5ba9"
+        },
+        "result": {
+          "path": ".heleos/duct-revision-2026-09-14/research-bluebeam-estimation-source-result.json",
+          "sha256": "cd6d7aea9e3a48abf4ff7af46f033b1f987a1ee5f3fad737adb9bcd7c793e0cd"
+        }
+      },
+      {
+        "before": {
+          "path": ".heleos/duct-revision-2026-09-14/research-egress-005-before.json",
+          "sha256": "d2325a6488a36b69c652337f3178fd2e1dbdc0f5d282038e2ccc94677c7dc160"
+        },
+        "after": {
+          "path": ".heleos/duct-revision-2026-09-14/research-egress-005-after.json",
+          "sha256": "3a0a5c64046d31f35f9d18c5207c14d98e0b40235b82159be8eb0b89147f9c8b"
+        },
+        "result": {
+          "path": ".heleos/duct-revision-2026-09-14/research-autodesk-help-source-result.json",
+          "sha256": "54c5525cd47f0a44af52b05acddfa1487b5337726bec2cf8d5fd07c5b12379b8"
+        }
+      },
+      {
+        "before": {
+          "path": ".heleos/duct-revision-2026-09-14/research-egress-006-before.json",
+          "sha256": "902bf93501ee68468dbc1056fb9966b901d27f2e17cdf92b5eee07d342592e70"
+        },
+        "after": {
+          "path": ".heleos/duct-revision-2026-09-14/research-egress-006-after.json",
+          "sha256": "39810dd01a7cf2ede52f9f4f9fb316830c58ddaa76a0a32eed3adb9de51540b9"
+        },
+        "result": {
+          "path": ".heleos/duct-revision-2026-09-14/research-procore-guide-source-result.json",
+          "sha256": "ef75f7fa3566cc76cfc1b22ee77c8da2111fd1201f8642c7dacc222c3a600449"
+        }
+      },
+      {
+        "before": {
+          "path": ".heleos/duct-revision-2026-09-14/research-egress-007-before.json",
+          "sha256": "8017afd9bbc7d1d59b44ba6ff1d0154ee21168d6d3efdc3e2eacebe3bd0bcee0"
+        },
+        "after": {
+          "path": ".heleos/duct-revision-2026-09-14/research-egress-007-after.json",
+          "sha256": "4319cc3c6221bc3ba8c07bff5dfc9c6932e46224fd2e5d07effc7187b5cfa06b"
+        },
+        "result": {
+          "path": ".heleos/duct-revision-2026-09-14/research-query-status-1-result.json",
+          "sha256": "6326109143e12119ceee262134bf42f634e4028a458aa161fc8fbb05d08e59d5"
+        }
+      }
+    ]
+  },
+  "checks": {
+    "new_source_responses": 4,
+    "substantive_new_bodies": 2,
+    "navigation_only_bodies": 1,
+    "empty_bodies": 1,
+    "reused_body_response_pairs": 2,
+    "new_support_passages": 6,
+    "reused_conflict_passages": 2,
+    "query_references_matched": 25,
+    "egress_before_after_pairs": 7,
+    "instruction_hashes": 4,
+    "head_branch_match": true,
+    "result": "PASS"
+  },
+  "verification_limits": [
+    "Sources are NotebookLM indexed-text snapshots; no independent publisher freshness or license verification. Line spans are indexed text, not PDF page numbers.",
+    "Both substantive new bodies are from Bluebeam; this is not independent cross-publisher corroboration.",
+    "Procore successful-empty response is verification incomplete. Autodesk navigation page provides no revision mechanics.",
+    "No current code, private drawings or private project context submitted. No production changes, new rule admission, native/Windows or representative-project acceptance."
+  ],
+  "production_rule_admission": false,
+  "adopted_code_or_tests": null,
+  "process": {
+    "state": "terminal",
+    "query_id": "b8e14eb38080",
+    "query_state": "completed",
+    "live_handles": []
+  },
+  "next_action": "Coordinator finalizes explicit source-applicability scope/closure contract and implements with original source fixtures, then records exact source-to-code/test adoption separately."
+}

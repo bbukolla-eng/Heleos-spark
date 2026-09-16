@@ -1,0 +1,475 @@
+{
+  "schema_version": 1,
+  "task_id": "BUILD-CHECKPOINT-GUARD-1",
+  "outcome": "complete",
+  "base_commit": "db695750d095c6845f0689e3cc4da79d09333935",
+  "summary": "Install local completion hook and shared staged/committed validator; CI validates every post-adoption checkpoint commit. Repair exact-origin retained links and retain 52 audited documentation dependencies for clean-checkout CI. No automatic commit, push or scheduling.",
+  "remaining_limits": [
+    "Structural consistency does not prove mechanical truth or replace independent acceptance.",
+    "Local hooks are bypassable and require installation per clone.",
+    "No push or remote GitHub run/settings change; CI definition is configured locally for next authorized publication.",
+    "Initial NotebookLM discovery mistake corrected with successful delayed N07 query/raw-source verification; this was not pre-implementation NotebookLM research. Claude prior expired OAuth unchanged.",
+    "Retained historical research is not new mechanical authority, section acceptance, or proof that every historical local evidence reference is portable."
+  ],
+  "next_task_id": "EVIDENCE-PDF-1",
+  "next_action": "freeze the PDF contract and literal expected specimen rows from accepted producers: separate quantity channels, known/unknown and stale states, source revision/page/region destinations, correction history and project scope limits. Reuse retained verified findings, then implement the PDF export and independently inspect its text, links and rendered pages on Mac. The finish line is a reproducible export matching those fixed cases and independent review; new mechanical recognition or complete section acceptance is not its prerequisite. Record the bounded contract in the task ledger before dependent implementation.",
+  "changed_files": [
+    {
+      "path": ".githooks/pre-commit",
+      "sha256": "440ee1ef17a27d7fd204d7904fafaedc55577d961126f6c04d0a81c811c4f12d"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "e583060f6d8be862f7d01ba753c3732e60fadf7da34f75b6ba315a1444686fe3"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/assignments.json",
+      "sha256": "19c4e3e9785df0e7ef33d60962c7cda8373ed247a283b4c1e3d83f10ee73b9e2"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/ci-compatibility-repair.md",
+      "sha256": "44ea480f6c71559b66ec55133b5ed6224e37d6e05e8a29a88702160df7f0b376"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/ci-worker.md",
+      "sha256": "acdca70f6127d92242e9af5a75afc0e84e9df2b31d6c00b920a48f1c5b3be4b0"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/contract.md",
+      "sha256": "0500709ad45f87b3d5a3f24e90bcbf4aa8edae4efa8949deea29aa79b7acb94c"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/coordinator-tests.log",
+      "sha256": "808f6fd70fc47ed822b02ee6e4e507f260eadd221b891c2307f8ea8352e12a19"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/document-closure-candidate.json",
+      "sha256": "00d22877f811f780efff1a694fb9c3e43d9740fc4caf1992a8610e3cca1643ba"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/document-closure-contract.md",
+      "sha256": "a25149ea8682c84858eb9b260317d5b2466a911eecefcb68b74a9758dbd09794"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/document-closure-review.md",
+      "sha256": "b88ba779db293d58fd71305a8fc5bf3cb37b56d135f0810fd3e30c77c8c06134"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/hook-checks.log",
+      "sha256": "ed75b334fa3506b688387da2a28fe44897e514badcc4478d6649c3b56a7bbd1d"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/notebooklm-correction.json",
+      "sha256": "41577fc3cceb8506bcb0e6df5aa9853691730f90c50353168e056db4f17ad3b1"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/notebooklm-query.json",
+      "sha256": "c522073674fc131e6d5b9faea3473ecb7d2723a64e79b3deba2b0961fac75fde"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/notebooklm-readback.json",
+      "sha256": "d9dc6cd8f024f3d904c614ca25af2fbdd67c03460044ad1a0b4d383c96bbda30"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/notebooklm-submission.json",
+      "sha256": "35a715192e1c0185cc27d1401a742604d4c1326485a955fd3aab660a0d59bc84"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/notebooklm-verification.json",
+      "sha256": "7bee89593afc47e2d66a7e8936e4be60d8d03ba0a49a602166226bebbf1e4892"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/repository-checks-final.log",
+      "sha256": "ef90e4b12bd807bf19a059fd897879c0755608beeae5238e7fd624a58fc662bf"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/repository-checks.log",
+      "sha256": "d545784268652b3cec55d4cfbcdefb8fdb9787b495d7de40e67af0ec32b76157"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/research.json",
+      "sha256": "eb2889bffa9841647475141d86e7db96bdd48efa59bd49177d29b3905d0f02c6"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/retained-link-tests.log",
+      "sha256": "9d76c22dce6215b281865d488510e4a654f69353b93b5a5a185b0c5224fb31fe"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/retained-links-review.md",
+      "sha256": "8c10eb8813877632b69230695ac66dbfdd260cd53d11ec75823c1f159475f7f8"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/review.md",
+      "sha256": "23d3dcc5a50321344515936ccdef9c3dac3d5d5986b3f92673e3f721f51ec210"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/staged-repository-checks-final.log",
+      "sha256": "aa1622dc78435ae80ca4b1080d5437055f6582d75d3cf7f8df55c1718f08feb4"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/staged-repository-checks.log",
+      "sha256": "dcf0566b12d0ac9dca105e829fde0fd7c273749c5270b2f75a02009623cf760d"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/validator-worker.md",
+      "sha256": "03a66ca80e6d9a15d84078d5d9f5111f36daab87568bf9a90d99de28ab711743"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "02f3b73c6f6e18367d055b9796f4ee0f177cf295a46c6fc5f9fb36ef4c4d039a"
+    },
+    {
+      "path": "CURRENT_STATUS.md",
+      "sha256": "72a12a751d4a2231eff726b284f7bf6b49ce0b29d54b0e2ef9912159c3d094fb"
+    },
+    {
+      "path": "docs/operations/build-checkpoints.md",
+      "sha256": "7b4bff733b7e6e66bac1f716557cdccd1cd1e093ccb026c3458fe3b82ed015a4"
+    },
+    {
+      "path": "docs/operations/mechanical-dataset-audit.md",
+      "sha256": "2675e09cebe7776c5e003a754c923e9fd6e300dfe6074ebe0d0a09692292633b"
+    },
+    {
+      "path": "docs/operations/retained-document-origins.json",
+      "sha256": "c148441cea91cfb3880c0ed039a7cefcfca8221cce3974fe251ef4c5fd61a79e"
+    },
+    {
+      "path": "docs/research/engineering/dataset-candidates/roboflow-floor-plans-zeb7z.json",
+      "sha256": "2c9f7eee97076866d9c2af054880d1a666f6be2d71f84e582f8d3562c4a3f252"
+    },
+    {
+      "path": "docs/research/engineering/dataset-candidates/roboflow-p-id-2-classes-er8vf.json",
+      "sha256": "5777e3877b940a94f23d16e00f63fda5eea5e8b0335aac09fb63a35906e688fd"
+    },
+    {
+      "path": "docs/research/engineering/dataset-candidates/roboflow-signs-recongnition.json",
+      "sha256": "30025d352b778792c4e3c0ec6a83511944b25305bc11161dc51c08bd6a5ab145"
+    },
+    {
+      "path": "docs/research/engineering/local-model-data-options-2026-09-10.md",
+      "sha256": "207fda053c0c3dfe24cbf7f17587ff886fd9183038f6e4e55f98fe31c555b7bf"
+    },
+    {
+      "path": "docs/research/engineering/roboflow-floor-plan-context-2026-09-13.md",
+      "sha256": "3f02b4f89dcfbfcc403762d65f645a52d64772b913becdf2e0c386611eb3109a"
+    },
+    {
+      "path": "docs/research/engineering/roboflow-pid-two-classes-2026-09-13.md",
+      "sha256": "73a02fcb6688bdfe01be8c0431d59fa313ef9869b55f8518499cd1894e6ece73"
+    },
+    {
+      "path": "docs/research/engineering/roboflow-preparation-manifest-2026-09-13.json",
+      "sha256": "7f71081766b70ad3fb3726706fd14d3180658cb5e4d17bb36d1d0d7769d0f107"
+    },
+    {
+      "path": "docs/research/engineering/roboflow-signs-recognition-2026-09-13.md",
+      "sha256": "bfee2a7d7c3b0eeeeaa9a965e20f62848475173cdda5016b201fbcca25a323b3"
+    },
+    {
+      "path": "docs/research/engineering/roboflow-six-dataset-comparison-2026-09-13.md",
+      "sha256": "16e22a3b3ead57845bd5fbfa5ddb877634e1c8684bc45987abaa593eab624745"
+    },
+    {
+      "path": "docs/research/notebooklm/air-device-findings-2026-09-14.json",
+      "sha256": "4b8c43c7f60fc80e1513c003853aa1bbe4395a51b2105256512d0f9a24b44a0d"
+    },
+    {
+      "path": "docs/research/notebooklm/air-device-preparation-2026-09-14.json",
+      "sha256": "65be61109ad87ce7e11b11172f7485e8932161af141a7bb78a7b1c7742ec0a92"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-arc-repartition-findings-2026-09-14.json",
+      "sha256": "cab238ec0707abcc1cfa65e48ceff4aa1a586ff2ed8a4abbccf3fae731046f19"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-arc-repartition-implementation-2026-09-15.json",
+      "sha256": "235059e2006583848a29ade3ba2187be0f1af40632708a3fbab40f182803575a"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-arc-revision-findings-2026-09-15.json",
+      "sha256": "8fb224365ea5702b2b0c99ddceebb60aaca281f5b1e05063dc765b96aeb51c22"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-arc-revision-implementation-2026-09-15.json",
+      "sha256": "da6ebc505e7b2e6647af9e14692148fd1d942e2ed1626f8a9eb09dad3d6e00c2"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-arc-splitting-findings-2026-09-14.json",
+      "sha256": "c8275ad08c368df28ac7ceb74cd7c4fcb428819a823d9c5a1f7bb931b126ab0d"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-arc-splitting-implementation-2026-09-14.json",
+      "sha256": "28b7ae87c5fb0cb5a7dacd1815d36651d891601643bcab49899a2cae2ba69d75"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-circular-arc-findings-2026-09-14.json",
+      "sha256": "182dc170bd23247e3922e1f35c5b5b293689a6214f023f39618c35fffb58fbe2"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-circular-arc-implementation-2026-09-14.json",
+      "sha256": "8b90b4f4a8e38bb4ad0afe6f2ae946829255f4c0b9c9088e9f1c00cba9ebf64b"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-correction-findings-2026-09-14.json",
+      "sha256": "b1b8520ae1a2b0a561b91f6547ea397debb9f1796fe5f7541a53883ddeafd28c"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-correction-implementation-2026-09-14.json",
+      "sha256": "adf04240bd5c47ae9c8093286e7c4a27fa517c49c42fddf0ae1a5a15e85527ad"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-cross-page-findings-2026-09-14.json",
+      "sha256": "b175abbb3d6e72292ed582bc2f3dcafee8824c414763f2001cdb18e3e02428a5"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-cross-page-implementation-2026-09-14.json",
+      "sha256": "8ef967c42cccffb4cdbaf134b145690dee9aa380677286de171f2e7bb0a285f7"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-evaluation-findings-2026-09-14.json",
+      "sha256": "074f28f2ede99b35c75bbf072a29aa58f2f8c541a8e90143c954bed8ed11ba6a"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-evaluation-implementation-2026-09-14.json",
+      "sha256": "65074b872e3621dd29bedad25e9bfc107c4867709ed17b2c30e4460e47b40c51"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-evidence-implementation-2026-09-14.json",
+      "sha256": "bb585d3e5b38be780c39d3cd284dd567128e68ef4aae2ad4772b5070267bdf3d"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-export-findings-2026-09-14.json",
+      "sha256": "4330a3300a7d7e48f382943fd720194fbbaea356c4526317cb0417bd00cb0e24"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-export-implementation-2026-09-14.json",
+      "sha256": "894abb492e569ec899c09a4d053748ec506f971f9d3a5d230a9a6a16495c247d"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-parent-graphic-findings-2026-09-14.json",
+      "sha256": "4a1471366dc5deaabffe61cdfb04e2f801d2e772ce7839e720dc31342064190b"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-parent-graphic-implementation-2026-09-14.json",
+      "sha256": "482c319a785d7ded54207aa7d759fcb00a37a9a50a297c4fe6bb6768a5deb10a"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-parent-reading-findings-2026-09-14.json",
+      "sha256": "06be3bdaf2bc8a907015821ec90c427a1eec678e128b64de56b7e81d35c7f191"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-parent-reading-implementation-2026-09-14.json",
+      "sha256": "b7e89436c34911154dc0221be06c85c5405e5da591a8b0e0bf7f998116e15d0a"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-refresh-findings-2026-09-14.json",
+      "sha256": "5d88fdba208d69466251ad6672ddd55cec3795359e8941e541516ef642bb749d"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-refresh-implementation-2026-09-14.json",
+      "sha256": "ae58d9356b851c71fdf8d2adf731bf61ce884f667a2060b3d275e564c6076826"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-revision-findings-2026-09-14.json",
+      "sha256": "06f84062356f533273d6feb58e2a7fc129bafbd9acb726c26c1baa93bbee3521"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-revision-implementation-2026-09-14.json",
+      "sha256": "5212f4c2a79e6e176b1e354ef7088c974212d9cb22a35fb4769182f0a5eadf21"
+    },
+    {
+      "path": "docs/research/notebooklm/expansion-n05-2026-09-14.json",
+      "sha256": "0cc9680fb4cc6168a05d2913f2cd77f42592eab0fb7554013adff26a280146ac"
+    },
+    {
+      "path": "docs/research/notebooklm/expansion-n07-2026-09-14.json",
+      "sha256": "18977f666139017b93c7f83b94480730d79bcc4132f9cc89e95b9fd4d9326d58"
+    },
+    {
+      "path": "docs/research/notebooklm/expansion-n10-2026-09-14.json",
+      "sha256": "2df7e67d7fce0a4f458e74065912288541ac8d15df265e0b0dc3909266b99d22"
+    },
+    {
+      "path": "docs/research/notebooklm/expansion-n11-2026-09-14.json",
+      "sha256": "570f4da7724221fcef77a9e7b8d20184acfc89e915b7a3d19baf5c093b347947"
+    },
+    {
+      "path": "docs/research/notebooklm/expansion-secret-key-2026-09-14.json",
+      "sha256": "44a7c07d54df1edb7759f70786279e478107edf3b141077a43f5cc6ae399610d"
+    },
+    {
+      "path": "docs/research/notebooklm/expansion-summary-2026-09-14.json",
+      "sha256": "9ae6be0d3b9503be922019297d57d3e0bda97feb7774c6a6418de78321ec4a47"
+    },
+    {
+      "path": "docs/research/notebooklm/expansion-summary-2026-09-14.md",
+      "sha256": "34177f86ab66b473fcc9b4fea118d1e2f6e2aa428f2e6858a22a83d34743c065"
+    },
+    {
+      "path": "docs/research/notebooklm/findings.json",
+      "sha256": "4a924acd2d2cfb4f55c34f057100195ebc3bc16a50bc00c0ec3cf32cad00a7ed"
+    },
+    {
+      "path": "docs/research/notebooklm/notebook-inventory.json",
+      "sha256": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a"
+    },
+    {
+      "path": "docs/research/notebooklm/windows-launcher-cleanup-findings-2026-09-14.json",
+      "sha256": "85d08f13a0fb13bc2db144ed0bbe61bf523e3ece9e0f33f919e79b936403548a"
+    },
+    {
+      "path": "docs/research/notebooklm/windows-launcher-cleanup-implementation-2026-09-14.json",
+      "sha256": "5a5ddcdd5f83262c24c346f97629fa832ee00bd5cb4f0e8e82395f99d287039b"
+    },
+    {
+      "path": "docs/research/notebooklm/workspace-packaging-findings-2026-09-14.json",
+      "sha256": "4e05662dbde15216d31bcc619d67b655c2f1c28c912841644e8e8b05a3b2978d"
+    },
+    {
+      "path": "docs/research/notebooklm/workspace-packaging-implementation-2026-09-14.json",
+      "sha256": "ab74cd07d71b0ff198898a9f4faab1377ce3d1c411eb8991bb2732f25c1a2dd6"
+    },
+    {
+      "path": "docs/roadmap.md",
+      "sha256": "38faf318739abdd9cb7b11b7a883be00c030bbbbcb58a9487add3f118e4148e2"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-09-10-equipment-workflow.md",
+      "sha256": "cf48a5924a2afdade69613eac5170472e9013bbee029726b3d7b241fb8ad9641"
+    },
+    {
+      "path": "scripts/install-build-hooks.py",
+      "sha256": "afa8779b562a14cf45f989da3c22617151cb4858c59cec832df9ed8ffde26888"
+    },
+    {
+      "path": "scripts/verify-build-checkpoint.py",
+      "sha256": "049790f57545fbb4f5ac11db2b20a3fa0c2256e81113436d0a89557dad5f78b2"
+    },
+    {
+      "path": "tests/fixtures/duct-takeoff/README.md",
+      "sha256": "51fa4e2e1105d0b296e73df67fbb373819154fbdbc226f49ae2cdfb25607bc01"
+    },
+    {
+      "path": "tests/test_build_checkpoint.py",
+      "sha256": "569a33cd7d62adfbfb9308085e0ae5750cd82055114ec9d8ec90060be8e666ba"
+    },
+    {
+      "path": "tests/test_build_checkpoint_hooks.py",
+      "sha256": "392b32c9fa9a3a6861201c6b3bc5bb161537e839896e02778a50d15447d05b70"
+    },
+    {
+      "path": "tests/test_checkpoint_ci.py",
+      "sha256": "d5d92c6940c08ad9a15e84b3f704eb81d823bb00199ce2498ed8c6d784add6da"
+    },
+    {
+      "path": "tests/test_ci_checks.py",
+      "sha256": "994320844cff4f236a2d0364f61f93d55579a06a580e92593ec4a72c810b9346"
+    },
+    {
+      "path": "tools/ci/check_build_checkpoints.py",
+      "sha256": "8d1f054f81a35f328b9de884b18d25c3fea1d340e971f9cddb04836108bf730c"
+    },
+    {
+      "path": "tools/ci/checks.py",
+      "sha256": "c02306c3a2d5ac929a95a9a672f2ea96247abda2d53673c398c415d9cf7f855e"
+    }
+  ],
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_*.py' -v",
+      "exit_code": 0,
+      "evidence": {
+        "path": ".heleos/build-checkpoint-2026-09-16/coordinator-tests.log",
+        "sha256": "808f6fd70fc47ed822b02ee6e4e507f260eadd221b891c2307f8ea8352e12a19"
+      }
+    },
+    {
+      "command": "python3 scripts/install-build-hooks.py; git config --local --get core.hooksPath; real Git hook tests",
+      "exit_code": 0,
+      "evidence": {
+        "path": ".heleos/build-checkpoint-2026-09-16/hook-checks.log",
+        "sha256": "ed75b334fa3506b688387da2a28fe44897e514badcc4478d6649c3b56a7bbd1d"
+      }
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p test_ci_checks.py -v",
+      "exit_code": 0,
+      "evidence": {
+        "path": ".heleos/build-checkpoint-2026-09-16/retained-link-tests.log",
+        "sha256": "9d76c22dce6215b281865d488510e4a654f69353b93b5a5a185b0c5224fb31fe"
+      }
+    },
+    {
+      "command": "python3 tools/ci/checks.py in isolated archive of exact staged tree",
+      "exit_code": 0,
+      "evidence": {
+        "path": ".heleos/build-checkpoint-2026-09-16/staged-repository-checks-final.log",
+        "sha256": "aa1622dc78435ae80ca4b1080d5437055f6582d75d3cf7f8df55c1718f08feb4"
+      }
+    }
+  ],
+  "review": {
+    "reviewer": "/root/checkpoint_review",
+    "outcome": "accepted",
+    "evidence": {
+      "path": ".heleos/build-checkpoint-2026-09-16/review.md",
+      "sha256": "23d3dcc5a50321344515936ccdef9c3dac3d5d5986b3f92673e3f721f51ec210"
+    }
+  },
+  "missing_prerequisite": null,
+  "independent_action": null,
+  "contract": {
+    "path": ".heleos/build-checkpoint-2026-09-16/contract.md",
+    "sha256": "0500709ad45f87b3d5a3f24e90bcbf4aa8edae4efa8949deea29aa79b7acb94c"
+  },
+  "research": {
+    "path": ".heleos/build-checkpoint-2026-09-16/research.json",
+    "sha256": "eb2889bffa9841647475141d86e7db96bdd48efa59bd49177d29b3905d0f02c6"
+  },
+  "process_state": "Implementation workers and test sessions finished. Coordinator owns final integration; no worker commits.",
+  "notebooklm_correction": {
+    "path": ".heleos/build-checkpoint-2026-09-16/notebooklm-verification.json",
+    "sha256": "7bee89593afc47e2d66a7e8936e4be60d8d03ba0a49a602166226bebbf1e4892"
+  },
+  "related_tasks": [
+    {
+      "task_id": "CI-RETAINED-LINKS-1",
+      "outcome": "complete",
+      "contract": {
+        "path": ".heleos/build-checkpoint-2026-09-16/ci-compatibility-repair.md",
+        "sha256": "44ea480f6c71559b66ec55133b5ed6224e37d6e05e8a29a88702160df7f0b376"
+      },
+      "review": {
+        "path": ".heleos/build-checkpoint-2026-09-16/review.md",
+        "sha256": "23d3dcc5a50321344515936ccdef9c3dac3d5d5986b3f92673e3f721f51ec210"
+      }
+    },
+    {
+      "task_id": "CI-DOCUMENT-CLOSURE-1",
+      "outcome": "complete",
+      "contract": {
+        "path": ".heleos/build-checkpoint-2026-09-16/document-closure-contract.md",
+        "sha256": "a25149ea8682c84858eb9b260317d5b2466a911eecefcb68b74a9758dbd09794"
+      },
+      "review": {
+        "path": ".heleos/build-checkpoint-2026-09-16/document-closure-review.md",
+        "sha256": "b88ba779db293d58fd71305a8fc5bf3cb37b56d135f0810fd3e30c77c8c06134"
+      },
+      "manifest": {
+        "path": ".heleos/build-checkpoint-2026-09-16/document-closure-candidate.json",
+        "sha256": "00d22877f811f780efff1a694fb9c3e43d9740fc4caf1992a8610e3cca1643ba"
+      }
+    }
+  ],
+  "historical_failures": [
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/repository-checks.log",
+      "sha256": "d545784268652b3cec55d4cfbcdefb8fdb9787b495d7de40e67af0ec32b76157"
+    },
+    {
+      "path": ".heleos/build-checkpoint-2026-09-16/staged-repository-checks.log",
+      "sha256": "dcf0566b12d0ac9dca105e829fde0fd7c273749c5270b2f75a02009623cf760d"
+    }
+  ]
+}
