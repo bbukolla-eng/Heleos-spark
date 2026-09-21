@@ -150,7 +150,7 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(restored.view()["items"], view["items"])
         self.assertTrue(restored.view()["review_complete"])
         with zipfile.ZipFile(io.BytesIO(self.flow.export())) as archive:
-            self.assertEqual(set(archive.namelist()), {"README.txt", "WORKBOOK.txt", "takeoff.xlsx", "workflow.json", "equipment.csv",
+            self.assertEqual(set(archive.namelist()), {"README.txt", "WORKBOOK.txt", "EVIDENCE.txt", "evidence.pdf", "takeoff.xlsx", "workflow.json", "equipment.csv",
                 "measurements.csv", "takeoff.csv", "unresolved-items.csv", "document-reading.json", "sheet-scales.json",
         "schedule-fields.csv", "requirements.csv", "equipment-register.csv",
         "mechanical-knowledge.json", "mechanical-rule-candidates.csv",

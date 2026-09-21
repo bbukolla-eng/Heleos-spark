@@ -1,8 +1,8 @@
 # Build completion checks
 
-The checkpoint guard catches missing or inconsistent continuation records. Codex
-still reviews the candidate, runs the relevant checks and owns the commit. The
-guard does not calculate acceptance, approve work, write status, commit, push,
+The checkpoint guard catches missing or inconsistent continuation records. The
+checkout controller reviews the candidate, runs the relevant checks, and commits
+only when the owner explicitly asks. The guard does not calculate acceptance, approve work, write status, commit, push,
 launch agents or schedule the next task.
 
 ## Normal workflow
@@ -20,7 +20,7 @@ launch agents or schedule the next task.
    receipt itself. Include status and reports; a deleted file has a null hash.
    Hash Git's staged blobs, not the working copies. Untracked evidence is not proof.
 5. Run `python3 scripts/verify-build-checkpoint.py --staged`. Fix the named problem
-   if it fails. Codex reviews the staged inventory and commits; the installed hook
+   if it fails. The checkout controller reviews the staged inventory and commits only when the owner explicitly asks; the installed hook
    runs the same validator automatically.
 6. After an authorized push or PR, the CI workflow checks new committed
    checkpoints and the existing repository checks. Local integration does not

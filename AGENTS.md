@@ -6,15 +6,27 @@ This is the shared project policy for Codex and every other worker. Provider-spe
 
 | File | Purpose |
 | --- | --- |
-| [AGENTS.md](AGENTS.md) | Shared authority, scope, verification, and continuity; Codex coordination |
+| [AGENTS.md](AGENTS.md) | Shared authority, scope, verification, and continuity; checkout controller recorded below |
 | [CLAUDE.md](CLAUDE.md) | Claude implementation and review workflow |
 | [KIMI.md](KIMI.md) | Kimi implementation, tests, and independent review |
 | [GROK.md](GROK.md) | Grok coding adapters and cited research |
-| [CURSOR.md](CURSOR.md) | Cursor editor/agent work in the assigned checkout |
+| [CURSOR.md](CURSOR.md) | Cursor editor/agent work; controller for the checkout recorded below |
 | [GROKBOTS.md](GROKBOTS.md) | GrokBots application and Athena research-artifact workflow |
 | [SKILLS.md](SKILLS.md) | Project workflow index and skill-admission requirements |
 
 These files do not install, authenticate, launch, sandbox, or grant tools to an agent. Confirm which instructions the actual runtime loaded. If loading cannot be established, include the shared and relevant provider file explicitly in the task context. Do not assume an arbitrary provider filename is auto-discovered.
+
+## Checkout controller
+
+Recorded 2026-09-21 for `/Users/bekim/Heleos-spark`, branch `2026-09-21-t5b5`, HEAD `49b7f57a208e162054b0d856dd299852a1bfce50`. The owner directed Cursor to take the build queue, reviews, and local workflow on this checkout.
+
+Cursor selects the next unfinished task from `CURRENT_STATUS.md`, reviews candidate bytes on this checkout, updates the checkpoint, and commits locally only when the owner explicitly asks. One writer updates `CURRENT_STATUS.md`: the checkout controller.
+
+The owner keeps these actions unless a later request names that action: merging to `main`, approving a pull request, push, branch protection, auto-merge, the `claude-egress` secret, and other GitHub Settings changes in `docs/policies/github-automation.md`.
+
+NotebookLM stays on the Codex connection. Until Cursor has that connection, Cursor reuses saved records under `docs/research/notebooklm/` and records the gap. This handoff leaves `.github/`, `.claude/hooks/`, `.githooks/`, `.claude/settings.json`, `.claude/workflows/`, `.claude/agents/`, and `docs/decisions/` unchanged.
+
+Where a later sentence in this file names Codex as coordinator or sole commit owner, this section governs this checkout. Historical task records stay as written.
 
 ## Start from verified state
 
@@ -50,7 +62,7 @@ These files do not install, authenticate, launch, sandbox, or grant tools to an 
 
 Implementation workers may write code, tests, and documentation in their assigned paths. They are not restricted to read-only analysis by this policy. A review-only assignment remains read-only. A tool's actual permissions must support the assignment; Markdown cannot turn a read-only connector into a writer.
 
-Codex coordinates assignments, verifies returned work, and performs owner-authorized integration. For each external worker, record a compact task brief containing:
+The checkout controller coordinates assignments, verifies returned work, and performs owner-authorized integration. For each external worker, record a compact task brief containing:
 
 - Task ID and concrete objective; exact checkout, base commit, and relevant instruction/plan identities.
 - Allowed paths, sole writer, permitted tools, and forbidden changes.
@@ -68,13 +80,13 @@ The owner directs this build to use the project
 bounded Claude Code implementation assignments. Follow its exact-base,
 authentication, containment, egress and task-packet checks. Each assignment names
 the only paths Claude may edit, one concrete deliverable and acceptance commands.
-Codex retains NotebookLM access, verifies supporting passages and supplies the
+NotebookLM access remains on the Codex connection until Cursor has its own. The checkout controller verifies supporting passages and supplies the
 committed, hash-pinned research packet before knowledge-dependent implementation.
 Reuse applicable verified findings instead of repeating completed research.
 
-While Claude works, Codex continues independent work on non-overlapping paths.
-Codex reviews the complete candidate inventory and diff, runs the declared checks
-independently, integrates only accepted changes and remains the only commit owner.
+While Claude works, the checkout controller continues independent work on non-overlapping paths.
+The checkout controller reviews the complete candidate inventory and diff, runs the declared checks
+independently, integrates only accepted changes, and commits only when the owner explicitly asks.
 Claude never commits or promotes its own candidate. Provider unavailability stops
 that dispatch; record it and continue independent preparation or implementation
 under the existing task authority. Keep all original run and failure evidence.
@@ -123,9 +135,9 @@ improve implementation. Follow [the research workflow](docs/operations/notebookl
 
 ## Verify and hand off
 
-- Follow [build completion checks](docs/operations/build-checkpoints.md) for code, configuration, instruction and active-plan commits. Update the live status and hash-pinned checkpoint receipt, stage only owned paths, then run `python3 scripts/verify-build-checkpoint.py --staged`. The local pre-commit hook and CI validate the selected Git bytes; they do not approve work, rewrite status, commit or restart accepted tasks. Use in-progress or blocked checkpoints when appropriate. Codex remains the sole commit owner.
+- Follow [build completion checks](docs/operations/build-checkpoints.md) for code, configuration, instruction and active-plan commits. Update the live status and hash-pinned checkpoint receipt, stage only owned paths, then run `python3 scripts/verify-build-checkpoint.py --staged`. The local pre-commit hook and CI validate the selected Git bytes; they do not approve work, rewrite status, commit or restart accepted tasks. Use in-progress or blocked checkpoints when appropriate. The checkout controller commits only when the owner explicitly asks.
 - Use the pinned Rust toolchain and locked, offline dependency resolution for ordinary checks.
 - Run checks appropriate to the exact changed bytes. Keep new verification evidence separate from historical results; a passing local test is not native Windows or production-release acceptance.
-- Record completed work, open findings, exact workspace/commit identities, and the next action before a handoff or compaction. For every completed scoped task, the coordinating agent must update root `CURRENT_STATUS.md` before reporting completion or handing off. Include the task and outcome, exact checkout/base commit, verification results and evidence location, remaining findings or limits, and one concrete next action. Keep detailed commands and file hashes in the task ledger. Include the status update in each authorized completion commit; explicitly identify implementation that remains uncommitted. Also update the status when the main checkout or its stated blockers materially change. Workers report their results to the coordinator so this file retains one writer.
+- Record completed work, open findings, exact workspace/commit identities, and the next action before a handoff or compaction. For every completed scoped task, the coordinating agent must update root `CURRENT_STATUS.md` before reporting completion or handing off. Include the task and outcome, exact checkout/base commit, verification results and evidence location, remaining findings or limits, and one concrete next action. Keep detailed commands and file hashes in the task ledger. Include the status update in each authorized completion commit; explicitly identify implementation that remains uncommitted. Also update the status when the main checkout or its stated blockers materially change. Workers report their results to the checkout controller so `CURRENT_STATUS.md` retains one writer.
 - Each handoff records: task/worker identity; base commit and changed-file identities; files changed; checks with exact commands and real exit results; findings and verification limits; current process state; and one concrete next action. Distinguish implementation finished, checks passed, independently accepted, and integrated.
 - Keep volatile results in the current task ledger/status, not copied into every provider file. After compaction, reconcile those records with live Git and process state before restarting anything. Preserve completed reports and resume at the first unfinished action.

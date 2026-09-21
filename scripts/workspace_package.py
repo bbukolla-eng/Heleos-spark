@@ -93,6 +93,7 @@ SOURCE_FILES = (
     "scripts/sheet_scale.py",
     "scripts/takeoff_workflow.py",
     "scripts/takeoff_workbook.py",
+    "scripts/evidence_pdf.py",
     "scripts/xlsx_workbook.py",
     "tests/fixtures/duct-takeoff/2026-09-13-rule-examples.json",
     "tests/fixtures/duct-takeoff/2026-09-14-owner-decision.json",

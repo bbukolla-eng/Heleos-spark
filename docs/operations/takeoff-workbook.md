@@ -42,5 +42,8 @@ The XLSX contains formulas with snapshot caches and requests recalculation on
 open. Independent ZIP/XML, Python, application and spreadsheet-engine checks are
 recorded in `.heleos/workbook-export-2026-09-16/`. Native Microsoft Excel and
 Windows/NTFS acceptance are separate remaining checks. Recognition qualification,
-complete Division 23 coverage, consolidated evidence PDF and release acceptance
-remain open.
+complete Division 23 coverage and release acceptance remain open.
+
+The same export writes `evidence.pdf`. Its frozen rows, source links and limits
+are in the EVIDENCE-PDF-1 contract. The PDF is a snapshot of supported results.
+It does not replace this workbook or close a CSI section.

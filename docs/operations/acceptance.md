@@ -18,7 +18,7 @@ Every executable task records these fields in its task brief or ledger:
 | Expected results | Independently established outputs for each named case, including exception cases |
 | Pass criteria | Required comparisons and numerical tolerances; zero unexplained omissions from the defined coverage set |
 | Verification | Exact commands or bounded manual procedure and the evidence each produces |
-| Reviewer | Independent review responsibility; Codex coordinates acceptance and remains the commit owner |
+| Reviewer | Independent review responsibility. The checkout controller coordinates acceptance and commits only when the owner explicitly asks |
 | Completion record | Actual exit/results, reviewed implementation identities, remaining scope and next task |
 
 An acceptance criterion may not say only “accurate,” “good enough,” “fully tested,”
@@ -30,7 +30,7 @@ separate bounded task. An undefined acceptance gate must not trigger repeat runs
 
 ## Engineering task acceptance
 
-Codex may accept an authorized engineering task when **all** of these are true:
+The checkout controller may accept an authorized engineering task when **all** of these are true:
 
 1. The defined artifact and connected behavior exist at recorded exact bytes.
 2. Every mandatory check listed in this task's fixed contract passes on its
@@ -116,7 +116,7 @@ acceptance of the delivered workflow.
 Every blocking review finding names the frozen criterion ID (or violated shared
 policy), actual and expected behavior, reproducer/evidence and affected paths.
 Correct that finding and check its affected regression surface; record why a
-broader rerun is required. Once the named findings close, Codex records acceptance
+broader rerun is required. Once the named findings close, the checkout controller records acceptance
 and integration without requiring another general review by default. Optional
 features get separate task IDs. If the same issue persists for two correction
 rounds, diagnose the oracle/input/implementation assumption and choose a bounded

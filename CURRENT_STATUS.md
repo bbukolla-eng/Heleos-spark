@@ -1,11 +1,15 @@
 # Current Status
 
-Updated 2026-09-16. Checkout `/Users/bekim/Heleos-spark`, branch `main`.
+Updated 2026-09-21. Checkout `/Users/bekim/Heleos-spark`, branch `2026-09-21-t5b5`, HEAD `49b7f57a208e162054b0d856dd299852a1bfce50`.
 **Resume here is the single live queue.** The goal defines the product outcome;
 the CSI register defines scope. Current delivery priority is complete Division 23
 capability on **Mac first**; native Windows delivery follows the connected workflow.
 
 ## Resume here
+
+**Checkout controller:** Cursor, recorded 2026-09-21 by owner direction for this checkout and branch. Cursor holds this live queue, reviews candidate bytes here, updates checkpoints, and commits locally only when the owner explicitly asks. The workflow stays: freeze the contract, test, record evidence, update the checkpoint, and run `python3 scripts/verify-build-checkpoint.py --staged`.
+
+The owner keeps merging to `main`, pull-request approval, push, branch protection, auto-merge, and the `claude-egress` secret. Those stay GitHub Settings actions in [github automation](docs/policies/github-automation.md). NotebookLM stays on the Codex connection. Until Cursor has that connection, section research reuses saved records under `docs/research/notebooklm/`. This handoff leaves `.github/`, hook paths, and `docs/decisions/` unchanged. Older records that name Codex as commit owner stay historical. The evidence PDF acceptance in this section stays as written, and this record does not commit that candidate.
 
 **Scope authority:** [Full CSI Division 23 hierarchy and section plans](docs/superpowers/plans/2026-09-16-division23-section-delivery.md).
 The verified **April 2016 CSI/CSC catalogue** contains **432 nodes including the
@@ -15,17 +19,50 @@ only the selected card and required contract subset. The old agency-guide
 organizing format and its 56 active cards have been removed. It is not the live
 scope or a second roadmap.
 
-**Primary product task: EVIDENCE-PDF-1.** Deliver a consolidated, source-linked
-evidence PDF for the already supported duct, air-device and equipment results.
+**Primary product task: Selected CSI section DEFINE.** Freeze the verified
+mechanical taxonomy and independent expected cases for one section's selected
+behavior, using its linked card and applicable source bodies.
 
-**Next executable action:** freeze the PDF contract and literal expected specimen
-rows from accepted producers: separate quantity channels, known/unknown and stale
-states, source revision/page/region destinations, correction history and project
-scope limits. Reuse retained verified findings, then implement the PDF export and
-independently inspect its text, links and rendered pages on Mac. The finish line
-is a reproducible export matching those fixed cases and independent review; new
-mechanical recognition or complete section acceptance is not its prerequisite.
-Record the bounded contract in the task ledger before dependent implementation.
+**Next executable action:** Select one CSI section and DEFINE its verified full mechanical taxonomy and independent expected cases from its linked card and applicable source bodies. Catalogue titles alone do not satisfy that definition. CSI-CATALOGUE-2026-RECONCILE stays blocked until an authorized complete newer-edition catalogue is obtained.
+
+**EVIDENCE-PDF-1** local software is independently reviewed and accepted for the
+frozen contract and specimen rows. The candidate remains uncommitted on branch
+`2026-09-21-t5b5` at `49b7f57a208e162054b0d856dd299852a1bfce50`. This acceptance does not
+commit or push the work, close a CSI section, qualify recognition, accept
+Windows, or record a bid.
+
+Evidence paths: contract
+`docs/operations/evidence-pdf-2026-09-21-contract.md`, specimen
+`tests/fixtures/evidence-pdf/specimen-rows.json`, writer
+`scripts/evidence_pdf.py`, review
+`docs/operations/evidence-pdf-2026-09-21-review.md`, task record
+`docs/operations/evidence-pdf-2026-09-21.json`. The review file is untracked.
+The task record now says `complete` and names the accepted review.
+
+The reviewer re-ran these commands and each exited 0:
+`python3 -m unittest discover -s tests/drawing-workspace -p 'test_evidence_pdf.py' -v`
+(4 tests), the same form for `test_takeoff_workbook.py` (13),
+`test_takeoff_workflow.py` (12), `test_workspace_package.py` (18),
+`test_equipment_count_workflow.py` (8), and `test_air_device_workflow.py` (5).
+Mac PDFKit inspect (`swift /tmp/heleos-evidence-review/inspect.swift /tmp/heleos-evidence-review/duct-current.pdf /tmp/heleos-evidence-review/pages`)
+and `qlmanage -t -s 800 -o /tmp/heleos-evidence-review /tmp/heleos-evidence-review/duct-current.pdf`
+also exited 0. `pdftotext` and `pdfinfo` are not installed and were not run.
+`python3 scripts/verify-build-checkpoint.py --staged` exited 0 on the index
+as it stood at the end of that review, before this status edit.
+
+Notes that are not blocking: a PDF `ValueError` during draft export is labeled
+`workbook_projection`, and each section is a single page. The package test
+expects 84 files because the PDF writer is in the payload. The previously
+accepted 83-file equipment package record stays that milestone. Cursor is the
+checkout controller recorded in Resume here.
+
+The checkpoint outcome is `complete`. The independent review accepted the export
+candidate with no blocking findings. This checkpoint pins that review and the
+changed-file SHA-256 values to the selected Git index, including
+`docs/operations/evidence-pdf-2026-09-21-review.md`. The review text still
+describes the status it saw, including branch `main` and an uncommitted
+candidate. The live branch is `2026-09-21-t5b5`. `pdftotext` and `pdfinfo` were
+not run. This acceptance does not close a CSI section.
 
 **Completed — EQUIPMENT-COUNT-1-SOFTWARE:** approved E01–E12 / EC01–EC20 now drive
 source-bound physical counts, separate package/procurement/installation channels,
@@ -116,7 +153,7 @@ and the [section work breakdown](docs/plans/division-23-section-work-breakdown.m
 | Duct | Approved D01–D10 connected calculation/correction and evidence | Recognition/representative scope; no repeated refinements without a recorded defect |
 | Air-device software | Approved A01–A12 calculation, producer transport, review/correction/reopen/history and source exports | Recognition child parked; software acceptance is preserved |
 | Equipment software | E01–E12/EC01–EC20 connected counts, separate quantity channels, correction/reopen/history and CSV/JSON/Excel independently verified on Mac | Automatic physical recognition, representative qualification and full CSI section bindings remain open |
-| Estimator output | Source-linked Excel/formulas with supported result projection and local package checks | Consolidated evidence PDF, desktop spreadsheet/representative estimator proof |
+| Estimator output | Source-linked Excel/formulas with supported result projection, local package checks, and an independently accepted uncommitted evidence PDF for the frozen contract and specimen rows | Desktop spreadsheet and representative estimator proof. The PDF candidate is not committed. It is not a bid, a CSI section closure, recognition qualification, or Windows acceptance. |
 | Remaining Division 23 | Every CSI baseline node has a linked task and acceptance card | Every unfinished required taxonomy and connected behavior stays open |
 | Platform/product | Mac implementation and local verification; portable shared code | Later WINDOWS-DELIVERY-1, representative product and final owner release acceptance |
 
@@ -168,7 +205,8 @@ confirm the limited Python process/hash findings; this is recorded honestly as
 post-implementation research, with the initial mistake preserved. Primary
 Git/Actions references were verified before implementation. Existing Claude
 authentication failure remains unchanged.
-This bounded guard setup returns execution to EVIDENCE-PDF-1 above; it is not a
+This bounded guard setup returned execution to the product queue. The live
+action is the selected CSI section DEFINE in Resume here. It is not a
 recurring status-only assignment.
 
 **EQUIPMENT-COUNT-1-SOFTWARE**, base
@@ -177,7 +215,9 @@ recurring status-only assignment.
 review dispositions, source-research reuse, browser/export/package evidence,
 fixture repairs, verification limits and terminal worker/process states. Codex
 reviewed and integrated the candidate; no worker committed or submitted private
-data externally. The next task is EVIDENCE-PDF-1 above. The completed CSI migration
+data externally. That checkpoint named EVIDENCE-PDF-1 as its next task. Resume
+here now records that export as accepted uncommitted local software, and the
+live action is the selected CSI section DEFINE. The completed CSI migration
 below remains scope authority, not a task to replay.
 
 **CSI23-HIERARCHY-MIGRATION-1**, base
@@ -202,9 +242,9 @@ review/integration evidence is recorded in
 Current-edition reconciliation, full mechanical definitions/implementations,
 representative acceptance and later Windows delivery remain outstanding. The
 catalogue reference is admitted for this internal planning/research; commercial
-redistribution permission is not established. The next product action is the
-evidence-PDF contract and implementation above; independent CSI definitions and
-behaviors may advance by actual required inputs.
+redistribution permission is not established. Independent CSI section DEFINE
+work is the live action in Resume here. Catalogue reconciliation stays blocked
+on an authorized newer-edition catalogue.
 
 The earlier CSI migration amended the repository goal. This checkpoint installs
 only the local completion hook and CI validation; no app goal or recurring
@@ -219,10 +259,10 @@ progress. Earlier exact checkpoints remain in Git history and the
 {
   "schema_version": 1,
   "receipt": "docs/operations/build-checkpoint.json",
-  "task_id": "BUILD-CHECKPOINT-GUARD-1",
+  "task_id": "EVIDENCE-PDF-1",
   "outcome": "complete",
-  "next_task_id": "EVIDENCE-PDF-1",
-  "next_action": "freeze the PDF contract and literal expected specimen rows from accepted producers: separate quantity channels, known/unknown and stale states, source revision/page/region destinations, correction history and project scope limits. Reuse retained verified findings, then implement the PDF export and independently inspect its text, links and rendered pages on Mac. The finish line is a reproducible export matching those fixed cases and independent review; new mechanical recognition or complete section acceptance is not its prerequisite. Record the bounded contract in the task ledger before dependent implementation."
+  "next_task_id": "Selected CSI section DEFINE",
+  "next_action": "Select one CSI section and DEFINE its verified full mechanical taxonomy and independent expected cases from its linked card and applicable source bodies. Catalogue titles alone do not satisfy that definition. CSI-CATALOGUE-2026-RECONCILE stays blocked until an authorized complete newer-edition catalogue is obtained."
 }
 ```
 <!-- /build-checkpoint -->

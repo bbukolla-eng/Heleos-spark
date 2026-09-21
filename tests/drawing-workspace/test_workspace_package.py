@@ -50,7 +50,7 @@ class WorkspacePackageTests(unittest.TestCase):
             "scripts/air_device_attributes.py", "scripts/air_device_calculation.py",
             "scripts/air_device_rules.py", "scripts/air_device_source_producer.py",
             "scripts/local_air_device_vision.py", "scripts/project_air_device_takeoff.py",
-            "scripts/takeoff_workbook.py", "scripts/xlsx_workbook.py",
+            "scripts/takeoff_workbook.py", "scripts/evidence_pdf.py", "scripts/xlsx_workbook.py",
             "scripts/mechanical_scope.py",
             "tests/fixtures/air-device-takeoff/2026-09-14-rule-examples.json",
             "tests/fixtures/air-device-takeoff/2026-09-15-owner-decision.json",
@@ -83,7 +83,7 @@ class WorkspacePackageTests(unittest.TestCase):
         secret.write_bytes(b"Do not package project data")
         output, manifest = self.build()
         self.assertEqual(manifest["entrypoint"], "scripts/drawing-workspace.py")
-        self.assertEqual(len(manifest["files"]), 83)
+        self.assertEqual(len(manifest["files"]), 84)
         self.assertEqual({item["path"] for item in manifest["files"]}, set(self.expected))
         self.assertIn("tests/fixtures/duct-takeoff/2026-09-14-owner-decision.json", self.expected)
         for item in manifest["files"]:
