@@ -1,0 +1,20 @@
+{
+  "section_id": "CSI-23-31-13",
+  "records": [
+    {
+      "id": "TAX-CENTERLINE-LENGTH",
+      "section_id": "CSI-23-31-13",
+      "kind": "measurement",
+      "parent_taxon_id": null,
+      "required": true,
+      "attributes": ["centerline_length_ft", "size_group", "work_status", "shape"],
+      "relationships": ["splits_at_supported_size_change", "fittings_counted_separately"],
+      "source_refs": ["DUCT-RULES-2026-09-13#D01", "DUCT-RULES-2026-09-13#D06"],
+      "rule_bindings": ["D01", "D02", "D03", "D04", "D05", "D06", "D07", "D08", "D09", "D10"],
+      "case_ids": ["E01", "E02", "E03", "E04", "E05", "E06", "E07", "E08", "E09"],
+      "coverage_receipts": []
+    }
+  ],
+  "required_children": ["CSI-23-31-13.13", "CSI-23-31-13.16", "CSI-23-31-13.19"],
+  "child_disposition": "Catalogue titles are recorded. Mechanical type, variant, and service records for those children are not adopted."
+}

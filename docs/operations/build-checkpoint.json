@@ -1,163 +1,71 @@
 {
   "schema_version": 1,
-  "task_id": "EVIDENCE-PDF-1",
-  "outcome": "complete",
-  "base_commit": "49b7f57a208e162054b0d856dd299852a1bfce50",
-  "summary": "Independent review accepted the EVIDENCE-PDF-1 export for the frozen contract and specimen rows. This checkpoint commits that candidate and the 2026-09-21 checkout-controller record. The live queue is a selected CSI section DEFINE. Catalogue reconciliation stays blocked on an authorized newer-edition catalogue.",
+  "task_id": "CSI-23-31-13-DEFINE",
+  "outcome": "in_progress",
+  "base_commit": "fa45862dbd65d634b45f772a7c874fe1ee1b6e43",
+  "summary": "CSI 23 31 13 Metal Ducts has an in-progress definition packet. Approved D01-D10 and E01-E09 are bound. D01-D06 stay blocked because the three child product types have catalogue titles only. The focused test checks that boundary and does not accept the section.",
   "remaining_limits": [
-    "The PDF records revision, page and region destinations. It does not embed original drawing crops. PDF validation errors are labeled workbook_projection. Each section is a single page.",
-    "No CSI section is complete. Recognition, representative-project, Windows, and release acceptance remain open. The PDF is not a bid.",
-    "pdftotext and pdfinfo are not installed and were not run. The reviewer recorded Mac PDFKit inspect and qlmanage thumbnail at exit 0.",
-    "The review file still describes the status it saw, including branch main and an uncommitted candidate. The live branch is 2026-09-21-t5b5.",
-    "AGENTS.md, CURSOR.md, docs/operations/acceptance.md, and docs/operations/build-checkpoints.md record the checkout controller in this same commit. The PDF review did not edit those instruction files.",
+    "D01-D06 are blocked. The section is not accepted.",
+    "23 31 13.13, 23 31 13.16, and 23 31 13.19 lack retained mechanical source bodies.",
+    "NotebookLM is not connected in this Cursor session. No new notebook query was run.",
+    "The definition test checks packet identity and that acceptance stays blocked. It does not calculate duct quantities.",
     "CSI-CATALOGUE-2026-RECONCILE stays blocked until an authorized complete newer-edition catalogue is obtained."
   ],
-  "next_task_id": "Selected CSI section DEFINE",
-  "next_action": "Select one CSI section and DEFINE its verified full mechanical taxonomy and independent expected cases from its linked card and applicable source bodies. Catalogue titles alone do not satisfy that definition. CSI-CATALOGUE-2026-RECONCILE stays blocked until an authorized complete newer-edition catalogue is obtained.",
+  "next_task_id": "CSI-23-31-13-DEFINE",
+  "next_action": "Retain mechanical source bodies for 23 31 13.13, 23 31 13.16, and 23 31 13.19, then finish D01-D06 for CSI-23-31-13-DEFINE. Catalogue titles do not close those child taxonomies. CSI-CATALOGUE-2026-RECONCILE stays blocked until an authorized complete newer-edition catalogue is obtained.",
   "changed_files": [
     {
-      "path": "AGENTS.md",
-      "sha256": "e383542defd2b759a1ca0835defb8c41bd6faebf5a9b044369c6f5e2b87b9b9b"
-    },
-    {
       "path": "CURRENT_STATUS.md",
-      "sha256": "838fece14e0e574a4dd09972795ac5e3b66bcd72effa090606e15ea41c5d21e6"
+      "sha256": "045a090d3af5d6990e7b6a56c1cb20b4c7e30880a0ed4ccdcb26914878842c6e"
     },
     {
-      "path": "CURSOR.md",
-      "sha256": "fc1b2de5dfbaf66353bee76db51e059f9de5b325992d3ae052ab915470048225"
+      "path": "docs/engineering/division23/csi-23-31-13/define/acceptance.json",
+      "sha256": "cda26aa169422acef3cd8727aba327ac722eb1c8b941a46b64fab18b036162b5"
     },
     {
-      "path": "docs/operations/acceptance.md",
-      "sha256": "8b2c44ccce77a5fc68b498152a7ed6fe82338653f12640ff8d7f37aa2f0f9015"
+      "path": "docs/engineering/division23/csi-23-31-13/define/expected-cases.json",
+      "sha256": "76fdc325b0f5ddc0f44b9be0f2702f5be34e3696a7569e6f078b4d55dcc225dc"
     },
     {
-      "path": "docs/operations/build-checkpoints.md",
-      "sha256": "f43f1b6d5e2a6f95ec9a023fae7bd137792ccbf308aaf9d12c3210bbf9fffa49"
+      "path": "docs/engineering/division23/csi-23-31-13/define/implementation-packet.json",
+      "sha256": "7e413e72be3a7773236fdd228047d466fc8fee3a9f89d25aa021d63c519ad5af"
     },
     {
-      "path": "docs/operations/evidence-pdf-2026-09-21-checks.log",
-      "sha256": "b492f4cf2ad7165eb24f3c23b5495304d8dd6a236ef5eb093dc721f2ac1eabf9"
+      "path": "docs/engineering/division23/csi-23-31-13/define/input-gaps.json",
+      "sha256": "9dc712a5f9ab75dbf110851f7e8839f5bce540c9da9f2dca00cd7a10356c3faa"
     },
     {
-      "path": "docs/operations/evidence-pdf-2026-09-21-contract.md",
-      "sha256": "344536d66c39dbb30929823419303d350532072b7559b2f7087c664c03fb4337"
+      "path": "docs/engineering/division23/csi-23-31-13/define/rule-bindings.json",
+      "sha256": "2e905a646be53773b62a02f884503d6602fd66c90d81be5f04e21bfd4cf5911f"
     },
     {
-      "path": "docs/operations/evidence-pdf-2026-09-21-review.md",
-      "sha256": "2aa63728cb1cc5e33e9c7da9c93c752fa0960b4fb6db69b4d2008d17ed55f9f9"
+      "path": "docs/engineering/division23/csi-23-31-13/define/scope.json",
+      "sha256": "787b15e3cc55016454b09e06eea0885e6430919c4df46ef84fb53ed39e67d607"
     },
     {
-      "path": "docs/operations/evidence-pdf-2026-09-21.json",
-      "sha256": "75690a20587550bdeb21ff3fae46bce612918d414318988555040053d006f0c6"
+      "path": "docs/engineering/division23/csi-23-31-13/define/taxonomy.json",
+      "sha256": "bfac19e1ff7fcd839718400b4c3e66c1f23ff825b1c8872677b7832910d48cad"
     },
     {
-      "path": "docs/operations/takeoff-workbook.md",
-      "sha256": "d7f0f75abae13f90d355aec70cdf42514385dfad41b81a8c035279fad99d9bf4"
+      "path": "docs/operations/csi-23-31-13-define-checks.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
-      "path": "scripts/evidence_pdf.py",
-      "sha256": "a73dc20e0ba7daa07678c350f90f74ca70870721d5c1f99940de3737ddc9a6cf"
-    },
-    {
-      "path": "scripts/takeoff_workflow.py",
-      "sha256": "27de7aaa98fd6602364af21d707a5b7dedd888299e8e9f7bf1c933fcaaa0ca3d"
-    },
-    {
-      "path": "scripts/workspace_package.py",
-      "sha256": "29f7d954b5c101f2addf02402297a58ff438330984f9c3bef4421d128d988e71"
-    },
-    {
-      "path": "tests/drawing-workspace/test_evidence_pdf.py",
-      "sha256": "433c4404680e13216b8c25369863714b37b4ed66c2531a63bd482543bde84b3e"
-    },
-    {
-      "path": "tests/drawing-workspace/test_takeoff_workflow.py",
-      "sha256": "ad9c5195b1e1f58b75f2bd533a889b2987a85d8354c051c3e9d241377a3b7c01"
-    },
-    {
-      "path": "tests/drawing-workspace/test_workspace_package.py",
-      "sha256": "e27fc3df98a0aaf38f19efc6673c2c513f036749477fc70288675172d813a570"
-    },
-    {
-      "path": "tests/fixtures/evidence-pdf/specimen-rows.json",
-      "sha256": "310f3d476bbdea7ff5839cb81eaa7cf12ed8c4fddf75f61e3ce5571c93ba60d7"
+      "path": "tests/drawing-workspace/test_csi_23_31_13_define.py",
+      "sha256": "ecdad89c4281f20e99dfe74a5a0618a4ce20060358da8de589ea03c43d78859e"
     }
   ],
   "checks": [
     {
-      "command": "python3 -m unittest discover -s tests/drawing-workspace -p 'test_evidence_pdf.py' -v",
+      "command": "python3 -m unittest discover -s tests/drawing-workspace -p 'test_csi_23_31_13_define.py' -v",
       "exit_code": 0,
       "evidence": {
-        "path": "docs/operations/evidence-pdf-2026-09-21-checks.log",
-        "sha256": "b492f4cf2ad7165eb24f3c23b5495304d8dd6a236ef5eb093dc721f2ac1eabf9"
-      }
-    },
-    {
-      "command": "python3 -m unittest discover -s tests/drawing-workspace -p 'test_takeoff_workbook.py' -v",
-      "exit_code": 0,
-      "evidence": {
-        "path": "docs/operations/evidence-pdf-2026-09-21-checks.log",
-        "sha256": "b492f4cf2ad7165eb24f3c23b5495304d8dd6a236ef5eb093dc721f2ac1eabf9"
-      }
-    },
-    {
-      "command": "python3 -m unittest discover -s tests/drawing-workspace -p 'test_takeoff_workflow.py' -v",
-      "exit_code": 0,
-      "evidence": {
-        "path": "docs/operations/evidence-pdf-2026-09-21-checks.log",
-        "sha256": "b492f4cf2ad7165eb24f3c23b5495304d8dd6a236ef5eb093dc721f2ac1eabf9"
-      }
-    },
-    {
-      "command": "python3 -m unittest discover -s tests/drawing-workspace -p 'test_workspace_package.py' -v",
-      "exit_code": 0,
-      "evidence": {
-        "path": "docs/operations/evidence-pdf-2026-09-21-checks.log",
-        "sha256": "b492f4cf2ad7165eb24f3c23b5495304d8dd6a236ef5eb093dc721f2ac1eabf9"
-      }
-    },
-    {
-      "command": "python3 -m unittest discover -s tests/drawing-workspace -p 'test_equipment_count_workflow.py' -v",
-      "exit_code": 0,
-      "evidence": {
-        "path": "docs/operations/evidence-pdf-2026-09-21-checks.log",
-        "sha256": "b492f4cf2ad7165eb24f3c23b5495304d8dd6a236ef5eb093dc721f2ac1eabf9"
-      }
-    },
-    {
-      "command": "python3 -m unittest discover -s tests/drawing-workspace -p 'test_air_device_workflow.py' -v",
-      "exit_code": 0,
-      "evidence": {
-        "path": "docs/operations/evidence-pdf-2026-09-21-checks.log",
-        "sha256": "b492f4cf2ad7165eb24f3c23b5495304d8dd6a236ef5eb093dc721f2ac1eabf9"
-      }
-    },
-    {
-      "command": "qlmanage -t -s 1200 -o /tmp/heleos-evidence-pdf /tmp/heleos-evidence-pdf/duct-current.pdf",
-      "exit_code": 0,
-      "evidence": {
-        "path": "docs/operations/evidence-pdf-2026-09-21-checks.log",
-        "sha256": "b492f4cf2ad7165eb24f3c23b5495304d8dd6a236ef5eb093dc721f2ac1eabf9"
-      }
-    },
-    {
-      "command": "swift /tmp/heleos-evidence-pdf/inspect.swift /tmp/heleos-evidence-pdf/duct-current.pdf /tmp/heleos-evidence-pdf/pages",
-      "exit_code": 0,
-      "evidence": {
-        "path": "docs/operations/evidence-pdf-2026-09-21-checks.log",
-        "sha256": "b492f4cf2ad7165eb24f3c23b5495304d8dd6a236ef5eb093dc721f2ac1eabf9"
+        "path": "docs/operations/csi-23-31-13-define-checks.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
     }
   ],
-  "review": {
-    "reviewer": "independent review recorded in docs/operations/evidence-pdf-2026-09-21-review.md",
-    "outcome": "accepted",
-    "evidence": {
-      "path": "docs/operations/evidence-pdf-2026-09-21-review.md",
-      "sha256": "2aa63728cb1cc5e33e9c7da9c93c752fa0960b4fb6db69b4d2008d17ed55f9f9"
-    }
-  },
+  "review": null,
   "missing_prerequisite": null,
   "independent_action": null
 }

@@ -19,25 +19,24 @@ only the selected card and required contract subset. The old agency-guide
 organizing format and its 56 active cards have been removed. It is not the live
 scope or a second roadmap.
 
-**Primary product task: Selected CSI section DEFINE.** Freeze the verified
-mechanical taxonomy and independent expected cases for one section's selected
-behavior, using its linked card and applicable source bodies.
+**Primary product task: CSI-23-31-13-DEFINE.** Freeze the verified
+mechanical taxonomy and independent expected cases for Metal Ducts, using its
+linked card and applicable source bodies.
 
-**Next executable action:** Select one CSI section and DEFINE its verified full mechanical taxonomy and independent expected cases from its linked card and applicable source bodies. Catalogue titles alone do not satisfy that definition. CSI-CATALOGUE-2026-RECONCILE stays blocked until an authorized complete newer-edition catalogue is obtained.
+**Next executable action:** Retain mechanical source bodies for 23 31 13.13, 23 31 13.16, and 23 31 13.19, then finish D01-D06 for CSI-23-31-13-DEFINE. Catalogue titles do not close those child taxonomies. CSI-CATALOGUE-2026-RECONCILE stays blocked until an authorized complete newer-edition catalogue is obtained.
 
 **EVIDENCE-PDF-1** local software is independently reviewed and accepted for the
-frozen contract and specimen rows. The candidate remains uncommitted on branch
-`2026-09-21-t5b5` at `49b7f57a208e162054b0d856dd299852a1bfce50`. This acceptance does not
-commit or push the work, close a CSI section, qualify recognition, accept
-Windows, or record a bid.
+frozen contract and specimen rows. It is committed on branch `2026-09-21-t5b5`
+as `fa45862dbd65d634b45f772a7c874fe1ee1b6e43`, based on
+`49b7f57a208e162054b0d856dd299852a1bfce50`. This acceptance does not close a CSI
+section, qualify recognition, accept Windows, or record a bid.
 
 Evidence paths: contract
 `docs/operations/evidence-pdf-2026-09-21-contract.md`, specimen
 `tests/fixtures/evidence-pdf/specimen-rows.json`, writer
 `scripts/evidence_pdf.py`, review
 `docs/operations/evidence-pdf-2026-09-21-review.md`, task record
-`docs/operations/evidence-pdf-2026-09-21.json`. The review file is untracked.
-The task record now says `complete` and names the accepted review.
+`docs/operations/evidence-pdf-2026-09-21.json`. The task record says `complete`.
 
 The reviewer re-ran these commands and each exited 0:
 `python3 -m unittest discover -s tests/drawing-workspace -p 'test_evidence_pdf.py' -v`
@@ -56,13 +55,16 @@ expects 84 files because the PDF writer is in the payload. The previously
 accepted 83-file equipment package record stays that milestone. Cursor is the
 checkout controller recorded in Resume here.
 
-The checkpoint outcome is `complete`. The independent review accepted the export
-candidate with no blocking findings. This checkpoint pins that review and the
-changed-file SHA-256 values to the selected Git index, including
-`docs/operations/evidence-pdf-2026-09-21-review.md`. The review text still
-describes the status it saw, including branch `main` and an uncommitted
-candidate. The live branch is `2026-09-21-t5b5`. `pdftotext` and `pdfinfo` were
-not run. This acceptance does not close a CSI section.
+That PDF checkpoint outcome is `complete` in `fa45862dbd65d634b45f772a7c874fe1ee1b6e43`.
+The independent review accepted the export candidate with no blocking findings.
+The review text still describes the status it saw, including branch `main` and
+an uncommitted candidate. `pdftotext` and `pdfinfo` were not run.
+
+**CSI-23-31-13-DEFINE** is the live task and is `in_progress`. The packet under
+`docs/engineering/division23/csi-23-31-13/define/` binds approved D01-D10 and
+E01-E09 to Metal Ducts. D01-D06 stay blocked. Child product types 23 31 13.13,
+23 31 13.16, and 23 31 13.19 have catalogue titles only. This packet does not
+accept the section.
 
 **Completed — EQUIPMENT-COUNT-1-SOFTWARE:** approved E01–E12 / EC01–EC20 now drive
 source-bound physical counts, separate package/procurement/installation channels,
@@ -95,7 +97,7 @@ recorded relevant change or defect.
 
 | Independent work | Finite next deliverable and actual prerequisite |
 | --- | --- |
-| Selected CSI section DEFINE | Verified full mechanical taxonomy and independent expected cases for that section's selected behavior; use its linked card and applicable source bodies. Catalogue titles alone do not satisfy mechanical definition. |
+| CSI-23-31-13-DEFINE | Retain mechanical source bodies for 23 31 13.13, 23 31 13.16, and 23 31 13.19, then finish D01-D06. Approved D01-D10 length rules are bound. Catalogue titles do not close those child taxonomies. |
 | CSI-CATALOGUE-2026-RECONCILE | Obtain an authorized complete newer-edition catalogue and record exact additions, removals and hierarchy changes against 2016. This blocks a current-edition completeness claim, not work under verified scope. |
 
 **NotebookLM entrypoint:** [CSI Division 23 notebook](https://notebooklm.google.com/notebook/53cebee4-b959-406d-930c-fc697a3d9e61),
@@ -153,7 +155,7 @@ and the [section work breakdown](docs/plans/division-23-section-work-breakdown.m
 | Duct | Approved D01–D10 connected calculation/correction and evidence | Recognition/representative scope; no repeated refinements without a recorded defect |
 | Air-device software | Approved A01–A12 calculation, producer transport, review/correction/reopen/history and source exports | Recognition child parked; software acceptance is preserved |
 | Equipment software | E01–E12/EC01–EC20 connected counts, separate quantity channels, correction/reopen/history and CSV/JSON/Excel independently verified on Mac | Automatic physical recognition, representative qualification and full CSI section bindings remain open |
-| Estimator output | Source-linked Excel/formulas with supported result projection, local package checks, and an independently accepted uncommitted evidence PDF for the frozen contract and specimen rows | Desktop spreadsheet and representative estimator proof. The PDF candidate is not committed. It is not a bid, a CSI section closure, recognition qualification, or Windows acceptance. |
+| Estimator output | Source-linked Excel/formulas with supported result projection, local package checks, and an independently accepted evidence PDF for the frozen contract and specimen rows, committed in `fa45862dbd65d634b45f772a7c874fe1ee1b6e43` | Desktop spreadsheet and representative estimator proof. The PDF is not a bid, a CSI section closure, recognition qualification, or Windows acceptance. |
 | Remaining Division 23 | Every CSI baseline node has a linked task and acceptance card | Every unfinished required taxonomy and connected behavior stays open |
 | Platform/product | Mac implementation and local verification; portable shared code | Later WINDOWS-DELIVERY-1, representative product and final owner release acceptance |
 
@@ -216,7 +218,7 @@ review dispositions, source-research reuse, browser/export/package evidence,
 fixture repairs, verification limits and terminal worker/process states. Codex
 reviewed and integrated the candidate; no worker committed or submitted private
 data externally. That checkpoint named EVIDENCE-PDF-1 as its next task. Resume
-here now records that export as accepted uncommitted local software, and the
+here now records that export as accepted local software committed in `fa45862dbd65d634b45f772a7c874fe1ee1b6e43`, and the
 live action is the selected CSI section DEFINE. The completed CSI migration
 below remains scope authority, not a task to replay.
 
@@ -259,10 +261,10 @@ progress. Earlier exact checkpoints remain in Git history and the
 {
   "schema_version": 1,
   "receipt": "docs/operations/build-checkpoint.json",
-  "task_id": "EVIDENCE-PDF-1",
-  "outcome": "complete",
-  "next_task_id": "Selected CSI section DEFINE",
-  "next_action": "Select one CSI section and DEFINE its verified full mechanical taxonomy and independent expected cases from its linked card and applicable source bodies. Catalogue titles alone do not satisfy that definition. CSI-CATALOGUE-2026-RECONCILE stays blocked until an authorized complete newer-edition catalogue is obtained."
+  "task_id": "CSI-23-31-13-DEFINE",
+  "outcome": "in_progress",
+  "next_task_id": "CSI-23-31-13-DEFINE",
+  "next_action": "Retain mechanical source bodies for 23 31 13.13, 23 31 13.16, and 23 31 13.19, then finish D01-D06 for CSI-23-31-13-DEFINE. Catalogue titles do not close those child taxonomies. CSI-CATALOGUE-2026-RECONCILE stays blocked until an authorized complete newer-edition catalogue is obtained."
 }
 ```
 <!-- /build-checkpoint -->
