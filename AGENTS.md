@@ -105,6 +105,8 @@ under the existing task authority. Keep all original run and failure evidence.
 
 ## NotebookLM source research
 
+NotebookLM is a required research step for every section and knowledge-dependent build task, not an optional worker preference. Every implementation assignment and completion record must include a `notebooklm_research` disposition as defined in the research workflow: new verified research, explicitly reused verified findings, or an unavailable attempt with affected scope and follow-up. Missing research disposition is incomplete task evidence. Consult the recorded inventory/findings before choosing reuse; do not claim a live query when only saved findings were used. The independent reviewer checks the disposition and source-to-behavior/test bindings before accepting knowledge-dependent work. Pure administrative work records why it introduces no knowledge-dependent behavior; it does not require a filler query. This is a required review procedure; no automatic NotebookLM hook is claimed.
+
 Use the connected NotebookLM MCP throughout the build when source research can
 improve implementation. Follow [the research workflow](docs/operations/notebooklm-research.md).
 

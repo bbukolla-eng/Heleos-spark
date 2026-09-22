@@ -6,6 +6,27 @@ relevant sources, query them for requirements and exceptions, and verify useful
 claims against their supporting text. The owner's approved rules, source evidence
 and deterministic calculation code retain authority.
 
+## Required task evidence (owner reaffirmed 2026-09-22)
+
+NotebookLM remains part of every section's DEFINE, RESULT, CONNECT and QUALIFY work, and of technical features or fixes outside those sections. At task entry, consult the existing routing inventory and applicable verified findings. Before new knowledge-dependent implementation, query relevant sources where the recorded evidence does not cover the task, verify consequential supporting passages, and supply the verified research packet to the implementation worker. Repeat research when requirements, evidence or sources change; do not repeat an unchanged successful query merely because a new task or worker starts.
+
+Each task's existing assignment/ledger and completion record must carry a `notebooklm_research` object. Keep it with the task, not in a competing research queue. Record:
+
+- `disposition`: `new_verified`, `reused_verified`, `unavailable`, or `administrative_no_new_claims`.
+- `records`: project-relative paths and SHA-256 identities for the query/source verification or reused findings; applicable finding IDs, notebook IDs, source IDs and supporting passage locations must resolve through those records. For `administrative_no_new_claims` or `unavailable` with no callable tool, `records` may be empty only with an explicit reason in `applicability`; retain a failure receipt when an actual call was attempted.
+- `applicability`: which requirements, exceptions and examples the evidence covers, its edition/source limits and any conflicts not adopted.
+- `behavior_and_checks`: the exact behavior and meaningful checks informed by each adopted finding, or an explicit explanation that the task only prepares research and has no implementation yet.
+- `gaps_and_next_action`: unsupported scope, failed access details and the named follow-up, or an explicit statement that there are no research gaps for the bounded task.
+- `external_submissions`: links to the pre-submission authorization/classification record and terminal results for new external calls, or an explicit no-submission reason: verified findings reused, administrative-only work, or no callable tool. An attempted external call requires its submission/result record even when it fails.
+
+`new_verified` requires query and supporting-text verification evidence. `reused_verified` requires real prior verified NotebookLM findings and an applicability check; a catalogue index, notebook title or an unverified answer is insufficient. A field saying “NotebookLM used” without resolvable evidence does not pass review.
+
+`unavailable` records the actual failed call or absent tool capability and does not satisfy a research-dependent acceptance criterion. Continue work that can use already verified findings or independent inputs; keep unsupported knowledge-dependent behavior unaccepted. Restore the outstanding NotebookLM query when access returns. Never describe an unavailable attempt as successful research.
+
+`administrative_no_new_claims` is limited to actions such as publication, queue maintenance or transcription of owner instructions that introduce no technical/mechanical behavior. State that reason explicitly; it cannot exempt a feature, calculation, recognition rule, dependency choice or technical fix from source research.
+
+The controller includes this evidence in Claude/Cursor/other worker assignments and at handoff. Independent review checks it before accepting knowledge-dependent implementation. Build updates name which disposition occurred and what it informed. Current checkpoint tooling validates receipt consistency and hashes; it does not automatically inspect this object or call NotebookLM. A future enforcement change must have its own tests and acceptance rather than being implied by this policy.
+
 ## Current CSI organization
 
 The [current routing inventory](../research/notebooklm/csi-division23-routing.json) supersedes title-based N10/N11 routing below. Start at **CSI Division 23 — Sections, Subsections & Takeoff Research** (`53cebee4-b959-406d-930c-fc697a3d9e61`). Its primary CSI/CSC catalogue and 14 source-backed branch indexes cover every published Division 23 entry in the verified April 2016 baseline. Branch indexes are derived navigation notes, not independent evidence or mechanical rules. Reconciliation with newer editions remains explicit.

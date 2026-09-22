@@ -1,129 +1,90 @@
 {
   "schema_version": 1,
-  "task_id": "KIMI-RETIRE-2026-09-22",
+  "task_id": "NOTEBOOKLM-REQUIRED-RESEARCH-2026-09-22",
   "outcome": "complete",
-  "base_commit": "ce714a0907e89f72a871f7d2dcf9472368523ab2",
-  "summary": "Retire Kimi from active instructions, runner CLI/library and legacy adapter; preserve historical records. Record the current Cursor/Codex collaboration and corrected Cursor adapter support. Scoped owner-authorized commit and PR; build queue unchanged.",
+  "base_commit": "5715a45dd4b26f8107271e5f0b2c04cd3901517d",
+  "summary": "Preserve the staged all-branch execution lineup and require explicit NotebookLM research evidence in assignments, task records and independent review across section delivery.",
   "remaining_limits": [
-    "Existing historical Kimi records and protocol decoding remain for provenance only.",
-    "No whole-section, recognition, release or native Windows acceptance is claimed.",
-    "Current product task CSI-23-31-13-DEFINE remains in progress with its recorded source-body gaps.",
-    "The publication request does not authorize merging or changing repository settings."
+    "Mechanical source verification and frozen section-specific implementation contracts remain outstanding.",
+    "Catalogue baseline is April 2016; newer-edition reconciliation remains open.",
+    "Routing helper still reports main_checkout_unavailable; exact checkout and HEAD verified directly.",
+    "Queue edits are local and no worker is launched by the lineup."
   ],
-  "next_task_id": "CSI-23-31-13-DEFINE",
-  "next_action": "Retain mechanical source bodies for 23 31 13.13, 23 31 13.16, and 23 31 13.19, then finish D01-D06 for CSI-23-31-13-DEFINE. Catalogue titles do not close those child taxonomies. CSI-CATALOGUE-2026-RECONCILE stays blocked until an authorized complete newer-edition catalogue is obtained.",
+  "next_task_id": "CSI-23-21-23-DEFINE",
+  "next_action": "Prepare CSI-23-21-23-DEFINE: reuse the recorded NotebookLM inventory and equipment findings, verify pump-family source passages, and record scope, input gaps and the first bounded implementation contract. If required sources are unavailable, record the affected gap and advance to CSI-23-07-19-DEFINE.",
   "changed_files": [
     {
       "path": "AGENTS.md",
-      "sha256": "50863befa4fa2eada6ce5e88b07cba67f3223f7da45e57466dc8ed6841d75a39"
+      "sha256": "fcedd9e61d3c672a94d98f4468734177b1f899354682a153ee359ff55067297d"
     },
     {
       "path": "CURRENT_STATUS.md",
-      "sha256": "e4b4503b50c3a6d3fdc6a619e45d1c32a7d4c9173c952aa4829a574daa96493b"
+      "sha256": "170446aa7b5c2e86929b9c65bb10d9e5352b190cbc6015b90744d19043fb6210"
     },
     {
-      "path": "KIMI.md",
-      "sha256": "16a30a85f1da7c670d9d71ed27603f3b934f3b039bbf002f0430b3c89c8ece9d"
+      "path": "docs/operations/csi23-lineup-2026-09-22-checks.json",
+      "sha256": "935c68eba94849639c8e6b149ba0ad09f916ce2e2b072bb7511bc5207bc73b4a"
     },
     {
-      "path": "crates/heleos-worker-runner/README.md",
-      "sha256": "6f52b94be9ebc9179ecb063c337c4b370b114896bf301f4c14b3b61391a96ca7"
+      "path": "docs/operations/csi23-lineup-2026-09-22-review.json",
+      "sha256": "918b418b212004119e36cdd71601ab85a94a9ae9d7e131360836548eaf28a3da"
     },
     {
-      "path": "crates/heleos-worker-runner/src/lib.rs",
-      "sha256": "0c13bd6f0768ac3e37a1ad9bda9464f15dcb274a27599df38d5f1361b80f88eb"
+      "path": "docs/operations/notebooklm-required-2026-09-22-checks.json",
+      "sha256": "7e7de6a4654f18a1751040550c07d4767772574a535e9a2c6487afeefdf2c5a1"
     },
     {
-      "path": "crates/heleos-worker-runner/src/main.rs",
-      "sha256": "981e2cf13c86ae6b97a63a8ea3ce49a93356720c5c2d1efa178e05dd4d58f399"
+      "path": "docs/operations/notebooklm-required-2026-09-22-review.json",
+      "sha256": "7f9ecd29df7940e1d33aa00315fe6e2a263452947d3be2e0380a42ee3d5f0db5"
     },
     {
-      "path": "crates/heleos-worker-runner/tests/runner.rs",
-      "sha256": "98d116d778513d2fccc856eaf34db19fb3ed063a4aa769b32e10b41c11033aa2"
+      "path": "docs/operations/notebooklm-research.md",
+      "sha256": "db25f74784a2df0ff57349c9dbae11a975d608aff79c5dbb02b01eb6164baa9e"
     },
     {
-      "path": "docs/operations/agent-coordination.md",
-      "sha256": "ded14b11c0e2ca9ff9bea01ea1c2580f8f1afbf5fbb2d166d58b35732bdc852d"
-    },
-    {
-      "path": "docs/operations/codex-cursor-collaboration-2026-09-22.md",
-      "sha256": "dbee8292cffa2d122c612714ab9f29f3dc41c66604fae5858707c63a02293975"
-    },
-    {
-      "path": "docs/operations/guarded-worker-runner.md",
-      "sha256": "54eedfa95c6dfa90a1e4f5d28dccbc6e577f2fcf23958bc7edeaed99433317d8"
-    },
-    {
-      "path": "docs/operations/kimi-removal-2026-09-22-check-1.log",
-      "sha256": "9e5a0675413f18a3c355c7af27d324fe90111fe4364a84fef568bfe9595eac80"
-    },
-    {
-      "path": "docs/operations/kimi-removal-2026-09-22-check-2.log",
-      "sha256": "eefdef66b6a61d7fcf3defbb05969136d5a79b6765f99dbd750a5a611a9f5ae6"
-    },
-    {
-      "path": "docs/operations/kimi-removal-2026-09-22-check-3.log",
-      "sha256": "998492dc30c9f1f61995e64a8d04e9c53fab30c5208803a765357e371ccf3b19"
-    },
-    {
-      "path": "docs/operations/kimi-removal-2026-09-22-check-4.log",
-      "sha256": "969d357642407f34714a99d0168cfe4a75e803723867e96d0df67143073b5055"
-    },
-    {
-      "path": "docs/operations/kimi-removal-2026-09-22-raw-checks.zip",
-      "sha256": "1fc99e91cecb1b643b23bc4b74c11babe3783032d2fe41211502dbd57c8855d3"
-    },
-    {
-      "path": "docs/operations/kimi-removal-2026-09-22-review.json",
-      "sha256": "0ec9197f839cbeb1cda300545a305f9b7155efa0d2c68d1ea436b269fbc44d74"
-    },
-    {
-      "path": "docs/operations/kimi-removal-2026-09-22.json",
-      "sha256": "de487ba1e24dc6a0191452e530c5688a16cf0127fa63447c2ea25e5ff577d64a"
-    },
-    {
-      "path": "scripts/provider-adapters/kimi-stdin.py",
-      "sha256": "24cd5cf9f744a5aec575f932de98690656171f3d45d97f35860a3cf07c345954"
-    },
-    {
-      "path": "tests/provider-adapters/test_kimi_stdin.py",
-      "sha256": "df7ed927b77acfba939aff396aa01709e03cb1ef55da6997fe4c5de75721165b"
+      "path": "docs/superpowers/plans/2026-09-16-division23-section-delivery.md",
+      "sha256": "075184afdc997fa31bfe0f03b0516ae4989583482034cab253e23704d2cd2de4"
     }
   ],
   "checks": [
     {
-      "command": "cargo +1.96.1 test --locked --offline -p heleos-worker-runner",
+      "command": "git diff --check",
       "exit_code": 0,
       "evidence": {
-        "path": "docs/operations/kimi-removal-2026-09-22-check-2.log",
-        "sha256": "eefdef66b6a61d7fcf3defbb05969136d5a79b6765f99dbd750a5a611a9f5ae6"
+        "path": "docs/operations/notebooklm-required-2026-09-22-checks.json",
+        "sha256": "7e7de6a4654f18a1751040550c07d4767772574a535e9a2c6487afeefdf2c5a1"
       }
     },
     {
-      "command": "cargo +1.96.1 test --locked --offline -p heleos-worker-protocol",
+      "command": "python3 tools/ci/checks.py",
       "exit_code": 0,
       "evidence": {
-        "path": "docs/operations/kimi-removal-2026-09-22-check-3.log",
-        "sha256": "998492dc30c9f1f61995e64a8d04e9c53fab30c5208803a765357e371ccf3b19"
-      }
-    },
-    {
-      "command": "python3 -B tests/provider-adapters/test_kimi_stdin.py -v",
-      "exit_code": 0,
-      "evidence": {
-        "path": "docs/operations/kimi-removal-2026-09-22-check-4.log",
-        "sha256": "969d357642407f34714a99d0168cfe4a75e803723867e96d0df67143073b5055"
+        "path": "docs/operations/notebooklm-required-2026-09-22-checks.json",
+        "sha256": "7e7de6a4654f18a1751040550c07d4767772574a535e9a2c6487afeefdf2c5a1"
       }
     }
   ],
   "review": {
-    "reviewer": "Codex independent subagent kimi_retirement_review",
+    "reviewer": "Codex independent agent /root/lineup_review",
     "outcome": "accepted",
     "evidence": {
-      "path": "docs/operations/kimi-removal-2026-09-22-review.json",
-      "sha256": "0ec9197f839cbeb1cda300545a305f9b7155efa0d2c68d1ea436b269fbc44d74"
+      "path": "docs/operations/notebooklm-required-2026-09-22-review.json",
+      "sha256": "7f9ecd29df7940e1d33aa00315fe6e2a263452947d3be2e0380a42ee3d5f0db5"
     }
   },
   "missing_prerequisite": null,
-  "independent_action": null
+  "independent_action": null,
+  "notebooklm_research": {
+    "disposition": "administrative_no_new_claims",
+    "records": [
+      {
+        "path": "docs/operations/notebooklm-research.md",
+        "sha256": "db25f74784a2df0ff57349c9dbae11a975d608aff79c5dbb02b01eb6164baa9e"
+      }
+    ],
+    "applicability": "Owner-directed workflow documentation only; no technical/mechanical feature, rule or dependency is implemented. Existing NotebookLM workflow and routing were inspected. Callable notebook query/source-read tools were discovered; no authentication or live research success is claimed.",
+    "behavior_and_checks": "Documentation consistency, staged checkpoint validation and independent review; no mechanical behavior changed.",
+    "gaps_and_next_action": "Runtime enforcement of the new disposition is not implemented; the next pump DEFINE task must query or bind applicable verified findings before knowledge-dependent implementation.",
+    "external_submissions": "None. No external research call or upload needed for transcription of owner workflow requirements."
+  }
 }

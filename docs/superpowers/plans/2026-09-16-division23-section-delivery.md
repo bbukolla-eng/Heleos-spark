@@ -44,6 +44,36 @@ The former agency-format cards/register are removed from active planning. Their 
 
 `CSI-CATALOGUE-2026-RECONCILE` requires an authorized complete current catalogue and explicit comparison of changed numbers/titles/relationships. It blocks a complete-current-edition claim; it does not block implementation under the verified baseline. The source's commercial redistribution rights are not admitted by this internal planning migration.
 
+## Staged execution contract
+
+Root `CURRENT_STATUS.md` contains the only ordered branch lineup. It now names a first section task in every one of the 14 branches; these are starting points, not the whole branch scope. The register and all existing descendant cards remain authoritative. This is an execution repair requested on 2026-09-22, not a replacement hierarchy or another coverage migration.
+
+### Preparation of each selected section (existing DEFINE task)
+
+**Writer:** checkout controller or its named bounded delegate. Research remains on the Codex NotebookLM connection. **Reviewer:** a distinct reviewer named in the implementation packet before implementation admission. No unspecified worker is considered running.
+
+**Files:** Read the selected register row, its linked card, its DEFINE criteria in `docs/plans/division-23-task-contracts.json`, the current CSI NotebookLM routing and applicable retained findings. Write only the selected card's declared `docs/engineering/division23/<section-slug>/define/` packet: `scope.json`, `taxonomy.json`, `rule-bindings.json`, `expected-cases.json`, `implementation-packet.json`, and `input-gaps.json`. Record external submissions under the existing NotebookLM workflow. Only the controller updates root status and the checkpoint.
+
+**Inputs:** exact CSI identities/children; retained mechanical passages; applicable approved rule versions; unchanged accepted software evidence. **Output:** one source-bound, bounded contract ready for RESULT/CONNECT, or a precise input-gap record permitting another row to advance. A gap record is progress on preparation, not acceptance of DEFINE or the section.
+
+- [ ] Inventory retained sources and actual body availability for this section and required children. Query relevant NotebookLM sources for missing knowledge, verify consequential passages, and log permitted external submissions. Unavailable tools do not turn missing evidence into verified facts.
+- [ ] Map required types, variants, attributes, relationships, exclusions and obligations to source passages. Put unsupported/conflicting items and their affected behavior in `input-gaps.json`; never silently remove them from section coverage.
+- [ ] Select the first independently testable behavior supported by those inputs. Record its exact source/rule bindings and independent expected cases, including applicable duplicates, packages, missing evidence, revision/correction and export cases. Service sections may produce obligations rather than material counts.
+- [ ] Pin case inputs, expected values/states, units and tolerances; name exact implementation/test paths, producer outputs, check commands, writer, reviewer and receipt location in `implementation-packet.json`. Do not mark it ready with unresolved fields or infer section-specific rules from the approved duct/air-device rules.
+- [ ] Run the selected card's D01-D06 checks and obtain independent review of admitted scope. Missing scope stays explicit. Record accepted preparation outputs and select implementation of the first ready slice; do not require all 14 branch definitions first.
+
+**Preparation acceptance:** D01-D06 for the declared scope must pass with independent review. Exact mechanical quantities and numerical tolerances are frozen from verified evidence during DEFINE, never invented by this scheduling change. A source availability inventory alone is not DEFINE completion.
+
+### Connected delivery and replenishment
+
+- [ ] Execute the admitted RESULT and CONNECT contract using its frozen independent tests. Reuse shared components only where their evidence matches the section behavior. Fix failed mandatory cases; optional enhancements become separate tasks.
+- [ ] Accept the bounded engineering slice only when all frozen mandatory checks pass and independent review accepts the candidate. Record source/rule/case identities, evidence and integration, then advance root status in the same checkpoint.
+- [ ] Replace that branch's first task with its next unfinished required child/section; use catalogue order as the tie-breaker among equally ready items, not as a requirement to implement blocked parents first. Keep the branch in the lineup until all its required scope and descendants are qualified. A seed deliverable never closes the branch.
+- [ ] After a connected slice, serve the next unserved ready branch. A blocked row retains its exact missing input and re-entry condition and does not stop the queue. Keep one implementation and at most two independent preparations active, with disjoint named write paths.
+- [ ] When all own/child scope is ready, run QUALIFY against its frozen representative Mac dossier and aggregate unchanged accepted child evidence. Native Windows remains a separate later product gate.
+
+**Maintenance checks for this repair:** all 14 direct register branches appear once in root's lineup; each seed is the branch itself or its descendant and resolves to an existing card/DEFINE frame; the primary task and next action agree with the checkpoint; no mechanical coverage states or approved rules are changed. Run `python3 scripts/verify-csi-division23.py`, `git diff --check` and the staged checkpoint validator. Review the limited documentation diff independently. This is a one-time repair; resume section work after it, not another status-only cycle.
+
 ## Complete verified CSI baseline hierarchy
 
 Every entry links to its own task and acceptance card. **No mechanical section is accepted by this classification migration.**

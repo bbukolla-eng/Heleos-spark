@@ -1,6 +1,6 @@
 # Current Status
 
-Updated 2026-09-22. Checkout `/Users/bekim/Heleos-spark`, branch `2026-09-21-t5b5`; this publication checkpoint is based on `ce714a0907e89f72a871f7d2dcf9472368523ab2`. The commit carrying this record advances that base.
+Updated 2026-09-22. Checkout `/Users/bekim/Heleos-spark`, branch `2026-09-21-t5b5`; this queue update is based on `5715a45dd4b26f8107271e5f0b2c04cd3901517d`. Queue edits are local until explicitly committed.
 **Resume here is the single live queue.** The goal defines the product outcome;
 the CSI register defines scope. Current delivery priority is complete Division 23
 capability on **Mac first**; native Windows delivery follows the connected workflow.
@@ -19,15 +19,40 @@ only the selected card and required contract subset. The old agency-guide
 organizing format and its 56 active cards have been removed. It is not the live
 scope or a second roadmap.
 
-**Primary product task: CSI-23-31-13-DEFINE.** Freeze the verified
-mechanical taxonomy and independent expected cases for Metal Ducts, using its
-linked card and applicable source bodies.
+**Primary product task: CSI-23-21-23-DEFINE.** Prepare Hydronic Pumps for its first source-backed implementation slice. This advances the approved equipment-counting work; it is not a selection inferred from the owner's earlier hydronic illustration.
 
-**Next executable action:** Retain mechanical source bodies for 23 31 13.13, 23 31 13.16, and 23 31 13.19, then finish D01-D06 for CSI-23-31-13-DEFINE. Catalogue titles do not close those child taxonomies. CSI-CATALOGUE-2026-RECONCILE stays blocked until an authorized complete newer-edition catalogue is obtained.
+**Next executable action:** Prepare CSI-23-21-23-DEFINE: reuse the recorded NotebookLM inventory and equipment findings, verify pump-family source passages, and record scope, input gaps and the first bounded implementation contract. If required sources are unavailable, record the affected gap and advance to CSI-23-07-19-DEFINE.
+
+**Division-wide delivery commitment:** Every section/subsection receives the same depth of verified research, taxonomy, applicable rules, connected implementation, correction/export behavior, meaningful tests and independent review as ducts and air devices. Reuse accepted components; do not reduce a section to its title or one specimen. The effort varies with scope, not with its place in the queue.
+
+**Staged work — all 14 branches remain visible.** The table is the live scheduling order, not a mechanical acceptance claim. “Prepare” permits source inventory/verification and contract definition; none of these new rows is implementation-ready yet. Cursor remains checkout controller and assigns named workers/reviewers before dispatch. Codex makes this bounded queue repair under the owner's current request; no worker is being launched by this edit.
+
+| Order | CSI branch | First section task / card | Stage | Next source-definition deliverable |
+| --- | --- | --- | --- | --- |
+| 1 | 23 20 00 — HVAC Piping and Pumps | [CSI-23-21-23-DEFINE — Hydronic Pumps](docs/superpowers/plans/division23-sections/csi-23-21-23.md) | Next: prepare | Equipment-count rules and connected counts already exist; verify applicability to pump families and package boundaries. |
+| 2 | 23 07 00 — HVAC Insulation | [CSI-23-07-19-DEFINE — HVAC Piping Insulation](docs/superpowers/plans/division23-sections/csi-23-07-19.md) | Preparation slot 2 | Inventory retained insulation findings; verify material, size, thickness, service and host relationships before freezing cases. |
+| 3 | 23 09 00 — Instrumentation and Control for HVAC | [CSI-23-09-13.23-DEFINE — Sensors and Transmitters](docs/superpowers/plans/division23-sections/csi-23-09-13-23.md) | Preparation slot 3 | Inventory sensor/transmitter evidence; resolve device, point and packaged-component boundaries before freezing cases. |
+| 4 | 23 05 00 — Common Work Results for HVAC | [CSI-23-05-29-DEFINE — Hangers and Supports for HVAC Piping and Equipment](docs/superpowers/plans/division23-sections/csi-23-05-29.md) | Queued | Verify host links, assemblies, exclusions and supported spacing/count evidence; do not infer spacing from a title. |
+| 5 | 23 06 00 — Schedules for HVAC | [CSI-23-06-20.13-DEFINE — Hydronic Pump Schedule](docs/superpowers/plans/division23-sections/csi-23-06-20-13.md) | Queued | Bind schedule fields to the pump section and existing reconciliation; distinguish a schedule row from a physical instance. |
+| 6 | 23 10 00 — Facility Fuel Systems | [CSI-23-11-23-DEFINE — Facility Natural-Gas Piping](docs/superpowers/plans/division23-sections/csi-23-11-23.md) | Queued | Verify gas-piping source scope, materials, joints, fittings and testing obligations; freeze supported quantities and exceptions. |
+| 7 | 23 40 00 — HVAC Air Cleaning Devices | [CSI-23-41-13-DEFINE — Panel Air Filters](docs/superpowers/plans/division23-sections/csi-23-41-13.md) | Queued | Verify filter instances, banks, equipment-package ownership and replacement/service distinctions. |
+| 8 | 23 50 00 — Central Heating Equipment | [CSI-23-52-00-DEFINE — Heating Boilers](docs/superpowers/plans/division23-sections/csi-23-52-00.md) | Queued | Inventory boiler children and package evidence; choose the first supported child behavior and retain all other children as open. |
+| 9 | 23 60 00 — Central Cooling Equipment | [CSI-23-64-16-DEFINE — Centrifugal Water Chillers](docs/superpowers/plans/division23-sections/csi-23-64-16.md) | Queued | Verify chiller children, equipment packages and separately supplied components before count/reconciliation cases. |
+| 10 | 23 70 00 — Central HVAC Equipment | [CSI-23-73-13-DEFINE — Modular Indoor Central-Station Air-Handling Units](docs/superpowers/plans/division23-sections/csi-23-73-13.md) | Queued | Verify AHU assembly and module boundaries, schedules and separately supplied components. |
+| 11 | 23 80 00 — Decentralized HVAC Equipment | [CSI-23-81-26-DEFINE — Split-System Air-Conditioners](docs/superpowers/plans/division23-sections/csi-23-81-26.md) | Queued | Verify indoor/outdoor assembly relationships and child variants; define double-counting and missing-evidence cases. |
+| 12 | 23 01 00 — Operation and Maintenance of HVAC Systems | [CSI-23-01-30.51-DEFINE — HVAC Air-Distribution System Cleaning](docs/superpowers/plans/division23-sections/csi-23-01-30-51.md) | Queued | Verify cleaning extents, affected assets and evidence/reporting obligations; do not invent material counts. |
+| 13 | 23 08 00 — Commissioning of HVAC | [CSI-23-08-00-DEFINE — Commissioning of HVAC](docs/superpowers/plans/division23-sections/csi-23-08-00.md) | Queued | Verify commissioning scope, asset/system links, required tests and deliverables as evidence-backed obligations. |
+| 14 | 23 30 00 — HVAC Air Distribution | [CSI-23-31-13-DEFINE — Metal Ducts](docs/superpowers/plans/division23-sections/csi-23-31-13.md) | Blocked scope; preserved | Retain bodies for 23 31 13.13, .16 and .19 to finish the recorded definition; preserve accepted duct/air-device software. |
+
+**Queue advancement:** Keep one implementation task active and at most two independent definition preparations. Complete each admitted slice through its connected Mac checks; do not collect definitions for all branches before coding. At a completion or an input block, select the first ready row above, record the reason for any skip, and replace a completed row's seed with the next unfinished section/child in that branch. Move a served branch behind unserved ready branches after a bounded connected slice; do not finish an entire branch before starting others. Missing sources block dependent implementation, not unrelated source preparation. No unchanged recognition retry or duct refinement displaces this lineup without a recorded defect or changed input.
+
+**CSI23-EXECUTION-LINEUP-2026-09-22 — queue repair complete locally:** all 14 branch/seed/card bindings and CSI structural checks pass. Independent review accepts this planning-only change; [checks](docs/operations/csi23-lineup-2026-09-22-checks.json) and [review](docs/operations/csi23-lineup-2026-09-22-review.json) retain the evidence. No new mechanical section or implementation is accepted. The next executable action is the pump definition above; these edits remain uncommitted.
+
+**Each handoff must say:** task ID; stage and named owner; exact next action; frozen output and expected cases; real dependencies; checks/reviewer; evidence; completed outcome or missing prerequisite; next selected task. [The master plan's staged-execution contract](docs/superpowers/plans/2026-09-16-division23-section-delivery.md#staged-execution-contract) defines the preparation finish line and admission to implementation. The existing checkpoint checks bind the primary task/next action; they do not automatically schedule workers or enforce branch rotation.
 
 **KIMI-RETIRE-2026-09-22 complete locally.** Kimi is removed from active assignments and its plugin is uninstalled. The runner CLI/library reject dispatch before a worker workspace is created; the old stdin adapter refuses every invocation without reading prompts or credentials. Historical protocol records and evidence remain readable. [Task record](docs/operations/kimi-removal-2026-09-22.json) and [independent review](docs/operations/kimi-removal-2026-09-22-review.json) bind the accepted candidate to 66 passing checks (47 runner, 17 protocol, 2 adapter); the initial failures and fixes are retained. [Collaboration record](docs/operations/codex-cursor-collaboration-2026-09-22.md) preserves Cursor's controller role and corrects stale documentation about existing Cursor runner support.
 
-The owner explicitly requested the scoped commit and PR. Codex records this publication checkpoint only; the primary product task and next action above remain unchanged. No merge, release, GitHub Settings change or native Windows acceptance is included. The routing helper still reports `main_checkout_unavailable`; branch/base and owned-file identities were verified directly. Unrelated `.cursor/` files are preserved outside this commit.
+The owner explicitly requested the scoped commit and PR. That publication checkpoint was subsequently pushed as PR #24. This local queue repair advances the product task as described above. No merge, release, GitHub Settings change or native Windows acceptance is included. The routing helper still reports `main_checkout_unavailable`; branch/base and owned-file identities were verified directly. Unrelated `.cursor/` files are preserved outside this commit.
 
 **EVIDENCE-PDF-1** local software is independently reviewed and accepted for the
 frozen contract and specimen rows. It is committed on branch `2026-09-21-t5b5`
@@ -64,7 +89,7 @@ The independent review accepted the export candidate with no blocking findings.
 The review text still describes the status it saw, including branch `main` and
 an uncommitted candidate. `pdftotext` and `pdfinfo` were not run.
 
-**CSI-23-31-13-DEFINE** is the live task and is `in_progress`. The packet under
+**CSI-23-31-13-DEFINE** is preserved with blocked source-dependent criteria; it is no longer the sole live assignment. The packet under
 `docs/engineering/division23/csi-23-31-13/define/` binds approved D01-D10 and
 E01-E09 to Metal Ducts. D01-D06 stay blocked. Child product types 23 31 13.13,
 23 31 13.16, and 23 31 13.19 have catalogue titles only. This packet does not
@@ -99,10 +124,9 @@ Use actual dependencies to advance independent section definitions and behavior;
 do not reopen the completed equipment, duct or air-device software without a
 recorded relevant change or defect.
 
-| Independent work | Finite next deliverable and actual prerequisite |
-| --- | --- |
-| CSI-23-31-13-DEFINE | Retain mechanical source bodies for 23 31 13.13, 23 31 13.16, and 23 31 13.19, then finish D01-D06. Approved D01-D10 length rules are bound. Catalogue titles do not close those child taxonomies. |
-| CSI-CATALOGUE-2026-RECONCILE | Obtain an authorized complete newer-edition catalogue and record exact additions, removals and hierarchy changes against 2016. This blocks a current-edition completeness claim, not work under verified scope. |
+**Edition reconciliation (separate blocked input):** CSI-CATALOGUE-2026-RECONCILE needs an authorized complete newer-edition catalogue. It is not an executable alternative to section work. The staged table above supplies independent preparation work under the verified 2016 baseline.
+
+**NotebookLM is required throughout section delivery.** Every assignment/terminal task record carries the [research disposition and evidence](docs/operations/notebooklm-research.md#required-task-evidence-owner-reaffirmed-2026-09-22): newly queried and passage-verified, applicable verified findings reused, or unavailable with its scoped gap and follow-up. Review checks the source-to-behavior/test links. Pure administrative edits identify that they introduce no new technical claims. There is no silent skip, no claim of a fresh query from reused evidence, and no automatic NotebookLM enforcement hook yet.
 
 **NotebookLM entrypoint:** [CSI Division 23 notebook](https://notebooklm.google.com/notebook/53cebee4-b959-406d-930c-fc697a3d9e61),
 with the primary catalogue and 14 indexed branches. The [current routing record](docs/research/notebooklm/csi-division23-routing.json)
@@ -265,10 +289,10 @@ progress. Earlier exact checkpoints remain in Git history and the
 {
   "schema_version": 1,
   "receipt": "docs/operations/build-checkpoint.json",
-  "task_id": "KIMI-RETIRE-2026-09-22",
+  "task_id": "NOTEBOOKLM-REQUIRED-RESEARCH-2026-09-22",
   "outcome": "complete",
-  "next_task_id": "CSI-23-31-13-DEFINE",
-  "next_action": "Retain mechanical source bodies for 23 31 13.13, 23 31 13.16, and 23 31 13.19, then finish D01-D06 for CSI-23-31-13-DEFINE. Catalogue titles do not close those child taxonomies. CSI-CATALOGUE-2026-RECONCILE stays blocked until an authorized complete newer-edition catalogue is obtained."
+  "next_task_id": "CSI-23-21-23-DEFINE",
+  "next_action": "Prepare CSI-23-21-23-DEFINE: reuse the recorded NotebookLM inventory and equipment findings, verify pump-family source passages, and record scope, input gaps and the first bounded implementation contract. If required sources are unavailable, record the affected gap and advance to CSI-23-07-19-DEFINE."
 }
 ```
 <!-- /build-checkpoint -->
