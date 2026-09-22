@@ -27,59 +27,25 @@ cargo run -p heleos-worker-runner --locked --offline -- \
      --permission-prompts none --tools Read,Write,Edit,Glob,Grep
 ```
 
-Kimi Code requires its prompt as an argument, so the repository-owned bounded
-stdin adapter performs only that transport conversion without invoking a shell.
-Kimi 0.34 prompt mode applies its noninteractive permission policy itself and
-rejects explicit `--auto` and `--yolo`, so the adapter supplies neither:
+Kimi was removed by owner direction on 2026-09-22. Do not dispatch it.
+The CLI and runner library reject the retired provider before creating a worker
+workspace. Its legacy stdin adapter exits 78 with a fixed retirement diagnostic
+for every invocation, without reading a prompt, executable, state or credentials.
+Its earlier task/probe records remain historical evidence only.
 
-```text
-cargo run -p heleos-worker-runner --locked --offline -- \
-  --task /absolute/task.json \
-  --source /absolute/source-checkout \
-  --workspace-root /absolute/worker-runs \
-  --provider kimi \
-  --command /usr/bin/python3 \
-  --git /usr/bin/git \
-  --inherit-env HOME \
-  --inherit-env USER \
-  --inherit-env LOGNAME \
-  --inherit-env SHELL \
-  -- -B /absolute/source-checkout/scripts/provider-adapters/kimi-stdin.py \
-     --kimi-executable /absolute/path/to/kimi
-```
-
-The first authenticated macOS Claude run required the four identity/home values
-shown above for its owner-authorized keychain session after the runner cleared
+The first authenticated macOS Claude run required explicit HOME, USER, LOGNAME
+and SHELL values for its owner-authorized keychain session after the runner cleared
 the ambient environment. Add `--inherit-env PATH` only when the assigned worker
 genuinely needs the operator's tool path. Inherited values are explicit
 child-process inputs and are not copied into prompts or reports. The task's data
-and egress decision must be authorized independently before either provider is
+and egress decision must be authorized independently before a provider is
 launched.
 
-Both example routes use the default `--containment none`. On macOS, an opt-in
+The example route uses the default `--containment none`. On macOS, an opt-in
 invocation can add `--containment macos_seatbelt` before the provider argument
 separator `--`. A PUBLIC-only Claude task has now completed one exact-scope write
-under this mode and passed controller hash acceptance. Kimi still cannot run
-within this boundary because its combined credential/runtime data root requires
-a real-home write. Inheriting the real `HOME` does not add it to Seatbelt's
-allowed write roots, and no real authentication state is copied into the
-ephemeral home.
-
-The Kimi adapter exposes a non-launching capability probe for this boundary:
-
-```text
-python3 scripts/provider-adapters/kimi-stdin.py \
-  --kimi-executable /absolute/path/to/kimi \
-  --probe-state-layout
-```
-
-The probe reads only bounded regular executable bytes, never reads standard
-input or authentication/config files, emits `heleos.kimi-state-capability/v1`,
-and exits 78 because no writable split-state capability is admitted. The exact
-reviewed 0.34.0 executable is classified `combined_auth_runtime_root`; unknown
-bytes are `unverified_executable`. `--worker-state-root /absolute/path` likewise
-exits 78 before reading a prompt, touching that root, or launching Kimi. Do not
-make the combined root writable or copy credentials to manufacture support.
+under this mode and passed controller hash acceptance. No real authentication
+state is copied into the ephemeral home.
 
 On Windows, callers must add `--containment windows_restricted_token_job` and
 provide absolute local `.exe` paths for Git and the provider. Windows rejects
@@ -105,7 +71,7 @@ uncontained provider.
    overlap, and broad cleanup targets. Record the actual created directory and
    ownership needed to identify it again. Never adopt an existing directory as a
    disposable run. The provider's working directory is this checkout.
-5. Accept only the initial local CLI providers `claude_code` and `kimi`. An
+5. Accept the configured local CLI providers `codex`, `claude_code`, `grok` and `cursor`. Kimi is retired by owner direction and rejected before workspace creation or provider launch. An
    installed executable and authorized session must be established separately.
    `notebook_lm` and `grok_bots` remain research-only and are not runnable CLI
    adapters. Other protocol provider values do not imply runner support.

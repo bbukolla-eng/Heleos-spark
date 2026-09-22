@@ -1,4 +1,4 @@
-//! Local, guarded proposal execution for configured Codex, Claude Code, Kimi, Grok, and Cursor commands.
+//! Local, guarded proposal execution for configured Codex, Claude Code, Grok, and Cursor commands.
 //!
 //! Explicit macOS or Windows containment restricts provider host-path writes.
 //! Reads, network, credentials, and provider authority need separate authorization.
@@ -288,7 +288,7 @@ fn run_inner(
     }
     if !matches!(
         assignment.provider,
-        Provider::Codex | Provider::ClaudeCode | Provider::Kimi | Provider::Grok | Provider::Cursor
+        Provider::Codex | Provider::ClaudeCode | Provider::Grok | Provider::Cursor
     ) {
         return Err(RunError::new(FailureCode::UnsupportedProvider));
     }

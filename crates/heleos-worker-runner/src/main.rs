@@ -13,7 +13,7 @@ use std::process::ExitCode;
 
 #[derive(Parser)]
 #[command(
-    about = "Run one local Codex, Claude Code, Kimi, Grok, or Cursor proposal in an isolated exact-base checkout"
+    about = "Run one local Codex, Claude Code, Grok, or Cursor proposal in an isolated exact-base checkout"
 )]
 struct Arguments {
     #[arg(long)]
@@ -22,7 +22,7 @@ struct Arguments {
     source: PathBuf,
     #[arg(long)]
     workspace_root: PathBuf,
-    #[arg(long, value_parser = ["codex", "claude_code", "kimi", "grok", "cursor"])]
+    #[arg(long, value_parser = ["codex", "claude_code", "grok", "cursor"])]
     provider: String,
     #[arg(long)]
     command: PathBuf,
@@ -93,7 +93,6 @@ fn execute(args: Arguments) -> Result<serde_json::Value, RunError> {
     let provider = match args.provider.as_str() {
         "codex" => Provider::Codex,
         "claude_code" => Provider::ClaudeCode,
-        "kimi" => Provider::Kimi,
         "grok" => Provider::Grok,
         "cursor" => Provider::Cursor,
         _ => return Err(RunError::new(FailureCode::InvalidConfiguration)),

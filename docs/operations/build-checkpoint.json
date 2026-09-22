@@ -1,71 +1,129 @@
 {
   "schema_version": 1,
-  "task_id": "CSI-23-31-13-DEFINE",
-  "outcome": "in_progress",
-  "base_commit": "fa45862dbd65d634b45f772a7c874fe1ee1b6e43",
-  "summary": "CSI 23 31 13 Metal Ducts has an in-progress definition packet. Approved D01-D10 and E01-E09 are bound. D01-D06 stay blocked because the three child product types have catalogue titles only. The focused test checks that boundary and does not accept the section.",
+  "task_id": "KIMI-RETIRE-2026-09-22",
+  "outcome": "complete",
+  "base_commit": "ce714a0907e89f72a871f7d2dcf9472368523ab2",
+  "summary": "Retire Kimi from active instructions, runner CLI/library and legacy adapter; preserve historical records. Record the current Cursor/Codex collaboration and corrected Cursor adapter support. Scoped owner-authorized commit and PR; build queue unchanged.",
   "remaining_limits": [
-    "D01-D06 are blocked. The section is not accepted.",
-    "23 31 13.13, 23 31 13.16, and 23 31 13.19 lack retained mechanical source bodies.",
-    "NotebookLM is not connected in this Cursor session. No new notebook query was run.",
-    "The definition test checks packet identity and that acceptance stays blocked. It does not calculate duct quantities.",
-    "CSI-CATALOGUE-2026-RECONCILE stays blocked until an authorized complete newer-edition catalogue is obtained."
+    "Existing historical Kimi records and protocol decoding remain for provenance only.",
+    "No whole-section, recognition, release or native Windows acceptance is claimed.",
+    "Current product task CSI-23-31-13-DEFINE remains in progress with its recorded source-body gaps.",
+    "The publication request does not authorize merging or changing repository settings."
   ],
   "next_task_id": "CSI-23-31-13-DEFINE",
   "next_action": "Retain mechanical source bodies for 23 31 13.13, 23 31 13.16, and 23 31 13.19, then finish D01-D06 for CSI-23-31-13-DEFINE. Catalogue titles do not close those child taxonomies. CSI-CATALOGUE-2026-RECONCILE stays blocked until an authorized complete newer-edition catalogue is obtained.",
   "changed_files": [
     {
+      "path": "AGENTS.md",
+      "sha256": "50863befa4fa2eada6ce5e88b07cba67f3223f7da45e57466dc8ed6841d75a39"
+    },
+    {
       "path": "CURRENT_STATUS.md",
-      "sha256": "045a090d3af5d6990e7b6a56c1cb20b4c7e30880a0ed4ccdcb26914878842c6e"
+      "sha256": "e4b4503b50c3a6d3fdc6a619e45d1c32a7d4c9173c952aa4829a574daa96493b"
     },
     {
-      "path": "docs/engineering/division23/csi-23-31-13/define/acceptance.json",
-      "sha256": "cda26aa169422acef3cd8727aba327ac722eb1c8b941a46b64fab18b036162b5"
+      "path": "KIMI.md",
+      "sha256": "16a30a85f1da7c670d9d71ed27603f3b934f3b039bbf002f0430b3c89c8ece9d"
     },
     {
-      "path": "docs/engineering/division23/csi-23-31-13/define/expected-cases.json",
-      "sha256": "76fdc325b0f5ddc0f44b9be0f2702f5be34e3696a7569e6f078b4d55dcc225dc"
+      "path": "crates/heleos-worker-runner/README.md",
+      "sha256": "6f52b94be9ebc9179ecb063c337c4b370b114896bf301f4c14b3b61391a96ca7"
     },
     {
-      "path": "docs/engineering/division23/csi-23-31-13/define/implementation-packet.json",
-      "sha256": "7e413e72be3a7773236fdd228047d466fc8fee3a9f89d25aa021d63c519ad5af"
+      "path": "crates/heleos-worker-runner/src/lib.rs",
+      "sha256": "0c13bd6f0768ac3e37a1ad9bda9464f15dcb274a27599df38d5f1361b80f88eb"
     },
     {
-      "path": "docs/engineering/division23/csi-23-31-13/define/input-gaps.json",
-      "sha256": "9dc712a5f9ab75dbf110851f7e8839f5bce540c9da9f2dca00cd7a10356c3faa"
+      "path": "crates/heleos-worker-runner/src/main.rs",
+      "sha256": "981e2cf13c86ae6b97a63a8ea3ce49a93356720c5c2d1efa178e05dd4d58f399"
     },
     {
-      "path": "docs/engineering/division23/csi-23-31-13/define/rule-bindings.json",
-      "sha256": "2e905a646be53773b62a02f884503d6602fd66c90d81be5f04e21bfd4cf5911f"
+      "path": "crates/heleos-worker-runner/tests/runner.rs",
+      "sha256": "98d116d778513d2fccc856eaf34db19fb3ed063a4aa769b32e10b41c11033aa2"
     },
     {
-      "path": "docs/engineering/division23/csi-23-31-13/define/scope.json",
-      "sha256": "787b15e3cc55016454b09e06eea0885e6430919c4df46ef84fb53ed39e67d607"
+      "path": "docs/operations/agent-coordination.md",
+      "sha256": "ded14b11c0e2ca9ff9bea01ea1c2580f8f1afbf5fbb2d166d58b35732bdc852d"
     },
     {
-      "path": "docs/engineering/division23/csi-23-31-13/define/taxonomy.json",
-      "sha256": "bfac19e1ff7fcd839718400b4c3e66c1f23ff825b1c8872677b7832910d48cad"
+      "path": "docs/operations/codex-cursor-collaboration-2026-09-22.md",
+      "sha256": "dbee8292cffa2d122c612714ab9f29f3dc41c66604fae5858707c63a02293975"
     },
     {
-      "path": "docs/operations/csi-23-31-13-define-checks.log",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      "path": "docs/operations/guarded-worker-runner.md",
+      "sha256": "54eedfa95c6dfa90a1e4f5d28dccbc6e577f2fcf23958bc7edeaed99433317d8"
     },
     {
-      "path": "tests/drawing-workspace/test_csi_23_31_13_define.py",
-      "sha256": "ecdad89c4281f20e99dfe74a5a0618a4ce20060358da8de589ea03c43d78859e"
+      "path": "docs/operations/kimi-removal-2026-09-22-check-1.log",
+      "sha256": "9e5a0675413f18a3c355c7af27d324fe90111fe4364a84fef568bfe9595eac80"
+    },
+    {
+      "path": "docs/operations/kimi-removal-2026-09-22-check-2.log",
+      "sha256": "eefdef66b6a61d7fcf3defbb05969136d5a79b6765f99dbd750a5a611a9f5ae6"
+    },
+    {
+      "path": "docs/operations/kimi-removal-2026-09-22-check-3.log",
+      "sha256": "998492dc30c9f1f61995e64a8d04e9c53fab30c5208803a765357e371ccf3b19"
+    },
+    {
+      "path": "docs/operations/kimi-removal-2026-09-22-check-4.log",
+      "sha256": "969d357642407f34714a99d0168cfe4a75e803723867e96d0df67143073b5055"
+    },
+    {
+      "path": "docs/operations/kimi-removal-2026-09-22-raw-checks.zip",
+      "sha256": "1fc99e91cecb1b643b23bc4b74c11babe3783032d2fe41211502dbd57c8855d3"
+    },
+    {
+      "path": "docs/operations/kimi-removal-2026-09-22-review.json",
+      "sha256": "0ec9197f839cbeb1cda300545a305f9b7155efa0d2c68d1ea436b269fbc44d74"
+    },
+    {
+      "path": "docs/operations/kimi-removal-2026-09-22.json",
+      "sha256": "de487ba1e24dc6a0191452e530c5688a16cf0127fa63447c2ea25e5ff577d64a"
+    },
+    {
+      "path": "scripts/provider-adapters/kimi-stdin.py",
+      "sha256": "24cd5cf9f744a5aec575f932de98690656171f3d45d97f35860a3cf07c345954"
+    },
+    {
+      "path": "tests/provider-adapters/test_kimi_stdin.py",
+      "sha256": "df7ed927b77acfba939aff396aa01709e03cb1ef55da6997fe4c5de75721165b"
     }
   ],
   "checks": [
     {
-      "command": "python3 -m unittest discover -s tests/drawing-workspace -p 'test_csi_23_31_13_define.py' -v",
+      "command": "cargo +1.96.1 test --locked --offline -p heleos-worker-runner",
       "exit_code": 0,
       "evidence": {
-        "path": "docs/operations/csi-23-31-13-define-checks.log",
-        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        "path": "docs/operations/kimi-removal-2026-09-22-check-2.log",
+        "sha256": "eefdef66b6a61d7fcf3defbb05969136d5a79b6765f99dbd750a5a611a9f5ae6"
+      }
+    },
+    {
+      "command": "cargo +1.96.1 test --locked --offline -p heleos-worker-protocol",
+      "exit_code": 0,
+      "evidence": {
+        "path": "docs/operations/kimi-removal-2026-09-22-check-3.log",
+        "sha256": "998492dc30c9f1f61995e64a8d04e9c53fab30c5208803a765357e371ccf3b19"
+      }
+    },
+    {
+      "command": "python3 -B tests/provider-adapters/test_kimi_stdin.py -v",
+      "exit_code": 0,
+      "evidence": {
+        "path": "docs/operations/kimi-removal-2026-09-22-check-4.log",
+        "sha256": "969d357642407f34714a99d0168cfe4a75e803723867e96d0df67143073b5055"
       }
     }
   ],
-  "review": null,
+  "review": {
+    "reviewer": "Codex independent subagent kimi_retirement_review",
+    "outcome": "accepted",
+    "evidence": {
+      "path": "docs/operations/kimi-removal-2026-09-22-review.json",
+      "sha256": "0ec9197f839cbeb1cda300545a305f9b7155efa0d2c68d1ea436b269fbc44d74"
+    }
+  },
   "missing_prerequisite": null,
   "independent_action": null
 }

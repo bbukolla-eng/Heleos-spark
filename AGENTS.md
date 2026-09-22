@@ -8,7 +8,6 @@ This is the shared project policy for Codex and every other worker. Provider-spe
 | --- | --- |
 | [AGENTS.md](AGENTS.md) | Shared authority, scope, verification, and continuity; checkout controller recorded below |
 | [CLAUDE.md](CLAUDE.md) | Claude implementation and review workflow |
-| [KIMI.md](KIMI.md) | Kimi implementation, tests, and independent review |
 | [GROK.md](GROK.md) | Grok coding adapters and cited research |
 | [CURSOR.md](CURSOR.md) | Cursor editor/agent work; controller for the checkout recorded below |
 | [GROKBOTS.md](GROKBOTS.md) | GrokBots application and Athena research-artifact workflow |
@@ -59,6 +58,8 @@ Where a later sentence in this file names Codex as coordinator or sole commit ow
 - Report progress as concrete achievements, remaining limits and the next deliverable. Keep settled owner decisions and their exact bindings in the task record so continuation does not ask them again. Do not claim automatic scheduling, hook enforcement or uninterrupted execution unless the running tools actually provide it.
 
 ## Assignment and write authority
+
+Kimi was retired from this build by owner direction on 2026-09-22. Do not assign it implementation, research, tests or reviews, invoke its adapters, or reinstall its plugin. Retained Kimi records are historical evidence only.
 
 Implementation workers may write code, tests, and documentation in their assigned paths. They are not restricted to read-only analysis by this policy. A review-only assignment remains read-only. A tool's actual permissions must support the assignment; Markdown cannot turn a read-only connector into a writer.
 

@@ -2,7 +2,7 @@
 
 The `heleos-worker-protocol` package validates bounded worker-task and handoff JSON and computes canonical SHA-256 identities. It reads local packets and reports validation; it does not dispatch a provider, execute acceptance commands, apply patches, enforce a filesystem sandbox, or promote a candidate into production.
 
-The implemented `heleos-worker-runner` adds local execution for `claude_code` and `kimi`, exact-base retained proposals, bounded process evidence, and mandatory post-run inventory. It also offers explicit macOS and Windows host-write containment. Protocol support for another provider does not imply a runnable adapter. Persistent coordination and promotion gates remain later work in the [coordination plan](../superpowers/plans/2026-09-08-agent-coordination-foundation.md); the macOS and [Windows containment plan](../superpowers/plans/2026-09-09-windows-worker-containment.md) define the implemented platform slices. Follow [AGENTS.md](../../AGENTS.md) and the relevant provider entrypoint for actual assignments; the [current status](../../CURRENT_STATUS.md) retains the separate Foundation release gates.
+The implemented `heleos-worker-runner` adds local execution for `codex`, `claude_code`, `grok` and `cursor`, exact-base retained proposals, bounded process evidence, and mandatory post-run inventory. It also offers explicit macOS and Windows host-write containment. Protocol support for another provider does not imply a runnable adapter. Persistent coordination and promotion gates remain later work in the [coordination plan](../superpowers/plans/2026-09-08-agent-coordination-foundation.md); the macOS and [Windows containment plan](../superpowers/plans/2026-09-09-windows-worker-containment.md) define the implemented platform slices. Follow [AGENTS.md](../../AGENTS.md) and the relevant provider entrypoint for actual assignments; the [current status](../../CURRENT_STATUS.md) retains the separate Foundation release gates.
 
 ## Generate a retained local proposal
 
@@ -43,7 +43,7 @@ The complete Job tree is terminated and reaped before inventory on timeout or
 normal exit. Windows rejects every other mode and every containment setup error
 without an uncontained fallback.
 
-These modes do not restrict reads, network, credentials, inherited external authority, provider internal actions, or cost. Environment minimization is not credential isolation, and `local_only` is a declared task policy, not network enforcement. Claude has completed one PUBLIC exact-scope write under Seatbelt; Kimi remains blocked by its combined credential/runtime data root. The Windows candidate is cross-compiled but has not passed its required native Windows/NTFS gate. This implementation does not establish App Sandbox, regulatory containment, production authority, or Foundation acceptance.
+These modes do not restrict reads, network, credentials, inherited external authority, provider internal actions, or cost. Environment minimization is not credential isolation, and `local_only` is a declared task policy, not network enforcement. Claude has completed one PUBLIC exact-scope write under Seatbelt; Kimi was retired by owner direction on 2026-09-22; its earlier credential/runtime boundary evidence remains historical. The Windows candidate is cross-compiled but has not passed its required native Windows/NTFS gate. This implementation does not establish App Sandbox, regulatory containment, production authority, or Foundation acceptance.
 
 ## Interpret runner evidence
 
@@ -69,13 +69,12 @@ The 64-character all-zero and all-one values in `instruction_sha256` and the han
 | --- | --- | --- |
 | `claude_code` | Write-capable implementation through a verified Claude route | [Task](../../tests/fixtures/agents/claude-code-implementation.task.json), [completed handoff](../../tests/fixtures/agents/claude-code-completed.handoff.json) |
 | `cursor` | Write-capable implementation through a verified Cursor route | [Task](../../tests/fixtures/agents/cursor-implementation.task.json) |
-| `kimi` | Write-capable implementation through a verified Kimi route | [Task](../../tests/fixtures/agents/kimi-implementation.task.json) |
 | `grok` | Write-capable implementation through a verified coding adapter | [Task](../../tests/fixtures/agents/grok-implementation.task.json) |
 | `codex` | Scoped implementation through a verified Codex route | [Task](../../tests/fixtures/agents/codex-implementation.task.json) |
 | `notebook_lm` | Research only; controller stages the returned candidate | [Task](../../tests/fixtures/agents/notebook-lm-research.task.json) |
 | `grok_bots` | GrokBots/Athena research only; controller stages the returned candidate | [Task](../../tests/fixtures/agents/grok-bots-athena-research.task.json) |
 
-The five implementation providers also accept `research` mode. `notebook_lm` and `grok_bots` reject `implementation`. Research artifact allowlists identify controller staging destinations; they do not grant a research application repository-write authority. A read-only Kimi connector is not a substitute for a verified writing route. Coding-capable Grok and the GrokBots application are distinct routes. Athena in the fixture is fictional routing context; a live interaction requires confirming the visible bot identity and an owner-authorized application session.
+The four active implementation providers also accept `research` mode at the protocol layer. The retained `kimi` protocol value is historical only; the runner rejects execution. `notebook_lm` and `grok_bots` reject `implementation`. Research artifact allowlists identify controller staging destinations; they do not grant a research application repository-write authority. Coding-capable Grok and the GrokBots application are distinct routes. Athena in the fixture is fictional routing context; a live interaction requires confirming the visible bot identity and an owner-authorized application session.
 
 ## Validate local packets
 

@@ -1,6 +1,6 @@
 # Local guarded worker runner
 
-This crate executes one explicitly configured Codex, Claude Code, Kimi, Grok,
+This crate executes one explicitly configured Codex, Claude Code, Grok,
 or Cursor command in an independent local Git clone detached at a validated
 task's exact base. It does not create a source worktree registration, share object
 hardlinks, fetch, push, merge, create a candidate commit, or run acceptance
@@ -10,8 +10,8 @@ The library exposes `run_json(input, config)` for preserving original JSON bytes
 and `run(validated_task, config)` for already-validated callers. Both return a
 typed `RunResult` or `RunError`. Provider input is a bounded generated prompt on
 stdin; the executable and ordered arguments are passed directly to `Command`.
-Only `codex`, `claude_code`, `kimi`, `grok`, and `cursor` implementation tasks
-are admitted in this slice; research providers fail before launch. Cursor is
+Only `codex`, `claude_code`, `grok`, and `cursor` implementation tasks
+are admitted in this slice; research providers fail before launch. Kimi was retired by owner direction on 2026-09-22: both CLI and library reject dispatch before workspace creation. Its protocol value and old evidence remain readable, and its legacy adapter refuses every invocation. Cursor is
 authenticated and has local executable-fixture coverage, but its five live
 attempts produced no accepted write. API-model quota blocks it until the reported
 September 14, 2026 reset or an explicit owner spend-limit action; composer-2.5
@@ -272,9 +272,7 @@ Live PUBLIC-only Claude Code and Grok tasks have each completed one exact-scope
 write under macOS Seatbelt and passed controller hash acceptance. Codex/Astra
 completed an exact-scope write under explicit runner containment mode `none`
 and its own `workspace-write` setting after the current Seatbelt profile denied
-Codex runtime-state initialization. Kimi remains blocked by its combined
-credential/runtime data-root design; real authentication state is not copied
-into the ephemeral home. Windows code has passed host tests and MSVC
+Codex runtime-state initialization. Kimi is retired; its earlier combined credential/runtime data-root findings remain historical evidence. Windows code has passed host tests and MSVC
 cross-compilation, but the required native Windows/NTFS gate has not run. This
 slice does not claim App Sandbox, regulatory containment, production authority,
 Foundation acceptance, or native Windows acceptance.

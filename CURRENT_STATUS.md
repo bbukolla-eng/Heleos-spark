@@ -1,6 +1,6 @@
 # Current Status
 
-Updated 2026-09-21. Checkout `/Users/bekim/Heleos-spark`, branch `2026-09-21-t5b5`, HEAD `49b7f57a208e162054b0d856dd299852a1bfce50`.
+Updated 2026-09-22. Checkout `/Users/bekim/Heleos-spark`, branch `2026-09-21-t5b5`; this publication checkpoint is based on `ce714a0907e89f72a871f7d2dcf9472368523ab2`. The commit carrying this record advances that base.
 **Resume here is the single live queue.** The goal defines the product outcome;
 the CSI register defines scope. Current delivery priority is complete Division 23
 capability on **Mac first**; native Windows delivery follows the connected workflow.
@@ -24,6 +24,10 @@ mechanical taxonomy and independent expected cases for Metal Ducts, using its
 linked card and applicable source bodies.
 
 **Next executable action:** Retain mechanical source bodies for 23 31 13.13, 23 31 13.16, and 23 31 13.19, then finish D01-D06 for CSI-23-31-13-DEFINE. Catalogue titles do not close those child taxonomies. CSI-CATALOGUE-2026-RECONCILE stays blocked until an authorized complete newer-edition catalogue is obtained.
+
+**KIMI-RETIRE-2026-09-22 complete locally.** Kimi is removed from active assignments and its plugin is uninstalled. The runner CLI/library reject dispatch before a worker workspace is created; the old stdin adapter refuses every invocation without reading prompts or credentials. Historical protocol records and evidence remain readable. [Task record](docs/operations/kimi-removal-2026-09-22.json) and [independent review](docs/operations/kimi-removal-2026-09-22-review.json) bind the accepted candidate to 66 passing checks (47 runner, 17 protocol, 2 adapter); the initial failures and fixes are retained. [Collaboration record](docs/operations/codex-cursor-collaboration-2026-09-22.md) preserves Cursor's controller role and corrects stale documentation about existing Cursor runner support.
+
+The owner explicitly requested the scoped commit and PR. Codex records this publication checkpoint only; the primary product task and next action above remain unchanged. No merge, release, GitHub Settings change or native Windows acceptance is included. The routing helper still reports `main_checkout_unavailable`; branch/base and owned-file identities were verified directly. Unrelated `.cursor/` files are preserved outside this commit.
 
 **EVIDENCE-PDF-1** local software is independently reviewed and accepted for the
 frozen contract and specimen rows. It is committed on branch `2026-09-21-t5b5`
@@ -261,8 +265,8 @@ progress. Earlier exact checkpoints remain in Git history and the
 {
   "schema_version": 1,
   "receipt": "docs/operations/build-checkpoint.json",
-  "task_id": "CSI-23-31-13-DEFINE",
-  "outcome": "in_progress",
+  "task_id": "KIMI-RETIRE-2026-09-22",
+  "outcome": "complete",
   "next_task_id": "CSI-23-31-13-DEFINE",
   "next_action": "Retain mechanical source bodies for 23 31 13.13, 23 31 13.16, and 23 31 13.19, then finish D01-D06 for CSI-23-31-13-DEFINE. Catalogue titles do not close those child taxonomies. CSI-CATALOGUE-2026-RECONCILE stays blocked until an authorized complete newer-edition catalogue is obtained."
 }
