@@ -1,0 +1,38 @@
+{
+  "time": "2026-09-23T01:23:24.029578+00:00",
+  "command": "python3 -m unittest discover -s tests -p test_*.py -v",
+  "exit_code": 0,
+  "output": "full-suite.txt",
+  "notebooklm_research": "Reused verified GH01-GH04; exact Git behavior verified with isolated temporary worktree tests; no private submissions.",
+  "red_green": [
+    "Missing publisher: 46bcde exit 1; implemented 9 cases: fae0de exit 0",
+    "Routine receipt and enrollment: e67297 exit 1; repaired: 988469 exit 0",
+    "Partial foreign commit: b8c509 exit 1; repaired c3c2b3 exit 0",
+    "Checkpoint entrypoint missing: 7e60bd exit 1; implemented dd7efa exit 0, 13 publisher tests"
+  ],
+  "final_focused": [
+    {
+      "command": "python3 -m unittest discover -s tests -p test_publish_task.py -v",
+      "exit_code": 0,
+      "tests": 13,
+      "tool_result": "a043a1",
+      "reason": "Final external submission journal added"
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p test_delivery_controller.py -v",
+      "exit_code": 0,
+      "tests": 22,
+      "tool_result": "988469",
+      "reason": "Enrollment and ordinary evidence exceptions verified"
+    }
+  ],
+  "publication": {
+    "provider": "GitHub",
+    "purpose": "Publish scoped automatic delivery implementation for independent review",
+    "classification": "approved project code and public-source research",
+    "approved_source_identities": "Exact staged checkpoint manifest in build-checkpoint.json",
+    "policy_decision": "Owner set it up after full automatic commit/push/PR workflow was described; isolated setup only, no product merge",
+    "time": "2026-09-23T01:23:24.029578+00:00",
+    "result_reference": "pending scoped commit and stacked PR"
+  }
+}

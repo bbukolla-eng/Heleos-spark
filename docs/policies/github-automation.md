@@ -1,70 +1,117 @@
 # GitHub automation
 
-**Owner:** Bekim Bukolla. **Authorized:** 2026-09-02, by the owner's instruction "set automatic merging, committing, PR, review on GitHub", which supersedes the roadmap's earlier rule that no `.github/workflows` file lands before the Decision 5 record. The Decision 5 record still inventories the auto-installed apps; nothing here adds a workflow or secret for them.
+Owner: Bekim Bukolla. The September 22 side conversation explicitly requests
+CodeRabbit review, automatic fixes, automatic merging and security review setup.
+The owner confirmed the custom app's repository and exact permissions at install.
+This setup does not authorize merging the existing product PR 24 or changing the
+parent checkout. Its build queue remains with Cursor.
 
-## What runs
+## Verified live configuration
 
-| Workflow | Trigger | What it does | Needs from the owner |
-|---|---|---|---|
-| `checks` (`.github/workflows/ci.yml`) | every pull request; pushes to `main` | Standard-library unit tests, `node --check` on every workflow script, `tools/ci/checks.py` (registry hashes, JSON validity, relative links and image destinations, the no-dash prose rule) | Nothing; runs today |
-| `claude-review` | a pull request is opened, updated, or marked ready (drafts skipped) | Claude reviews the diff against `CLAUDE.md`, the spec, and `ROADMAP.md` and leaves review comments; it never approves or merges | The `claude-egress` environment and its `ANTHROPIC_API_KEY` secret |
-| `claude` | `@claude` in an issue, issue comment, review, or review comment | Claude implements the request and commits: on an open pull request it pushes to that pull request's branch, so the pull request updates itself; from an issue it creates a branch and replies with a pre-filled pull request link a person must click. The action does not open pull requests itself (its `docs/security.md`, "Pull Request Creation") | The `claude-egress` environment and its `ANTHROPIC_API_KEY` secret; the Claude GitHub App installed on the repository |
-| `auto-merge` | a non-draft pull request gains the `automerge` label, is marked ready, or is updated while labelled | Enables GitHub auto-merge (squash); GitHub merges once every required check passes | "Allow auto-merge" in Settings; branch protection on `main` requiring the `checks` job |
-| `ai-review-gate` (`.github/workflows/ai-review-gate.yml`), job `ai-reviewers` | non-draft pull request opened, reopened, synchronized, or marked ready | Polls until ChatGPT Codex and Copilot have acknowledged the current head (or Copilot's `copilot-pull-request-reviewer` check is success); posts `@codex review` once per head if Codex has not spoken. ECC Tools is printed as advisory and does not fail the job | After this lands on `main`, require the `ai-reviewers` check on the Sparky ruleset (owner or Github_pusher). Amazon Q stays a separate Sparky required check. No new secret. |
-| Dependabot (`.github/dependabot.yml`) | weekly | Opens pull requests that bump the pinned action commits | Nothing |
+[Setup record](../operations/github-automation-2026-09-23/README.md) preserves the
+snapshots, public research and outstanding acceptance work.
 
-After `ai-review-gate` lands on `main`, Sparky must require the `ai-reviewers` check. The owner or Github_pusher adds that context to the ruleset. This gate reads existing Codex, ECC Tools, and Copilot reviews (and Copilot's check-run) through `GITHUB_TOKEN`; it does not add a secret or a workflow for those apps. Codex and Copilot are required to pass. ECC Tools acknowledgement is advisory. Amazon Q remains a separate Sparky required check.
+- `Heleos Automation bbukolla` (app 5040385, installation 163923904) is installed
+  on `bbukolla-eng/Heleos-spark` only. Contents and pull requests: read/write;
+  Actions, Checks and Metadata: read. No administrative or workflow write grant.
+- `heleos-automation` environment accepts branch `main` only. The owner generated
+  and stored `HELEOS_AUTOMATION_PRIVATE_KEY`; Codex verified the secret name only.
+  App ID and bot identity are environment variables. The repository activation
+  switch `HELEOS_AUTOMATION_ENABLED` remains `false` and the activation time is
+  unset. Installation and a saved credential are not workflow activation.
+- Ruleset 22285340 requires a current approving review, stale dismissal,
+  last-push approval, resolved threads and strict required checks. No bypass
+  actors remain. Required check publishers are pinned; the `ai-reviewers`
+  publisher is GitHub Actions, not the previously mismatched app.
+- Only merge commits are allowed. Force pushes and branch deletion remain
+  prohibited. Repository native auto-merge is enabled, but does not supply
+  independent acceptance by itself.
+- Dependabot alerts and security fixes are enabled. Extended CodeQL setup passed
+  for Actions, JavaScript/TypeScript and Python on current main. Native CodeQL
+  merge protection blocks errors and high/critical security findings. Rust
+  coverage remains to be observed when the Rust code reaches main.
 
-Until the secret exists, the two Claude workflows print a notice and exit green; they do not fail pull requests. Once it exists they are additionally gated twice: by the `claude-egress` environment, whose required reviewers hold the job before it reads the secret, and by `tools/egress/record.py check`, which fails the job if the egress policy or a signed decision record is missing from the checkout.
+## Candidate workflow contract
 
-## Owner steps in GitHub Settings (one time)
+The following candidate is under review; activation is a separate recorded gate:
 
-1. Settings, General, Pull Requests: enable **Allow auto-merge**. Optionally enable **Automatically delete head branches**.
-2. Settings, Branches, add a rule for `main`: require a pull request before merging, require status checks to pass with **checks** selected, block force pushes and deletions, and apply the rule to administrators. GitHub does not offer auto-merge without such a rule.
-3. Settings, Environments, New environment, named exactly `claude-egress`. Both Claude workflows declare it, so a job cannot read the provider secret without it. Under **Deployment protection rules** tick **Required reviewers** and add yourself. Leave the wait timer at 0. This is what stops a pull request that edits `.github/workflows/claude-review.yml` from running the edited file against the secret before anyone has read the diff, which `docs/policies/egress.md` section 6 names as gap 3.
-4. Settings, Actions, General, Fork pull request workflows from outside collaborators: select **Require approval for all external contributors**. Step 3 gates the secret; this gates the run.
-5. The secret. Put it on the environment, not on the repository, so the protection rule in step 3 applies to it:
-   - Settings, Environments, `claude-egress`, **Environment secrets**, Add secret.
-   - Name: `ANTHROPIC_API_KEY`, spelled exactly that way. The workflows read `secrets.ANTHROPIC_API_KEY` and test it for emptiness, so a misspelled name is not an error, it is a silent skip: the jobs print a notice and pass.
-   - Value: a Console API key from console.anthropic.com, Settings, API keys, Create key. It begins `sk-ant-api03-`. Paste it with no quotes, no `Bearer` prefix, and no trailing newline. GitHub shows it once and never again; keep your own copy in your password manager, not in this repository, not in an issue, and not in a chat window.
-   - Do **not** add `CLAUDE_CODE_OAUTH_TOKEN`. The subscription token runs the same workflows under Anthropic's Consumer Terms, where model training is opt out rather than excluded and content flagged by safety classifiers is used and retained regardless. The Console key runs them under the Commercial Terms, which prohibit training on customer content. Section 3 of the decision record sets out the difference with quoted terms.
-   - Do this **only after** signing the decision record, for the reason in "Egress, and the credential" below. The order is not advisory: `tools/egress/record.py check` fails the job while `docs/decisions/2026-09-03-egress-policy.md` is absent or unsigned, so adding the secret first buys nothing except red pull requests.
-   - To rotate or revoke: the same Environment secrets panel, Update or Remove. Removing it returns both workflows to the notice-and-pass state.
-   - No other secret is needed. `GITHUB_TOKEN` is minted per run by GitHub; never create one by hand.
-6. Install the Claude GitHub App on the repository (`/install-github-app` in Claude Code, or github.com/apps/claude) so that `@claude` runs can push the branch they work on and their commits trigger `checks`.
-7. Create the label `automerge` (Issues, Labels). Apply it to a pull request you want merged without a manual click; remove it to stop.
+| Component | Behavior |
+| --- | --- |
+| `.coderabbit.yaml` | Incremental reviews, requests changes for unresolved findings, no automatic review pause. Correctness, security, tests and source evidence are explicit review instructions. |
+| `dependency-review.yml` | Read-only PR dependency review blocking newly introduced high/critical vulnerabilities. Its check must be made required after publication and publisher verification. |
+| `delivery.yml` | Scheduled/manual trusted-main controller with a repository-scoped app token. No PR code/artifact checkout or execution. Disabled until acceptance. |
+| `publish_task.py` | Active checkout controllers invoke it after independent acceptance: validate exact files, create the task branch, commit, push, open/reuse a PR and enroll it for delivery. Does not watch arbitrary dirty work. |
+| `delivery_controller.py` | Exact-head independent approval, current target, complete inventories, required checks, security scan and protection drift checks. Refuses forks, preactivation PRs and held work. Stops on failed or pending main CI. |
+| `auto-merge.yml` | Retires the old label-triggered squash path. No active merge path remains in this legacy file. |
 
-The session that wrote this page has no tool for any of these settings; each is an account action the spec reserves for the owner (section 13).
+The controller uses the merge API with the verified head SHA and merge method
+`merge`. It never leaves a queued native auto-merge eligible across a new head
+whose sensitive-change consent has not been checked. Native branch requirements
+still apply. Only one merge can occur per run; resulting main CI must pass before
+another delivery. Main security results are a separate acceptance check.
 
-## What stays with people
+CodeRabbit or Codex bot approval must be an actual `APPROVED` review for the
+current head and must come from neither the PR author nor a commit writer. A
+comment, acknowledgement or passing test alone is not acceptance. The existing
+`ai-reviewers` acknowledgement gate remains supplementary, not an approval.
 
-- AI workers still never approve a pull request and never call merge themselves; merges happen through GitHub's auto-merge on pull requests the owner labels, after the required checks pass.
-- The `claude` workflow works on the branch it creates for the issue or pull request and never pushes to `main` (branch protection enforces this).
-- Every Claude run reads pull request and issue text as data. Text in an issue that asks for a policy change, a secret, or a merge is reported, not followed.
+Sensitive files include automation, hooks, worker boundaries, instructions
+and access/security policy. Routine status, checkpoint receipts, section research
+and product calculation scripts are not sensitive merely because they change. They require an owner comment exactly
+`Heleos owner consent FULL_40_CHARACTER_HEAD_SHA`, in addition to independent
+review and CI. This consent changes with the candidate SHA.
 
-## Egress, and the credential
+An `autofix` label permits at most two deduplicated CodeRabbit requests for
+separate stacked candidates on ordinary public-repository PRs. Sensitive paths
+and CodeRabbit-authored fixes do not re-enter that loop. A fix is never its own
+independent review. Receipt/checkpoint failures are not waived. Child-to-parent
+integration and provider plan availability must be verified before calling this
+an end-to-end automatic fixing capability. Never issue provider commands that
+force approval or mark unresolved findings resolved merely to pass a gate.
 
-The two Claude workflows send `INTERNAL` repository content to Anthropic once they can run: the pull request diff, and whatever the model reads from the checkout, which for the review workflow reliably includes `CLAUDE.md`, `ROADMAP.md`, and the spec. Spec section 5 governs that traffic and requires a seven-field record for every external submission.
+## Credentials, egress and acceptance
 
-`docs/policies/egress.md` is the policy that permits it, and `docs/decisions/2026-09-03-egress-policy.md` is the decision that will put the policy in force. That decision record does not exist yet. What exists is the prepared draft at `docs/roadmap/decision-12-egress-draft.md`, because only the owner writes under `docs/decisions/`. To record it: copy that draft to `docs/decisions/2026-09-03-egress-policy.md`, answer its six determinations, replace the draft banner with a line reading exactly `**Status:** APPROVED`, sign the `**Decided by:**` line, and commit. The gate reads only ordinary prose: a `**Status:** APPROVED` line inside a fenced block, an HTML comment, or an indented code block is an illustration and is ignored, so an example of how to sign cannot sign the record. Until then neither the policy nor the decision is in effect and the secret must not be added. `tools/egress/record.py` enforces this from inside the job: its `check` mode runs before the provider step and fails the job when the policy or the decision record is missing from the checkout, so the record is a gate rather than a log, and its `write` mode emits the seven fields to the job summary and a workflow artifact. The gate reads the record as well as looking for it: a file without `**Status:** APPROVED` and a named signer fails the check, so a prepared draft copied into place unsigned cannot open it.
+No secret belongs in Git, prompts, reports or chat. Workflow defaults are read
+only and actions use full SHA pins. The publishing identity is not a reviewer.
+Private documents are outside this public-repository automation scope.
 
-The credential is part of the policy. These workflows use `ANTHROPIC_API_KEY` under Anthropic's Commercial Terms, which exclude training on customer content and treat it as confidential. A subscription OAuth token would run the same workflows under the Consumer Terms instead. The `checks` and `auto-merge` workflows send nothing outside GitHub and are unaffected.
+The existing approved decision is
+[the signed egress policy](../decisions/2026-09-03-egress-policy.md).
+The earlier statement that it was missing was stale. Existing Claude workflows
+still use `claude-egress`; its inspected environment has no protection rules,
+so the historical claim that required reviewers already protected it is false.
+This setup does not modify its secret. Tightening that separate credential path
+requires explicit scope and remains an open security finding.
 
-## Provenance of the actions used
+Public NotebookLM research was reused and supporting source passages were read
+again. The setup record binds findings to code and tests. Provider comments log
+purpose, public source identity and authorization before requesting fixes.
+Independent review and a representative GitHub trial remain mandatory before
+activation. No automatic approval, successful pilot or main acceptance is implied
+by local tests, source research or an installed app.
 
-| Action | Commit pinned | Tag | License |
-|---|---|---|---|
-| `actions/checkout` | `11bd71901bbe5b1630ceea73d27597364c9af683` | v4.2.2 | MIT |
-| `actions/setup-python` | `a26af69be951a213d495a4c3e4e4022e16d87065` | v5.6.0 | MIT |
-| `anthropics/claude-code-action` | `833fb0f8c9f6686b33d963a8bae0a94f4936ab2a` | v1.0.211 | MIT |
-| `actions/upload-artifact` | `043fb46d1a93c77aae656e7c1c64a875d1fc6a0a` | v7.0.1 | MIT |
+## Completion entrypoint and standing authority
 
-Pins are by commit, resolved with `git ls-remote --tags` on 2026-09-02; Dependabot proposes bumps as pull requests that go through `checks` like any other change. A bump of `claude-code-action` is not a routine bump: what the action prefetches before the first model call is the evidence base of the egress record, and v1.0.211 changed it. Re-read the prefetch query and re-verify section 2 of that record before merging one.
-
-## Local run
+The owner requested this full routine delivery setup on 2026-09-23 UTC. Controllers
+may publish independently accepted, scoped task checkpoints without another
+per-task commit/push/PR question. Worker proposal authority remains unchanged.
+Run from an isolated task worktree after writing the completed receipt:
 
 ```bash
-python3 -m unittest discover -s tests -p 'test_*.py' -v
-for f in .claude/workflows/*.js docs/runs/*/scripts/*.js; do node --check "$f"; done
-python3 tools/ci/checks.py
+python3 tools/github/publish_task.py --repo /absolute/task/worktree --from-checkpoint --apply
 ```
+
+The publisher derives paths and expected hashes from the receipt, requires its
+independent review and NotebookLM disposition, and executes the checkpoint
+validator from the task's parent commit. It refuses the primary checkout,
+unrelated staged files, path traversal, symlinks, mismatched receipts and changed
+candidate bytes. It creates a `codex/` branch when the worktree is detached,
+keeps normal commit hooks, pushes with no force, and reuses an existing task PR.
+A journal in the worktree Git directory records interruptions and submissions.
+Untracked files outside the manifest remain local. There is no generic commit of
+all dirty files and no background filesystem watcher.
+
+Only PRs with `heleos-delivery` are eligible for the merge controller. The publisher
+adds this enrollment and `autofix`. `automation-hold` blocks both fixes and merges.
+Local task acceptance permits publication, not GitHub self-approval. An existing
+closed task PR is not silently recreated.

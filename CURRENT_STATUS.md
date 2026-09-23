@@ -1,5 +1,19 @@
 # Current Status
 
+**Isolated automation side task, 2026-09-23 UTC:** This copy is in
+`/Users/bekim/.codex/worktrees/github-automation/Heleos-spark`, branch
+`codex/github-automation`, base `f9d7ceda027875b0dbef24710bfca96c6c95a104`.
+Codex owns only this automation candidate; Cursor's parent checkout and the
+product queue below are unchanged. GITHUB-AUTOMATION-2026-09-23 is in progress:
+custom app installed only on Heleos-spark, key secret name verified, CodeQL setup
+passed, Dependabot enabled and native review/security/merge rules strengthened.
+Automation remains disabled. Local policy tests and schema checks pass; independent
+review, publication and GitHub pilot remain outstanding. Scoped setup commit/push/PR publication is authorized by the latest owner request;
+no unrelated product merge is authorized. [Task record](docs/operations/github-automation-2026-09-23/README.md).
+Next side-task action: publish the authorized scoped candidate as a separate stacked PR,
+obtain independent review, then perform a disabled-mode GitHub pilot after its foundation reaches main.
+Do not use this side checkpoint to reroute or reopen the product queue.
+
 Updated 2026-09-22. Checkout `/Users/bekim/Heleos-spark`, branch `2026-09-21-t5b5`; this queue update is based on `5715a45dd4b26f8107271e5f0b2c04cd3901517d`. Queue edits are local until explicitly committed.
 **Resume here is the single live queue.** The goal defines the product outcome;
 the CSI register defines scope. Current delivery priority is complete Division 23
@@ -289,8 +303,8 @@ progress. Earlier exact checkpoints remain in Git history and the
 {
   "schema_version": 1,
   "receipt": "docs/operations/build-checkpoint.json",
-  "task_id": "NOTEBOOKLM-REQUIRED-RESEARCH-2026-09-22",
-  "outcome": "complete",
+  "task_id": "GITHUB-AUTOMATION-2026-09-23",
+  "outcome": "in_progress",
   "next_task_id": "CSI-23-21-23-DEFINE",
   "next_action": "Prepare CSI-23-21-23-DEFINE: reuse the recorded NotebookLM inventory and equipment findings, verify pump-family source passages, and record scope, input gaps and the first bounded implementation contract. If required sources are unavailable, record the affected gap and advance to CSI-23-07-19-DEFINE."
 }

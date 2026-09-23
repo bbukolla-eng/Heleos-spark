@@ -1,0 +1,27 @@
+{
+  "task_id": "GITHUB-AUTOMATION-REPAIR-2026-09-22",
+  "provider": "NotebookLM",
+  "purpose": "Verify public GitHub automation security requirements before implementation",
+  "classification": "PUBLIC",
+  "approved_source_identities": [
+    "8765e3a9-3e51-407f-8c38-5357aecb396e",
+    "fc1c5a82-9a35-4ddd-9f1c-d2f9727b2dc1"
+  ],
+  "policy_decision": "Owner-approved repair; public research only; no code, private project documents or credentials submitted",
+  "timestamp": "2026-09-22T23:54:21.685634+00:00",
+  "query": "Using the selected GitHub primary references only, explain requirements and failure cases for public-repository automation: independent review versus bot acknowledgement, exact commit binding, PR-controlled workflow check spoofing, required-check publisher identities, untrusted code and secret isolation, minimum permissions, merge commits, auto-merge, and subsequent CI after bot pushes. Identify anything the sources do not establish; cite supporting passages.",
+  "result_reference": "notebooklm-query-result.json; verified-research.md",
+  "state": "completed_source_passages_verified",
+  "source_additions": [
+    "https://docs.github.com/en/actions/reference/security/secure-use",
+    "https://docs.github.com/en/actions/concepts/security/github_token"
+  ],
+  "observed_source_count_before": 248,
+  "approval": "Standing project authorization for relevant public reference sources; verified room for two entries.",
+  "source_add_result": {
+    "status": "success",
+    "added_count": 2
+  },
+  "query_id": "3d05c6560b14",
+  "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe"
+}

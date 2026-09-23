@@ -1,0 +1,52 @@
+name: Guarded delivery
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_run:
+    workflows: [checks, CodeQL, Dependency review]
+    types: [completed]
+permissions:
+  contents: read
+concurrency:
+  group: heleos-guarded-delivery
+  cancel-in-progress: false
+jobs:
+  delivery:
+    if: github.repository == 'bbukolla-eng/Heleos-spark' && vars.HELEOS_AUTOMATION_ENABLED == 'true'
+    environment: heleos-automation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check activation prerequisites
+        env:
+          APP_ID: ${{ vars.HELEOS_AUTOMATION_APP_ID }}
+          HAS_KEY: ${{ secrets.HELEOS_AUTOMATION_PRIVATE_KEY != '' }}
+          ACTIVE_AFTER: ${{ vars.HELEOS_AUTOMATION_ACTIVE_AFTER }}
+        run: |
+          test -n "$APP_ID" && test "$HAS_KEY" = true && test -n "$ACTIVE_AFTER" || {
+            echo '::error::Automation app/environment setup is incomplete; no delivery action taken.'
+            exit 1
+          }
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
+        id: app
+        with:
+          app-id: ${{ vars.HELEOS_AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.HELEOS_AUTOMATION_PRIVATE_KEY }}
+          owner: bbukolla-eng
+          repositories: Heleos-spark
+          permission-contents: write
+          permission-pull-requests: write
+          permission-checks: read
+          permission-actions: read
+      - name: Evaluate current candidates using trusted default-branch code
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          HELEOS_AUTOMATION_ACTIVE_AFTER: ${{ vars.HELEOS_AUTOMATION_ACTIVE_AFTER }}
+          HELEOS_AUTOMATION_BOT: ${{ vars.HELEOS_AUTOMATION_BOT }}
+        run: python3 tools/github/delivery_controller.py --apply

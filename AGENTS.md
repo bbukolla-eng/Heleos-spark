@@ -27,6 +27,34 @@ NotebookLM stays on the Codex connection. Until Cursor has that connection, Curs
 
 Where a later sentence in this file names Codex as coordinator or sole commit owner, this section governs this checkout. Historical task records stay as written.
 
+## Scoped automatic delivery authorization
+
+Owner direction in the 2026-09-23 automation side conversation authorizes the
+checkout controller to create task branches in isolated worktrees, commit scoped
+independently accepted task checkpoints, push them to the existing Heleos-spark
+origin and create PRs without asking again for each routine task. This supersedes
+older sentences requiring a new owner request for each routine commit or push.
+Workers still cannot approve or publish their own candidates.
+
+After task acceptance, the controller runs
+`python3 tools/github/publish_task.py --repo <isolated-worktree> --from-checkpoint --apply`.
+It derives the exact file manifest from the completed checkpoint, verifies the
+baseline validator, commits, pushes and opens or reuses one PR. Do not run it on
+the shared primary checkout. New tasks should use isolated worktrees; preserve
+existing parent work and its controller. A task not yet independently accepted
+stays uncommitted by this automatic publisher; an explicit owner request can
+still authorize an in-progress checkpoint through the normal manual procedure.
+
+The merge controller is a separate authority: actual independent current-head
+approval, all required CI/security checks, no unresolved threads and GitHub
+protections are mandatory. Routine status/evidence updates do not require another
+owner decision. Sensitive workflow, policy, instruction or security-boundary
+changes need owner consent for that exact head before automated merge.
+No force pushes, squash/rebase, bypasses, deployments or releases are authorized.
+The automation remains disabled until published and independently verified; see
+[delivery policy](docs/policies/github-automation.md). This instruction describes
+the completion step an active controller invokes, not a background file watcher.
+
 ## Start from verified state
 
 1. Identify the exact checkout, branch, HEAD, and dirty paths before editing. Use explicit repository paths; this Codex task may start in `/Users/bekim`.

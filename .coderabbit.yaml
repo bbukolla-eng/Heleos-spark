@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: en-US
+reviews:
+  profile: assertive
+  request_changes_workflow: true
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 0
+    drafts: false
+    base_branches: ['.*']
+  finishing_touches:
+    autofix:
+      enabled: true
+    fix_ci:
+      enabled: true
+    resolve_merge_conflict:
+      enabled: false
+  path_instructions:
+    - path: '**/*'
+      instructions: >-
+        Review correctness, security and missing tests. Follow AGENTS.md and the
+        frozen task contract. Verify NotebookLM research evidence for knowledge-dependent
+        changes. Do not accept generated quantities as their own test oracle.
+        Preserve checkpoint parent history. Never treat acknowledgements or passing
+        tests alone as completed mechanical section acceptance.
+    - path: '.github/**'
+      instructions: >-
+        Check token permissions, immutable action pins, command injection, untrusted
+        checkout execution, stale review/check evidence and self-approval. Security
+        and automation changes need owner consent bound to the current full head SHA.
+        No ruleset bypass and no squash or rebase merges.

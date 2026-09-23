@@ -1,5 +1,8 @@
 # Cursor — Heleos-spark
 
+
+Controller delivery follows the scoped automatic delivery authorization in [AGENTS.md](AGENTS.md). After independent task acceptance, invoke the exact-manifest publisher from an isolated worktree; no repeated owner prompt is needed for routine commits, pushes and PRs. This exception does not grant implementation workers publication or approval authority.
+
 Read [AGENTS.md](AGENTS.md), [CURRENT_STATUS.md](CURRENT_STATUS.md), [SKILLS.md](SKILLS.md), and the assigned task brief. This is the project entrypoint for Cursor editor/agent and approved CLI work; it is not proof that a particular Cursor runtime automatically loads this filename.
 
 ## Role and workspace
