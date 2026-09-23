@@ -43,7 +43,7 @@ jobs:
             cat "${log_path}" >&2
             return "${status}"
           }
-          pr_number="$(gh api "repos/${GH_REPO}/pulls" -f state=open -f head="${GH_OWNER}:${BRANCH}" -f base=main --jq '.[0].number // empty')"
+          pr_number="$(gh api --method GET "repos/${GH_REPO}/pulls" -f state=open -f head="${GH_OWNER}:${BRANCH}" -f base=main --jq '.[0].number // empty')"
           body="Automated draft PR for branch \`${BRANCH}\`.\n\nThis PR is managed by \`.github/workflows/pr-automation.yml\`."
           if [ -z "${pr_number}" ]; then
             log_path="${RUNNER_TEMP}/pr-automation-create-pr.log"
