@@ -1,3 +1,8 @@
 __pycache__/
 *.pyc
 .venv/
+.worktrees/
+/target/
+/.heleos/
+/research-cache/
+/OWNER_ACTION_REQUIRED/*.json

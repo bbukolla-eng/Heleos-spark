@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "record_kind": "research_candidate_metadata",
+  "candidate_id": "roboflow:pid-dataset/p-id-2-classes-er8vf",
+  "status": "research_only_not_admitted",
+  "observed_at": "2026-09-14T01:32:03.865358+00:00",
+  "data_class": "PUBLIC",
+  "identity": {
+    "project_url": "https://universe.roboflow.com/pid-dataset/p-id-2-classes-er8vf",
+    "workspace_slug": "pid-dataset",
+    "project_slug": "p-id-2-classes-er8vf",
+    "display_name": "P&ID 2 Classes",
+    "publisher_display_name": "PID dataset"
+  },
+  "project_metadata": {
+    "source_url": "https://universe.roboflow.com/pid-dataset/p-id-2-classes-er8vf",
+    "reported_images": 4250,
+    "task": "object_detection",
+    "classes": [
+      "page connection",
+      "tag"
+    ],
+    "reported_versions": 3,
+    "reported_dataset_specific_models": 0,
+    "project_description_available": false
+  },
+  "version_metadata": {
+    "source_url": "https://universe.roboflow.com/pid-dataset/p-id-2-classes-er8vf/dataset/3",
+    "version": 3,
+    "generated_date": "2026-01-29",
+    "reported_images": 4250,
+    "split_counts": {
+      "train": 3384,
+      "validation": 638,
+      "test": 228
+    },
+    "preprocessing": [
+      "grayscale"
+    ],
+    "reported_augmentation": "none",
+    "advertised_example_formats": [
+      "COCO JSON",
+      "YOLO"
+    ],
+    "archive_retrieved": false,
+    "archive_sha256": null,
+    "independent_original_drawing_count": null
+  },
+  "sample_observation": {
+    "source_url": "https://universe.roboflow.com/pid-dataset/p-id-2-classes-er8vf/images/BUMQkNcWRI2LlKK2IOaq",
+    "source_surface": "public current-gallery Labels and Raw Data panels",
+    "image_name": "13.jpg",
+    "image_id": "BUMQkNcWRI2LlKK2IOaq",
+    "width_px": 7168,
+    "height_px": 4561,
+    "displayed_split": "train",
+    "displayed_group": "symbols",
+    "displayed_counts": {
+      "tag": 112,
+      "page connection": 0
+    },
+    "public_original_annotation_rows": {
+      "symbols": {
+        "count": 112,
+        "numeric_class_ids": [
+          0
+        ]
+      },
+      "withlinesandtext": {
+        "count": 112,
+        "numeric_class_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31
+        ]
+      }
+    },
+    "coordinates_equal_after_removing_class_id": true,
+    "alternate_group_converted_counts": {
+      "Text": 118,
+      "Line": 122
+    },
+    "original_class_name_mapping_verified": false,
+    "observation_bound_to_frozen_version_archive": false,
+    "dataset_wide_generalization_verified": false,
+    "evidence_form": "investigator-derived metadata; raw page and archive bytes not preserved"
+  },
+  "rights": {
+    "declared_license": "CC-BY-4.0",
+    "declaration_source": "https://universe.roboflow.com/pid-dataset/p-id-2-classes-er8vf",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "platform_terms_url": "https://roboflow.com/terms",
+    "underlying_drawing_origin_verified": false,
+    "licensor_authority_verified": false,
+    "owner_service_plan_verified": false,
+    "commercial_acquisition_cleared": false,
+    "training_use_approved": false
+  },
+  "assessment": {
+    "possible_use": "generic region proposal research after annotation review; page-reference localization requires positive examples and a task definition",
+    "ocr_tag_label_semantics_established": false,
+    "mechanical_taxonomy_mapping": null,
+    "direct_physical_takeoff_support_established": false,
+    "model_accuracy_measured": false,
+    "next_action": "Identify original class mapping and drawing provenance; inspect an exact authorized version archive before defining a scoped localization experiment."
+  },
+  "local_code_inspected": {
+    "scripts/mechanical_model_baseline.py": "a768da17667af83d980f01f93e7d1084d3ea38892604cb6236c0a1079dd5fc08",
+    "scripts/mechanical_model_scoring.py": "2bdc9fe44c1731c4c2a02256defba78b54a56c267f8105dd9b6ab28c30f26df9"
+  },
+  "report": "docs/research/engineering/roboflow-pid-two-classes-2026-09-13.md"
+}

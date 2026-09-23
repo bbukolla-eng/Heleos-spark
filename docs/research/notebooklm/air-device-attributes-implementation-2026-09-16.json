@@ -1,0 +1,68 @@
+{
+  "schema": "heleos.research-implementation/v1",
+  "task_id": "AIR-DEVICE-ATTRIBUTES-1",
+  "parent_task": "AIR-DEVICE-COUNT-1",
+  "state": "independently_accepted_and_locally_integrated_prerequisite",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "base_commit": "30b3e7fc81c5110ab36a40d4a1f2ee36dbba7a8d",
+  "research": {
+    "path": "docs/research/notebooklm/air-device-build-findings-2026-09-16.json",
+    "sha256": "300ccbf328608f17a1b0dfc14ed1b46b3652a7ad97ff6c351a39c38e356e6c27",
+    "reuse": "Previous NotebookLM query/source bodies reverified; no repeated query or new submission.",
+    "source_findings": [
+      "AIR-RESEARCH-01",
+      "AIR-RESEARCH-02",
+      "AIR-RESEARCH-03",
+      "AIR-RESEARCH-04"
+    ]
+  },
+  "authority": "Approved A01-A12/AC01-AC17 owner receipt with immutable archived rule packet and examples. Source research is context, never quantity authority.",
+  "adopted": [
+    {
+      "rule_ids": [
+        "A01",
+        "A03",
+        "A07"
+      ],
+      "behavior": "Evidence-backed qualified source attributes retain face/neck/opening sizes, assembly length and slots separately. Exact rational inch canonicalization is distinct from six-place display; source text/units survive. Family classification creates no each quantity.",
+      "implementation": "scripts/air_device_attributes.py",
+      "verification": "25 attribute tests and44 independent numerical oracle assertions on Python3.9/3.12/3.14."
+    },
+    {
+      "rule_ids": [
+        "A03",
+        "A08",
+        "A12"
+      ],
+      "behavior": "Policy loader binds exact approved receipt/packet/examples independently of presentation headings, location and scale. Missing/modified policy fails closed.",
+      "implementation": "scripts/air_device_rules.py",
+      "verification": "6 policy tests on each runtime including relocated policy, byte changes, missing sources and outside-root symlink refusal."
+    }
+  ],
+  "candidate": {
+    "provider": "Claude Code",
+    "task": "air-device-attributes-claude-001",
+    "path": "/Users/bekim/Heleos-spark/.heleos/air-device-build-2026-09-16/controller-candidate",
+    "files": {
+      "scripts/air_device_attributes.py": "57ab67414f53d2e59f5c0f6477d6382cf766e5c3554fcf5599bf7ec2e5db731b",
+      "tests/drawing-workspace/test_air_device_attributes.py": "c3a6bcefc2ef1e48489c79b0ad0675672f2c5dfc4939c3aed71d75124d5dc379",
+      "scripts/air_device_rules.py": "19e9ad45e0a332f32dec9470cee6b39fdc396c157d8697e8e51961f373e39576",
+      "tests/drawing-workspace/test_air_device_rules.py": "91626bfa94353c9f8ee8f29d424d97451ee962d13ba4a9afab3d8c55abf0f13e"
+    },
+    "original_candidate": ".worktrees/provider-runs/heleos-worker-94r6Hi/checkout",
+    "controller_repairs": ".heleos/air-device-build-2026-09-16/controller-repair.json"
+  },
+  "checks": ".heleos/air-device-build-2026-09-16/repaired-checks.json",
+  "ledger": ".heleos/air-device-build-2026-09-16",
+  "limits": [
+    "This is a prerequisite, not connected automatic air-device counts.",
+    "All count, correspondence, multiplicity, relocation, schedule, coverage, persisted history, correction and UI/export integration remain outstanding.",
+    "Combined multiplicity/relocation operation support remains explicit outstanding work in count contract.",
+    "No representative-project accuracy, live model execution, native Windows or release acceptance.",
+    "Earlier application integration remains preserved and uncommitted."
+  ],
+  "next_action": "Implement the pure source-bound count kernel and all17 approved semantic cases, then connect source production and append-only application workflow.",
+  "independent_review": ".heleos/air-device-build-2026-09-16/independent-review.json",
+  "process_state": "Claude, reviewer and checks terminal",
+  "integration_smoke": "Root-path imports and approved policy load passed; all four source/test bytes match accepted candidate."
+}

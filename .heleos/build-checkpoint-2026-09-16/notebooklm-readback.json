@@ -1,0 +1,21 @@
+{
+  "status": "success",
+  "notebook": {
+    "id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+    "title": "N07 — Software Engineering",
+    "source_count": 246,
+    "url": "https://notebooklm.google.com/notebook/f0404db5-8c1e-4591-9c9d-2727bd668cbe"
+  },
+  "selected_sources": [
+    {
+      "id": "4ed811a9-c317-4126-8255-2cba4425c440",
+      "title": "hashlib — Secure hashes and message digests — Python 3.14.7 documentation"
+    },
+    {
+      "id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "title": "subprocess — Subprocess management — Python 3.14.7 documentation"
+    }
+  ],
+  "scope": "Relevant source subset from successful notebook_get; full inventory not duplicated.",
+  "time": "2026-09-16T20:49:34.426Z"
+}

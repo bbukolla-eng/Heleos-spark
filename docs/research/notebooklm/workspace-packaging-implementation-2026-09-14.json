@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "task_id": "WORKSPACE-PACKAGING-PROOF-1",
+  "state": "portable_package_and_bounded_mac_proof_verified_windows_behavior_open",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_head": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "findings": {
+    "path": "docs/research/notebooklm/workspace-packaging-findings-2026-09-14.json",
+    "sha256": "4e05662dbde15216d31bcc619d67b655c2f1c28c912841644e8e8b05a3b2978d"
+  },
+  "inventory_reused": {
+    "path": "docs/research/notebooklm/notebook-inventory.json",
+    "sha256": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a",
+    "notebook_count": 59,
+    "current_selected_notebooks": [
+      {
+        "id": "d70190ac-d75f-4547-a228-6701aae288f1",
+        "title": "N01 \u2014 System Architecture",
+        "source_count": 51,
+        "url": "https://notebooklm.google.com/notebook/d70190ac-d75f-4547-a228-6701aae288f1"
+      },
+      {
+        "id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+        "title": "N07 \u2014 Software Engineering",
+        "source_count": 32,
+        "url": "https://notebooklm.google.com/notebook/f0404db5-8c1e-4591-9c9d-2727bd668cbe"
+      }
+    ],
+    "selection_reason": "N01 inspected first; no explicit Python launcher packaging source title. N07 inspected only to find closer official packaging sources. No unrelated duct sources reread."
+  },
+  "query": {
+    "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+    "query_id": "5ae86ce60db3",
+    "state": "completed",
+    "queries_started": 1
+  },
+  "supporting_sources": [
+    {
+      "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+      "source_id": "ec06549d-99de-4367-bddc-4dd35d583249",
+      "title": "Python Packaging User Guide",
+      "url": "https://packaging.python.org/en/latest/",
+      "edition": null,
+      "indexed_text_path": ".heleos/workspace-packaging-proof-2026-09-14/research-pypa-indexed-text.txt",
+      "indexed_text_sha256": "f78ec02831401e200c0e7f9606f34f7dd530926255d2303f597751d5c704d284"
+    },
+    {
+      "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+      "source_id": "0be2cd9f-f484-46a8-9db1-490fae75ef1d",
+      "title": "Windows Installer | Tauri",
+      "url": "https://v2.tauri.app/distribute/windows-installer/",
+      "edition": "Tauri v2 (patch unspecified)",
+      "indexed_text_path": ".heleos/workspace-packaging-proof-2026-09-14/research-windows-indexed-text.txt",
+      "indexed_text_sha256": "56cfb8bae9eab45c1c2f4eaadf6e6a5b11846831b161dc92653780a3c516f6f2"
+    },
+    {
+      "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+      "source_id": "1963885f-442c-4caa-9f98-1926207fe7cf",
+      "title": "macOS Application Bundle | Tauri",
+      "url": "https://v2.tauri.app/distribute/macos-application-bundle/",
+      "edition": "Tauri v2 (patch unspecified)",
+      "indexed_text_path": ".heleos/workspace-packaging-proof-2026-09-14/research-macos-indexed-text.txt",
+      "indexed_text_sha256": "3aa9cd4cae4e99cd1b72eb08f283dddcb68761cd3f58d2a77e6effbeb51ecc3e"
+    },
+    {
+      "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+      "source_id": "95a9d21a-9493-451a-b0aa-0c0b529e0d76",
+      "title": "Package a desktop app from source code using Visual Studio - MSIX | Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/windows/msix/desktop/desktop-to-uwp-packaging-dot-net",
+      "edition": null,
+      "indexed_text_path": ".heleos/workspace-packaging-proof-2026-09-14/research-msix-indexed-text.txt",
+      "indexed_text_sha256": "6faf0e22a66e5a655964838a87d0a3c4c2b316f322c4a30739bd363571f9290c"
+    }
+  ],
+  "verified_exact_passages": 14,
+  "adoption": [
+    {
+      "passages": [
+        "WP-P04"
+      ],
+      "finding": "The indexed Tauri macOS note warns GUI apps do not inherit shell dotfile PATH.",
+      "implementation": "Explicit installed tool paths and hashes in an external runtime profile; no implicit PATH lookup at launch.",
+      "code": [
+        "scripts/launch-drawing-workspace.py:configure",
+        "scripts/launch-drawing-workspace.py:check",
+        "scripts/launch-drawing-workspace.py:run"
+      ],
+      "checks": [
+        "test_configure_check_do_not_execute_or_open_project_and_profile_is_exclusive",
+        "test_run_argv_spaces_environment_output_exit_and_relocation"
+      ]
+    },
+    {
+      "passages": [
+        "WP-P03",
+        "WP-P05",
+        "WP-P07",
+        "WP-P13",
+        "WP-P14"
+      ],
+      "finding": "Indexed Tauri/MSIX references describe framework-specific native bundles/installers.",
+      "implementation": "This artifact is labeled a relocatable installed-runtime preview, with native format/Windows acceptance outstanding; no shell/installer technology selected.",
+      "code": [
+        "apps/drawing-workspace/package-readme.txt",
+        "docs/operations/workspace-package.md",
+        "scripts/workspace_package.py:TARGET_PLATFORMS"
+      ],
+      "checks": [
+        "native phase create and reopen receipts report macOS only",
+        "review-windows-cleanup-gap.json retains actual missing Windows behavior"
+      ]
+    },
+    {
+      "passages": [
+        "WP-P09",
+        "WP-P10",
+        "WP-P11",
+        "WP-P12"
+      ],
+      "finding": "Tauri examples distinguish external/bundled/downloaded dependencies and show explicit failure handling.",
+      "implementation": "Heleos retains installed native libraries with their tools, performs read-only readiness checks apart from a temporary writable-cache probe, and propagates child terminal status; no download or installer adopted. This is a local engineering translation, not a Python requirement established by Tauri.",
+      "code": [
+        "scripts/launch-drawing-workspace.py:check",
+        "scripts/launch-drawing-workspace.py:run",
+        "scripts/workspace_package.py:PAYLOAD_SOURCES"
+      ],
+      "checks": [
+        "test_changed_tool_platform_python_and_malformed_profiles_fail",
+        "test_run_argv_spaces_environment_output_exit_and_relocation",
+        "root-runtime-configure-stdout.json",
+        "root-runtime-check-delivered-stdout.json",
+        "root-runtime-check-relocated-stdout.json"
+      ]
+    }
+  ],
+  "engineering_contract_not_source_claims": [
+    "Explicit51file allowlist/canonicalmanifest/hash/ZIP identity",
+    "Python -I -B bootstrap and verified helper source before exec",
+    "external mutable project/profile/cache and alias checks",
+    "Python argv/cwd/space handling",
+    "POSIX group cleanup on startup, wait-return and descendant cases",
+    "native relocation, rendering, text, approved4ft calculation/correction/history/ZIP/reopen"
+  ],
+  "unadopted": [
+    "Tauri/MSIX selection or mandatory installer",
+    "automatic dependency/model download",
+    "unsupported read-only Resources/app-attach overclaims",
+    "new mechanical quantity authority or thresholds",
+    "native Windows parity from macOS or branch simulation"
+  ],
+  "verification": {
+    "builder_tests_each_python": 18,
+    "launcher_tests_each_python": 13,
+    "python_versions": [
+      "3.14.6",
+      "3.9.6"
+    ],
+    "root_test_receipts": [
+      ".heleos/workspace-packaging-proof-2026-09-14/root-builder-tests.json",
+      ".heleos/workspace-packaging-proof-2026-09-14/root-launcher-tests.json"
+    ],
+    "native_attempt": 2,
+    "native_receipt": ".heleos/workspace-package-native-2026-09-14-attempt-2/package-native-verification.json",
+    "native_receipt_sha256": "607f1b52417edfc8e7bf6d0c83724433f09e1e031ae1296abc2a9cbd1f7a4bc5",
+    "failed_attempt_preserved": ".heleos/workspace-packaging-proof-2026-09-14/root-native-attempt-1-terminal.json",
+    "application_original_reads_blocked": true,
+    "browser_listener_or_model_execution": false,
+    "native_windows": false
+  },
+  "delivery": {
+    "package": "output/workspace-package/Heleos-preview",
+    "archive": "output/workspace-package/Heleos-preview.zip",
+    "archive_sha256": "7c72ba4363d7adb534a0b2780225ca546a74b5ca45dbf9bb72e781c3d7b4203a",
+    "package_id": "workspace_31f579965b16ef42a8b68443c2e0812d526fb9cb0d2b71d919cb775d78e83a4f",
+    "manifest_sha256": "c69073cc3ca94b811db704e39258cd933612184d04df12e4c5d6f6ac0170bfbb",
+    "payload_count": 51,
+    "native_payload_equal": true,
+    "readiness_created_project": false
+  },
+  "code_and_check_sha256": {
+    "scripts/workspace_package.py": "d4482f862a3f3e1615d6bf28776b2f416fe08b31d0fd2694564feebb9f506023",
+    "scripts/package-drawing-workspace.py": "00a5b774cc28d49bf4dada3152651de5ec43c4233d3a579000dae0465e6b4b5a",
+    "scripts/launch-drawing-workspace.py": "923a89d07a563b37ef89ff0f6577ff4238466328f889d145fc66d93781b7dc69",
+    "apps/drawing-workspace/package-readme.txt": "d6d0a727b054da452424d34535819d5808aa8fab3a8bc4980b6fe6b466bdc500",
+    "tests/drawing-workspace/test_workspace_package.py": "5e8109a827193c3b55bd6ab7319a0b4b9b1b9a774f8174f9f6762cb528318ab2",
+    "tests/drawing-workspace/test_workspace_launcher.py": "6cee1343c438388294fc83d9e0c873b27924ea3f03fb6bd03959c77feac59816",
+    "tests/drawing-workspace/acceptance_workspace_package.py": "c79834909bdbe9ae28126f4cc51d310957bb0dc9477de28222bdf736c17d5fd8",
+    "docs/operations/workspace-package.md": "707f3e3e44e2c8db283be8547b1980f14e853a2419767d1bd8bfbe74a6e6d72b"
+  },
+  "egress": {
+    "provider": "connected NotebookLM MCP",
+    "classification": "public reference query/source text only",
+    "before_after_pairs": 9,
+    "ledger": ".heleos/workspace-packaging-proof-2026-09-14/research-egress.jsonl",
+    "sha256": "086cd9eb7394387d363ee3fd9739348d1724d33c73f3edb3e628c8d2286a1109",
+    "private_uploads": 0,
+    "sources_or_notes_added": 0
+  },
+  "open_findings": [
+    {
+      "id": "WP-R4",
+      "state": "open_native_windows_parity",
+      "finding": "Windows forced-stop fallback kills direct child only; descendant cleanup after ignored CTRL_BREAK or leader exit is missing.",
+      "evidence": ".heleos/workspace-packaging-proof-2026-09-14/review-windows-cleanup-gap.json",
+      "consequence": "Windows launch path remains an unaccepted candidate; full-goal work outstanding."
+    }
+  ],
+  "approved_mechanical_rules": "Unchanged and authoritative; exact three runtime rule data files retained",
+  "pending_owner_decisions": [
+    "air-device A01-A12/AC01-AC17",
+    "concrete workbook schema and evidence PDF layout"
+  ],
+  "full_goal": "active incomplete",
+  "next_action": "Implement Windows owned-process-tree cleanup with verified applicable sources, then pursue actual native Windows proof; preserve completed Mac/package work and pending calculation/export decisions.",
+  "independent_review": {
+    "path": ".heleos/workspace-packaging-proof-2026-09-14/review-final.json",
+    "sha256": "8978455f48114a9563dbec984a51832286e57caba5336b86deeaf90ba18b7750",
+    "state": "bounded Mac/offline packaging passed; WP-R4 Windows forceful descendant cleanup open"
+  }
+}

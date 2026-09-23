@@ -1,0 +1,225 @@
+schema_version = 1
+status = "research_only"
+
+# Candidate citation metadata only. No source admission, cached bytes, or executable rules.
+# For undated rolling pages, effective_date is the observation date, explicitly qualified in gaps.
+
+[[source]]
+id = "pdf-security-userunit-pdfa-2023"
+canonical_url = "https://pdfa.org/how-big-can-your-pdf-page-be/"
+publisher = "PDF Association"
+title = "How big can your PDF page be?"
+edition_or_version = "Staff article, 2023-07-20"
+effective_date = "2023-07-20"
+retrieved_at = "2026-09-09T14:50:19Z"
+cache_status = "not_cached"
+license_or_rights = "Public article; no redistribution or third-party upload permission established."
+data_class = "PUBLIC"
+locators = ["Body paragraphs immediately before PDFacademicBot for July 2023: PDF 1.6 UserUnit and implementation-dependent range"]
+claims_supported = ["Informative: UserUnit multiplies the default 1/72-inch coordinate system; supported ranges depend on the implementation.", "Informative: the article distinguishes PDF 2.0 format page-size freedom from application limits."]
+applicability = "Geometry test design: exercise large and non-default user units; application bounds need separate governed decisions."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "URL reference only; no upload grant recorded."
+contradictions = []
+gaps = ["Informative article, not the licensed normative specification; does not establish finite-number checks or accepted project coordinate bounds."]
+
+[[source]]
+id = "pdf-security-raster-1.0"
+canonical_url = "https://pdfa.org/wp-content/uploads/2017/07/PDFraster10.pdf"
+publisher = "PDF Association and TWAIN Working Group"
+title = "Document management applications - Raster Image Transport and Storage - Use of ISO 32000 (PDF/raster)"
+edition_or_version = "PDF/raster Version 1.0, copyright 2017"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:50:19Z"
+cache_status = "not_cached"
+license_or_rights = "Copyright page ii: all rights reserved; reproduction or other utilization requires prior written permission unless otherwise specified."
+data_class = "PUBLIC"
+locators = ["Copyright page ii, PDF page 2", "6.5.2-6.5.3, printed page 6, and 6.5.6, printed page 7 (PDF pages 11-12)", "Informative Annex A.1-A.2, printed page 11 (PDF page 16)"]
+claims_supported = ["Profile-specific: PDF/raster 1.0 requires local MediaBox [0 0 w h] and prohibits MediaBox and Rotate inheritance from page-tree nodes.", "Informative Annex A distinguishes scan order from viewing orientation and derives MediaBox from pixel dimensions and ppi assuming UserUnit 1."]
+applicability = "Restricted raster profile comparison for page boxes and rotation; never generalize its restrictions to arbitrary engineering PDFs."
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "Explicit copyright restriction; no written upload permission supplied. Public reading does not grant copying or uploading."
+contradictions = ["Profile restrictions differ from general-PDF possibilities; this is a scope distinction, not contradictory normative authority."]
+gaps = ["Only copyright year is established; effective_date is observation date, not asserted publication or legal-effective date.", "No licensed specification copied or uploaded; no source cache. Complete general-PDF inheritance, rotation, and box fallback semantics still require authorized normative verification."]
+
+[[source]]
+id = "pdf-security-page-boxes-pdfa-member-2025"
+canonical_url = "https://pdfa.org/introducing-set-page-boxes-api-from-pdfrest-precise-control-to-crop-resize-and-optimize-pdfs/"
+publisher = "Datalogics, Eric Shore; hosted as PDF Association Member News"
+title = "Introducing Set Page Boxes API from pdfRest: Precise Control to Crop, Resize, and Optimize PDFs"
+edition_or_version = "Member News, 2025-06-02"
+effective_date = "2025-06-02"
+retrieved_at = "2026-09-09T14:50:19Z"
+cache_status = "not_cached"
+license_or_rights = "Public member article; no third-party upload grant established."
+data_class = "PUBLIC"
+locators = ["DISCLAIMER above article body", "Introducing Precision in PDF Layout Management: five page-boundary bullets"]
+claims_supported = ["Informative terminology: MediaBox describes paper size, CropBox visible area, BleedBox bleed extent, TrimBox finished size, and ArtBox artwork bounds."]
+applicability = "Geometry vocabulary and test-axis inventory only; vendor article is not PDF Association policy or ISO authority."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Metadata and URL reference only; no upload authorized."
+contradictions = []
+gaps = ["Member marketing material explicitly disclaims PDF Association policy status; no normative defaults, inheritance, containment, clipping, or malformed-rectangle semantics verified here."]
+
+[[source]]
+id = "pdf-security-iso32000-2-2020-errata-syntax"
+canonical_url = "https://pdf-issues.pdfa.org/32000-2-2020/clause07.html"
+publisher = "PDF Association PDF specification errata project"
+title = "Syntax - Errata for PDF specifications"
+edition_or_version = "Public errata for ISO 32000-2:2020; rolling page observed 2026-09-09"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:50:19Z"
+cache_status = "not_cached"
+license_or_rights = "Public errata excerpts; underlying ISO specification rights are not an upload grant."
+data_class = "PUBLIC"
+locators = ["7.5.4 Cross reference table; 7.5.5 File trailer, Table 15 Size and Prev; 7.5.6 Incremental updates", "7.5.8.2 Cross-reference stream dictionary, Table 17", "7.6.2 Application of encryption; 7.6.3 General encryption algorithm", "7.7.4 Name dictionary, Table 32 JavaScript and EmbeddedFiles", "7.11.4.1 Embedded file streams, Table 45 CheckSum"]
+claims_supported = ["Errata clarifies byte offsets, incremental cross-reference sections, Size and Prev, and direct-value requirements for cross-reference stream dictionaries.", "Stream decryption precedes filter decoding; document structure and encrypted content have different coverage.", "JavaScript names can map to document-level ECMAScript actions. Embedded streams use file-specification EF or RF entries; the document EmbeddedFiles name tree is not universally required. Its MD5 CheckSum is not a security check."]
+applicability = "Citation candidates for revision-aware parsing, encryption state, attachment discovery, active-content inventory, and malformed-xref experiments."
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "No permission to upload ISO-derived text or licensed specification established."
+contradictions = []
+gaps = ["Rolling errata publication date is unspecified; effective_date records observation only.", "Errata omits unchanged standard text; not a complete PDF validator or a source of application object-count and aggregate decompression budgets."]
+
+[[source]]
+id = "pdf-security-iso32000-2-2020-errata-actions"
+canonical_url = "https://pdf-issues.pdfa.org/32000-2-2020/clause12.html"
+publisher = "PDF Association PDF specification errata project"
+title = "Interactive features - Errata for PDF specifications"
+edition_or_version = "Public errata for ISO 32000-2:2020; rolling page observed 2026-09-09"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:50:19Z"
+cache_status = "not_cached"
+license_or_rights = "Public errata excerpts; no underlying ISO redistribution or upload grant inferred."
+data_class = "PUBLIC"
+locators = ["12.6.4.2 Go-To actions; 12.6.4.4 Embedded Go-To actions; 12.6.4.6 Launch actions", "12.6.4.8 URI actions, Editor Note referring to Errata 256", "12.6.4.16 Go-To-3D-View actions; 12.6.4.18 Rich-Media-Execute actions", "12.7.4.1 Field dictionaries, Table 226 AA"]
+claims_supported = ["Public errata identifies navigation, embedded navigation, launch, URI, 3D-view, and rich-media-execution action classes and form additional-action triggers.", "The URI editor note says Base and URI-dictionary discussion applies to all relative document URIs, not only URI actions."]
+applicability = "Threat-inventory candidate: cover actions and trigger locations separately from literal URL scanning; no action-execution authority."
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "No written permission for ISO-derived content uploads established."
+contradictions = []
+gaps = ["effective_date is observation only; rolling errata does not establish its own legal-effective date.", "Partial errata does not enumerate every action, trigger, URI scheme, or extension. A complete action allowlist remains unapproved."]
+
+[[source]]
+id = "pdf-security-lopdf-0.44.0-reader-experiment"
+canonical_url = "https://raw.githubusercontent.com/J-F-Liu/lopdf/v0.44.0/src/reader.rs"
+publisher = "J-F-Liu/lopdf upstream contributors"
+title = "lopdf v0.44.0 src/reader.rs"
+edition_or_version = "v0.44.0 tag; matches local Cargo.lock version, not byte-verified against packaged crate"
+effective_date = "2026-07-10"
+retrieved_at = "2026-09-09T14:50:19Z"
+cache_status = "not_cached"
+license_or_rights = "Public upstream source; license applicability to third-party upload not evaluated."
+data_class = "PUBLIC"
+locators = ["Reader fields max_decompressed_size and MAX_NESTING_DEPTH, lines 410-426", "Reader::read, xref_start bounds check and previous-xref traversal, lines 707-755", "Reader::load_objects_raw, lines 894-916: object-load error branch and ObjectStream::new_with_limit"]
+claims_supported = ["EXPERIMENT: static source inspection observes an optional per-stream load decompression bound with None documented as unlimited, plus MAX_NESTING_DEPTH 100.", "EXPERIMENT: Reader::read checks xref_start against input length and traverses prior xrefs; load_objects_raw can skip objects after read errors and converts object-stream decoding failure to None."]
+applicability = "Pinned implementation observations for hostile-input experiments; successful load alone must not be treated as evidence of complete semantic validation."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Source URL only; no upload requested or granted."
+contradictions = []
+gaps = ["No executable experiment run, no fixture bytes created, and no product integration verified.", "Per-stream limits do not establish an aggregate object-count, total allocation, fuel, recursion, or time budget.", "Tag identity and crate checksum equivalence were not independently verified; source observations are not normative PDF requirements."]
+
+[[source]]
+id = "pdf-security-lopdf-0.44.0-stream-experiment"
+canonical_url = "https://raw.githubusercontent.com/J-F-Liu/lopdf/v0.44.0/src/object.rs"
+publisher = "J-F-Liu/lopdf upstream contributors"
+title = "lopdf v0.44.0 src/object.rs"
+edition_or_version = "v0.44.0 tag"
+effective_date = "2026-07-10"
+retrieved_at = "2026-09-09T14:50:19Z"
+cache_status = "not_cached"
+license_or_rights = "Public upstream source; upload licensing not evaluated."
+data_class = "PUBLIC"
+locators = ["Stream::decompressed_content warning and Stream::decompressed_content_with_limit, lines 808-832", "Stream::decompress_to_writer and decode_filters, lines 834-850"]
+claims_supported = ["EXPERIMENT: static inspection observes unbounded decompressed_content and a bounded alternative returning MemoryLimitExceeded on excess output.", "EXPERIMENT: upstream documentation describes per-filter-layer bounds; decompress_to_writer first obtains decoded data then writes it."]
+applicability = "Design evidence for testing nested filters and aggregate memory separately from a single output limit."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Link-only research; no upload authorization inferred."
+contradictions = []
+gaps = ["Not a runtime measurement or proof of every decoder boundary; native and sandbox memory behavior remain untested.", "Release tag is not a cached byte identity and not proof of packaged-crate equivalence."]
+
+[[source]]
+id = "pdf-security-lopdf-0.44.0-release-notes"
+canonical_url = "https://raw.githubusercontent.com/J-F-Liu/lopdf/v0.44.0/CHANGELOG.md"
+publisher = "J-F-Liu/lopdf upstream contributors"
+title = "lopdf changelog at v0.44.0"
+edition_or_version = "v0.44.0, 2026-07-10"
+effective_date = "2026-07-10"
+retrieved_at = "2026-09-09T14:50:19Z"
+cache_status = "not_cached"
+license_or_rights = "Public upstream release notes; third-party upload rights not evaluated."
+data_class = "PUBLIC"
+locators = ["v0.44.0 heading, Feat and Fix", "v0.39.0 Breaking change: is_encrypted and was_encrypted"]
+claims_supported = ["EXPERIMENT: release-note inspection dates v0.44.0 to 2026-07-10 and records load-time and stream decompression bounds and encrypted incremental-save changes.", "EXPERIMENT: v0.39.0 notes distinguish current is_encrypted state after decryption from original was_encrypted state."]
+applicability = "Version provenance and candidate regression axes; implementation behavior must be checked in exact source and fixtures."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Reference URL only, no upload authorized."
+contradictions = ["The v0.44.0 change list mentions both rejecting and supporting encrypted incremental save; it is a change history, not sufficient evidence of final behavior."]
+gaps = ["No final incremental-writer behavior claim is made; this needs tagged writer source inspection and an executable experiment."]
+
+[[source]]
+id = "pdf-security-owasp-file-upload"
+canonical_url = "https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html"
+publisher = "OWASP Cheat Sheet Series Team"
+title = "File Upload Cheat Sheet"
+edition_or_version = "Rolling public guidance observed 2026-09-09"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:50:19Z"
+cache_status = "not_cached"
+license_or_rights = "Footer declares Creative Commons Attribution-ShareAlike 4.0 International."
+data_class = "PUBLIC"
+locators = ["Introduction; File Upload Threats / Malicious Files", "Content-Type Validation; File Signature Validation", "File Content Validation; Filesystem Permissions; Upload and Download Limits", "Copyright footer"]
+claims_supported = ["OWASP recommends layered upload controls and identifies parser exploits, decompression bombs, huge files, and client-side active content as threats.", "Untrusted MIME headers or signatures alone are inadequate; limits should account for decompressed size, and file permissions should be minimal.", "Public scanning services can cause data leakage; sandboxing and content disarm are candidate controls, not automatic source-upload permission."]
+applicability = "General untrusted-document intake threat and control guidance; no numerical project limits or permission to send project documents externally."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Reference-only policy retained despite public license; no NotebookLM upload action authorized."
+contradictions = []
+gaps = ["effective_date is observation date because page publication/update date was not established.", "No PDF-specific parser completeness, signed-document preservation, or sandbox effectiveness proof."]
+
+[[source]]
+id = "pdf-security-wasmtime-capability-boundary"
+canonical_url = "https://docs.wasmtime.dev/security.html"
+publisher = "Bytecode Alliance / Wasmtime project"
+title = "Security - Wasmtime"
+edition_or_version = "Rolling official documentation observed 2026-09-09"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:50:19Z"
+cache_status = "not_cached"
+license_or_rights = "Public official documentation; upload rights not evaluated."
+data_class = "PUBLIC"
+locators = ["WebAssembly Core: imports/exports and linear-memory bounds", "Defense-in-depth", "Filesystem Access", "Terminal Output"]
+claims_supported = ["Wasmtime describes outside-world access through explicitly linked interfaces and WASI filesystem access through granted capabilities.", "It acknowledges implementation bugs and defense-in-depth measures, and warns that terminal control sequences from untrusted output can have host-side effects."]
+applicability = "Capability inventory and sandbox-boundary research; verify host imports, preopens, output handling, and separate resource budgets for the actual embedding."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Only public citation reference allowed; no upload requested."
+contradictions = []
+gaps = ["effective_date is observation date; rolling docs are not pinned to the product runtime version.", "Not proof of host-function safety, denial-of-service resistance, kernel isolation, or native platform acceptance."]
+
+[[source]]
+id = "pdf-security-wasmtime-cve-2023-26489"
+canonical_url = "https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-ff4p-7xrq-q5r8"
+publisher = "Bytecode Alliance / Wasmtime maintainers"
+title = "Guest-controlled out-of-bounds read/write on x86_64"
+edition_or_version = "GHSA-ff4p-7xrq-q5r8 / CVE-2023-26489"
+effective_date = "2023-03-08"
+retrieved_at = "2026-09-09T14:50:19Z"
+cache_status = "not_cached"
+license_or_rights = "Public maintainer security advisory; redistribution and upload rights not evaluated."
+data_class = "PUBLIC"
+locators = ["Published Mar 8, 2023; Package / Affected versions / Patched versions", "Description / Impact", "CVE ID"]
+claims_supported = ["Historical maintainer advisory: incorrect x86_64 address calculation allowed guest-controlled reads/writes outside linear memory.", "Advisory lists Wasmtime 0.37.0 through 6.0.0 and Cranelift codegen 0.84.0 through 0.93.0 as affected, with patched release lines identified."]
+applicability = "Historical sandbox failure mode informing compiler/runtime patch verification; does not establish that this repository is affected."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation metadata only; no source upload permitted by this task."
+contradictions = []
+gaps = ["Current dependency exposure and mitigation status were not assessed; this is not a vulnerability finding against the project.", "PDF inputs are data to the guest; this advisory concerns malicious guest code and must not be conflated with a demonstrated PDF-to-host exploit."]

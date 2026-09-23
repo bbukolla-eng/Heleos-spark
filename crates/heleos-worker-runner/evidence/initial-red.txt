@@ -1,0 +1,141 @@
+Command: cargo test -p heleos-worker-runner --locked --offline --test runner --test cli --no-fail-fast
+Exit: 101
+Initial CLI phase: 0 passed; 2 failed (stub main exited 1 without structured JSON).
+The following is the complete runner phase captured after that CLI phase.
+
+test timeout_terminates_provider_and_descendants_without_pipe_deadlock ... FAILED
+test out_of_allowlist_and_ignored_writes_are_rejected ... FAILED
+test explicit_argv_is_literal_and_prompt_goes_to_stdin ... FAILED
+test instruction_digest_mismatch_is_rejected ... FAILED
+test forbidden_write_is_rejected_and_cleaned ... FAILED
+test allowed_untracked_write_yields_usable_validated_pending_handoff ... FAILED
+test provider_and_mode_must_match_the_implementation_assignment ... FAILED
+test tracked_deletion_and_executable_mode_changes_are_inventoried ... FAILED
+test nonzero_exit_has_typed_failure_and_bounded_diagnostics ... FAILED
+test unavailable_exact_base_fails_without_falling_back_to_head ... FAILED
+test stdout_and_stderr_are_drained_but_bounded ... FAILED
+test default_failure_retention_keeps_the_failed_checkout ... FAILED
+test oversized_prompt_stops_before_provider_launch ... FAILED
+test git_metadata_tampering_and_symlink_writes_fail_closed ... FAILED
+test exact_base_and_dirty_source_are_preserved ... FAILED
+
+failures:
+
+---- timeout_terminates_provider_and_descendants_without_pipe_deadlock stdout ----
+
+thread 'timeout_terminates_provider_and_descendants_without_pipe_deadlock' (58180264) panicked at crates/heleos-worker-runner/tests/runner.rs:53:5:
+assertion `left == right` failed
+  left: NotImplemented
+ right: Timeout
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- out_of_allowlist_and_ignored_writes_are_rejected stdout ----
+
+thread 'out_of_allowlist_and_ignored_writes_are_rejected' (58180260) panicked at crates/heleos-worker-runner/tests/runner.rs:42:9:
+assertion `left == right` failed
+  left: NotImplemented
+ right: OutOfScope
+
+---- explicit_argv_is_literal_and_prompt_goes_to_stdin stdout ----
+
+thread 'explicit_argv_is_literal_and_prompt_goes_to_stdin' (58180255) panicked at crates/heleos-worker-runner/tests/runner.rs:94:42:
+called `Result::unwrap()` on an `Err` value: RunError { code: NotImplemented, exit_code: None, stdout: Capture { bytes: [], truncated: false }, stderr: Capture { bytes: [], truncated: false }, checkout_path: None }
+
+---- instruction_digest_mismatch_is_rejected stdout ----
+
+thread 'instruction_digest_mismatch_is_rejected' (58180258) panicked at crates/heleos-worker-runner/tests/runner.rs:129:5:
+assertion `left == right` failed
+  left: NotImplemented
+ right: InstructionMismatch
+
+---- forbidden_write_is_rejected_and_cleaned stdout ----
+
+thread 'forbidden_write_is_rejected_and_cleaned' (58180256) panicked at crates/heleos-worker-runner/tests/runner.rs:34:5:
+assertion `left == right` failed
+  left: NotImplemented
+ right: OutOfScope
+
+---- allowed_untracked_write_yields_usable_validated_pending_handoff stdout ----
+
+thread 'allowed_untracked_write_yields_usable_validated_pending_handoff' (58180252) panicked at crates/heleos-worker-runner/tests/runner.rs:17:42:
+called `Result::unwrap()` on an `Err` value: RunError { code: NotImplemented, exit_code: None, stdout: Capture { bytes: [], truncated: false }, stderr: Capture { bytes: [], truncated: false }, checkout_path: None }
+
+---- provider_and_mode_must_match_the_implementation_assignment stdout ----
+
+thread 'provider_and_mode_must_match_the_implementation_assignment' (58180262) panicked at crates/heleos-worker-runner/tests/runner.rs:147:5:
+assertion `left == right` failed
+  left: NotImplemented
+ right: ProviderMismatch
+
+---- tracked_deletion_and_executable_mode_changes_are_inventoried stdout ----
+
+thread 'tracked_deletion_and_executable_mode_changes_are_inventoried' (58180265) panicked at crates/heleos-worker-runner/tests/runner.rs:171:50:
+called `Result::unwrap()` on an `Err` value: RunError { code: NotImplemented, exit_code: None, stdout: Capture { bytes: [], truncated: false }, stderr: Capture { bytes: [], truncated: false }, checkout_path: None }
+
+---- nonzero_exit_has_typed_failure_and_bounded_diagnostics stdout ----
+
+thread 'nonzero_exit_has_typed_failure_and_bounded_diagnostics' (58180259) panicked at crates/heleos-worker-runner/tests/runner.rs:62:5:
+assertion `left == right` failed
+  left: NotImplemented
+ right: ProviderExit
+
+---- unavailable_exact_base_fails_without_falling_back_to_head stdout ----
+
+thread 'unavailable_exact_base_fails_without_falling_back_to_head' (58180266) panicked at crates/heleos-worker-runner/tests/runner.rs:138:5:
+assertion `left == right` failed
+  left: NotImplemented
+ right: BaseUnavailable
+
+---- stdout_and_stderr_are_drained_but_bounded stdout ----
+
+thread 'stdout_and_stderr_are_drained_but_bounded' (58180263) panicked at crates/heleos-worker-runner/tests/runner.rs:109:42:
+called `Result::unwrap()` on an `Err` value: RunError { code: NotImplemented, exit_code: None, stdout: Capture { bytes: [], truncated: false }, stderr: Capture { bytes: [], truncated: false }, checkout_path: None }
+
+---- default_failure_retention_keeps_the_failed_checkout stdout ----
+
+thread 'default_failure_retention_keeps_the_failed_checkout' (58180253) panicked at crates/heleos-worker-runner/tests/runner.rs:182:5:
+assertion `left == right` failed
+  left: NotImplemented
+ right: ProviderExit
+
+---- oversized_prompt_stops_before_provider_launch stdout ----
+
+thread 'oversized_prompt_stops_before_provider_launch' (58180261) panicked at crates/heleos-worker-runner/tests/runner.rs:120:5:
+assertion `left == right` failed
+  left: NotImplemented
+ right: PromptTooLarge
+
+---- git_metadata_tampering_and_symlink_writes_fail_closed stdout ----
+
+thread 'git_metadata_tampering_and_symlink_writes_fail_closed' (58180257) panicked at crates/heleos-worker-runner/tests/runner.rs:162:9:
+assertion failed: matches!(code, FailureCode::RepositoryMutation | FailureCode::UnsafePath)
+
+---- exact_base_and_dirty_source_are_preserved stdout ----
+
+thread 'exact_base_and_dirty_source_are_preserved' (58180254) panicked at crates/heleos-worker-runner/tests/runner.rs:78:46:
+called `Result::unwrap()` on an `Err` value: RunError { code: NotImplemented, exit_code: None, stdout: Capture { bytes: [], truncated: false }, stderr: Capture { bytes: [], truncated: false }, checkout_path: None }
+
+
+failures:
+    allowed_untracked_write_yields_usable_validated_pending_handoff
+    default_failure_retention_keeps_the_failed_checkout
+    exact_base_and_dirty_source_are_preserved
+    explicit_argv_is_literal_and_prompt_goes_to_stdin
+    forbidden_write_is_rejected_and_cleaned
+    git_metadata_tampering_and_symlink_writes_fail_closed
+    instruction_digest_mismatch_is_rejected
+    nonzero_exit_has_typed_failure_and_bounded_diagnostics
+    out_of_allowlist_and_ignored_writes_are_rejected
+    oversized_prompt_stops_before_provider_launch
+    provider_and_mode_must_match_the_implementation_assignment
+    stdout_and_stderr_are_drained_but_bounded
+    timeout_terminates_provider_and_descendants_without_pipe_deadlock
+    tracked_deletion_and_executable_mode_changes_are_inventoried
+    unavailable_exact_base_fails_without_falling_back_to_head
+
+test result: FAILED. 0 passed; 15 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
+
+error: test failed, to rerun pass `-p heleos-worker-runner --test runner`
+error: 2 targets failed:
+    `-p heleos-worker-runner --test cli`
+    `-p heleos-worker-runner --test runner`

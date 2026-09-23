@@ -1,0 +1,650 @@
+{
+  "schema_version": 1,
+  "record_kind": "research_preparation_manifest_not_training_input",
+  "task_id": "DATASET-PREP-1",
+  "created_at": "2026-09-14T03:16:06.379608+00:00",
+  "purpose": "Prepare the nine owner-supplied candidate sources alongside the first duct-calculation implementation.",
+  "authority": {
+    "training_ready": false,
+    "dataset_admitted": false,
+    "model_admitted": false,
+    "quantity_authority": false
+  },
+  "common_open_checks": [
+    "Exact export acquired and hashed with inspected-sample binding",
+    "Underlying drawing source, rights and permitted acquisition/use",
+    "Source-level duplicate and ancestry review",
+    "Task-specific complete class definitions and reviewed mappings",
+    "Independent source-group train/evaluation partition",
+    "Missing-target annotation audit",
+    "Target centerline/topology/size/elevation/physical-instance truth as required by task"
+  ],
+  "candidates": [
+    {
+      "candidate_id": "roboflow:symbol-detection-boj78/datset2-bbc8k",
+      "candidate_record": "docs/research/engineering/dataset-candidates/roboflow-datset2-bbc8k.json",
+      "candidate_record_sha256": "6c6f3bb874c5e613878c799e910b2b99742527166b596fd85f600ca519704e0e",
+      "project_url": "https://universe.roboflow.com/symbol-detection-boj78/datset2-bbc8k",
+      "status": "research_only_not_admitted",
+      "proposed_task": "later_pnid_component_localization",
+      "observed_version": 1,
+      "observed_version_source": "https://universe.roboflow.com/symbol-detection-boj78/datset2-bbc8k/dataset/1",
+      "selected_export": null,
+      "archive_sha256": null,
+      "training_ready": false,
+      "underlying_source_groups": null,
+      "evaluation_split_assignment": null,
+      "class_list_complete": false,
+      "raw_label_worksheet": [
+        {
+          "raw_label": "Circle",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_component_localization"
+        },
+        {
+          "raw_label": "Square",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_component_localization"
+        },
+        {
+          "raw_label": "Arrow",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_component_localization"
+        },
+        {
+          "raw_label": "Field",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_component_localization"
+        },
+        {
+          "raw_label": "Ball Valve",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_component_localization"
+        },
+        {
+          "raw_label": "Butterfly Valve",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_component_localization"
+        },
+        {
+          "raw_label": "Centrifugal Pump",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_component_localization"
+        },
+        {
+          "raw_label": "Check Valve",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_component_localization"
+        },
+        {
+          "raw_label": "Control Valve",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_component_localization"
+        },
+        {
+          "raw_label": "Flange",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_component_localization"
+        },
+        {
+          "raw_label": "Gate Valve",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_component_localization"
+        },
+        {
+          "raw_label": "Globe Valve",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_component_localization"
+        },
+        {
+          "raw_label": "Needle Valve",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_component_localization"
+        },
+        {
+          "raw_label": "Page Connection",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_component_localization"
+        },
+        {
+          "raw_label": "Reduce",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_component_localization"
+        }
+      ],
+      "source_specific_next_check": "Recover numeric 1-32 codebook and verify displayed-v1 versus linked-v7 version identity.",
+      "source_report": "docs/research/engineering/roboflow-six-dataset-comparison-2026-09-13.md"
+    },
+    {
+      "candidate_id": "roboflow:reviuer/floor-plans-zeb7z",
+      "candidate_record": "docs/research/engineering/dataset-candidates/roboflow-floor-plans-zeb7z.json",
+      "candidate_record_sha256": "2c9f7eee97076866d9c2af054880d1a666f6be2d71f84e582f8d3562c4a3f252",
+      "project_url": "https://universe.roboflow.com/reviuer/floor-plans-zeb7z",
+      "status": "research_only_not_admitted",
+      "proposed_task": "architectural_wall_room_context",
+      "observed_version": 8,
+      "observed_version_source": "https://universe.roboflow.com/reviuer/floor-plans-zeb7z/dataset/8",
+      "selected_export": null,
+      "archive_sha256": null,
+      "training_ready": false,
+      "underlying_source_groups": null,
+      "evaluation_split_assignment": null,
+      "class_list_complete": null,
+      "raw_label_worksheet": [
+        {
+          "raw_label": "wall",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "architectural_wall_room_context"
+        },
+        {
+          "raw_label": "room",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "architectural_wall_room_context"
+        }
+      ],
+      "source_specific_next_check": "Resolve absent license declaration and source rights; preserve mechanical overlap and unknown missing labels.",
+      "source_report": "docs/research/engineering/roboflow-floor-plan-context-2026-09-13.md"
+    },
+    {
+      "candidate_id": "roboflow:blueprint-hu8pr/hvac-hkgny",
+      "candidate_record": "docs/research/engineering/dataset-candidates/roboflow-hvac-hkgny.json",
+      "candidate_record_sha256": "38fbeffb39d7c9e1049cb728bde1260a8587d555adecd62c10318563ebd84ba9",
+      "project_url": "https://universe.roboflow.com/blueprint-hu8pr/hvac-hkgny",
+      "status": "research_only_not_admitted",
+      "proposed_task": "duct_bend_region_proposals",
+      "observed_version": 1,
+      "observed_version_source": "https://universe.roboflow.com/blueprint-hu8pr/hvac-hkgny/dataset/1",
+      "selected_export": null,
+      "archive_sha256": null,
+      "training_ready": false,
+      "underlying_source_groups": null,
+      "evaluation_split_assignment": null,
+      "class_list_complete": true,
+      "raw_label_worksheet": [
+        {
+          "raw_label": "0",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "duct_bend_region_proposals"
+        },
+        {
+          "raw_label": "1",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "duct_bend_region_proposals"
+        },
+        {
+          "raw_label": "2",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "duct_bend_region_proposals"
+        },
+        {
+          "raw_label": "3",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "duct_bend_region_proposals"
+        },
+        {
+          "raw_label": "bend",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "duct_bend_region_proposals"
+        },
+        {
+          "raw_label": "duct",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "duct_bend_region_proposals"
+        },
+        {
+          "raw_label": "txt",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "duct_bend_region_proposals"
+        },
+        {
+          "raw_label": "vd",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "duct_bend_region_proposals"
+        }
+      ],
+      "source_specific_next_check": "Review named and numeric labels, vd and txt; add centerline/size/connectivity supervision.",
+      "source_report": "docs/research/engineering/roboflow-six-dataset-comparison-2026-09-13.md"
+    },
+    {
+      "candidate_id": "roboflow:hvac-project/hvac-vcvog",
+      "candidate_record": "docs/research/engineering/dataset-candidates/roboflow-hvac-vcvog.json",
+      "candidate_record_sha256": "f7f653cb6ec4fd443e3a5c9de71fdd3240ac63c1e3ed17218601992d75999f77",
+      "project_url": "https://universe.roboflow.com/hvac-project/hvac-vcvog",
+      "status": "research_only_not_admitted",
+      "proposed_task": "alternative_hvac_annotation_audit",
+      "observed_version": 3,
+      "observed_version_source": "https://universe.roboflow.com/hvac-project/hvac-vcvog/dataset/3",
+      "selected_export": null,
+      "archive_sha256": null,
+      "training_ready": false,
+      "underlying_source_groups": null,
+      "evaluation_split_assignment": null,
+      "class_list_complete": true,
+      "raw_label_worksheet": [
+        {
+          "raw_label": "3",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "alternative_hvac_annotation_audit"
+        },
+        {
+          "raw_label": "bend",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "alternative_hvac_annotation_audit"
+        },
+        {
+          "raw_label": "d3ddssesfesfeds",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "alternative_hvac_annotation_audit"
+        },
+        {
+          "raw_label": "duct",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "alternative_hvac_annotation_audit"
+        },
+        {
+          "raw_label": "txt",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "alternative_hvac_annotation_audit"
+        }
+      ],
+      "source_specific_next_check": "Compare shared-source annotations; class 3 and d3ddssesfesfeds remain unresolved.",
+      "source_report": "docs/research/engineering/roboflow-six-dataset-comparison-2026-09-13.md"
+    },
+    {
+      "candidate_id": "roboflow:pid-dataset/p-id-2-classes-er8vf",
+      "candidate_record": "docs/research/engineering/dataset-candidates/roboflow-p-id-2-classes-er8vf.json",
+      "candidate_record_sha256": "5777e3877b940a94f23d16e00f63fda5eea5e8b0335aac09fb63a35906e688fd",
+      "project_url": "https://universe.roboflow.com/pid-dataset/p-id-2-classes-er8vf",
+      "status": "research_only_not_admitted",
+      "proposed_task": "generic_symbol_region_proposals",
+      "observed_version": 3,
+      "observed_version_source": "https://universe.roboflow.com/pid-dataset/p-id-2-classes-er8vf/dataset/3",
+      "selected_export": null,
+      "archive_sha256": null,
+      "training_ready": false,
+      "underlying_source_groups": null,
+      "evaluation_split_assignment": null,
+      "class_list_complete": null,
+      "raw_label_worksheet": [
+        {
+          "raw_label": "page connection",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "generic_symbol_region_proposals"
+        },
+        {
+          "raw_label": "tag",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "generic_symbol_region_proposals"
+        }
+      ],
+      "source_specific_next_check": "Resolve collapsed tag semantics and page-connection examples; no automatic equipment/OCR mapping.",
+      "source_report": "docs/research/engineering/roboflow-pid-two-classes-2026-09-13.md"
+    },
+    {
+      "candidate_id": "roboflow:plan-training/signs-recongnition",
+      "candidate_record": "docs/research/engineering/dataset-candidates/roboflow-signs-recongnition.json",
+      "candidate_record_sha256": "30025d352b778792c4e3c0ec6a83511944b25305bc11161dc51c08bd6a5ab145",
+      "project_url": "https://universe.roboflow.com/plan-training/signs-recongnition",
+      "status": "research_only_not_admitted",
+      "proposed_task": "drawing_reference_marker_localization",
+      "observed_version": 3,
+      "observed_version_source": "https://universe.roboflow.com/plan-training/signs-recongnition/dataset/3",
+      "selected_export": null,
+      "archive_sha256": null,
+      "training_ready": false,
+      "underlying_source_groups": null,
+      "evaluation_split_assignment": null,
+      "class_list_complete": null,
+      "raw_label_worksheet": [
+        {
+          "raw_label": "Door",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "drawing_reference_marker_localization"
+        },
+        {
+          "raw_label": "Detail",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "drawing_reference_marker_localization"
+        },
+        {
+          "raw_label": "eLEVATION4",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "drawing_reference_marker_localization"
+        },
+        {
+          "raw_label": "Grid",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "drawing_reference_marker_localization"
+        },
+        {
+          "raw_label": "Level",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "drawing_reference_marker_localization"
+        },
+        {
+          "raw_label": "SectionD",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "drawing_reference_marker_localization"
+        },
+        {
+          "raw_label": "SectionDEMPTY",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "drawing_reference_marker_localization"
+        },
+        {
+          "raw_label": "SectionL",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "drawing_reference_marker_localization"
+        },
+        {
+          "raw_label": "SectionLEMPTY",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "drawing_reference_marker_localization"
+        },
+        {
+          "raw_label": "SectionR",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "drawing_reference_marker_localization"
+        },
+        {
+          "raw_label": "SectionReMPTY",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "drawing_reference_marker_localization"
+        },
+        {
+          "raw_label": "Sections",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "drawing_reference_marker_localization"
+        },
+        {
+          "raw_label": "SectionU",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "drawing_reference_marker_localization"
+        },
+        {
+          "raw_label": "SectionUeMPTY",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "drawing_reference_marker_localization"
+        },
+        {
+          "raw_label": "Wall1",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "drawing_reference_marker_localization"
+        }
+      ],
+      "source_specific_next_check": "Verify small-source coverage and marker semantics; marker detection alone cannot resolve reference text.",
+      "source_report": "docs/research/engineering/roboflow-signs-recognition-2026-09-13.md"
+    },
+    {
+      "candidate_id": "roboflow:pnid-2u2eu/split_images-uib2u",
+      "candidate_record": "docs/research/engineering/dataset-candidates/roboflow-split_images-uib2u.json",
+      "candidate_record_sha256": "68e9864b3b249b7604b8c2c1839dcdd3e3365d01342d8a479dacb4344e7d74c8",
+      "project_url": "https://universe.roboflow.com/pnid-2u2eu/split_images-uib2u",
+      "status": "research_only_not_admitted",
+      "proposed_task": "later_pnid_valve_instrument_localization",
+      "observed_version": 10,
+      "observed_version_source": "https://universe.roboflow.com/pnid-2u2eu/split_images-uib2u/dataset/10",
+      "selected_export": null,
+      "archive_sha256": null,
+      "training_ready": false,
+      "underlying_source_groups": null,
+      "evaluation_split_assignment": null,
+      "class_list_complete": false,
+      "raw_label_worksheet": [
+        {
+          "raw_label": "Ball Valve",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_valve_instrument_localization"
+        },
+        {
+          "raw_label": "Butterfly Valve",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_valve_instrument_localization"
+        },
+        {
+          "raw_label": "Check Valve",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_valve_instrument_localization"
+        },
+        {
+          "raw_label": "Gate Valve",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_valve_instrument_localization"
+        },
+        {
+          "raw_label": "Globe Valve",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_valve_instrument_localization"
+        },
+        {
+          "raw_label": "Pump",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_valve_instrument_localization"
+        },
+        {
+          "raw_label": "Heat Exchanger",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_valve_instrument_localization"
+        },
+        {
+          "raw_label": "Flow Direction",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_valve_instrument_localization"
+        },
+        {
+          "raw_label": "DCS Single-Func Field Mounted",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_valve_instrument_localization"
+        },
+        {
+          "raw_label": "Off-Drawing",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_valve_instrument_localization"
+        },
+        {
+          "raw_label": "Revision Triangle",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_valve_instrument_localization"
+        },
+        {
+          "raw_label": "Tag with balloon",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_valve_instrument_localization"
+        },
+        {
+          "raw_label": "line split arrows",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "later_pnid_valve_instrument_localization"
+        }
+      ],
+      "source_specific_next_check": "Verify complete 192-class definitions, per-class support and source-separated evaluation.",
+      "source_report": "docs/research/engineering/roboflow-six-dataset-comparison-2026-09-13.md"
+    },
+    {
+      "candidate_id": "roboflow:institute-of-management-sciences-eacvm/symbol_detection_v2-dtl7r",
+      "candidate_record": "docs/research/engineering/dataset-candidates/roboflow-symbol_detection_v2-dtl7r.json",
+      "candidate_record_sha256": "94a4f20eaadbbc5a4b92a6dc733825204963a02bd92ead242bb219c53f6d64f3",
+      "project_url": "https://universe.roboflow.com/institute-of-management-sciences-eacvm/symbol_detection_v2-dtl7r",
+      "status": "research_only_not_admitted",
+      "proposed_task": "generic_symbol_localization",
+      "observed_version": 7,
+      "observed_version_source": "https://universe.roboflow.com/institute-of-management-sciences-eacvm/symbol_detection_v2-dtl7r/dataset/7",
+      "selected_export": null,
+      "archive_sha256": null,
+      "training_ready": false,
+      "underlying_source_groups": null,
+      "evaluation_split_assignment": null,
+      "class_list_complete": true,
+      "raw_label_worksheet": [
+        {
+          "raw_label": "0",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "generic_symbol_localization"
+        }
+      ],
+      "source_specific_next_check": "Single class 0 provides no typed equipment or air-device classification.",
+      "source_report": "docs/research/engineering/roboflow-six-dataset-comparison-2026-09-13.md"
+    },
+    {
+      "candidate_id": "roboflow:opop-ri0av/tiling_method-w1e2l",
+      "candidate_record": "docs/research/engineering/dataset-candidates/roboflow-tiling_method-w1e2l.json",
+      "candidate_record_sha256": "71f778a82b4b58369110050a684cc43d45c953efa9eeffce21aba17617917ca8",
+      "project_url": "https://universe.roboflow.com/opop-ri0av/tiling_method-w1e2l",
+      "status": "research_only_not_admitted",
+      "proposed_task": "hold_for_task_definition",
+      "observed_version": 1,
+      "observed_version_source": "https://universe.roboflow.com/opop-ri0av/tiling_method-w1e2l/dataset/1",
+      "selected_export": null,
+      "archive_sha256": null,
+      "training_ready": false,
+      "underlying_source_groups": null,
+      "evaluation_split_assignment": null,
+      "class_list_complete": true,
+      "raw_label_worksheet": [
+        {
+          "raw_label": "box",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "hold_for_task_definition"
+        },
+        {
+          "raw_label": "2M",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "hold_for_task_definition"
+        },
+        {
+          "raw_label": "3M",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "hold_for_task_definition"
+        },
+        {
+          "raw_label": "4M",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "hold_for_task_definition"
+        },
+        {
+          "raw_label": "6M",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "hold_for_task_definition"
+        },
+        {
+          "raw_label": "8M",
+          "accepted_target_class": null,
+          "review_state": "unreviewed",
+          "task_context": "hold_for_task_definition"
+        }
+      ],
+      "source_specific_next_check": "Define box and 2M-8M without interpreting M as a unit; establish task relevance.",
+      "source_report": "docs/research/engineering/roboflow-six-dataset-comparison-2026-09-13.md"
+    }
+  ],
+  "overlap_review_queue": [
+    {
+      "id": "hvac-shared-gallery-example-1",
+      "state": "public_sample_overlap_observed_not_archive_verified",
+      "members": [
+        {
+          "candidate_id": "roboflow:blueprint-hu8pr/hvac-hkgny",
+          "sample_url": "https://universe.roboflow.com/blueprint-hu8pr/hvac-hkgny/images/DRtgxRliKWpQDfgn04b7",
+          "annotation_count": 300
+        },
+        {
+          "candidate_id": "roboflow:hvac-project/hvac-vcvog",
+          "sample_url": "https://universe.roboflow.com/hvac-project/hvac-vcvog/images/P9DxOIJGxQBjYoaZlXVz",
+          "annotation_count": 364
+        }
+      ],
+      "reported_image_identifier": "a723c5df9f5dda3151167aaabd3ee802",
+      "identifier_is_computed_archive_sha256": false,
+      "same_source_scope": "Only the inspected image pair; original project ancestry and total overlap rate remain unknown.",
+      "automatic_label_mapping": null,
+      "next_action": "Retain competing annotations, establish original source identity and adjudicate differences before any split or label merge."
+    }
+  ],
+  "existing_baseline_constraints": {
+    "code_reference": "scripts/mechanical_model_baseline.py",
+    "code_sha256": "a768da17667af83d980f01f93e7d1084d3ea38892604cb6236c0a1079dd5fc08",
+    "max_samples_per_dataset": 200,
+    "max_objects_per_sample": 250,
+    "requires_test_sample": true,
+    "accepted_representation": "Normalized mechanical bounding boxes",
+    "known_adapter_gaps": [
+      "Inspected HVAC examples have 300 and 364 boxes, exceeding current object cap.",
+      "Wall/room, reference-marker and generic-symbol tasks lack justified mappings into the current mechanical categories.",
+      "Centerline/topology and physical-quantity metrics are not implemented by bounding-box scoring."
+    ],
+    "required_behavior": "Do not truncate annotations, invent test membership, or force auxiliary labels into mechanical categories to fit existing limits."
+  },
+  "local_preparation_completed": [
+    "Nine source records linked by exact hash",
+    "Raw-label mapping worksheets with no invented accepted mappings",
+    "Single observed HVAC overlap queued for adjudication",
+    "Current adapter limits verified and recorded"
+  ],
+  "next_action": "Audit the HVAC pair source/codebook and choose a bounded representative task/export once its use basis is established; freeze source-group and target-annotation requirements before training."
+}

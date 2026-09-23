@@ -1,0 +1,650 @@
+{
+  "HEAD": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "at": "2026-09-14T11:01:23.981743+00:00",
+  "authority": "Research candidate only. No production implementation, dataset admission, mechanical rule, threshold or acceptance authority. Root selects explicit local evaluation definitions and binds any adopted finding to implementation/tests.",
+  "branch": "main",
+  "brief_sha256": "b158a5f9037bcdddab4e9ca934de16cea7ccbbb7a258acc532effd659f63cd6c",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "egress": [
+    {
+      "after": "research-egress-001-after.json",
+      "after_sha256": "e0faaff4aac69465e9cac12bce8c9e0c03322e6e972a73835d4dd2c6624e434c",
+      "before": "research-egress-001-before.json",
+      "before_sha256": "7e7bfabeab9bb90172ac1c55943153b7d72894be8e0cbbc8e280e5eef8e849d5",
+      "result_path": ".heleos/duct-evaluation-2026-09-14/research-notebook-get-result.json",
+      "result_sha256": "836677904c98aa289aba7977b846c1f4a126ff1d62e0a05f48eb26ae67d61c70",
+      "tool": "mcp__gemini_notebook_mcp__notebook_get"
+    },
+    {
+      "after": "research-egress-002-after.json",
+      "after_sha256": "a37f180462e3d1577332d80f3ab438b80b1cb03e03292e1249dbd56ceb31b586",
+      "before": "research-egress-002-before.json",
+      "before_sha256": "43a7b235668ae52a45d914699d60406d2c1df28b5c4380a6ec2a1f3e813cc9e9",
+      "result_path": ".heleos/duct-evaluation-2026-09-14/research-query-start-result.json",
+      "result_sha256": "1cacbab361c39731be1cd849851fb5569e91f74cd9510027a1fd69ea5f1f3cb5",
+      "tool": "mcp__gemini_notebook_mcp__notebook_query_start"
+    },
+    {
+      "after": "research-egress-003-after.json",
+      "after_sha256": "049a0c2de21bad64a71d17d393c99225451f03e031b60e0cf9a66501ff685358",
+      "before": "research-egress-003-before.json",
+      "before_sha256": "d2cf449930038ef1644bf8747aee1c5517fa89648030bc40267ee5de9a952bde",
+      "result_path": ".heleos/duct-evaluation-2026-09-14/research-ahmsys-source-result.json",
+      "result_sha256": "9551718565dd5c11d8aa2d26c1b66d12e6f3211df4a6fc7d7e507ec4a81d1235",
+      "tool": "mcp__gemini_notebook_mcp__source_get_content"
+    },
+    {
+      "after": "research-egress-004-after.json",
+      "after_sha256": "f3e1c13c1fe39893459a801d5b626540399d0f716573a2230d11a16509986570",
+      "before": "research-egress-004-before.json",
+      "before_sha256": "4626f15be442b616b6e80b86434049ff03652770abe631fb36a05a40f6049d4f",
+      "result_path": ".heleos/duct-evaluation-2026-09-14/research-digitize-pid-source-result.json",
+      "result_sha256": "02492d5c8248b974c459929f68b7a89cc2b02f566d79bb7150b2be56c4d49462",
+      "tool": "mcp__gemini_notebook_mcp__source_get_content"
+    },
+    {
+      "after": "research-egress-005-after.json",
+      "after_sha256": "2b0aebd65a45bb05686f788a8035a10cc6733200dcc47d11ed5a71f9b5842422",
+      "before": "research-egress-005-before.json",
+      "before_sha256": "9459490d0f7ee42993e1d07739803da4b00d2d7e2cf9084ff2011e4517f15e5b",
+      "result_path": ".heleos/duct-evaluation-2026-09-14/research-shapely-source-result.json",
+      "result_sha256": "79d1711d6dc7313cc45a0767f134042f125926f2717e379c05e2b42bd549bede",
+      "tool": "mcp__gemini_notebook_mcp__source_get_content"
+    },
+    {
+      "after": "research-egress-006-after.json",
+      "after_sha256": "25e6be3ee3aa4b9194a5cf241a9af3fe5eef78ac13d4946c85aaeb37168e150a",
+      "before": "research-egress-006-before.json",
+      "before_sha256": "8bdc0cb18ca742faadf676227e8c224df97f909f00a1a4387ca61e05fe3521ec",
+      "result_path": ".heleos/duct-evaluation-2026-09-14/research-query-status-1-result.json",
+      "result_sha256": "e77c3e6806bfbef1c83d7be5e791a301776ae40fd3db756211b23909211d6d28",
+      "tool": "mcp__gemini_notebook_mcp__notebook_query_status"
+    }
+  ],
+  "external_call_count": 6,
+  "findings": [
+    {
+      "application": "Supports reporting these evaluation targets separately. Box detection results alone do not establish centerline, connectivity, correct duct-size association or calibrated-length accuracy.",
+      "boundary": "This evaluation separation is an inference from source-specific tasks, not a new mechanical quantity rule or source-defined composite score.",
+      "claim": "The papers treat object recognition, geometry/location, text/dimensions and connectivity as distinguishable outputs. Digitize-PID explicitly separates symbol localization/class/associated-label correctness from graph adjacency correctness; AHMsys reports type, location and dimensions separately.",
+      "disposition": "verified_applicable",
+      "id": "DEVAL01",
+      "passages": [
+        "A03",
+        "A05",
+        "D01",
+        "D05"
+      ]
+    },
+    {
+      "application": "Retain input-format, annotation, scale and line-type context when reporting evaluation results; source performance is conditional on its corpus and preparation.",
+      "boundary": "Neither the AHMsys preprocessing prescription nor Digitize-PID pixel parameters are adopted as universal HVAC input requirements.",
+      "claim": "AHMsys uses specially preprocessed CAD exports: cleaned HVAC content, 8K transparent monochrome images, prescribed line weights, adjacent dimension text and a known 500mm equilateral reference. Its results concern 110 CAD drawings from one Akila project. Digitize-PID separately reports complete and dashed-line results and describes gap-handling assumptions.",
+      "disposition": "verified_applicable",
+      "id": "DEVAL02",
+      "passages": [
+        "A01",
+        "A04",
+        "A05",
+        "D02",
+        "D06"
+      ]
+    },
+    {
+      "application": "Supports explicit geometry, connection and label-association targets beyond a symbol-box target.",
+      "boundary": "P&ID is a process schematic domain. Endpoint clustering is that paper’s construction method; it does not establish physical HVAC junctions or a crossing-versus-junction rule.",
+      "claim": "Digitize-PID describes ground truth containing symbol spatial information, labels, connected pipelines, horizontal/vertical line coordinates and text positions. Graph construction uses retained line endpoints as vertices, joins nearby endpoint clusters, and evaluates adjacency-list correctness separately.",
+      "disposition": "verified_applicable",
+      "id": "DEVAL03",
+      "passages": [
+        "D03",
+        "D05"
+      ]
+    },
+    {
+      "application": "Separate text recognition from association to the intended duct segment or object; retain ambiguous associations instead of inferring correctness from a detected text box.",
+      "boundary": "P&ID identifiers are not automatically HVAC size annotations. The papers do not provide an independent HVAC size-association scoring formula or spatial tolerance.",
+      "claim": "AHMsys extracts dimension text and associates it with object types/locations. Digitize-PID includes an associated label in symbol correctness, requires exact ground-truth text matching for its recognition result, and explains why a text-box center alone may not identify the nearest relevant label.",
+      "disposition": "verified_applicable",
+      "id": "DEVAL04",
+      "passages": [
+        "A03",
+        "D04",
+        "D05",
+        "D06"
+      ]
+    },
+    {
+      "application": "Keep planar geometry comparison distinct from calibrated physical length and vertical/sloped measurement. A generic planar geometry operation is not evidence of mechanical connectivity or physical length.",
+      "boundary": "The landing page does not establish a Hausdorff, buffered-overlap, path-matching, or physical length-error algorithm. No new dependency or implementation is admitted.",
+      "claim": "AHMsys uses an explicit physical reference to obtain image scale. The selected Shapely landing describes Cartesian planar geometry and states that buffer discards Z coordinates.",
+      "disposition": "verified_applicable",
+      "id": "DEVAL05",
+      "passages": [
+        "A01",
+        "S01",
+        "S02"
+      ]
+    }
+  ],
+  "instruction_identities_verified": {
+    "AGENTS.md": "f1e8ca69afc99a02647b9509acf73fbf3bfb7c7c73029f7a20852a1cf33bb8a6",
+    "SKILLS.md": "939b8aac16ee926c9775efb2465ae3178d9f5365dc5cd2fe4df3aa46a52d017f",
+    "docs/operations/notebooklm-research.md": "970e311e3638c8e623cf09990c8a91d9af7f1e6f1265a3fd51ec94d5df229be3",
+    "docs/roadmap.md": "4e1e215e6177129af97d6e7f72e4946c3f79c371499db3e66efb562893e08b2a",
+    "docs/superpowers/specs/2026-09-13-calculation-sequence-design.md": "6ae8b6a5a8a43b638b7cfae8f67c676de59a495e8aae8ca00eeb8870fd85d7b8",
+    "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6"
+  },
+  "inventory_reuse": {
+    "notebook_count": 59,
+    "path": "docs/research/notebooklm/notebook-inventory.json",
+    "selected_notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+    "selected_notebook_source_count_now": 68,
+    "selected_source_identities_match": true,
+    "sha256": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a"
+  },
+  "next_action": "Root independently verify useful passage hashes and define the bounded evaluation contract with explicit unsupported metrics/thresholds retained.",
+  "private_uploads": 0,
+  "process_state": "terminal; query completed; no running process",
+  "query": {
+    "answer_path": ".heleos/duct-evaluation-2026-09-14/research-query-answer.txt",
+    "answer_sha256": "aef29c962e10b838ee15a6bfdf8381831ff5e376db7e9fa743405bd098a9fe04",
+    "conversation_id": "041f8358-7612-45b0-86aa-d6630e870db1",
+    "generated_answer_issues": [
+      "The answer labels domain sections with ranges such as[37–73] although its result contains only25citation records. Use the retained citation mapping and exact source passages, not those summary ranges.",
+      "The answer’s statement that line intersections form graph vertices overstates Digitize-PID: §2.2 describes line endpoints and nearby endpoint clusters. The source does not authorize treating every geometric crossing as a physical junction.",
+      "Calling AHMsys location accuracy a macro score is unsupported; the paper labels it accuracy but supplies no averaging definition.",
+      "Treating the reported complete/dashed correct counts as a fully defined binary geometric scoring procedure overstates the source: the counts are given, but its line correctness/matching criterion is absent.",
+      "Causal claims attributing table differences to turns, vertical text or background noise are not established by the selected result passages. Pipeline handling and empirical score differences do not prove those error causes.",
+      "The indexed Digitize-PID Table3a renders its IoU entry as<0.9. This transcription was not independently checked against PDF pixels and is not adopted as a threshold.",
+      "The claim that Shapely contains no domain logic or evaluation metrics is restricted here to the selected landing text. No full-library inventory or linked algorithm-page verification was performed."
+    ],
+    "noncontiguous_reference_explanations": {
+      "citation15": "Citation omits intervening code example; its two natural-language usage sentences are present in the landing. This citation is not used for an algorithm claim.",
+      "citation21": "Citation appends a<cited_table>placeholder and separate table object. Dataset context is directly checked atA04; complete string matching therefore remainsfalse in the mechanical reference check."
+    },
+    "query_count": 1,
+    "query_id": "1b90408dd6d4",
+    "question_path": ".heleos/duct-evaluation-2026-09-14/research-egress-002-before.json",
+    "reference_verification": {
+      "checks": [
+        {
+          "citation_number": 1,
+          "cited_text_sha256": "7e385981e6117c72b74c0f34c89f0cf5fb8862bd6c211c225ee1d92586e40c2a",
+          "indexed_line_end": 99,
+          "indexed_line_start": 1,
+          "matched": true,
+          "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d"
+        },
+        {
+          "citation_number": 2,
+          "cited_text_sha256": "4a500e59d33200dabd5510e61b0e4c74cb80acdf9a88ff1a0c50eadce93a8c23",
+          "indexed_line_end": 129,
+          "indexed_line_start": 103,
+          "matched": true,
+          "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d"
+        },
+        {
+          "citation_number": 3,
+          "cited_text_sha256": "a3d7548d40109f514f14d8f986e225eb9d6e49c75886bf4b4651bfb149e36ebc",
+          "indexed_line_end": 141,
+          "indexed_line_start": 131,
+          "matched": true,
+          "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d"
+        },
+        {
+          "citation_number": 4,
+          "cited_text_sha256": "96e0a90ee78efaf8579cd4d8b9d0a7d0c06e93545978025298367b6af255203b",
+          "indexed_line_end": 215,
+          "indexed_line_start": 213,
+          "matched": true,
+          "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d"
+        },
+        {
+          "citation_number": 5,
+          "cited_text_sha256": "58a85728bdd7c1e8c361ca87b537669d5412c498837e36a8b3a599aee9d99093",
+          "indexed_line_end": 233,
+          "indexed_line_start": 217,
+          "matched": true,
+          "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d"
+        },
+        {
+          "citation_number": 6,
+          "cited_text_sha256": "5005df250137373ed0c497b5e8f05a9cb695dde6b52451b4dc90cb70d2643738",
+          "indexed_line_end": 235,
+          "indexed_line_start": 235,
+          "matched": true,
+          "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d"
+        },
+        {
+          "citation_number": 7,
+          "cited_text_sha256": "12c759589b9906175c6d3d2de44e8f55cfffa1d40acedc4e57b4bc3232c08de6",
+          "indexed_line_end": 7,
+          "indexed_line_start": 1,
+          "matched": true,
+          "source_id": "8b629240-2c89-40fa-a964-8a534e753948"
+        },
+        {
+          "citation_number": 8,
+          "cited_text_sha256": "a2918e1c90152b5b6f2ba6dd442d3defbb32b6ba5bb71bd1b30eb715f713f7a4",
+          "indexed_line_end": 9,
+          "indexed_line_start": 9,
+          "matched": true,
+          "source_id": "8b629240-2c89-40fa-a964-8a534e753948"
+        },
+        {
+          "citation_number": 9,
+          "cited_text_sha256": "6344cc9987a999adbd72f02b1ad427c3f76989dd1aed0a675e70ed2a2ab8f8d6",
+          "indexed_line_end": 89,
+          "indexed_line_start": 83,
+          "matched": true,
+          "source_id": "8b629240-2c89-40fa-a964-8a534e753948"
+        },
+        {
+          "citation_number": 10,
+          "cited_text_sha256": "e98fdb6afed567ecdea564811e613b4eafda987a70ce9ff6648ef7312e33d5af",
+          "indexed_line_end": 97,
+          "indexed_line_start": 91,
+          "matched": true,
+          "source_id": "8b629240-2c89-40fa-a964-8a534e753948"
+        },
+        {
+          "citation_number": 11,
+          "cited_text_sha256": "80ea19835e1970dca9da2a728ebdb8a130c6df30bc1fa93d6fa111876b471e91",
+          "indexed_line_end": 181,
+          "indexed_line_start": 179,
+          "matched": true,
+          "source_id": "8b629240-2c89-40fa-a964-8a534e753948"
+        },
+        {
+          "citation_number": 12,
+          "cited_text_sha256": "f57387caecb462e817974a9501b10459770954698bd450ef852109f17f5ec35e",
+          "indexed_line_end": 121,
+          "indexed_line_start": 121,
+          "matched": true,
+          "source_id": "8b629240-2c89-40fa-a964-8a534e753948"
+        },
+        {
+          "citation_number": 13,
+          "cited_text_sha256": "6c4dffda2642e35e8cfdf4309add58d4c3036334d8bc362732d10cff1d96f096",
+          "indexed_line_end": 137,
+          "indexed_line_start": 137,
+          "matched": true,
+          "source_id": "8b629240-2c89-40fa-a964-8a534e753948"
+        },
+        {
+          "citation_number": 14,
+          "cited_text_sha256": "3b13fd332fdad35de21aff928ada7c51cec5170da1d30c53c2eed49fce047599",
+          "indexed_line_end": 221,
+          "indexed_line_start": 191,
+          "matched": true,
+          "source_id": "6fde95ce-647d-459e-ad24-35727ce13599"
+        },
+        {
+          "citation_number": 15,
+          "cited_text_sha256": "16ad19b907495d016154abf609f8b38956f9be52ee88a10cab134aa1c6ac9b4b",
+          "indexed_line_end": null,
+          "indexed_line_start": null,
+          "matched": false,
+          "source_id": "6fde95ce-647d-459e-ad24-35727ce13599"
+        },
+        {
+          "citation_number": 16,
+          "cited_text_sha256": "10d727f0ef78ceddf8e3149bac1805aeb33286e991daa3c0e43136a9141518b7",
+          "indexed_line_end": 197,
+          "indexed_line_start": 197,
+          "matched": true,
+          "source_id": "8b629240-2c89-40fa-a964-8a534e753948"
+        },
+        {
+          "citation_number": 17,
+          "cited_text_sha256": "b32f2721e8a63e8002e9ef66c013dd2372cc82ac82833bd6fdfb0c75d5ed4a1b",
+          "indexed_line_end": 215,
+          "indexed_line_start": 199,
+          "matched": true,
+          "source_id": "8b629240-2c89-40fa-a964-8a534e753948"
+        },
+        {
+          "citation_number": 18,
+          "cited_text_sha256": "24a64c0c3b6c4ec717aa3f9448af9295ef900a330f3cd6b8b1c23b2542ca7983",
+          "indexed_line_end": 305,
+          "indexed_line_start": 297,
+          "matched": true,
+          "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d"
+        },
+        {
+          "citation_number": 19,
+          "cited_text_sha256": "63624b9e728a38a71cfa96399d5f71a7e10c1635fde0c8d6645138f97e69b3d3",
+          "indexed_line_end": 343,
+          "indexed_line_start": 307,
+          "matched": true,
+          "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d"
+        },
+        {
+          "citation_number": 20,
+          "cited_text_sha256": "04e4af5a1d813a768fda435b39f6611006fe4861dc0425084e63873111298289",
+          "indexed_line_end": 177,
+          "indexed_line_start": 177,
+          "matched": true,
+          "source_id": "8b629240-2c89-40fa-a964-8a534e753948"
+        },
+        {
+          "citation_number": 21,
+          "cited_text_sha256": "d76736191e1b36cb8f60f2b9b386b270274d3402a8c6b38127156f54b82ebefb",
+          "indexed_line_end": null,
+          "indexed_line_start": null,
+          "matched": false,
+          "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d"
+        },
+        {
+          "citation_number": 22,
+          "cited_text_sha256": "4cb6ed8099825f4f2cab489272c3c1085ca1089a9a6b0bc8a7f6909bdf928d4f",
+          "indexed_line_end": 245,
+          "indexed_line_start": 237,
+          "matched": true,
+          "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d"
+        },
+        {
+          "citation_number": 23,
+          "cited_text_sha256": "3e11978a55d3376bff4879b8a211416d1a646bc65bcf6f18ae7d14e28b87bf3a",
+          "indexed_line_end": 139,
+          "indexed_line_start": 139,
+          "matched": true,
+          "source_id": "8b629240-2c89-40fa-a964-8a534e753948"
+        },
+        {
+          "citation_number": 24,
+          "cited_text_sha256": "d568b16d7c4fba7a480c64ae3bbccd441d8cf244bca385fec5ba29211797b958",
+          "indexed_line_end": 143,
+          "indexed_line_start": 141,
+          "matched": true,
+          "source_id": "8b629240-2c89-40fa-a964-8a534e753948"
+        },
+        {
+          "citation_number": 25,
+          "cited_text_sha256": "36948b17890828ce36e038ce3f16244a86e1334768f8634b225b18346fae2dd8",
+          "indexed_line_end": 37,
+          "indexed_line_start": 37,
+          "matched": true,
+          "source_id": "8b629240-2c89-40fa-a964-8a534e753948"
+        }
+      ],
+      "matched": 23,
+      "method": "Whitespace-collapse and removal of standalone HTTP(S)/javascript URL lines for matching; original indexed bytes unmodified. Exact matches locate source text only; they do not verify the generated interpretation.",
+      "total": 25
+    },
+    "source_reads": 3,
+    "state": "completed"
+  },
+  "schema_version": 1,
+  "source_examples_not_acceptance": {
+    "AHMsys": "Table2 reports overall type98.9%,location98.1%,dimensions98.4% on its own prepared CAD project; no correctness/averaging formula or acceptance criterion is given.",
+    "Digitize_PID": "Table3b reports complete90774/91416(99.34%) and dashed20620/24848(82.91%). This is an empirical P&ID line-detection example without a stated geometric match criterion, not HVAC accuracy."
+  },
+  "source_or_note_additions": 0,
+  "sources": [
+    {
+      "edition_or_date": "arXiv:2407.01987v1, 02 Jul 2024",
+      "indexed_coverage": "Full indexed HTML paper text with methods, results and tables, not merely abstract metadata; images not independently fetched.",
+      "indexed_line_count": 663,
+      "indexed_text_path": ".heleos/duct-evaluation-2026-09-14/research-ahmsys-indexed-text.txt",
+      "indexed_text_sha256": "7f610e7022e7439f6b6e4b81abffb5061a4ffca8dcb2a50a9565b8a1a7d8e663",
+      "license_or_production_admission": false,
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "notebook_title": "AHMsys: An Automated HVAC Modeling System for BIM Project",
+      "response_path": ".heleos/duct-evaluation-2026-09-14/research-ahmsys-source-result.json",
+      "response_sha256": "9551718565dd5c11d8aa2d26c1b66d12e6f3211df4a6fc7d7e507ec4a81d1235",
+      "slug": "ahmsys",
+      "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d",
+      "title": "AHMsys: An Automated HVAC Modeling System for BIM Project",
+      "upstream_publisher_freshness_verified": false,
+      "url": "https://arxiv.org/html/2407.01987v1"
+    },
+    {
+      "edition_or_date": null,
+      "indexed_coverage": "Full indexed PDF text with methods, experiments and tables; exact PDF version/date not stated in the selected indexed body. Original page markers are incomplete; locations below are indexed lines and sections.",
+      "indexed_line_count": 259,
+      "indexed_text_path": ".heleos/duct-evaluation-2026-09-14/research-digitize-pid-indexed-text.txt",
+      "indexed_text_sha256": "9f78c7f4f5e1d750c021ccc9061d2990d658c2a6008c1227c9493879c1e42b0d",
+      "license_or_production_admission": false,
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "notebook_title": "https://arxiv.org/pdf/2109.03794.pdf",
+      "response_path": ".heleos/duct-evaluation-2026-09-14/research-digitize-pid-source-result.json",
+      "response_sha256": "02492d5c8248b974c459929f68b7a89cc2b02f566d79bb7150b2be56c4d49462",
+      "slug": "digitize-pid",
+      "source_id": "8b629240-2c89-40fa-a964-8a534e753948",
+      "title": "Digitize-PID: Automatic Digitization of Piping and Instrumentation Diagrams",
+      "upstream_publisher_freshness_verified": false,
+      "url": "https://arxiv.org/pdf/2109.03794.pdf"
+    },
+    {
+      "edition_or_date": "2.1.2 landing page",
+      "indexed_coverage": "Documentation landing page with overview, example and FAQ. Linked measurement/algorithm documentation was not opened; landing links alone do not define those algorithms.",
+      "indexed_line_count": 1757,
+      "indexed_text_path": ".heleos/duct-evaluation-2026-09-14/research-shapely-indexed-text.txt",
+      "indexed_text_sha256": "8994d108d58d6e51e76a8156b705c82d15fa2ab9c1b082042b2385e7b1ced772",
+      "license_or_production_admission": false,
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "notebook_title": "Shapely — Shapely 2.1.2 documentation",
+      "response_path": ".heleos/duct-evaluation-2026-09-14/research-shapely-source-result.json",
+      "response_sha256": "79d1711d6dc7313cc45a0767f134042f125926f2717e379c05e2b42bd549bede",
+      "slug": "shapely",
+      "source_id": "6fde95ce-647d-459e-ad24-35727ce13599",
+      "title": "Shapely — Shapely 2.1.2 documentation",
+      "upstream_publisher_freshness_verified": false,
+      "url": "https://shapely.readthedocs.io/en/stable/"
+    }
+  ],
+  "state": "terminal_verified_research_candidate",
+  "supporting_passages": [
+    {
+      "hash_convention": "UTF-8 exact selected indexed lines, preserving their existing line endings. Indexed line numbers are not PDF page numbers.",
+      "id": "A01",
+      "indexed_text_path": ".heleos/duct-evaluation-2026-09-14/research-ahmsys-indexed-text.txt",
+      "line_end": 215,
+      "line_start": 213,
+      "section": "§2.1 drawing preprocessing and physical scale reference",
+      "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d",
+      "text_sha256": "1b3d203f14125c4bdbaf153e82638cfa650889444e0a257be21848193f45f7d7"
+    },
+    {
+      "hash_convention": "UTF-8 exact selected indexed lines, preserving their existing line endings. Indexed line numbers are not PDF page numbers.",
+      "id": "A02",
+      "indexed_text_path": ".heleos/duct-evaluation-2026-09-14/research-ahmsys-indexed-text.txt",
+      "line_end": 235,
+      "line_start": 233,
+      "section": "§2.2.1 duct coordinates and method-specific neighboring-object heuristic",
+      "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d",
+      "text_sha256": "317f85d3f61eca5c692c488ba5ba3f9f1d14c5a94dee38aaa8a5dab81cc4ac9f"
+    },
+    {
+      "hash_convention": "UTF-8 exact selected indexed lines, preserving their existing line endings. Indexed line numbers are not PDF page numbers.",
+      "id": "A03",
+      "indexed_text_path": ".heleos/duct-evaluation-2026-09-14/research-ahmsys-indexed-text.txt",
+      "line_end": 245,
+      "line_start": 237,
+      "section": "§2.2.2 dimension text extraction and integration",
+      "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d",
+      "text_sha256": "9c7cb2161b4c7229622175e848a74b1fb84b8e821c002960d7d977b7e1f94eca"
+    },
+    {
+      "hash_convention": "UTF-8 exact selected indexed lines, preserving their existing line endings. Indexed line numbers are not PDF page numbers.",
+      "id": "A04",
+      "indexed_text_path": ".heleos/duct-evaluation-2026-09-14/research-ahmsys-indexed-text.txt",
+      "line_end": 253,
+      "line_start": 251,
+      "section": "§3 dataset context",
+      "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d",
+      "text_sha256": "971c9f67f61c11e9b57e38f1c226b319611e965355c8ae38dc7aaf2cb0b409a5"
+    },
+    {
+      "hash_convention": "UTF-8 exact selected indexed lines, preserving their existing line endings. Indexed line numbers are not PDF page numbers.",
+      "id": "A05",
+      "indexed_text_path": ".heleos/duct-evaluation-2026-09-14/research-ahmsys-indexed-text.txt",
+      "line_end": 329,
+      "line_start": 299,
+      "section": "§3 Table2 separately reports type, location and dimension accuracy",
+      "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d",
+      "text_sha256": "ccb21e3f523627e6b2db013b737edaf7707db6862ef028b18e8528e41892fbfe"
+    },
+    {
+      "hash_convention": "UTF-8 exact selected indexed lines, preserving their existing line endings. Indexed line numbers are not PDF page numbers.",
+      "id": "D01",
+      "indexed_text_path": ".heleos/duct-evaluation-2026-09-14/research-digitize-pid-indexed-text.txt",
+      "line_end": 69,
+      "line_start": 67,
+      "section": "§2 separate symbol/label/pipeline and connectivity output tables",
+      "source_id": "8b629240-2c89-40fa-a964-8a534e753948",
+      "text_sha256": "d1b2cea7709b2df8fee55ff0085b562438421db45e61c6c50d196bb4b4aec3f8"
+    },
+    {
+      "hash_convention": "UTF-8 exact selected indexed lines, preserving their existing line endings. Indexed line numbers are not PDF page numbers.",
+      "id": "D02",
+      "indexed_text_path": ".heleos/duct-evaluation-2026-09-14/research-digitize-pid-indexed-text.txt",
+      "line_end": 121,
+      "line_start": 119,
+      "section": "§2.1 line endpoints and dashed-line gap exceptions",
+      "source_id": "8b629240-2c89-40fa-a964-8a534e753948",
+      "text_sha256": "23d540c4b798978d0bfc8be8e0f3fdacef3074ab765d42f5b613623bb8a8878d"
+    },
+    {
+      "hash_convention": "UTF-8 exact selected indexed lines, preserving their existing line endings. Indexed line numbers are not PDF page numbers.",
+      "id": "D03",
+      "indexed_text_path": ".heleos/duct-evaluation-2026-09-14/research-digitize-pid-indexed-text.txt",
+      "line_end": 139,
+      "line_start": 137,
+      "section": "§2.2 endpoint graph clustering and label propagation",
+      "source_id": "8b629240-2c89-40fa-a964-8a534e753948",
+      "text_sha256": "e3c4d686f19058b2fda269c50bddae7b2db0edaebc93370757bc21aa29533606"
+    },
+    {
+      "hash_convention": "UTF-8 exact selected indexed lines, preserving their existing line endings. Indexed line numbers are not PDF page numbers.",
+      "id": "D04",
+      "indexed_text_path": ".heleos/duct-evaluation-2026-09-14/research-digitize-pid-indexed-text.txt",
+      "line_end": 149,
+      "line_start": 145,
+      "section": "§2.2 text-association exception and §2.3 domain reconciliation",
+      "source_id": "8b629240-2c89-40fa-a964-8a534e753948",
+      "text_sha256": "62f0f14462eae85dace562dcbd20c05a44968baff4922db86a95c579c6cf6dfc"
+    },
+    {
+      "hash_convention": "UTF-8 exact selected indexed lines, preserving their existing line endings. Indexed line numbers are not PDF page numbers.",
+      "id": "D05",
+      "indexed_text_path": ".heleos/duct-evaluation-2026-09-14/research-digitize-pid-indexed-text.txt",
+      "line_end": 177,
+      "line_start": 175,
+      "section": "§3 ground-truth contents and §4 separate evaluation criteria",
+      "source_id": "8b629240-2c89-40fa-a964-8a534e753948",
+      "text_sha256": "e35b082094ea132d61182d13dcfb51cba8016723be8f150f2f378f2edfe79ca4"
+    },
+    {
+      "hash_convention": "UTF-8 exact selected indexed lines, preserving their existing line endings. Indexed line numbers are not PDF page numbers.",
+      "id": "D06",
+      "indexed_text_path": ".heleos/duct-evaluation-2026-09-14/research-digitize-pid-indexed-text.txt",
+      "line_end": 211,
+      "line_start": 197,
+      "section": "§4 exact text recognition and Table3 line-detection counts",
+      "source_id": "8b629240-2c89-40fa-a964-8a534e753948",
+      "text_sha256": "f401aee640c7aa2d34fed51707a3131822981b57f545e77ec1cc64ddef358f41"
+    },
+    {
+      "hash_convention": "UTF-8 exact selected indexed lines, preserving their existing line endings. Indexed line numbers are not PDF page numbers.",
+      "id": "S01",
+      "indexed_text_path": ".heleos/duct-evaluation-2026-09-14/research-shapely-indexed-text.txt",
+      "line_end": 221,
+      "line_start": 201,
+      "section": "Landing overview: planar geometry, not coordinate-system management",
+      "source_id": "6fde95ce-647d-459e-ad24-35727ce13599",
+      "text_sha256": "c1c8e6b3d725d6c3fde95225b594e02fb2ffae304303052d36ef5b8ac1f4d3b0"
+    },
+    {
+      "hash_convention": "UTF-8 exact selected indexed lines, preserving their existing line endings. Indexed line numbers are not PDF page numbers.",
+      "id": "S02",
+      "indexed_text_path": ".heleos/duct-evaluation-2026-09-14/research-shapely-indexed-text.txt",
+      "line_end": 1517,
+      "line_start": 1505,
+      "section": "Landing FAQ: buffer is two-dimensional and discards Z",
+      "source_id": "6fde95ce-647d-459e-ad24-35727ce13599",
+      "text_sha256": "55b3ebbc53741d165f545fee1f7450a1572b14eb7e98bb06388f4147bea57cd0"
+    }
+  ],
+  "task_id": "DUCT-EVALUATION-1-RESEARCH",
+  "unsupported_and_conflicting": [
+    {
+      "disposition": "unsupported",
+      "finding": "No centerline IoU/buffer overlap, Hausdorff/path-deviation metric or matching tolerance is defined in these indexed bodies. Digitize-PID reports correct/total line counts but omits the geometric criterion that makes a line correct.",
+      "id": "DG01",
+      "passages": [
+        "A05",
+        "D05",
+        "D06",
+        "S01"
+      ],
+      "topic": "HVAC path/centerline overlap metric"
+    },
+    {
+      "disposition": "unsupported",
+      "finding": "Adjacency-list accuracy is named without a formula, normalization, node/edge matching convention or independently reported topology score. The selected papers do not define HVAC crossing-versus-junction truth, missed/extra branch scoring or physical connectivity tolerances.",
+      "id": "DG02",
+      "passages": [
+        "A02",
+        "D03",
+        "D05"
+      ],
+      "topic": "Formal topology score and annotation convention"
+    },
+    {
+      "disposition": "unsupported",
+      "finding": "AHMsys reports dimensions accuracy without its correctness formula/tolerance. Digitize-PID symbol/label correctness and text exact match do not establish duct-size association scoring.",
+      "id": "DG03",
+      "passages": [
+        "A03",
+        "A05",
+        "D04",
+        "D05"
+      ],
+      "topic": "Independent size-association score"
+    },
+    {
+      "disposition": "unsupported",
+      "finding": "No physical length MAE, relative-error, RMSE, unit-specific acceptance tolerance or vertical/sloped length evaluation is defined or reported in these selected bodies.",
+      "id": "DG04",
+      "passages": [
+        "A01",
+        "A05",
+        "D06",
+        "S02"
+      ],
+      "topic": "Calibrated physical length error"
+    },
+    {
+      "disposition": "unsupported",
+      "finding": "No source establishes an HVAC acceptance threshold. AHMsys empirical percentages, Digitize-PID IoU>0.75 symbol criterion, line counts and pixel clustering parameters are source-specific results/settings and cannot be promoted into HVAC production or project acceptance criteria.",
+      "id": "DG05",
+      "passages": [
+        "A04",
+        "A05",
+        "D05",
+        "D06"
+      ],
+      "topic": "HVAC acceptance threshold"
+    },
+    {
+      "disposition": "conflict_not_adopted",
+      "finding": "Nearest-point fitting identification, edge-label propagation and overwriting an associated label in a domain reconciliation example do not override approved source-bound decisions, unresolved conflicts, D05 or append-only project provenance. These are retained as source-specific method examples only.",
+      "id": "DG06",
+      "passages": [
+        "A02",
+        "D03",
+        "D04"
+      ],
+      "topic": "Automatic semantic replacement from proximity or business reconciliation"
+    }
+  ],
+  "verification_limits": [
+    "Indexed text is a NotebookLM snapshot, not a fresh verification of publisher bytes or image/table rendering.",
+    "AHMsys and Digitize-PID returned substantive full indexed paper text; Shapely returned only its landing page. No claim based solely on an abstract or link was treated as a full method.",
+    "Absence findings are limited to these three selected indexed bodies; no claim that the broader literature lacks such metrics.",
+    "No login, credential read, source/note addition, model execution, private upload or Git mutation. Read-only source checks and owned research outputs only."
+  ]
+}

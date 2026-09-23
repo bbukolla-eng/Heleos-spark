@@ -1,0 +1,69 @@
+{
+  "task": "WORKBOOK-EXPORT-1",
+  "at": "2026-09-16T13:21:55.810994+00:00",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "implementation_base": "bfc7cc6a07a11bd42ab13e875dc35a97f7960eb2",
+  "state": "implementation finished; independent checks and review passed; controller integration pending",
+  "feature": "Source-linked takeoff.xlsx and WORKBOOK.txt in local draft ZIP; duct and air-device current projection; separate history and unknown finals",
+  "files": {
+    "apps/drawing-workspace/workflow.js": "69cd8e30d0c775e1acdcc0c7a808723677b8cc8cfd4fbd8054f56dc9af9631d2",
+    "docs/operations/takeoff-workbook.md": "d6e225f413202eb40c2a467166dffb750399c10a3a7b275d15d83069daee7153",
+    "scripts/takeoff_workbook.py": "ba977805ee4a2b22b4b9bcf1d474324fb92b2018f8e93705ded3deb1980ef035",
+    "scripts/takeoff_workflow.py": "c1a253dffcb5fd761548fd4f951305151adb70f7539cafb293a73d283247f093",
+    "scripts/workspace_package.py": "c8320c8edd3f6985472d3cd278e6705c40403d9ec77545c1a6b15e60957c49af",
+    "scripts/xlsx_workbook.py": "3b177e61c015f7fee44904079c80f379e91440e72f426314ea17870650fe7c99",
+    "tests/drawing-workspace/test_takeoff_workbook.py": "8f270edcf419fe4e87d85096890e6906c66d2d5d5cd5750a0010b55cdf002865",
+    "tests/drawing-workspace/test_takeoff_workflow.py": "feac8376b73e0ac3989f3cb750eee9de57c9acc0cd0c22f99992b8e00b2ba2a7",
+    "tests/drawing-workspace/test_workspace_package.py": "a793a2bfd381545857248037986bde04cd362783e5c87278f3574ad80ed1bb03",
+    "tests/drawing-workspace/test_xlsx_workbook.py": "256e71cc1cc1c52bb47823ff1e41e4b04fb3fae065c4f9c78f6c0a47686f1f9c",
+    "tests/fixtures/workbook/duct-request.json": "63c2c740f72e0b9c2a37cbfb72d050864bea23fa2d7795a39551c01783b1b998"
+  },
+  "research": "docs/research/notebooklm/workbook-export-findings-2026-09-16.json",
+  "adopted_findings": {
+    "X01": "BytesIO writer",
+    "X02": "deterministic sorted ZIP members and explicit timestamp",
+    "X03": "ZIP_STORED with context manager and independent readback",
+    "X04": "OOXML relationships and cell XML checked independently",
+    "X05": "live formulas, typed core-matched caches, independent recalculation and mutation",
+    "reused_source_traceability": "Sources internal links with exact source/page/geometry/evidence identities; history excluded from current formulas"
+  },
+  "provider": {
+    "task": "workbook-writer-claude-001",
+    "state": "terminal before inference; authentication expired",
+    "runner_exit": 2,
+    "provider_exit": 1,
+    "run_directory": ".worktrees/provider-runs/heleos-worker-zkn0bT",
+    "decision": "Candidate unavailable. Codex implemented all allowed and integration paths independently; no repeated dispatch.",
+    "next": "Owner login refresh before a new exact-base Claude task"
+  },
+  "verification": {
+    "python": "47 tests on Python3.9/3.12/3.14; exact commands and outputs in python-verification.json and workflow-final-checks.json",
+    "clean_tree": "24900f5ab54f4a6b71e48e48f3c7f38cafbe1448",
+    "clean_checks": "47 tests and relocated75-file runtime/import/export pass; clean-verification.json",
+    "spreadsheet_engine": "20 formulas,12 mutation/restoration checks, stale/mixed files; engine-verification.json",
+    "visual": "All five sheets inspected including reference columns: nine renders, no truncation of displayed sample content",
+    "javascript": "node --check apps/drawing-workspace/workflow.js exit0",
+    "whitespace": "git diff --cached --check exit0"
+  },
+  "independent_review": {
+    "reviewer": "Codex /root/topology_review",
+    "outcome": "No blockers",
+    "writer_sha256": "3b177e61c015f7fee44904079c80f379e91440e72f426314ea17870650fe7c99",
+    "projection_sha256": "ba977805ee4a2b22b4b9bcf1d474324fb92b2018f8e93705ded3deb1980ef035",
+    "evidence": "Independent4 writer tests,6 projection tests, connected stale source and ZIP locator probes exit0"
+  },
+  "retained_failures": [
+    "Expired Claude OAuth401 before inference.",
+    "Existing exact ZIP-member expectation initially rejected takeoff.xlsx and WORKBOOK.txt; updated expected inventory, all12 workflow tests passed on all3 runtimes."
+  ],
+  "limits": [
+    "No native Microsoft Excel or Windows execution acceptance.",
+    "Workbook is a snapshot; edits do not update Heleos or learn later source changes.",
+    "Air-device original recognition remains unqualified; no further model calls this task.",
+    "Remaining Division23 classes, consolidated evidence PDF and release acceptance remain outstanding.",
+    "Existing unrelated uncommitted files are preserved; no remote push."
+  ],
+  "process_state": "all workers and verification commands terminal",
+  "next": "Consolidated evidence PDF for supported results using the same source-bound quantities and exceptions"
+}

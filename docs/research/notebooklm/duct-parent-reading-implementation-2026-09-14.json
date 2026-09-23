@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "task_id": "DUCT-PARENT-READING-1",
+  "at": "2026-09-14T08:35:36.706749+00:00",
+  "research_record": {
+    "path": "docs/research/notebooklm/duct-parent-reading-findings-2026-09-14.json",
+    "sha256": "06be3bdaf2bc8a907015821ec90c427a1eec678e128b64de56b7e81d35c7f191"
+  },
+  "research_preceded_implementation": true,
+  "source_verification": {
+    "path": ".heleos/duct-parent-reading-2026-09-14/root-research-verification.json",
+    "sha256": "31618ef188c0275da8895f64222aa56fd250dbd24e5db235a484945ad8a260e9"
+  },
+  "authority": {
+    "rules": {
+      "path": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+      "sha256": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6"
+    },
+    "decision": "tests/fixtures/duct-takeoff/2026-09-14-owner-decision.json",
+    "new_rule_admission": false,
+    "basis": "Approved D01-D10/E01-E09 and deterministic calculation remain authoritative. Public context does not grant physical identity, check deletion, datum matching or scale precedence."
+  },
+  "adoption": [
+    {
+      "finding": "DUCT-PARENT-READING-RESEARCH-01",
+      "decision": "adopted_contextual_feedback",
+      "behavior": "Explicit parent dimension edit/review panel, change reason, original/replacement value and exact evidence history. Bounded parent replacement and child lineage are local provenance decisions, not a Bluebeam requirement.",
+      "code": [
+        "apps/drawing-workspace/ducts.js:parentReadingProposal",
+        "apps/drawing-workspace/ducts.js:readingHistory",
+        "scripts/project_duct_reading_links.py:correct_parent_readings"
+      ],
+      "checks": [
+        "retained parent dimension repair submits only existing reading changes and never exposes route or check deletion",
+        "retained parent reading history compares original and corrected source regions after the correction",
+        "acceptance_duct_parent_readings.py"
+      ]
+    },
+    {
+      "finding": "DUCT-PARENT-READING-RESEARCH-02",
+      "decision": "adopted_context_and_preserved_existing_scale_authority",
+      "behavior": "Keep exact original view, capture and scale identities; fresh replacement requires current evidence. Preserve partial coverage and unresolved source errors for still-used references. Reopening uses saved evidence without inference.",
+      "code": [
+        "scripts/project_duct_takeoff.py:_current_evidence_ids",
+        "scripts/project_duct_takeoff.py:_current_sources",
+        "scripts/project_duct_takeoff.py:_selected_source_snapshot",
+        "scripts/takeoff_workflow.py"
+      ],
+      "checks": [
+        "test_pr06_fresh_foreign_recapture_replaces_stale_sources_and_allows_coverage_review",
+        "test_repair_does_not_certify_neighbor_using_stale_shared_capture",
+        "test_captured_only_split_keeps_geometry_through_unrelated_save_and_source_recovery",
+        "acceptance_duct_parent_readings.py"
+      ]
+    },
+    {
+      "finding": "DUCT-PARENT-READING-RESEARCH-03",
+      "decision": "conflict_not_adopted",
+      "behavior": "D05 keeps a material written/scaled whole-run conflict unresolved. Correcting a reading does not remove its check, move the path, or force child quantities.",
+      "code": [
+        "scripts/project_duct_reading_links.py:correct_parent_readings",
+        "scripts/duct_calculation.py (unchanged)"
+      ],
+      "checks": [
+        "test_pr02_unit_equivalence_and_pr03_real_conflict_preserve_unchanged_readings",
+        "test_pr01_named_nine_to_eight_repair_preserves_children_and_history",
+        "test_pr04_nested_repair_changes_only_own_parent_and_enclosing_member_pin"
+      ]
+    },
+    {
+      "finding": "DUCT-PARENT-READING-RESEARCH-04",
+      "decision": "unsupported_external_mechanics_preserved_as_gap",
+      "behavior": "Strict IDs, exact current parent/reading/source pins, explicit foreign relationship review, append-only events and atomic saves implement local approved provenance. Missing applicability cannot be inferred from the public sources.",
+      "code": [
+        "scripts/project_duct_reading_links.py",
+        "scripts/project_duct_takeoff.py",
+        "scripts/takeoff_workflow.py"
+      ],
+      "checks": [
+        "test_pr07_every_foreign_sibling_requires_explicit_current_review",
+        "test_pr08_invalid_payloads_and_storage_failure_are_atomic",
+        "test_pr10_parent_repair_stales_pending_reread_and_reopens_with_history"
+      ]
+    },
+    {
+      "finding": "DUCT-PARENT-READING-RESEARCH-05",
+      "decision": "conflict_not_adopted",
+      "behavior": "Electrical tag matching is not transferred to duct identity or source replacement. Equal text or quantities do not authorize an enclosing membership update or physical correspondence.",
+      "checks": [
+        "test_pr05_stale_sibling_pin_is_not_silently_repaired",
+        "test_shared_foreign_capture_remains_for_neighbor_but_leaves_repaired_parent"
+      ]
+    }
+  ],
+  "local_correction_decisions": {
+    "shared_evidence": "Replacing one parent reading removes only its obsolete local reference. Other portions keep their required reference; all captures remain in history.",
+    "recovery_metadata": "Selected saved source geometry supports recovery. Quantity always uses separately validated current source bytes and assignments.",
+    "inherited_evidence_limit": "Child/admission bytes remain fixed. Inherited same-page evidence still required elsewhere remains unresolved when unavailable; no blanket unused-reference exemption."
+  },
+  "implementation_sha256": {
+    "scripts/project_duct_reading_links.py": "474356f946774198e2a7e3e73a0ee9ad17d8c334cc3d02b76c2f19c52bd91c6a",
+    "scripts/project_duct_takeoff.py": "eb8ab6dee7743890e1f6120c11ef6a877321a1ea1f78933b4e7681c6790f7d40",
+    "scripts/takeoff_workflow.py": "bba314a932ab0ee305d833960566279722459836912f4298a1fc377831aa0aad",
+    "scripts/duct_calculation.py": "5bf49578d8d3372ff7b0aeae922f920ead1a34c8851bf1133a72f774e959f63c",
+    "scripts/project_duct_refresh.py": "aea4524b1c088ab90d97659f6a2296f3e892e5fe8e0c804e67117cac3bd0dd08",
+    "apps/drawing-workspace/ducts.js": "499ee2bc5c32415179c2c6a693fdd7c434b8cb72f0683e09ce0f8148c0de3238"
+  },
+  "tests_sha256": {
+    "tests/drawing-workspace/test_duct_parent_readings.py": "ed2969af2a53acf1e490ab4d1003eb1044da0e5c36b2b730da8ff7e7ce3a39f2",
+    "tests/drawing-workspace/duct-ui.test.cjs": "3137978f078e77f87487c24dbfac1ddd19b3f523e085aa4697c46e7c03042ed0",
+    "tests/drawing-workspace/acceptance_duct_parent_readings.py": "7d2969a314535a8dfbf41670b059623bb3cc2c44a9e9fba1effb9f61baa1d6f4",
+    "tests/drawing-workspace/duct_parent_reading_native_fixture.py": "4fddcd7f1ac4c4e4ef60775f54254e33fd69e806913cd81d49acb4b2b211c8a1"
+  },
+  "original_sources": {
+    "output/pdf/original-duct-parent-reading-fixtures.pdf": "513db37f6f04bf827e7159c50102600e0bf4e7e1ff3a888863d1b72b6cfca954",
+    "tests/fixtures/duct-takeoff/parent-reading-source-geometry.json": "9a12d02910e1d805b4d8e40515b707cc9c12c800ed4b8486096065a03aefa811",
+    "tests/fixtures/duct-takeoff/parent-reading-expected.json": "f2dedcb15552cd9450b8cb9f40ba72c19eaa45e2cdaa940bbd32f14a06ce2a98",
+    "tests/fixtures/duct-takeoff/build_parent_reading_pdf.py": "55fb5bbf37005a52e2bbccf2d786499f7c5cad30d346f44dec6f50a5a5837947"
+  },
+  "verification": {
+    "path": ".heleos/duct-parent-reading-2026-09-14/root-final-verification.json",
+    "sha256": "c863fcb445e83196ab70aee76798fa735860fde33ced3c8b0ac50107d450296b"
+  },
+  "verification_state": "PASS; scoped capability locally implemented, independently reviewed and verified; full goal active/incomplete",
+  "external_activity": {
+    "new_queries": 0,
+    "source_identity_refreshes": 0,
+    "new_source_bodies": 0,
+    "reused_source_bodies": 4,
+    "verified_passages": 8,
+    "private_uploads": 0,
+    "public_source_or_note_additions": 0,
+    "external_submissions": 0,
+    "decision": "Reuse exact verified retained findings; no new mechanical requirement or changed source evidence. No external submission log event is needed for a local-only reuse."
+  },
+  "limits": [
+    "Indexed text snapshots retain original URLs/source/notebook IDs and retrieval dates in the linked findings; reuse is not fresh publisher verification.",
+    "Source relationship review does not demonstrate model recognition or physical interpretation accuracy.",
+    "Native Mac synthetic verification does not establish native Windows or representative-project acceptance.",
+    "Missing retained-parent graphic support, inherited child evidence recovery, later mechanical categories and estimator-ready outputs remain outstanding."
+  ]
+}

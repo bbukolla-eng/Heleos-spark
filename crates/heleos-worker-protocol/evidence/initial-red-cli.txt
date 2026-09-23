@@ -1,0 +1,64 @@
+Command: cargo +1.96.1 test --locked --offline -p heleos-worker-protocol --test cli
+Checkout: /Users/bekim/Heleos-spark/.worktrees/agent-control-foundation
+Base: af526a3c9c7ad93f360b6629e9b592a81787b341
+Phase: initial RED, permissive library placeholder and empty CLI
+Exit code: 101
+
+   Compiling cpufeatures v0.3.1
+   Compiling errno v0.3.14
+   Compiling serde_derive v1.0.229
+   Compiling clap_derive v4.6.4
+   Compiling thiserror-impl v2.0.20
+   Compiling sha2 v0.11.0
+   Compiling thiserror v2.0.20
+   Compiling tempfile v3.27.0
+   Compiling serde_json v1.0.151
+   Compiling clap v4.6.6
+   Compiling serde_jcs v0.2.0
+   Compiling heleos-worker-protocol v0.1.0 (/Users/bekim/Heleos-spark/.worktrees/agent-control-foundation/crates/heleos-worker-protocol)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.78s
+     Running tests/cli.rs (target/debug/deps/cli-61194171373b919b)
+
+running 4 tests
+test acceptance_commands_and_input_paths_are_never_executed ... FAILED
+test rejects_oversized_documents_with_bounded_diagnostics ... FAILED
+test rejects_invalid_files_mismatch_and_arguments_without_echoing_input ... FAILED
+test task_and_handoff_identities_are_stable_across_two_physical_roots ... FAILED
+
+failures:
+
+---- acceptance_commands_and_input_paths_are_never_executed stdout ----
+
+thread 'acceptance_commands_and_input_paths_are_never_executed' (58131262) panicked at crates/heleos-worker-protocol/tests/cli.rs:17:5:
+assertion `left == right` failed
+  left: 0
+ right: 1
+
+---- rejects_oversized_documents_with_bounded_diagnostics stdout ----
+
+thread 'rejects_oversized_documents_with_bounded_diagnostics' (58131264) panicked at crates/heleos-worker-protocol/tests/cli.rs:26:5:
+assertion failed: !output.status.success()
+
+---- rejects_invalid_files_mismatch_and_arguments_without_echoing_input stdout ----
+
+thread 'rejects_invalid_files_mismatch_and_arguments_without_echoing_input' (58131263) panicked at crates/heleos-worker-protocol/tests/cli.rs:26:5:
+assertion failed: !output.status.success()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- task_and_handoff_identities_are_stable_across_two_physical_roots stdout ----
+
+thread 'task_and_handoff_identities_are_stable_across_two_physical_roots' (58131265) panicked at crates/heleos-worker-protocol/tests/cli.rs:17:5:
+assertion `left == right` failed
+  left: 0
+ right: 1
+
+
+failures:
+    acceptance_commands_and_input_paths_are_never_executed
+    rejects_invalid_files_mismatch_and_arguments_without_echoing_input
+    rejects_oversized_documents_with_bounded_diagnostics
+    task_and_handoff_identities_are_stable_across_two_physical_roots
+
+test result: FAILED. 0 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+error: test failed, to rerun pass `-p heleos-worker-protocol --test cli`

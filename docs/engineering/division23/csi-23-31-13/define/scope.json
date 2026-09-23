@@ -1,0 +1,44 @@
+{
+  "section_id": "CSI-23-31-13",
+  "number": "23 31 13",
+  "title": "Metal Ducts",
+  "parent_id": "CSI-23-31-00",
+  "catalogue_edition": "MasterFormat 2016 Numbers & Titles, April 2016",
+  "catalogue_page": 88,
+  "catalogue_pdf_sha256": "a8431feef5ef80eed4d6e52e2125797d8be61d99e42017fef8ff607fe68f0bc3",
+  "declared_scope": "Admitted behavior is the owner-approved duct centerline measurement in D01-D10. Child product types stay gaps until their mechanical source bodies are retained.",
+  "children": [
+    {
+      "id": "CSI-23-31-13.13",
+      "number": "23 31 13.13",
+      "title": "Rectangular Metal Ducts",
+      "disposition": "gap"
+    },
+    {
+      "id": "CSI-23-31-13.16",
+      "number": "23 31 13.16",
+      "title": "Round and Flat-Oval Spiral Ducts",
+      "disposition": "gap"
+    },
+    {
+      "id": "CSI-23-31-13.19",
+      "number": "23 31 13.19",
+      "title": "Metal Duct Fittings",
+      "disposition": "gap"
+    }
+  ],
+  "primary_sources": [
+    {
+      "id": "DUCT-RULES-2026-09-13",
+      "path": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+      "sha256": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6",
+      "role": "approved measurement rules for admitted length behavior"
+    },
+    {
+      "id": "DUCT-OWNER-DECISION-2026-09-14",
+      "path": "tests/fixtures/duct-takeoff/2026-09-14-owner-decision.json",
+      "sha256": "097ab2c8920143644d5353f9164f7a76befb0c2ba1a530b2660f2d563b3c74b2",
+      "role": "owner approval of D01-D10 and E01-E09"
+    }
+  ]
+}

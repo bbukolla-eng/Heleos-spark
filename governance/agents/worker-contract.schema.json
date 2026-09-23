@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://heleos.invalid/research/worker-contract.schema.json",
+  "title": "PUBLIC proposal-only research WorkerContract v1",
+  "description": "Metadata grammar only. This does not authorize a provider launch, prove executable or input bytes, admit an endpoint, or enforce a sandbox. validate-contracts.jq is the executable authority for grammar checks. SHA-256 is lowercase hexadecimal. All arrays have at most 64 items. Prose is bounded printable ASCII and permits ratios, percentages and prices while rejecting recognizable host paths, credential patterns and interpolation. Use structured URL fields for URLs. No secret-bearing fields are admitted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "task_id", "provider", "executable_sha256", "snapshot_sha256", "data_class", "allowed_inputs", "allowed_tools", "allowed_endpoints", "forbidden_paths", "forbidden_actions", "acceptance_commands", "budgets", "result_directory", "return_format", "authority"],
+  "properties": {
+    "schema": {"const": "heleos.research-worker-contract/v1"},
+    "task_id": {"$ref": "#/$defs/identifier"},
+    "provider": {"$ref": "#/$defs/provider"},
+    "executable_sha256": {"$ref": "#/$defs/digest", "description": "Exact admitted executable or browser platform source artifact digest; not an absolute executable path."},
+    "snapshot_sha256": {"$ref": "#/$defs/digest"},
+    "data_class": {"const": "PUBLIC"},
+    "allowed_inputs": {
+      "type": "array", "minItems": 1, "maxItems": 64,
+      "items": {"type": "object", "additionalProperties": false, "required": ["id", "sha256"], "properties": {"id": {"$ref": "#/$defs/identifier"}, "sha256": {"$ref": "#/$defs/digest"}}}
+    },
+    "allowed_tools": {"type": "array", "minItems": 1, "maxItems": 64, "items": {"enum": ["read_public_source", "search_public_sources", "synthesize", "write_quarantine"]}},
+    "allowed_endpoints": {"type": "array", "minItems": 1, "maxItems": 64, "items": {"$ref": "#/$defs/endpoint"}},
+    "forbidden_paths": {"description": "Complete logical deny classes, never host paths.", "type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true, "items": {"enum": ["host", "private", "production", "credentials"]}},
+    "forbidden_actions": {"type": "array", "minItems": 6, "maxItems": 6, "uniqueItems": true, "items": {"enum": ["self_approve", "merge", "push", "publish", "read_credentials", "write_production"]}},
+    "acceptance_commands": {"description":"Structured controller verification proposals only, never worker execution grants. The controller independently binds each identifier-only tool to an admitted executable and argument semantics; identifiers are not restricted to today's checks. Never invoke these records through a shell.","type":"array","minItems":1,"maxItems":64,"items":{"$ref":"#/$defs/command"}},
+    "budgets": {"$ref": "#/$defs/budgets"},
+    "result_directory": {"type": "string", "minLength": 36, "maxLength": 36, "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", "description": "UUID-v4 quarantine identifier. The controller resolves its OS-specific storage root externally."},
+    "return_format": {"const": "heleos.research-packet/v1"},
+    "authority": {"const": "proposal_only", "description": "Every provider is research-only under this contract, including notebook_lm and grok_bots. No merge, push, publish, approval, credential, or production authority."}
+  },
+  "$defs": {
+    "identifier": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-z0-9][a-z0-9_-]*$", "not": {"pattern": "[\u0000-\u001f\u007f]"}},
+    "provider": {"enum": ["codex", "claude_code", "kimi", "grok", "cursor", "notebook_lm", "grok_bots"]},
+    "digest": {"type": "string", "minLength": 64, "maxLength": 64, "pattern": "^[0-9a-f]{64}$"},
+    "prose": {"type":"string","minLength":1,"maxLength":2048,"allOf":[{"pattern":"^[ -~]+$"},{"not":{"pattern":"[\u0000-\u001f]"}},{"pattern":"[^ ]"},{"$ref":"#/$defs/safe_content"}]},
+    "safe_content": {"not":{"anyOf":[{"pattern":"(^|[^a-z0-9A-Z0-9])/([a-z0-9_.~A-Z0-9_.~]|/)|[a-zA-Z]:[/\\\\]|\\\\|[fF][iI][lL][eE][ ]*:|~[/\\\\]|\\.\\.[/\\\\]|/\\.\\.($|[/ ])|(^|[/ =:])([.][sS][sS][hH]|[.][aA][wW][sS]|[.][cC][oO][nN][fF][iI][gG]|[.][cC][oO][dD][eE][xX]|[pP][rR][iI][vV][aA][tT][eE]|[cC][rR][eE][dD][eE][nN][tT][iI][aA][lL][sS]|[sS][eE][cC][rR][eE][tT][sS]|[uU][sS][eE][rR][sS]|[hH][oO][mM][eE])(/|$)|%[a-z_A-Z_][a-z0-9_A-Z0-9_]*%|%(2[fF]|5[cC]|2[eE])|[$][({a-z_({A-Z_]|`|\\{\\{|\\}\\}|#\\{"},{"pattern":"([tT][oO][kK][eE][nN]|[aA][pP][iI][_ \\-]?[kK][eE][yY]|[pP][aA][sS][sS][wW][oO][rR][dD]|[pP][aA][sS][sS][wW][dD]|[sS][eE][cC][rR][eE][tT]|[cC][rR][eE][dD][eE][nN][tT][iI][aA][lL]|[cC][oO][oO][kK][iI][eE]|[aA][uU][tT][hH][oO][rR][iI][zZ][aA][tT][iI][oO][nN])[\"']?[ ]*[:=]|[bB][eE][aA][rR][eE][rR][ ]+[a-z0-9._~\\-A-Z0-9._~\\-]+|[sS][kK]-[a-z0-9_\\-A-Z0-9_\\-]{8,}|[gG][hH][pousrPOUSR]_[a-z0-9A-Z0-9]{16,}|[gG][iI][tT][hH][uU][bB]_[pP][aA][tT]_[a-z0-9_A-Z0-9_]{16,}|[aA][kK][iI][aA][A-Z0-9a-z0-9]{16}|-----[bB][eE][gG][iI][nN][ A-Z a-z]*[pP][rR][iI][vV][aA][tT][eE] [kK][eE][yY]-----|[eE][yY][jJ][a-z0-9_\\-A-Z0-9_\\-]+[.][eE][yY][jJ][a-z0-9_\\-A-Z0-9_\\-]+[.][a-z0-9_\\-A-Z0-9_\\-]+"}]}},
+    "argument": {"type":"string","minLength":1,"maxLength":256,"pattern":"^[A-Za-z0-9_.=-][A-Za-z0-9_./=-]*$","allOf":[{"not":{"pattern":"[\u0000-\u001f]"}},{"not":{"pattern":"(^|[/=])\\.\\.(/|$)"}},{"$ref":"#/$defs/safe_content"}]},
+    "command": {"type":"object","additionalProperties":false,"required":["tool","argv","expected_exit"],"properties":{"tool":{"$ref":"#/$defs/identifier"},"argv":{"type":"array","minItems":0,"maxItems":64,"items":{"$ref":"#/$defs/argument"}},"expected_exit":{"type":"integer","minimum":0,"maximum":255}}},
+    "endpoint": {
+      "type": "string", "minLength": 1, "maxLength": 512,
+      "pattern": "^https://[a-z0-9]([a-z0-9-]*[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*\\.[a-z]{2,63}$",
+      "allOf": [{"not": {"pattern": "\\.(localhost|local|internal|lan|home|test|invalid)$"}}, {"not": {"pattern": "[\u0000-\u001f\u007f]"}}],
+      "description": "HTTPS DNS origin without path, port, query, userinfo, numeric host or local suffix. Actual official-provider admission and DNS/egress checks remain external."
+    },
+    "source_url": {
+      "type": "string", "minLength": 1, "maxLength": 2048,
+      "pattern": "^https://[a-z0-9]([a-z0-9-]*[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*\\.[a-z]{2,63}(/[A-Za-z0-9._~-]+)*/?$",
+      "allOf": [{"not": {"pattern": "\\.(localhost|local|internal|lan|home|test|invalid)(/|$)"}}, {"not": {"pattern": "/\\.\\.?(/|$)"}}, {"not": {"pattern": "[\u0000-\u001f\u007f]"}}],
+      "description": "Bounded public-source-shaped HTTPS URL. jq also caps its origin at 512 characters. Citation truth and destination classification require independent checks."
+    },
+    "budgets": {
+      "type": "object", "additionalProperties": false,
+      "required": ["wall_seconds", "actions", "output_bytes", "cost_usd"],
+      "properties": {
+        "wall_seconds": {"type": "integer", "minimum": 1, "maximum": 86400},
+        "actions": {"type": "integer", "minimum": 1, "maximum": 10000},
+        "output_bytes": {"type": "integer", "minimum": 1, "maximum": 10485760},
+        "cost_usd": {"type": "number", "exclusiveMinimum": 0, "maximum": 1000}
+      }
+    }
+  }
+}

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Mechanical takeoff · Heleos</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="path_editor.js" defer></script>
+    <script src="app.js" defer></script>
+    <script src="equipment.js" defer></script>
+    <script src="arc_family_editor.js" defer></script>
+    <script src="revision_checks_editor.js" defer></script>
+    <script src="ducts.js" defer></script>
+    <script src="air_devices.js" defer></script>
+    <script src="equipment_counts.js" defer></script>
+    <script src="workflow.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#drawing-area">Skip to drawing</a>
+    <header class="app-header">
+      <a class="brand" href="./" aria-label="Heleos drawing workspace"><span class="brand-mark" aria-hidden="true">H</span>HELEOS</a>
+      <div class="project-heading">
+        <p class="eyebrow">Mechanical takeoff workspace</p>
+        <h1 id="project-name">Drawing workspace</h1>
+      </div>
+      <div class="header-actions">
+        <span class="local-label"><span aria-hidden="true"></span>Stored on this computer</span>
+        <button class="button button-primary" id="import-button" type="button" disabled><span aria-hidden="true">＋</span> Import PDF</button>
+      </div>
+      <input id="pdf-input" type="file" accept="application/pdf,.pdf" hidden>
+    </header>
+
+    <div class="notice-region">
+      <div class="error-notice" id="error-notice" role="alert" hidden>
+        <div><strong>Something needs attention</strong><p id="error-message"></p></div>
+        <button class="button button-quiet" id="dismiss-error" type="button" aria-label="Dismiss error">Dismiss</button>
+      </div>
+      <p class="activity" id="activity" role="status" aria-live="polite">Opening your workspace…</p>
+    </div>
+
+    <section class="workflow-strip" aria-label="Project takeoff workflow">
+      <div class="workflow-overview"><div><p class="eyebrow">Your project workflow</p><h2 id="workflow-project-title">Set up your mechanical project</h2></div><p id="workflow-progress" role="status">Opening saved progress…</p></div>
+      <nav aria-label="Takeoff stages"><ol id="workflow-navigation" class="workflow-navigation"></ol></nav>
+    </section>
+    <div class="workspace" id="workspace" aria-busy="true">
+      <aside class="sidebar" aria-label="Drawing library">
+        <section class="documents-section" aria-labelledby="documents-heading">
+          <div class="section-heading"><h2 id="documents-heading">Documents</h2><button class="button button-quiet refresh-button" id="refresh-button" type="button" disabled>Refresh</button></div>
+          <p class="section-hint" id="documents-hint">Your imported drawing sets appear here.</p>
+          <ul class="document-list" id="document-list"></ul>
+        </section>
+        <section class="sheets-section" id="sheets-section" aria-labelledby="sheets-heading" hidden>
+          <div class="section-heading"><h2 id="sheets-heading">Sheets</h2><span class="count" id="sheet-count"></span></div>
+          <p class="section-hint">Pages in the original PDF</p>
+          <ol class="sheet-list" id="sheet-list"></ol>
+        </section>
+        <div class="sidebar-note"><span class="small-rule" aria-hidden="true"></span><p>Start with the drawing.<br>Keep the original evidence.</p></div>
+      </aside>
+
+      <main class="drawing-area" id="drawing-area" tabindex="-1">
+        <section class="empty-state" id="empty-state" aria-labelledby="empty-heading">
+          <div class="paper-symbol" aria-hidden="true"><span></span><span></span><span></span></div>
+          <p class="eyebrow">Your drawings, in one place</p>
+          <h2 id="empty-heading">Bring your first drawing in.</h2>
+          <p class="empty-description">Import a PDF to browse its sheets and view the original drawing. Everything stays on this computer.</p>
+          <div class="drop-zone" id="drop-zone">
+            <button class="button button-primary" id="choose-pdf-button" type="button" disabled>Choose a PDF</button>
+            <p>or drag and drop one here</p>
+            <span class="file-limit">PDF · up to 256 MiB per file</span>
+          </div>
+          <p class="empty-footnote">Drawing scale will need verification before any measurement.</p>
+        </section>
+
+        <section class="drawing-view" id="drawing-view" aria-label="Selected drawing" hidden>
+          <div class="drawing-toolbar">
+            <div class="drawing-title"><p class="eyebrow" id="selected-document"></p><h2 id="selected-sheet"></h2></div>
+            <div class="page-controls" aria-label="Sheet navigation">
+              <button class="button button-square" id="previous-sheet" type="button" aria-label="Previous sheet">←</button>
+              <span class="page-position" id="page-position"></span>
+              <button class="button button-square" id="next-sheet" type="button" aria-label="Next sheet">→</button>
+            </div>
+            <a class="button button-outline original-link" id="open-original" target="_blank" rel="noopener">Open original PDF <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="drawing-facts" aria-label="Drawing details">
+            <div><span class="fact-label">Page size</span><span id="page-size"></span></div>
+            <div><span class="fact-label">Rotation</span><span id="page-rotation"></span></div>
+            <span class="scale-badge">Scale applies only within a calibrated view</span>
+          </div>
+          <div class="image-controls" id="image-controls" hidden>
+            <span>Page preview <span aria-hidden="true">·</span> select a workflow tool to measure</span>
+            <div class="zoom-controls" aria-label="Preview zoom">
+              <button class="button button-quiet" id="fit-preview" type="button" disabled>Fit page</button>
+              <button class="button button-square" id="zoom-out" type="button" aria-label="Zoom out" disabled>−</button>
+              <span id="zoom-level">Fit</span>
+              <button class="button button-square" id="zoom-in" type="button" aria-label="Zoom in" disabled>＋</button>
+            </div>
+          </div>
+          <div class="pdf-stage">
+            <iframe id="pdf-preview" title="Original drawing PDF"></iframe>
+            <div class="image-viewport" id="image-viewport" tabindex="0" role="region" aria-label="Drawing preview; use arrow keys to scroll when zoomed" hidden><div class="image-canvas" id="image-canvas"></div></div>
+            <div class="image-status" id="image-status" hidden><p id="preview-message" role="status" aria-live="polite"></p><button class="button button-outline" id="retry-preview" type="button" hidden>Retry preview</button></div>
+          </div>
+          <div class="preview-footer">
+            <p>Preview unavailable? <a id="fallback-original" target="_blank" rel="noopener">Open the original PDF in a new tab.</a></p>
+            <p>Measurements require a known distance and a confirmed drawing view.</p>
+          </div>
+          <details class="evidence-details"><summary>Original evidence</summary><dl><dt>Revision SHA-256</dt><dd><code id="revision-id"></code></dd><dt>Sheet ID</dt><dd><code id="sheet-id"></code></dd></dl></details>
+        </section>
+      </main>
+      <aside class="takeoff-panel" aria-labelledby="workflow-stage-title">
+        <div class="workflow-panel-heading"><p class="eyebrow" id="workflow-stage-number">Stage 1 of 7</p><h2 id="workflow-stage-title">Project setup</h2><span class="draft-label">Draft project records</span></div>
+        <label class="field-label" for="workflow-actor">Operator / reviewer</label><input id="workflow-actor" maxlength="100" autocomplete="name" placeholder="Your name">
+        <p id="workflow-message" class="equipment-message" role="status" aria-live="polite"></p>
+        <p id="workflow-error" class="equipment-error" role="alert" hidden></p>
+        <div id="workflow-content"></div>
+        <section id="workflow-equipment-tools" hidden aria-labelledby="equipment-heading">
+        <div class="takeoff-heading"><p class="eyebrow">Mechanical takeoff</p><h2 id="equipment-heading">Draft equipment tag review</h2><span class="draft-label">Supporting references</span></div>
+        <p class="takeoff-intro">Find equipment tags on plan and schedule pages. Compare their references and inspect the source.</p>
+        <div class="takeoff-source-actions">
+          <button class="button button-outline" id="equipment-add-plan" type="button" disabled>Add plan page</button>
+          <button class="button button-outline" id="equipment-add-schedule" type="button" disabled>Add schedule page</button>
+        </div>
+        <ul id="equipment-pages" class="equipment-pages" aria-label="Pages selected for equipment extraction"></ul>
+        <label class="field-label" for="equipment-reader">Read with</label>
+        <select id="equipment-reader"><option value="text">PDF text</option><option value="vision" disabled>Local AI</option></select>
+        <p id="equipment-reader-status" class="section-hint">Checking available readers…</p>
+        <button class="button button-primary" id="equipment-run" type="button" disabled>Find equipment</button>
+        <p id="equipment-message" class="equipment-message" role="status" aria-live="polite"></p>
+        <p id="equipment-error" class="equipment-error" role="alert" hidden></p>
+        <div class="equipment-history">
+          <label class="field-label" for="equipment-history">Saved extractions</label>
+          <select id="equipment-history"><option value="">No extractions yet</option></select>
+        </div>
+        <section id="equipment-results" hidden aria-label="Equipment extraction results">
+          <div class="equipment-result-heading"><h3 id="equipment-summary"></h3><a id="equipment-export" class="button button-outline" download="heleos-equipment-review.csv">Export CSV</a></div>
+          <p class="section-hint">These records review tag references. Use physical equipment review above to establish assemblies, package contents and quantities.</p>
+          <label class="field-label" for="equipment-reviewer">Reviewer</label>
+          <input id="equipment-reviewer" maxlength="100" placeholder="Your name" autocomplete="name">
+          <div id="equipment-warnings"></div>
+          <div id="equipment-rows"></div>
+          <details class="manual-equipment">
+            <summary>Add missed equipment</summary>
+            <p class="section-hint">Open one of this extraction's pages, enter the tag, then draw a box around the item.</p>
+            <label class="field-label" for="equipment-manual-tag">Equipment tag</label>
+            <input id="equipment-manual-tag" maxlength="40" placeholder="For example EF-3">
+            <label class="field-label" for="equipment-manual-reason">Reason</label>
+            <input id="equipment-manual-reason" maxlength="500" placeholder="For example tag missed by the reader">
+            <button id="equipment-place" class="button button-outline" type="button">Place on drawing</button>
+            <button id="equipment-cancel-place" class="button button-quiet" type="button" hidden>Cancel</button>
+          </details>
+          <details class="equipment-audit"><summary>Extraction and correction history</summary><pre id="equipment-audit"></pre></details>
+        </section>
+        </section>
+        <div id="workflow-review-controls"></div>
+        <details class="workflow-history"><summary>Saved changes and remaining capabilities</summary><ul id="workflow-capabilities"></ul><ol id="workflow-history"></ol></details>
+      </aside>
+    </div>
+    <noscript><p class="noscript">Enable JavaScript to import and browse drawings in this local workspace.</p></noscript>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "task_id": "NOTEBOOKLM-REQUIRED-RESEARCH-2026-09-22",
+  "scope": "Required research procedure documentation; no automatic enforcement or mechanical acceptance claimed.",
+  "status_receipt_binding": "pass",
+  "research_dispositions_and_evidence_fields": "pass",
+  "checks": [
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "python3 tools/ci/checks.py",
+      "exit_code": 0,
+      "stdout": "1052 tracked files checked, 0 failures\n",
+      "stderr": ""
+    }
+  ],
+  "review_fix": "Clarified empty-evidence/no-submission rules for administrative work and absent connector; actual attempted calls retain receipts."
+}

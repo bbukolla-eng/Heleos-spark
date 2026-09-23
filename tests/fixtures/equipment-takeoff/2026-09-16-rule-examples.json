@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "task_id": "EQUIPMENT-RULES-1",
+  "state": "owner_approved",
+  "rule_packet": "docs/superpowers/specs/2026-09-16-equipment-counting-rules.md",
+  "authority": "Owner-approved literal semantic examples; not model inputs or representative original drawing truth",
+  "units": {
+    "counts": "each",
+    "compatible_dimensions": "imperial"
+  },
+  "default_scope": "Current complete selected scope and established inclusion unless a case explicitly says otherwise.",
+  "cases": [
+    {
+      "id": "EC01",
+      "rules": [
+        "E01",
+        "E02",
+        "E03"
+      ],
+      "input": "Two distinct new pump instances and a matching declaration.",
+      "expected": {
+        "new_installed_pumps": 2,
+        "declared_pumps": 2,
+        "final_pumps": 2
+      }
+    },
+    {
+      "id": "EC02",
+      "rules": [
+        "E02"
+      ],
+      "input": "Three source depictions have established correspondence to one AHU.",
+      "expected": {
+        "physical_ahus": 1,
+        "final_ahus": 1,
+        "retained_references": 3
+      }
+    },
+    {
+      "id": "EC03",
+      "rules": [
+        "E02"
+      ],
+      "input": "Two depictions share a tag; physical correspondence is unresolved.",
+      "expected": {
+        "final_pumps": null,
+        "unresolved": [
+          "physical_correspondence"
+        ]
+      }
+    },
+    {
+      "id": "EC04",
+      "rules": [
+        "E02",
+        "E03"
+      ],
+      "input": "Two independently established physical pumps share a conflicting tag.",
+      "expected": {
+        "known_physical_pumps": 2,
+        "final_pumps": null,
+        "unresolved": [
+          "tag_conflict"
+        ]
+      }
+    },
+    {
+      "id": "EC05",
+      "rules": [
+        "E04"
+      ],
+      "input": "One AHU has three shipping sections and four integral fan modules.",
+      "expected": {
+        "final_ahus": 1,
+        "shipping_sections": 3,
+        "integral_fan_modules": 4,
+        "additional_ahu_count": 0
+      }
+    },
+    {
+      "id": "EC06",
+      "rules": [
+        "E04",
+        "E05"
+      ],
+      "input": "One chiller includes two compressors and a unit-mounted controller.",
+      "expected": {
+        "final_chillers": 1,
+        "included_compressors": 2,
+        "included_controllers": 1,
+        "additional_component_procurement": 0
+      }
+    },
+    {
+      "id": "EC07",
+      "rules": [
+        "E04",
+        "E05"
+      ],
+      "input": "Two pump packages explicitly include motors.",
+      "expected": {
+        "final_pumps": 2,
+        "included_motors": 2,
+        "additional_motor_procurement": 0
+      }
+    },
+    {
+      "id": "EC08",
+      "rules": [
+        "E05"
+      ],
+      "input": "One chiller includes a remote starter furnished loose for field installation.",
+      "expected": {
+        "final_chillers": 1,
+        "linked_starters": 1,
+        "additional_starter_procurement": 0,
+        "starter_field_installation": 1
+      }
+    },
+    {
+      "id": "EC09",
+      "rules": [
+        "E03"
+      ],
+      "input": "Three observed pumps; current applicable schedule declares four.",
+      "expected": {
+        "known_physical_pumps": 3,
+        "declared_pumps": 4,
+        "final_pumps": null,
+        "unresolved": [
+          "schedule_conflict"
+        ]
+      }
+    },
+    {
+      "id": "EC10",
+      "rules": [
+        "E03",
+        "E10"
+      ],
+      "input": "Schedule-only boiler with unresolved missing physical occurrence.",
+      "expected": {
+        "known_physical_boilers": 0,
+        "declared_boilers": 1,
+        "final_boilers": null,
+        "outstanding_requirements": 1
+      }
+    },
+    {
+      "id": "EC11",
+      "rules": [
+        "E07"
+      ],
+      "input": "One duty and one installed standby pump.",
+      "expected": {
+        "duty_pumps": 1,
+        "standby_pumps": 1,
+        "final_installed_pumps": 2
+      }
+    },
+    {
+      "id": "EC12",
+      "rules": [
+        "E05",
+        "E07"
+      ],
+      "input": "Two installed pumps; applicable project requirement is one spare seal and gasket per pump.",
+      "expected": {
+        "final_installed_pumps": 2,
+        "spare_seals": 2,
+        "spare_gaskets": 2,
+        "additional_pump_count": 0
+      }
+    },
+    {
+      "id": "EC13",
+      "rules": [
+        "E07"
+      ],
+      "input": "Two installed pumps plus one uninstalled spare, all expressly new and separately procured.",
+      "expected": {
+        "final_installed_pumps": 2,
+        "uninstalled_spare_pumps": 1,
+        "new_procurement_pumps": 3
+      }
+    },
+    {
+      "id": "EC14",
+      "rules": [
+        "E05"
+      ],
+      "input": "One AHU includes racks; six operating filter elements are expressly separately procured.",
+      "expected": {
+        "final_ahus": 1,
+        "separate_operating_filter_elements": 6,
+        "additional_rack_procurement": 0,
+        "unstated_filter_quantities_inferred": false
+      }
+    },
+    {
+      "id": "EC15",
+      "rules": [
+        "E06"
+      ],
+      "input": "One representative terminal-unit symbol; scoped note says three total including that representative.",
+      "expected": {
+        "final_terminal_units": 3,
+        "bare_typ_without_multiplicity_final": null
+      }
+    },
+    {
+      "id": "EC16",
+      "rules": [
+        "E07",
+        "E08"
+      ],
+      "input": "One source-verified reused fan moved between old and new locations.",
+      "expected": {
+        "physical_fans": 1,
+        "remove_operations": 1,
+        "reinstall_operations": 1,
+        "new_fan_procurement": 0
+      }
+    },
+    {
+      "id": "EC17",
+      "rules": [
+        "E07",
+        "E08"
+      ],
+      "input": "An old boiler is removed and replaced with a distinct new boiler.",
+      "expected": {
+        "removed_boilers": 1,
+        "new_installed_boilers": 1
+      }
+    },
+    {
+      "id": "EC18",
+      "rules": [
+        "E04"
+      ],
+      "input": "One outdoor and two indoor units are distinct assemblies linked to one system; procurement grouping unknown.",
+      "expected": {
+        "final_outdoor_units": 1,
+        "final_indoor_units": 2,
+        "systems": 1,
+        "procurement_packages": null
+      }
+    },
+    {
+      "id": "EC19",
+      "rules": [
+        "E10"
+      ],
+      "input": "Empty detector with unknown coverage versus a separately verified complete empty scope.",
+      "expected": {
+        "unknown_coverage_final": null,
+        "verified_complete_empty_scope_final": 0
+      }
+    },
+    {
+      "id": "EC20",
+      "rules": [
+        "E11"
+      ],
+      "input": "Correct one false positive from three pump proposals, leaving an unrelated AHU group unchanged.",
+      "expected": {
+        "prior_pumps": 3,
+        "current_pumps": 2,
+        "unrelated_ahus": 1,
+        "replayed_pumps": 2
+      }
+    }
+  ]
+}

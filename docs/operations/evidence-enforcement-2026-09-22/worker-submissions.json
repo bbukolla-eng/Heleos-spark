@@ -1,0 +1,165 @@
+{
+  "task_id": "CHECKPOINT-EVIDENCE-1",
+  "submissions": [
+    {
+      "provider": "Claude Code",
+      "task_id": "evidence-enforcement-claude-002",
+      "task_sha256": "874851cb16240159e2737f23493d1efce4199e70ebf2f7564cd1e92353730917",
+      "classification": "INTERNAL",
+      "authorization": "Owner directed bounded Claude Code implementation throughout build; this exact task is restricted to named validator and tests. No confidential drawings or secrets.",
+      "purpose": "Implement evidence and continuation guard per owner request",
+      "source_checkout": "/Users/bekim/Heleos-spark",
+      "base_commit": "f9d7ceda027875b0dbef24710bfca96c6c95a104",
+      "source_identities": {
+        "AGENTS.md": "fcedd9e61d3c672a94d98f4468734177b1f899354682a153ee359ff55067297d",
+        "CLAUDE.md": "5e67b76914e4116b97e26523e911be04d1362af10e0c3132fac03ef434abbcac",
+        ".agents/skills/claude-code-headless/SKILL.md": "fa0c8bdfa47ac11a0da1e623da69892ba15296a68b8085ead7bdf55611dcab47",
+        ".heleos/build-checkpoint-2026-09-16/research.json": "eb2889bffa9841647475141d86e7db96bdd48efa59bd49177d29b3905d0f02c6",
+        ".heleos/build-checkpoint-2026-09-16/notebooklm-verification.json": "7bee89593afc47e2d66a7e8936e4be60d8d03ba0a49a602166226bebbf1e4892",
+        "docs/operations/notebooklm-research.md": "db25f74784a2df0ff57349c9dbae11a975d608aff79c5dbb02b01eb6164baa9e"
+      },
+      "model": "configured default",
+      "claude_version": "2.1.261",
+      "login": "loggedIn true via normal CLI; provider request not yet proven",
+      "containment": "macos_seatbelt",
+      "time": "2026-09-23T01:27:47.849301+00:00",
+      "state": "terminal_preflight_rejection",
+      "result_reference": ".heleos/evidence-enforcement-2026-09-22/runs/evidence-enforcement-claude-002",
+      "routing_gap": "active-build-status reports main_checkout_unavailable; exact live branch/HEAD verified directly; no base guessed.",
+      "next_action": "Correct field based on Rust schema; validate document before dispatch.",
+      "changed_input": "Objective compressed below protocol text cap; no authority expansion.",
+      "exit_code": 2,
+      "failure": "strict Task schema uses schema, not stale example schema_version; no provider launch"
+    },
+    {
+      "provider": "Claude Code",
+      "task_id": "evidence-enforcement-claude-003",
+      "task_sha256": "7aa4d20a3ed47c7bd4aab9f2454ae445d85989073575e867a5ffe8a09c55e464",
+      "classification": "INTERNAL",
+      "authorization": "Owner directed bounded Claude Code implementation throughout build; this exact task is restricted to named validator and tests. No confidential drawings or secrets.",
+      "purpose": "Implement evidence and continuation guard per owner request",
+      "source_checkout": "/Users/bekim/Heleos-spark",
+      "base_commit": "f9d7ceda027875b0dbef24710bfca96c6c95a104",
+      "source_identities": {
+        "AGENTS.md": "fcedd9e61d3c672a94d98f4468734177b1f899354682a153ee359ff55067297d",
+        "CLAUDE.md": "5e67b76914e4116b97e26523e911be04d1362af10e0c3132fac03ef434abbcac",
+        ".agents/skills/claude-code-headless/SKILL.md": "fa0c8bdfa47ac11a0da1e623da69892ba15296a68b8085ead7bdf55611dcab47",
+        ".heleos/build-checkpoint-2026-09-16/research.json": "eb2889bffa9841647475141d86e7db96bdd48efa59bd49177d29b3905d0f02c6",
+        ".heleos/build-checkpoint-2026-09-16/notebooklm-verification.json": "7bee89593afc47e2d66a7e8936e4be60d8d03ba0a49a602166226bebbf1e4892",
+        "docs/operations/notebooklm-research.md": "db25f74784a2df0ff57349c9dbae11a975d608aff79c5dbb02b01eb6164baa9e"
+      },
+      "model": "configured default",
+      "claude_version": "2.1.261",
+      "login": "loggedIn true via normal CLI; provider request not yet proven",
+      "containment": "macos_seatbelt",
+      "time": "2026-09-23T01:28:19.779843+00:00",
+      "state": "terminal_configuration_rejection",
+      "result_reference": ".heleos/evidence-enforcement-2026-09-22/runs/evidence-enforcement-claude-003",
+      "routing_gap": "active-build-status reports main_checkout_unavailable; exact live branch/HEAD verified directly; no base guessed.",
+      "next_action": "Use external temporary candidate root; durable reports remain under project.",
+      "changed_input": "Correct schema field verified against Rust Task; no permission expansion.",
+      "failure": "Runner requires existing workspace_root outside source checkout; no provider launched",
+      "exit_code": 2
+    },
+    {
+      "provider": "Claude Code",
+      "task_id": "evidence-enforcement-claude-004",
+      "task_sha256": "d8c1e392d0f6f14ef4af5374a11530136d3062c75143b76e84929009c3518c43",
+      "classification": "INTERNAL",
+      "authorization": "Owner directed bounded Claude Code implementation throughout build; this exact task is restricted to named validator and tests. No confidential drawings or secrets.",
+      "purpose": "Implement evidence and continuation guard per owner request",
+      "source_checkout": "/Users/bekim/Heleos-spark",
+      "base_commit": "f9d7ceda027875b0dbef24710bfca96c6c95a104",
+      "source_identities": {
+        "AGENTS.md": "fcedd9e61d3c672a94d98f4468734177b1f899354682a153ee359ff55067297d",
+        "CLAUDE.md": "5e67b76914e4116b97e26523e911be04d1362af10e0c3132fac03ef434abbcac",
+        ".agents/skills/claude-code-headless/SKILL.md": "fa0c8bdfa47ac11a0da1e623da69892ba15296a68b8085ead7bdf55611dcab47",
+        ".heleos/build-checkpoint-2026-09-16/research.json": "eb2889bffa9841647475141d86e7db96bdd48efa59bd49177d29b3905d0f02c6",
+        ".heleos/build-checkpoint-2026-09-16/notebooklm-verification.json": "7bee89593afc47e2d66a7e8936e4be60d8d03ba0a49a602166226bebbf1e4892",
+        "docs/operations/notebooklm-research.md": "db25f74784a2df0ff57349c9dbae11a975d608aff79c5dbb02b01eb6164baa9e"
+      },
+      "model": "configured default",
+      "claude_version": "2.1.261",
+      "login": "loggedIn true via normal CLI; provider request not yet proven",
+      "containment": "macos_seatbelt",
+      "time": "2026-09-23T01:29:20.379820+00:00",
+      "state": "terminal_timeout",
+      "result_reference": "runner-generated path under /Users/bekim/Heleos-worker-runs; archive under project on termination",
+      "routing_gap": "active-build-status reports main_checkout_unavailable; exact live branch/HEAD verified directly; no base guessed.",
+      "next_action": "No retry: Codex takes over only allowed candidate source/tests; independently verifies and fixes findings before accepting any candidate.",
+      "changed_input": "External existing runtime root /Users/bekim/Heleos-worker-runs satisfies validate_config.",
+      "exec_session_id": 74670,
+      "run_directory": "/Users/bekim/Heleos-worker-runs/heleos-worker-hA9PxF",
+      "exit_code": 2,
+      "runner_failure": {
+        "checkout_path": "/Users/bekim/Heleos-worker-runs/heleos-worker-hA9PxF/checkout",
+        "cleanup_failed": false,
+        "code": "timeout",
+        "evidence_write_failed": false,
+        "exit_code": null,
+        "message": "task duration limit exceeded",
+        "next_action": "Controller inspects retained evidence before assigning any further work.",
+        "run_directory": "/Users/bekim/Heleos-worker-runs/heleos-worker-hA9PxF",
+        "schema": "heleos.worker-run-failure/v1",
+        "stderr": {
+          "retained_bytes": 0,
+          "truncated": false
+        },
+        "stdout": {
+          "retained_bytes": 0,
+          "truncated": false
+        }
+      },
+      "historical_process_observation": "Runner and Claude child live; candidate validator edited. No terminal result or candidate accepted yet.",
+      "terminal_process_observation": "Contained runner exited 2 at duration limit; managed provider process terminated and reaped; partial allowed files retained for independent Codex completion."
+    },
+    {
+      "provider": "Claude Code",
+      "task_id": "evidence-enforcement-claude-001",
+      "task_sha256": "fbf38db073ff61873376782343a2d029e87fab31b3e051da33f20f363c15261d",
+      "classification": "INTERNAL",
+      "authorization": "Owner directed bounded Claude Code implementation throughout build; this exact task is restricted to named validator and tests. No confidential drawings or secrets.",
+      "purpose": "Implement evidence and continuation guard per owner request",
+      "source_checkout": "/Users/bekim/Heleos-spark",
+      "base_commit": "f9d7ceda027875b0dbef24710bfca96c6c95a104",
+      "source_identities": {
+        "AGENTS.md": "fcedd9e61d3c672a94d98f4468734177b1f899354682a153ee359ff55067297d",
+        "CLAUDE.md": "5e67b76914e4116b97e26523e911be04d1362af10e0c3132fac03ef434abbcac",
+        ".agents/skills/claude-code-headless/SKILL.md": "fa0c8bdfa47ac11a0da1e623da69892ba15296a68b8085ead7bdf55611dcab47",
+        ".heleos/build-checkpoint-2026-09-16/research.json": "eb2889bffa9841647475141d86e7db96bdd48efa59bd49177d29b3905d0f02c6",
+        ".heleos/build-checkpoint-2026-09-16/notebooklm-verification.json": "7bee89593afc47e2d66a7e8936e4be60d8d03ba0a49a602166226bebbf1e4892",
+        "docs/operations/notebooklm-research.md": "db25f74784a2df0ff57349c9dbae11a975d608aff79c5dbb02b01eb6164baa9e"
+      },
+      "model": "configured default",
+      "claude_version": "2.1.261",
+      "login": "loggedIn true via normal CLI; provider request not yet proven",
+      "containment": "macos_seatbelt",
+      "time": "2026-09-23T01:26:46.134410+00:00",
+      "state": "terminal_preflight_rejection",
+      "result_reference": ".heleos/evidence-enforcement-2026-09-22/runs/evidence-enforcement-claude-001",
+      "routing_gap": "active-build-status reports main_checkout_unavailable; exact live branch/HEAD verified directly; no base guessed.",
+      "exit_code": 2,
+      "failure": "invalid_task: objective exceeds protocol MAX_TEXT_BYTES=4096",
+      "next_action": "New task ID with objective under 4096 bytes; same write/data scope. No provider launched."
+    }
+  ],
+  "terminal_archive": {
+    "path": "docs/operations/evidence-enforcement-2026-09-22/claude-terminal.zip",
+    "sha256": "e8c9d654ca38cb9223b52dc647fce63ea269cdf02c301d2959f06be06e80537a"
+  },
+  "candidate_state": "Historical partial Claude candidate capture at timeout; candidate_files identifies those original bytes. Codex completion and independent review are recorded separately.",
+  "candidate_files": [
+    {
+      "path": "scripts/verify-build-checkpoint.py",
+      "sha256": "66e17f196718d5595191748524d3ba49d16447c3466c333fac426286aef9e02d"
+    },
+    {
+      "path": "tests/test_checkpoint_evidence.py",
+      "sha256": "58b1d2f868765bdb76e102e086458d3b6060807acfaddd9af12c63f76d1886e2"
+    }
+  ],
+  "notebooklm": {
+    "disposition": "reused_verified",
+    "new_external_submission": false
+  }
+}

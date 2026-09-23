@@ -1,5 +1,7 @@
 # Heleos-spark build roadmap
 
+> **Historical revision-2 planning context; not current execution authority.** This document retains the proposed roadmap of 2026-09-02. Current execution and milestone authority is the decision-complete CURRENT/FUTURE roadmap in [`docs/roadmap.md`](docs/roadmap.md); current state is owned by [`CURRENT_STATUS.md`](CURRENT_STATUS.md); binding design is [`docs/superpowers/specs/2026-08-26-heleos-spark-foundation-design.md`](docs/superpowers/specs/2026-08-26-heleos-spark-foundation-design.md). Stale Phase 0/no-code claims below must not restart completed work or override recorded owner decisions.
+
 **Status:** Proposed for owner review (revision 2)
 **Date:** 2026-09-02
 **Owner:** Bekim Bukolla

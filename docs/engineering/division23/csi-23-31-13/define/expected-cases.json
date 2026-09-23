@@ -1,0 +1,21 @@
+{
+  "section_id": "CSI-23-31-13",
+  "unit_system": "imperial",
+  "tolerance_ft": "0.00",
+  "source": {
+    "path": "tests/fixtures/duct-takeoff/2026-09-13-rule-examples.json",
+    "sha256": "08ce9d1b0348b96de0b00dbc71a55a94e962c58f4b17239a61f3cf64e846e6ad",
+    "admitted_by": "tests/fixtures/duct-takeoff/2026-09-14-owner-decision.json"
+  },
+  "cases": [
+    {"case_id": "E01", "rule_ids": ["D01", "D06"], "criterion_ids": ["CSI-23-31-13-D04"], "expected": {"group_lengths_ft": ["8.00", "4.00"], "total_ft": "12.00", "automatic_fitting_length_ft": "0"}},
+    {"case_id": "E02", "rule_ids": ["D03", "D04"], "criterion_ids": ["CSI-23-31-13-D04"], "expected": {"total_ft": "17.00", "complete": true}},
+    {"case_id": "E03", "rule_ids": ["D03", "D10"], "criterion_ids": ["CSI-23-31-13-D04"], "expected": {"known_subtotal_ft": "12.00", "total_ft": null, "complete": false, "unresolved_vertical_portions": 1}},
+    {"case_id": "E04", "rule_ids": ["D04"], "criterion_ids": ["CSI-23-31-13-D04"], "expected": {"total_ft": "5.00", "physical_portions": 1}},
+    {"case_id": "E05", "rule_ids": ["D08", "D09"], "criterion_ids": ["CSI-23-31-13-D04"], "expected": {"duct_total_ft": "10.00", "invented_junctions": 0, "wall_length_in_duct_total_ft": "0"}},
+    {"case_id": "E06", "rule_ids": ["D08"], "criterion_ids": ["CSI-23-31-13-D04"], "expected": {"total_ft": "8.00", "physical_runs": 1}},
+    {"case_id": "E07", "rule_ids": ["D05"], "criterion_ids": ["CSI-23-31-13-D04"], "expected": {"replacement_ft": "16.00", "historical_ft": "8.00"}},
+    {"case_id": "E08", "rule_ids": ["D02"], "criterion_ids": ["CSI-23-31-13-D04"], "expected": {"new_ft": "8.00", "existing_ft": "4.00", "demolition_ft": "3.00"}},
+    {"case_id": "E09", "rule_ids": ["D07"], "criterion_ids": ["CSI-23-31-13-D04"], "expected": {"group_total_ft": "0.01"}}
+  ]
+}

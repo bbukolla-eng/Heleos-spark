@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "task_id": "WINDOWS-LAUNCHER-CLEANUP-1",
+  "recorded_at": "2026-09-14T12:50:10.223096+00:00",
+  "status": "Implementation finished, independently reviewed, locally integrated uncommitted; native Windows acceptance outstanding",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_head": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "authority": "Verified Windows source text informs engineering. Approved mechanical rules and deterministic quantity code are unchanged and retain authority. No private material uploaded.",
+  "research": {
+    "inventory": {
+      "path": "docs/research/notebooklm/notebook-inventory.json",
+      "sha256": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a"
+    },
+    "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+    "core_findings": {
+      "path": "docs/research/notebooklm/windows-launcher-cleanup-findings-2026-09-14.json",
+      "sha256": "85d08f13a0fb13bc2db144ed0bbe61bf523e3ece9e0f33f919e79b936403548a"
+    },
+    "core_adoption_before_implementation": {
+      "path": ".heleos/windows-launcher-cleanup-2026-09-14/root-source-adoption.json",
+      "sha256": "6ee862ffb603053b24f56c9fe39fe0b6701adf2780b4db1e5f628836a3182393"
+    },
+    "core_passages": {
+      "path": ".heleos/windows-launcher-cleanup-2026-09-14/research-verified-passages.json",
+      "sha256": "43bc645de5b4e2101922ee51e8fd5d6cbf1528d131c6f54d9dffc2c6d4e22ade"
+    },
+    "duplicate_findings": {
+      "path": ".heleos/windows-launcher-cleanup-2026-09-14/research-duplicate-findings.json",
+      "sha256": "282a88b443dcc0de0c1b4640cb34684154db72b961c0247c9302d07cdec031cb"
+    },
+    "duplicate_passages": {
+      "path": ".heleos/windows-launcher-cleanup-2026-09-14/research-duplicate-verified-passages.json",
+      "sha256": "e4e5253461c980801f3e295e9a19510367f299b607994b46447058636c60acd0"
+    },
+    "duplicate_adoption_before_harness_finalization": {
+      "path": ".heleos/windows-launcher-cleanup-2026-09-14/root-duplicate-source-adoption.json",
+      "sha256": "92c9702f490f58f46ba2b27865a8a80cee6e8c649ad4a27fd20c76b92911ce6d"
+    },
+    "queries": [
+      {
+        "id": "1298fb4d035c",
+        "state": "completed"
+      },
+      {
+        "id": "5adefd0ee0fe",
+        "state": "completed"
+      }
+    ],
+    "new_public_notebook_sources": 5,
+    "core_exact_passages": 17,
+    "duplicate_exact_passages": 13,
+    "note": "Duplicate packet reuses process-handle support; passage counts do not imply independent source counts. Root checked supporting bodies and exact identities.",
+    "egress": [
+      {
+        "path": ".heleos/windows-launcher-cleanup-2026-09-14/research-egress.jsonl",
+        "sha256": "84b90edf191ce40600218cd8db1835e83899257a50b65f3ba95c78d9da3d95c8"
+      },
+      {
+        "path": ".heleos/windows-launcher-cleanup-2026-09-14/research-duplicate-egress.jsonl",
+        "sha256": "c6af0d34591d6a6a1007ba2a4a798f9480aeed96242c333392bf2c15de52bb76"
+      }
+    ],
+    "notebook_before_after_pairs": 13,
+    "supplementary_official_api_reads": {
+      "path": ".heleos/windows-launcher-cleanup-2026-09-14/root-web-call-1-after.json",
+      "sha256": "51654c3f4e82dcd7b3479e3d88471c8c42a10f8bc5af6e6e0051c60b0204ac8c"
+    }
+  },
+  "plan": {
+    "path": "docs/superpowers/plans/2026-09-14-windows-launcher-cleanup.md",
+    "sha256": "24e6c7f3e7c8dbcc776a2fa8000cf79bd75cede0861b92685c2a7ef93b80a98a"
+  },
+  "clarification": {
+    "record": {
+      "path": ".heleos/windows-launcher-cleanup-2026-09-14/root-plan-clarification-WL-R1.json",
+      "sha256": "67cff6ec8aa902f423ba7937f9380d1f509b916a7198d21bbb51e439960290e5"
+    },
+    "review": {
+      "path": ".heleos/windows-launcher-cleanup-2026-09-14/review-contract-early.json",
+      "sha256": "e9addfa27bae953ac70034087f6cd8b14979a3beb74d0650959405f7f105e427"
+    },
+    "supersedes": "The original root source adoption snapshot proposed console-break signaling. WL-R1 replaces that proposal with owned-job termination only; the original snapshot is retained as history.",
+    "final_contract": "No Windows PID lookup or PID/group signaling. Windows interruption is forceful; natural exit status is preserved after successful cleanup."
+  },
+  "implementation": [
+    {
+      "path": "scripts/launch-drawing-workspace.py",
+      "sha256": "90a6df126128b8b6c14a5ba07526360f21c88694413f29a0e2988d968a32ca22"
+    },
+    {
+      "path": "tests/drawing-workspace/test_windows_workspace_job.py",
+      "sha256": "988744281aee9b92b859b6939293f20133df7d863767f63221849c3ee519c1ac"
+    },
+    {
+      "path": "tests/drawing-workspace/acceptance_windows_workspace_job.py",
+      "sha256": "5f4d334888027095e88a75100d296976056fae3d6cd1a9bcc885eff5d16cdea5"
+    }
+  ],
+  "source_to_behavior_and_tests": [
+    {
+      "passages": [
+        "WL-P01",
+        "WL-P02",
+        "WL-P08",
+        "WL-P11"
+      ],
+      "behavior": "Create and configure a fresh noninheritable job before Popen; associate exact child and verify membership before startup gate. Enclosing-job failure does not bypass containment.",
+      "code": [
+        "WindowsJob.__init__",
+        "WindowsJob.assign",
+        "run_windows_owned"
+      ],
+      "tests": [
+        "test_configure_assign_membership_release_and_cleanup_order",
+        "test_job_setup_failures_never_start_child_and_close_created_job",
+        "test_assignment_and_membership_fail_closed_and_reap"
+      ]
+    },
+    {
+      "passages": [
+        "WL-P03",
+        "WL-P04"
+      ],
+      "behavior": "Unconditional whole-job termination and bounded active-process accounting even after leader exit; last job handle closes on all cleanup paths.",
+      "code": [
+        "WindowsJob.terminate_and_wait",
+        "WindowsJob.close",
+        "run_windows_owned"
+      ],
+      "tests": [
+        "test_active_process_timeout_is_failure_even_with_exited_leader",
+        "test_cleanup_failures_override_success_and_preserve_primary_error"
+      ],
+      "native_cases_pending": [
+        "exited-leader-live-descendant",
+        "parent-death-after-assignment",
+        "parent-death-after-gate-stubborn-tree"
+      ]
+    },
+    {
+      "passages": [
+        "WL-P06",
+        "WL-P07",
+        "WL-P09",
+        "WL-P10",
+        "WL-P12",
+        "WL-P16",
+        "WL-P17"
+      ],
+      "behavior": "Borrow exact retained CPython Handle with explicit private compatibility guard; no Close/Detach of borrowed handle, no PID lookup; aggregate primary and cleanup failures.",
+      "engineering_limit": "PRIVATE CPython type/lifetime guard and ctypes ABI mapping are implementation contracts, not certified by Notebook answers. Native Windows is required to accept actual ABI behavior.",
+      "tests": [
+        "test_fixed_width_abi_and_all_api_signatures_keep_high_bit_handles",
+        "test_private_handle_guard_rejects_unknown_closed_and_invalid_values",
+        "test_gate_failures_close_gate_terminate_job_and_reap"
+      ]
+    },
+    {
+      "passages": [
+        "WL-P14",
+        "WL-P15"
+      ],
+      "behavior": "Use sys-only fixed stdin gate with -I -B -S. Local CPython closes primary thread handle before Popen returns, so its CREATE_SUSPENDED path is not adopted. No console-break stop path remains.",
+      "engineering_limit": "The byte gate is an explicit engineering design supported by local Python source inspection and tests, not a source-defined unique method.",
+      "tests": [
+        "test_bootstrap_imports_only_builtin_sys_before_exact_byte",
+        "test_real_gate_blocks_then_preserves_same_pid_argv_output_and_exit",
+        "test_parent_death_before_assignment_yields_eof_without_app_import",
+        "test_pending_signals_before_spawn_after_spawn_after_membership_keep_gate_closed"
+      ]
+    },
+    {
+      "passages": [
+        "DH01",
+        "DH02",
+        "DH03",
+        "DH04",
+        "DH05",
+        "DH06",
+        "DH07",
+        "DH10",
+        "DH13"
+      ],
+      "behavior": "Native fixture observes exact process objects using duplicated observation handles. Controller target uses only PROCESS_DUP_HANDLE; returned values are communicated to and closed in their owning process. No Job handle is duplicated.",
+      "engineering_limit": "Fixture transport, failure handling and watchdogs are engineering choices; portable checks do not certify native handle transfer or race behavior.",
+      "tests": [
+        "Portable fixture construction with actual 51-file package verifier on Python 3.9 and 3.14",
+        "Seven native lifecycle cases authored, all NOT_RUN on Mac"
+      ]
+    }
+  ],
+  "verification": {
+    "root_suites": [
+      {
+        "path": ".heleos/windows-launcher-cleanup-2026-09-14/root-tests-py314.json",
+        "sha256": "339c0d1e9fd3eb8df41aea5f74ca29621b60b455be706c4df7501658adf2d990"
+      },
+      {
+        "path": ".heleos/windows-launcher-cleanup-2026-09-14/root-tests-py39.json",
+        "sha256": "8db3a3738ce7eabbc549bc9c47a0a206f0d44f0135f7b1ed5771e41970ce41f9"
+      }
+    ],
+    "tests_per_runtime": {
+      "windows_focused": 15,
+      "existing_launcher": 13,
+      "builder": 18
+    },
+    "independent_review": {
+      "path": ".heleos/windows-launcher-cleanup-2026-09-14/review-final.json",
+      "sha256": "abba94b9f8f8286cd047a8556b8f6b63b35f303fa37e64f79e08ed1cef0b5718"
+    },
+    "independent_probes_per_runtime": 12,
+    "native_harness": {
+      "path": ".heleos/windows-launcher-cleanup-2026-09-14/native-harness-handoff.json",
+      "sha256": "dbfefe39f4e8e9f669e59605b31bc3038d576b8dd5f47decf95b2e93c9408729"
+    },
+    "native_harness_independent_review": {
+      "path": ".heleos/windows-launcher-cleanup-2026-09-14/native-harness-independent-review.json",
+      "sha256": "b5f51042dadc20a8fd0f36253cb4c53c9e9f88313269a59d2e7fb1fa0ebf3181"
+    },
+    "payload_continuity": {
+      "path": ".heleos/windows-launcher-cleanup-2026-09-14/payload-handoff.json",
+      "sha256": "a8ebcf652408410e55e2e15f7518654ee0cbb8e15dbeab4b0b208bac4945d34e"
+    },
+    "delivery": {
+      "path": ".heleos/windows-launcher-cleanup-2026-09-14/root-delivery-verification.json",
+      "sha256": "7c28d999bd3de4ccea45c2068ab7fbdf2da4567cddc67da113636af80c6afa47"
+    }
+  },
+  "rejected_or_unsupported": [
+    "Generated claim that CREATE_SUSPENDED is the only safe approach",
+    "Immediate PID recycling claim not established by selected text",
+    "Legacy Windows nesting statements generalized to modern Windows",
+    "Generated DuplicateHandle remote-close description targeting the caller original handle",
+    "Notebook source certification of Python gate, private Handle contract or ctypes ABI",
+    "Native Windows operational acceptance from Mac or inert API tests"
+  ],
+  "preserved": [
+    "All 48 existing application, asset and approved-rule payloads",
+    "Original delivered Mac preview folder/ZIP and native relocation receipt",
+    "Approved duct rules and quantity fixtures",
+    "Pending air-device and export schema/layout owner decisions"
+  ],
+  "outstanding": [
+    "Actual Windows lifecycle harness execution on exact launcher/helper bytes",
+    "Complete Foundation/Poppler Windows application and NTFS checks",
+    "Representative-project truth, accuracy and remaining mechanical categories",
+    "Final native shell/installers and existing release gates"
+  ],
+  "process_state": "All scoped workers and verification processes terminal; no application/listener/model/native Windows process running",
+  "next_action": "Run the retained seven-case native Windows harness against the pinned candidate when an actual Windows environment is available; preserve existing evidence and resume the first approved unfinished product task."
+}

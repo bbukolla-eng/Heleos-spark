@@ -1,0 +1,64 @@
+$ python3 tools/ci/checks.py
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/superpowers/specs/2026-09-13-duct-measurement-rules.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/research/engineering/roboflow-preparation-manifest-2026-09-13.json
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: tests/fixtures/duct-takeoff/README.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/operations/mechanical-dataset-audit.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/superpowers/specs/2026-09-13-calculation-sequence-design.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/superpowers/plans/2026-09-10-equipment-workflow.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/operations/drawing-workspace.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/superpowers/plans/2026-09-10-equipment-workflow.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/superpowers/plans/2026-09-10-equipment-workflow.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/operations/drawing-workspace.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/operations/drawing-workspace.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/superpowers/plans/2026-09-10-drawing-workspace.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/roadmap.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: ROADMAP.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: crates/heleos-worker-runner/evidence/live-grok-run.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: crates/heleos-worker-runner/evidence/live-codex-run.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: crates/heleos-worker-runner/evidence/live-cursor-run.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: AGENTS.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: CLAUDE.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: KIMI.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: GROK.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: CURSOR.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: GROKBOTS.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: SKILLS.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md: docs/superpowers/plans/2026-08-28-heleos-spark-foundation-0.1.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md: docs/operations/status-archive/2026-09-16-archive-manifest.json
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md: docs/plans/division-23-section-register.json
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md: docs/plans/division-23-section-work-breakdown.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md: docs/operations/acceptance.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md: tests/fixtures/equipment-takeoff/2026-09-16-owner-decision.json
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md: docs/operations/build-goal.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md: docs/research/div23-scope-and-proposed-lineup-2026-09-16.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md: docs/operations/acceptance.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md: docs/research/notebooklm/div23-scope-review-implementation-2026-09-16.json
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md: docs/research/notebooklm/equipment-counting-findings-2026-09-16.json
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md: docs/research/notebooklm/div23-scope-findings-2026-09-16.json
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md: docs/superpowers/specs/2026-09-16-takeoff-workbook-contract.md
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md: docs/research/notebooklm/workbook-export-findings-2026-09-16.json
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md: docs/research/notebooklm/workbook-export-implementation-2026-09-16.json
+link: docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md: docs/research/notebooklm/air-device-attributes-implementation-2026-09-16.json
+link: docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md: superpowers/specs/2026-08-26-heleos-spark-foundation-design.md
+link: docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md: ../CURRENT_STATUS.md
+link: docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md: ../AGENTS.md
+link: docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md: superpowers/plans/2026-09-10-drawing-workspace.md
+link: docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md: superpowers/plans/2026-09-10-equipment-workflow.md
+link: docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md: research/engineering/local-model-data-options-2026-09-10.md
+link: docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md: superpowers/plans/2026-08-28-heleos-spark-foundation-0.1.md
+link: docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md: ../CURRENT_STATUS.md
+link: docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md: ../governance/github-apps.toml
+link: docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md: superpowers/plans/2026-09-08-agent-coordination-foundation.md
+link: docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md: ../crates/heleos-worker-runner/evidence/live-grok-run.md
+link: docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md: ../crates/heleos-worker-runner/evidence/live-codex-run.md
+link: docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md: ../crates/heleos-worker-runner/evidence/live-cursor-run.md
+link: tests/fixtures/air-device-takeoff/approved-rule-packet.md: 2026-09-13-calculation-sequence-design.md
+link: tests/fixtures/air-device-takeoff/approved-rule-packet.md: ../../research/notebooklm/air-device-findings-2026-09-14.json
+prose: docs/roadmap.md:13: em or en dash
+prose: docs/roadmap.md:20: em or en dash
+prose: docs/roadmap.md:21: em or en dash
+prose: docs/roadmap.md:95: em or en dash
+958 tracked files checked, 60 failures
+
+exit_code=1

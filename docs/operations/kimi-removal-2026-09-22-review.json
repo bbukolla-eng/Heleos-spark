@@ -1,0 +1,97 @@
+{
+  "task_id": "KIMI-RETIRE-2026-09-22",
+  "reviewer": "Codex independent subagent kimi_retirement_review",
+  "reviewed_at_utc": "2026-09-22T14:28:06.224019+00:00",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "2026-09-21-t5b5",
+  "base_commit": "ce714a0907e89f72a871f7d2dcf9472368523ab2",
+  "result": "accepted_for_bounded_retirement_scope",
+  "open_findings": [],
+  "candidate_sha256": {
+    "AGENTS.md": "50863befa4fa2eada6ce5e88b07cba67f3223f7da45e57466dc8ed6841d75a39",
+    "KIMI.md": "16a30a85f1da7c670d9d71ed27603f3b934f3b039bbf002f0430b3c89c8ece9d",
+    "crates/heleos-worker-runner/src/lib.rs": "0c13bd6f0768ac3e37a1ad9bda9464f15dcb274a27599df38d5f1361b80f88eb",
+    "crates/heleos-worker-runner/src/main.rs": "981e2cf13c86ae6b97a63a8ea3ce49a93356720c5c2d1efa178e05dd4d58f399",
+    "crates/heleos-worker-runner/tests/runner.rs": "98d116d778513d2fccc856eaf34db19fb3ed063a4aa769b32e10b41c11033aa2",
+    "scripts/provider-adapters/kimi-stdin.py": "24cd5cf9f744a5aec575f932de98690656171f3d45d97f35860a3cf07c345954",
+    "tests/provider-adapters/test_kimi_stdin.py": "df7ed927b77acfba939aff396aa01709e03cb1ef55da6997fe4c5de75721165b",
+    "docs/operations/guarded-worker-runner.md": "54eedfa95c6dfa90a1e4f5d28dccbc6e577f2fcf23958bc7edeaed99433317d8",
+    "docs/operations/agent-coordination.md": "ded14b11c0e2ca9ff9bea01ea1c2580f8f1afbf5fbb2d166d58b35732bdc852d",
+    "crates/heleos-worker-runner/README.md": "6f52b94be9ebc9179ecb063c337c4b370b114896bf301f4c14b3b61391a96ca7",
+    "docs/operations/codex-cursor-collaboration-2026-09-22.md": "dbee8292cffa2d122c612714ab9f29f3dc41c66604fae5858707c63a02293975"
+  },
+  "task_ledger_snapshot": {
+    "path": "docs/operations/kimi-removal-2026-09-22.json",
+    "sha256": "91c20045f5cd20d0b476a363d5550e2e7403f5b8d6ade0241ac2a2987c547778",
+    "note": "Review-time snapshot; root writer may append final test results and this review reference without changing reviewed implementation."
+  },
+  "resolved_findings": [
+    {
+      "id": "KR1",
+      "issue": "Initial CLI retirement test expected unredacted Clap stderr despite existing fixed JSON parse-error contract.",
+      "resolution": "All required CLI arguments now supplied with a missing task file; test asserts invalid_configuration JSON, empty stderr and no workspace. Focused independent test passes."
+    },
+    {
+      "id": "KR2",
+      "issue": "Active runner guide retained executable Kimi examples and obsolete probe behavior.",
+      "resolution": "Current CLI guide replaces commands and probe claims with unconditional retirement notice; historical task/probe records explicitly marked historical."
+    }
+  ],
+  "criteria": [
+    {
+      "criterion": "No active Kimi assignments or declared Kimi runner admission",
+      "evidence": "AGENTS.md forbids assignments; KIMI.md is a retirement notice. CLI whitelist removes kimi; run and run_json converge on run_inner rejection before filesystem validation/creation. Provider mismatch also prevents admitting a Kimi config under a different task identity."
+    },
+    {
+      "criterion": "Legacy adapter refuses before prompt, file or provider use",
+      "evidence": "Adapter only imports sys, writes a fixed diagnostic and returns 78. Independent Python tests passed for legacy invocation routes with open empty stdin and patched file/subprocess access."
+    },
+    {
+      "criterion": "Retained identities and evidence readable",
+      "evidence": "Provider::Kimi remains in unchanged protocol. Historical task and completed handoff independently validated successfully; protocol and evidence paths show no candidate changes."
+    },
+    {
+      "criterion": "Other providers and safeguards preserved",
+      "evidence": "Production Rust changes remove only Kimi from supported provider list and CLI match/help. Existing provider matching, containment, protocol validation, redacted diagnostics and other-provider tests remain. Root performs full regression suites separately."
+    },
+    {
+      "criterion": "No secret/account deletion",
+      "evidence": "Reviewed candidate contains no credential/account deletion or inspection code. Plugin uninstall success is assignment-provided tool evidence, not independently repeated by this reviewer."
+    }
+  ],
+  "independent_checks": [
+    {
+      "command": "python3 -B tests/provider-adapters/test_kimi_stdin.py -v",
+      "exit": 0,
+      "result": "2 tests passed; 4 legacy CLI argument routes covered."
+    },
+    {
+      "command": "cargo +1.96.1 test --locked --offline -p heleos-worker-runner retired_kimi -- --nocapture",
+      "exit": 0,
+      "result": "2 focused retirement tests passed; 3 configured containment variants rejected by library before workspace creation."
+    },
+    {
+      "command": "cargo +1.96.1 run --locked --offline -p heleos-worker-protocol -- task tests/fixtures/agents/kimi-implementation.task.json",
+      "exit": 0,
+      "canonical_digest": "2558ec13521e4ab589bcc6396a13b1b7ea1fb3778c676a171950530c8d07e80b"
+    },
+    {
+      "command": "cargo +1.96.1 run --locked --offline -p heleos-worker-protocol -- handoff --task crates/heleos-worker-runner/evidence/live-kimi-task.json crates/heleos-worker-runner/evidence/live-kimi-completed-handoff.json",
+      "exit": 0,
+      "canonical_digest": "2a44c5deb931489974f2fd41de7fdf20bcf8a9685d8b2e9de3ff4e2b9eb78b76"
+    },
+    {
+      "command": "git diff --check",
+      "exit": 0
+    }
+  ],
+  "limits": [
+    "Local macOS review; no native Windows execution. Windows-mode rejection in the focused test is a configuration branch exercise on macOS.",
+    "No live provider, network or credential operation; plugin uninstall not repeated.",
+    "Full runner/protocol regression checks owned by root and not duplicated here.",
+    "No CURRENT_STATUS.md, checkpoint, Git index, commit, account or other candidate edits by reviewer. Existing untracked Cursor files left untouched.",
+    "Acceptance is limited to exact listed candidate hashes and this retirement deliverable; no product, section or release acceptance."
+  ],
+  "process_state": "terminal_completed",
+  "next_action": "Root records full check results and independent review in retirement ledger, then hands status/checkpoint follow-up to Cursor as checkout controller."
+}

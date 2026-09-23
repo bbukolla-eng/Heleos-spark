@@ -1,0 +1,162 @@
+schema_version = 1
+status = "research_only"
+
+[[source]]
+id = "grok-bot-product"
+canonical_url = "https://x.ai/bot"
+publisher = "SpaceXAI LLC"
+title = "AI teammates that finish the work | Grok Bot"
+edition_or_version = "Unversioned product page; 2026-09-09 observation-date surrogate, not a publication date"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T15:13:05Z"
+cache_status = "not_cached"
+license_or_rights = "Public official page, copyright SpaceXAI LLC; linked reference and original paraphrase only, no redistribution license established"
+data_class = "PUBLIC"
+locators = ["Meet Grok Bot", "Message Bots like teammates", "Pricing: Cursor and Grok", "Download Grok Bot"]
+claims_supported = ["Official product name is Grok Bot; product page offers desktop and mobile access.", "Product pricing page includes base Cursor Pro and SuperGrok labels."]
+applicability = "Official product identity only; does not establish owner eligibility, authenticated privacy state, browser-only access, or per-run cost"
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "No affirmative upload or source-text redistribution permission established"
+contradictions = ["Get started documentation dated September 2 lists Plus, Heavy, Pro+, Ultra and Teams eligibility; product page includes base Pro and SuperGrok. Account-specific eligibility remains unresolved."]
+gaps = ["No page revision or publication date exposed; effective_date is observation only", "No retained source-byte digest or independent reviewer verification", "No authenticated supported browser-only control surface established"]
+
+[[source]]
+id = "grok-bot-overview"
+canonical_url = "https://docs.x.ai/grok-bot/overview"
+publisher = "SpaceXAI LLC (SpaceXAI Docs)"
+title = "Grok Bot"
+edition_or_version = "Documentation last updated September 3, 2026"
+effective_date = "2026-09-03"
+retrieved_at = "2026-09-09T15:13:05Z"
+cache_status = "not_cached"
+license_or_rights = "Official public documentation; reference and original paraphrase only, no upload license established"
+data_class = "PUBLIC"
+locators = ["What makes Grok Bot different", "Bots share one computer"]
+claims_supported = ["Grok Bot offers persistent named agents using computer tools and connectors or MCP.", "Bots on one account share a cloud computer, files and sessions; separate screens do not create separate security boundaries."]
+applicability = "Product architecture description; no evidence of this account's effective permissions or a public Bot-control API"
+supersession_state = "current"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Public visibility is not affirmative permission to upload documentation"
+contradictions = ["The overview's per-Bot VM wording is qualified by its explicit shared user-scoped computer section; do not infer per-Bot isolation."]
+gaps = ["No source bytes cached or hashed", "No current account or deployed version observed", "Independent locator recheck remains open"]
+
+[[source]]
+id = "grok-bot-get-started"
+canonical_url = "https://docs.x.ai/grok-bot/get-started"
+publisher = "SpaceXAI LLC (SpaceXAI Docs)"
+title = "Get started"
+edition_or_version = "Documentation last updated September 2, 2026"
+effective_date = "2026-09-02"
+retrieved_at = "2026-09-09T15:13:05Z"
+cache_status = "not_cached"
+license_or_rights = "Official public documentation; reference and original paraphrase only, no upload license established"
+data_class = "PUBLIC"
+locators = ["Before you begin", "2. Sign in", "5. Sign in to the tools it needs"]
+claims_supported = ["The documented sign-in uses a Cursor account and owner browser authentication.", "Grok Bot needs cloud storage and does not support Legacy Privacy Mode."]
+applicability = "Admission prerequisites only; no login, privacy migration, installation or account-setting change authorized by this discovery"
+supersession_state = "current"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "No affirmative documentation upload right established"
+contradictions = ["Eligible plan list is narrower than the product page's pricing labels; owner entitlement was not checked."]
+gaps = ["Actual account eligibility, authentication and data setting are unverified", "No source-byte digest retained", "Independent review open"]
+
+[[source]]
+id = "grok-bot-terms"
+canonical_url = "https://x.ai/legal/grok-bot-terms"
+publisher = "SpaceXAI LLC"
+title = "Grok Bot Terms"
+edition_or_version = "Last updated September 3, 2026"
+effective_date = "2026-09-03"
+retrieved_at = "2026-09-09T15:13:05Z"
+cache_status = "not_cached"
+license_or_rights = "Copyright 2026 SpaceXAI LLC; public legal reference, no broader copying or upload right established"
+data_class = "PUBLIC"
+locators = ["1.1 Authorized Use", "2.3 Warnings and Human Review", "3. Connected Services", "4. Persistent and Shared Environment"]
+claims_supported = ["Bot terms supplement the customer's governing agreement; controls can vary by plan and configuration.", "Approval aids do not guarantee prevention or reverse actions; connections can authorize data interaction.", "Shared environment data can persist after a Bot is deleted."]
+applicability = "Terms discovery, not a determination of this owner's contracting entity or agreement; no action authority or rights admission"
+supersession_state = "current"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "No affirmative legal-page upload license established"
+contradictions = []
+gaps = ["Underlying owner agreement and deployment were not inspected", "Source bytes and rights unverified by independent reviewer"]
+
+[[source]]
+id = "grok-bot-privacy-controls"
+canonical_url = "https://docs.x.ai/grok-bot/approvals-security-and-privacy"
+publisher = "SpaceXAI LLC (SpaceXAI Docs)"
+title = "Approvals, security, and privacy"
+edition_or_version = "Documentation last updated September 2, 2026"
+effective_date = "2026-09-02"
+retrieved_at = "2026-09-09T15:13:05Z"
+cache_status = "not_cached"
+license_or_rights = "Official public documentation; reference and original paraphrase only, no upload license established"
+data_class = "PUBLIC"
+locators = ["Configure Auto Review", "Control access to your local computer", "Cursor account and data settings", "Remove access and working data"]
+claims_supported = ["Auto Review is model-based and availability-dependent; local execution defaults to asking each time.", "Bot privacy and training opt-out follow applicable Cursor account settings, and Legacy Privacy Mode is unsupported.", "Deleting a Bot does not erase shared files or sessions."]
+applicability = "Bot-specific privacy routing; current owner settings and complete Cursor contractual controls remain unverified"
+supersession_state = "current"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "No affirmative documentation upload right established"
+contradictions = ["Generic Grok consumer Private Chat retention must not be substituted for the Bot-specific Cursor settings described here."]
+gaps = ["No default Bot publication state established", "No live local-execution, connector, training, retention or Auto Review settings inspected", "Linked Cursor contractual pages outside this xAI/Grok-only source set remain unreviewed", "Independent review open; no source cache"]
+
+[[source]]
+id = "grok-bot-sharing"
+canonical_url = "https://docs.x.ai/grok-bot/bots"
+publisher = "SpaceXAI LLC (SpaceXAI Docs)"
+title = "Create and manage Bots"
+edition_or_version = "Documentation last updated September 7, 2026"
+effective_date = "2026-09-07"
+retrieved_at = "2026-09-09T15:13:05Z"
+cache_status = "not_cached"
+license_or_rights = "Official public documentation; reference and original paraphrase only, no upload license established"
+data_class = "PUBLIC"
+locators = ["Share a Bot", "Delete a Bot", "Pin or hide a Bot"]
+claims_supported = ["Bot share links are public and expose shared configuration; recipients copy the Bot without receiving the originator's computer or conversation history.", "Hiding a Bot does not pause it or its routines."]
+applicability = "Sharing mechanism and lifecycle only; no claim that this owner's Bot has or lacks a public link"
+supersession_state = "current"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "No affirmative documentation upload right established"
+contradictions = []
+gaps = ["Default sharing and existing link state not established", "No source-byte cache or independent recheck"]
+
+[[source]]
+id = "grok-bot-connectors"
+canonical_url = "https://docs.x.ai/grok-bot/computer-and-apps"
+publisher = "SpaceXAI LLC (SpaceXAI Docs)"
+title = "Use the computer and apps"
+edition_or_version = "Documentation last updated August 11, 2026"
+effective_date = "2026-08-11"
+retrieved_at = "2026-09-09T15:13:05Z"
+cache_status = "not_cached"
+license_or_rights = "Official public documentation; reference and original paraphrase only, no upload license established"
+data_class = "PUBLIC"
+locators = ["One computer, shared by all your Bots", "Watch computer work", "Connect an app"]
+claims_supported = ["Installed connectors are account-wide and appear as Plugins.", "Closing the app or laptop does not stop cloud work."]
+applicability = "Connector and session boundaries; no account integrations inspected or granted"
+supersession_state = "current"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "No affirmative documentation upload right established"
+contradictions = []
+gaps = ["Actual connectors, permissions and active routines unknown", "No source cache or independent locator verification"]
+
+[[source]]
+id = "grok-consumer-privacy"
+canonical_url = "https://x.ai/legal/privacy-policy"
+publisher = "SpaceXAI LLC"
+title = "SpaceXAI Privacy Policy"
+edition_or_version = "Effective August 24, 2026"
+effective_date = "2026-08-24"
+retrieved_at = "2026-09-09T15:13:05Z"
+cache_status = "not_cached"
+license_or_rights = "Official public legal reference; original paraphrase only, no upload or redistribution license established"
+data_class = "PUBLIC"
+locators = ["Opening scope and exclusions", "5. Retention of personal information"]
+claims_supported = ["Policy excludes processing on behalf of business customers and use through third-party services.", "Consumer Private Chat describes deletion within 30 days subject to legal, compliance and safety exceptions."]
+applicability = "Consumer comparison only; not proof of Grok Bot retention, training or owner privacy settings"
+supersession_state = "current"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "No affirmative legal-page upload right established"
+contradictions = ["Search surfaced an April 4 policy through a query-bearing variant; the reopened canonical page gives August 24. Only the canonical current version is recorded."]
+gaps = ["No source-byte digest or independent verification", "Bot-specific underlying Cursor agreement remains outside this source set"]

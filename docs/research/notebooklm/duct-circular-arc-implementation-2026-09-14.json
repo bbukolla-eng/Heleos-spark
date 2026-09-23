@@ -1,0 +1,374 @@
+{
+  "schema_version": 1,
+  "task_id": "DUCT-CIRCULAR-ARC-1",
+  "recorded_at": "2026-09-14T14:03:23.939485+00:00",
+  "status": "Implementation finished, independently reviewed, locally integrated uncommitted; separate package verified; full product goal remains active",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_head": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "authority": "Owner-approved D03 conditional true-curve measurement; original D01-D08 rules and deterministic quantity authority preserved. No private submission or generated rule adoption.",
+  "research": {
+    "inventory": {
+      "path": "docs/research/notebooklm/notebook-inventory.json",
+      "sha256": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a"
+    },
+    "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+    "query": {
+      "id": "c5434c3c6b47",
+      "state": "completed"
+    },
+    "findings": {
+      "path": "docs/research/notebooklm/duct-circular-arc-findings-2026-09-14.json",
+      "sha256": "182dc170bd23247e3922e1f35c5b5b293689a6214f023f39618c35fffb58fbe2"
+    },
+    "adoption_before_implementation": {
+      "path": ".heleos/duct-circular-arc-2026-09-14/root-source-adoption.json",
+      "sha256": "bc311d7daeb90ef598cda56334ff486a7b7864b427432deebdecb27e6bd27ae2"
+    },
+    "verified_passages": {
+      "path": ".heleos/duct-circular-arc-2026-09-14/research-verified-passages.json",
+      "sha256": "28422bbe717e5eaa7b7672165c2e60ae3829f35a71f27accc63a4c330f79ce10"
+    },
+    "new_bodies": 2,
+    "new_exact_passages": 11,
+    "reused_bodies": 2,
+    "reused_passages": 3,
+    "egress": {
+      "path": ".heleos/duct-circular-arc-2026-09-14/research-egress.jsonl",
+      "sha256": "6315a5948a1d7422873917b18f1559430bb60031bfdb68a2bef5afaf783edfda"
+    },
+    "before_after_pairs": 7,
+    "private_uploads": false,
+    "root_passage_byte_recheck": "11 whole-body and exact-span hashes passed during final documentation; no repeat remote query"
+  },
+  "plan": {
+    "path": "docs/superpowers/plans/2026-09-14-duct-circular-arc.md",
+    "sha256": "0cc0a0ac0bb166bf6ecb535ee4b768c87656fad09bbd8582fd3c06a156e4b563"
+  },
+  "method": {
+    "path": ".heleos/duct-circular-arc-2026-09-14/method-design.md",
+    "sha256": "b40deb7ddedced4cef6e5f11e3cfdb4489b8cc42165c2dbc8a6a57cd37a0560d"
+  },
+  "observation_contract": {
+    "path": "docs/superpowers/specs/2026-09-14-duct-observation-contract.md",
+    "sha256": "8145ec08ef070344d4e9b94f0a295e489273f30b8fbbf05576e2389fa14cd0c9"
+  },
+  "implementation": [
+    {
+      "path": "scripts/duct_arc_geometry.py",
+      "sha256": "86074478df030dad9a764e31643636584a07f5a21dfadad8d9f5c8591f6ba0f2"
+    },
+    {
+      "path": "scripts/duct_calculation.py",
+      "sha256": "986b9d6e16f65d2771b647b5d08a7b85e4d98247e30a8638eda50c4f742d968e"
+    },
+    {
+      "path": "scripts/sheet_scale.py",
+      "sha256": "7471fb28ffd52d864d9d6bb5deb5f236dab07297eb4c89775d08e70022877b7f"
+    },
+    {
+      "path": "scripts/project_duct_reading_links.py",
+      "sha256": "00c9cc38490e9b4cee6b92629dc6cdd7f87c81483b568167d4d573a8150942e9"
+    },
+    {
+      "path": "scripts/project_duct_refresh.py",
+      "sha256": "762705699a97759a56ae7994544a0f2537e04b122ff6bd4c29cfb7df7a658b52"
+    },
+    {
+      "path": "scripts/project_duct_takeoff.py",
+      "sha256": "ea46cbcbc8aca2d7db980c49110db56c6dc25902adc69dd0980158acf467dbfb"
+    },
+    {
+      "path": "scripts/takeoff_workflow.py",
+      "sha256": "d9adc9b7c1daff0357646c02a41f00ac79180d55d2af17b82a383382bc4080c7"
+    },
+    {
+      "path": "scripts/local_duct_vision_v2.py",
+      "sha256": "0e9b84cd860164369bd11815c95ba8f4c848be02410523065c0886ab6d4659bf"
+    },
+    {
+      "path": "scripts/duct_source_producer.py",
+      "sha256": "f973726f9652beb895b55d94029918a6c64bf96d29a451729e20faf60086a4ab"
+    },
+    {
+      "path": "scripts/duct_path_scoring.py",
+      "sha256": "d7b7f4ad5023dc209d10a0f54d21d69f46850bd8f71c68c7a33d1267b4e50ece"
+    },
+    {
+      "path": "scripts/workspace_package.py",
+      "sha256": "32755af28e26694d822116e20bef54d33152c601817568b5578c0d80be7c21fd"
+    },
+    {
+      "path": "apps/drawing-workspace/app.js",
+      "sha256": "6c26369ccc5b8a99216c02d646de6037178126e1287f4a907bb8d48406f6cb44"
+    },
+    {
+      "path": "apps/drawing-workspace/ducts.js",
+      "sha256": "f21217300ba75a3e4ada535b67c3919f446da3bf17af16737c96b23f5b57366a"
+    },
+    {
+      "path": "apps/drawing-workspace/path_editor.js",
+      "sha256": "cf8529a09c8a90852ae5bbaa3574cee79a084f5f29b2335659d72d8329a31eb9"
+    },
+    {
+      "path": "apps/drawing-workspace/styles.css",
+      "sha256": "0945478b16c8c8f36e1455a00c18696ecd55753bdcb91c87aab64296397c792e"
+    },
+    {
+      "path": "apps/drawing-workspace/package-readme.txt",
+      "sha256": "433194d62ae4768e2b3ced04cae92c9f4735abb053259026e9c4eefd2ec0570e"
+    }
+  ],
+  "source_to_behavior_and_tests": [
+    {
+      "passages": [
+        "CA01",
+        "CA02",
+        "CA03",
+        "CA04"
+      ],
+      "source_context": "Circular distance is radius times sweep in radians; endpoints alone do not identify full/major extent.",
+      "behavior": "Explicit start/through/end simple circular arc in canonical PDF micropoints; rational circle and certified outward angle/radius bounds admit only a proved positive six-decimal-meter HALF_EVEN result.",
+      "code": [
+        {
+          "path": "scripts/duct_arc_geometry.py",
+          "sha256": "86074478df030dad9a764e31643636584a07f5a21dfadad8d9f5c8591f6ba0f2"
+        },
+        {
+          "path": "scripts/duct_calculation.py",
+          "sha256": "986b9d6e16f65d2771b647b5d08a7b85e4d98247e30a8638eda50c4f742d968e"
+        }
+      ],
+      "tests": [
+        {
+          "path": "tests/drawing-workspace/test_duct_arc_geometry.py",
+          "sha256": "f01ea97edbc229c2931d9fc4337adf09f4bc86f16d5ec6648642de8931256fca"
+        },
+        {
+          "path": "tests/drawing-workspace/test_duct_circular_arc.py",
+          "sha256": "380a5254d6d168352f6bde80c49ea4a4dd8ee6ed6df6b124cb97193da4f5a5ae"
+        }
+      ],
+      "engineering_limit": "Machin pi identity, atan/sqrt interval bounds, resource caps and rounding admission are explicit engineering choices with independent mathematical checks; not source-certified algorithms."
+    },
+    {
+      "passages": [
+        "CA05",
+        "CA06",
+        "CA07",
+        "CA08",
+        "CA09",
+        "CA10",
+        "CA11"
+      ],
+      "source_context": "Library documentation distinguishes planar circular arcs, angle units, orientation, chord approximations and ellipses; its third-point CCW convention is not the product through-point contract.",
+      "behavior": "Separate v2 schema/adapter preserves v1 bytes and replay. Circular-arc display and correction retain three anchors, reject degeneracy without chord fallback, and use the complete curve for view and graphic coverage.",
+      "code": [
+        {
+          "path": "scripts/local_duct_vision_v2.py",
+          "sha256": "0e9b84cd860164369bd11815c95ba8f4c848be02410523065c0886ab6d4659bf"
+        },
+        {
+          "path": "scripts/duct_source_producer.py",
+          "sha256": "f973726f9652beb895b55d94029918a6c64bf96d29a451729e20faf60086a4ab"
+        },
+        {
+          "path": "scripts/sheet_scale.py",
+          "sha256": "7471fb28ffd52d864d9d6bb5deb5f236dab07297eb4c89775d08e70022877b7f"
+        },
+        {
+          "path": "apps/drawing-workspace/path_editor.js",
+          "sha256": "cf8529a09c8a90852ae5bbaa3574cee79a084f5f29b2335659d72d8329a31eb9"
+        }
+      ],
+      "tests": [
+        {
+          "path": "tests/drawing-workspace/test_duct_arc_producer.py",
+          "sha256": "a0495154499b394030df0c66adc8f6f9530edddd89fc4a265d07f3807bb35933"
+        },
+        {
+          "path": "tests/drawing-workspace/test_duct_arc_geometry.py",
+          "sha256": "f01ea97edbc229c2931d9fc4337adf09f4bc86f16d5ec6648642de8931256fca"
+        },
+        {
+          "path": "tests/drawing-workspace/path-editor.test.cjs",
+          "sha256": "4f233703f85ecea75cac0607cfed1e2bd5001f43ad5eac41e00c9ee4764e392d"
+        }
+      ],
+      "engineering_limit": "Exact clipping, tangency, open complements and rectangle-union coverage are independently tested local algorithms. Graphic containment does not prove semantic duct ink."
+    },
+    {
+      "passages": [
+        "Retained FEMA dimension/scale conflict and Bluebeam curve UI context in findings record"
+      ],
+      "source_context": "Reuse source-linked scale review and UI context without changing D05 precedence.",
+      "behavior": "Centerline radius and whole-length checks have disjoint consumed roles; foreign readings retain exact source bindings. Corrections, omitted reread constraints, history and affected recalculation remain connected.",
+      "code": [
+        {
+          "path": "scripts/project_duct_reading_links.py",
+          "sha256": "00c9cc38490e9b4cee6b92629dc6cdd7f87c81483b568167d4d573a8150942e9"
+        },
+        {
+          "path": "scripts/project_duct_refresh.py",
+          "sha256": "762705699a97759a56ae7994544a0f2537e04b122ff6bd4c29cfb7df7a658b52"
+        },
+        {
+          "path": "scripts/project_duct_takeoff.py",
+          "sha256": "ea46cbcbc8aca2d7db980c49110db56c6dc25902adc69dd0980158acf467dbfb"
+        },
+        {
+          "path": "scripts/takeoff_workflow.py",
+          "sha256": "d9adc9b7c1daff0357646c02a41f00ac79180d55d2af17b82a383382bc4080c7"
+        },
+        {
+          "path": "apps/drawing-workspace/ducts.js",
+          "sha256": "f21217300ba75a3e4ada535b67c3919f446da3bf17af16737c96b23f5b57366a"
+        }
+      ],
+      "tests": [
+        {
+          "path": "tests/drawing-workspace/test_duct_circular_arc.py",
+          "sha256": "380a5254d6d168352f6bde80c49ea4a4dd8ee6ed6df6b124cb97193da4f5a5ae"
+        },
+        {
+          "path": "tests/drawing-workspace/acceptance_duct_circular_arc.py",
+          "sha256": "b7d8cc330b68754da04d39f8ec7f4811014398179046a4ad8ffe389d451f4a87"
+        },
+        {
+          "path": "tests/drawing-workspace/duct-ui.test.cjs",
+          "sha256": "246e4a32bc0d484b53dcdc36b449b679ae60b5767e3728cc51d8bd25176eb6b1"
+        }
+      ],
+      "engineering_limit": "Owner D05 remains authoritative; source interpretation and physical correspondence require explicit local review. Radius diagnostic values do not manufacture source readings."
+    }
+  ],
+  "review_findings_closed": [
+    "DCA-E01: one-to-one reread cannot replace a retained planar split leaf with an arc; preflight rejection preserves in-memory and stored bytes.",
+    "PR-R1: v2 producer identity hashes the actual imported legacy adapter dependency; v1 identity remains unchanged.",
+    "UI-R1: malformed observation versions/containers reject with typed validation before scoring.",
+    "UI-R2: source edit/highlight validates available current geometry fingerprint as well as dimensions and transform.",
+    "UI-R3: isolated package test fixture explicitly includes the two new payloads while retaining historical51 mapping."
+  ],
+  "verification": {
+    "root_python": [
+      {
+        "receipt": {
+          "path": ".heleos/duct-circular-arc-2026-09-14/root-python314-final.json",
+          "sha256": "0d5817580a46a51ff13224a012eb8912ce7db83c170f841ed0b32c7243d812e8"
+        },
+        "tests": 361,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "stable_bytes": true,
+        "exit_code": 0,
+        "command": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          ".heleos/duct-circular-arc-2026-09-14/root-final-checks.py",
+          "--output",
+          "root-python314-final.json"
+        ]
+      },
+      {
+        "receipt": {
+          "path": ".heleos/duct-circular-arc-2026-09-14/root-python39-final.json",
+          "sha256": "66de7cf478a89f32170353be48a6eb596649adf942fe2978a8f01d1b08012dd7"
+        },
+        "tests": 361,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "stable_bytes": true,
+        "exit_code": 0,
+        "command": [
+          "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+          "-B",
+          ".heleos/duct-circular-arc-2026-09-14/root-final-checks.py",
+          "--output",
+          "root-python39-final.json"
+        ]
+      }
+    ],
+    "node_ui": {
+      "receipt": {
+        "path": ".heleos/duct-circular-arc-2026-09-14/root-ui-final.log",
+        "sha256": "241def8c8898ba19f5b5c75e964f68be6d6fe8dbe63259b46910d22183d20b8f"
+      },
+      "tests": 99,
+      "exit_code": 0,
+      "command": "node --test tests/drawing-workspace/path-editor.test.cjs tests/drawing-workspace/duct-ui.test.cjs tests/drawing-workspace/duct-evaluation-ui.test.cjs"
+    },
+    "independent_reviews": [
+      {
+        "path": ".heleos/duct-circular-arc-2026-09-14/review-geometry-final.json",
+        "sha256": "496fd51cfab87385ab7f16d6e22699d750005dcd83465580bf724f86ed072085"
+      },
+      {
+        "path": ".heleos/duct-circular-arc-2026-09-14/review-engine-final.json",
+        "sha256": "39c65a1c4021dc3b0e8791de5d3c1a76a16db24babb4693f7d2b0712355e2005"
+      },
+      {
+        "path": ".heleos/duct-circular-arc-2026-09-14/review-ui-final.json",
+        "sha256": "fd7ba5fc80edbe7c0cfa5169171f51c6cf4307e9ffcb0fc9e560d55eca843729"
+      }
+    ],
+    "independent_geometry": "14,490 exact-geometry cases per Python runtime plus17 angle-bound,16 quantity and8 refusal probes with a different pi identity. UI review also checked5,280 arc triples over all four rotations.",
+    "native_mac": {
+      "receipt": {
+        "path": ".heleos/duct-circular-arc-native-2026-09-14-attempt-1/duct-circular-arc-verification.json",
+        "sha256": "94eb9dbde7ad947dcf6b71e60feb55dd4e3547f9b0ca07d4d9d662223896f304"
+      },
+      "state": "PASS",
+      "command": "FONTCONFIG_FILE=/Users/bekim/Heleos-spark/apps/drawing-workspace/fonts-macos.conf XDG_CACHE_HOME=/Users/bekim/Heleos-spark/.heleos/duct-circular-arc-2026-09-14/renderer-cache /opt/homebrew/opt/python@3.14/bin/python3.14 -B tests/drawing-workspace/acceptance_duct_circular_arc.py --workspace .heleos/duct-circular-arc-native-2026-09-14-attempt-1 --heleos target/debug/heleos --pdftotext /Users/bekim/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/poppler/poppler/bin/pdftotext --pdftoppm /Users/bekim/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/poppler/poppler/bin/pdftoppm",
+      "exit_code": 0,
+      "source": {
+        "path": "output/pdf/original-duct-circular-arcs.pdf",
+        "sha256": "69486053a876a4b42da51063797effccd996a8f4f74aa621f5d6e4e507623a46"
+      },
+      "frozen_expected": {
+        "path": "tests/fixtures/duct-takeoff/circular-arc-expected.json",
+        "sha256": "bbfea02a997b21ff4619f0fa5a35c35d630b7dc7858d7a581f62c9697613755a"
+      },
+      "source_visual_inspection": "Worker inspected original pages before freeze; root inspected both actual native rendered pages, with matching reread PNG bytes.",
+      "literal_results": {
+        "quarter_m": "1.915115",
+        "major_m": "5.745345",
+        "sum_stored_m": "7.660460",
+        "quarter_ft": "6.28",
+        "major_ft": "18.85",
+        "total_ft": "25.13"
+      },
+      "limits": "Original synthetic two-page source and inert v2 transport; actual Foundation/Poppler lifecycle. No live model, listener or representative-project truth."
+    },
+    "package": {
+      "receipt": {
+        "path": ".heleos/duct-circular-arc-2026-09-14/root-package-verification.json",
+        "sha256": "df7614cda44d59fbf911dfe460142c029001cccb2f6e827fce0637b1f04b48ba"
+      },
+      "package_id": "workspace_98bf0a3360d0a1968ba9afb3815e7451fcae94229c122fedbca3b42e3751570d",
+      "payload_count": 53,
+      "archive": {
+        "path": "output/workspace-package/Heleos-preview-circular-arc-candidate.zip",
+        "bytes": 1393986,
+        "sha256": "075ea46a98c1436272dd579f218d9499f2afd0213813e6cb986f666ae52eb769"
+      }
+    }
+  },
+  "preserved": [
+    "Approved duct packet, examples and owner decision",
+    "Legacy v1 adapter bytes and producer semantics",
+    "Both earlier preview folders/ZIPs and proof",
+    "Owner-review workbook and evidence PDF bytes; approval remains pending"
+  ],
+  "outstanding": [
+    "Arc splitting, one-to-many topology mapping and circular-arc evaluation metrics",
+    "Arbitrary curves, full circles, splines, unsupported nonplanar/flex/hidden geometry",
+    "Live recognition accuracy and owner-adjudicated representative projects",
+    "Air-device counting packet approval and remaining Division23 categories",
+    "Final workbook/evidence-PDF schema approval and connected final export",
+    "Native Windows/NTFS, both-platform product acceptance, native installers and remaining release gates"
+  ],
+  "process_state": "All arc authors/reviewers and verification sessions terminal; no application/listener/model process running. Five workers reassigned to owner-requested NotebookLM expansion.",
+  "next_action": "Finish five notebook expansions to250 verified entries each with source quality distinctions, preserve this package, then resume the first approved unfinished full-goal dependency."
+}
