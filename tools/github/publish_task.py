@@ -116,6 +116,10 @@ def publish(repo, request, apply=False):
         if run(repo,'diff','HEAD','--',*request['paths']):raise PublishError('Committed task differs from request')
         check_baseline(repo,base,head)
     if not apply:return {'state':'ready','task_id':request['task_id'],'commit':head if resumed else None}
+    live_main=api(f'repos/{REPO}/git/ref/heads/main')['object']['sha']
+    ancestry=api(f'repos/{REPO}/compare/{base}...{live_main}')
+    if ancestry.get('status') not in {'identical','ahead'} or ancestry.get('merge_base_commit',{}).get('sha')!=base:
+        raise PublishError('Task base contains unmerged feature ancestry; do not publish to main')
     state_dir=gitdir/'heleos-delivery';state_dir.mkdir(exist_ok=True)
     lock=state_dir/'publisher.lock'
     try:lock.mkdir()

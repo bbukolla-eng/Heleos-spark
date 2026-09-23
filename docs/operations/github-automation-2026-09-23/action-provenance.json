@@ -1,0 +1,106 @@
+{
+  "verification": "Official GitHub commit, tag inventory and license endpoints; floating tag endpoint v4 was unavailable, so retained immutable commit and matching release tag evidence.",
+  "actions": [
+    {
+      "repository": "actions/checkout",
+      "requested_ref": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "sha": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "tags": [
+        "v7.0.1",
+        "v7"
+      ],
+      "commit_url": "https://github.com/actions/checkout/commit/3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "license": "MIT",
+      "license_url": "https://github.com/actions/checkout/blob/main/LICENSE",
+      "error": null
+    },
+    {
+      "repository": "actions/checkout",
+      "requested_ref": "11bd71901bbe5b1630ceea73d27597364c9af683",
+      "sha": "11bd71901bbe5b1630ceea73d27597364c9af683",
+      "tags": [
+        "v4.2.2"
+      ],
+      "commit_url": "https://github.com/actions/checkout/commit/11bd71901bbe5b1630ceea73d27597364c9af683",
+      "license": "MIT",
+      "license_url": "https://github.com/actions/checkout/blob/main/LICENSE",
+      "error": null
+    },
+    {
+      "repository": "actions/setup-python",
+      "requested_ref": "5fda3b95a4ea91299a34e894583c3862153e4b97",
+      "sha": "5fda3b95a4ea91299a34e894583c3862153e4b97",
+      "tags": [
+        "v7.0.0",
+        "v7"
+      ],
+      "commit_url": "https://github.com/actions/setup-python/commit/5fda3b95a4ea91299a34e894583c3862153e4b97",
+      "license": "MIT",
+      "license_url": "https://github.com/actions/setup-python/blob/main/LICENSE",
+      "error": null
+    },
+    {
+      "repository": "anthropics/claude-code-action",
+      "requested_ref": "833fb0f8c9f6686b33d963a8bae0a94f4936ab2a",
+      "sha": "833fb0f8c9f6686b33d963a8bae0a94f4936ab2a",
+      "tags": [
+        "v1.0.211"
+      ],
+      "commit_url": "https://github.com/anthropics/claude-code-action/commit/833fb0f8c9f6686b33d963a8bae0a94f4936ab2a",
+      "license": "MIT",
+      "license_url": "https://github.com/anthropics/claude-code-action/blob/main/LICENSE",
+      "error": null
+    },
+    {
+      "repository": "actions/upload-artifact",
+      "requested_ref": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+      "sha": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+      "tags": [
+        "v7.0.1",
+        "v7"
+      ],
+      "commit_url": "https://github.com/actions/upload-artifact/commit/043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+      "license": "MIT",
+      "license_url": "https://github.com/actions/upload-artifact/blob/main/LICENSE",
+      "error": null
+    },
+    {
+      "repository": "actions/create-github-app-token",
+      "requested_ref": "fee1f7d63c2ff003460e3d139729b119787bc349",
+      "sha": "fee1f7d63c2ff003460e3d139729b119787bc349",
+      "tags": [
+        "v2.2.2",
+        "v2"
+      ],
+      "commit_url": "https://github.com/actions/create-github-app-token/commit/fee1f7d63c2ff003460e3d139729b119787bc349",
+      "license": "MIT",
+      "license_url": "https://github.com/actions/create-github-app-token/blob/main/LICENSE",
+      "error": null
+    },
+    {
+      "repository": "actions/dependency-review-action",
+      "requested_ref": "2031cfc080254a8a887f58cffee85186f0e49e48",
+      "sha": "2031cfc080254a8a887f58cffee85186f0e49e48",
+      "tags": [
+        "v4.9.0"
+      ],
+      "commit_url": "https://github.com/actions/dependency-review-action/commit/2031cfc080254a8a887f58cffee85186f0e49e48",
+      "license": "MIT",
+      "license_url": "https://github.com/actions/dependency-review-action/blob/main/LICENSE",
+      "error": null
+    },
+    {
+      "repository": "actions/setup-node",
+      "requested_ref": "v7",
+      "sha": "820762786026740c76f36085b0efc47a31fe5020",
+      "tags": [
+        "v7.0.0",
+        "v7"
+      ],
+      "commit_url": "https://github.com/actions/setup-node/commit/820762786026740c76f36085b0efc47a31fe5020",
+      "license": "MIT",
+      "license_url": "https://github.com/actions/setup-node/blob/main/LICENSE",
+      "error": null
+    }
+  ]
+}

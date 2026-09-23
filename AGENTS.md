@@ -55,6 +55,8 @@ The automation remains disabled until published and independently verified; see
 [delivery policy](docs/policies/github-automation.md). This instruction describes
 the completion step an active controller invokes, not a background file watcher.
 
+Independently accepted tasks published through this entrypoint open ready-for-review PRs. This scoped exception supersedes older draft-only instructions; unaccepted candidates remain drafts. Publication never supplies the required independent GitHub approval.
+
 ## Start from verified state
 
 1. Identify the exact checkout, branch, HEAD, and dirty paths before editing. Use explicit repository paths; this Codex task may start in `/Users/bekim`.

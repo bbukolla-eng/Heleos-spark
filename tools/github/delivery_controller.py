@@ -15,10 +15,11 @@ REPO = 'bbukolla-eng/Heleos-spark'
 OWNER = 'bbukolla-eng'
 REVIEWERS = {'coderabbitai[bot]', 'chatgpt-codex-connector[bot]'}
 SENSITIVE = ('.github/', '.claude/', '.githooks/', '.agents/', 'tools/github/',
-             'tools/egress/', 'tools/ci/', 'docs/policies/', 'docs/decisions/',
+             'tools/egress/', 'tools/ci/', 'docs/policies/', 'docs/decisions/', 'docs/architecture/decisions/', 'docs/roadmap/',
              'crates/heleos-worker-', 'docs/operations/github-automation-')
 SENSITIVE_FILES = {'AGENTS.md','CLAUDE.md','CURSOR.md','GROK.md','GROKBOTS.md',
-                   'SKILLS.md','.coderabbit.yaml','SECURITY.md',
+                   'SKILLS.md','.coderabbit.yaml','SECURITY.md','GOAL.md','ROADMAP.md','docs/roadmap.md',
+                   'docs/superpowers/specs/2026-08-26-heleos-spark-foundation-design.md',
                    'scripts/verify-build-checkpoint.py','scripts/install-build-hooks.py',
                    'scripts/active-build-status.py'}
 
@@ -53,7 +54,7 @@ def independent_approvals(reviews, head, writers):
     latest={}
     for review in sorted(reviews,key=lambda r:r['id']):
         login=review.get('user',{}).get('login','')
-        if review.get('state')!='PENDING': latest[login]=review
+        if review.get('state') in {'APPROVED','CHANGES_REQUESTED','DISMISSED'}: latest[login]=review
     if any(r.get('state')=='CHANGES_REQUESTED' for r in latest.values()): return set()
     return {login for login,r in latest.items() if login in REVIEWERS and login not in writers
             and r.get('user',{}).get('type')=='Bot' and r.get('state')=='APPROVED'
@@ -84,6 +85,21 @@ def evaluate(pr, files, reviews, comments, checks, writers, base, activation, ap
     # authoritative; do not invent a separate scanner app/status publisher.
     if not security_protected: reasons.append('native CodeQL protection not verified')
     return {'eligible':not reasons,'reasons':reasons,'sensitive':sensitive,'head':head}
+
+
+
+def refresh_candidate(url, number, expected_head, files, writers, base, activation, app_login, security_protected=False):
+    """Reload revocable approval, consent, checks and PR state before acting."""
+    fresh=gh(url)
+    if fresh['head']['sha']!=expected_head or fresh['base']['sha']!=base:
+        return fresh, {'eligible':False,'reasons':['candidate or target changed'],
+                       'head':fresh['head']['sha']}, [], []
+    reviews=pages(url+'/reviews')
+    comments=pages(f'repos/{REPO}/issues/{number}/comments')
+    checks=pages(f'repos/{REPO}/commits/{expected_head}/check-runs','check_runs')
+    result=evaluate(fresh,files,reviews,comments,checks,writers,base,activation,
+                    app_login,security_protected=security_protected)
+    return fresh,result,reviews,comments
 
 
 def fix_request(pr, files, reviews, comments, activation, app_login):
@@ -147,7 +163,8 @@ def main():
     settings=gh('repos/'+REPO)
     if settings.get('private') is not False: raise SystemExit('Only approved public repository scope supported')
     protection=gh(f'repos/{REPO}/rulesets/22285340')
-    if not protection_ready(protection,settings): raise SystemExit('Protection contract incomplete or changed; no delivery action taken')
+    security_protected=protection_ready(protection,settings)
+    if not security_protected: raise SystemExit('Protection contract incomplete or changed; no delivery action taken')
     reports=[]
     for item in pages('repos/'+REPO+'/pulls?state=open'):
         if stamp(item['created_at']) < stamp(activation): continue
@@ -158,15 +175,16 @@ def main():
         # Unattributed commit identities do not qualify for unattended delivery.
         attributable=bool(commits) and len(commits)==pr['commits'] and all(c.get('author') and c.get('committer') for c in commits)
         base=gh(f'repos/{REPO}/git/ref/heads/main')['object']['sha']
-        result=evaluate(pr,files,reviews,comments,checks,writers,base,activation,app_login,security_protected=True)
+        result=evaluate(pr,files,reviews,comments,checks,writers,base,activation,app_login,security_protected=security_protected)
         if not attributable: result['eligible']=False;result['reasons'].append('unattributed commit writer')
         result['pr']=number;reports.append(result)
         if not args.apply: continue
-        fresh=gh(url)
+        fresh,latest,reviews,comments=refresh_candidate(url,number,pr['head']['sha'],
+            files,writers,base,activation,app_login,security_protected=security_protected)
         if fresh['head']['sha']!=pr['head']['sha'] or fresh['base']['sha']!=base: continue
-        # Reevaluate mutable labels, draft/state and mergeability immediately before action.
-        latest=evaluate(fresh,files,reviews,comments,checks,writers,base,activation,app_login,security_protected=True)
-        if not latest['eligible']: result['eligible']=False;result['reasons']=latest['reasons']
+        result.update(latest)
+        if not attributable:
+            result['eligible']=False;result['reasons'].append('unattributed commit writer')
         message=fix_request(fresh,files,reviews,comments,activation,app_login)
         if message:
             # Log public provider submission before requesting a separate candidate.
@@ -176,8 +194,13 @@ def main():
             runs=pages(f'repos/{REPO}/actions/runs?branch=main&head_sha={base}','workflow_runs')
             if not main_ci_ready(runs,base):
                 result['eligible']=False;result['reasons'].append('main CI pending/failed');continue
-            if not protection_ready(gh(f'repos/{REPO}/rulesets/22285340'),gh('repos/'+REPO)):
+            security_protected=protection_ready(gh(f'repos/{REPO}/rulesets/22285340'),gh('repos/'+REPO))
+            if not security_protected:
                 raise SystemExit('Protection changed before merge; no merge attempted')
+            fresh,latest,_,_=refresh_candidate(url,number,pr['head']['sha'],
+                files,writers,base,activation,app_login,security_protected=security_protected)
+            result.update(latest)
+            if not latest['eligible']: continue
             # Merge the verified immutable head only. A queued native auto-merge
             # could otherwise outlive this head's sensitive-change consent.
             # The installation has no ruleset bypass; native rules still apply.

@@ -40,6 +40,8 @@ class PublisherTests(unittest.TestCase):
         self.calls=[]
         def api(endpoint,data=None,method=None):
             self.calls.append((endpoint,data,method))
+            if endpoint.endswith('/git/ref/heads/main'):return {'object':{'sha':self.base}}
+            if '/compare/' in endpoint:return {'status':'identical','merge_base_commit':{'sha':self.base}}
             if '/pulls?' in endpoint:return []
             if endpoint.endswith('/pulls'):return {'number':99,'html_url':'https://github.com/bbukolla-eng/Heleos-spark/pull/99','head':{'sha':git(self.repo,'rev-parse','HEAD')}}
             return {}
@@ -103,7 +105,11 @@ class PublisherTests(unittest.TestCase):
     def test_existing_pr_reused_without_duplicate(self):
         first=m.publish(self.repo,self.request,True)
         pr={'number':99,'state':'open','html_url':first['pr_url'],'body':'<!-- heleos-delivery:TASK-1 -->','head':{'sha':first['commit']}}
-        with patch.object(m,'api',side_effect=lambda endpoint,data=None,method=None: [pr] if '/pulls?' in endpoint else {}) as api:
+        def existing(endpoint,data=None,method=None):
+            if endpoint.endswith('/git/ref/heads/main'):return {'object':{'sha':self.base}}
+            if '/compare/' in endpoint:return {'status':'identical','merge_base_commit':{'sha':self.base}}
+            return [pr] if '/pulls?' in endpoint else {}
+        with patch.object(m,'api',side_effect=existing) as api:
             second=m.publish(self.repo,self.request,True)
         self.assertEqual(first['commit'],second['commit'])
         self.assertFalse(any(c.args[0].endswith('/pulls') for c in api.call_args_list))
@@ -117,6 +123,15 @@ class PublisherTests(unittest.TestCase):
         self.assertEqual(self.request['paths'],request['paths'])
         self.assertEqual('TASK-1',request['task_id'])
         self.assertEqual('ready',m.publish(self.repo,request,False)['state'])
+
+    def test_unmerged_feature_ancestry_is_not_pushed(self):
+        def unmerged(endpoint,data=None,method=None):
+            if endpoint.endswith('/git/ref/heads/main'):return {'object':{'sha':'f'*40}}
+            if '/compare/' in endpoint:return {'status':'behind','merge_base_commit':{'sha':'f'*40}}
+            self.fail('No remote mutation is permitted with unmerged ancestry')
+        with patch.object(m,'api',side_effect=unmerged):
+            with self.assertRaises(m.PublishError):m.publish(self.repo,self.request,True)
+        self.assertEqual(self.base,git(self.repo,'rev-parse','HEAD'))
 
     def test_symlink_parent_rejected(self):
         (self.repo/'link').symlink_to(self.main,target_is_directory=True);self.request['paths']['link/a.txt']=hashlib.sha256(b'before\n').hexdigest()

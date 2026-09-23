@@ -3,20 +3,20 @@
 **Isolated automation side task, 2026-09-23 UTC:** This copy is in
 `/Users/bekim/.codex/worktrees/github-automation/Heleos-spark`, branch
 `codex/github-automation`, initial base `f9d7ceda027875b0dbef24710bfca96c6c95a104`; published setup
-commit `ce9d99e9ec8193edd79b03a7da35c0ef76746536` is the parent of this follow-up.
+commits `ce9d99e` and `d502e0d` precede this review-fix checkpoint.
 Codex owns only this automation candidate; Cursor's parent checkout and the
-product queue below are unchanged. GITHUB-AUTOMATION-2026-09-23 is in progress:
-custom app installed only on Heleos-spark, key secret name verified, CodeQL setup
-passed, Dependabot enabled and native review/security/merge rules strengthened.
-Automation remains disabled. Local policy tests and schema checks pass; independent
-review, publication and GitHub pilot remain outstanding. Scoped setup commit/push/PR publication is authorized by the latest owner request;
-no unrelated product merge is authorized. [Task record](docs/operations/github-automation-2026-09-23/README.md).
-PR [#26](https://github.com/bbukolla-eng/Heleos-spark/pull/26) is open against
-`2026-09-21-t5b5`. Initial GitHub checks/dependency review and Amazon Q passed;
-CodeRabbit review is running. The CodeQL protection follow-up passed 23 local
-policy tests. Next side-task action: review the latest candidate and its CI, then
-perform a disabled-mode GitHub pilot after the checkpoint foundation reaches main.
-Do not use this side checkpoint to reroute or reopen the product queue.
+product queue below remain unchanged. GITHUB-AUTOMATION-2026-09-23 is in progress:
+app and security protections are configured; delivery remains disabled.
+[PR26](https://github.com/bbukolla-eng/Heleos-spark/pull/26) targets
+`2026-09-21-t5b5`; it does not authorize merging PR24. All 240 local tests passed
+on this review-fix candidate. Independent review has found remaining provider
+admission, audit-record and activation conditions; no acceptance is claimed.
+See the [task record](docs/operations/github-automation-2026-09-23/README.md).
+Next side action: reconcile provider admission and durable seven-field submission
+records, obtain current-head independent review, then perform the GitHub pilot
+when the foundation reaches main. Follow-up `heleos-delivery-pr-follow-up` is
+active every 15 minutes in this thread. Do not use this side checkpoint to
+reroute or reopen the product queue.
 
 Updated 2026-09-22. Checkout `/Users/bekim/Heleos-spark`, branch `2026-09-21-t5b5`; this queue update is based on `5715a45dd4b26f8107271e5f0b2c04cd3901517d`. Queue edits are local until explicitly committed.
 **Resume here is the single live queue.** The goal defines the product outcome;

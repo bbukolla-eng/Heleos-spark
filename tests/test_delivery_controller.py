@@ -52,6 +52,18 @@ class DeliveryPolicy(unittest.TestCase):
         self.review[0]['state']='COMMENTED'
         self.assertFalse(self.result()['eligible'])
 
+    def test_comment_does_not_withdraw_approval_but_dismissal_does(self):
+        self.review.append(dict(self.review[0],id=2,state='COMMENTED'))
+        self.assertTrue(self.result()['eligible'])
+        self.review.append(dict(self.review[0],id=3,state='DISMISSED'))
+        self.assertFalse(self.result()['eligible'])
+
+    def test_governing_documents_require_sensitive_consent(self):
+        for name in ['GOAL.md','ROADMAP.md','docs/architecture/decisions/0001-foundation-runtime.md','docs/roadmap/skills-and-plugins.md','docs/superpowers/specs/2026-08-26-heleos-spark-foundation-design.md']:
+            with self.subTest(name=name):
+                self.files=[{'filename':name}]
+                self.assertFalse(self.result()['eligible'])
+
     def test_writer_cannot_supply_independent_review(self):
         self.writers.add('coderabbitai[bot]')
         self.assertFalse(self.result()['eligible'])
@@ -148,6 +160,15 @@ class DeliveryPolicy(unittest.TestCase):
         rule['bypass_actors']=[]
         settings['allow_squash_merge']=True
         self.assertFalse(m.protection_ready(rule,settings))
+
+    def test_refresh_rejects_revoked_consent(self):
+        self.files=[{'filename':'.github/workflows/delivery.yml'}]
+        self.comments=[{'user':{'login':m.OWNER},'body':'Heleos owner consent '+HEAD}]
+        self.assertTrue(self.result()['eligible'])
+        with patch.object(m,'gh',return_value=self.pr), patch.object(m,'pages',side_effect=[self.review,[],self.checks]):
+            _,result,_,_=m.refresh_candidate('pr-url',26,HEAD,self.files,self.writers,BASE,ACTIVATION,BOT,security_protected=True)
+        self.assertFalse(result['eligible'])
+        self.assertIn('sensitive change requires owner consent for this head',result['reasons'])
 
     def test_unzoned_activation_rejected(self):
         with self.assertRaises(ValueError):m.stamp('2026-09-23T00:00:00')

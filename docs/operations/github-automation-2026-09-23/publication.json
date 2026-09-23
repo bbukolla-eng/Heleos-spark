@@ -20,5 +20,13 @@
     "code_change": "evaluate requires explicit native security assurance; main passes it only after validating ruleset, and checks ruleset again before merge"
   },
   "activation": "disabled; dependent foundation PR24 still open; no unrelated merge attempted",
-  "next_action": "Finish latest-candidate independent review, then verify integration/pilot after foundation reaches main."
+  "next_action": "Finish latest-candidate independent review, then verify integration/pilot after foundation reaches main.",
+  "review_fix_checkpoint": {
+    "base_commit": "d502e0d8ff38f515fec7cfb4eb6cb4950ee576d8",
+    "tests": 240,
+    "outcome": "in progress; review fixes implemented, remaining activation findings recorded",
+    "evidence": "review-fix-checks.json",
+    "follow_up": "heleos-delivery-pr-follow-up",
+    "next_action": "Reconcile provider admission and durable seven-field audit records; then current-head review and live pilot."
+  }
 }

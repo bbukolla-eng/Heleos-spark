@@ -57,7 +57,7 @@ comment, acknowledgement or passing test alone is not acceptance. The existing
 
 Sensitive files include automation, hooks, worker boundaries, instructions
 and access/security policy. Routine status, checkpoint receipts, section research
-and product calculation scripts are not sensitive merely because they change. They require an owner comment exactly
+and product calculation scripts are not sensitive merely because they change. Sensitive changes require an owner comment exactly
 `Heleos owner consent FULL_40_CHARACTER_HEAD_SHA`, in addition to independent
 review and CI. This consent changes with the candidate SHA.
 
@@ -115,3 +115,47 @@ Only PRs with `heleos-delivery` are eligible for the merge controller. The publi
 adds this enrollment and `autofix`. `automation-hold` blocks both fixes and merges.
 Local task acceptance permits publication, not GitHub self-approval. An existing
 closed task PR is not silently recreated.
+
+## Workflow action provenance
+
+All rows were checked against the upstream GitHub commit, tag inventory and
+license endpoints; [API evidence](../operations/github-automation-2026-09-23/action-provenance.json)
+records the exact responses used. Action implementation changes require fresh
+review. A Claude action update also changes the egress evidence baseline.
+
+| Action | Immutable commit | Release | License |
+| --- | --- | --- | --- |
+| actions/checkout | `3d3c42e5aac5ba805825da76410c181273ba90b1` | v7.0.1 | [MIT](https://github.com/actions/checkout/blob/main/LICENSE) |
+| actions/checkout | `11bd71901bbe5b1630ceea73d27597364c9af683` | v4.2.2 | [MIT](https://github.com/actions/checkout/blob/main/LICENSE) |
+| actions/setup-python | `5fda3b95a4ea91299a34e894583c3862153e4b97` | v7.0.0 | [MIT](https://github.com/actions/setup-python/blob/main/LICENSE) |
+| anthropics/claude-code-action | `833fb0f8c9f6686b33d963a8bae0a94f4936ab2a` | v1.0.211 | [MIT](https://github.com/anthropics/claude-code-action/blob/main/LICENSE) |
+| actions/upload-artifact | `043fb46d1a93c77aae656e7c1c64a875d1fc6a0a` | v7.0.1 | [MIT](https://github.com/actions/upload-artifact/blob/main/LICENSE) |
+| actions/create-github-app-token | `fee1f7d63c2ff003460e3d139729b119787bc349` | v2.2.2 | [MIT](https://github.com/actions/create-github-app-token/blob/main/LICENSE) |
+| actions/dependency-review-action | `2031cfc080254a8a887f58cffee85186f0e49e48` | v4.9.0 | [MIT](https://github.com/actions/dependency-review-action/blob/main/LICENSE) |
+| actions/setup-node | `820762786026740c76f36085b0efc47a31fe5020` | v7.0.0 | [MIT](https://github.com/actions/setup-node/blob/main/LICENSE) |
+
+## Existing workflows and remaining enforcement limits
+
+The earlier September 2 authorization for `checks`, `claude-review`, `claude`,
+and the historical merge workflow remains recorded in repository history.
+`checks` performs repository validation; Claude workflows retain their separate
+Anthropic egress policy and credential controls; the AI review gate collects
+acknowledgements; Dependabot opens dependency updates. This candidate replaces
+only the old merge behavior, not those workflows or their provider conditions.
+The inspected `claude-egress` environment still needs its separately scoped
+protection repair. No claim is made that required reviewers are configured there.
+
+The new controller cannot activate until dependency-review is made required,
+current-head review and the live trial pass, and outstanding provider admission
+and durable submission-record findings are resolved. Native GitHub auto-merge
+remains enabled; the custom enrollment/consent/hold gates constrain this controller
+only, not independent manual or native auto-merge actions. The live trial must
+settle that alternative path before claiming repository-wide enforcement.
+
+The publisher validates receipt fields and hashes; it does not cryptographically
+prove reviewer independence. Only the trusted checkout controller invokes it after
+performing independent acceptance. Workers cannot obtain publishing authority by
+writing `accepted` into their own receipt. Publisher enrollment is the owner's
+standing opt-in for accepted routine tasks, not an additional independent review.
+PR26 was published manually as a dependency stack; the routine publisher supports
+only main-target tasks whose base is already main history.

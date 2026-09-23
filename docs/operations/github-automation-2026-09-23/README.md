@@ -155,3 +155,49 @@ The resulting main CodeQL workflow must also pass before another merge.
 23 policy tests pass, including missing native security assurance and routine
 checkpoint/enrollment cases. Independent review has not yet accepted this change.
 CodeRabbit confirmed the repository config and Advanced plan while reviewing PR26.
+
+## Review-fix checkpoint (parent d502e0d)
+
+Latest checks: all 240 Python tests passed on the final candidate code, including
+26 delivery-policy and 14 publisher cases. The stored `review-fix-suite.txt` and
+`review-fix-checks.json` supersede earlier counts for this candidate. Repository
+checks reported 1081 tracked files, zero failures before staging this checkpoint.
+
+Resolved in this candidate: Copilot 4078214603 (refresh revocable reviews, consent
+and checks before actions), 4078214637 (reject unmerged feature ancestry before
+mutation), 4078214650 (explicit accepted-task ready-PR exception), 4078214665
+(sensitive-consent wording), 4078214675 (upstream action provenance). Also addressed
+Claude's approval-then-comment liveness case and governing-document gaps, documented
+receipt trust limits and native-auto-merge scope, and passed the observed protection
+result into evaluation. All Node workflow action references are now immutable.
+These are implementation responses, not independent acceptance of our fixes.
+
+Review snapshots are retained in `review-comments.json`. Remaining activation
+work is explicit and must not be waved through:
+
+1. Record the newer owner automation authority in the decisions/admission records;
+   reconcile stale draft-only/manual-delivery clauses without inventing a signature.
+2. Reconcile CodeRabbit admission and repository INTERNAL classification with the
+   egress policy. The owner installed CodeRabbit and explicitly requested automatic
+   reviews/fixes; that authorization still needs the durable source/policy bindings.
+3. Make controller/publisher submission records conform to the seven-field schema,
+   preserve preflight and terminal outcomes in durable reviewable artifacts, and
+   document/repair runtime-journal placement. Current ad-hoc logs are incomplete.
+4. Resolve the remaining sensitive-contract boundary and native auto-merge alternative
+   path. No claim of universal enforcement is made. No existing PR is auto-enrolled.
+5. Finish latest-head independent review, foundation integration, required dependency
+   check configuration and live success/refusal trials, including separate fix
+   integration and resulting main CI. The App token's real endpoint permissions and
+   downstream CI must be exercised, not inferred from mocks.
+
+The side-task receipt advances; historical completed product receipts remain in
+Git and no product task is reopened. The parent checkout was not edited. Our
+setup PR remains stacked on PR24; it is not evidence that PR24 may be merged here.
+
+Follow-up `heleos-delivery-pr-follow-up` is ACTIVE in this Codex thread every
+15 minutes. It stays quiet on unchanged state, works only this isolated setup,
+and must retain all activation prerequisites above. It is a scheduled Codex
+follow-up, not proof that the unpublished GitHub delivery workflow is running.
+Next executable action: reconcile the provider/admission and seven-field audit
+findings against the recorded owner authorization, then request current-head
+review. Keep `HELEOS_AUTOMATION_ENABLED=false` until all acceptance cases pass.

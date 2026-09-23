@@ -1,7 +1,7 @@
 # CLAUDE.md: Heleos-spark
 
 
-Controller delivery follows the scoped automatic delivery authorization in [AGENTS.md](AGENTS.md). After independent task acceptance, invoke the exact-manifest publisher from an isolated worktree; no repeated owner prompt is needed for routine commits, pushes and PRs. This exception does not grant implementation workers publication or approval authority.
+Controller delivery follows the scoped automatic delivery authorization in [AGENTS.md](AGENTS.md). After independent task acceptance, invoke the exact-manifest publisher from an isolated worktree; no repeated owner prompt is needed for routine commits, pushes and PRs. Accepted publisher tasks open ready-for-review PRs, superseding the draft-only wording below for this entrypoint. Unaccepted candidates remain drafts. This exception does not grant implementation workers publication or approval authority.
 
 Operating rules for Claude Code and any other AI worker in this repository. Read this before touching anything. The design spec at `docs/superpowers/specs/2026-08-26-heleos-spark-foundation-design.md` and its accepted architecture decisions govern the architecture. `ROADMAP.md` retains the historical Phase 0 plan and proposed later work; use `CURRENT_STATUS.md` and the accepted Rust runtime ADR for current implementation state. This file says how to work inside those authorities.
 
