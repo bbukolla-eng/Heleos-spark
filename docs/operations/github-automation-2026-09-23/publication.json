@@ -1,0 +1,24 @@
+{
+  "time": "2026-09-23T01:29:44.742106+00:00",
+  "published_commit": "ce9d99e9ec8193edd79b03a7da35c0ef76746536",
+  "pr": "https://github.com/bbukolla-eng/Heleos-spark/pull/26",
+  "base_branch": "2026-09-21-t5b5",
+  "publication": "committed and pushed; separate stacked PR opened",
+  "native_attachment": "attempted; Codex app returned thread not found; PR remains available by URL",
+  "observed_checks": {
+    "checks": "success",
+    "dependency-review": "success",
+    "Amazon Q Developer": "success",
+    "ai-reviewers": "in progress",
+    "CodeRabbit": "pending; repository config used, assertive profile, Advanced plan"
+  },
+  "review": "Amazon Q COMMENTED with no critical findings; CodeRabbit and Codex review still pending; no accepted independent approval claimed",
+  "codeql_correction": {
+    "red": "1d8004 exit 1: clean native-protected PR rejected without guessed scanner app",
+    "green": "0a757d exit 0: 23 policy tests pass",
+    "evidence": "GET apps/github-code-scanning returned 404; verified active CodeQL native rule is authoritative, checked before action",
+    "code_change": "evaluate requires explicit native security assurance; main passes it only after validating ruleset, and checks ruleset again before merge"
+  },
+  "activation": "disabled; dependent foundation PR24 still open; no unrelated merge attempted",
+  "next_action": "Finish latest-candidate independent review, then verify integration/pilot after foundation reaches main."
+}

@@ -60,8 +60,8 @@
 
 **Files:** Update setup ledger, isolated CURRENT_STATUS, checkpoint receipt and provider workflow guidance only where needed to invoke the publisher after task acceptance.
 
-- [ ] Record authority and exact candidate checks; validate staged checkpoint; commit scoped setup as in-progress rather than fake acceptance.
-- [ ] Push the new automation branch and open a scoped PR against the current product branch. Its parent PR24 remains unchanged and unmerged. Attach created PR to this Codex task.
+- [x] Record authority and exact candidate checks; validate staged checkpoint; commit scoped setup as in-progress rather than fake acceptance.
+- [x] Push the new automation branch and open a scoped PR against the current product branch. Its parent PR24 remains unchanged and unmerged. Attach created PR to this Codex task.
 - [ ] Verify actual CodeRabbit review/check identities and CI; fix concrete findings within scope. No self-approval or force-approval commands.
 - [ ] Activate only after the workflow exists on main, required publisher checks are verified, the app authenticates, a disabled-mode pilot passes, and independent acceptance is recorded. If parent integration or review is unavailable, record that exact dependency and preserve the tested candidate.
 

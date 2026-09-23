@@ -25,7 +25,7 @@ class DeliveryPolicy(unittest.TestCase):
         self.writers = {'author'}
 
     def result(self):
-        return m.evaluate(self.pr,self.files,self.review,self.comments,self.checks,self.writers,BASE,ACTIVATION,BOT)
+        return m.evaluate(self.pr,self.files,self.review,self.comments,self.checks,self.writers,BASE,ACTIVATION,BOT,security_protected=True)
 
     def fix(self):
         self.pr['labels']=[{'name':'autofix'},{'name':'heleos-delivery'}]
@@ -70,8 +70,13 @@ class DeliveryPolicy(unittest.TestCase):
         self.checks.append(dict(self.checks[0],id=10,conclusion='failure'))
         self.assertFalse(self.result()['eligible'])
 
-    def test_missing_security_scan_fails(self):
-        self.checks.pop();self.assertFalse(self.result()['eligible'])
+    def test_unverified_native_security_blocks(self):
+        result=m.evaluate(self.pr,self.files,self.review,self.comments,self.checks,self.writers,BASE,ACTIVATION,BOT)
+        self.assertFalse(result['eligible'])
+
+    def test_native_codeql_does_not_require_nonexistent_publisher(self):
+        self.checks.pop()
+        self.assertTrue(self.result()['eligible'])
 
     def test_renamed_sensitive_path_needs_exact_owner_consent(self):
         self.files[0]['previous_filename']='.github/workflows/trusted.yml'

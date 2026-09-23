@@ -2,148 +2,39 @@
   "schema_version": 1,
   "task_id": "GITHUB-AUTOMATION-2026-09-23",
   "outcome": "in_progress",
-  "base_commit": "f9d7ceda027875b0dbef24710bfca96c6c95a104",
-  "summary": "Installed scoped GitHub app/security protections; implement automatic accepted-task commit/push/PR publisher and guarded review/fix/merge controller. Candidate prepared for independent GitHub review; activation remains disabled.",
+  "base_commit": "ce9d99e9ec8193edd79b03a7da35c0ef76746536",
+  "summary": "Publish guarded delivery PR26 and replace unsupported scanner-publisher assumption with verified native CodeQL enforcement; independent review and activation still pending.",
   "remaining_limits": [
-    "Independent GitHub review and live delivery pilot pending.",
-    "Automation PR is stacked on PR24 checkpoint foundation; no product merge authorized in this side conversation.",
-    "CodeRabbit live publisher/approval/plan and stacked-fix integration remain to verify.",
-    "Dependency-review becomes required only after publication; activation time remains unset."
+    "PR26 is stacked on unmerged PR24; automatic main delivery is disabled.",
+    "Independent current-head approval and live pilot remain outstanding.",
+    "Separate stacked fix integration remains an explicit acceptance condition."
   ],
   "next_task_id": "CSI-23-21-23-DEFINE",
   "next_action": "Prepare CSI-23-21-23-DEFINE: reuse the recorded NotebookLM inventory and equipment findings, verify pump-family source passages, and record scope, input gaps and the first bounded implementation contract. If required sources are unavailable, record the affected gap and advance to CSI-23-07-19-DEFINE.",
   "changed_files": [
     {
-      "path": ".coderabbit.yaml",
-      "sha256": "3dc5a8f18e2177cba31b35cb818c2054226dd9fc3d33d195261812f67022a33f"
-    },
-    {
-      "path": ".github/workflows/ai-review-gate.yml",
-      "sha256": "a1036eb6ed748f3ec77ea268236444b20925a7923b8f057e41e1f3374e2ec02f"
-    },
-    {
-      "path": ".github/workflows/auto-merge.yml",
-      "sha256": "c32a87c739e35333a06787fb282057d959be0ee6ebc47a64ca8a6ca21f521817"
-    },
-    {
-      "path": ".github/workflows/delivery.yml",
-      "sha256": "1758923bb443b3e1da01a21b042eb6aaf28be60948a9551cb59714c03783f7ad"
-    },
-    {
-      "path": ".github/workflows/dependency-review.yml",
-      "sha256": "b3a2cf7e9972ea026e226454bc9cee6bd4d588ee206db897a01f26809fe08dff"
-    },
-    {
-      "path": "AGENTS.md",
-      "sha256": "bb0947894db34d9ec40bf9c9ba4fae4b9b249a075c7cf365978216317b3a7088"
-    },
-    {
-      "path": "CLAUDE.md",
-      "sha256": "6fa3b6899674b70a5b03a2414d36ac5be7f8979bbf7882e8eaa7213212c1986e"
-    },
-    {
       "path": "CURRENT_STATUS.md",
-      "sha256": "23dfc4f23aa4cb39fb4d6bff773ca110705a036014e8f56c7df8fe1f43f40997"
-    },
-    {
-      "path": "CURSOR.md",
-      "sha256": "a87ea50eb3ae2251a72cb0fd850dd8e2a6322a0ede7d9e712e1ee21d3ec4e0f4"
+      "sha256": "4963e115aa08eadf836e8f5e336a902eccb062f6224c0690a6bc69017398a01c"
     },
     {
       "path": "docs/operations/github-automation-2026-09-23/README.md",
-      "sha256": "d9c4b2a47743ac57461ee34e69d75c27478f55509f431ddbf96c8060d709ef92"
+      "sha256": "be61926f91dbd6fb086d136a59654a7e860f8a3179bb22281fbd64015d719d05"
     },
     {
-      "path": "docs/operations/github-automation-2026-09-23/app-registration.json",
-      "sha256": "bf02101b9492d90d134c68e5b5ac4cac3474bcd56564381f38cf94f9e76717db"
-    },
-    {
-      "path": "docs/operations/github-automation-2026-09-23/checks.json",
-      "sha256": "e5b3dcb595b7da1c22d19cbebcc19f5390189f49c02b3f7e50e59244c5c8ce17"
-    },
-    {
-      "path": "docs/operations/github-automation-2026-09-23/codeql-before.json",
-      "sha256": "ae940f55084037c8c1fcb8a71a1f026d5da5038857fada73bc51ce0087d7bb5b"
-    },
-    {
-      "path": "docs/operations/github-automation-2026-09-23/full-suite.txt",
-      "sha256": "8d0974ab2ada0c57abfecf632660faeb51a4b2d873e7529ca598b5dee46ebf72"
-    },
-    {
-      "path": "docs/operations/github-automation-2026-09-23/notebooklm-submission.json",
-      "sha256": "2328ddb190a52641eccda9ef806e6b513ac2401bc319233ab9c6f6d2bf170937"
-    },
-    {
-      "path": "docs/operations/github-automation-2026-09-23/publisher-checks.json",
-      "sha256": "e3975c265cbca72f931f9ec2d383fe409a73448bc688bcca17118b4d66ce2717"
-    },
-    {
-      "path": "docs/operations/github-automation-2026-09-23/repository-before.json",
-      "sha256": "5fa0b1fbb18dca74cd915542aa419ef80aec0b30ae84a4a8fbd71dc2ff580a67"
-    },
-    {
-      "path": "docs/operations/github-automation-2026-09-23/reused-notebooklm-query-result.json",
-      "sha256": "dd67ce975dad4730ce821dbd4fadbf9f66cd76c822281c63b4acc6dd0eb5c811"
-    },
-    {
-      "path": "docs/operations/github-automation-2026-09-23/reused-notebooklm-submission.json",
-      "sha256": "ec527d3a0e2d67ade9744ac31a8eb50f2b91fbaf900a2d7e6a95a61dd46dfae1"
-    },
-    {
-      "path": "docs/operations/github-automation-2026-09-23/reused-verified-research.md",
-      "sha256": "d3be8e9235e4cba47f52c2287eb9b29d5b8f4304563578ae2db0fe4d8df58b24"
-    },
-    {
-      "path": "docs/operations/github-automation-2026-09-23/ruleset-after.json",
-      "sha256": "b161076e3f5b3f6171f2d027098f61e24e1581a7af3ccb70a9b70309bb5c6a42"
-    },
-    {
-      "path": "docs/operations/github-automation-2026-09-23/ruleset-before.json",
-      "sha256": "d2cd7311623c4fea3c307d14b09bf4080787ac478924e150f20a2d6662eff278"
-    },
-    {
-      "path": "docs/operations/github-automation-2026-09-23/ruleset-pre-update.json",
-      "sha256": "ca0680ee2c9b82ec1c1ae59334790682004206fce740120926846e36a2dfab90"
-    },
-    {
-      "path": "docs/operations/github-automation-2026-09-23/security-fixes-before.json",
-      "sha256": "8a0a15ba9d18fbed2294a579cbae9c005dd2fc71b83c56a28e7f55f984e8771f"
-    },
-    {
-      "path": "docs/operations/github-automation-2026-09-23/security-setup-results.json",
-      "sha256": "f829557b4a3ac7c8ccb2f3b21070e148301b911d5279bff9b583694e7b40f31c"
-    },
-    {
-      "path": "docs/operations/github-automation-2026-09-23/source-8765e3a9-3e51-407f-8c38-5357aecb396e.json",
-      "sha256": "4480a6af46929c7bdd1b29de18ae603472ed389529cd50c19822eeae695da583"
-    },
-    {
-      "path": "docs/operations/github-automation-2026-09-23/source-fc1c5a82-9a35-4ddd-9f1c-d2f9727b2dc1.json",
-      "sha256": "265dbdb81a4ae43fec2ce7c3cf68774f2644dccd635944eefa8d9e9b5048ccf1"
-    },
-    {
-      "path": "docs/policies/github-automation.md",
-      "sha256": "dc807a9351029fcf657d959dbc353bcb638ef7c3e81c36c3df8b69ba8ec9fee6"
+      "path": "docs/operations/github-automation-2026-09-23/publication.json",
+      "sha256": "7aa41222234db4d875086486a47cdea5de5065cc0590fcca9e67c41b49b313ab"
     },
     {
       "path": "docs/superpowers/plans/2026-09-23-automatic-task-delivery.md",
-      "sha256": "50728e52668cb831b0586bd77b14fcbf393a4ddf6621ce2ae2d359d79d662cc5"
+      "sha256": "d126a5fbccba6ebb72807fec9829f7878cd253b8f9fed2743c1bc51034fe78fd"
     },
     {
       "path": "tests/test_delivery_controller.py",
-      "sha256": "f268af26979a78b9875d20f7a128c8aa7aa838d017e7db53b9b3c71fa6d71bab"
-    },
-    {
-      "path": "tests/test_publish_task.py",
-      "sha256": "021750ef2a3b35e7794d700c4f64de8dc5fcb1d5f5ead27f40fcab17448d6712"
+      "sha256": "d0aae7185783257d428e7eabfc1ebb143dbf26b193a9e45f9a0b22bfeb403eb9"
     },
     {
       "path": "tools/github/delivery_controller.py",
-      "sha256": "2495be4c7153df535225a25c479ca9b9ed07b102f124cf59633461b6a6e5ea78"
-    },
-    {
-      "path": "tools/github/publish_task.py",
-      "sha256": "3cdaf7ed21df1e36f9c2dc9caae25814996433e5cf8b2a17a618b098d99a2651"
+      "sha256": "94eafff1baf631fb7b81fa640aedd1d64b951234550f6593fa9cb9c2db70422d"
     }
   ],
   "checks": [
@@ -151,40 +42,8 @@
       "command": "python3 -m unittest discover -s tests -p test_delivery_controller.py -v",
       "exit_code": 0,
       "evidence": {
-        "path": "docs/operations/github-automation-2026-09-23/checks.json",
-        "sha256": "e5b3dcb595b7da1c22d19cbebcc19f5390189f49c02b3f7e50e59244c5c8ce17"
-      }
-    },
-    {
-      "command": "python3 -m unittest discover -s tests -p test_ai_review_gate.py -v",
-      "exit_code": 0,
-      "evidence": {
-        "path": "docs/operations/github-automation-2026-09-23/checks.json",
-        "sha256": "e5b3dcb595b7da1c22d19cbebcc19f5390189f49c02b3f7e50e59244c5c8ce17"
-      }
-    },
-    {
-      "command": "python3 tools/ci/checks.py",
-      "exit_code": 0,
-      "evidence": {
-        "path": "docs/operations/github-automation-2026-09-23/checks.json",
-        "sha256": "e5b3dcb595b7da1c22d19cbebcc19f5390189f49c02b3f7e50e59244c5c8ce17"
-      }
-    },
-    {
-      "command": "git diff --cached --check",
-      "exit_code": 0,
-      "evidence": {
-        "path": "docs/operations/github-automation-2026-09-23/checks.json",
-        "sha256": "e5b3dcb595b7da1c22d19cbebcc19f5390189f49c02b3f7e50e59244c5c8ce17"
-      }
-    },
-    {
-      "command": "python3 -m unittest discover -s tests -p test_*.py -v",
-      "exit_code": 0,
-      "evidence": {
-        "path": "docs/operations/github-automation-2026-09-23/publisher-checks.json",
-        "sha256": "e3975c265cbca72f931f9ec2d383fe409a73448bc688bcca17118b4d66ce2717"
+        "path": "docs/operations/github-automation-2026-09-23/publication.json",
+        "sha256": "7aa41222234db4d875086486a47cdea5de5065cc0590fcca9e67c41b49b313ab"
       }
     }
   ],
@@ -198,5 +57,5 @@
     "record": "docs/operations/github-automation-2026-09-23/notebooklm-submission.json",
     "behavior_and_checks": "Least privilege, trusted main checkout, full action pins, scoped App; source bodies freshly re-read and retained. Independent acceptance pending."
   },
-  "side_task_next_action": "Push authorized setup commit, open separate stacked automation PR into 2026-09-21-t5b5, obtain independent review and inspect current-head CI. Preserve disabled activation until foundation reaches main and live pilot passes."
+  "side_task_next_action": "Inspect independent reviews and latest-head GitHub CI for PR26; activate only after checkpoint foundation reaches main and disabled-mode pilot passes."
 }

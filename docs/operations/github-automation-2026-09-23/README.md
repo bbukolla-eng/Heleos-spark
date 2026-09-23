@@ -5,7 +5,9 @@ Task GITHUB-AUTOMATION-2026-09-23 remains in progress. Codex is the sole writer 
 `codex/github-automation`, base `f9d7ceda027875b0dbef24710bfca96c6c95a104`.
 The parent Cursor checkout and its product queue are untouched. No subagents or
 Claude workers were dispatched because this side conversation forbids them.
-No commit, push, PR creation, merge or release was performed.
+Initial setup was uncommitted. The authorized continuation committed/pushed
+`ce9d99e9ec8193edd79b03a7da35c0ef76746536` and opened separate stacked PR26.
+No product merge or release was performed; publication.json records current observations.
 
 ## Deliverable and acceptance
 
@@ -69,8 +71,7 @@ checks will be retained in `checks.json`. No independent acceptance is claimed.
 ## Remaining work and exact continuation
 
 1. Credential handoff complete: user generated/stored the key; secret name verified. No credential value entered model context.
-2. Complete independent review, including current-head CodeQL publisher/check
-   observation on a real PR, CodeRabbit plan availability and a successful/failed end-to-end trial. Official CodeRabbit schema validation, YAML parsing and local main-CI/protection drift tests now pass. Current
+2. Complete independent review, including native CodeQL enforcement on a main-target PR, CodeRabbit fix availability and a successful/failed end-to-end trial. Official CodeRabbit schema validation, YAML parsing and local main-CI/protection drift tests now pass. Current
    controller is a candidate and must remain disabled until these are resolved.
 3. CodeRabbit fix CI availability depends on the account plan. A stacked fix is
    not automatically integrated by this main-only controller. Freeze and verify
@@ -145,3 +146,12 @@ branch, leaving PR24 unmerged. This avoids presenting product implementation as
 part of an automation-only PR. GitHub activation awaits dependency integration,
 independent review and the disabled-mode pilot. Do not force the merge to claim
 completion.
+
+CodeQL follow-up: a guessed separate scanner publisher did not resolve. Removed
+that unsupported assumption. The controller now requires explicit confirmation
+that the native CodeQL rule is active; GitHub must report clean main-target
+mergeability, and rules are checked again before the exact-SHA merge request.
+The resulting main CodeQL workflow must also pass before another merge.
+23 policy tests pass, including missing native security assurance and routine
+checkpoint/enrollment cases. Independent review has not yet accepted this change.
+CodeRabbit confirmed the repository config and Advanced plan while reviewing PR26.

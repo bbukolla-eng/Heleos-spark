@@ -60,7 +60,7 @@ def independent_approvals(reviews, head, writers):
             and r.get('commit_id')==head}
 
 
-def evaluate(pr, files, reviews, comments, checks, writers, base, activation, app_login):
+def evaluate(pr, files, reviews, comments, checks, writers, base, activation, app_login, security_protected=False):
     reasons=[];head=pr['head']['sha']
     if not re.fullmatch('[0-9a-f]{40}',head): reasons.append('invalid head')
     if pr.get('state')!='open' or pr.get('draft'): reasons.append('not a ready open PR')
@@ -80,11 +80,9 @@ def evaluate(pr, files, reviews, comments, checks, writers, base, activation, ap
     for name in ['checks','dependency-review']:
         runs=[c for c in checks if c.get('name')==name and c.get('head_sha')==head and c.get('app',{}).get('id')==15368]
         if not runs or max(runs,key=lambda c:c['id']).get('conclusion')!='success': reasons.append(name+' missing/failed')
-    codeql={}
-    for c in sorted(checks,key=lambda c:c['id']):
-        if c.get('app',{}).get('slug')=='github-code-scanning' and c.get('head_sha')==head:
-            codeql[c['name']]=c
-    if not codeql or any(c.get('conclusion')!='success' for c in codeql.values()): reasons.append('CodeQL scan missing/failed')
+    # The verified native CodeQL rule and clean main-target mergeability are
+    # authoritative; do not invent a separate scanner app/status publisher.
+    if not security_protected: reasons.append('native CodeQL protection not verified')
     return {'eligible':not reasons,'reasons':reasons,'sensitive':sensitive,'head':head}
 
 
@@ -160,14 +158,14 @@ def main():
         # Unattributed commit identities do not qualify for unattended delivery.
         attributable=bool(commits) and len(commits)==pr['commits'] and all(c.get('author') and c.get('committer') for c in commits)
         base=gh(f'repos/{REPO}/git/ref/heads/main')['object']['sha']
-        result=evaluate(pr,files,reviews,comments,checks,writers,base,activation,app_login)
+        result=evaluate(pr,files,reviews,comments,checks,writers,base,activation,app_login,security_protected=True)
         if not attributable: result['eligible']=False;result['reasons'].append('unattributed commit writer')
         result['pr']=number;reports.append(result)
         if not args.apply: continue
         fresh=gh(url)
         if fresh['head']['sha']!=pr['head']['sha'] or fresh['base']['sha']!=base: continue
         # Reevaluate mutable labels, draft/state and mergeability immediately before action.
-        latest=evaluate(fresh,files,reviews,comments,checks,writers,base,activation,app_login)
+        latest=evaluate(fresh,files,reviews,comments,checks,writers,base,activation,app_login,security_protected=True)
         if not latest['eligible']: result['eligible']=False;result['reasons']=latest['reasons']
         message=fix_request(fresh,files,reviews,comments,activation,app_login)
         if message:
