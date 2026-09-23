@@ -36,15 +36,20 @@ report that prerequisite rather than treating a settings toggle as paid entitlem
 Native auto-merge capability under Cursor's existing identity likewise needs a live
 trial; do not create another app if it lacks permission.
 
-Current main 63ae39c has a pre-existing failing checks run 34061515864. PR25 proposes
-its repair. This task does not merge that old PR or waive required approvals. The
+Current main 63ae39c has a pre-existing failing checks run 34061515864. This
+candidate includes the same punctuation-only repair independently proposed by PR25;
+it changes no decision and does not merge that old PR or waive approvals. The
 new setup PR is sensitive workflow configuration and must receive independent review.
 The legacy workflow now requests merge commits and binds the expected PR head; its
 PR-number activation guard (numbers greater than 26) does not automatically enroll older PRs.
 
 Local verification: workflow YAML parsed; diff whitespace check passed. Repository
-checks fail on the unchanged docs/decisions/README.md:13 em dash already reported
-by main CI. That baseline failure was not hidden or changed in this setup.
+checks initially reproduced the existing docs/decisions/README.md:13 em dash failure.
+Replacing it with a colon repairs the prose defect without weakening the check.
+A reviewed recovery PR whose current checks prove it repairs the exact main failure
+may proceed through native protections; unrelated merges wait for healthy main CI.
+After the punctuation repair: repository checks passed (64 tracked files, zero
+failures) and all 101 Python tests passed on 2026-09-23 UTC.
 
 ## Authority and research
 
