@@ -65,7 +65,7 @@ jobs:
             --precall "$RUNNER_TEMP/precall.json"
       - if: env.HAS_TOKEN == 'true'
         id: claude
-        uses: anthropics/claude-code-action@833fb0f8c9f6686b33d963a8bae0a94f4936ab2a # v1.0.211
+        uses: anthropics/claude-code-action@cfc3eb22bfed5c26ef66e3223c982af27e4524de # v1.0.231
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           # An @claude run implements a change, so it needs to run the suite to verify its own
