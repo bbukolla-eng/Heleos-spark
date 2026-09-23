@@ -3,6 +3,11 @@
 
 This is a read-only consistency check, not an acceptance authority or scheduler.
 It never executes commands declared in receipts or reads evidence from the worktree.
+
+When the evidence policy is present in the exact base or the selected index/tree,
+receipts must also carry resolvable NotebookLM research records and may not silently
+restart a task that reachable receipt history already closed. Structural validation
+is not source-truth certification; independent human review remains required.
 """
 
 import argparse
@@ -33,6 +38,16 @@ CSI_NAMES = {"docs/plans/division-23-section-register.json",
              "docs/plans/division-23-section-work-breakdown.md"}
 CSI_CARDS = "docs/superpowers/plans/division23-sections/"
 CSI_CHECKER = "scripts/verify-csi-division23.py"
+POLICY = "docs/operations/checkpoint-evidence-policy.json"
+POLICY_CONTRACT = {"schema_version": 1, "require_notebooklm_evidence": True,
+                   "reject_completed_resume": True}
+DISPOSITIONS = ("new_verified", "reused_verified", "unavailable", "administrative_no_new_claims")
+VERIFIED_DISPOSITIONS = ("new_verified", "reused_verified")
+FINDINGS_KIND = "notebooklm_verified_findings"
+RESEARCH_TEXT = ("applicability", "behavior_and_checks", "gaps_and_next_action", "external_submissions")
+ADMINISTRATIVE_NAMES = {STATUS, "AGENTS.md", "CLAUDE.md", "CURSOR.md", "GROK.md", "GROKBOTS.md",
+                        "SKILLS.md", "README.md", "ROADMAP.md", "SECURITY.md", "GOAL.md"}
+ADMINISTRATIVE_OPERATIONS = {".json", ".log", ".txt"}
 HEX256 = re.compile(r"[0-9a-f]{64}\Z")
 BLOCK_START = "<!-- build-checkpoint:v1 -->"
 BLOCK_END = "<!-- /build-checkpoint -->"
@@ -154,6 +169,267 @@ def check_proof(snapshot, proof, label, errors, type_changes):
         errors.append(f"{label}: evidence SHA-256 does not match selected Git bytes: {path}")
 
 
+def tree_entry(repo, treeish, path):
+    """Return (kind, mode, oid) for one exact path in a tree-ish, or None when absent."""
+    raw = git(repo, "ls-tree", "-z", "--full-tree", treeish, "--", path)
+    for record in raw.split(b"\0"):
+        if not record:
+            continue
+        metadata, found = record.split(b"\t", 1)
+        mode, kind, oid = metadata.decode("ascii").split()
+        if found.decode("utf-8") == path:
+            return kind, mode, oid
+    return None
+
+
+def check_policy(data, label, errors):
+    """The policy is one exact owner-directed object; no partial or downgraded variant counts."""
+    try:
+        value = json_object(data, label)
+    except CheckpointError as exc:
+        errors.append(str(exc))
+        return
+    exact = set(value) == set(POLICY_CONTRACT) and all(
+        type(value[key]) is type(expected) and value[key] == expected
+        for key, expected in POLICY_CONTRACT.items() if key in value)
+    if not exact:
+        errors.append(f"{label} must be exactly {json.dumps(POLICY_CONTRACT, sort_keys=True)}")
+
+
+def history_roots(repo, base, target):
+    """Include every merge parent, including pending staged merge parents."""
+    roots = [base]
+    if target is not None:
+        roots.extend(git(repo, "rev-list", "--parents", "-n", "1", target).decode().split()[1:])
+    else:
+        merge_path = Path(git(repo, "rev-parse", "--git-path", "MERGE_HEAD").decode().strip())
+        if not merge_path.is_absolute():
+            merge_path = Path(repo) / merge_path
+        if merge_path.exists():
+            pending = merge_path.read_text().splitlines()
+            if not pending or any(not re.fullmatch(r"[0-9a-fA-F]{40}", item) for item in pending):
+                raise CheckpointError("malformed MERGE_HEAD")
+            for item in pending:
+                roots.append(git(repo, "rev-parse", "--verify", item + "^{commit}").decode().strip())
+    return list(dict.fromkeys(roots))
+
+
+def selected_policy(repo, roots, snapshot, errors):
+    """Inherit policy from every exact parent; selected bytes cannot discard it."""
+    inherited_entries = [tree_entry(repo, root, POLICY) for root in roots]
+    selected = snapshot.entries.get(POLICY)
+    if not any(inherited_entries) and selected is None:
+        return False
+    for inherited in inherited_entries:
+        if inherited is None:
+            continue
+        kind, mode, oid = inherited
+        if kind != "blob" or mode not in REGULAR:
+            errors.append(f"{POLICY}: inherited evidence policy must be a regular file")
+        else:
+            check_policy(git(repo, "cat-file", "blob", oid), f"inherited {POLICY}", errors)
+    if selected is None:
+        errors.append(f"{POLICY}: an adopted evidence policy cannot be removed")
+    else:
+        try:
+            check_policy(snapshot.read(POLICY), POLICY, errors)
+        except CheckpointError as exc:
+            errors.append(str(exc))
+    return True
+
+
+def check_citation(snapshot, proof, packet, label, errors, type_changes):
+    """Validate one packet citation; a findings record cannot cite itself as its own evidence."""
+    if isinstance(proof, dict) and proof.get("path") == packet:
+        errors.append(f"{label}: a findings record cannot cite itself as evidence")
+        return None
+    before = len(errors)
+    check_proof(snapshot, proof, label, errors, type_changes)
+    return proof["path"] if len(errors) == before else None
+
+
+def check_findings(snapshot, path, label, errors, type_changes):
+    """Validate one pinned findings packet against exact Git bytes.
+
+    Passage presence is a structural check on the pinned source text. It does not
+    certify that the finding is true, applicable, or independently reviewed.
+    """
+    try:
+        packet = json_object(snapshot.read(path), label)
+    except (CheckpointError, UnicodeError) as exc:
+        errors.append(str(exc))
+        return
+    if type(packet.get("schema_version")) is not int or packet["schema_version"] != 1:
+        errors.append(f"{label}: findings schema_version must be 1")
+    if packet.get("kind") != FINDINGS_KIND:
+        errors.append(f"{label}: findings kind must be {FINDINGS_KIND}")
+    for field in ("query", "verification"):
+        check_citation(snapshot, packet.get(field), path, f"{label}.{field}", errors, type_changes)
+    findings = packet.get("findings")
+    if not isinstance(findings, list) or not findings:
+        errors.append(f"{label}: findings must be a nonempty array")
+        return
+    identifiers = set()
+    for index, finding in enumerate(findings):
+        sublabel = f"{label}.findings[{index}]"
+        if not isinstance(finding, dict):
+            errors.append(f"{sublabel} must be an object")
+            continue
+        for field in ("id", "notebook_id", "source_id", "locator", "finding", "passage"):
+            if not text(finding.get(field)):
+                errors.append(f"{sublabel} {field} must be a nonempty string")
+        identifier = normalized(finding.get("id"))
+        if identifier:
+            if identifier in identifiers:
+                errors.append(f"{sublabel}: duplicate finding id {identifier}")
+            identifiers.add(identifier)
+        if finding.get("verification_status") != "verified_applicable":
+            errors.append(f"{sublabel} verification_status must be verified_applicable")
+        for field in ("behaviors", "checks"):
+            value = finding.get(field)
+            if not isinstance(value, list) or not value or not all(text(item) for item in value):
+                errors.append(f"{sublabel} {field} must be a nonempty array of explicit strings")
+        source = check_citation(snapshot, finding.get("source"), path,
+                                f"{sublabel}.source", errors, type_changes)
+        if source is None or not text(finding.get("passage")):
+            continue
+        try:
+            body = snapshot.read(source).decode("utf-8")
+        except (CheckpointError, UnicodeError) as exc:
+            errors.append(f"{sublabel}.source must be UTF-8 text: {exc}")
+            continue
+        if finding["passage"] not in body:
+            errors.append(f"{sublabel}: passage does not occur verbatim in {source}")
+
+
+def administrative_path(path):
+    """Administrative checkpoints touch documentation surfaces only, never the policy itself."""
+    if path == POLICY:
+        return False
+    if path in ADMINISTRATIVE_NAMES:
+        return True
+    suffix = PurePosixPath(path).suffix.lower()
+    if path.startswith("docs/") and suffix == ".md":
+        return True
+    return path.startswith("docs/operations/") and suffix in ADMINISTRATIVE_OPERATIONS
+
+
+def check_research(snapshot, receipt, changes, type_changes, errors):
+    """Require a resolvable NotebookLM research disposition for the selected receipt bytes."""
+    research = receipt.get("notebooklm_research")
+    if not isinstance(research, dict):
+        errors.append("receipt notebooklm_research must be an object while the evidence policy applies")
+        return
+    disposition = research.get("disposition")
+    if disposition not in DISPOSITIONS:
+        errors.append("notebooklm_research disposition must be one of " + ", ".join(DISPOSITIONS))
+    for field in RESEARCH_TEXT:
+        if not text(research.get(field)):
+            errors.append(f"notebooklm_research {field} must be a nonempty string")
+    records = research.get("records")
+    if not isinstance(records, list):
+        errors.append("notebooklm_research records must be an array of path/SHA-256 proofs")
+        records = []
+    for index, record in enumerate(records):
+        label = f"notebooklm_research.records[{index}]"
+        before = len(errors)
+        check_proof(snapshot, record, label, errors, type_changes)
+        if len(errors) == before and disposition in VERIFIED_DISPOSITIONS:
+            check_findings(snapshot, record["path"], label, errors, type_changes)
+    if disposition in VERIFIED_DISPOSITIONS and not records:
+        errors.append(f"{disposition} requires at least one pinned verified findings record")
+    if disposition == "unavailable":
+        for field in ("missing_prerequisite", "independent_action"):
+            if not text(receipt.get(field)):
+                errors.append(f"unavailable research requires receipt {field}")
+        if receipt.get("outcome") == "complete":
+            errors.append("unavailable research cannot close a task as complete")
+    if disposition == "administrative_no_new_claims":
+        for path in sorted(changes):
+            if changes[path] == "D":
+                errors.append(f"administrative_no_new_claims cannot delete {path}")
+            elif path in type_changes:
+                errors.append(f"administrative_no_new_claims cannot retype {path}")
+            elif snapshot.entries.get(path, (None,))[0] != "100644":
+                errors.append(f"administrative_no_new_claims requires non-executable regular file: {path}")
+            elif not administrative_path(path):
+                errors.append(f"administrative_no_new_claims cannot change {path}")
+
+
+def completed_task_ids(repo, roots, errors):
+    """Collect closed task IDs from the union of every parent's reachable history."""
+    completed = set()
+    try:
+        commits = []
+        for root in roots:
+            kind = git(repo, "cat-file", "-t", root).strip()
+            if kind == b"commit":
+                commits.append(root)
+            elif kind != b"tree":
+                raise CheckpointError("receipt history root must be a commit or empty tree")
+        if not commits:
+            return completed
+        revisions = git(repo, "log", "--format=%H", "--full-history", *commits, "--", RECEIPT).split()
+    except CheckpointError as exc:
+        errors.append(f"receipt history is unreadable: {exc}")
+        return completed
+    for revision in revisions:
+        commit = revision.decode("ascii")
+        try:
+            entry = tree_entry(repo, commit, RECEIPT)
+        except CheckpointError as exc:
+            errors.append(f"receipt history is unreadable: {exc}")
+            continue
+        if entry is None:
+            continue  # The receipt is simply absent from that historical tree.
+        kind, mode, oid = entry
+        if kind != "blob" or mode not in REGULAR:
+            errors.append(f"{RECEIPT}: historical version {commit[:12]} is not a regular file")
+            continue
+        try:
+            historical = json_object(git(repo, "cat-file", "blob", oid), f"{RECEIPT}@{commit[:12]}")
+        except CheckpointError as exc:
+            errors.append(str(exc))
+            continue
+        identifier = normalized(historical.get("task_id"))
+        if historical.get("outcome") == "complete" and identifier:
+            completed.add(identifier)
+    return completed
+
+
+def check_reopen(snapshot, reopen, next_task, errors, type_changes):
+    """A deliberate reopen names the same task, an explicit reason and pinned evidence."""
+    if not isinstance(reopen, dict):
+        errors.append("next_task_reopen must be a task_id/reason/evidence object")
+        return False
+    accepted = True
+    if not next_task or normalized(reopen.get("task_id")) != next_task:
+        errors.append("next_task_reopen task_id must match next_task_id")
+        accepted = False
+    if not text(reopen.get("reason")):
+        errors.append("next_task_reopen reason must be a nonempty string")
+        accepted = False
+    before = len(errors)
+    check_proof(snapshot, reopen.get("evidence"), "next_task_reopen", errors, type_changes)
+    return accepted and len(errors) == before
+
+
+def check_resume(repo, roots, snapshot, receipt, errors, type_changes):
+    """Reject silently restarting a completed task without a pinned reopen record."""
+    task = normalized(receipt.get("task_id"))
+    next_task = normalized(receipt.get("next_task_id"))
+    if receipt.get("outcome") == "blocked" and next_task and next_task == task:
+        errors.append("blocked checkpoint must name an independent next_task_id, not the blocked task")
+    reopen = receipt.get("next_task_reopen")
+    accepted = False
+    if reopen is not None:
+        accepted = check_reopen(snapshot, reopen, next_task, errors, type_changes)
+    completed = completed_task_ids(repo, roots, errors)
+    if next_task and next_task in completed and not accepted:
+        errors.append(f"next_task_id {next_task} repeats a completed task; record next_task_reopen "
+                      "with a matching task_id, an explicit reason and pinned evidence")
+
+
 def check_status(snapshot, receipt, errors):
     try:
         status = snapshot.read(STATUS).decode("utf-8")
@@ -228,14 +504,20 @@ def validate(repo, base, target=None):
             changes[path] = kind
             if kind == "T":
                 type_changes.add(path)
+        roots = history_roots(repo, base, target)
+        evidence_policy = selected_policy(repo, roots, snapshot, errors)
         if not any(protected(path) for path in changes):
-            return []
+            if evidence_policy and len(roots) > 1:
+                inherited_receipt = json_object(snapshot.read(RECEIPT), "merge receipt")
+                check_resume(repo, roots, snapshot, inherited_receipt, errors, type_changes)
+            return errors
+        policy_error_count = len(errors)
         for path in (STATUS, RECEIPT):
             if path not in changes or changes[path] == "D":
                 errors.append(f"{path} must change with protected work")
             if path in type_changes:
                 errors.append(f"{path}: type changes are not permitted")
-        if errors:
+        if len(errors) > policy_error_count:
             return errors
         receipt = json_object(snapshot.read(RECEIPT), "receipt")
         if type(receipt.get("schema_version")) is not int or receipt["schema_version"] != 1:
@@ -314,6 +596,9 @@ def validate(repo, base, target=None):
                 errors.append("complete requires successful checks with exit_code 0")
             if not isinstance(review, dict) or review.get("outcome") != "accepted":
                 errors.append("complete requires an accepted review with pinned evidence")
+        if evidence_policy:
+            check_research(snapshot, receipt, changes, type_changes, errors)
+            check_resume(repo, roots, snapshot, receipt, errors, type_changes)
         check_status(snapshot, receipt, errors)
         if not errors and any(csi_changed(path) for path in changes):
             check_csi(snapshot, errors)

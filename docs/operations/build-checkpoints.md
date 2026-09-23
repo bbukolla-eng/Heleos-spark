@@ -92,3 +92,21 @@ Retained Markdown snapshots keep their original bytes. The repository link check
 uses `docs/operations/retained-document-origins.json` to verify each named copy's
 hash and resolve its links from the recorded original location. Missing targets
 and changed copies still fail. Current documents use their normal location.
+
+## Research and continuation enforcement
+
+The policy at `docs/operations/checkpoint-evidence-policy.json` activates these additional checks for protected work. Policy-free historical commits retain their original validation contract. Once the policy is present in any parent (including a pending merge parent), it cannot be removed, malformed or disabled in the candidate. Receipt and status schema versions remain 1; the policy is a separate forward activation, not a history rewrite.
+
+Every active-policy receipt includes `notebooklm_research` with the disposition and string explanations specified in the [research workflow](notebooklm-research.md#required-task-evidence-owner-reaffirmed-2026-09-22). Its `records` are path/SHA-256 proofs in the selected Git tree. Unstaged or untracked evidence does not count.
+
+For `new_verified` and `reused_verified`, each record is a JSON packet with `schema_version: 1`, `kind: notebooklm_verified_findings`, pinned `query` and `verification` proof objects, and a nonempty `findings` array. Each finding contains a unique `id`, `notebook_id`, `source_id`, `locator`, `finding`, `passage`, `verification_status: verified_applicable`, nonempty `behaviors` and `checks` string arrays, and a pinned `source` proof. The passage must occur verbatim in the retained UTF-8 source bytes. Source bytes may be a retained verified excerpt; the query and verification receipts preserve its provenance. Packet/status/receipt self-proof, unsafe paths, symlinks, mismatched hashes and malformed structures fail. The [current normalized packet](evidence-enforcement-2026-09-22/research.json) demonstrates reuse of the original verified NotebookLM findings without claiming a new query.
+
+For `unavailable`, the receipt must name a missing prerequisite and independent action, and cannot be complete. A partial checkpoint preserves progress without accepting unsupported work. `administrative_no_new_claims` is restricted to documentation and operations-evidence paths; code, tests, configuration, policy activation and their deletion cannot use that exemption. Only non-executable regular documentation files qualify; deletions do not use this exemption. A filename check cannot prove that narrative evidence is honest or relevant. Reviewers must still inspect the actual source passages, scope and behavior/test bindings.
+
+The validator also checks completed task IDs in reachable ancestor checkpoint receipts. If `next_task_id` refers to one, require `next_task_reopen` containing that exact task ID, a nonempty reason and a hash-pinned evidence object. New defects or changed inputs justify reopening; routine continuation does not. The existing prohibition on a completed task selecting itself remains. A blocked checkpoint must select independent next work rather than itself. These checks cover recorded checkpoint history, not unrecorded work or every external task tracker.
+
+Query and verification proofs are opaque retained provider/reviewer records: the guard validates their path and byte identity, not their response schema, origin, notebook/source cross-links or truth. Independent review must inspect those records and verify those relationships. The normalized findings packet and exact source-passage presence are structurally checked.
+
+Direct staged/commit validation checks all merge parents, even when the selected merge tree equals its first parent. The unchanged CI adapter reuses individually validated parent checkpoints for clean automatic merges; manual merge resolutions invoke the validator.
+
+The existing local pre-commit hook and CI range adapter invoke the updated validator; no hook, workflow or repository settings changes are needed. Local hooks can still be bypassed using Git options, and CI merge enforcement depends on repository protections. The checker never runs receipt commands, chooses tasks, edits status or queries NotebookLM. The controller still advances the live queue and remains its sole general writer.

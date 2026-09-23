@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "require_notebooklm_evidence": true,
+  "reject_completed_resume": true
+}

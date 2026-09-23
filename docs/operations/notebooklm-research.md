@@ -25,7 +25,7 @@ Each task's existing assignment/ledger and completion record must carry a `noteb
 
 `administrative_no_new_claims` is limited to actions such as publication, queue maintenance or transcription of owner instructions that introduce no technical/mechanical behavior. State that reason explicitly; it cannot exempt a feature, calculation, recognition rule, dependency choice or technical fix from source research.
 
-The controller includes this evidence in Claude/Cursor/other worker assignments and at handoff. Independent review checks it before accepting knowledge-dependent implementation. Build updates name which disposition occurred and what it informed. Current checkpoint tooling validates receipt consistency and hashes; it does not automatically inspect this object or call NotebookLM. A future enforcement change must have its own tests and acceptance rather than being implied by this policy.
+The controller includes this evidence in Claude/Cursor/other worker assignments and at handoff. Independent review checks it before accepting knowledge-dependent implementation. Build updates name which disposition occurred and what it informed. After activation of `docs/operations/checkpoint-evidence-policy.json`, the existing checkpoint validator requires this object and validates its evidence from the exact staged index or committed tree. It rejects administrative exemptions for non-documentation paths and rejects completed checkpoints with unavailable research. It does not call NotebookLM or certify the truth/applicability of the source. Independent review remains mandatory. See the [enforced packet format](build-checkpoints.md#research-and-continuation-enforcement) for the additional structured finding records.
 
 ## Current CSI organization
 
