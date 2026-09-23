@@ -1,0 +1,1049 @@
+{
+  "observed_at": "2026-09-23T02:26:46.787132+00:00",
+  "purpose": "Owner-requested triage of all 14 open PRs; not acceptance or automatic enrollment",
+  "pull_requests": [
+    {
+      "autoMergeRequest": null,
+      "baseRefName": "main",
+      "headRefName": "codex/native-github-automation",
+      "headRefOid": "495a42f577fbdde806a69a51a3a25c7ec81546f9",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "number": 27,
+      "reviewDecision": "CHANGES_REQUESTED",
+      "statusCheckRollup": [
+        {
+          "name": "ai-reviewers",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808836163/job/107015815286"
+        },
+        {
+          "name": "Analyze (actions)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808834852/job/107015553695"
+        },
+        {
+          "name": "build (18.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808836203/job/107015555101"
+        },
+        {
+          "name": "checks",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808836260/job/107015555756"
+        },
+        {
+          "name": "review",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808836182/job/107015555045"
+        },
+        {
+          "name": "Analyze (javascript-typescript)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808834852/job/107015553914"
+        },
+        {
+          "name": "build (20.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808836203/job/107015555021"
+        },
+        {
+          "name": "Analyze (python)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808834852/job/107015554021"
+        },
+        {
+          "name": "build (22.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808836203/job/107015554842"
+        },
+        {
+          "name": "CodeQL",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/runs/107015677370"
+        },
+        {
+          "name": "CodeRabbit",
+          "result": "SUCCESS",
+          "url": ""
+        }
+      ],
+      "title": "ci: use native merge commits for new ready PRs",
+      "url": "https://github.com/bbukolla-eng/Heleos-spark/pull/27",
+      "unresolved_threads": {
+        "count": 32,
+        "outdated": 0,
+        "has_more": false,
+        "urls": [
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078366518",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078366547",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078373101",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078373802",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078374553",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078375468",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078375969",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078375973",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078375977",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078376377",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078377001",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078377970",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078378627",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078379561",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078380323",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078380343",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078381275",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078381419",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078381811",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078382318",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078382757",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078383163",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078383390",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078384009",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078397729",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078398423",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078399294",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078400072",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078400826",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078401994",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078402822",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/27#discussion_r4078429727"
+        ]
+      }
+    },
+    {
+      "autoMergeRequest": {
+        "authorEmail": null,
+        "commitBody": "",
+        "commitHeadline": null,
+        "mergeMethod": "MERGE",
+        "enabledAt": "2026-09-22T16:43:06Z",
+        "enabledBy": {
+          "id": "U_kgDOD9Qh1Q",
+          "is_bot": false,
+          "login": "bbukolla-eng",
+          "name": ""
+        }
+      },
+      "baseRefName": "main",
+      "headRefName": "cursor/ci-autofix-automation-1842",
+      "headRefOid": "8028e0c9195de25dae487dda35e6e29d266d879b",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "number": 25,
+      "reviewDecision": "",
+      "statusCheckRollup": [
+        {
+          "name": "ai-reviewers",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35754137765/job/106835509972"
+        },
+        {
+          "name": "build (18.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35747458739/job/106812631264"
+        },
+        {
+          "name": "checks",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35747458682/job/106812631881"
+        },
+        {
+          "name": "review",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35754137726/job/106835509458"
+        },
+        {
+          "name": "build (20.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35747458739/job/106812631896"
+        },
+        {
+          "name": "build (22.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35747458739/job/106812631684"
+        }
+      ],
+      "title": "fix: replace em dash in decisions README",
+      "url": "https://github.com/bbukolla-eng/Heleos-spark/pull/25",
+      "unresolved_threads": {
+        "count": 3,
+        "outdated": 0,
+        "has_more": false,
+        "urls": [
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/25#discussion_r4073974699",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/25#discussion_r4073977799",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/25#discussion_r4073979357"
+        ]
+      }
+    },
+    {
+      "autoMergeRequest": null,
+      "baseRefName": "main",
+      "headRefName": "2026-09-21-t5b5",
+      "headRefOid": "d115d2fd525dd86bd4824e065caf8709598a5ae7",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "number": 24,
+      "reviewDecision": "",
+      "statusCheckRollup": [
+        {
+          "name": "ai-reviewers",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808788465/job/107015405193"
+        },
+        {
+          "name": "Analyze (actions)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808787577/job/107015404355"
+        },
+        {
+          "name": "build (18.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808788525/job/107015405125"
+        },
+        {
+          "name": "checks",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808788523/job/107015405267"
+        },
+        {
+          "name": "review",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808788392/job/107015404650"
+        },
+        {
+          "name": "Analyze (javascript-typescript)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808787577/job/107015404339"
+        },
+        {
+          "name": "build (20.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808788525/job/107015405076"
+        },
+        {
+          "name": "Analyze (python)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808787577/job/107015404190"
+        },
+        {
+          "name": "build (22.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35808788525/job/107015405201"
+        },
+        {
+          "name": "CodeQL",
+          "result": "FAILURE",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/runs/107015509032"
+        },
+        {
+          "name": "CodeRabbit",
+          "result": "SUCCESS",
+          "url": ""
+        }
+      ],
+      "title": "Integrate Heleos build milestones and retire Kimi workflow",
+      "url": "https://github.com/bbukolla-eng/Heleos-spark/pull/24",
+      "unresolved_threads": {
+        "count": 53,
+        "outdated": 1,
+        "has_more": false,
+        "urls": [
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073422782",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073422847",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073429703",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073431378",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073432492",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073434676",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073436789",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073438605",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073440821",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073443031",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073444946",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073447851",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073449595",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073451698",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073455690",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073458171",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073459824",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073461836",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073464072",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4073467728",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077687666",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077694898",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077696286",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077697078",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077698014",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077699170",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077701735",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077703026",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077704083",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077705263",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077706180",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077707739",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077709459",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077710495",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077712258",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077713966",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077715033",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4077716468",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4078364512",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4078376756",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4078376790",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4078385632",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4078386060",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4078386862",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4078387766",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4078388622",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4078389327",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4078390600",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4078391209",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4078391854",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4078392878",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4078393592",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/24#discussion_r4078394864"
+        ]
+      }
+    },
+    {
+      "autoMergeRequest": null,
+      "baseRefName": "copilot/setup-auto-review-merge",
+      "headRefName": "copilot/fix-github-actions-job",
+      "headRefOid": "733c5508a1b5b59a1778fd096620d4d5e823d8a2",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "number": 22,
+      "reviewDecision": "CHANGES_REQUESTED",
+      "statusCheckRollup": [
+        {
+          "name": "checks",
+          "result": "FAILURE",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35158662146/job/105008501709"
+        },
+        {
+          "name": "ensure-draft-pr",
+          "result": "FAILURE",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35158657168/job/105008496702"
+        },
+        {
+          "name": "ai-reviewers",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35160045491/job/105008504803"
+        },
+        {
+          "name": "build (18.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35158662126/job/105008499779"
+        },
+        {
+          "name": "review",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35160045518/job/105008506626"
+        },
+        {
+          "name": "build (20.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35158662126/job/105008499753"
+        },
+        {
+          "name": "build (22.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35158662126/job/105008499527"
+        },
+        {
+          "name": "automerge-policy",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35160045474/job/105008506067"
+        }
+      ],
+      "title": "Handle PR-write restriction failures in pr-automation draft PR job",
+      "url": "https://github.com/bbukolla-eng/Heleos-spark/pull/22",
+      "unresolved_threads": {
+        "count": 3,
+        "outdated": 0,
+        "has_more": false,
+        "urls": [
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/22#discussion_r4031425613",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/22#discussion_r4031425647",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/22#discussion_r4031523687"
+        ]
+      }
+    },
+    {
+      "autoMergeRequest": null,
+      "baseRefName": "main",
+      "headRefName": "copilot/setup-auto-review-merge",
+      "headRefOid": "0b864e546c86a579c77717b04cb313f52d230d93",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "number": 21,
+      "reviewDecision": "",
+      "statusCheckRollup": [
+        {
+          "name": "checks",
+          "result": "FAILURE",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35158265071/job/105002822960"
+        },
+        {
+          "name": "ensure-draft-pr",
+          "result": "FAILURE",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35156892561/job/105002822001"
+        },
+        {
+          "name": "ai-reviewers",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35158814243/job/105004590176"
+        },
+        {
+          "name": "build (18.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35158265211/job/105002824255"
+        },
+        {
+          "name": "review",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35158814288/job/105004590748"
+        },
+        {
+          "name": "build (20.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35158265211/job/105002824197"
+        },
+        {
+          "name": "build (22.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35158265211/job/105002824014"
+        },
+        {
+          "name": "automerge-policy",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35158814282/job/105004590690"
+        }
+      ],
+      "title": "Automate draft PR creation and policy-driven auto-merge on green AI checks",
+      "url": "https://github.com/bbukolla-eng/Heleos-spark/pull/21",
+      "unresolved_threads": {
+        "count": 18,
+        "outdated": 0,
+        "has_more": false,
+        "urls": [
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031416081",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031416123",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031416142",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031416164",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031416185",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031416203",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031416223",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031416237",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031416252",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031416271",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031416291",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031463614",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031463618",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031463620",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031463626",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031463635",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031463640",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/21#discussion_r4031463643"
+        ]
+      }
+    },
+    {
+      "autoMergeRequest": {
+        "authorEmail": null,
+        "commitBody": "",
+        "commitHeadline": null,
+        "mergeMethod": "MERGE",
+        "enabledAt": "2026-09-16T21:50:49Z",
+        "enabledBy": {
+          "id": "U_kgDOD9Qh1Q",
+          "is_bot": false,
+          "login": "bbukolla-eng",
+          "name": ""
+        }
+      },
+      "baseRefName": "main",
+      "headRefName": "dependabot/github_actions/anthropics/claude-code-action-1.0.223",
+      "headRefOid": "2dcf5143c4d802c18ac3e621dc6b0b1346788ec1",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "number": 20,
+      "reviewDecision": "REVIEW_REQUIRED",
+      "statusCheckRollup": [
+        {
+          "name": "ai-reviewers",
+          "result": "FAILURE",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35120791291/job/104877749580"
+        },
+        {
+          "name": "checks",
+          "result": "FAILURE",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35120791191/job/104877748882"
+        },
+        {
+          "name": "build (18.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35120791458/job/104877749817"
+        },
+        {
+          "name": "review",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35120791226/job/104877748898"
+        },
+        {
+          "name": "build (20.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35120791458/job/104877749542"
+        },
+        {
+          "name": "build (22.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/35120791458/job/104877749622"
+        }
+      ],
+      "title": "ci: bump anthropics/claude-code-action from 1.0.211 to 1.0.223",
+      "url": "https://github.com/bbukolla-eng/Heleos-spark/pull/20",
+      "unresolved_threads": {
+        "count": 0,
+        "outdated": 0,
+        "has_more": false,
+        "urls": []
+      }
+    },
+    {
+      "autoMergeRequest": null,
+      "baseRefName": "main",
+      "headRefName": "dependabot/github_actions/actions/checkout-7.0.1",
+      "headRefOid": "f1df2deb856e377e09508e098accdeacf1801c83",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "number": 19,
+      "reviewDecision": "REVIEW_REQUIRED",
+      "statusCheckRollup": [
+        {
+          "name": "ai-reviewers",
+          "result": "FAILURE",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34375499638/job/102547145739"
+        },
+        {
+          "name": "checks",
+          "result": "FAILURE",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34375499568/job/102547146479"
+        },
+        {
+          "name": "build (18.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34375499718/job/102547145690"
+        },
+        {
+          "name": "review",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34375499634/job/102547145535"
+        },
+        {
+          "name": "build (20.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34375499718/job/102547146098"
+        },
+        {
+          "name": "build (22.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34375499718/job/102547146065"
+        }
+      ],
+      "title": "ci: bump actions/checkout from 4.2.2 to 7.0.1",
+      "url": "https://github.com/bbukolla-eng/Heleos-spark/pull/19",
+      "unresolved_threads": {
+        "count": 0,
+        "outdated": 0,
+        "has_more": false,
+        "urls": []
+      }
+    },
+    {
+      "autoMergeRequest": null,
+      "baseRefName": "main",
+      "headRefName": "cursor/coverage-spark-15-gate-residuals",
+      "headRefOid": "16c010286887aad8ed97cf575cf41b805f7c3c24",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "number": 17,
+      "reviewDecision": "",
+      "statusCheckRollup": [
+        {
+          "name": "checks",
+          "result": "FAILURE",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34109836356/job/101703250368"
+        },
+        {
+          "name": "ai-reviewers",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34109836393/job/101703250722"
+        },
+        {
+          "name": "build (18.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34109836348/job/101703250232"
+        },
+        {
+          "name": "review",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34109836336/job/101703251033"
+        },
+        {
+          "name": "build (20.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34109836348/job/101703250193"
+        },
+        {
+          "name": "build (22.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34109836348/job/101703249932"
+        },
+        {
+          "name": "Amazon Q Developer",
+          "result": "SUCCESS",
+          "url": "https://aws.amazon.com/q/developer/"
+        }
+      ],
+      "title": "test: pin residual #15 force-push, SHA-field, and CLI contracts",
+      "url": "https://github.com/bbukolla-eng/Heleos-spark/pull/17",
+      "unresolved_threads": {
+        "count": 9,
+        "outdated": 0,
+        "has_more": false,
+        "urls": [
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/17#discussion_r3948693371",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/17#discussion_r3948694664",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/17#discussion_r3948695953",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/17#discussion_r3948697285",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/17#discussion_r3948698597",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/17#discussion_r3948699526",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/17#discussion_r3948705955",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/17#discussion_r3948710182",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/17#discussion_r3948710190"
+        ]
+      }
+    },
+    {
+      "autoMergeRequest": null,
+      "baseRefName": "main",
+      "headRefName": "bek/spark-automerge-aq-ping",
+      "headRefOid": "085e4efe2b83e3ce06af2e5bcdd8517740e4ed31",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "number": 16,
+      "reviewDecision": "",
+      "statusCheckRollup": [
+        {
+          "name": "ai-reviewers",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34062548004/job/101565550648"
+        },
+        {
+          "name": "build (18.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34062548006/job/101565522277"
+        },
+        {
+          "name": "checks",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34062548008/job/101565522368"
+        },
+        {
+          "name": "review",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34062548035/job/101565522292"
+        },
+        {
+          "name": "build (20.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34062548006/job/101565522245"
+        },
+        {
+          "name": "build (22.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34062548006/job/101565522174"
+        },
+        {
+          "name": "enable",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34062548009/job/101565522343"
+        }
+      ],
+      "title": "ci: auto-label automerge and ping stuck Amazon Q",
+      "url": "https://github.com/bbukolla-eng/Heleos-spark/pull/16",
+      "unresolved_threads": {
+        "count": 54,
+        "outdated": 5,
+        "has_more": false,
+        "urls": [
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945349851",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945349871",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945349880",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945353968",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945354010",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945354012",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945354527",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945355129",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945355581",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945355977",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945356530",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945357079",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945357096",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945357104",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945357155",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945357508",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945358046",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945358358",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945358680",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945359106",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945359452",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945372253",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945372270",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945372280",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945377255",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945377509",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945377788",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945377974",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945378346",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945378635",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945379017",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945379231",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945379558",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945379849",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945390817",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945391211",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945391694",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945392255",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945393050",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945393707",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945394100",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945395201",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945396036",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945403305",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945403634",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945403741",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945404104",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945404330",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945404789",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945405124",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945405470",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945405741",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945406003",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/16#discussion_r3945406308"
+        ]
+      }
+    },
+    {
+      "autoMergeRequest": null,
+      "baseRefName": "main",
+      "headRefName": "cursor/coverage-spark-4-9-10-second-residuals",
+      "headRefOid": "97ff07345239c75154e57cff08e1a47fa315a419",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "number": 14,
+      "reviewDecision": "",
+      "statusCheckRollup": [
+        {
+          "name": "checks",
+          "result": "FAILURE",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34061576619/job/101562921671"
+        },
+        {
+          "name": "ai-reviewers",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34061576620/job/101562921571"
+        },
+        {
+          "name": "build (18.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34061576574/job/101562921523"
+        },
+        {
+          "name": "enable",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34061576614/job/101562921508"
+        },
+        {
+          "name": "review",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34061576570/job/101562921153"
+        },
+        {
+          "name": "build (20.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34061576574/job/101562921465"
+        },
+        {
+          "name": "build (22.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34061576574/job/101562921340"
+        }
+      ],
+      "title": "test: pin remaining #4/#9/#10 JSON, rule, comment, and precall paths",
+      "url": "https://github.com/bbukolla-eng/Heleos-spark/pull/14",
+      "unresolved_threads": {
+        "count": 11,
+        "outdated": 0,
+        "has_more": false,
+        "urls": [
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/14#discussion_r3940239771",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/14#discussion_r3940239778",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/14#discussion_r3940239782",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/14#discussion_r3940239786",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/14#discussion_r3940241844",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/14#discussion_r3945344340",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/14#discussion_r3945344356",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/14#discussion_r3945348998",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/14#discussion_r3945349582",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/14#discussion_r3945350081",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/14#discussion_r3945350419"
+        ]
+      }
+    },
+    {
+      "autoMergeRequest": null,
+      "baseRefName": "main",
+      "headRefName": "cursor/coverage-spark-4-9-10-residuals",
+      "headRefOid": "402c39bad79ffe564e5292b20ff856f482389e6a",
+      "isDraft": false,
+      "mergeStateStatus": "BLOCKED",
+      "number": 13,
+      "reviewDecision": "",
+      "statusCheckRollup": [
+        {
+          "name": "checks",
+          "result": "FAILURE",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34061575102/job/101562916879"
+        },
+        {
+          "name": "ai-reviewers",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34061575113/job/101562916819"
+        },
+        {
+          "name": "build (18.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34061575138/job/101562917168"
+        },
+        {
+          "name": "enable",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34061575152/job/101562917020"
+        },
+        {
+          "name": "review",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34061575130/job/101562916965"
+        },
+        {
+          "name": "build (20.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34061575138/job/101562917043"
+        },
+        {
+          "name": "build (22.x)",
+          "result": "SUCCESS",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34061575138/job/101562917157"
+        }
+      ],
+      "title": "test: pin residual #4/#9/#10 registry, ledger, and snapshot-write paths",
+      "url": "https://github.com/bbukolla-eng/Heleos-spark/pull/13",
+      "unresolved_threads": {
+        "count": 7,
+        "outdated": 0,
+        "has_more": false,
+        "urls": [
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/13#discussion_r3932989421",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/13#discussion_r3945352191",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/13#discussion_r3945352647",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/13#discussion_r3945353480",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/13#discussion_r3945354028",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/13#discussion_r3945354662",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/13#discussion_r3945354904"
+        ]
+      }
+    },
+    {
+      "autoMergeRequest": null,
+      "baseRefName": "feat/enriched-build-fabric",
+      "headRefName": "copilot/fix-github-actions-job-failure",
+      "headRefOid": "d3b11a94fb81171f8c0dd1483040bab8ddc389f3",
+      "isDraft": true,
+      "mergeStateStatus": "UNKNOWN",
+      "number": 11,
+      "reviewDecision": "",
+      "statusCheckRollup": [],
+      "title": "Fix failing CI Python test suite (wheel builds, doctor Athena profile, boundary false positive, flaky teardown)",
+      "url": "https://github.com/bbukolla-eng/Heleos-spark/pull/11",
+      "unresolved_threads": {
+        "count": 1,
+        "outdated": 0,
+        "has_more": false,
+        "urls": [
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/11#discussion_r3932791022"
+        ]
+      }
+    },
+    {
+      "autoMergeRequest": null,
+      "baseRefName": "main",
+      "headRefName": "claude/heleos-spark-branch-60gd5e",
+      "headRefOid": "861fcfeab1c591a5b6c729d6f4ca3c291bd2a5ec",
+      "isDraft": true,
+      "mergeStateStatus": "DIRTY",
+      "number": 3,
+      "reviewDecision": "REVIEW_REQUIRED",
+      "statusCheckRollup": [],
+      "title": "feat: establish the Claude Code lane, its guard, and the build roadmap",
+      "url": "https://github.com/bbukolla-eng/Heleos-spark/pull/3",
+      "unresolved_threads": {
+        "count": 0,
+        "outdated": 0,
+        "has_more": false,
+        "urls": []
+      }
+    },
+    {
+      "autoMergeRequest": null,
+      "baseRefName": "main",
+      "headRefName": "feat/enriched-build-fabric",
+      "headRefOid": "8577291c1f2405bdabf61cf19a00f162c847af59",
+      "isDraft": false,
+      "mergeStateStatus": "DIRTY",
+      "number": 1,
+      "reviewDecision": "",
+      "statusCheckRollup": [
+        {
+          "name": "Python 3.12 test suite",
+          "result": "FAILURE",
+          "url": "https://github.com/bbukolla-eng/Heleos-spark/actions/runs/33857495181/job/100974067261"
+        }
+      ],
+      "title": "Build HELIOS Division 23 engine and ATHENA research intake",
+      "url": "https://github.com/bbukolla-eng/Heleos-spark/pull/1",
+      "unresolved_threads": {
+        "count": 18,
+        "outdated": 0,
+        "has_more": false,
+        "urls": [
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3924168988",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3924169038",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3924170929",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3924170932",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3924170935",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3924170946",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3924170950",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3924170958",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3924170964",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3924175499",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3932741997",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3932742080",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3932809907",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3932809914",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3932809923",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3932809930",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3932809938",
+          "https://github.com/bbukolla-eng/Heleos-spark/pull/1#discussion_r3932809945"
+        ]
+      }
+    }
+  ],
+  "ruleset": {
+    "id": 22285340,
+    "name": "Sparky-9",
+    "target": "branch",
+    "source_type": "Repository",
+    "source": "bbukolla-eng/Heleos-spark",
+    "enforcement": "active",
+    "conditions": {
+      "ref_name": {
+        "exclude": [],
+        "include": [
+          "~DEFAULT_BRANCH"
+        ]
+      }
+    },
+    "rules": [
+      {
+        "type": "deletion"
+      },
+      {
+        "type": "required_status_checks",
+        "parameters": {
+          "strict_required_status_checks_policy": true,
+          "do_not_enforce_on_create": false,
+          "required_status_checks": [
+            {
+              "context": "checks",
+              "integration_id": 15368
+            },
+            {
+              "context": "Amazon Q Developer",
+              "integration_id": 1220912
+            },
+            {
+              "context": "copilot-pull-request-reviewer",
+              "integration_id": 15368
+            },
+            {
+              "context": "ai-reviewers",
+              "integration_id": 15368
+            }
+          ]
+        }
+      },
+      {
+        "type": "copilot_code_review",
+        "parameters": {
+          "review_on_push": true,
+          "review_draft_pull_requests": true
+        }
+      },
+      {
+        "type": "non_fast_forward"
+      },
+      {
+        "type": "pull_request",
+        "parameters": {
+          "required_approving_review_count": 1,
+          "dismiss_stale_reviews_on_push": true,
+          "required_reviewers": [],
+          "require_code_owner_review": false,
+          "require_last_push_approval": true,
+          "required_review_thread_resolution": true,
+          "require_extra_approval_for_unattributed_changes": true,
+          "allowed_merge_methods": [
+            "merge"
+          ]
+        }
+      },
+      {
+        "type": "code_scanning",
+        "parameters": {
+          "code_scanning_tools": [
+            {
+              "tool": "CodeQL",
+              "security_alerts_threshold": "high_or_higher",
+              "alerts_threshold": "errors"
+            }
+          ]
+        }
+      }
+    ],
+    "node_id": "RRS_lACqUmVwb3NpdG9yec5QVzO1zgFUDBw",
+    "created_at": "2026-09-04T12:27:40.422-04:00",
+    "updated_at": "2026-09-22T20:56:55.722-04:00",
+    "bypass_actors": [],
+    "current_user_can_bypass": "never",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/bbukolla-eng/Heleos-spark/rulesets/22285340"
+      },
+      "html": {
+        "href": "https://github.com/bbukolla-eng/Heleos-spark/rules/22285340"
+      }
+    }
+  }
+}

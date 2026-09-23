@@ -9,15 +9,12 @@ This is the replacement for withdrawn PR26, not a continuation of its custom app
 - CodeRabbit repository 1347892149: automatic and incremental review enabled,
   drafts excluded, default branch only, auto-pause disabled, request-changes
   workflow enabled and Autofix enabled. UI changes apply only to Heleos-spark.
-- Existing Cursor automation 490dd69e-b548-11f1-bb68-864e54d14197: GitHub PR-opened,
-  review-submitted and workflow-completed triggers, restricted by instructions to
-  new same-repository ready PRs targeting main. Older PRs are excluded.
-- Cursor requests CodeRabbit fixes for its findings and handles CI/other findings.
-  Fixes go to the existing PR branch. Two total fix attempts per PR, shared across
-  providers; persistent attempt/lease records and notifications are agent instructions,
-  not a new deterministic GitHub enforcement layer.
-- Cursor cannot approve via its configured PR-comment tool. Slack read/send tools
-  and the daily/main-only repair triggers were removed. No new credential or app.
+- Cursor automation 490dd69e-b548-11f1-bb68-864e54d14197 is inactive by the
+  owner's subsequent instruction. Its run history showed no active jobs when
+  disabled. Do not activate it or use it as an automatic-fix fallback.
+- GitHub-only automatic fix triggering is not implemented. Enabling CodeRabbit
+  Autofix makes the feature available; it does not prove unattended invocation,
+  entitlement, a deterministic two-attempt limit or a successful fix/merge cycle.
 - Native GitHub auto-merge is enabled; only merge commits are allowed. Existing
   required reviews, checks, resolved threads, stale dismissal, last-push approval
   and CodeQL protection remain. Fix authors cannot supply independent approval.
@@ -30,11 +27,9 @@ CI/security must be verified separately. Unchanged/non-actionable events stay qu
 ## Verification limits and next action
 
 UI configuration is not an end-to-end successful fix/merge. CodeRabbit shows the
-workspace as Free; Autofix entitlement and accepting a Cursor-authored trigger must
-be verified on an eligible PR. No subscription or trial was purchased. If unavailable,
-report that prerequisite rather than treating a settings toggle as paid entitlement.
-Native auto-merge capability under Cursor's existing identity likewise needs a live
-trial; do not create another app if it lacks permission.
+workspace as Free; Autofix entitlement must be verified on an eligible PR. No
+subscription or trial was purchased. No custom app or Cursor fallback is authorized.
+The GitHub-only fix trigger and deterministic attempt cap remain unfinished.
 
 Current main 63ae39c has a pre-existing failing checks run 34061515864. This
 candidate includes the same punctuation-only repair independently proposed by PR25;
@@ -54,8 +49,8 @@ failures) and all 101 Python tests passed on 2026-09-23 UTC.
 ## Authority and research
 
 These settings record the owner's explicit side-conversation choices: reviews,
-fixes and guarded auto-merge; recommended new-PR-only scope, CodeRabbit/Cursor
-split, direct PR-branch fixes and two failed attempts before escalation. They
+fixes and guarded auto-merge; initial new-PR-only scope, subsequently corrected to GitHub/CodeRabbit only,
+direct PR-branch fixes and two failed attempts before escalation. They
 supersede the rejected custom-app proposal only; product acceptance is unchanged.
 Repository content submitted to the already installed CodeRabbit and Cursor
 services remains INTERNAL. Secrets and private project drawings are excluded.
@@ -72,10 +67,18 @@ Primary documentation used:
 - https://docs.coderabbit.ai/reference/configuration
 - https://cursor.com/docs/cloud-agent/automations
 
-External submission record for settings: provider CodeRabbit and Cursor;
+Historical settings activity summary (not a schema-validated submission receipt): provider CodeRabbit and Cursor;
 purpose configure owner-requested repository review/fix workflow; data_class INTERNAL;
 source_hashes bound to this record's Git commit and saved UI prompt evidence;
 policy_decision owner authorization above, allow for this repository only;
 time 2026-09-23 UTC; result_ref the repository settings and automation URLs below.
 - https://app.coderabbit.ai/repository/1347892149/settings
 - https://cursor.com/automations/490dd69e-b548-11f1-bb68-864e54d14197
+
+## Backlog handling
+
+The owner subsequently asked to address all 14 open PRs. This authorizes individual
+triage and repair; it does not silently enroll the backlog into automatic merging.
+See [the PR queue](pull-request-backlog.md) for per-PR finish lines and blockers.
+The external-submission receipt and provider-admission reconciliation findings
+remain open; this document does not fabricate historical hashes or dismiss reviews.
