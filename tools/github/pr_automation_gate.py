@@ -14,8 +14,8 @@ ALIASES = {
     "checks": ("checks",),
     "codex": ("ai-reviewers", "codex"),
     "copilot": ("ai-reviewers", "copilot-pull-request-reviewer", "copilot"),
-    "ecc": ("ecc", "ecc-tools"),
-    "amazon-q": ("amazon q", "amazon-q", "amazonq"),
+    "ecc": ("ECC Tools Review", "ecc", "ecc-tools"),
+    "amazon-q": ("Amazon Q Developer", "amazon q", "amazon-q", "amazonq"),
     "ai-reviewers": ("ai-reviewers",),
 }
 DEFAULT_REQUIRED = ("checks", "codex", "copilot", "ecc", "amazon-q")
@@ -50,12 +50,13 @@ def _successful_names(check_runs):
 
 def evaluate(check_runs, required):
     ok_names = _successful_names(check_runs)
-    ok_norm = [_norm(name) for name in ok_names]
+    ok_norm = {_norm(name) for name in ok_names}
     missing = []
     for signal in required:
         probes = ALIASES.get(signal, (signal,))
-        probe_norm = [_norm(p) for p in probes if _norm(p)]
-        if not any(any(probe in name for probe in probe_norm) for name in ok_norm):
+        accepted = {_norm(probe) for probe in probes}
+        accepted.discard("")
+        if ok_norm.isdisjoint(accepted):
             missing.append(signal)
     return {
         "required": list(required),

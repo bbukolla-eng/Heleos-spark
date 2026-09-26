@@ -51,6 +51,17 @@ class Evaluate(unittest.TestCase):
         result = gate.evaluate([run("my custom gate", "success")], ("my custom gate",))
         self.assertTrue(result["all_ok"])
 
+    def test_containing_name_does_not_satisfy_signal(self):
+        result = gate.evaluate(
+            [
+                run("prechecks", "success"),
+                run("codex-lint", "success"),
+            ],
+            ("checks", "codex"),
+        )
+        self.assertFalse(result["all_ok"])
+        self.assertEqual(result["missing"], ["checks", "codex"])
+
 
 class Cli(unittest.TestCase):
     def test_cli_returns_zero_when_green(self):
