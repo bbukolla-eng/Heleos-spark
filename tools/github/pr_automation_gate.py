@@ -13,7 +13,7 @@ import sys
 ALIASES = {
     "checks": ("checks",),
     "codex": ("ai-reviewers", "codex"),
-    "copilot": ("ai-reviewers", "copilot-pull-request-reviewer", "copilot"),
+    "copilot": ("copilot-pull-request-reviewer", "copilot"),
     "ecc": ("ECC Tools Review", "ecc", "ecc-tools"),
     "amazon-q": ("Amazon Q Developer", "amazon q", "amazon-q", "amazonq"),
     "ai-reviewers": ("ai-reviewers",),

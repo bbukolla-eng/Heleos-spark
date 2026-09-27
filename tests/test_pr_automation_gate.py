@@ -62,6 +62,14 @@ class Evaluate(unittest.TestCase):
         self.assertFalse(result["all_ok"])
         self.assertEqual(result["missing"], ["checks", "codex"])
 
+    def test_ai_reviewers_satisfies_codex_but_not_copilot(self):
+        result = gate.evaluate(
+            [run("ai-reviewers", "success")],
+            ("codex", "copilot"),
+        )
+        self.assertFalse(result["all_ok"])
+        self.assertEqual(result["missing"], ["copilot"])
+
 
 class Cli(unittest.TestCase):
     def test_cli_returns_zero_when_green(self):
