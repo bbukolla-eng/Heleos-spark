@@ -70,6 +70,59 @@ class Evaluate(unittest.TestCase):
         self.assertFalse(result["all_ok"])
         self.assertEqual(result["missing"], ["copilot"])
 
+    def test_stale_success_does_not_satisfy_signal(self):
+        result = gate.evaluate(
+            [
+                {"name": "checks", "conclusion": "failure", "id": 9},
+                {"name": "checks", "conclusion": "success", "id": 3},
+                {
+                    "name": "codex",
+                    "conclusion": None,
+                    "status": "in_progress",
+                    "id": 8,
+                    "started_at": "2026-09-29T13:00:00Z",
+                },
+                {
+                    "name": "codex",
+                    "conclusion": "success",
+                    "id": 4,
+                    "started_at": "2026-09-29T12:00:00Z",
+                },
+            ],
+            ("checks", "codex"),
+        )
+        self.assertFalse(result["all_ok"])
+        self.assertEqual(result["missing"], ["checks", "codex"])
+        self.assertEqual(result["successful_checks"], [])
+
+    def test_later_started_at_outranks_an_older_success(self):
+        result = gate.evaluate(
+            [
+                {"name": "checks", "conclusion": "success", "started_at": "2026-09-29T12:00:00Z"},
+                {
+                    "name": "checks",
+                    "conclusion": None,
+                    "status": "in_progress",
+                    "started_at": "2026-09-29T13:00:00Z",
+                },
+            ],
+            ("checks",),
+        )
+        self.assertFalse(result["all_ok"])
+        self.assertEqual(result["missing"], ["checks"])
+
+    def test_latest_success_replaces_earlier_failure(self):
+        result = gate.evaluate(
+            [
+                {"name": "checks", "conclusion": "failure", "id": 2},
+                {"name": "checks", "conclusion": "success", "id": 5},
+            ],
+            ("checks",),
+        )
+        self.assertTrue(result["all_ok"])
+        self.assertEqual(result["missing"], [])
+        self.assertEqual(result["successful_checks"], ["checks"])
+
 
 class Cli(unittest.TestCase):
     def test_cli_returns_zero_when_green(self):

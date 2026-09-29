@@ -37,14 +37,42 @@ def _as_items(payload):
     return []
 
 
+def _recency(run, index):
+    """Rank a check run so a later rerun outranks a stale one.
+
+    GitHub assigns a new integer id on each rerun. started_at covers a
+    pending rerun that has no completed_at yet. List order is the last resort.
+    """
+    run_id = run.get("id")
+    if type(run_id) is int:
+        return (3, run_id)
+    if isinstance(run_id, str) and run_id.isdigit():
+        return (3, int(run_id))
+    started = run.get("started_at")
+    if isinstance(started, str) and started.strip():
+        return (2, started.strip())
+    completed = run.get("completed_at")
+    if isinstance(completed, str) and completed.strip():
+        return (1, completed.strip())
+    return (0, index)
+
+
 def _successful_names(check_runs):
-    names = []
-    for run in _as_items(check_runs):
-        if run.get("conclusion") != "success":
-            continue
+    latest = {}
+    for index, run in enumerate(_as_items(check_runs)):
         name = run.get("name")
-        if isinstance(name, str) and name.strip():
-            names.append(name)
+        if not isinstance(name, str) or not name.strip():
+            continue
+        key = name.strip()
+        rank = _recency(run, index)
+        current = latest.get(key)
+        if current is None or rank > current[0]:
+            latest[key] = (rank, run)
+    names = []
+    for _rank, run in latest.values():
+        if run.get("conclusion") == "success":
+            name = run.get("name")
+            names.append(name.strip())
     return names
 
 
