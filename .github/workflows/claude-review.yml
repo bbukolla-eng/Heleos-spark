@@ -9,7 +9,7 @@ name: claude-review
 # Needs the ANTHROPIC_API_KEY secret; until it exists this job prints a notice and passes.
 on:
   pull_request:
-    types: [opened, synchronize, ready_for_review]
+    types: [opened, reopened, synchronize, ready_for_review]
 env:
   EGRESS_DECISION: docs/decisions/2026-09-03-egress-policy.md
   EGRESS_RULE: egress-3-claude-review

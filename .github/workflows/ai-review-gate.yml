@@ -26,6 +26,11 @@ jobs:
       checks: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # This job writes comments, so run repository logic from the trusted base SHA,
+          # never from pull-request-controlled code.
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 1
       - name: Wait for Codex and Copilot
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
