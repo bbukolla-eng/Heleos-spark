@@ -92,6 +92,26 @@ class RegistryPins(unittest.TestCase):
         self.assertEqual(len(failures), 1)
         self.assertIn("script missing", failures[0])
 
+    def test_a_malformed_list_entry_is_reported_not_raised(self):
+        self.write(".claude/workflows/REGISTRY.json", json.dumps({
+            "workflows": ["judge-panel.js"],
+        }))
+        failures = checks.check_registry(root=self.root)
+        self.assertEqual(len(failures), 1)
+        self.assertIn("must be an object", failures[0])
+
+        self.write(".claude/workflows/REGISTRY.json", json.dumps(["judge-panel.js"]))
+        failures = checks.check_registry(root=self.root)
+        self.assertEqual(len(failures), 1)
+        self.assertIn("must be an object", failures[0])
+
+        self.write(".claude/workflows/REGISTRY.json", json.dumps({
+            "workflows": "judge-panel.js",
+        }))
+        failures = checks.check_registry(root=self.root)
+        self.assertEqual(len(failures), 1)
+        self.assertIn("must be an object", failures[0])
+
 
 class EgressLedgerChecks(unittest.TestCase):
     def setUp(self):
