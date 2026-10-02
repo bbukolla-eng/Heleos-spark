@@ -308,6 +308,8 @@ class RunningFromOutsideTheTreeItChecks(unittest.TestCase):
         self.assertEqual(written["policy_decision"]["outcome"], "allow")
         self.assertNotEqual(written["policy_decision"]["policy_sha256"], "absent")
         self.assertRegex(written["policy_decision"]["policy_sha256"], r"^[0-9a-f]{64}$")
+        self.assertNotEqual(written["policy_decision"]["decision_sha256"], "absent")
+        self.assertRegex(written["policy_decision"]["decision_sha256"], r"^[0-9a-f]{64}$")
 
     def test_the_root_flag_wins_over_the_keyword(self):
         empty = tempfile.mkdtemp()
