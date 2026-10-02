@@ -19,6 +19,8 @@ jobs:
           python-version: "3.12"
       - name: Unit tests (standard library only, no network)
         run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Worker workspace tests (locked Rust dependencies)
+        run: cargo test --workspace --locked
       - name: Workflow scripts parse
         run: |
           for f in .claude/workflows/*.js docs/runs/*/scripts/*.js; do node --check "$f"; done
