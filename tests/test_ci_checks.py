@@ -112,6 +112,16 @@ class RegistryPins(unittest.TestCase):
         self.assertEqual(len(failures), 1)
         self.assertIn("must be an object", failures[0])
 
+    def test_a_malformed_map_value_is_reported_not_skipped(self):
+        self.write(".claude/workflows/REGISTRY.json", json.dumps({
+            "workflows": {"demo": "demo.js"},
+        }))
+        failures = checks.check_registry(root=self.root)
+        self.assertEqual(len(failures), 1)
+        self.assertIn("demo", failures[0])
+        self.assertIn("must be an object", failures[0])
+        self.assertIn("str", failures[0])
+
 
 class EgressLedgerChecks(unittest.TestCase):
     def setUp(self):

@@ -59,6 +59,9 @@ def check_registry(root=ROOT):
         return failures
     for name, entry in items:
         if not isinstance(entry, dict):
+            failures.append(
+                f"registry: {name}: entry must be an object, got {type(entry).__name__}"
+            )
             continue
         script = entry.get("script") or entry.get("path") or f"{name}.js"
         if os.sep not in script and "/" not in script:
