@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -14,6 +15,7 @@ SEVEN = ("provider", "purpose", "data_class", "source_hashes", "policy_decision"
 class EgressRecord(unittest.TestCase):
     def setUp(self):
         self.root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.root, ignore_errors=True)
         os.makedirs(os.path.join(self.root, "docs", "policies"))
         os.makedirs(os.path.join(self.root, "docs", "decisions"))
         self.write("docs/policies/egress.md", "# Egress policy\n")
@@ -135,6 +137,7 @@ class GitFailureDegradesRatherThanCrashes(unittest.TestCase):
 
     def setUp(self):
         self.root = tempfile.mkdtemp()  # deliberately not a git repository
+        self.addCleanup(shutil.rmtree, self.root, ignore_errors=True)
         os.makedirs(os.path.join(self.root, "docs", "policies"))
         os.makedirs(os.path.join(self.root, "docs", "decisions"))
         with open(os.path.join(self.root, "docs/policies/egress.md"), "w", encoding="utf-8") as handle:
@@ -164,6 +167,7 @@ class ExistenceIsNotApproval(unittest.TestCase):
 
     def setUp(self):
         self.root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.root, ignore_errors=True)
         os.makedirs(os.path.join(self.root, "docs", "policies"))
         os.makedirs(os.path.join(self.root, "docs", "decisions"))
         self.write("docs/policies/egress.md", "policy\n")
@@ -204,6 +208,7 @@ class PreCallHashesSurviveACommitDuringTheRun(unittest.TestCase):
 
     def setUp(self):
         self.root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.root, ignore_errors=True)
         os.makedirs(os.path.join(self.root, "docs", "policies"))
         os.makedirs(os.path.join(self.root, "docs", "decisions"))
         with open(os.path.join(self.root, "docs/policies/egress.md"), "w", encoding="utf-8") as handle:
@@ -263,7 +268,9 @@ class RunningFromOutsideTheTreeItChecks(unittest.TestCase):
 
     def setUp(self):
         self.root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.root, ignore_errors=True)
         self.elsewhere = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.elsewhere, ignore_errors=True)
         os.makedirs(os.path.join(self.root, "docs", "policies"))
         os.makedirs(os.path.join(self.root, "docs", "decisions"))
         with open(os.path.join(self.root, "docs/policies/egress.md"), "w", encoding="utf-8") as handle:
@@ -311,8 +318,23 @@ class RunningFromOutsideTheTreeItChecks(unittest.TestCase):
         self.assertNotEqual(written["policy_decision"]["decision_sha256"], "absent")
         self.assertRegex(written["policy_decision"]["decision_sha256"], r"^[0-9a-f]{64}$")
 
+
+class TheRootFlagWinsOverTheKeyword(unittest.TestCase):
+    """--root on the command line overrides the root keyword passed to main."""
+
+    def setUp(self):
+        self.root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.root, ignore_errors=True)
+        os.makedirs(os.path.join(self.root, "docs", "policies"))
+        os.makedirs(os.path.join(self.root, "docs", "decisions"))
+        with open(os.path.join(self.root, "docs/policies/egress.md"), "w", encoding="utf-8") as handle:
+            handle.write("# Egress policy\n")
+        with open(os.path.join(self.root, "docs/decisions/d.md"), "w", encoding="utf-8") as handle:
+            handle.write("# Decision\n\n**Status:** APPROVED\n\n**Decided by:** Bekim Bukolla **Date:** 2026-09-03\n")
+
     def test_the_root_flag_wins_over_the_keyword(self):
         empty = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, empty, ignore_errors=True)
         code = record.main(
             ["check", "--provider", "anthropic", "--purpose", "p", "--data-class", "INTERNAL",
              "--decision", "docs/decisions/d.md", "--rule", "r", "--root", self.root],
@@ -331,6 +353,7 @@ class AnExampleSignatureIsNotASignature(unittest.TestCase):
 
     def setUp(self):
         self.root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.root, ignore_errors=True)
         os.makedirs(os.path.join(self.root, "docs"))
 
     def failures(self, body):

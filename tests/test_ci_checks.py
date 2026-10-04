@@ -1,6 +1,7 @@
 import hashlib
 import json
 import os
+import shutil
 import sys
 import tempfile
 import unittest
@@ -12,6 +13,7 @@ from tools.ci import checks  # noqa: E402
 class LinkAndProseChecks(unittest.TestCase):
     def setUp(self):
         self.root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.root, ignore_errors=True)
         os.makedirs(os.path.join(self.root, "docs"))
         self.write("docs/target.md", "# target\n")
 
@@ -55,6 +57,7 @@ class RegistryPins(unittest.TestCase):
 
     def setUp(self):
         self.root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.root, ignore_errors=True)
         os.makedirs(os.path.join(self.root, ".claude", "workflows"))
 
     def write(self, rel, text):
@@ -126,6 +129,7 @@ class RegistryPins(unittest.TestCase):
 class EgressLedgerChecks(unittest.TestCase):
     def setUp(self):
         self.root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.root, ignore_errors=True)
         os.makedirs(os.path.join(self.root, "docs", "runs", "egress"))
         os.makedirs(os.path.join(self.root, "docs", "policies"))
         os.makedirs(os.path.join(self.root, "docs", "decisions"))
