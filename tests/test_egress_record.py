@@ -453,7 +453,10 @@ class AnExampleSignatureIsNotASignature(unittest.TestCase):
             "# Draft\n\n```\nthis example never closes\n\n"
             "**Status:** APPROVED\n\n**Decided by:** Bekim Bukolla **Date:** 2026-09-03\n"
         )
-        self.assertTrue(self.failures(body), "an unclosed fence let a later signature open the gate")
+        failures = self.failures(body)
+        self.assertEqual(len(failures), 2, failures)
+        self.assertTrue(any("not signed" in f for f in failures), failures)
+        self.assertTrue(any("no signer" in f for f in failures), failures)
 
 
 if __name__ == "__main__":
