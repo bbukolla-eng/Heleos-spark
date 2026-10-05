@@ -41,9 +41,27 @@ def check_registry(root=ROOT):
     with open(path, encoding="utf-8") as handle:
         registry = json.load(handle)
     entries = registry.get("workflows", registry) if isinstance(registry, dict) else registry
-    items = entries.items() if isinstance(entries, dict) else [(e.get("name"), e) for e in entries]
+    if isinstance(entries, dict):
+        items = entries.items()
+    elif isinstance(entries, list):
+        items = []
+        for index, entry in enumerate(entries):
+            if not isinstance(entry, dict):
+                failures.append(
+                    f"registry: workflows[{index}]: entry must be an object, got {type(entry).__name__}"
+                )
+                continue
+            items.append((entry.get("name"), entry))
+    else:
+        failures.append(
+            f"registry: workflows must be an object or a list, got {type(entries).__name__}"
+        )
+        return failures
     for name, entry in items:
         if not isinstance(entry, dict):
+            failures.append(
+                f"registry: {name}: entry must be an object, got {type(entry).__name__}"
+            )
             continue
         script = entry.get("script") or entry.get("path") or f"{name}.js"
         if os.sep not in script and "/" not in script:
