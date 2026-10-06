@@ -134,6 +134,24 @@ class TheOtherFailClosedBlankingStrategies(unittest.TestCase):
             "\t**Decided by:** Someone **Date:** x\n\n"
             "## 6. Decision\n\n**Status:** Draft\n\n**Decided by:** ____ **Date:** ____\n"
         )
+        self.assertEqual(
+            record.prose_only(body).split("\n"),
+            [
+                "# Draft",
+                "",
+                "Example:",
+                "",
+                "",
+                "",
+                "",
+                "## 6. Decision",
+                "",
+                "**Status:** Draft",
+                "",
+                "**Decided by:** ____ **Date:** ____",
+                "",
+            ],
+        )
         self.assertTrue(self.failures(body), "a tab-indented example opened the gate")
 
 
