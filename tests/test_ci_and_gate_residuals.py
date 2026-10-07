@@ -9,6 +9,7 @@ two fail-closed blanking strategies, a corrupt precall snapshot, and prompt-sour
 import hashlib
 import json
 import os
+import shutil
 import sys
 import tempfile
 import unittest
@@ -23,6 +24,7 @@ class JsonChecks(unittest.TestCase):
 
     def setUp(self):
         self.root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.root, ignore_errors=True)
 
     def write(self, rel, text):
         path = os.path.join(self.root, rel)
@@ -47,6 +49,7 @@ class LedgerRuleAndHashTypes(unittest.TestCase):
 
     def setUp(self):
         self.root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.root, ignore_errors=True)
         os.makedirs(os.path.join(self.root, "docs", "runs", "egress"))
         os.makedirs(os.path.join(self.root, "docs", "policies"))
         os.makedirs(os.path.join(self.root, "docs", "decisions"))
@@ -113,6 +116,7 @@ class TheOtherFailClosedBlankingStrategies(unittest.TestCase):
 
     def setUp(self):
         self.root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.root, ignore_errors=True)
         os.makedirs(os.path.join(self.root, "docs"))
 
     def failures(self, body):
@@ -160,6 +164,7 @@ class PrecallAndPromptSource(unittest.TestCase):
 
     def setUp(self):
         self.root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.root, ignore_errors=True)
         os.makedirs(os.path.join(self.root, "docs", "policies"))
         os.makedirs(os.path.join(self.root, "docs", "decisions"))
         with open(os.path.join(self.root, "docs/policies/egress.md"), "w", encoding="utf-8") as handle:
