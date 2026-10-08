@@ -105,6 +105,21 @@ class LedgerRuleAndHashTypes(unittest.TestCase):
         failures = checks.check_egress_ledger(root=self.root)
         self.assertTrue(any("no rule recorded" in item for item in failures), failures)
 
+    def test_a_non_string_rule_is_reported(self):
+        for rule in (None, [], {}):
+            with self.subTest(rule=rule):
+                pd = {
+                    "outcome": "allow",
+                    "rule": rule,
+                    "policy": "docs/policies/egress.md",
+                    "policy_sha256": "0" * 64,
+                    "decision": "docs/decisions/d.md",
+                    "decision_sha256": "0" * 64,
+                }
+                self.write("docs/runs/egress/index.jsonl", self.line(policy_decision=pd) + "\n")
+                failures = checks.check_egress_ledger(root=self.root)
+                self.assertTrue(any("no rule recorded" in item for item in failures), failures)
+
     def test_source_hashes_as_a_string_fail(self):
         self.write("docs/runs/egress/index.jsonl", self.line(source_hashes="checkout-tree:sha1:abc") + "\n")
         failures = checks.check_egress_ledger(root=self.root)
