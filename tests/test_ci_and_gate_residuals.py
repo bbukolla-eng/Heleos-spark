@@ -219,8 +219,9 @@ class PrecallAndPromptSource(unittest.TestCase):
         with open(os.path.join(self.root, "prompt.md"), "w", encoding="utf-8") as handle:
             handle.write(body)
         digest = hashlib.sha256(body.encode("utf-8")).hexdigest()
-        hashes = record.source_hashes(self.root, {}, prompt_source="prompt.md")
-        self.assertIn("prompt-source:sha256:" + digest, hashes)
+        code, written = self.write_mode(["--prompt-source", "prompt.md"])
+        self.assertEqual(code, 0)
+        self.assertIn("prompt-source:sha256:" + digest, written["source_hashes"])
 
 
 if __name__ == "__main__":
