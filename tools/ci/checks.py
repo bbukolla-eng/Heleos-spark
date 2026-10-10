@@ -137,7 +137,8 @@ def check_egress_ledger(root=ROOT):
                 continue
             if decision.get("outcome") != "allow":
                 failures.append(f"{where}: outcome is {decision.get('outcome')}, not allow")
-            if not str(decision.get("rule", "")).strip():
+            rule = decision.get("rule", "")
+            if not isinstance(rule, str) or not rule.strip():
                 failures.append(f"{where}: no rule recorded")
             for key in ("policy", "decision"):
                 target = decision.get(key)
