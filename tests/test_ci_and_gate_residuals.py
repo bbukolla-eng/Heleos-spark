@@ -194,18 +194,22 @@ class PrecallAndPromptSource(unittest.TestCase):
             "--decision", "docs/decisions/d.md", "--rule", "r", "--out", out,
         ] + extra
         code = record.main(argv, env={}, root=self.root)
+        if not os.path.exists(out):
+            return code, None
         with open(out, encoding="utf-8") as handle:
             written = json.loads(handle.read().strip())
         return code, written
 
     def test_a_corrupt_precall_snapshot_is_marked_rather_than_used(self):
         precall = os.path.join(self.root, "precall.json")
+        leaked = "ghp_" + "x" * 36
         with open(precall, "w", encoding="utf-8") as handle:
-            handle.write("{not json\n")
+            handle.write("{not json " + leaked + "\n")
         code, written = self.write_mode(["--precall", precall])
         self.assertEqual(code, 0)
+        self.assertIsNotNone(written)
         self.assertIn("precall-snapshot:absent", written["source_hashes"])
-        self.assertNotIn("not json", json.dumps(written))
+        self.assertNotIn(leaked, json.dumps(written))
 
     def test_an_empty_precall_hash_list_is_marked_absent(self):
         precall = os.path.join(self.root, "precall.json")
