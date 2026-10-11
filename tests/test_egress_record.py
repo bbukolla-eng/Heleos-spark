@@ -297,9 +297,12 @@ class RunningFromOutsideTheTreeItChecks(unittest.TestCase):
         self.assertIn("may receive INTERNAL", result.stdout)
 
     def test_without_root_write_records_present_files_as_absent(self):
-        """PR #10 verified this in a simulated runner; the unit suite only covered check."""
+        # No --root leaves ROOT three directories above this copy, which is /
+        # under a default TMPDIR. The refusal depends on /docs/policies/egress.md
+        # not existing there.
         out = os.path.join(self.elsewhere, "egress.jsonl")
         result = self.run_copy("write", "--out", out)
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
         self.assertTrue(os.path.exists(out), result.stdout + result.stderr)
         with open(out, encoding="utf-8") as handle:
             written = json.loads(handle.read().strip())
