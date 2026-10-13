@@ -7,13 +7,16 @@
 | Workflow | Trigger | What it does | Needs from the owner |
 |---|---|---|---|
 | `checks` (`.github/workflows/ci.yml`) | every pull request; pushes to `main` | Standard-library unit tests, `node --check` on every workflow script, `tools/ci/checks.py` (registry hashes, JSON validity, relative links and image destinations, the no-dash prose rule) | Nothing; runs today |
-| `claude-review` | a pull request is opened, updated, or marked ready (drafts skipped) | Claude reviews the diff against `CLAUDE.md`, the spec, and `ROADMAP.md` and leaves review comments; it never approves or merges | The `claude-egress` environment and its `ANTHROPIC_API_KEY` secret |
+| `claude-review` | a pull request is opened, reopened, updated, or marked ready (drafts skipped) | Claude reviews the diff against `CLAUDE.md`, the spec, and `ROADMAP.md` and leaves review comments; it never approves or merges | The `claude-egress` environment and its `ANTHROPIC_API_KEY` secret |
 | `claude` | `@claude` in an issue, issue comment, review, or review comment | Claude implements the request and commits: on an open pull request it pushes to that pull request's branch, so the pull request updates itself; from an issue it creates a branch and replies with a pre-filled pull request link a person must click. The action does not open pull requests itself (its `docs/security.md`, "Pull Request Creation") | The `claude-egress` environment and its `ANTHROPIC_API_KEY` secret; the Claude GitHub App installed on the repository |
-| `auto-merge` | a non-draft pull request gains the `automerge` label, is marked ready, or is updated while labelled | Enables GitHub auto-merge (squash); GitHub merges once every required check passes | "Allow auto-merge" in Settings; branch protection on `main` requiring the `checks` job |
+| `auto-merge` | a non-draft pull request gains the `automerge` label, is reopened, is marked ready, or is updated while labelled | Enables GitHub auto-merge (squash); GitHub merges once every required check passes | "Allow auto-merge" in Settings; branch protection on `main` requiring the `checks` job |
 | `ai-review-gate` (`.github/workflows/ai-review-gate.yml`), job `ai-reviewers` | non-draft pull request opened, reopened, synchronized, or marked ready | Polls until ChatGPT Codex and Copilot have acknowledged the current head (or Copilot's `copilot-pull-request-reviewer` check is success); posts `@codex review` once per head if Codex has not spoken. ECC Tools is printed as advisory and does not fail the job | After this lands on `main`, require the `ai-reviewers` check on the Sparky ruleset (owner or Github_pusher). Amazon Q stays a separate Sparky required check. No new secret. |
+| `pr-automation` (`.github/workflows/pr-automation.yml`) | pushes to non-`main` branches; pull request open, reopen, sync, ready, and label changes | On branch pushes, opens a draft pull request to `main` when one does not already exist and refreshes the body on existing draft pull requests. On pull request events, applies `automerge` only when the opt-in label `automerge-request` is present and checks are green for `checks`, Codex, Copilot, ECC, and Amazon Q signals | Require the check contexts listed in step 8 on `main`; define and apply the `automerge-request` label on pull requests meant for hands-free merge |
 | Dependabot (`.github/dependabot.yml`) | weekly | Opens pull requests that bump the pinned action commits | Nothing |
 
-After `ai-review-gate` lands on `main`, Sparky must require the `ai-reviewers` check. The owner or Github_pusher adds that context to the ruleset. This gate reads existing Codex, ECC Tools, and Copilot reviews (and Copilot's check-run) through `GITHUB_TOKEN`; it does not add a secret or a workflow for those apps. Codex and Copilot are required to pass. ECC Tools acknowledgement is advisory. Amazon Q remains a separate Sparky required check.
+After `ai-review-gate` lands on `main`, Sparky must require the `ai-reviewers` check. The owner or Github_pusher adds that context to the ruleset. This gate reads existing Codex, ECC Tools, and Copilot reviews (and Copilot's check-run) through `GITHUB_TOKEN`; it does not add a secret or a workflow for those apps. The gate checks out the pull request base SHA, so with write permissions it runs trusted repository logic, not pull-request-controlled code. Codex and Copilot are required to pass. ECC Tools acknowledgement is advisory.
+
+The `pr-automation` workflow also checks out the pull request base SHA before it runs repository logic in a write-capable job. Its automerge policy step requires green signals for `checks`, Codex, Copilot, ECC, and Amazon Q before it applies the `automerge` label.
 
 Until the secret exists, the two Claude workflows print a notice and exit green; they do not fail pull requests. Once it exists they are additionally gated twice: by the `claude-egress` environment, whose required reviewers hold the job before it reads the secret, and by `tools/egress/record.py check`, which fails the job if the egress policy or a signed decision record is missing from the checkout.
 
@@ -33,6 +36,7 @@ Until the secret exists, the two Claude workflows print a notice and exit green;
    - No other secret is needed. `GITHUB_TOKEN` is minted per run by GitHub; never create one by hand.
 6. Install the Claude GitHub App on the repository (`/install-github-app` in Claude Code, or github.com/apps/claude) so that `@claude` runs can push the branch they work on and their commits trigger `checks`.
 7. Create the label `automerge` (Issues, Labels). Apply it to a pull request you want merged without a manual click; remove it to stop.
+8. For hands-free merge policy with `pr-automation`, create the label `automerge-request` and require these checks on `main`: `checks`, `ai-reviewers`, the Copilot check (`copilot-pull-request-reviewer`), the ECC check context used in your repository, and the Amazon Q check context used in your repository. The policy step matches ECC and Amazon Q by check name text, so keep those check names stable.
 
 The session that wrote this page has no tool for any of these settings; each is an account action the spec reserves for the owner (section 13).
 
@@ -55,11 +59,12 @@ The credential is part of the policy. These workflows use `ANTHROPIC_API_KEY` un
 | Action | Commit pinned | Tag | License |
 |---|---|---|---|
 | `actions/checkout` | `11bd71901bbe5b1630ceea73d27597364c9af683` | v4.2.2 | MIT |
+| `actions/checkout` | `3d3c42e5aac5ba805825da76410c181273ba90b1` | v7.0.1 | MIT |
 | `actions/setup-python` | `a26af69be951a213d495a4c3e4e4022e16d87065` | v5.6.0 | MIT |
 | `anthropics/claude-code-action` | `833fb0f8c9f6686b33d963a8bae0a94f4936ab2a` | v1.0.211 | MIT |
 | `actions/upload-artifact` | `043fb46d1a93c77aae656e7c1c64a875d1fc6a0a` | v7.0.1 | MIT |
 
-Pins are by commit, resolved with `git ls-remote --tags` on 2026-09-02; Dependabot proposes bumps as pull requests that go through `checks` like any other change. A bump of `claude-code-action` is not a routine bump: what the action prefetches before the first model call is the evidence base of the egress record, and v1.0.211 changed it. Re-read the prefetch query and re-verify section 2 of that record before merging one.
+Pins are by commit, resolved with `git ls-remote --tags` on 2026-09-02. The v7.0.1 `actions/checkout` row was confirmed the same way on 2026-10-13, and `claude-review.yml` still pins v4.2.2, so both rows stay. Dependabot proposes bumps as pull requests that go through `checks` like any other change. A bump of `claude-code-action` is not a routine bump: what the action prefetches before the first model call is the evidence base of the egress record, and v1.0.211 changed it. Re-read the prefetch query and re-verify section 2 of that record before merging one.
 
 ## Local run
 
