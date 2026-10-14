@@ -6,7 +6,7 @@ head-since, evaluate CLI, and the stable job-id/permissions contract.
 
 These cases are the remaining production branches with meaningful blast radius:
 a Copilot success on an older SHA must not open the new head; GitHub's other
-SHA fields (original_commit_id, after, nested commit.sha) must still bind;
+SHA fields (original_commit_id, timeline commit_id, nested commit.sha) must still bind;
 force-push timeline events must move head-since; the workflow's CLI exit codes
 for ping and head-since must stay the contract the bash job depends on.
 """
@@ -36,6 +36,32 @@ def comment(login, created_at=NEWER, body="looks fine", **extra):
     item = {"user": user(login), "created_at": created_at, "body": body}
     item.update(extra)
     return item
+
+
+def force_push_event(created_at, commit_id=HEAD):
+    """REST issue-timeline head_ref_force_pushed event.
+
+    Keys match the event captured from pull request 8 (id 30490119913,
+    created 2026-09-03). That payload set commit_id to a SHA and had no
+    push-webhook after field.
+    """
+    return {
+        "id": 30490119913,
+        "node_id": "HRFPE_lADOUFcztc8AAAABPgQpFM8AAAAHGVpO6Q",
+        "url": (
+            "https://api.github.com/repos/bbukolla-eng/Heleos-spark/"
+            "issues/events/30490119913"
+        ),
+        "actor": {"login": "dependabot[bot]"},
+        "event": "head_ref_force_pushed",
+        "commit_id": commit_id,
+        "commit_url": (
+            "https://api.github.com/repos/bbukolla-eng/Heleos-spark/commits/"
+            + commit_id
+        ),
+        "created_at": created_at,
+        "performed_via_github_app": None,
+    }
 
 
 def evaluate(**overrides):
@@ -77,8 +103,9 @@ class AlternateShaFields(unittest.TestCase):
         result = evaluate(review_comments=[item])
         self.assertTrue(result["codex"])
 
-    def test_after_field_binds_a_force_push_event(self):
-        event = {"event": "head_ref_force_pushed", "after": HEAD, "created_at": SINCE}
+    def test_commit_id_binds_a_force_push_event(self):
+        event = force_push_event(SINCE)
+        self.assertNotIn("after", event)
         self.assertEqual(gate._commit_ids(event), [HEAD])
         self.assertTrue(gate.is_for_head(event, HEAD, NEWER))
 
@@ -93,16 +120,14 @@ class AlternateShaFields(unittest.TestCase):
 
 class ForcePushHeadSince(unittest.TestCase):
     def test_force_push_timeline_event_wins_over_committer_date(self):
-        timeline = [
-            {"event": "head_ref_force_pushed", "after": HEAD, "created_at": SINCE},
-        ]
+        timeline = [force_push_event(SINCE)]
         commit = {"commit": {"committer": {"date": OLDER}}}
         self.assertEqual(gate.resolve_head_since(timeline, commit, HEAD), SINCE)
 
     def test_later_matching_timeline_event_wins(self):
         timeline = [
             {"event": "committed", "sha": HEAD, "created_at": SINCE},
-            {"event": "head_ref_force_pushed", "sha": HEAD, "created_at": LATER},
+            force_push_event(LATER),
         ]
         commit = {"commit": {"committer": {"date": OLDER}}}
         self.assertEqual(gate.resolve_head_since(timeline, commit, HEAD), LATER)
@@ -205,7 +230,7 @@ class WorkflowCliContract(unittest.TestCase):
             timeline = self._write(
                 tmp,
                 "timeline.json",
-                [{"event": "head_ref_force_pushed", "after": HEAD, "created_at": SINCE}],
+                [force_push_event(SINCE)],
             )
             commit = self._write(
                 tmp,
