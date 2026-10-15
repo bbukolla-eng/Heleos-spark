@@ -253,6 +253,31 @@ class WorkflowCliContract(unittest.TestCase):
             self.assertEqual(code, 0)
             self.assertEqual(captured.getvalue().strip(), SINCE)
 
+    def test_cli_head_since_exits_zero_with_empty_stdout_when_unresolved(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            timeline = self._write(tmp, "timeline.json", [])
+            commit = self._write(
+                tmp,
+                "commit.json",
+                {"commit": {"committer": {}}},
+            )
+            captured = StringIO()
+            with redirect_stdout(captured):
+                code = gate.main(
+                    [
+                        "head-since",
+                        "--head-sha",
+                        HEAD,
+                        "--timeline",
+                        timeline,
+                        "--commit",
+                        commit,
+                    ]
+                )
+            # Command substitution plus the workflow's -z guard sees this as empty.
+            self.assertEqual(code, 0)
+            self.assertEqual(captured.getvalue().strip(), "")
+
     def test_empty_json_file_is_treated_as_no_items(self):
         with tempfile.TemporaryDirectory() as tmp:
             blank = self._write(tmp, "blank.json", None)
