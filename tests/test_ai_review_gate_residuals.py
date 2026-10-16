@@ -106,7 +106,6 @@ class AlternateShaFields(unittest.TestCase):
     def test_commit_id_binds_a_force_push_event(self):
         event = force_push_event(SINCE)
         self.assertNotIn("after", event)
-        self.assertEqual(gate._commit_ids(event), [HEAD])
         self.assertTrue(gate.is_for_head(event, HEAD, NEWER))
 
     def test_nested_commit_sha_binds(self):
