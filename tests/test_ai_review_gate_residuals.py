@@ -12,6 +12,7 @@ for ping and head-since must stay the contract the bash job depends on.
 """
 import json
 import os
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -176,53 +177,64 @@ class WorkflowCliContract(unittest.TestCase):
                 json.dump(value, handle)
         return path
 
+    def _run_script(self, args):
+        script = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "tools",
+            "github",
+            "ai_review_gate.py",
+        )
+        return subprocess.run(
+            [sys.executable, script, *args],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
     def test_cli_should_ping_codex_exit_codes(self):
         with tempfile.TemporaryDirectory() as tmp:
             empty = self._write(tmp, "empty.json", [])
-            captured = StringIO()
-            with redirect_stdout(captured):
-                ping = gate.main(
-                    [
-                        "should-ping-codex",
-                        "--head-sha",
-                        HEAD,
-                        "--head-since",
-                        SINCE,
-                        "--reviews",
-                        empty,
-                        "--issue-comments",
-                        empty,
-                        "--review-comments",
-                        empty,
-                    ]
-                )
-            self.assertEqual(ping, 0)
-            self.assertEqual(captured.getvalue().strip(), "ping")
+            # The workflow's if sees the process status, not main()'s return value.
+            ping = self._run_script(
+                [
+                    "should-ping-codex",
+                    "--head-sha",
+                    HEAD,
+                    "--head-since",
+                    SINCE,
+                    "--reviews",
+                    empty,
+                    "--issue-comments",
+                    empty,
+                    "--review-comments",
+                    empty,
+                ]
+            )
+            self.assertEqual(ping.returncode, 0, ping.stderr)
+            self.assertEqual(ping.stdout.strip(), "ping")
 
             prior = self._write(
                 tmp,
                 "comments.json",
                 [comment("github-actions[bot]", body="@codex review")],
             )
-            captured = StringIO()
-            with redirect_stdout(captured):
-                skip = gate.main(
-                    [
-                        "should-ping-codex",
-                        "--head-sha",
-                        HEAD,
-                        "--head-since",
-                        SINCE,
-                        "--reviews",
-                        empty,
-                        "--issue-comments",
-                        prior,
-                        "--review-comments",
-                        empty,
-                    ]
-                )
-            self.assertEqual(skip, 2)
-            self.assertEqual(captured.getvalue().strip(), "skip")
+            skip = self._run_script(
+                [
+                    "should-ping-codex",
+                    "--head-sha",
+                    HEAD,
+                    "--head-since",
+                    SINCE,
+                    "--reviews",
+                    empty,
+                    "--issue-comments",
+                    prior,
+                    "--review-comments",
+                    empty,
+                ]
+            )
+            self.assertEqual(skip.returncode, 2, skip.stderr)
+            self.assertEqual(skip.stdout.strip(), "skip")
 
     def test_cli_head_since_prints_the_resolved_timestamp(self):
         with tempfile.TemporaryDirectory() as tmp:
