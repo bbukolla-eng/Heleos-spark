@@ -1,4 +1,4 @@
-# Cursor — Heleos-spark
+# Cursor - Heleos-spark
 
 Read [AGENTS.md](AGENTS.md), [CURRENT_STATUS.md](CURRENT_STATUS.md), [SKILLS.md](SKILLS.md), and the assigned task brief. This is the project entrypoint for Cursor editor/agent and approved CLI work; it is not proof that a particular Cursor runtime automatically loads this filename.
 
