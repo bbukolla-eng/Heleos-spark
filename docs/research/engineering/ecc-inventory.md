@@ -1,4 +1,4 @@
-# ECC research inventory — 2026-09-09
+# ECC research inventory - 2026-09-09
 
 Status: `installed_app_no_callable_adapter`. The installation observation is
 inherited from the existing account-level registry; current installation grants
