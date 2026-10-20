@@ -1,0 +1,87 @@
+{
+  "schema": "heleos.research-findings/v1",
+  "task": "DUCT-TOPOLOGY-1",
+  "at": "2026-09-16T03:38:08.533563+00:00",
+  "provider": "NotebookLM connected MCP",
+  "classification": "PUBLIC",
+  "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+  "topic": "N05 Drawing Intelligence",
+  "inventory_reused": "docs/research/notebooklm/expansion-n05-2026-09-14.json",
+  "request": {
+    "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+    "source_ids": [
+      "8b629240-2c89-40fa-a964-8a534e753948",
+      "9f6f06e6-2449-42ff-84ea-f81b15b5e76d"
+    ],
+    "query": "In Digitize-PID and AHMsys, how are detected line geometry and graph connections distinguished? Identify explicit supporting sections on junction/endpoint clustering, domain validation and independent graph-adjacency evaluation. Do the papers justify treating any geometric crossing or nearby endpoints as a physical HVAC junction? Give exceptions, limitations and a small source-backed example. Separate documented algorithms from unverified inference; do not generalize P&ID-specific heuristics into mechanical takeoff rules or universal tolerances.",
+    "timeout": 60,
+    "new_conversation": true
+  },
+  "query_result_sha256": "d218e82d072d0d2a65aeaab94bb7b5bab08940ca29242c31034d39963dc4b8e4",
+  "source": {
+    "id": "8b629240-2c89-40fa-a964-8a534e753948",
+    "url": "https://arxiv.org/pdf/2109.03794.pdf",
+    "title": "https://arxiv.org/pdf/2109.03794.pdf",
+    "body_sha256": "cecf24a4d9788cef092c1e4f8e88a2988f24562947b46c103c77074c27db4f28",
+    "retained_body": ".heleos/duct-topology-2026-09-15/digitize-pid-text.txt",
+    "passages": [
+      {
+        "lines": [
+          69,
+          71
+        ],
+        "sha256": "c03201a848931c84af15d50bbcef6bd2334bd5391f10af46f267982424545c30",
+        "text": "In this paper, the task is to automate the process of P&ID digitization to convert the scanned legacy P&ID sheets into a structured format. The proposed method should be capable of identifying different industrial components such as symbols, pipes along with their labeled text and neighbouring symbols. The proposed pipeline Digitize-PID takes an input P&ID image and outputs a .csv file consisting of two separate tables listing - (1) different instances of symbols with their mapped text labels and connected pipelines; and (2) containing the list of inter-connectivity between different pipelines representing a graph. \n\nDigitize-PID consists of three high level steps: Detection, Comprehension and Reconciliation, as shown in Figure 1. The Detection step involves extraction of different components from P&ID sheets such as text, lines and symbols which are essential to execute the subsequent steps in the pipeline. The Comprehension step consists of logically aggregating the different components detected in the previous stage, for example, the graph generation module takes basic features like lines, symbols and textual information as input and associates the appropriate symbols and text to lines. Finally, the Reconciliation step comprises of applying different domain/business rules and final corrections/tweaks on the output data of the comprehension stage. Next, we present a detailed description of these 3 steps in the following sub-sections. ",
+        "verified_claim": "Detection, comprehension and domain reconciliation are separate stages."
+      },
+      {
+        "lines": [
+          137,
+          139
+        ],
+        "sha256": "635130e092f6445999c23a757045c93d22e0be90da770e96302322896094e78b",
+        "text": "\u2013 Graph generation: The interactions between different components of P&ID are represented by a web of lines that can be interpreted as a weighted graph structure. The graph representation assumes that the components are vertices and the connecting lines between components are edges. The connecting edges are of varying shapes, which can be decomposed into a combination of multiple straight lines of arbitrary lengths which enables us to create a graph with all straight line edges. For graph generation, we utilize the line information extracted in the detection step to filter out the lines with length smaller than the resolution-dependent threshold(\u03b1). Similarly, we remove the lines overlapping with regions of texts/symbols. The remaining lines (let\u2019s say n) are taken as edges, and the two end-points of each line are taken as vertices. This creates n separate graphs, each having 2 vertices. Thus, the junction centers having k lines will have k vertices, occurring in close proximity, and another k vertices pointing away in different directions. These neighbouring vertices at the junction points can be interpreted as separate clusters such that for each cluster, distance of its respective vertices from its mean (i.e., mean of vertices) would not exceed the line threshold value \u03b7\u03b1 (where 0 < \u03b7 < 1). After optimizing cluster centers with respect to the vertices, we replace the cluster vertices with their respective cluster centers, thus aggregating the separate single-edged graphs to form a common graph. \n\nAfter the graph structure is created, we assign labels to the edges. Gen-erally, the edges labels are filtered out from the detected text using regular expressions provided by domain experts or manually by visual inspection. After the relevant labels are extracted, they are localized to corresponding graph edges which have the minimum euclidean distance. Finally, these labels on the edges are propagated using Breadth First Search, to the adjoining edges (computed for edges from left to right) with the additional stopping condition of not propagating over label-assigned edges.",
+        "verified_claim": "The paper merges line endpoints using a resolution-dependent clustering heuristic; this is not an HVAC rule."
+      },
+      {
+        "lines": [
+          147,
+          149
+        ],
+        "sha256": "eee3b9c84e109d0dfc7a1e338f46a964769f19efd6f61b3a32cb253749af3394",
+        "text": "2.3 Reconciliation \n\nThe digitized data obtained from Comprehension step, are the final output of our proposed method. However, to address any errors/failure, we use the reconciliation step which validates and performs corrections according to domain/business rules. For example, in some arbitrary case, if the particular symbol\u2019s label has a static common name over the entire sheet, then the obtained associated text has to be re-validated and overwritten. Multiple iterations involving reconciliation steps can dramatically improve the accuracy of the proposed method even in the customized business scenarios. ",
+        "verified_claim": "Domain/business rules validate and correct extracted output."
+      },
+      {
+        "lines": [
+          175,
+          177
+        ],
+        "sha256": "b02482895397d5c102ed6c8e931db64c0e98946aa98452ae5adbf4e1091f5470",
+        "text": "salt and pepper noise in the generated sheets. The labels are assigned to symbols and pipelines maintaining the standards followed for real world P&ID. The ground-truth of the dataset consists of spatial information of symbols along with associated text labels and their connected pipeline. We provide sets of horizontal and vertical lines with their coordinates and a separate list containing all the texts present in P&ID sheets along with their spatial position. \n\n4 Experimental Results and Discussions Here, we present the system configuration used for conducting experiments followed by the performance evaluation of Digitize-P&ID. The performance is evaluated based on Recall, Precision and F1-score for different symbols taken over the test-split. A correct prediction of a symbol includes precise localization of symbol with IOU > 0.75, symbol class and its associated text-label. Similarly, the output graph is evaluated based on the accuracy of correct adjacency list. However, the validation of graph-creation depends on domain information and is performed as part of the reconciliation step.",
+        "verified_claim": "Dataset ground truth includes connected pipelines and graph evaluation uses correct adjacency lists."
+      }
+    ],
+    "refresh_difference": "Only signed NotebookLM image URLs changed; all four adopted passage hashes match the cached indexed text. Retain both source bodies."
+  },
+  "adopted": [
+    {
+      "finding": "Separate geometry and graph-relation evaluation",
+      "behavior": "Evaluate only explicitly annotated same-sheet undirected path pairs, after definite unique geometry correspondence. Preserve independent truth and original model response.",
+      "tests": "correct positive/negative pairs, omitted and uncertain assertions, geometry ambiguity, absent truth"
+    },
+    {
+      "finding": "Domain validation remains separate",
+      "behavior": "Assertions retain source evidence but are proposals only, no snapping, inferred junction, transitive closure, fitting count or length change.",
+      "tests": "unlabelled pairs unscored; crossed lines never infer a relation; same-sheet evidence and dangling references rejected"
+    }
+  ],
+  "unsupported": [
+    "NotebookLM describes crossover handling and failure of dense clustering as documented; selected text does not explicitly establish those specific behaviors. Do not adopt.",
+    "AHMsys fitting-count proximity heuristics are not adopted and were not reverified for this task.",
+    "No universal HVAC topology tolerance, metric formula or production acceptance threshold is established.",
+    "Indexed citations establish research context, not human review of a particular project assertion."
+  ],
+  "engineering_contract": "The versioned schema and partial-truth diagnostic formulas are local engineering choices under the approved roadmap, not formulas attributed to the paper. D01-D10 and immutable geometry/quantity helpers remain authoritative.",
+  "external_submission": ".heleos/duct-topology-2026-09-15/notebooklm-submission.json"
+}

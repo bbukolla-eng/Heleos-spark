@@ -1,0 +1,81 @@
+# Guarded Worker Runner Implementation Plan
+
+**Status:** Guarded provider foundation committed through `ce49970`, with GitHub App preparation through `faf8f53` and `337941b`; live Claude and Grok writes accepted under macOS Seatbelt; live Codex write accepted with runner containment `none`; exact native Windows/NTFS execution remains pending
+
+**Branch:** `build/agent-control-foundation`
+
+**Starting commit:** `967de37`
+
+## Current finish line
+
+Build a local, deterministic runner for write-capable AI coding workers. The runner consumes a validated `heleos.worker-task/v1` packet, proves the requested base commit exists, creates an isolated disposable checkout at exactly that commit, invokes one explicitly configured local provider process without shell interpolation, inventories all Git changes, enforces allowed and forbidden paths, and emits a task-bound handoff. It never applies, merges, or pushes the result.
+
+Claude Code and Grok Build 0.2.111 are authenticated and have completed accepted PUBLIC-only writes under macOS Seatbelt. Codex CLI 0.153.4 completed one accepted PUBLIC-only `gpt-6-astra` write using runner containment `none` and Codex's own `workspace-write` mode; that success is not proof of outer host/process/read/network/authority containment. Kimi completed an earlier uncontained write, but remains write-disabled under Seatbelt because its exact reviewed 0.34.0 executable exposes one combined authentication/runtime root and no supported split-state switch. Commit `ce49970` adds a non-launching exact-byte capability probe and typed exit-78 refusal before an unsupported state-root request can read input, touch state, or launch Kimi. Cursor is authenticated and admitted but has no accepted live write because API-model quota is exhausted until the reported September 14, 2026 reset; composer-2.5 rejects required workspace exclusion. Do not retry before reset or an explicit owner spend-limit action; tasks 001-005 are terminal and must not be reused. NotebookLM and GrokBots/Athena remain research-only.
+
+## Implementation tasks
+
+1. Add `crates/heleos-worker-runner` with a typed library and thin CLI.
+2. Write failing tests first against temporary local Git repositories and fake provider executables.
+3. Clone from the source checkout into a caller-selected, project-controlled workspace root and detach at the exact task base.
+4. Invoke the provider using an executable plus an explicit argument vector and a generated prompt on standard input. Never pass provider input through a shell.
+5. Apply the task duration limit, terminate timed-out processes, and bound retained standard output and error output.
+6. Inventory tracked modifications, deletions, renames, and untracked files with machine-readable Git output.
+7. Reject any changed path outside `allowed_paths` or within `forbidden_paths`; retain successful and failed workspaces for inspection and evidence. Any cleanup is a separate explicit action after ownership and containment are revalidated.
+8. Emit a protocol-compatible handoff that is validated against the original task before output.
+9. Add public synthetic fixtures and an operator guide.
+10. Run locked/offline tests, strict Clippy, formatting, provenance, and exact changed-file checks before committing.
+
+## Non-goals
+
+- No acceptance-command execution in this slice.
+- No provider authentication, credential extraction, or session copying.
+- No network policy decision by the runner; provider access must already be authorized by the task and operator.
+- No production database writes, release authority, merge, push, or authoritative-branch mutation.
+- No direct write role for NotebookLM or GrokBots/Athena.
+
+## Acceptance evidence
+
+- Tests prove an allowed write succeeds and produces a valid handoff.
+- Tests prove forbidden and out-of-scope writes fail closed.
+- Tests prove nonzero provider exit and timeout are typed failures.
+- Tests prove shell metacharacters in arguments cannot execute an injected command.
+- Tests prove the source checkout and its branch/HEAD remain unchanged.
+- Tests prove the isolated checkout is exactly the task base even when the source checkout is on a newer commit.
+- Tests prove captured logs are bounded and no task input is echoed by fixed diagnostics.
+- A real authenticated provider smoke task runs only after the fake-provider boundary is green.
+
+## Cursor checkpoint through task 005
+
+Cursor is implemented through `02e5d2858c8d08d9d3e68741ee18037c515fcc77`, following `042c9c0` admission, `7d31665` direct Node/runtime repair, `f14d9b6` config isolation, and `9659280` model selection. Final checks pass 23 adapter tests on Python 3.14.6 and 3.9.6, 44 runner host tests, strict Clippy, formatting, and whitespace checks. [Live Cursor evidence](../../../crates/heleos-worker-runner/evidence/live-cursor-run.md) records all five attempts, their hashes, installation/authentication, and containment limits. Every attempt is terminal; no accepted Cursor fixture exists. The API-model monthly limit blocks further live dispatch until the reported September 14, 2026 reset or an explicit owner spend-limit action. composer-2.5 rejects required workspace exclusion, which remains enabled. Do not reuse tasks 001-005. Continue safe independent engineering; native Windows/NTFS acceptance remains pending.
+
+## Next after this slice
+
+The accepted Codex fixture/evidence, synchronized Cursor terminal evidence, macOS Seatbelt profile, and Windows restricted-token/Job Object backend are committed. Handoff automation commit `7e7d9e1` adds deterministic full-history packaging and independently pinned import into a new NTFS checkout. Commit `47861fa` adds the owner-facing full native launcher with atomic retained evidence; commit `e1ad311` adds committed-main active-build discovery and continuity checks. Package an exact clean commit, transfer its candidate plus separately trusted launcher/importer scripts, and run `scripts/run-windows-native-candidate.ps1` with independently obtained manifest and commit pins on native Windows/NTFS; host tests and cross-compilation do not satisfy that pending gate. Kimi needs a provider-supported read-only-auth/writable-runtime capability before contained writes resume; the current reviewed build is explicitly unavailable. Preserve completed Claude, Grok, Codex, and Cursor task identities and outcomes; do not repeat them.
+
+Persist validated task/run/handoff identities through the governed operational store only after Foundation 0.1 acceptance and an explicit migration plan. Before then, additional provider work remains a retained candidate in this isolated engineering lane. Foundation 0.1 remains unaccepted, and this branch must not merge into its candidate before acceptance. No merge, push, or deployment has occurred for this branch.
+
+GitHub App preparation is complete at `faf8f53` (disposition-transition verifier) and `337941b` (public GET inventory); preserve those checkpoints after compaction. Next for that gate, obtain owner choices plus decision and installation evidence and validate the registry. All four dispositions remain `owner_decision_required` and egress remains prohibited. Public metadata does not prove current installation grants, repository scope, running version/digest, or actual egress. Workflow writing and release remain blocked pending those choices and evidence; the [current status](../../../CURRENT_STATUS.md#later-human-and-platform-gates) owns the detailed handoff. Neither commit supplies native Windows acceptance or push authority.
+
+## Initial implementation checkpoint
+
+- Runner implementation commit: `cad8e4cec76e4fe2afbf30275ba31bddd0541fa3`.
+- Controller gates passed: 24 runner integration tests, 2 runner CLI tests, 19 Kimi-adapter tests, workspace formatting, locked/offline workspace check, strict workspace Clippy, reproducible two-build PDF guest provenance, and the normal provenance scan.
+- Live Claude task digest: `7e8d98e428ea1ddf4d0152a142ebb3651d805092f9227b50c1492138ffd21e5d`.
+- Claude changed exactly `tests/fixtures/runner/live/claude-headless.txt`; its expected and observed SHA-256 is `d88b56eb7d68ea2ebc4b2b191c965470a5272268caa10ce471b5893692fbaf35`.
+- The controller acceptance check exited zero. Completed handoff digest: `f8182e7f7021fe7ba53d9c6ec9f2eb1768949b94d61c39e36c31066b80581145`.
+- Live Kimi task digest: `e9d03473e354fd0266fd9e4c644fd0124fdd62ff8389ebd2103c285ff6fbb6a9`.
+- Kimi changed exactly `proof/kimi-headless.txt` in a dedicated PUBLIC-only source repository; its expected and observed SHA-256 is `6109053c330d9df1cb2711a6d032f3b491273558035a4fb1fa385b596d9f8640`.
+- The controller acceptance check exited zero. Completed Kimi handoff digest: `2a44c5deb931489974f2fd41de7fdf20bcf8a9685d8b2e9de3ff4e2b9eb78b76`.
+- No merge, push, deployment, production write, or Foundation 0.1 candidate change occurred.
+
+## Current implementation checkpoint
+
+- `56758dd` admits the guarded Grok adapter and runner path. The assembled runner passes 39 host tests; the Grok adapter passes all 23 black-box tests under Python 3.14.6 and 3.9.6.
+- Authenticated Grok Build `0.2.111` ran two separately identified PUBLIC-only tasks under macOS Seatbelt. The first candidate failed the declared hash check and was rejected without integration. The second produced exactly `tests/fixtures/runner/live/grok-seatbelt.txt`, 84 bytes with SHA-256 `fe8e15e6d8c4ded8a4e6bd29238a0a23130d1f3df200565b8a6b198738d983f4`, and passed controller acceptance. Both processes are terminal; exact accepted bytes and [live evidence](../../../crates/heleos-worker-runner/evidence/live-grok-run.md) are committed as `fb18a39`.
+- `9a62481` isolates three shared-temporary-directory inventory assertions in child-process temporary roots, retaining their complete inventory checks. After the repair, `./scripts/verify-foundation` exited `0`, including provenance `pass` over 172 files, the full locked/offline workspace tests, two-root reproducible PDF-guest build, and clean/offline acceptance rerun.
+- `ba3310620a4aa9ff2bb7ce6d93c7931708de4f8a` admits the bounded Codex stdin adapter and runner path. All 14 adapter tests pass under Python 3.14.6 and 3.9.6; the assembled runner passes 42 tests. The post-Codex `./scripts/verify-foundation` gate exited `0`, including provenance `pass` over 176 files, the complete locked/offline workspace suite, the reproducible two-root PDF guest, and the clean/offline acceptance rerun.
+- The official Codex CLI was upgraded from `0.147.0` to exact `0.153.4` because the old version rejected `gpt-6-astra`. The first separately identified PUBLIC-only task failed closed under macOS Seatbelt before the model when runtime state needed a denied write. The second selected runner containment `none`, authenticated with the old CLI, and failed with the model/version HTTP 400. The third new task identity used `0.153.4` and succeeded once: exactly `tests/fixtures/runner/live/codex-astra-runner.txt`, 81 bytes, SHA-256 `195846e4eab5d1882207d9e18512172c37254e6cfea9a2d3d97d63a2114340a0`. Both controller acceptance checks passed, and its completed handoff validates. The accepted candidate and [live Codex evidence](../../../crates/heleos-worker-runner/evidence/live-codex-run.md) are included in this checkpoint. No task was repeated.
+- Successful Codex execution used runner containment `none` with Codex's own `workspace-write` mode. It proves the bounded task's accepted write, not outer host/process/read/network/authority containment. Native Windows/NTFS execution remains pending. Kimi remains write-disabled under Seatbelt; Cursor is authenticated/admitted but live-write acceptance is blocked by API-model quota until the reported September 14, 2026 reset. composer-2.5 is incompatible with required workspace exclusion. No retry before reset or an explicit owner spend-limit action; preserve tasks 001-005. These accepted worker results grant no production authority, Foundation acceptance, merge, push, or deployment authority.
+- `e1ad311` adds deterministic active-build discovery from the committed visible-main authority. Its 12 black-box cases plus the existing 10 continuity cases pass under Python 3.14.6 and 3.9.6. Local main commit `9747046ef7665bb7ad7f4a8e3da90db2721597f6` registers this worktree, while `/Users/bekim/Heleos-spark/ACTIVE_BUILD` exposes it in Finder without copying source.
+- `47861fa` adds the one-command full native Windows launcher. Its 39 portable contract checks and the existing 27 importer checks pass on macOS PowerShell; non-Windows execution fails before path creation and cannot claim native evidence.
+- `ce49970` adds the Kimi state-layout probe and fail-closed unsupported-root path. The adapter passes 25 cases under both installed Python runtimes, and the runner now passes 46 tests total, including actual Seatbelt checks that the provider is not launched and synthetic credential bytes remain untouched.

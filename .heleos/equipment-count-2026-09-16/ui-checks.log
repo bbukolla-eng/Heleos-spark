@@ -1,0 +1,36 @@
+✔ unread equipment remains unknown without rendering writes or editable final totals (1.253875ms)
+✔ atomic review preserves request and uses the generation when editing began (0.74275ms)
+✔ changed generation retains unfinished draft and disables stale overwrite (0.170708ms)
+✔ review requires actor and evidence reason without sending an empty mutation (0.1665ms)
+✔ source-region admission binds exact page geometry and requires supported physical source (1.002167ms)
+✔ region pick from another page cannot be admitted into pinned source (0.224667ms)
+✔ EC20 exclusion changes only reviewed draft and preserves prior calculation history (0.489708ms)
+✔ included loose starter retains distinct channels and source navigation (0.166458ms)
+✔ zero requires saved complete result and coverage is an explicit draft decision (0.159583ms)
+✔ multiplicity requires explicit positive integer and selected source evidence without entering final total (1.222542ms)
+✔ invalid multiplier blocks save and keeps draft for correction (0.61975ms)
+✔ schedule-only declaration retains zero members and cannot create an observed assembly (0.852792ms)
+✔ same and package links retain exact members, allow correction and never auto accept inferred relationships (0.927ms)
+✔ coverage review adds exact empty-page context and evidence without manufacturing an instance (0.206083ms)
+✔ failed source review retains draft and exact generation for safe correction (0.301292ms)
+✔ source context changes block stale save even when generation has not refreshed (0.237666ms)
+✔ blank source evidence cannot save a newly drawn equipment region (0.415458ms)
+✔ system and package counts are shown independently from physical quantity (0.086583ms)
+✔ stale source replacement removes only affected dependencies and preserves unrelated AHU and history (0.674166ms)
+✔ role changes expose source replacement even when source geometry identity stays equal (0.240667ms)
+✔ occurrence correction visibly resets complete coverage without replacing focused inputs (0.497959ms)
+✔ Documents groups the actual mechanical sections and preserves heading-only and unassigned scope (11.434542ms)
+✔ Current and stale saved reviews are distinguished without selecting a stale disposition (1.311875ms)
+✔ Source controls open exact original headings, requirements and unread pages while source text stays inert (1.174083ms)
+✔ Section requirement review uses the existing audited command and refreshes from its response (1.399125ms)
+✔ Stale and in-progress readings retain section evidence but prevent requirement edits (1.621625ms)
+✔ Older readings request a section refresh without hiding known requirements (0.646208ms)
+✔ Failed and interrupted readings show retry guidance with disabled review controls (1.370458ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 50.242958

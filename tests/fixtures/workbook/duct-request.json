@@ -1,0 +1,317 @@
+{
+  "observations": [
+    {
+      "schema": "duct-observation-1",
+      "id": "A-1",
+      "source": {
+        "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "index": 0,
+        "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "geometry_fingerprint": "528f53e1766808599630fbd46d046ce533633f1a0e7170a49953291ff23225d7"
+      },
+      "group": {
+        "scope": "ductwork",
+        "system": "supply",
+        "material": "galvanized steel",
+        "work_status": "new_install",
+        "size": {
+          "shape": "rectangular",
+          "dimensions": [
+            "24",
+            "12"
+          ],
+          "unit": "in",
+          "original_text": "24x12"
+        },
+        "evidence_ids": [
+          "label"
+        ]
+      },
+      "geometry": {
+        "kind": "planar",
+        "points": [
+          [
+            0.1,
+            0.2
+          ],
+          [
+            0.3,
+            0.2
+          ]
+        ],
+        "scale_fact_id": "c98bd6b436ce43cea748245631aba803",
+        "dimension_check_ids": []
+      },
+      "readings": [],
+      "evidence_ids": [
+        "label",
+        "support",
+        "datum",
+        "graphic"
+      ],
+      "issues": []
+    },
+    {
+      "schema": "duct-observation-1",
+      "id": "A-2",
+      "source": {
+        "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "index": 0,
+        "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "geometry_fingerprint": "528f53e1766808599630fbd46d046ce533633f1a0e7170a49953291ff23225d7"
+      },
+      "group": {
+        "scope": "ductwork",
+        "system": "supply",
+        "material": "galvanized steel",
+        "work_status": "new_install",
+        "size": {
+          "shape": "rectangular",
+          "dimensions": [
+            "18",
+            "12"
+          ],
+          "unit": "in",
+          "original_text": "18x12"
+        },
+        "evidence_ids": [
+          "label"
+        ]
+      },
+      "geometry": {
+        "kind": "planar",
+        "points": [
+          [
+            0.3,
+            0.2
+          ],
+          [
+            0.4,
+            0.2
+          ]
+        ],
+        "scale_fact_id": "c98bd6b436ce43cea748245631aba803",
+        "dimension_check_ids": []
+      },
+      "readings": [],
+      "evidence_ids": [
+        "label",
+        "support",
+        "datum",
+        "graphic"
+      ],
+      "issues": []
+    }
+  ],
+  "admissions": [
+    {
+      "id": "admit-A-1",
+      "observation_id": "A-1",
+      "observation_fingerprint": "5af86d01a12b551fd3de03e65c905b8ebc11fb8e3e3941fda7dc8f93d2051af9",
+      "state": "included",
+      "role": "duct",
+      "evidence_ids": [
+        "support"
+      ],
+      "method": "source_validator",
+      "rule_fingerprint": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    },
+    {
+      "id": "admit-A-2",
+      "observation_id": "A-2",
+      "observation_fingerprint": "b2a5ef93b0e595a982dd1fb395d20373e772265312f74b22eb6032a026ea6fb1",
+      "state": "included",
+      "role": "duct",
+      "evidence_ids": [
+        "support"
+      ],
+      "method": "source_validator",
+      "rule_fingerprint": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    }
+  ],
+  "correspondences": [],
+  "current_sources": {
+    "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb": {
+      "geometry": {
+        "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "index": 0,
+        "width_micropoints": 720000000,
+        "height_micropoints": 720000000,
+        "unit": "pt",
+        "rotation_degrees": 0,
+        "transform": {
+          "m11": 1,
+          "m12": 0,
+          "m21": 0,
+          "m22": -1,
+          "tx_micropoints": 0,
+          "ty_micropoints": 720000000
+        },
+        "parent_content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "coordinate_space": "display_page_normalized_top_left",
+        "fingerprint": "528f53e1766808599630fbd46d046ce533633f1a0e7170a49953291ff23225d7"
+      },
+      "evidence": [
+        {
+          "id": "label",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 0,
+            "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "geometry_fingerprint": "528f53e1766808599630fbd46d046ce533633f1a0e7170a49953291ff23225d7"
+          },
+          "bbox": [
+            0.01,
+            0.01,
+            0.9,
+            0.1
+          ],
+          "text": "24x12 and 18x12 supply galvanized new duct",
+          "artifact_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        },
+        {
+          "id": "support",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 0,
+            "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "geometry_fingerprint": "528f53e1766808599630fbd46d046ce533633f1a0e7170a49953291ff23225d7"
+          },
+          "bbox": [
+            0.01,
+            0.01,
+            0.9,
+            0.1
+          ],
+          "text": "Separate physical portions; one straight slope",
+          "artifact_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        },
+        {
+          "id": "datum",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 0,
+            "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "geometry_fingerprint": "528f53e1766808599630fbd46d046ce533633f1a0e7170a49953291ff23225d7"
+          },
+          "bbox": [
+            0.01,
+            0.01,
+            0.9,
+            0.1
+          ],
+          "text": "Both elevations use project datum",
+          "artifact_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        },
+        {
+          "id": "graphic",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 0,
+            "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "geometry_fingerprint": "528f53e1766808599630fbd46d046ce533633f1a0e7170a49953291ff23225d7"
+          },
+          "bbox": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "text": null,
+          "artifact_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        }
+      ]
+    }
+  },
+  "scale_facts": [
+    {
+      "id": "c98bd6b436ce43cea748245631aba803",
+      "source": {
+        "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "index": 0,
+        "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "view": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "label": "Original quarter inch scale",
+      "actor": "Fixture reviewer",
+      "reason": "Literal reference",
+      "at": "2026-09-16T13:13:44.229186+00:00",
+      "geometry": {
+        "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "index": 0,
+        "width_micropoints": 720000000,
+        "height_micropoints": 720000000,
+        "unit": "pt",
+        "rotation_degrees": 0,
+        "transform": {
+          "m11": 1,
+          "m12": 0,
+          "m21": 0,
+          "m22": -1,
+          "tx_micropoints": 0,
+          "ty_micropoints": 720000000
+        },
+        "parent_content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "coordinate_space": "display_page_normalized_top_left",
+        "fingerprint": "528f53e1766808599630fbd46d046ce533633f1a0e7170a49953291ff23225d7"
+      },
+      "geometry_fingerprint": "528f53e1766808599630fbd46d046ce533633f1a0e7170a49953291ff23225d7",
+      "state": "unverified",
+      "origin": "calibrated",
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.1,
+          0.0
+        ]
+      ],
+      "known_length": "4",
+      "unit": "ft",
+      "meters_per_point": "0.01693333333333333333333333333333333",
+      "paper_points": "72",
+      "uniform_scale_confirmed": true,
+      "fingerprint": "6c1f75387bc43dbc212ae5a19a78f2bae3c08838df4e6a7e39854596568d8c04"
+    }
+  ],
+  "scale_decisions": [
+    {
+      "id": "fec7552127ae4d4bab2552906341bb15",
+      "fact_id": "c98bd6b436ce43cea748245631aba803",
+      "state": "verified",
+      "actor": "Fixture reviewer",
+      "reason": "Original synthetic source",
+      "at": "2026-09-16T13:13:44.229711+00:00",
+      "fact_fingerprint": "6c1f75387bc43dbc212ae5a19a78f2bae3c08838df4e6a7e39854596568d8c04",
+      "geometry_fingerprint": "528f53e1766808599630fbd46d046ce533633f1a0e7170a49953291ff23225d7"
+    }
+  ],
+  "rule_binding": {
+    "id": "approved-D01-D10",
+    "fingerprint": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "state": "approved"
+  },
+  "coverage": {
+    "state": "complete",
+    "observation_fingerprints": {
+      "A-1": "5af86d01a12b551fd3de03e65c905b8ebc11fb8e3e3941fda7dc8f93d2051af9",
+      "A-2": "b2a5ef93b0e595a982dd1fb395d20373e772265312f74b22eb6032a026ea6fb1"
+    },
+    "source_fingerprints": {
+      "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb": "528f53e1766808599630fbd46d046ce533633f1a0e7170a49953291ff23225d7"
+    },
+    "evidence_ids": [
+      "support"
+    ],
+    "issues": []
+  }
+}

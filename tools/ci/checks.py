@@ -25,6 +25,7 @@ LINK_RE = re.compile(r"\[[^\]]*\]\(([^)\s#]+)(?:#[^)]*)?\)")
 DASHES = ("—", "–")
 EGRESS_CLASSES = ("PUBLIC", "INTERNAL", "PROJECT_CONFIDENTIAL")
 EGRESS_FIELDS = ("provider", "purpose", "data_class", "source_hashes", "policy_decision", "time", "result_ref")
+RETAINED_ORIGINS = "docs/operations/retained-document-origins.json"
 
 
 def tracked_files(root=ROOT):
@@ -73,15 +74,80 @@ def check_json(files, root=ROOT):
     return failures
 
 
+def _regular_repository_file(rel, root):
+    """Return a canonical in-repository regular file; do not follow symbolic links."""
+    if (not isinstance(rel, str) or not rel or "\\" in rel or ":" in rel
+            or any(ord(char) < 32 for char in rel)
+            or any(part in ("", ".", "..") for part in rel.split("/"))):
+        raise ValueError(f"unsafe root-relative path: {rel!r}")
+    path = os.path.abspath(root)
+    for part in rel.split("/"):
+        path = os.path.join(path, part)
+        if os.path.islink(path):
+            raise ValueError(f"symbolic link in path: {rel}")
+    if not os.path.isfile(path):
+        raise ValueError(f"not a regular file: {rel}")
+    return path
+
+
+def retained_document_origins(root=ROOT):
+    """Validate exact retained bytes and their declared original link-resolution locations.
+
+    The origin records do not assert that the current original file has the same content.
+    Every registered copy is validated, even if it is not in the selected Markdown list.
+    """
+    origins, failures = {}, []
+    registry_path = os.path.join(root, RETAINED_ORIGINS)
+    if not os.path.lexists(registry_path):
+        return origins, failures
+    try:
+        with open(_regular_repository_file(RETAINED_ORIGINS, root), encoding="utf-8") as handle:
+            registry = json.load(handle)
+        if (not isinstance(registry, dict) or set(registry) != {"schema_version", "documents"}
+                or type(registry["schema_version"]) is not int or registry["schema_version"] != 1
+                or not isinstance(registry["documents"], list)):
+            raise ValueError("expected schema_version 1 and documents array")
+    except (ValueError, OSError) as error:
+        return origins, [f"retained origins: {RETAINED_ORIGINS}: {error}"]
+    seen = set()
+    for number, entry in enumerate(registry["documents"], 1):
+        try:
+            if not isinstance(entry, dict) or set(entry) != {"retained_path", "source_path", "sha256", "basis"}:
+                raise ValueError("expected retained_path, source_path, sha256 and basis")
+            retained = _regular_repository_file(entry["retained_path"], root)
+            _regular_repository_file(entry["source_path"], root)
+            if not entry["retained_path"].endswith(".md") or not entry["source_path"].endswith(".md"):
+                raise ValueError("retained and source paths must be Markdown files")
+            if entry["retained_path"] in seen:
+                raise ValueError(f"duplicate retained_path: {entry['retained_path']}")
+            seen.add(entry["retained_path"])
+            if not isinstance(entry["basis"], str) or not entry["basis"].strip():
+                raise ValueError("basis must be a non-empty string")
+            if not isinstance(entry["sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", entry["sha256"]):
+                raise ValueError("sha256 must be a full lowercase digest")
+            with open(retained, "rb") as handle:
+                digest = hashlib.sha256(handle.read()).hexdigest()
+            if digest != entry["sha256"]:
+                raise ValueError(f"sha256 mismatch for {entry['retained_path']}: {digest}")
+            origins[entry["retained_path"]] = entry["source_path"]
+        except (ValueError, OSError) as error:
+            failures.append(f"retained origins: entry {number}: {error}")
+    return origins, failures
+
+
 def check_links(files, root=ROOT):
     """Relative markdown link and image destinations must resolve to an existing file or directory."""
-    failures = []
+    origins, failures = retained_document_origins(root)
     for rel in files:
         if not rel.endswith(".md"):
             continue
-        with open(os.path.join(root, rel), encoding="utf-8") as handle:
-            text = handle.read()
-        base = os.path.dirname(os.path.join(root, rel))
+        try:
+            with open(os.path.join(root, rel), encoding="utf-8") as handle:
+                text = handle.read()
+        except (ValueError, OSError) as error:
+            failures.append(f"link: {rel}: cannot read: {error}")
+            continue
+        base = os.path.dirname(os.path.join(root, origins.get(rel, rel)))
         for target in LINK_RE.findall(text):
             if re.match(r"^[a-z]+:", target) or target.startswith("/"):
                 continue
@@ -148,9 +214,10 @@ def check_egress_ledger(root=ROOT):
     return failures
 
 
-def main():
-    files = tracked_files()
-    failures = check_registry() + check_json(files) + check_links(files) + check_prose(files) + check_egress_ledger()
+def main(root=ROOT):
+    files = tracked_files(root)
+    failures = (check_registry(root) + check_json(files, root) + check_links(files, root)
+                + check_prose(files, root) + check_egress_ledger(root))
     for failure in failures:
         print(failure)
     print(f"{len(files)} tracked files checked, {len(failures)} failures")

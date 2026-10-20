@@ -1,0 +1,81 @@
+{
+  "task": "WORKBOOK-EXPORT-1",
+  "at": "2026-09-16T13:03:07.222010+00:00",
+  "provider": "NotebookLM plus primary Microsoft documentation",
+  "classification": "PUBLIC research; no project code uploaded",
+  "policy_decision": "Standing public research authorization; verified findings reused",
+  "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+  "topic": "Software engineering / portable ZIP",
+  "source_id": "3a13727d-d5e4-4ac4-85df-4ad66dbdc4ff",
+  "url": "https://docs.python.org/3/library/zipfile.html",
+  "conversation_id": "074f63f1-98d8-494c-99a9-89f8fd16885e",
+  "query": "From the Python zipfile source only, what are the requirements and exceptions for writing a ZIP archive into an in-memory binary buffer using writestr and ZipInfo, deterministic timestamps, closing to finalize the directory, and portable compression? Cite supporting passages. Do not infer spreadsheet rules.",
+  "supporting_text": {
+    "path": ".heleos/workbook-export-2026-09-16/zipfile-indexed-text.txt",
+    "sha256": "0e3922ade4271e569f2d29be5b3509f2fabeb1787e8e68e7374fe80736e711eb"
+  },
+  "verified_findings": [
+    {
+      "id": "X01",
+      "locator": "ZipFile constructor, indexed lines 643-657",
+      "finding": "ZipFile accepts a file-like object, permitting BytesIO export.",
+      "adoption": "Create a local in-memory XLSX archive; test ZIP readability."
+    },
+    {
+      "id": "X02",
+      "locator": "ZipFile.writestr, indexed lines 1942-1972; ZipInfo date_time",
+      "finding": "writestr accepts bytes or UTF-8 text; explicit ZipInfo carries date/time; a string name uses current time.",
+      "adoption": "Fixed timestamp, explicit member identities and sorted parts; assert identical bytes on repeated export."
+    },
+    {
+      "id": "X03",
+      "locator": "ZipFile.close, indexed lines 1060-1069; ZIP_STORED constant",
+      "finding": "Closing writes essential archive records; ZIP_STORED avoids optional compression modules.",
+      "adoption": "Context-managed ZIP_STORED archive; reopen and resolve every required part."
+    },
+    {
+      "id": "X04",
+      "locator": "Microsoft SpreadsheetML document structure, minimum workbook scenario / related package parts",
+      "url": "https://learn.microsoft.com/en-us/office/open-xml/spreadsheet/structure-of-a-spreadsheetml-document",
+      "finding": "Workbook sheets refer through relationship IDs to worksheet parts containing sheetData.",
+      "verification": "Read primary source 2026-09-16; retained research-2.json",
+      "adoption": "Independent XML relationship and part checks."
+    },
+    {
+      "id": "X05",
+      "locator": "Microsoft working with formulas, cell formula and cached value sections",
+      "url": "https://learn.microsoft.com/en-us/office/open-xml/spreadsheet/working-with-formulas",
+      "finding": "The f element contains a formula; v can hold its last calculated value. A cached value is not recalculation evidence.",
+      "verification": "Read primary source 2026-09-16; retained research-2.json",
+      "adoption": "Write formulas and typed caches; independently recalculate and mutate/restore checks."
+    }
+  ],
+  "reused_findings": [
+    {
+      "record": "docs/research/notebooklm/duct-export-findings-2026-09-14.json",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+      "url": "https://www.bluebeam.com/resources/construction-takeoffs-guide-2026/",
+      "body_sha256": "372ef5ad88ec0ae83af888943a72903076eff498bd01b4ab5baccd9f9e96cc9c",
+      "locator": "indexed lines 1287-1315, auditability and original preservation",
+      "verification": "Source bytes rehashed and passages reread this turn",
+      "adoption": "Current quantities link to exact original evidence; history does not feed totals."
+    },
+    {
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "33a451e3-091b-46ff-abdc-784a59c5fcfe",
+      "url": "https://blog.bluebeam.com/quantity-link-bluebeam-deep-dive/",
+      "body_sha256": "6540c01e5dc465cbbc6ada706e8e30e9cdc42c306fd21004788a089bc9f3355b",
+      "locator": "indexed lines14539-14557, cells and formula mapping",
+      "verification": "Source bytes rehashed and passages reread this turn",
+      "adoption": "Formula-linked workbook projection; vendor synchronization is not adopted."
+    }
+  ],
+  "authority": "Approved D01-D10/A01-A12 and deterministic core remain authoritative. Half-even micrometer contract reuses independently verified prototype, not NotebookLM inference.",
+  "unsupported_or_not_adopted": [
+    "Python 3.14-only zipfile APIs and SOURCE_DATE_EPOCH behavior are outside Python3.9 baseline.",
+    "Research does not establish mechanical quantity rules, model accuracy, native Excel/Windows compatibility or production acceptance.",
+    "No external workbook links, vendor integration or network refresh."
+  ],
+  "evidence_ledger": ".heleos/workbook-export-2026-09-16"
+}

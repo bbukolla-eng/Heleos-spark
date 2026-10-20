@@ -1,0 +1,28 @@
+[package]
+name = "heleos-pdf-protocol"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
+
+[lib]
+path = "src/lib.rs"
+
+[features]
+default = []
+artifact-host = ["dep:toml", "dep:wasmparser"]
+
+[dependencies]
+serde.workspace = true
+serde_jcs.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+toml = { workspace = true, optional = true }
+wasmparser = { workspace = true, optional = true }

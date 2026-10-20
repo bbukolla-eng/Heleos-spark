@@ -1,0 +1,297 @@
+{
+  "schema_version": 1,
+  "task_id": "DUCT-EXPORT-PREPARATION-1",
+  "at": "2026-09-14T10:43:40.584038+00:00",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_commit": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "state": "implemented_and_verified_review_specimen_schema_layout_approval_pending",
+  "chronology": "Verified source findings preceded this normalizer and export specimen. Existing approved deterministic rules and the previously verified native duct workflow were reused unchanged.",
+  "research": {
+    "path": "docs/research/notebooklm/duct-export-findings-2026-09-14.json",
+    "sha256": "4330a3300a7d7e48f382943fd720194fbbaea356c4526317cb0417bd00cb0e24"
+  },
+  "source_verification": {
+    "path": ".heleos/duct-export-preparation-2026-09-14/root-research-verification.json",
+    "sha256": "d16feafbb2b35a6ed278b1c778598cc0890d3d52592d6618b2c63252e7c5896c"
+  },
+  "inventory": {
+    "path": "docs/research/notebooklm/notebook-inventory.json",
+    "sha256": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a"
+  },
+  "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+  "verified_passages": [
+    {
+      "source_key": "bluebeam-guide",
+      "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "indexed_text_lines": [
+        1037,
+        1069
+      ],
+      "section": "Validation, downstream export/traceability and revision management",
+      "passage_sha256": "1c33b3aada0bc1c3ed66fbc090200eef3aee2c37670d2964ebd3362fcd69cd46",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "bluebeam-guide",
+      "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "indexed_text_lines": [
+        1287,
+        1315
+      ],
+      "section": "Auditability, drawing locations and preservation of original quantities",
+      "passage_sha256": "d9baab61731ace0ae65e58a9da0d0f762c818501c9a84769ccb2829bb356950f",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "bluebeam-guide",
+      "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "indexed_text_lines": [
+        973,
+        985
+      ],
+      "section": "Scale verification context",
+      "passage_sha256": "6851d951db992d3664cc3b6bf3cab6308ea370fb4d4c02fee641301c2b3f676e",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "bluebeam-estimation",
+      "source_id": "6bca9972-2389-4935-9c47-31261542ee70",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-estimation-indexed-text.txt",
+      "indexed_text_lines": [
+        14599,
+        14629
+      ],
+      "section": "Spreadsheet transcription/version issues, formula columns and own-scale revisions",
+      "passage_sha256": "e507cb16927fd711324e5c74e2135a39fd5c4e368e2617305f4e2a422df4acea",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "quantity-link",
+      "source_id": "33a451e3-091b-46ff-abdc-784a59c5fcfe",
+      "text_location": ".heleos/duct-export-preparation-2026-09-14/research-quantity-link-indexed-text.txt",
+      "indexed_text_lines": [
+        14539,
+        14557
+      ],
+      "section": "Existing spreadsheet formulas, measurement types and cells/columns",
+      "passage_sha256": "b7a978b2cc3eac698134f9a13d7e9965190a2fad3df23e4d798ab6697e64b30b",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "quantity-link",
+      "source_id": "33a451e3-091b-46ff-abdc-784a59c5fcfe",
+      "text_location": ".heleos/duct-export-preparation-2026-09-14/research-quantity-link-indexed-text.txt",
+      "indexed_text_lines": [
+        14615,
+        14637
+      ],
+      "section": "Structured estimating columns and independent detail scale",
+      "passage_sha256": "cc8ba9d6dcd88c5990029ab99cf65b00805ec8dce5b8046bc72b7a42fc2ea176",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "quantity-link",
+      "source_id": "33a451e3-091b-46ff-abdc-784a59c5fcfe",
+      "text_location": ".heleos/duct-export-preparation-2026-09-14/research-quantity-link-indexed-text.txt",
+      "indexed_text_lines": [
+        14673,
+        14697
+      ],
+      "section": "Mapping measurement types, revisions, snapshot versus live sync and custom formulas",
+      "passage_sha256": "d1116a4e87c02b65af9b5ed3544fff86346338caae9c517fb1321a9f40ee3455",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "mepdetect",
+      "source_id": "4a7e4472-4c73-49fa-9e01-e33e1b9e20f5",
+      "text_location": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-indexed-text.txt",
+      "indexed_text_lines": [
+        1310,
+        1316
+      ],
+      "section": "Scope and verification limitations of drawing/model-derived outputs",
+      "passage_sha256": "c34fcc4033e6be50e0daf246d3fb137787addc6c49080f9f8761d200ab13ca1c",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    }
+  ],
+  "adoptions": [
+    {
+      "finding_id": "DUCT-EXPORT-RESEARCH-01",
+      "disposition": "verified_context_applied",
+      "behavior": "Read-only normalizer binds current result, source bytes, page geometry, observation, scale and evidence identities. Workbook rows cite PDF pages/locators; PDF contains original vector evidence and full bound identities.",
+      "code": [
+        "scripts/duct_export_specimen.py::_check_projection",
+        "scripts/duct_export_specimen.py::_check_scale_binding",
+        "scripts/duct_export_specimen.py::load_specimen"
+      ],
+      "tests": [
+        "test_changed_png_is_rejected_even_when_the_outer_zip_is_repinned",
+        "test_evidence_cannot_claim_another_page_with_the_original_image_hash",
+        "test_projected_current_meters_must_match_the_selected_saved_row",
+        "test_calibration_source_page_must_match_its_selected_source_binding"
+      ],
+      "artifact_checks": [
+        "root-pdf-verification.json:34 evidence records,115 internal links,84 destinations",
+        "independent-workbook-final-review.json:exact source bindings and current locators"
+      ]
+    },
+    {
+      "finding_id": "DUCT-EXPORT-RESEARCH-02",
+      "disposition": "verified_vendor_example_qualified",
+      "behavior": "Snapshot manifest identity is explicit. XLSX formulas recalculate values within that snapshot; changes do not update original evidence, the application or the static PDF. No vendor live synchronization protocol was adopted.",
+      "code": [
+        ".heleos/duct-export-preparation-2026-09-14/workbook-runtime/workbook-build.mjs",
+        ".heleos/duct-export-preparation-2026-09-14/pdf-build.py"
+      ],
+      "artifact_checks": [
+        "workbook-mutation-checks.json:22 engine cases and restoration",
+        "root-native-excel-verification.json:12 to11 to12 feet on isolated copy",
+        "workbook-xml-verification.json:zero saved error cells"
+      ]
+    },
+    {
+      "finding_id": "DUCT-EXPORT-RESEARCH-03",
+      "disposition": "verified_context_applied",
+      "behavior": "Select current generation by exact ID; preserve nine historical generations and six events without current double counting. Each original drawing view keeps its own scale; historical R1 ten-foot route is excluded from current twelve-foot subtotal.",
+      "tests": [
+        "test_current_generation_is_selected_by_id_when_history_is_reordered",
+        "test_native3_current_identity_quantities_and_evidence_survive_read_only_normalization",
+        "test_selected_scale_decision_must_match_fact_and_geometry_fingerprints"
+      ],
+      "artifact_checks": [
+        "root-pdf-verification.json:three source contexts and six revision events",
+        "independent-workbook-final-review.json:history isolated from current formulas"
+      ]
+    },
+    {
+      "finding_id": "DUCT-EXPORT-RESEARCH-04",
+      "disposition": "contextual_limitation_only",
+      "behavior": "Coverage remains partial and final quantity Unknown. Electrical detection limitations establish no HVAC accuracy claim or new measurement rule.",
+      "tests": [
+        "test_legitimate_stale_projection_preserves_history_without_current_formula_input",
+        "test_unknown_quantity_stays_absent_instead_of_becoming_zero"
+      ],
+      "artifact_checks": [
+        "workbook-mutation-checks.json:missing,stale,all-unknown and coverage cases",
+        "root-native-excel-verification.json:Unknown preserved through input edits"
+      ]
+    },
+    {
+      "finding_id": "DUCT-EXPORT-RESEARCH-05",
+      "disposition": "unsupported_mechanics_not_adopted",
+      "behavior": "Rounding, unknown encoding, PDF transforms and offline link mechanics come from approved local rules and separately checked artifact/runtime behavior. Notebook answer framing and vendor universality claims are not authority."
+    },
+    {
+      "finding_id": "DUCT-EXPORT-RESEARCH-06",
+      "disposition": "existing_approved_authority_retained",
+      "behavior": "Keep six-decimal source meter text, safe integer micrometers, strict individual/history/aggregate precision bounds, sum before half-even display, and unknown/mixed work-status guards. No new physical takeoff rule.",
+      "tests": [
+        "test_e09_keeps_both_1524_micrometer_inputs_before_display_rounding",
+        "test_individual_precision_bound_is_strict_for_current_and_history",
+        "test_sum_uses_integer_inputs_and_guards_the_aggregate_precision_bound",
+        "test_e08_mixed_known_work_statuses_cannot_be_combined",
+        "test_unknown_status_blocks_combination_without_guessing_installation"
+      ],
+      "artifact_checks": [
+        "workbook-mutation-checks.json:E09,unknown,stale,duplicate,excluded,grouping,status and bound cases",
+        "independent-workbook-final-review.json:10054 independent mathematical cases"
+      ]
+    }
+  ],
+  "implementation_identities": [
+    {
+      "path": "scripts/duct_export_specimen.py",
+      "sha256": "2718a062804382855a9243e8fe87d435bf7b969dc6ae4bc83fe669cc66979215"
+    },
+    {
+      "path": "tests/drawing-workspace/test_duct_export_specimen.py",
+      "sha256": "dae77907b1de503c2929831e649c17932bfb30590602f01aa6c0c6096193776f"
+    },
+    {
+      "path": ".heleos/duct-export-preparation-2026-09-14/specimen.json",
+      "sha256": "654ae429d1a4415c29ea3b0f8591991b0c7df6317392e0a900be72288dfea454"
+    },
+    {
+      "path": ".heleos/duct-export-preparation-2026-09-14/workbook-runtime/workbook-build.mjs",
+      "sha256": "e4395a87a54bb4d2af6405545bde56508d4676c1b5be464e1844ba19ec3c07fe"
+    },
+    {
+      "path": ".heleos/duct-export-preparation-2026-09-14/pdf-build.py",
+      "sha256": "ec5e0cad68ee215be0be0d58b062c19f14b79049ce6079f968668468ef167c0f"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-14-duct-export-review-contract.md",
+      "sha256": "dcb754d5ecb53bd4fbbed37d4ba5eacac278eb2a89c9f3d8f160ee57fc1b6551"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "outputs/01a09d78-e467-7a61-99ba-be72b8f49910/duct-takeoff-review.xlsx",
+      "sha256": "0b2f113205013082f8dc81026d9fe889ceb05b2dce618055992a4d377032c544"
+    },
+    {
+      "path": "output/pdf/duct-takeoff-evidence-review.pdf",
+      "sha256": "156b9a24013b2540ef847f6feabdb218635c3c943724697102ea27457f9aacc1"
+    }
+  ],
+  "verification": [
+    {
+      "path": ".heleos/duct-export-preparation-2026-09-14/root-normalizer-tests-freeze2.json",
+      "sha256": "df7b9d9e35568f27031cfc88c16ee957f8a446d68399adfc0d1f4cbdccf66277"
+    },
+    {
+      "path": ".heleos/duct-export-preparation-2026-09-14/root-normalizer-replay-verification-freeze2.json",
+      "sha256": "6e54596b911b391c85fda629101ead93178cd4da2663ee6465f33c3209245c5b"
+    },
+    {
+      "path": ".heleos/duct-export-preparation-2026-09-14/independent-normalizer-review.json",
+      "sha256": "c0601ec0e727aec0a8b0cdbcdca57d8c61af6ed0c392fa795f9083706ce1f10b"
+    },
+    {
+      "path": ".heleos/duct-export-preparation-2026-09-14/independent-workbook-final-review.json",
+      "sha256": "9242292dbce9f731d85029b45addc21b4882b1d7ff26436058b9f70406d901f6"
+    },
+    {
+      "path": ".heleos/duct-export-preparation-2026-09-14/root-native-excel-verification.json",
+      "sha256": "d2188cb2870c101c26c1c4832f23c397bef369f9981fa3ed8cdc494b218a662a"
+    },
+    {
+      "path": ".heleos/duct-export-preparation-2026-09-14/root-workbook-visual-verification.json",
+      "sha256": "2ef4ddbd78bfd45f964d7da89239cce013de01e4d421f28e96a297bfa463395e"
+    },
+    {
+      "path": ".heleos/duct-export-preparation-2026-09-14/root-pdf-verification.json",
+      "sha256": "8f5b1e6d1a50adc65d859f24226e80d941cc451c5c6ad7bddb06cd934090ee0d"
+    }
+  ],
+  "external_activity": {
+    "new_queries": 1,
+    "new_source_reads": 1,
+    "status_reads": 2,
+    "before_after_pairs": 4,
+    "private_uploads": 0,
+    "sources_or_notes_added": 0,
+    "receipt_index": "docs/research/notebooklm/duct-export-findings-2026-09-14.json#/external_activity"
+  },
+  "conflicts_and_limits": [
+    "Existing D05 written/scaled-dimension precedence conflict and D08 physical matching gaps remain unadopted.",
+    "Selected public sources do not establish spreadsheet numeric/cache or PDF coordinate mechanics.",
+    "Verification uses an original synthetic accepted duct fixture, not representative project accuracy.",
+    "Connected export integration, owner schema/layout approval and native Windows acceptance remain outstanding."
+  ],
+  "production_rule_admission": false,
+  "approved_rules_changed": false,
+  "next_action": "Obtain owner decision on the concrete workbook schema and evidence-PDF layout under roadmap0.6, then implement connected exports with approved deterministic authority."
+}

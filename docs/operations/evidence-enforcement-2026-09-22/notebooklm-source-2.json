@@ -1,0 +1,25 @@
+{
+  "source_id": "4ed811a9-c317-4126-8255-2cba4425c440",
+  "url": "https://docs.python.org/3/library/hashlib.html",
+  "title": "hashlib \u2014 Secure hashes and message digests \u2014 Python 3.14.7 documentation",
+  "char_count": 44935,
+  "passages": [
+    {
+      "locator": "Indexed source character 5042",
+      "exact_text": "bytes-like objects\n\nhttps://docs.python.org/3/glossary.html#term-bytes-like-object\n\n (normally \n\nbytes\n\nhttps://docs.python.org/3/builtins/stdtypes.html#bytes\n\n ) using the \n\nupdate\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.hash.update\n\n method. At any point you can ask it for the \n\ndigest\n\n of the concatenation of the data fed to it so far using the \n\ndigest()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.hash.digest\n\n or \n\nhexdigest()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.hash.hexdigest\n\n methods.\n\nTo allow multithreading, the Python \n\nGIL\n\nhttps://docs.python.org/3/glossary.html#term-GIL\n\n is released while computing a hash supplied more than 2047"
+    },
+    {
+      "locator": "Indexed source character 5876",
+      "exact_text": "Constructors for hash algorithms that are always present in this module are \n\nsha1()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.sha1\n\n , \n\nsha224()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.sha224\n\n , \n\nsha256()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.sha256\n\n , \n\nsha384()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.sha384\n\n , \n\nsha512()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.sha512\n\n , \n\nsha3_224()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.sha3_224\n\n , \n\nsha3_256()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.sha3_256\n\n , \n\nsha3_384()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.sha3_"
+    }
+  ],
+  "finding": "SHA-256 accepts bytes; digest or hexdigest identifies the exact supplied byte sequence.",
+  "verified": true,
+  "implementation": [
+    "scripts/verify-build-checkpoint.py:check_proof",
+    "scripts/verify-build-checkpoint.py:changed_files verification"
+  ],
+  "tests": [
+    "tests/test_build_checkpoint.py staged/committed byte and tamper cases"
+  ]
+}

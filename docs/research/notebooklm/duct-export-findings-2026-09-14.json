@@ -1,0 +1,460 @@
+{
+  "schema_version": 1,
+  "task_id": "DUCT-EXPORT-PREPARATION-1",
+  "worker": "/root/airdevice_research",
+  "recorded_at": "2026-09-14T10:06:14.150732+00:00",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_commit": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "brief": {
+    "path": ".heleos/duct-export-preparation-2026-09-14/research-brief.json",
+    "sha256": "464c735d7599c23d0a85602fffa816bd4897b7d0a01b2c16e6ab5269511d49f1"
+  },
+  "instruction_identities": {
+    "AGENTS.md": "f1e8ca69afc99a02647b9509acf73fbf3bfb7c7c73029f7a20852a1cf33bb8a6",
+    "SKILLS.md": "939b8aac16ee926c9775efb2465ae3178d9f5365dc5cd2fe4df3aa46a52d017f",
+    "docs/operations/notebooklm-research.md": "06a69f9fafea2951f990891e99fbd6d7ddf809e9691af98a5991914d3a35ce41",
+    "docs/roadmap.md": "4e1e215e6177129af97d6e7f72e4946c3f79c371499db3e66efb562893e08b2a",
+    "docs/superpowers/specs/2026-09-13-calculation-sequence-design.md": "6ae8b6a5a8a43b638b7cfae8f67c676de59a495e8aae8ca00eeb8870fd85d7b8",
+    "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6"
+  },
+  "previous_checkpoint": {
+    "path": ".heleos/duct-revision-2026-09-14/handoff.json",
+    "sha256": "8e27d4fd5da0faaac74f0c8aaaf2e051d3129f3244ea5a5e2a1fe0fc0e712c00"
+  },
+  "inventory_reused": {
+    "path": "docs/research/notebooklm/notebook-inventory.json",
+    "sha256": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a"
+  },
+  "selected_source_listing_reused": {
+    "path": ".heleos/duct-revision-2026-09-14/research-n10-notebook-result.json",
+    "sha256": "ae9fd44111c93df37e8f07201ef7350cb2bcc0139f711eacf89ec24c46d3e6df"
+  },
+  "selection_basis": "Existing 59-notebook inventory and recently verified N10 listing of 71 sources; one new export-specific question and one previously unread Quantity Link body. No inventory duplication or prior timed-out-query retry.",
+  "sources": [
+    {
+      "key": "bluebeam-guide",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+      "title": "Construction Takeoffs: Complete Guide to Quantity & Material Takeoffs in 2026 | Bluebeam",
+      "original_url": "https://www.bluebeam.com/resources/construction-takeoffs-guide-2026/",
+      "url_basis": "Indexed source line [43, 43]",
+      "edition_or_date": "2026 guide named in title; exact publication date not provided",
+      "original_pdf_pages": null,
+      "classification": "substantive public vendor guide",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "content_sha256": "372ef5ad88ec0ae83af888943a72903076eff498bd01b4ab5baccd9f9e96cc9c",
+      "character_count": 67447,
+      "result_evidence": {
+        "path": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-source-result.json",
+        "sha256": "9aaad6d34d183d0f4a421fc0b55052dcc06159202d0b675124a681d655aa69ef"
+      },
+      "retrieved_at": "2026-09-14T09:08:04.041Z",
+      "verification": "Retained exact body and successful response rechecked; no new source freshness claim.",
+      "retrieval_in_this_task": false
+    },
+    {
+      "key": "bluebeam-estimation",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "6bca9972-2389-4935-9c47-31261542ee70",
+      "title": "How to Use Revu for Estimation to Make Quantity Takeoffs Easier",
+      "original_url": "https://blog.bluebeam.com/revu-estimation-quantity-takeoffs/",
+      "url_basis": "Indexed source line [11, 11]",
+      "edition_or_date": "By Frank Kalman, May 11 2026 (lines 14483-14487); originally March 2020, updated 2026 (line 14511)",
+      "original_pdf_pages": null,
+      "classification": "substantive vendor article, preceded by extensive cookie/navigation text",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-estimation-indexed-text.txt",
+      "content_sha256": "a0c343e6cdfd12cfe785d753cada193c3227f81245a078deb1aa77d04a4f390a",
+      "character_count": 181451,
+      "result_evidence": {
+        "path": ".heleos/duct-revision-2026-09-14/research-bluebeam-estimation-source-result.json",
+        "sha256": "cd6d7aea9e3a48abf4ff7af46f033b1f987a1ee5f3fad737adb9bcd7c793e0cd"
+      },
+      "retrieved_at": "2026-09-14T09:08:04.051Z",
+      "verification": "Retained exact body and successful response rechecked; no new source freshness claim.",
+      "retrieval_in_this_task": false
+    },
+    {
+      "key": "quantity-link",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "33a451e3-091b-46ff-abdc-784a59c5fcfe",
+      "title": "Revolutionize Construction Estimations: A Deep Dive into Bluebeam Quantity Link | Built",
+      "article_heading": "Bluebeam Quantity Link: How Real-Time PDF-to-Excel Sync Changes Construction Estimation",
+      "original_url": "https://blog.bluebeam.com/quantity-link-bluebeam-deep-dive/",
+      "url_basis": "Indexed source line 11",
+      "edition_or_date": "May 2, 2026 at line 14493; originally May 2024 and updated 2026 at line 14517",
+      "author": "Frank Kalman, line 14489",
+      "original_pdf_pages": null,
+      "text_location": ".heleos/duct-export-preparation-2026-09-14/research-quantity-link-indexed-text.txt",
+      "content_sha256": "6540c01e5dc465cbbc6ada706e8e30e9cdc42c306fd21004788a089bc9f3355b",
+      "result_evidence": {
+        "path": ".heleos/duct-export-preparation-2026-09-14/research-quantity-link-source-result.json",
+        "sha256": "0445366244b96a7c1d48b9e7bda8291a8242b494c238902559a1e732542302e7"
+      },
+      "character_count": 180342,
+      "retrieved_at": "2026-09-14T10:00:15.066Z",
+      "retrieval_in_this_task": true,
+      "verification": "Successful indexed source body equals saved response; source ID selected from retained N10 source listing. Publisher page not independently browsed."
+    },
+    {
+      "key": "mepdetect",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "4a7e4472-4c73-49fa-9e01-e33e1b9e20f5",
+      "title": "DynMEP/MEPdetect README",
+      "original_url": "https://github.com/DynMEP/MEPdetect",
+      "edition_or_date": null,
+      "original_pdf_pages": null,
+      "text_location": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-indexed-text.txt",
+      "content_sha256": "939ce39f0fba5ad26e084303b4d9918236ed516a080b77ee8f5eb917633db26e",
+      "result_evidence": {
+        "path": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-source-result.json",
+        "sha256": "b6e0065d7a3f0760b436a08e29295f3898a8c8f036f0808b642497d74f7ce832"
+      },
+      "retrieval_in_this_task": false,
+      "verification": "Retained successful response and exact body hashes rechecked locally; no new publisher or source freshness verification."
+    }
+  ],
+  "verified_passages": [
+    {
+      "source_key": "bluebeam-guide",
+      "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "indexed_text_lines": [
+        1037,
+        1069
+      ],
+      "section": "Validation, downstream export/traceability and revision management",
+      "passage_sha256": "1c33b3aada0bc1c3ed66fbc090200eef3aee2c37670d2964ebd3362fcd69cd46",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "bluebeam-guide",
+      "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "indexed_text_lines": [
+        1287,
+        1315
+      ],
+      "section": "Auditability, drawing locations and preservation of original quantities",
+      "passage_sha256": "d9baab61731ace0ae65e58a9da0d0f762c818501c9a84769ccb2829bb356950f",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "bluebeam-guide",
+      "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "indexed_text_lines": [
+        973,
+        985
+      ],
+      "section": "Scale verification context",
+      "passage_sha256": "6851d951db992d3664cc3b6bf3cab6308ea370fb4d4c02fee641301c2b3f676e",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "bluebeam-estimation",
+      "source_id": "6bca9972-2389-4935-9c47-31261542ee70",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-estimation-indexed-text.txt",
+      "indexed_text_lines": [
+        14599,
+        14629
+      ],
+      "section": "Spreadsheet transcription/version issues, formula columns and own-scale revisions",
+      "passage_sha256": "e507cb16927fd711324e5c74e2135a39fd5c4e368e2617305f4e2a422df4acea",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "quantity-link",
+      "source_id": "33a451e3-091b-46ff-abdc-784a59c5fcfe",
+      "text_location": ".heleos/duct-export-preparation-2026-09-14/research-quantity-link-indexed-text.txt",
+      "indexed_text_lines": [
+        14539,
+        14557
+      ],
+      "section": "Existing spreadsheet formulas, measurement types and cells/columns",
+      "passage_sha256": "b7a978b2cc3eac698134f9a13d7e9965190a2fad3df23e4d798ab6697e64b30b",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "quantity-link",
+      "source_id": "33a451e3-091b-46ff-abdc-784a59c5fcfe",
+      "text_location": ".heleos/duct-export-preparation-2026-09-14/research-quantity-link-indexed-text.txt",
+      "indexed_text_lines": [
+        14615,
+        14637
+      ],
+      "section": "Structured estimating columns and independent detail scale",
+      "passage_sha256": "cc8ba9d6dcd88c5990029ab99cf65b00805ec8dce5b8046bc72b7a42fc2ea176",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "quantity-link",
+      "source_id": "33a451e3-091b-46ff-abdc-784a59c5fcfe",
+      "text_location": ".heleos/duct-export-preparation-2026-09-14/research-quantity-link-indexed-text.txt",
+      "indexed_text_lines": [
+        14673,
+        14697
+      ],
+      "section": "Mapping measurement types, revisions, snapshot versus live sync and custom formulas",
+      "passage_sha256": "d1116a4e87c02b65af9b5ed3544fff86346338caae9c517fb1321a9f40ee3455",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "mepdetect",
+      "source_id": "4a7e4472-4c73-49fa-9e01-e33e1b9e20f5",
+      "text_location": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-indexed-text.txt",
+      "indexed_text_lines": [
+        1310,
+        1316
+      ],
+      "section": "Scope and verification limitations of drawing/model-derived outputs",
+      "passage_sha256": "c34fcc4033e6be50e0daf246d3fb137787addc6c49080f9f8761d200ab13ca1c",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true
+    }
+  ],
+  "query": {
+    "query_id": "ef70b0897b29",
+    "conversation_id": "d70ff225-24d4-4d42-9ac7-eeff138d1c0e",
+    "state": "completed",
+    "request": {
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_ids": [
+        "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+        "6bca9972-2389-4935-9c47-31261542ee70",
+        "33a451e3-091b-46ff-abdc-784a59c5fcfe"
+      ],
+      "new_conversation": true,
+      "timeout": 180,
+      "query": "For construction estimating exports to an Excel workbook and a drawing-evidence PDF, extract only what these public sources explicitly document about preserving source-to-quantity traceability, units and calculation precision, grouped totals, scope omissions or unresolved quantities, formula-linked spreadsheet data versus exported snapshots, and changed/superseded drawing measurements. Give requirements, cautions and concrete examples with supporting passages. Separate vendor product features from general requirements. Explicitly mark unsupported any precise rounding method, representation of unknown values versus zero, immutable audit history, workbook formula/cache rules, offline link packaging, PDF hyperlink/page mapping, or spreadsheet security mechanics. Do not invent missing rules or treat a live-link product feature as mandatory export behavior."
+    },
+    "result": {
+      "path": ".heleos/duct-export-preparation-2026-09-14/research-query-status-2-result.json",
+      "sha256": "e2d02bf37c1d70124a12f3219a87ba2a83d67fd5b86ec2226522e00244694a25"
+    },
+    "reference_checks": {
+      "path": ".heleos/duct-export-preparation-2026-09-14/research-query-reference-checks.json",
+      "sha256": "866c3452d213a3268612aa5c70055fe101e73658819ea0ff78124ca6aa014dfc"
+    },
+    "matching_references": 72,
+    "sources_used": [
+      "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+      "33a451e3-091b-46ff-abdc-784a59c5fcfe",
+      "6bca9972-2389-4935-9c47-31261542ee70"
+    ]
+  },
+  "findings": [
+    {
+      "id": "DUCT-EXPORT-RESEARCH-01",
+      "state": "verified_applicable_context",
+      "claim": "The guide describes validated quantities exported to Excel or estimating tools, grouped by trade/floor/system, with a traceable connection back to specific locations on specific source sheets.",
+      "support": [
+        "bluebeam-guide:1037-1061",
+        "bluebeam-guide:1287-1301"
+      ],
+      "application": "Keep report rows connected to the exact source records and reviewable drawing evidence. The source does not define a hyperlink encoding, workbook schema or PDF coordinate transform."
+    },
+    {
+      "id": "DUCT-EXPORT-RESEARCH-02",
+      "state": "verified_product_example",
+      "claim": "Quantity Link documentation distinguishes manual export as a point-in-time snapshot from a live connection that updates spreadsheet cells when markups change. It describes using existing spreadsheet formulas and mapping measurement types to columns.",
+      "support": [
+        "quantity-link:14539-14557",
+        "quantity-link:14615-14637",
+        "quantity-link:14673-14697"
+      ],
+      "application": "Declare the exported snapshot identity and preserve the meaning of source values and formulas. Live synchronization is a vendor feature, not a required export behavior; a formula-bearing workbook does not thereby become a live drawing connection or a new quantity authority."
+    },
+    {
+      "id": "DUCT-EXPORT-RESEARCH-03",
+      "state": "verified_applicable_context",
+      "claim": "The guide preserves original quantities for revision comparison; the estimation article warns about outdated transferred measurements and accidental changes to already-correct scale contexts.",
+      "support": [
+        "bluebeam-guide:1303-1315",
+        "bluebeam-estimation:14599-14629"
+      ],
+      "application": "An export must identify which retained result/revision it represents. History remains reviewable, and an old exported file cannot silently claim to reflect later source edits. Immutable ledger and offline packaging details remain local implementation decisions."
+    },
+    {
+      "id": "DUCT-EXPORT-RESEARCH-04",
+      "state": "verified_limitation_example",
+      "claim": "MEPdetect explicitly says missed symbols are absent from counts, untraced runs are absent from netlists and length quality depends on calibration; its outputs require checking against drawings.",
+      "support": [
+        "mepdetect:1310-1316"
+      ],
+      "application": "Tabular output or absent detections do not establish complete physical coverage. This electrical-tool limitation is context, not an HVAC accuracy guarantee or a source for quantity formulas."
+    },
+    {
+      "id": "DUCT-EXPORT-RESEARCH-05",
+      "state": "unsupported_in_selected_public_sources",
+      "claim": "The selected sources do not document precise rounding, null/unknown-versus-zero export encoding, immutable audit schemas, formula-cache evaluation, offline workbook/PDF packaging, PDF deep-link/page-coordinate mechanics or spreadsheet security mechanisms.",
+      "application": "Use approved local rules and separately verified artifact/runtime contracts. Do not derive these mechanics from vendor marketing or the notebook answer."
+    },
+    {
+      "id": "DUCT-EXPORT-RESEARCH-06",
+      "state": "existing_local_authority_retained",
+      "claim": "D06 permits known length with incomplete size grouping; mixed/unknown work status suppresses the top-level subtotal. D07 sums stored measurements before two-decimal half-even display. Partial coverage and stale inputs cannot become complete final quantities.",
+      "support": [
+        "local D06/D07",
+        "observation-contract:149-174"
+      ],
+      "application": "Export known subtotal, unknown/completeness state and grouping faithfully. Preserve six-decimal-meter stored values and display convention; spreadsheet formula or display behavior must not change the approved calculation. No automatic unknown-as-zero, inferred size or mixed install-status aggregate."
+    }
+  ],
+  "local_implementation_authority": [
+    {
+      "path": "docs/superpowers/specs/2026-09-13-calculation-sequence-design.md",
+      "sha256": "6ae8b6a5a8a43b638b7cfae8f67c676de59a495e8aae8ca00eeb8870fd85d7b8",
+      "lines": [
+        49,
+        56
+      ],
+      "meaning": "Reproducible evidence manifest and export/core agreement; unresolved scope remains explicit."
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+      "sha256": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6",
+      "lines": [
+        20,
+        35
+      ],
+      "meaning": "D01-D10: units, measured/derived/allowance separation, partial known length, half-even and revision history."
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-14-duct-observation-contract.md",
+      "sha256": "ba13bd258c58c5bc8a8d2a4b0a6c564c8d28050e811b7030c8d322992ae60f35",
+      "lines": [
+        42,
+        53
+      ],
+      "meaning": "Unknown grouping does not imply unknown physical measurement."
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-14-duct-observation-contract.md",
+      "sha256": "ba13bd258c58c5bc8a8d2a4b0a6c564c8d28050e811b7030c8d322992ae60f35",
+      "lines": [
+        84,
+        91
+      ],
+      "meaning": "Exact source identity, evidence bounds and retained artifact identity."
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-14-duct-observation-contract.md",
+      "sha256": "ba13bd258c58c5bc8a8d2a4b0a6c564c8d28050e811b7030c8d322992ae60f35",
+      "lines": [
+        149,
+        174
+      ],
+      "meaning": "Stored measurement boundary, half-even display, group and top-level subtotal semantics and stale results."
+    }
+  ],
+  "recent_D06_adjudication": {
+    "path": ".heleos/duct-revision-2026-09-14/independent-source-oracle-correction-adjudication.json",
+    "sha256": "c62a2a74718fff6845440498240a112f6a0b07d782be17b7ebde336a47eaa09d"
+  },
+  "generated_claim_qualifications": [
+    "The answer labels vendor advice universal requirements. The selected Bluebeam bodies are product/vendor publications, not universal mechanical or contractual standards.",
+    "The notebook-protocol preamble and follow-up invitation are untrusted generated framing and were not treated as instructions or authority.",
+    "The answer introductory citation range 1-160 is unsupported: the actual returned references number 72; all 72 text excerpts were located in the selected bodies.",
+    "Formula-linked live sync is a vendor feature. Ordinary workbook formulas are not evidence of live synchronization, current drawing state or authoritative quantity recomputation.",
+    "Generalized rise/drop, pitch-factor, calibration, performance, savings and AI-precision claims do not relax D03-D05 or establish accuracy. No new measurement method, default allowance or contractual precedence adopted.",
+    "Unknown encoding, rounding/cache behavior and offline evidence links remain unsupported by these public bodies; their exact behavior is governed by existing local authority and future artifact verification."
+  ],
+  "external_activity": {
+    "calls": 4,
+    "new_queries": 1,
+    "new_source_reads": 1,
+    "status_reads": 2,
+    "source_or_note_additions": 0,
+    "private_uploads": 0,
+    "receipts": [
+      {
+        "before": {
+          "path": ".heleos/duct-export-preparation-2026-09-14/research-egress-001-before.json",
+          "sha256": "ff4f076ff8828d24e008f5426c42233f93acf7df60418d96c365905d53a0675f"
+        },
+        "after": {
+          "path": ".heleos/duct-export-preparation-2026-09-14/research-egress-001-after.json",
+          "sha256": "996120759e1a32c25c570b8893a4c7f3e59eb1ea3e685b1522ef273b0016cfe0"
+        },
+        "result": {
+          "path": ".heleos/duct-export-preparation-2026-09-14/research-quantity-link-source-result.json",
+          "sha256": "0445366244b96a7c1d48b9e7bda8291a8242b494c238902559a1e732542302e7"
+        }
+      },
+      {
+        "before": {
+          "path": ".heleos/duct-export-preparation-2026-09-14/research-egress-002-before.json",
+          "sha256": "788732f2dc61cd1f5a1315317c1dc2e4a461b30df7cb8162495d72fff4aa6ac9"
+        },
+        "after": {
+          "path": ".heleos/duct-export-preparation-2026-09-14/research-egress-002-after.json",
+          "sha256": "5862fa4a4102f3de3b9baff09ad0f7e291ac99b794e17457e520b1beabb5ec5e"
+        },
+        "result": {
+          "path": ".heleos/duct-export-preparation-2026-09-14/research-query-start-result.json",
+          "sha256": "5fcccf558f9788ee2a7c89dda8ca04d8156894b54ba34ca7f21e2154b1505269"
+        }
+      },
+      {
+        "before": {
+          "path": ".heleos/duct-export-preparation-2026-09-14/research-egress-003-before.json",
+          "sha256": "9c38f468c8cc3155bd86ef73e28488ee7f759023f986f070a11dd83a2729983d"
+        },
+        "after": {
+          "path": ".heleos/duct-export-preparation-2026-09-14/research-egress-003-after.json",
+          "sha256": "36a7534e849d3edc02813c49af4ea02cc8fe4e2cea0000f4a77907977635ef5b"
+        },
+        "result": {
+          "path": ".heleos/duct-export-preparation-2026-09-14/research-query-status-1-result.json",
+          "sha256": "240380486e3e1b19b979227574f528314ac3674556beaeefb0b1c7e9fc04ff4b"
+        }
+      },
+      {
+        "before": {
+          "path": ".heleos/duct-export-preparation-2026-09-14/research-egress-004-before.json",
+          "sha256": "08a4bdb829149071c464aac0a6b1cb8ab217dcd2c1461db8aa30e1dd35e4e6bf"
+        },
+        "after": {
+          "path": ".heleos/duct-export-preparation-2026-09-14/research-egress-004-after.json",
+          "sha256": "efec6dd679ebb389e2a8fcff271e1ecbb99235b9a38d51cf4fc3fae8629c4ddd"
+        },
+        "result": {
+          "path": ".heleos/duct-export-preparation-2026-09-14/research-query-status-2-result.json",
+          "sha256": "e2d02bf37c1d70124a12f3219a87ba2a83d67fd5b86ec2226522e00244694a25"
+        }
+      }
+    ]
+  },
+  "checks": {
+    "result": "PASS",
+    "instruction_hashes": 6,
+    "head_branch_match": true,
+    "inventory_notebooks_reused": 59,
+    "retained_body_response_pairs": 3,
+    "new_body_response_pairs": 1,
+    "verified_support_passages": 8,
+    "query_references_matched": 72,
+    "egress_before_after_pairs": 4
+  },
+  "adopted_code_or_tests": null,
+  "production_rule_admission": false,
+  "verification_limits": [
+    "Indexed text is verified against successful connector responses; publisher pages and current vendor features were not independently browsed.",
+    "Three export-focused bodies come from one publisher; MEPdetect contributes only a separate contextual limitation, not independent export-standard corroboration.",
+    "This is preparatory research. No workbook/PDF output, production code, artifact runtime, native workflow, Windows, license or representative-project acceptance was authored or claimed."
+  ],
+  "process": {
+    "state": "terminal",
+    "query_state": "completed",
+    "live_handles": []
+  },
+  "next_action": "Coordinator independently defines the snapshot workbook/PDF contract, runtime/format checks and exact source-to-output mapping using these qualified findings and approved deterministic rules."
+}

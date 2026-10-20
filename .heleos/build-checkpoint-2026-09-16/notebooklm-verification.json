@@ -1,0 +1,70 @@
+{
+  "task_id": "BUILD-CHECKPOINT-GUARD-1",
+  "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+  "phase": "Delayed cross-check after implementation; initial availability claim corrected",
+  "time": "2026-09-16T20:50:16.607Z",
+  "source_method": "source_get_content raw indexed text independently read against notebook answer",
+  "findings": [
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "url": "https://docs.python.org/3/library/subprocess.html",
+      "title": "subprocess — Subprocess management — Python 3.14.7 documentation",
+      "char_count": 89283,
+      "passages": [
+        {
+          "locator": "Indexed source character 18888",
+          "exact_text": "Providing a sequence of arguments is generally preferred, as it allows the module to take care of any required escaping and quoting of arguments (e.g. to permit spaces in file names). If passing a single string, either \n\nshell\n\n must be \n\nTrue\n\nhttps://docs.python.org/3/builtins/constants.html#True\n\n (see below) or else the string must simply name the program to be executed without specifying any arguments.\n\nstdin\n\n, \n\nstdout\n\n and \n\nstderr\n\n specify the executed program's standard input, standard output and standard error file handles, respectively. Valid values are \n\nNone\n\n , \n\nPIPE\n\nhttps://docs.python.org/3/library/subprocess.html#subprocess.PIPE\n\n , \n\nDEVNULL\n\nhttps://docs.python.org/3/"
+        },
+        {
+          "locator": "Indexed source character 8778",
+          "exact_text": "If \n\ncheck\n\n is true, and the process exits with a non-zero exit code, a \n\nCalledProcessError\n\nhttps://docs.python.org/3/library/subprocess.html#subprocess.CalledProcessError\n\n exception will be raised. Attributes of that exception hold the arguments, the exit code, and stdout and stderr if they were captured.\n\nIf \n\nencoding\n\n or \n\nerrors\n\n are specified, or \n\ntext\n\n is true, file objects for stdin, stdout and stderr are opened in text mode using the specified \n\nencoding\n\n and \n\nerrors\n\n or the \n\nio.TextIOWrapper\n\nhttps://docs.python.org/3/library/io.html#io.TextIOWrapper\n\n default. The \n\nuniversal_newlines\n\n argument is equivalent to \n\ntext\n\n and is provided for backwards compatibility. By "
+        },
+        {
+          "locator": "Indexed source character 9475",
+          "exact_text": "By default, file objects are opened in binary mode.\n\nIf \n\nenv\n\n is not \n\nNone\n\n , it must be a mapping that defines the environment variables for the new process; these are used instead of the default behavior of inheriting the current process' environment. It is passed directly to \n\nPopen\n\nhttps://docs.python.org/3/library/subprocess.html#subprocess.Popen\n\n . This mapping can be str to str on any platform or bytes to bytes on POSIX platforms much like \n\nos.environ\n\nhttps://docs.python.org/3/library/os.html#os.environ\n\n or \n\nos.environb\n\nhttps://docs.python.org/3/library/os.html#os.environb\n\n .\n\nExamples:\n\nCopy\n\n>>> subprocess.run([\"ls\", \"-l\"])  # doesn't capture output\nCompletedProcess(args"
+        }
+      ],
+      "finding": "Use argv sequences, explicitly inspect returncode, and preserve binary stdout for Git object hashing.",
+      "verified": true,
+      "implementation": [
+        "scripts/verify-build-checkpoint.py:git",
+        "tools/ci/check_build_checkpoints.py:git"
+      ],
+      "tests": [
+        "tests/test_build_checkpoint.py",
+        "tests/test_checkpoint_ci.py"
+      ]
+    },
+    {
+      "source_id": "4ed811a9-c317-4126-8255-2cba4425c440",
+      "url": "https://docs.python.org/3/library/hashlib.html",
+      "title": "hashlib — Secure hashes and message digests — Python 3.14.7 documentation",
+      "char_count": 44935,
+      "passages": [
+        {
+          "locator": "Indexed source character 5042",
+          "exact_text": "bytes-like objects\n\nhttps://docs.python.org/3/glossary.html#term-bytes-like-object\n\n (normally \n\nbytes\n\nhttps://docs.python.org/3/builtins/stdtypes.html#bytes\n\n ) using the \n\nupdate\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.hash.update\n\n method. At any point you can ask it for the \n\ndigest\n\n of the concatenation of the data fed to it so far using the \n\ndigest()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.hash.digest\n\n or \n\nhexdigest()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.hash.hexdigest\n\n methods.\n\nTo allow multithreading, the Python \n\nGIL\n\nhttps://docs.python.org/3/glossary.html#term-GIL\n\n is released while computing a hash supplied more than 2047"
+        },
+        {
+          "locator": "Indexed source character 5876",
+          "exact_text": "Constructors for hash algorithms that are always present in this module are \n\nsha1()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.sha1\n\n , \n\nsha224()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.sha224\n\n , \n\nsha256()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.sha256\n\n , \n\nsha384()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.sha384\n\n , \n\nsha512()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.sha512\n\n , \n\nsha3_224()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.sha3_224\n\n , \n\nsha3_256()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.sha3_256\n\n , \n\nsha3_384()\n\nhttps://docs.python.org/3/library/hashlib.html#hashlib.sha3_"
+        }
+      ],
+      "finding": "SHA-256 accepts bytes; digest or hexdigest identifies the exact supplied byte sequence.",
+      "verified": true,
+      "implementation": [
+        "scripts/verify-build-checkpoint.py:check_proof",
+        "scripts/verify-build-checkpoint.py:changed_files verification"
+      ],
+      "tests": [
+        "tests/test_build_checkpoint.py staged/committed byte and tamper cases"
+      ]
+    }
+  ],
+  "disposition": "Existing code and tested boundaries are consistent with these limited findings. No code or mechanical rule change. Git index/hook and Actions behavior remains supported by the separate primary Git/Actions references.",
+  "not_adopted": [
+    "The answer's file_digest optimization is unnecessary and not implemented.",
+    "Timeout/process lifecycle discussion is not a new acceptance criterion.",
+    "Notebook answer cannot establish Git index or Actions semantics, nor prove tests passed."
+  ]
+}

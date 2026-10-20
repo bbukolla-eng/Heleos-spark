@@ -1,0 +1,5 @@
+$ python3 tools/ci/checks.py
+962 tracked files checked, 0 failures
+
+exit_code=0
+Workflow JavaScript syntax checks: exit 0.

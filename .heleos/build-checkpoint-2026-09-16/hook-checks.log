@@ -1,0 +1,14 @@
+Root TDD: python3 -m unittest discover -s tests -p test_build_checkpoint_hooks.py -v
+RED: 7 failures; repository hook absent; exit 1.
+GREEN: 7 tests passed in 1.204s; exit 0.
+Tests use real temporary Git repositories for installation, refusal to replace custom hooks, staging isolation and commit exit behavior.
+
+End-to-end test added before validator existed: 1 expected failure (missing implementation), exit 1.
+After validator implementation: full 8-test hook suite passed in 1.704s, exit 0.
+Actual root installation: python3 scripts/install-build-hooks.py, exit 0.
+git config --local --get core.hooksPath -> .githooks, exit 0.
+Post-install independent full hook boundary suite: 8 passed in 1.645s, exit 0.
+No global configuration or GitHub settings changed.
+
+Independent-review loader repair: replacement-object regression first failed (commit improperly accepted), then passed after --no-replace-objects was added to diff gate and staged checker loader.
+Final coordinator CI unit discovery: 190 tests passed, exit 0; includes 30 validator, 22 range and 9 hook tests. See coordinator-tests.log.

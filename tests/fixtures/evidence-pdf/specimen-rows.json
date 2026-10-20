@@ -1,0 +1,152 @@
+{
+  "schema": "evidence-pdf-specimen-1",
+  "contract": "docs/operations/evidence-pdf-2026-09-21-contract.md",
+  "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "limits": [
+    "LIMIT claim=not-a-bid",
+    "LIMIT claim=closes-no-csi-section",
+    "LIMIT claim=recognition-unqualified",
+    "LIMIT claim=snapshot-not-live-sync",
+    "LIMIT unknown-is-not-zero",
+    "LIMIT not-available-is-not-zero",
+    "LIMIT history-excluded-from-current-totals",
+    "LIMIT stale-stored-length-is-not-current",
+    "LIMIT no-windows-acceptance",
+    "LIMIT no-representative-project-acceptance"
+  ],
+  "cases": {
+    "duct-current": {
+      "contains": [
+        "PROJECT Original workbook fixture",
+        "SCOPE class=duct known_ft=12.00 complete_ft=12.00 unit=ft",
+        "SCOPE class=air-device known_each=NOT AVAILABLE complete_each=NOT AVAILABLE unit=each",
+        "SCOPE class=equipment known_each=NOT AVAILABLE complete_each=NOT AVAILABLE unit=each",
+        "SCOPE class=other-division-23 known=NOT AVAILABLE complete=NOT AVAILABLE state=outstanding",
+        "ROW class=duct row=A-1 state=current meters=2.438400 feet=8.00 stored_meters=2.438400",
+        "ROW class=duct row=A-2 state=current meters=1.219200 feet=4.00 stored_meters=1.219200",
+        "GROUP class=duct size=24x12 work_status=new_install known_ft=8.00 complete_ft=8.00",
+        "GROUP class=duct size=18x12 work_status=new_install known_ft=4.00 complete_ft=4.00",
+        "region=0.100000,0.200000,0.300000,0.200000",
+        "region=0.300000,0.200000,0.400000,0.200000",
+        "page=1",
+        "revision=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "dest=SRC-duct-A-1",
+        "dest=SRC-duct-A-2",
+        "HISTORY class=duct id=current relation=current known_ft=12.00 complete_ft=12.00",
+        "HISTORY class=duct id=old relation=superseded known_ft=999.00 complete_ft=999.00"
+      ],
+      "summary_excludes": ["999.00", "1.219200"],
+      "history_contains": ["999.00"],
+      "links": {
+        "SRC-duct-A-1": [
+          "revision=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "page=1",
+          "region=0.100000,0.200000,0.300000,0.200000"
+        ],
+        "SRC-duct-A-2": [
+          "revision=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "page=1",
+          "region=0.300000,0.200000,0.400000,0.200000"
+        ]
+      }
+    },
+    "duct-stale": {
+      "contains": [
+        "SCOPE class=duct known_ft=8.00 complete_ft=UNKNOWN unit=ft",
+        "ROW class=duct row=A-1 state=current meters=2.438400 feet=8.00 stored_meters=2.438400",
+        "ROW class=duct row=A-2 state=stale meters=UNKNOWN feet=UNKNOWN stored_meters=1.219200",
+        "GROUP class=duct size=24x12 work_status=new_install known_ft=8.00 complete_ft=8.00",
+        "GROUP class=duct size=18x12 work_status=new_install known_ft=0.00 complete_ft=UNKNOWN"
+      ],
+      "summary_excludes": ["999.00", "1.219200", "known_ft=0.00"],
+      "history_contains": ["999.00"]
+    },
+    "duct-mixed": {
+      "contains": [
+        "SCOPE class=duct known_ft=UNKNOWN complete_ft=UNKNOWN unit=ft",
+        "GROUP class=duct size=24x12 work_status=new_install known_ft=8.00 complete_ft=8.00",
+        "GROUP class=duct size=18x12 work_status=demolition known_ft=4.00 complete_ft=4.00"
+      ],
+      "summary_excludes": ["known_ft=12.00", "999.00"]
+    },
+    "air-incomplete": {
+      "contains": [
+        "PROJECT Air count flow",
+        "SCOPE class=air-device known_each=1 complete_each=UNKNOWN unit=each",
+        "ROW class=air-device physical_each=1 remove_each=0 reinstall_each=0 new_purchase_each=UNKNOWN",
+        "region=0.100000,0.200000,0.200000,0.300000",
+        "page=1",
+        "revision=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ],
+      "summary_excludes": ["complete_each=1"],
+      "link_from_view": "air-device"
+    },
+    "air-excluded": {
+      "contains": [
+        "SCOPE class=air-device known_each=0 complete_each=UNKNOWN unit=each",
+        "relation=superseded known_each=1"
+      ],
+      "summary_excludes": ["complete_each=1", "complete_each=0", "known_each=1"]
+    },
+    "equipment-corrected": {
+      "contains": [
+        "PROJECT Physical equipment",
+        "SCOPE class=equipment known_each=3 complete_each=3 unit=each",
+        "ROW class=equipment tag=PUMP-1 physical_each=1 procurement_each=1 installation_each=1 remove_each=0 reinstall_each=0 component_each=0",
+        "ROW class=equipment tag=PUMP-2 physical_each=1 procurement_each=1 installation_each=1 remove_each=0 reinstall_each=0 component_each=0",
+        "ROW class=equipment tag=PUMP-3 physical_each=0 procurement_each=0 installation_each=0 remove_each=0 reinstall_each=0 component_each=0",
+        "ROW class=equipment tag=AHU-1 physical_each=1 procurement_each=1 installation_each=1 remove_each=0 reinstall_each=0 component_each=0",
+        "GROUP class=equipment family=pump work_status=new known_each=2 complete_each=2",
+        "GROUP class=equipment family=ahu work_status=new known_each=1 complete_each=1",
+        "region=0.050000,0.200000,0.180000,0.400000",
+        "region=0.250000,0.200000,0.380000,0.400000",
+        "region=0.650000,0.200000,0.780000,0.400000",
+        "page=1",
+        "page=3",
+        "dest=SRC-equipment-pump-1",
+        "dest=SRC-equipment-ahu-1",
+        "relation=current known_each=3 complete_each=3",
+        "relation=superseded known_each=4 complete_each=4"
+      ],
+      "summary_excludes": ["known_each=4", "complete_each=4"],
+      "history_contains": ["known_each=4", "complete_each=4"],
+      "links": {
+        "SRC-equipment-pump-1": [
+          "page=1",
+          "region=0.050000,0.200000,0.180000,0.400000",
+          "revision=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ],
+        "SRC-equipment-ahu-1": [
+          "page=3",
+          "region=0.650000,0.200000,0.780000,0.400000",
+          "revision=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ]
+      }
+    },
+    "equipment-stale-source": {
+      "contains": [
+        "SCOPE class=equipment known_each=1 complete_each=UNKNOWN unit=each",
+        "ROW class=equipment tag=AHU-1 physical_each=1 procurement_each=1 installation_each=1 remove_each=0 reinstall_each=0 component_each=0",
+        "ROW class=equipment tag=PUMP-1 physical_each=UNKNOWN"
+      ],
+      "summary_excludes": ["complete_each=1", "complete_each=4"]
+    },
+    "equipment-schedule": {
+      "contains": [
+        "SCOPE class=equipment known_each=4 complete_each=UNKNOWN unit=each",
+        "DECLARATION id=pump-demand declared_each=4 observed_each=3 state=unresolved"
+      ],
+      "summary_excludes": ["complete_each=4"]
+    },
+    "empty": {
+      "contains": [
+        "PROJECT New project",
+        "SCOPE class=duct known_ft=NOT AVAILABLE complete_ft=NOT AVAILABLE unit=ft",
+        "SCOPE class=air-device known_each=NOT AVAILABLE complete_each=NOT AVAILABLE unit=each",
+        "SCOPE class=equipment known_each=NOT AVAILABLE complete_each=NOT AVAILABLE unit=each",
+        "SCOPE class=other-division-23 known=NOT AVAILABLE complete=NOT AVAILABLE state=outstanding"
+      ],
+      "summary_excludes": ["known_ft=0.00", "known_each=0", "complete_ft=0.00", "complete_each=0"]
+    }
+  }
+}

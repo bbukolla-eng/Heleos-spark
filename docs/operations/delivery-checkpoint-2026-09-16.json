@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "task": "DELIVERY-STRUCTURE-PLAN-1",
+  "audit_base": "c1143a7c1bc75339cdd8dd71cfe0580dd0d611ca",
+  "meaning": "Terminal accounting of existing evidence, not new execution or acceptance. Original receipts remain immutable. Historical next fields do not select current work.",
+  "records": [
+    {
+      "id": "WORKBOOK-EXPORT-1",
+      "state": "accepted_local_software",
+      "integration_commit": "2757d31ff93f60ed567ddd8bc9257c29a0e52fa8",
+      "resolution": "The original acceptance receipt preceded integration; resume-state records completed local integration. Both commits are ancestors of the audit base.",
+      "scope": "Supported takeoff workbook projection, formulas, source links, correction/stale/unknown behavior and local portable package checks.",
+      "remaining": "Consolidated evidence PDF, desktop spreadsheet and representative estimator verification remain separate work."
+    },
+    {
+      "id": "AIR-DEVICE-COUNT-1-SOFTWARE",
+      "parent": "AIR-DEVICE-COUNT-1",
+      "state": "accepted_local_software",
+      "integration_commit": "4f0ca41ffd00bbd828cd8d83ad4d843cc2ad2c94",
+      "scope": "Approved deterministic calculation, source producer transport, application review/correction/reopen/history and source exports against retained local software cases.",
+      "remaining": "No recognition qualification inferred; parent remains incomplete."
+    },
+    {
+      "id": "AIR-DEVICE-COUNT-1-RECOGNITION",
+      "parent": "AIR-DEVICE-COUNT-1",
+      "state": "blocked_input",
+      "scope": "Original-source local recognition qualification",
+      "last_case": "AC01",
+      "actual_physical": 0,
+      "expected_physical": 3,
+      "runs": "eight terminal runs retained",
+      "next_action": "Define a materially different bounded experiment with fixed original-source cases and acceptance metrics before another model run.",
+      "blocks": "Recognition claims only; not unrelated section implementation or accepted software."
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".heleos/workbook-export-2026-09-16/acceptance.json",
+      "sha256": "39e273374f94ef32c90e928ee322039c3ab7630b2a3754d3c5463995f1056f66"
+    },
+    {
+      "path": ".heleos/workbook-export-2026-09-16/resume-state.json",
+      "sha256": "194ca0ff4e11ed40bc8800d4ec9d82d071b1e4be9fb28d4637eb5d68c8891b4e"
+    },
+    {
+      "path": ".heleos/air-device-count-2026-09-16/connection-verification-final.json",
+      "sha256": "baf9444f4e54aa0231cce7219149d1b3017f232675c8ca15f49595b0f54e2709"
+    },
+    {
+      "path": ".heleos/air-device-count-2026-09-16/resume-state.json",
+      "sha256": "4768e2d804e11037c46dc2c012f19ec569f4c3c42932f4b56de541ff9c760f24"
+    },
+    {
+      "path": ".heleos/air-device-count-2026-09-16/local-recognition-outcome.json",
+      "sha256": "0f93c3c6cfb6b42bb2be8aed150e18ec969e66b59107f06a4a889aabf69a9502"
+    }
+  ],
+  "verification": "Receipt contents read and integration commits verified ancestors; no product checks or model runs repeated."
+}

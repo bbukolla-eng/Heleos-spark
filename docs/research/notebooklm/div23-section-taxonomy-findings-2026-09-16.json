@@ -1,0 +1,265 @@
+{
+  "source": {
+    "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+    "source_id": "0c32c752-88ab-47b1-8d4b-204f7c814f53",
+    "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2021%2013.pdf",
+    "edition": "03-01-23",
+    "sha256": "acfe2927e09697d9c3d43f07725bccc8802e4787ad77f5ca17abb6cbab46d31f"
+  },
+  "verified_scope_headings": [
+    {
+      "paragraph": "1.1",
+      "heading": "DESCRIPTION",
+      "offset": 463,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "1.2",
+      "heading": "RELATED WORK",
+      "offset": 930,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "1.3",
+      "heading": "APPLICABLE PUBLICATIONS",
+      "offset": 2021,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "1.4",
+      "heading": "SUBMITTALS",
+      "offset": 6744,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "1.5",
+      "heading": "QUALITY ASSURANCE",
+      "offset": 10095,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "1.6",
+      "heading": "AS-BUILT DOCUMENTATION",
+      "offset": 11144,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "1.7",
+      "heading": "SPARE PARTS",
+      "offset": 11292,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.1",
+      "heading": "PIPE AND EQUIPMENT SUPPORTS, PIPE SLEEVES, AND WALL AND CEILING PLATES",
+      "offset": 11440,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.2",
+      "heading": "PIPE AND TUBING",
+      "offset": 11599,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.3",
+      "heading": "FITTINGS FOR STEEL PIPE",
+      "offset": 12641,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.4",
+      "heading": "FITTINGS FOR COPPER TUBING",
+      "offset": 14246,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.5",
+      "heading": "FITTINGS FOR PLASTIC PIPING",
+      "offset": 15103,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.6",
+      "heading": "DIELECTRIC FITTINGS",
+      "offset": 15330,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.7",
+      "heading": "SCREWED JOINTS",
+      "offset": 15902,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.8",
+      "heading": "VALVES",
+      "offset": 16054,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.9",
+      "heading": "WATER FLOW MEASURING DEVICES",
+      "offset": 21932,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.10",
+      "heading": "STRAINERS",
+      "offset": 24377,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.11",
+      "heading": "FLEXIBLE CONNECTORS FOR WATER SERVICE",
+      "offset": 24847,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.12",
+      "heading": "EXPANSION JOINTS",
+      "offset": 26449,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.13",
+      "heading": "HYDRONIC SYSTEM COMPONENTS",
+      "offset": 29500,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.14",
+      "heading": "WATER FILTERS AND POT CHEMICAL FEEDERS",
+      "offset": 36355,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.15",
+      "heading": "GAUGES, PRESSURE AND COMPOUND",
+      "offset": 36507,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.16",
+      "heading": "PRESSURE/TEMPERATURE TEST PROVISIONS",
+      "offset": 37288,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.17",
+      "heading": "THERMOMETERS",
+      "offset": 38091,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.18",
+      "heading": "FIRESTOPPING MATERIAL",
+      "offset": 38737,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "2.19",
+      "heading": "//ELECTRICAL HEAT TRACING SYSTEMS",
+      "offset": 38828,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "3.1",
+      "heading": "INSTALLATION",
+      "offset": 41687,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "3.2",
+      "heading": "PIPE JOINTS",
+      "offset": 45317,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "3.3",
+      "heading": "EXPANSION JOINTS (BELLOWS AND SLIP TYPE)",
+      "offset": 46036,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "3.4",
+      "heading": "//SEISMIC BRACING ABOVEGROUND PIPING",
+      "offset": 47013,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "3.5",
+      "heading": "LEAK TESTING ABOVEGROUND PIPING",
+      "offset": 47172,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "3.6",
+      "heading": "FLUSHING AND CLEANING PIPING SYSTEMS",
+      "offset": 47909,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "3.7",
+      "heading": "WATER TREATMENT",
+      "offset": 50323,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "3.8",
+      "heading": "//ELECTRIC HEAT TRACING",
+      "offset": 50711,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "3.9",
+      "heading": "STARTUP AND TESTING",
+      "offset": 50840,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "3.10",
+      "heading": "//COMMISSIONING",
+      "offset": 51643,
+      "verification": "exact raw indexed source heading"
+    },
+    {
+      "paragraph": "3.11",
+      "heading": "DEMONSTRATION AND TRAINING",
+      "offset": 51909,
+      "verification": "exact raw indexed source heading"
+    }
+  ],
+  "query": "query-response.json",
+  "adoption": "Section taxonomy work planning only; no quantities or universal project mandates.",
+  "limits": [
+    "VA guide with optional text; not complete CSI catalogue",
+    "Generated answer is discovery input only; detailed numeric technical rules require individual source verification and applicable owner rule approval",
+    "Source requirements at1.7 and2.3 concerning pressed fittings need contextual conflict handling rather than universal prohibition"
+  ],
+  "implementation_scope": "Work breakdown and coverage audit. The typed production taxonomy and section behavior remain open tasks.",
+  "external_submissions": {
+    "before": ".heleos/div23-section-work-plan-2026-09-16/submission-before.json",
+    "after": ".heleos/div23-section-work-plan-2026-09-16/submission-after.json"
+  },
+  "catalogue_availability_check": {
+    "at": "2026-09-16T14:42:01.310988+00:00",
+    "state": "terminal_success",
+    "sources": [
+      {
+        "source_id": "6d900d17-26e8-40b1-bb8d-8914fc1bf76b",
+        "characters": 9264,
+        "sha256": "926e5bc67af4c0d6dc0f400d59f4f88b9d1d8b192d8abd13a03c3af78b8074d7",
+        "result": "CSI orientation/access webpage; no Division23sectiontable"
+      },
+      {
+        "source_id": "803f0513-242f-44db-a094-77d1d5c447a1",
+        "characters": 9264,
+        "sha256": "926e5bc67af4c0d6dc0f400d59f4f88b9d1d8b192d8abd13a03c3af78b8074d7",
+        "result": "CSI orientation/access webpage; no Division23sectiontable"
+      }
+    ],
+    "finding": "Existing MasterFormat2026source titles do not contain the complete catalogue; duplicate orientation pages. No unavailable source inventory was called empty."
+  },
+  "acceptance_definition": "docs/operations/acceptance.md"
+}

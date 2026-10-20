@@ -1,0 +1,149 @@
+{
+  "purpose": "Original independently enumerated application runtime paths used by package boundary tests; no machine paths, hashes, runtime binaries or project data",
+  "files": [
+    {
+      "path": "apps/drawing-workspace/app.js"
+    },
+    {
+      "path": "apps/drawing-workspace/ducts.js"
+    },
+    {
+      "path": "apps/drawing-workspace/equipment.js"
+    },
+    {
+      "path": "apps/drawing-workspace/fonts-macos.conf"
+    },
+    {
+      "path": "apps/drawing-workspace/index.html"
+    },
+    {
+      "path": "apps/drawing-workspace/path_editor.js"
+    },
+    {
+      "path": "apps/drawing-workspace/styles.css"
+    },
+    {
+      "path": "apps/drawing-workspace/workflow.js"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md"
+    },
+    {
+      "path": "scripts/document_layout.py"
+    },
+    {
+      "path": "scripts/document_pipeline.py"
+    },
+    {
+      "path": "scripts/document_requirements.py"
+    },
+    {
+      "path": "scripts/document_schedule.py"
+    },
+    {
+      "path": "scripts/drawing-workspace.py"
+    },
+    {
+      "path": "scripts/drawing_scale_labels.py"
+    },
+    {
+      "path": "scripts/duct_calculation.py"
+    },
+    {
+      "path": "scripts/duct_path_scoring.py"
+    },
+    {
+      "path": "scripts/duct_source_producer.py"
+    },
+    {
+      "path": "scripts/equipment_takeoff.py"
+    },
+    {
+      "path": "scripts/local_duct_vision.py"
+    },
+    {
+      "path": "scripts/local_mechanical_vision.py"
+    },
+    {
+      "path": "scripts/mechanical_knowledge.py"
+    },
+    {
+      "path": "scripts/mechanical_model_baseline.py"
+    },
+    {
+      "path": "scripts/mechanical_model_inference.py"
+    },
+    {
+      "path": "scripts/mechanical_model_scoring.py"
+    },
+    {
+      "path": "scripts/mechanical_rule_admission_store.py"
+    },
+    {
+      "path": "scripts/mechanical_rule_applicability.py"
+    },
+    {
+      "path": "scripts/mechanical_rule_context.py"
+    },
+    {
+      "path": "scripts/mechanical_rule_decision_store.py"
+    },
+    {
+      "path": "scripts/mechanical_rule_resolution.py"
+    },
+    {
+      "path": "scripts/mechanical_rule_scope.py"
+    },
+    {
+      "path": "scripts/mechanical_rule_validation.py"
+    },
+    {
+      "path": "scripts/mechanical_taxonomy.py"
+    },
+    {
+      "path": "scripts/project_duct_evaluation.py"
+    },
+    {
+      "path": "scripts/project_duct_reading_links.py"
+    },
+    {
+      "path": "scripts/project_duct_refresh.py"
+    },
+    {
+      "path": "scripts/project_duct_revision.py"
+    },
+    {
+      "path": "scripts/project_duct_takeoff.py"
+    },
+    {
+      "path": "scripts/project_knowledge.py"
+    },
+    {
+      "path": "scripts/project_rule_admission.py"
+    },
+    {
+      "path": "scripts/project_rule_resolution.py"
+    },
+    {
+      "path": "scripts/project_schedule_reconciliation.py"
+    },
+    {
+      "path": "scripts/schedule_reconciliation.py"
+    },
+    {
+      "path": "scripts/sheet_geometry.py"
+    },
+    {
+      "path": "scripts/sheet_scale.py"
+    },
+    {
+      "path": "scripts/takeoff_workflow.py"
+    },
+    {
+      "path": "tests/fixtures/duct-takeoff/2026-09-13-rule-examples.json"
+    },
+    {
+      "path": "tests/fixtures/duct-takeoff/2026-09-14-owner-decision.json"
+    }
+  ]
+}

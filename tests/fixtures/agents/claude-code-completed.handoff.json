@@ -1,0 +1,19 @@
+{
+  "schema": "heleos.worker-handoff/v1",
+  "task_digest": "a58ce9c4301b3b64870b3e78865d5b866ba325b6c26580358d31ac1252ffa964",
+  "provider": "claude_code",
+  "terminal_state": "completed",
+  "changed_paths": [
+    "examples/agent-protocol/claude-code/add.rs",
+    "examples/agent-protocol/claude-code/add_test.rs"
+  ],
+  "checks": [
+    {
+      "command": "git diff --check -- examples/agent-protocol/claude-code",
+      "exit_code": 0,
+      "output_sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  ],
+  "candidate_commit": null,
+  "unresolved_items": []
+}

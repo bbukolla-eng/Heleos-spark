@@ -1,0 +1,405 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+fail() { printf 'SUPPLY_CHAIN_FAIL: %s\n' "$1" >&2; exit 1; }
+[[ $# == 0 ]] || fail 'unexpected arguments; there are no skip or bootstrap modes'
+for task_name in CARGO CARGO_BUILD_TARGET CARGO_TARGET_DIR CARGO_BUILD_TARGET_DIR CARGO_BUILD_RUSTC CARGO_BUILD_RUSTC_WRAPPER \
+  CARGO_BUILD_RUSTFLAGS RUSTC RUSTC_WRAPPER RUSTC_WORKSPACE_WRAPPER RUSTFLAGS \
+  CARGO_ENCODED_RUSTFLAGS GITLEAKS_CONFIG GITLEAKS_CONFIG_TOML GIT_CONFIG_PARAMETERS GIT_CONFIG_COUNT \
+  RUST_TEST_THREADS; do
+  [[ -z "${!task_name:-}" ]] || fail "inherited authority is forbidden: $task_name"
+done
+[[ "$(uname -s)" == Darwin && "$(uname -m)" == arm64 ]] || fail 'requires native Darwin ARM64; use the PowerShell entry point on Windows'
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
+task_root="$(pwd -P)"
+task_base=c1596c4cc536155ad3a052cfec2c9b8951814aba
+export CARGO_NET_OFFLINE=true RUSTUP_AUTO_INSTALL=0 RUSTUP_TOOLCHAIN=1.96.1
+export GIT_NO_REPLACE_OBJECTS=1 GIT_TERMINAL_PROMPT=0
+export GIT_NO_LAZY_FETCH=1
+# Several frozen failure-path tests prove the default temp namespace is
+# unchanged. Serialize libtest so sibling cases cannot mutate that same
+# namespace between the before/after observations.
+export RUST_TEST_THREADS=1
+
+for task_tool in cargo rustc git shasum awk cmp find sort; do
+  command -v "$task_tool" >/dev/null || fail "missing prerequisite: $task_tool; see docs/operations/dependency-bootstrap.md"
+done
+[[ "$(git rev-parse --show-toplevel)" == "$task_root" ]] || fail 'wrong repository root'
+git cat-file -e "$task_base^{commit}" || fail 'missing frozen Task 10 baseline commit'
+[[ "$(git rev-parse --is-shallow-repository)" == false ]] || fail 'full-history secret scan requires complete local Git history'
+[[ -z "$(git for-each-ref --format='%(refname)' refs/replace)" ]] || fail 'Git replacement refs are forbidden'
+task_grafts="$(git rev-parse --git-path info/grafts)"
+[[ ! -e "$task_grafts" && ! -L "$task_grafts" ]] || fail 'Git grafts are forbidden for full-history scanning'
+
+check_clean_candidate() {
+  [[ -z "$(git status --porcelain=v1 --untracked-files=all --ignore-submodules=none)" ]] ||
+    fail 'supply-chain candidate must have no tracked or untracked nonignored changes'
+}
+check_clean_candidate
+task_candidate_sha="$(git rev-parse HEAD)"
+[[ "$task_candidate_sha" =~ ^[a-f0-9]{40}$ ]] || fail 'invalid supply-chain candidate HEAD'
+check_candidate_path() {
+  local task_path="$1" task_head_blob
+  git cat-file -e "$task_candidate_sha:$task_path" || fail "candidate is missing governed path: $task_path"
+  task_head_blob="$(git rev-parse "$task_candidate_sha:$task_path")"
+  [[ "$(git hash-object --no-filters "$task_path")" == "$task_head_blob" ]] ||
+    fail "candidate path differs from HEAD: $task_path"
+}
+for task_path in governance/tools.toml scripts/verify-supply-chain \
+  tests/verification/src/bin/verify-provenance.rs tests/verification/tests/native_suite_receipt.rs; do
+  check_candidate_path "$task_path"
+done
+
+# Production and Task 9 source bytes stay frozen. Task 10 may change only the
+# three verifier inputs below and add private-package metadata to three host manifests.
+# The native-suite receipt contract adds one exact, separately admitted test source.
+task_source_paths=(Cargo.toml Cargo.lock rust-toolchain.toml crates tests/verification artifacts/pdf-guest \
+  scripts/verify-provenance scripts/verify-foundation scripts/verify-foundation.ps1)
+task_delta_paths=(Cargo.lock tests/verification/Cargo.toml tests/verification/src/bin/verify-provenance.rs)
+task_native_suite_path=tests/verification/tests/native_suite_receipt.rs
+task_packaging_paths=(crates/heleos-cli/Cargo.toml crates/heleos-core/Cargo.toml \
+  crates/heleos-platform-fs/Cargo.toml)
+task_exclusions=()
+for task_path in "${task_delta_paths[@]}" "${task_packaging_paths[@]}" "$task_native_suite_path"; do
+  task_exclusions+=(":(exclude,literal)$task_path")
+done
+task_paths="$(git ls-tree -r --name-only "$task_base" -- "${task_source_paths[@]}")"
+[[ -n "$task_paths" ]] || fail 'empty governed source inventory'
+task_paths+=$'\n'"$task_native_suite_path"
+task_delta_hashes=()
+check_sources() {
+  local task_path task_parent task_hash task_expected task_index task_packaging
+  git diff --no-ext-diff --no-textconv --quiet "$task_base" -- "${task_source_paths[@]}" "${task_exclusions[@]}" || fail 'production or Task 9 source drift'
+  [[ -z "$(git ls-files --others -- "${task_source_paths[@]}" ":(exclude,literal)$task_native_suite_path")" ]] || fail 'unrecorded source or guest file'
+  while IFS= read -r task_path; do
+    [[ "$task_path" =~ ^[A-Za-z0-9_./-]+$ ]] || fail 'unsupported governed source filename'
+    [[ -f "$task_path" ]] || fail "missing governed source: $task_path"
+    task_parent="$task_path"
+    while [[ "$task_parent" != . ]]; do
+      [[ ! -L "$task_parent" ]] || fail 'indirect governed source path'
+      task_parent="$(dirname -- "$task_parent")"
+    done
+    if [[ "$task_path" == "$task_native_suite_path" ]]; then
+      check_hash "$task_path" "$task_native_suite_sha256"
+      continue
+    fi
+    task_hash="$(git hash-object --no-filters "$task_path")"
+    task_expected="$(git rev-parse "$task_base:$task_path")"
+    for task_index in "${!task_delta_paths[@]}"; do
+      if [[ "$task_path" == "${task_delta_paths[$task_index]}" ]]; then
+        if [[ -z "${task_delta_hashes[$task_index]:-}" ]]; then
+          task_delta_hashes[$task_index]="$task_hash"
+        fi
+        task_expected="${task_delta_hashes[$task_index]}"
+      fi
+    done
+    for task_packaging in "${task_packaging_paths[@]}"; do
+      if [[ "$task_path" == "$task_packaging" ]]; then
+        task_expected="$(git show "$task_base:$task_path" | awk '
+          NR == 1 { if ($0 != "[package]") exit 1; print; print "publish = false"; next }
+          { print }
+        ' | git hash-object --stdin)" || fail 'invalid packaging baseline'
+      fi
+    done
+    [[ "$task_hash" == "$task_expected" ]] || fail "raw source-byte drift: $task_path"
+  done <<< "$task_paths"
+}
+# Freeze every lock stanza and production dependency string; only these two
+# already-resolved dependencies may be added to the verification package.
+task_expected_lock="$(git show "$task_base:Cargo.lock" | awk '
+  /^\[\[package\]\]$/ { verifier=0 }
+  /^name = "heleos-verification"$/ { verifier=1; count++ }
+  { print }
+  verifier && $0 == " \"serde_jcs\"," { print " \"serde_json\","; json++ }
+  verifier && $0 == " \"tempfile\"," { print " \"toml 1.1.4+spec-1.1.0\","; toml++ }
+  END { if (count != 1 || json != 1 || toml != 1) exit 1 }
+' | git hash-object --stdin)" || fail 'invalid verifier lock baseline'
+[[ "$(git hash-object --no-filters Cargo.lock)" == "$task_expected_lock" ]] || fail 'unapproved lock package, closure, feature, or dependency delta'
+
+# Byte equality above freezes the root pin/default-features and all production
+# features. Make the actual two cfg(windows) direct edges explicit as well.
+awk '$0 == "cap-primitives = { version = \"=4.0.3\", default-features = false }" { count++ }
+  END { if (count != 1) exit 1 }' Cargo.toml || fail 'cap-primitives root pin/features drift'
+for task_path in crates/heleos-platform-fs/Cargo.toml crates/heleos-cli/Cargo.toml; do
+  awk -v expected="[target.'cfg(windows)'.dependencies]" '
+    /^\[/ { section=$0 }
+    /cap-primitives/ { if ($0 != "cap-primitives = { workspace = true }" || section != expected) exit 1; count++ }
+    END { if (count != 1) exit 1 }
+  ' "$task_path" || fail 'cap-primitives direct edge/features drift'
+done
+if git grep -q -E 'cap[-_]primitives' -- crates/heleos-core; then
+  fail 'core cap-primitives edge or use is forbidden'
+else
+  [[ $? == 1 ]] || fail 'cannot inspect core cap-primitives authority'
+fi
+task_prior_governance_size="$(git cat-file -s "$task_base:governance/tools.toml")"
+git show "$task_base:governance/tools.toml" |
+  cmp - <(head -c "$task_prior_governance_size" governance/tools.toml) || fail 'historical governance was changed; Task 10 admissions must be append-only'
+for task_config in .gitleaks.toml .gitleaksignore .cargo/audit.toml .cargo/config .cargo/config.toml .deny.toml .cargo/deny.toml deny.exceptions.toml; do
+  [[ ! -e "$task_config" && ! -L "$task_config" ]] || fail "unadmitted security-tool override: $task_config"
+done
+
+# Read only a canonical single-line admission field outside TOML multiline text.
+# Missing, duplicate, escaped, or noncanonical values fail. This is intentionally
+# not a general TOML parser and never evaluates registry text as shell code.
+admitted() {
+  local task_value
+  task_value="$(awk -v tool="$1" -v key="$2" '
+    { line=$0; quotes=gsub(/"""/, "", line); if (quotes) { if (quotes%2) multi=!multi; next } }
+    /\047\047\047/ { bad=1 }
+    !multi && /^\[\[tool\]\]$/ { selected=0 }
+    !multi && /^name = "/ { name=$0; sub(/^name = "/, "", name); sub(/"$/, "", name); selected=(name==tool); if (selected) records++ }
+    !multi && selected && $0 ~ "^[[:space:]]*" key "[[:space:]]*=" {
+      count++; value=$0; sub(/^[^=]*=[[:space:]]*/, "", value);
+      if (value !~ /^"[A-Za-z0-9_.:+\/-]+"$/) bad=1;
+      sub(/^"/, "", value); sub(/"$/, "", value)
+    }
+    END { if (count != 1 || records != 1 || bad || multi) exit 1; print value }
+  ' governance/tools.toml)" || fail "missing or ambiguous admission: $1.$2"
+  printf '%s' "$task_value"
+}
+sha256() { shasum -a 256 "$1" | awk '{print $1}'; }
+check_direct_file() {
+  local task_parent="$1"
+  [[ -f "$1" && ! -L "$1" ]] || fail 'missing, special, or indirect input'
+  while [[ "$task_parent" != . && "$task_parent" != / ]]; do
+    [[ ! -L "$task_parent" ]] || fail 'indirect hashed input path'
+    task_parent="$(dirname -- "$task_parent")"
+  done
+}
+check_hash() {
+  local task_expected="$2"
+  [[ "$task_expected" =~ ^[a-f0-9]{64}$ ]] || fail "invalid SHA-256 admission: $2"
+  check_direct_file "$1"
+  [[ "$(sha256 "$1")" == "$task_expected" ]] || fail "checksum drift: $2"
+}
+task_verifier_sha256="$(admitted heleos-foundation-verifier source_sha256)"
+task_native_suite_sha256="$(admitted heleos-foundation-verifier native_suite_test_sha256)"
+task_macos_gate_sha256="$(admitted heleos-foundation-verifier macos_gate_sha256)"
+check_hash tests/verification/src/bin/verify-provenance.rs "$task_verifier_sha256"
+check_hash scripts/verify-supply-chain "$task_macos_gate_sha256"
+check_sources
+
+# PDF manifests are frozen guest-build inputs. Only cargo-deny's disposable
+# audit copy receives their private-package metadata; no build uses that copy.
+task_audit_packaging_paths=(crates/heleos-pdf-guest/Cargo.toml \
+  crates/heleos-pdf-protocol/Cargo.toml crates/heleos-test-fixtures/Cargo.toml)
+check_deny_audit() {
+  local task_index task_path task_actual_inventory task_expected_inventory
+  [[ -d "$task_deny_workspace" && ! -L "$task_deny_workspace" ]] || fail 'indirect cargo-deny audit workspace'
+  [[ -z "$(find "$task_deny_workspace" ! -type d ! -type f -print)" ]] || fail 'special or indirect cargo-deny audit entry'
+  task_actual_inventory="$(cd "$task_deny_workspace" && find . -type f -print | LC_ALL=C sort)"
+  task_expected_inventory="$(printf './%s\n' "${task_audit_paths[@]}" | LC_ALL=C sort)"
+  [[ "$task_actual_inventory" == "$task_expected_inventory" ]] || fail 'cargo-deny audit inventory drift'
+  for task_index in "${!task_audit_paths[@]}"; do
+    task_path="${task_audit_paths[$task_index]}"
+    check_hash "$task_root/$task_path" "${task_audit_source_hashes[$task_index]}"
+    check_hash "$task_deny_workspace/$task_path" "${task_audit_hashes[$task_index]}"
+  done
+  cmp Cargo.lock "$task_deny_workspace/Cargo.lock" || fail 'cargo-deny audit lock drift'
+  check_hash deny.toml "$task_policy_sha256"
+  check_sources
+}
+prepare_deny_audit() {
+  local task_path task_hash task_index task_packaging task_projected task_expected
+  check_sources
+  task_deny_evidence="$(mktemp -d "$task_root/target/supply-chain-deny.XXXXXX")"
+  task_deny_workspace="$task_deny_evidence/workspace"
+  mkdir "$task_deny_workspace"
+  task_audit_paths=()
+  task_audit_source_hashes=()
+  task_audit_hashes=()
+  while IFS= read -r task_path; do
+    case "$task_path" in Cargo.toml|Cargo.lock|crates/*|tests/verification/*) ;; *) continue ;; esac
+    check_direct_file "$task_root/$task_path"
+    task_hash="$(sha256 "$task_root/$task_path")"
+    check_hash "$task_root/$task_path" "$task_hash"
+    mkdir -p "$task_deny_workspace/$(dirname -- "$task_path")"
+    # -P preserves a final symlink for rejection instead of dereferencing it.
+    cp -pP "$task_root/$task_path" "$task_deny_workspace/$task_path"
+    check_hash "$task_deny_workspace/$task_path" "$task_hash"
+    task_audit_paths+=("$task_path")
+    task_audit_source_hashes+=("$task_hash")
+    task_audit_hashes+=("$task_hash")
+    printf '%s  %s\n' "$task_hash" "$task_path" >>"$task_deny_evidence/source-hashes.sha256"
+  done <<< "$task_paths"
+  [[ ${#task_audit_paths[@]} -gt 0 ]] || fail 'empty cargo-deny audit inventory'
+  for task_packaging in "${task_audit_packaging_paths[@]}"; do
+    task_projected="$task_deny_workspace/$task_packaging.task10-projection"
+    (set -C; awk '
+      NR == 1 { if ($0 != "[package]") exit 1; print; print "publish = false"; next }
+      { print }
+    ' "$task_root/$task_packaging" >"$task_projected") || fail 'invalid cargo-deny packaging projection'
+    task_expected="$(git show "$task_base:$task_packaging" | awk '
+      NR == 1 { if ($0 != "[package]") exit 1; print; print "publish = false"; next }
+      { print }
+    ' | shasum -a 256 | awk '{print $1}')" || fail 'invalid cargo-deny packaging baseline'
+    check_hash "$task_projected" "$task_expected"
+    mv -f "$task_projected" "$task_deny_workspace/$task_packaging"
+    for task_index in "${!task_audit_paths[@]}"; do
+      if [[ "${task_audit_paths[$task_index]}" == "$task_packaging" ]]; then
+        task_audit_hashes[$task_index]="$task_expected"
+      fi
+    done
+  done
+  for task_index in "${!task_audit_paths[@]}"; do
+    printf '%s  %s\n' "${task_audit_hashes[$task_index]}" "${task_audit_paths[$task_index]}" >>"$task_deny_evidence/audit-hashes.sha256"
+  done
+  check_deny_audit
+}
+run_deny_audit() {
+  prepare_deny_audit
+  local task_status=0
+  cargo +1.96.1 deny --manifest-path "$task_deny_workspace/Cargo.toml" --config "$task_root/deny.toml" \
+    --workspace --all-features --offline --frozen check --deny warnings advisories bans licenses sources \
+    >"$task_deny_evidence/cargo-deny.log" 2>&1 || task_status=$?
+  check_deny_audit
+  printf 'Cargo-deny audit evidence retained under %s (exit %s)\n' "${task_deny_evidence#"$task_root/"}" "$task_status"
+  [[ "$task_status" == 0 ]] || fail 'cargo-deny audit failed; inspect retained cargo-deny.log'
+}
+check_tool() {
+  local task_path task_version task_name="$1" task_pin="$2" task_checksum="$3" task_want="$4"
+  shift 4
+  [[ "$(admitted "$task_name" version_or_digest)" == "$task_pin" ]] || fail "tool version admission drift: $task_name"
+  [[ "$(admitted "$task_name" registry_checksum)" == "$task_checksum" ]] || fail "tool source-archive admission drift: $task_name"
+  task_path="$(type -P "$task_name")" || fail "missing pinned tool: $task_name; bootstrap is a separate owner action"
+  task_version="$("$task_path" "$@")" || fail "cannot inspect pinned tool: $task_name"
+  [[ "$task_version" == "$task_want" ]] || fail "version drift: $task_name"
+}
+check_tool cargo-deny 0.20.2 e528dfcbe739af7ce37a77d3d6df1b29dd6887b1c701d888820c0f16b864f737 'cargo-deny 0.20.2' --version
+check_tool cargo-audit 0.22.2 700c2b240f7fd330c24b675fe429f73a5b676531fcc6300400b2b67f155ba12a 'cargo-audit 0.22.2' --version
+check_tool cargo-cyclonedx 0.5.9 5d162f67705f0f5038759d73bf546a083bf30e8677c2e944b416bca48d9d69a8 'cargo-cyclonedx-cyclonedx 0.5.9' cyclonedx --version
+[[ "$(admitted gitleaks version_or_digest)" == 8.30.1 ]] || fail 'gitleaks version admission drift'
+[[ "$(admitted gitleaks darwin_arm64_archive_sha256)" == b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5 ]] || fail 'gitleaks archive admission drift'
+[[ "$(gitleaks version)" == 8.30.1 ]] || fail 'gitleaks version drift'
+task_policy_sha256="$(admitted cargo-deny policy_sha256)"
+check_hash deny.toml "$task_policy_sha256"
+check_hash tests/verification/src/bin/verify-provenance.rs "$task_verifier_sha256"
+task_sbom_sha256="$(admitted cargo-cyclonedx generated_sbom_sha256)"
+check_hash artifacts/sbom/heleos-foundation-0.1.cdx.json "$task_sbom_sha256"
+task_governance_sha256="$(sha256 governance/tools.toml)"
+
+task_cargo_home="${CARGO_HOME:-$HOME/.cargo}"
+
+check_advisory() {
+  local task_db="$1" task_commit task_archive_hash task_time task_now task_origin task_expected_origin task_files task_parent
+  [[ -d "$task_db" && ! -L "$task_db" ]] || fail 'missing or indirect advisory snapshot'
+  task_commit="$(admitted cargo-deny advisory_data_snapshot_commit)"
+  [[ "$task_commit" =~ ^[a-f0-9]{40}$ ]] || fail 'invalid advisory commit'
+  [[ "$(git -C "$task_db" rev-parse HEAD)" == "$task_commit" ]] || fail 'advisory commit drift'
+  task_origin="$(git -C "$task_db" remote get-url origin)"
+  task_expected_origin="$(admitted cargo-deny advisory_data_origin)"
+  [[ "${task_origin%.git}" == "${task_expected_origin%.git}" ]] || fail 'unexpected advisory origin'
+  [[ -z "$(git -C "$task_db" status --porcelain --untracked-files=all)" ]] || fail 'advisory snapshot has modified or extra files'
+  task_files="$(git -C "$task_db" ls-tree -r --name-only "$task_commit")"
+  [[ -n "$task_files" ]] || fail 'empty advisory snapshot'
+  while IFS= read -r task_file; do
+    [[ "$task_file" =~ ^[A-Za-z0-9_./-]+$ ]] || fail 'unsupported advisory filename'
+    task_parent="$task_file"
+    while [[ "$task_parent" != . ]]; do
+      [[ ! -L "$task_db/$task_parent" ]] || fail 'indirect advisory file'
+      task_parent="$(dirname -- "$task_parent")"
+    done
+    [[ "$(git -C "$task_db" hash-object --no-filters "$task_file")" == "$(git -C "$task_db" rev-parse "$task_commit:$task_file")" ]] || fail 'raw advisory file drift'
+  done <<< "$task_files"
+  [[ "$(git -C "$task_db" rev-parse 'HEAD^{tree}')" == "$(admitted cargo-deny advisory_data_snapshot_tree)" ]] || fail 'advisory tree drift'
+  task_archive_hash="$(git -C "$task_db" ls-tree -r --full-tree HEAD | shasum -a 256 | awk '{print $1}')"
+  [[ "$task_archive_hash" == "$(admitted cargo-deny advisory_data_snapshot_sha256)" ]] || fail 'advisory snapshot checksum drift'
+  task_time="$(date -ju -f '%Y-%m-%dT%H:%M:%SZ' "$(admitted cargo-deny advisory_data_snapshot_time)" +%s)" || fail 'invalid advisory snapshot time'
+  task_now="$(date -u +%s)"
+  (( task_time <= task_now && task_now - task_time <= 604800 )) || fail 'future or stale advisory snapshot; refresh only during explicit bootstrap'
+}
+for task_field in advisory_data_origin advisory_data_snapshot_commit advisory_data_snapshot_tree advisory_data_snapshot_sha256 advisory_data_snapshot_time; do
+  [[ "$(admitted cargo-deny "$task_field")" == "$(admitted cargo-audit "$task_field")" ]] || fail 'cargo-deny and cargo-audit snapshot admissions differ'
+done
+check_advisory "$task_cargo_home/advisory-db"
+task_deny_dbs=()
+for task_candidate in "$task_cargo_home"/advisory-dbs/*; do
+  if [[ -d "$task_candidate" && ! -L "$task_candidate" ]]; then
+    task_deny_dbs+=("$task_candidate")
+  elif [[ "$task_candidate" == "$task_cargo_home/advisory-dbs/db.lock" && -f "$task_candidate" && ! -L "$task_candidate" ]]; then
+    : # cargo-deny's own local database mutex is not advisory content.
+  else
+    fail 'unexpected entry in cargo-deny advisory database root'
+  fi
+done
+[[ ${#task_deny_dbs[@]} == 1 ]] || fail 'expected exactly one cargo-deny advisory database'
+check_advisory "${task_deny_dbs[0]}"
+
+# No workspace/CLI build occurs before Task 9 establishes the approved guest.
+cargo +1.96.1 build --frozen -p heleos-verification --bin verify-provenance
+scripts/verify-provenance verify-sbom artifacts/sbom/heleos-foundation-0.1.cdx.json
+scripts/verify-provenance build-pdf-guest
+scripts/verify-provenance
+cargo +1.96.1 metadata --frozen --all-features --format-version 1 >/dev/null
+run_deny_audit
+cargo +1.96.1 audit --no-fetch --db "$task_cargo_home/advisory-db" --deny warnings
+# Scan history and a direct regular-file snapshot of Git source inputs. Ignored
+# target/cache copies must not multiply findings or become source authority.
+task_secret_evidence="$(mktemp -d "${TMPDIR:-/tmp}/heleos-supply-chain.XXXXXX")"
+task_secret_snapshot="$task_secret_evidence/source"
+mkdir "$task_secret_snapshot"
+task_scan_paths="$(git ls-files --cached --others --exclude-standard)"
+[[ -n "$task_scan_paths" ]] || fail 'empty secret-scan source inventory'
+while IFS= read -r task_path; do
+  [[ "$task_path" =~ ^[A-Za-z0-9_./-]+$ && -f "$task_path" ]] || fail 'unsupported secret-scan source input'
+  task_parent="$task_path"
+  while [[ "$task_parent" != . ]]; do
+    [[ ! -L "$task_parent" ]] || fail 'indirect secret-scan source input'
+    task_parent="$(dirname -- "$task_parent")"
+  done
+  mkdir -p "$task_secret_snapshot/$(dirname -- "$task_path")"
+  cp -p "$task_path" "$task_secret_snapshot/$task_path"
+  cmp "$task_path" "$task_secret_snapshot/$task_path" || fail 'secret-scan source copy drift'
+done <<< "$task_scan_paths"
+gitleaks git --redact=100 --ignore-gitleaks-allow --log-opts=--all --exit-code 0 \
+  --report-format json --report-path "$task_secret_evidence/history.json" . \
+  >"$task_secret_evidence/history.log" 2>&1 || fail 'history secret scan failed; redacted diagnostics retained in OS-temp evidence'
+gitleaks dir --redact=100 --ignore-gitleaks-allow --exit-code 0 \
+  --report-format json --report-path "$task_secret_evidence/current.json" "$task_secret_snapshot" \
+  >"$task_secret_evidence/current.log" 2>&1 || fail 'current-source secret scan failed; redacted diagnostics retained in OS-temp evidence'
+# Exit-code 0 only permits report collection; exact governed finding adjudication
+# is mandatory and owned by the semantic verifier, never a generic ignore.
+scripts/verify-provenance verify-secret-scan "$task_secret_evidence/history.json" "$task_secret_evidence/current.json"
+
+export HELEOS_BIN="$task_root/target/debug/heleos"
+export HELEOS_PDF_GUEST="$task_root/target/wasm32-wasip1/release/heleos_pdf_guest.wasm"
+cargo +1.96.1 clippy --frozen --workspace --all-targets --all-features -- -D warnings
+cargo +1.96.1 build --frozen -p heleos-cli --bin heleos
+cargo +1.96.1 test --frozen -p heleos-core --test backup_restore
+cargo +1.96.1 test --frozen -p heleos-core --lib store::tests
+cargo +1.96.1 test --frozen -p heleos-core --lib backup::tests
+# Includes helper_source_contract_freezes_the_reviewed_windows_authority and
+# helper_dependency_lock_and_governance_audit_is_frozen, including the exact
+# five-symbol metadata allowlist and single local unsafe publication call.
+cargo +1.96.1 test --frozen -p heleos-platform-fs --lib
+cargo +1.96.1 test --frozen -p heleos-cli --bin heleos
+cargo +1.96.1 test --frozen -p heleos-cli --test cli
+cargo +1.96.1 test --frozen --workspace --all-targets --all-features
+/usr/bin/sandbox-exec -p '(version 1) (allow default) (deny network*)' \
+  cargo +1.96.1 test --frozen -p heleos-verification --all-targets
+
+# Rust owns the full-graph generation, fixed epoch, two-root comparison, and
+# semantic validation. Raw cargo-cyclonedx member output is never an aggregate.
+task_output="$(mktemp -d "$task_root/target/supply-chain.XXXXXX")"
+scripts/verify-provenance build-sbom "$task_output/heleos-foundation-0.1.cdx.json"
+scripts/verify-provenance verify-sbom "$task_output/heleos-foundation-0.1.cdx.json"
+cmp artifacts/sbom/heleos-foundation-0.1.cdx.json "$task_output/heleos-foundation-0.1.cdx.json" || fail 'regenerated semantic SBOM differs from the admitted artifact'
+check_hash artifacts/sbom/heleos-foundation-0.1.cdx.json "$task_sbom_sha256"
+scripts/verify-provenance verify-sbom artifacts/sbom/heleos-foundation-0.1.cdx.json
+scripts/verify-provenance
+check_sources
+check_hash deny.toml "$task_policy_sha256"
+check_hash tests/verification/src/bin/verify-provenance.rs "$task_verifier_sha256"
+check_hash scripts/verify-supply-chain "$task_macos_gate_sha256"
+check_hash governance/tools.toml "$task_governance_sha256"
+check_advisory "$task_cargo_home/advisory-db"
+check_advisory "${task_deny_dbs[0]}"
+check_clean_candidate
+[[ "$(git rev-parse HEAD)" == "$task_candidate_sha" ]] || fail 'candidate HEAD changed during supply-chain verification'
+printf 'Candidate SBOM evidence retained under %s\n' "${task_output#"$task_root/"}"
+printf 'Redacted secret-scan evidence retained under %s\n' "$task_secret_evidence"
+
+printf '%s\n' 'SUPPLY_CHAIN_LOCAL_PASS: native macOS ARM64 offline gate passed.' \
+  'DEFERRED_PLATFORM_GATE: native Windows/NTFS tests and cap-primitives Windows build-probe/API evidence require the Windows runner.' \
+  'DEFERRED_RELEASE_GATE: same-candidate macOS/Windows CI, GitHub App owner dispositions, and release attestation remain separate gates; this result is a local candidate only.'

@@ -1,0 +1,145 @@
+{
+  "schema": "heleos.research-findings/v1",
+  "task_id": "AIR-DEVICE-COUNT-1",
+  "recorded_at": "2026-09-16T04:04:13.495038+00:00",
+  "provider": "NotebookLM retained verified source snapshot",
+  "inventory": "docs/research/notebooklm/expansion-n11-2026-09-14.json",
+  "prior_query": "docs/research/notebooklm/air-device-findings-2026-09-14.json",
+  "prior_query_sha256": "4b8c43c7f60fc80e1513c003853aa1bbe4395a51b2105256512d0f9a24b44a0d",
+  "new_external_submission": false,
+  "reuse_basis": "Existing verified query covers the approved class and unchanged source context; user directs reuse. Owner has now settled class policy separately. No manufacturer-specific new mechanical finding is being adopted.",
+  "sources": [
+    {
+      "key": "fastduct",
+      "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+      "source_id": "5d4da822-598d-4c4c-a26e-402c9bb7ad7f",
+      "title": "FastDUCT - HVAC Estimating Software",
+      "original_url": "https://fastest-inc.com/FastDUCT",
+      "content_sha256": "17f9ac8c81d3afc7b09456c0b7ad575e78a04729b199489a0c43104c3f9be63f",
+      "text_location": ".heleos/air-device-preparation-2026-09-14/research-fastduct-indexed-text.txt",
+      "passages": [
+        {
+          "lines": [
+            151,
+            153
+          ],
+          "section": "Easy-to-Read Reports",
+          "text": "Easy-to-Read Reports\n\nFastDUCT calculates pounds, square feet, material costs, shop and field labor hours in seconds with a single click. Material adjustments and job factors can be applied directly to the report. Reports can be broken down by sections, specs, areas, zones, cost-codes, item tags, and much more.",
+          "sha256": "d6100a75c03ef64c7d2612cf1c2ff4da2b457a08afa724e4e9595691db89f469",
+          "finding_id": "AIR-RESEARCH-04",
+          "claim": "FastDUCT's product description presents each and linear feet as distinct selectable assembly units; it also describes reporting by item tags and color-coded overlays for plan changes.",
+          "limit": "Primary evidence for advertised software features only. It does not establish how a continuous/slot diffuser becomes one each unit, a count conversion from dimensions/airflow, or work-status classification rules."
+        },
+        {
+          "lines": [
+            163,
+            175
+          ],
+          "section": "On-Screen Digitizer and Plan Overlay",
+          "text": "On-Screen Digitizer\n\nPerform takeoffs directly from digital plans on your computer screen, reducing the time and costs of printing and manually marking paper copies. Our on-screen digitizer takeoff software supports a wide variety of popular CAD Drawing formats including Windows Bitmap, Dodge Plans, PDF, JPEG, TIF, GIF, PNG Images, and many others. Other features of the on-screen digitizer include\n\nHigh-Resolution Graphics\n\n - You can see the difference in display quality when compared to competitor systems\n\nPlan Overlay\n\n - Easily overlay plan addendums to quickly identify new project requirements \n\n(we show what changed using a simple color-coded system)",
+          "sha256": "a3a3d76de51d00ba5c92a5b51c2004395ab341ed89cae8eaf16d981e56e44ec5",
+          "finding_id": "AIR-RESEARCH-04",
+          "claim": "FastDUCT's product description presents each and linear feet as distinct selectable assembly units; it also describes reporting by item tags and color-coded overlays for plan changes.",
+          "limit": "Primary evidence for advertised software features only. It does not establish how a continuous/slot diffuser becomes one each unit, a count conversion from dimensions/airflow, or work-status classification rules."
+        },
+        {
+          "lines": [
+            197,
+            203
+          ],
+          "section": "Scalable Assemblies; Cost Codes",
+          "text": "Scalable Assemblies\n\nDefine assemblies that can be scaled directly on the plan in various units including each, linear-feet, square-feet, cubic-feet, etc. Useful for a wide range of applications such as refrigeration line-sets, advanced excavation, insulation, demolition, and more. Assemblies also support user-defined parameters that allow you to modify components at takeoff-time giving even greater flexibility.\n\nCost Codes\n\nBreak up information on reports using your own custom cost codes. Cost codes can be assigned at a global Spec level, Assembly level or on individual takeoff items. Cost codes are integrated with reporting modules and are also exported to the Microsoft Excel ",
+          "sha256": "e807922b2c71f38acfe5464c5ac8e1d7037654a2d634352e4d0ad2751a96a668",
+          "finding_id": "AIR-RESEARCH-04",
+          "claim": "FastDUCT's product description presents each and linear feet as distinct selectable assembly units; it also describes reporting by item tags and color-coded overlays for plan changes.",
+          "limit": "Primary evidence for advertised software features only. It does not establish how a continuous/slot diffuser becomes one each unit, a count conversion from dimensions/airflow, or work-status classification rules."
+        }
+      ]
+    },
+    {
+      "key": "blueprint-tutorial",
+      "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+      "source_id": "6e8c87b2-685a-4b33-ba79-b643692192fd",
+      "title": "Mastering Mechanical Blueprint Reading with Floor Plans, Sections, Isometrics, and Schedules - Free Video Tutorial",
+      "original_url": "https://vdci.edu/learn/blueprint-reading/mastering-mechanical-blueprint-reading",
+      "content_sha256": "f014c7fb961c7a8e86c318c605115a14b99724fea320c7dba37fc791b4b00b44",
+      "text_location": ".heleos/air-device-preparation-2026-09-14/research-blueprint-tutorial-indexed-text.txt",
+      "passages": [
+        {
+          "lines": [
+            1031,
+            1041
+          ],
+          "section": "Legends Come First; M1 Series: Air Distribution Plans",
+          "text": "Legends Come First\n\nMany mechanical sets begin with legends. These pages define the symbols, abbreviations, and conventions used throughout the drawings. If you are new to a set or working with an unfamiliar designer, the legend is the fastest way to confirm what a symbol means before making assumptions in the field.\n\nM1 and M2 Series: Floor Plans\n\nThe early mechanical sheets are often devoted to floor plans. Two common series you will see are the M1 and M2 series, which typically represent different types of mechanical systems mapped onto the building layout.\n\nM1 Series: Air Distribution Plans\n\nThe M1 series commonly covers air distribution. These sheets focus on how air moves through the building, including the layout of ductwork, diffusers, returns, and related components that support HVAC air delivery.",
+          "sha256": "b8dd443d07ee564693d4f5c542ca8f7adfa570255c6da32ec2f03baac1c2a6ce",
+          "finding_id": "AIR-RESEARCH-01",
+          "claim": "The VDCI lesson describes legends as definitions of drawing symbols and conventions, and air-distribution plans as showing ductwork, diffusers and returns.",
+          "limit": "Supports including an explicit legend and system context in proposed examples. It does not define the full air-device class or prove that M1 sheet names identify eligible count views in every project."
+        },
+        {
+          "lines": [
+            1053,
+            1085
+          ],
+          "section": "Enlarged Plans; Sections and Isometrics; Schematics; Details",
+          "text": "M4 Series: Enlarged Plans\n\nThe M4 series is commonly used for enlarged plans. Enlarged plans zoom into a specific area from the main floor plans and give it a dedicated sheet, so the details are readable.\n\nThese are especially useful in spaces where mechanical information is dense such as:\n\nMechanical rooms\n\nTight corridor runs with multiple systems converging\n\nEquipment clusters with heavy tagging, notes, and connections\n\nIf an area contains too much information to display clearly at the normal plan scale, an enlarged plan provides the space needed to show it accurately.\n\nM5 Series: Sections and Isometrics\n\nThe M5 series often includes sections and isometrics, which help clarify how systems relate in three dimensions.\n\nSections\n\nA section can be thought of as slicing through the building and looking at it from the side. Sections help show vertical relationships, elevations, and clearances that can be difficult to interpret from a flat floor plan alone.\n\nIsometrics\n\nAn isometric is a three-dimensional diagram that helps you visualize how parts connect spatially. Isometrics are useful when you need a clearer sense of routing, offsets, and how a system runs through a space beyond what a floor plan can communicate.\n\nM6 Series: Schematics\n\nThe M6 series is typically used for schematics. Schematics show how systems connect logically, rather than where they sit physically in the building. These drawings help you understand system flow, relationships between components, and operational intent.\n\nM7 Series: Details\n\nThe M7 series is often reserved for details. Details are zoomed-in views of specific conditions that require precise instructions such as unique mounting conditions, specialty connections, or system transitions that cannot be fully explained with standard plan graphics.",
+          "sha256": "bb2a501b6dda74e7757688f251f54ac21223ca896b99118e71ea0366f3fbaab8",
+          "finding_id": "AIR-RESEARCH-02",
+          "claim": "The lesson describes enlarged plans as closer views of an area on a main floor plan, sections/isometrics as spatial views, schematics as logical relationships and details as instructions for particular conditions.",
+          "limit": "Supports preserving view purpose and explicit correspondence evidence in the example packet. A counting deduplication algorithm, physical-instance identity rule and automatic view-priority rule are absent."
+        },
+        {
+          "lines": [
+            1109,
+            1123
+          ],
+          "section": "M10 Series: Mechanical Schedules",
+          "text": "M10 Series: Mechanical Schedules\n\nThe M10 series is commonly dedicated to mechanical schedules. Schedules compile equipment and system information into tables that are easier to reference during procurement, coordination, and installation.\n\nMechanical schedules often include:\n\nEquipment lists and unit tags\n\nSpecifications for each unit\n\nPower requirements and other utilities information\n\nAccessory and fixture requirements tied to specific equipment\n\nIf the plans show you the layout and intent, schedules often tell you what needs to be ordered and what each unit requires to function properly.",
+          "sha256": "9430fd205864f2bc2312eee8404a64cf867291b185283ac548f06f277ed411d1",
+          "finding_id": "AIR-RESEARCH-03",
+          "claim": "The lesson describes schedules as tables of equipment/system information including tags, unit specifications, utilities and accessory requirements.",
+          "limit": "Supports representing a schedule as attribute evidence in examples. The source does not say a repeated type tag is a unique physical instance, give an air-device size schema, or resolve count/size discrepancies between plans and schedules."
+        }
+      ]
+    }
+  ],
+  "authoritative_policy": {
+    "decision_path": "tests/fixtures/air-device-takeoff/2026-09-15-owner-decision.json",
+    "decision_sha256": "92bef46866b28120c7346fe3745111f219aafc8be452c76b0a3c2ad554949c19",
+    "rules": "A01-A12",
+    "examples": "AC01-AC17"
+  },
+  "adoption": [
+    {
+      "findings": [
+        "AIR-RESEARCH-01",
+        "AIR-RESEARCH-02"
+      ],
+      "behavior": "Keep source roles and physical correspondence distinct; repeated tag or graphic alone never establishes identity.",
+      "tests": "AC01/02/03/11/15/16 source roles and duplication cases"
+    },
+    {
+      "findings": [
+        "AIR-RESEARCH-03"
+      ],
+      "behavior": "Treat schedule attributes/declarations separately from observed physical count.",
+      "tests": "AC06 count conflict and exact schedule binding"
+    },
+    {
+      "findings": [
+        "AIR-RESEARCH-04"
+      ],
+      "behavior": "Keep each assembly count separate from linear length/slots and other qualified size attributes.",
+      "tests": "AC07 units and no count conversion from length or slots"
+    }
+  ],
+  "unsupported": [
+    "Empty Price/Titus bodies remain unavailable; no manufacturer-specific claim adopted.",
+    "Sources do not establish our each counting, multiplicity, relocation, correspondence or zero rules. Owner-approved A01-A12 now provides that policy.",
+    "No production accuracy threshold is established.",
+    "Exact metric-to-imperial rational conversions are established software arithmetic, not rules attributed to these source passages."
+  ],
+  "quantity_authority": "Approved rules and deterministic source-bound calculation; research is contextual evidence only.",
+  "verification_state": "PASS: Codex and independent read-only airdevice_research verified both nonempty body hashes, six spans, four retained response hashes and approved example/packet identities. No new NotebookLM submission."
+}

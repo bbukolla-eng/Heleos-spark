@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "task_id": "WINDOWS-LAUNCHER-CLEANUP-1-RESEARCH",
+  "state": "research_complete_candidate_not_admitted",
+  "at": "2026-09-14T12:25:29.897392+00:00",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "head": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "branch": "main",
+  "brief_sha256": "9d31b6f66b70cbfd9e4a0ac565ae901e0bad79ab2abbaf6c0c15eb8d25b1bbb7",
+  "start_record_sha256": "47806b0f1ad7a8cc9734527f9cc06e6aac741d6a7d80e6f3900d329af275e74b",
+  "inventory_reuse": {
+    "notebooks": 59,
+    "inventory_sha256": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a",
+    "N01": "Reuse preceding checked51-source snapshot; no relevant equivalent title",
+    "N07_before_addition": {
+      "id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+      "title": "N07 — Software Engineering",
+      "source_count": 32,
+      "url": "https://notebooklm.google.com/notebook/f0404db5-8c1e-4591-9c9d-2727bd668cbe"
+    },
+    "N07_source_additions": 4,
+    "previous_packaging_gap_findings_sha256": "4e05662dbde15216d31bcc619d67b655c2f1c28c912841644e8e8b05a3b2978d"
+  },
+  "source_additions": {
+    "authorization": "Root research brief and owner public-source standing authorization",
+    "count": 4,
+    "kind": "official learn.microsoft.com URLs only",
+    "response_path": ".heleos/windows-launcher-cleanup-2026-09-14/research-call-02-response.json",
+    "response_sha256": "2daeb3401da2927f0abe0b10037b456c2e73ae1660aec4a46d193d7481bee2c9",
+    "private_uploads": 0,
+    "note_additions": 0
+  },
+  "query": {
+    "id": "1298fb4d035c",
+    "state": "completed",
+    "conversation_id": "e7f31d85-0aee-4701-a015-5a066240d02d",
+    "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+    "source_ids": [
+      "90ce5816-8572-484b-b146-186dbc9b53bb",
+      "8049ecfc-3365-4fec-9a8b-68cd6a192219",
+      "dc0e4d51-42a5-4636-8bc5-d1143c968b23",
+      "58e4c07a-db08-4c6a-826a-0927723cd31b"
+    ],
+    "bounded_queries": 1,
+    "retries": 0,
+    "status_polls": 2,
+    "result_path": ".heleos/windows-launcher-cleanup-2026-09-14/research-call-09-response.json",
+    "result_sha256": "68ed707e0d274d96f2fa5321908fae40e5f6871be2a0319f7b2071fa1874b5b1",
+    "answer_path": ".heleos/windows-launcher-cleanup-2026-09-14/research-query-answer.txt",
+    "answer_sha256": "150b7d67b69ee93da896a0eb15b4b2604473642d0080cabb0ed560ccdc4cc4d6",
+    "authority": "Generated answer is navigation only; actual indexed passages establish the candidate facts."
+  },
+  "sources": [
+    {
+      "source_id": "8049ecfc-3365-4fec-9a8b-68cd6a192219",
+      "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+      "title": "Job Objects - Win32 apps | Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/procthread/job-objects",
+      "source_scope": "Official Microsoft Win32 documentation, substantive indexed body",
+      "indexed_text_path": ".heleos/windows-launcher-cleanup-2026-09-14/research-job-objects-indexed-text.txt",
+      "indexed_text_sha256": "766d752843b16465adf9d8cd124e6ae341fa7c91257d66e0e07544176ee3bc0c",
+      "line_count": 1125,
+      "response_path": ".heleos/windows-launcher-cleanup-2026-09-14/research-call-03-response.json",
+      "response_sha256": "4c100847cf53cd24e7de7674ff217d043ac02fda1d4e7cc7c0ee3cb86b479e93",
+      "update_label_in_text": "Last updated on 07/14/2025",
+      "original_pdf_pages": null,
+      "edition": null,
+      "freshness": "Newly added official public URL, indexed body retrieved through NotebookLM; no independent publisher browser verification."
+    },
+    {
+      "source_id": "90ce5816-8572-484b-b146-186dbc9b53bb",
+      "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+      "title": "AssignProcessToJobObject function (jobapi2.h) - Win32 apps | Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/jobapi2/nf-jobapi2-assignprocesstojobobject",
+      "source_scope": "Official Microsoft Win32 documentation, substantive indexed body",
+      "indexed_text_path": ".heleos/windows-launcher-cleanup-2026-09-14/research-assign-indexed-text.txt",
+      "indexed_text_sha256": "dfd2d33e9edcab28972539150ea5f7bae6b051c56f744c2e2e67e18b1831dd91",
+      "line_count": 1047,
+      "response_path": ".heleos/windows-launcher-cleanup-2026-09-14/research-call-04-response.json",
+      "response_sha256": "4e51c31dd42bc7e650581d9d787a1a81d4343d88b4a3f21e1f6e84bcc2eb6fcd",
+      "update_label_in_text": "Last updated on 10/12/2021",
+      "original_pdf_pages": null,
+      "edition": null,
+      "freshness": "Newly added official public URL, indexed body retrieved through NotebookLM; no independent publisher browser verification."
+    },
+    {
+      "source_id": "dc0e4d51-42a5-4636-8bc5-d1143c968b23",
+      "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+      "title": "Process Creation Flags (WinBase.h) - Win32 apps | Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/procthread/process-creation-flags",
+      "source_scope": "Official Microsoft Win32 documentation, substantive indexed body",
+      "indexed_text_path": ".heleos/windows-launcher-cleanup-2026-09-14/research-creation-indexed-text.txt",
+      "indexed_text_sha256": "686ca95e6c74da5cac3d7b6c2b331a31e74fcb96da3de518825e70e2f36736af",
+      "line_count": 1141,
+      "response_path": ".heleos/windows-launcher-cleanup-2026-09-14/research-call-05-response.json",
+      "response_sha256": "571e8b499ea56519ab4727f4d08b931f5366148668b0a01fce37ba6eeb220e44",
+      "update_label_in_text": "Last updated on 07/14/2025",
+      "original_pdf_pages": null,
+      "edition": null,
+      "freshness": "Newly added official public URL, indexed body retrieved through NotebookLM; no independent publisher browser verification."
+    },
+    {
+      "source_id": "58e4c07a-db08-4c6a-826a-0927723cd31b",
+      "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+      "title": "Process Handles and Identifiers - Win32 apps | Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/procthread/process-handles-and-identifiers",
+      "source_scope": "Official Microsoft Win32 documentation, substantive indexed body",
+      "indexed_text_path": ".heleos/windows-launcher-cleanup-2026-09-14/research-handles-indexed-text.txt",
+      "indexed_text_sha256": "899ab28b3b1ff16f6c9de94e956274a8db5875537266d9d25313907c1a6ad538",
+      "line_count": 811,
+      "response_path": ".heleos/windows-launcher-cleanup-2026-09-14/research-call-06-response.json",
+      "response_sha256": "8ed9ce5d68b6f3241846a1d499391b36dddad5e2ef3a8caa9519ddc6b39c7623",
+      "update_label_in_text": "Last updated on 07/14/2025",
+      "original_pdf_pages": null,
+      "edition": null,
+      "freshness": "Newly added official public URL, indexed body retrieved through NotebookLM; no independent publisher browser verification."
+    }
+  ],
+  "verified_passages": {
+    "path": ".heleos/windows-launcher-cleanup-2026-09-14/research-verified-passages.json",
+    "sha256": "43bc645de5b4e2101922ee51e8fd5d6cbf1528d131c6f54d9dffc2c6d4e22ade",
+    "count": 17
+  },
+  "findings": [
+    {
+      "id": "WL-F01",
+      "status": "verified_applicable",
+      "claim": "A new job starts with no associated processes. AssignProcessToJobObject associates a process; default CreateProcess children created after association join the job.",
+      "passages": [
+        "WL-P01",
+        "WL-P02"
+      ],
+      "requirements": "Association must be established for job-based cleanup of a child; this source explicitly describes children created after association.",
+      "exceptions": "WMI Win32_Process.Create is excluded in this overview. Breakaway flags and parent nested-job settings can change association.",
+      "engineering_inference": "To promise cleanup of application-created descendants, establish and verify membership before permitting application work that could create them. The source does not choose how a launcher enforces that ordering."
+    },
+    {
+      "id": "WL-F02",
+      "status": "verified_applicable",
+      "claim": "With JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE set, closing the last job handle terminates associated processes; for a nested job it also covers associated child-job processes.",
+      "passages": [
+        "WL-P04"
+      ],
+      "requirements": "The documented condition is last job-object handle closure, not direct-child exit, one arbitrary CloseHandle, or launcher control-signal delivery.",
+      "engineering_inference": "Ownership and inheritance of every relevant job handle matter to cleanup correctness; preventing unintended additional handles must be proved by the implementation.",
+      "limits": "The selected overview establishes semantics, not numeric flag value, ctypes field layout, binding correctness or a completion-wait implementation."
+    },
+    {
+      "id": "WL-F03",
+      "status": "verified_applicable",
+      "claim": "TerminateJobObject is the documented operation for all currently associated job processes. CREATE_NEW_PROCESS_GROUP instead supports console CTRL+BREAK delivery.",
+      "passages": [
+        "WL-P03",
+        "WL-P14"
+      ],
+      "applicability": "Job-wide cleanup and console notification are distinct documented operations.",
+      "limits": "The creation-flags source supplies no guarantee that CTRL+BREAK recipients exit. These selected bodies do not establish detailed TerminateJobObject return, wait or exception semantics; root separately verified its exact API page."
+    },
+    {
+      "id": "WL-F04",
+      "status": "verified_applicable",
+      "claim": "Assignment requires JOB_OBJECT_ASSIGN_PROCESS on the job handle and PROCESS_SET_QUOTA plus PROCESS_TERMINATE on the process handle. Zero indicates failure, with GetLastError for details.",
+      "passages": [
+        "WL-P06",
+        "WL-P07",
+        "WL-P09",
+        "WL-P10",
+        "WL-P12"
+      ],
+      "exceptions": "Some limit failures terminate the supplied process, while other documented restrictions simply make assignment fail. A terminating job or parent also causes failure.",
+      "engineering_inference": "Do not release application startup after an assignment error or assume every assignment failure cleaned up the created process. Cleanup and failure preservation are explicit engineering obligations."
+    },
+    {
+      "id": "WL-F05",
+      "status": "verified_applicable",
+      "claim": "Existing job membership has nested-job/UI-limit/session constraints; multiple job association began in Windows8/Server2012.",
+      "passages": [
+        "WL-P01",
+        "WL-P05",
+        "WL-P08",
+        "WL-P11",
+        "WL-P13"
+      ],
+      "exceptions": "Older Windows single-job behavior, compatibility jobs, allowed breakaway and nested-parent limits can affect assignment/descendant containment. The old-version process-tree alternatives in the overview are not a general recommendation to allow breakaway.",
+      "engineering_inference": "A nested-job failure must remain visible; weakening breakaway limits to make a check pass changes the promised containment and cannot be inferred as authorized."
+    },
+    {
+      "id": "WL-F06",
+      "status": "verified_applicable",
+      "claim": "CREATE_SUSPENDED (0x00000004) creates the primary thread suspended; that thread does not run until ResumeThread is called.",
+      "passages": [
+        "WL-P15",
+        "WL-P10"
+      ],
+      "requirements": "The guaranteed scope is the primary thread. A separate AssignProcessToJobObject security-token exception requires suspended creation, but this is not a documented requirement that every possible job assignment use it.",
+      "limits": "No source proves equivalence with a Python stdin gate, Python startup side-effect freedom, private Popen thread-handle access or recovery of a thread handle already closed by Python."
+    },
+    {
+      "id": "WL-F07",
+      "status": "verified_applicable",
+      "claim": "CreateProcess returns process and primary-thread handles that remain valid until closed, even after termination; the documented process-identifier validity lasts from creation until termination.",
+      "passages": [
+        "WL-P16",
+        "WL-P17"
+      ],
+      "requirements": "Retained native handle lifetime and numeric PID lifetime are distinct. OpenProcess accepts a PID and explicit rights/inheritance.",
+      "engineering_inference": "Do not treat a saved numeric PID after termination as stable ownership evidence or reacquire it to represent the same created child. Retaining the original handle avoids relying on a stronger PID lifetime guarantee than this text provides.",
+      "limits": "The source does not specify the exact PID-reuse timing nor the Python representation/ownership/closing behavior of process handles."
+    },
+    {
+      "id": "WL-F08",
+      "status": "unsupported",
+      "claim": "Selected official Win32 bodies do not establish the Python startup architecture or every binding detail.",
+      "topics": [
+        "Cooperative stdin gate correctness and EOF/parent-death behavior",
+        "Safety of imports or startup before a gate under Python -I -B -S",
+        "CPython subprocess private handles and thread-handle closure",
+        "Exact JOBOBJECT_EXTENDED_LIMIT_INFORMATION ABI and numeric kill-on-close/info-class constants",
+        "Retroactive capture of descendants that existed before assignment",
+        "Native Windows behavior/parity on the actual packaged application"
+      ],
+      "resolution": "Root engineering contract, separate API/ABI verification and meaningful native/portable checks decide these. Absence of source proof is neither architecture selection nor evidence that an approach cannot work."
+    },
+    {
+      "id": "WL-F09",
+      "status": "conflict_not_adopted",
+      "claim": "Generated answer says suspended creation is necessary for a generic launcher and is the only native way to guarantee startup ordering.",
+      "passages": [
+        "WL-P10",
+        "WL-P15"
+      ],
+      "reason": "The selected texts define CREATE_SUSPENDED primary-thread behavior and one security-token requirement. They do not compare every startup mechanism or establish necessity/uniqueness for the root contract. The generated answer itself separately recognizes that cooperative Python gating is not evaluated.",
+      "resolution": "Do not adopt the necessity/uniqueness claim or infer rejection/acceptance of the proposed gate."
+    },
+    {
+      "id": "WL-F10",
+      "status": "conflict_not_adopted",
+      "claim": "Generated diagram asserts instant PID invalidation/recycling and links a retained process handle to QueryInformationJobObject accuracy.",
+      "passages": [
+        "WL-P16",
+        "WL-P17"
+      ],
+      "reason": "The selected handle text specifies handle validity until closed and PID validity until termination; it does not establish precise recycling timing. QueryInformationJobObject is a job-object API, so that example is not established by a retained process-handle passage.",
+      "resolution": "Use only the exact documented lifetime distinction, and keep numeric PID reuse timing and unrelated API guarantees out of implementation authority."
+    },
+    {
+      "id": "WL-F11",
+      "status": "conflict_not_adopted",
+      "claim": "Generated answer generalizes the old single-job process-tree paragraph into universal failure of every subsequent child job association when breakaway is prohibited.",
+      "passages": [
+        "WL-P05",
+        "WL-P08",
+        "WL-P11"
+      ],
+      "reason": "The overview alternatives are explicitly for cases where nested jobs cannot be used, while the assignment page separately documents modern nested-job association. Neither universal failure nor guaranteed nesting success follows.",
+      "resolution": "Preserve actual nested-job, UI/session and parent-limit constraints and fail visibly on concrete assignment errors."
+    },
+    {
+      "id": "WL-F12",
+      "status": "unsupported",
+      "claim": "Generated language about atomic or immediate subtree destruction and standard single-process termination exceeds these selected passage guarantees.",
+      "passages": [
+        "WL-P03",
+        "WL-P04"
+      ],
+      "reason": "These passages establish which associated processes are terminated, not the precise return/wait timing or the full TerminateProcess contract.",
+      "resolution": "Root supplemental exact API references and tests govern completion/cleanup confirmation; no atomic timing or single-process API guarantee is admitted from this answer."
+    }
+  ],
+  "egress": {
+    "path": ".heleos/windows-launcher-cleanup-2026-09-14/research-egress.jsonl",
+    "sha256": "84b90edf191ce40600218cd8db1835e83899257a50b65f3ba95c78d9da3d95c8",
+    "before_after_pairs": 9,
+    "operations": {
+      "source_add": 1,
+      "notebook_get": 1,
+      "notebook_query_status": 2,
+      "notebook_query_start": 1,
+      "source_get_content": 4
+    },
+    "public_only": true,
+    "current_access": "Direct connected NotebookLM calls succeeded with existing normal authentication; no credential/login reads."
+  },
+  "coordination": {
+    "root_separate_verification": "Root reports supplementary official SetInformationJobObject, QueryInformationJobObject, TerminateJobObject and JOBOBJECT_EXTENDED_LIMIT_INFORMATION bodies plus local Windows-worker/Python analysis; not duplicated or independently accepted by this research record.",
+    "product_authority": "Root owns the startup choice, ABI checks, tests, integration and status. This record adds no product code or approval."
+  },
+  "verification_limits": [
+    "No native Windows process launch, model/listener/browser call, or product source change by researcher.",
+    "Indexed source text is a documentation snapshot, not native application behavior or an accepted ctypes binding.",
+    "Root supplemental API documents remain separate evidence; unsupported scope here is limited to these four NotebookLM sources."
+  ],
+  "process_state": {
+    "query": "completed",
+    "query_id": "1298fb4d035c",
+    "researcher_processes_running": []
+  },
+  "next_action": "Root verifies these candidate passages, maps applicable facts and explicit Python/ABI gaps to the chosen guarded startup/cleanup contract, then implements and independently tests."
+}

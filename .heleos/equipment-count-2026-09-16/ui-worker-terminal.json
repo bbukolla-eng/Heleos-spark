@@ -1,0 +1,22 @@
+{
+  "worker": "/root/equipment_ui_scout",
+  "initial_terminal": "candidate_returned",
+  "checks": {
+    "node_test": {
+      "exit_code": 0,
+      "passed": 18
+    },
+    "node_check": {
+      "exit_code": 0
+    }
+  },
+  "paths": [
+    "apps/drawing-workspace/equipment_counts.js",
+    "tests/drawing-workspace/equipment_counts.test.js"
+  ],
+  "hashes_at_initial_return": [
+    "58e7dba8deb1fdd3903b3758a96b5729ec96d774eb7df1151f2e9c774bd7b2e2",
+    "ee707bd9c9aa56063b5490aa9f6b36a3a222188eb07b9faa970468aa74459079"
+  ],
+  "next_action": "Bounded stale-source replacement repair running; preserve unaffected source observations and retained history."
+}

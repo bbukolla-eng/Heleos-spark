@@ -1,0 +1,465 @@
+# PUBLIC research metadata only; no admission or production authority.
+# For undated sources, effective_date is explicitly an observation-date surrogate.
+# All locators were opened on original publisher sites; no source bytes retained.
+schema_version = 1
+status = "research_only"
+
+[[source]]
+id = "sqlite-wal"
+canonical_url = "https://www.sqlite.org/wal.html"
+publisher = "SQLite authors"
+title = "Write-Ahead Logging"
+edition_or_version = "Living documentation; footer updated 2026-08-25"
+effective_date = "2026-08-25"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Authors dedicate SQLite documentation to public domain; see copyright.html."
+data_class = "PUBLIC"
+locators = ["Sections 1, 2.2, 2.3, 4, 9, 11"]
+claims_supported = ["WAL supports concurrent readers and one writer on a single host; retained WAL belongs with its database.","NORMAL can lose committed transactions on power loss; FULL adds commit synchronization.","Section 11 identifies a WAL-reset corruption race fixed in 3.51.3, with 3.44.6 and 3.50.7 backports."]
+applicability = "Advisory SQLite WAL lifecycle; actual library version, VFS and hardware remain separate verification targets."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation metadata only in this task; no NotebookLM upload decision or submission."
+contradictions = ["Concurrency is not freedom from SQLITE_BUSY; section 9 qualifies the overview.","General WAL safety claims require the documented corruption fix and functioning storage."]
+gaps = ["No retained source bytes or source digest; live documentation may change.","No repository dependency-version audit or native crash test performed."]
+
+[[source]]
+id = "sqlite-foreign-keys"
+canonical_url = "https://www.sqlite.org/foreignkeys.html"
+publisher = "SQLite authors"
+title = "SQLite Foreign Key Support"
+edition_or_version = "Living documentation; footer updated 2026-03-20"
+effective_date = "2026-03-20"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Authors dedicate SQLite documentation to public domain; see copyright.html."
+data_class = "PUBLIC"
+locators = ["Section 2: Enabling Foreign Key Support"]
+claims_supported = ["Foreign-key enforcement requires suitable compile options and activation on each connection.","Changing enforcement inside a multi-statement transaction has no effect."]
+applicability = "Advisory connection initialization and integrity policy."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation metadata only in this task; no NotebookLM upload decision or submission."
+contradictions = ["Declared constraints alone do not demonstrate active enforcement."]
+gaps = ["No retained source bytes or source digest; live documentation may change.","Deployed compile options and connection initialization not tested."]
+
+[[source]]
+id = "sqlite-backup-overview"
+canonical_url = "https://www.sqlite.org/backup.html"
+publisher = "SQLite authors"
+title = "SQLite Backup API"
+edition_or_version = "Living documentation; footer updated 2025-11-13"
+effective_date = "2025-11-13"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Authors dedicate SQLite documentation to public domain; see copyright.html."
+data_class = "PUBLIC"
+locators = ["Introduction snapshot paragraph; section 3.1: File and Database Connection Locking"]
+claims_supported = ["Incremental online backup permits source writes between steps; other-connection writes can restart copying.","Frequent restarts can prevent completion."]
+applicability = "Advisory database backup behavior; external vault objects need independent coordination."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation metadata only in this task; no NotebookLM upload decision or submission."
+contradictions = ["Introduction describes a snapshot at copying commencement; section 3.1 qualifies timing through restarts and updates. Do not promise a fixed initial snapshot under concurrent writes."]
+gaps = ["No retained source bytes or source digest; live documentation may change.","No database-plus-vault consistency boundary specified by this source."]
+
+[[source]]
+id = "sqlite-backup-api"
+canonical_url = "https://www.sqlite.org/c3ref/backup_finish.html"
+publisher = "SQLite authors"
+title = "Online Backup API"
+edition_or_version = "Living C API reference observed 2026-09-09"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Authors dedicate SQLite documentation to public domain; see copyright.html."
+data_class = "PUBLIC"
+locators = ["sqlite3_backup_step(); sqlite3_backup_finish(); Concurrent Usage of Database Handles"]
+claims_supported = ["A successful complete step returns SQLITE_DONE; finish may return SQLITE_OK even when copying never completed.","Incomplete destination transactions roll back on finish; destination handles must not be used concurrently by other APIs."]
+applicability = "Advisory backup completion, error handling and handle ownership."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation metadata only in this task; no NotebookLM upload decision or submission."
+contradictions = ["Successful cleanup is not proof of successful backup completion.","Database backup does not automatically snapshot external vault files."]
+gaps = ["Publication effective date unavailable; effective_date records observation date only, not publisher enactment.","No retained source bytes or source digest; live documentation may change.","Need restore validation and an application-defined consistent vault inventory."]
+
+[[source]]
+id = "sqlite-pragmas"
+canonical_url = "https://www.sqlite.org/pragma.html"
+publisher = "SQLite authors"
+title = "Pragma statements supported by SQLite"
+edition_or_version = "Living documentation; footer updated 2026-06-04"
+effective_date = "2026-06-04"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Authors dedicate SQLite documentation to public domain; see copyright.html."
+data_class = "PUBLIC"
+locators = ["PRAGMA synchronous; PRAGMA fullfsync; PRAGMA integrity_check; PRAGMA foreign_key_check"]
+claims_supported = ["WAL NORMAL sacrifices power-loss durability; WAL FULL adds commit sync; rollback DELETE needs EXTRA for additional directory durability.","fullfsync defaults off and uses F_FULLFSYNC where supported.","integrity_check excludes foreign-key violations; foreign_key_check is separate."]
+applicability = "Advisory durability and validation settings; filesystem and VFS assumptions apply."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation metadata only in this task; no NotebookLM upload decision or submission."
+contradictions = ["FULL is not an unconditional durability guarantee across all journal modes.","A successful integrity_check does not establish referential or vault-byte integrity."]
+gaps = ["No retained source bytes or source digest; live documentation may change.","No runtime settings or storage-stack behavior verified."]
+
+[[source]]
+id = "sqlite-defensive-schema"
+canonical_url = "https://www.sqlite.org/c3ref/c_dbconfig_defensive.html"
+publisher = "SQLite authors"
+title = "Database Connection Configuration Options"
+edition_or_version = "Living C API reference observed 2026-09-09"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Authors dedicate SQLite documentation to public domain; see copyright.html."
+data_class = "PUBLIC"
+locators = ["SQLITE_DBCONFIG_DEFENSIVE; SQLITE_DBCONFIG_TRUSTED_SCHEMA"]
+claims_supported = ["Defensive mode disables SQL features that can deliberately corrupt database files.","Disabling trusted schema restricts schema-triggered functions and virtual tables unless marked innocuous."]
+applicability = "Advisory handling of untrusted schemas and connection configuration."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation metadata only in this task; no NotebookLM upload decision or submission."
+contradictions = ["Defensive mode is not a filesystem sandbox; trusted-schema settings do not make arbitrary source bytes trustworthy."]
+gaps = ["Publication effective date unavailable; effective_date records observation date only, not publisher enactment.","No retained source bytes or source digest; live documentation may change.","Application-defined function tags and connection settings unverified."]
+
+[[source]]
+id = "sqlite-locking"
+canonical_url = "https://www.sqlite.org/lockingv3.html"
+publisher = "SQLite authors"
+title = "File Locking And Concurrency In SQLite Version 3"
+edition_or_version = "Rollback-mode explanation; footer updated 2025-05-31"
+effective_date = "2025-05-31"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Authors dedicate SQLite documentation to public domain; see copyright.html."
+data_class = "PUBLIC"
+locators = ["Section 3.0: Locking; section 4.1: Dealing with hot journals"]
+claims_supported = ["Rollback mode uses SHARED, RESERVED, PENDING and EXCLUSIVE lock states.","Hot-journal recovery can require exclusive locks before reading."]
+applicability = "Advisory rollback-mode lifecycle only; does not describe WAL locking."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation metadata only in this task; no NotebookLM upload decision or submission."
+contradictions = ["Rollback reader/writer exclusions must not be transposed into WAL concurrency claims."]
+gaps = ["No retained source bytes or source digest; live documentation may change.","Underlying filesystem lock correctness not demonstrated."]
+
+[[source]]
+id = "sqlite-corruption"
+canonical_url = "https://www.sqlite.org/howtocorrupt.html"
+publisher = "SQLite authors"
+title = "How To Corrupt An SQLite Database File"
+edition_or_version = "Living documentation; footer updated 2026-04-13"
+effective_date = "2026-04-13"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Authors dedicate SQLite documentation to public domain; see copyright.html."
+data_class = "PUBLIC"
+locators = ["Sections 1.2-1.4; 2.1-2.5; 3"]
+claims_supported = ["Uncoordinated live file copies, missing journals, broken locks and failed synchronization can corrupt databases.","On Unix, direct non-SQLite opens and closes can disrupt process advisory locks; newer defenses are not a cure-all."]
+applicability = "Advisory backup, naming and corruption failure modes."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation metadata only in this task; no NotebookLM upload decision or submission."
+contradictions = ["A nominally read-only direct file inspection can disrupt another connection's locks.","Renaming an in-use database is not equivalent to publishing a new immutable vault object."]
+gaps = ["No retained source bytes or source digest; live documentation may change.","No safe live raw-copy protocol or repository behavior inferred."]
+
+[[source]]
+id = "sqlite-atomic-commit"
+canonical_url = "https://www.sqlite.org/atomiccommit.html"
+publisher = "SQLite authors"
+title = "Atomic Commit In SQLite"
+edition_or_version = "Rollback-mode explanation; footer updated 2026-04-21"
+effective_date = "2026-04-21"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Authors dedicate SQLite documentation to public domain; see copyright.html."
+data_class = "PUBLIC"
+locators = ["Section 2: Hardware Assumptions; sections 9.1 and 9.2"]
+claims_supported = ["Atomic commit depends on VFS locking, honest sync behavior and storage assumptions.","The described commit mechanism is for rollback journals, not WAL."]
+applicability = "Advisory statement of assumptions, not proof that a particular disk honors them."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation metadata only in this task; no NotebookLM upload decision or submission."
+contradictions = ["Section 9.2 discourages fullfsync for performance; Apple's fsync manual calls for F_FULLFSYNC when strict write ordering is required. Resolve through explicit durability requirements.","Older hardware language must not be treated as a current APFS/SSD guarantee."]
+gaps = ["No retained source bytes or source digest; live documentation may change.","Hardware flush behavior and deployed VFS remain unverified."]
+
+[[source]]
+id = "nist-sha256-fips180-4"
+canonical_url = "https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf"
+publisher = "NIST"
+title = "Secure Hash Standard (SHS), FIPS 180-4"
+edition_or_version = "August 2015 update; official record dated 2015-08-04"
+effective_date = "2015-08-04"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "NIST technical-publication terms apply; third-party rights require separate review."
+data_class = "PUBLIC"
+locators = ["Section 1, printed page 3; section 6.2, printed pages 21-23 (PDF pages 26-28)"]
+claims_supported = ["FIPS 180-4 specifies SHA-256 and its 256-bit message digest computation."]
+applicability = "Advisory digest algorithm for content identification; authenticity, retention and backup completeness are application obligations."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation metadata only in this task; no NotebookLM upload decision or submission."
+contradictions = ["A bare digest does not establish authorized provenance or provide encryption."]
+gaps = ["Official publication record announces planned revision in 2023; no successor validation is claimed.","No retained source bytes or source digest; live documentation may change."]
+
+[[source]]
+id = "age-format-v1.1.0"
+canonical_url = "https://c2sp.org/age@v1.1.0"
+publisher = "C2SP / age authors"
+title = "age file encryption format"
+edition_or_version = "C2SP age v1.1.0; age wire format v1"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Public specification; exact reuse license unresolved in this pass."
+data_class = "PUBLIC"
+locators = ["Encrypted file format / File key; Header MAC; Payload"]
+claims_supported = ["Each file requires a fresh random file key; authenticated payload chunks carry a final-chunk marker.","Streaming decryption must report an error if EOF arrives without a successfully decrypted final chunk."]
+applicability = "Advisory encryption format; implementations, recipient custody and publication protocol require separate verification."
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "No source-specific upload authorization established; excluded from NotebookLM upload."
+contradictions = ["Successful decryption of early chunks is not proof of complete-file authentication."]
+gaps = ["Publication effective date unavailable; effective_date records observation date only, not publisher enactment.","No retained source bytes or source digest; live documentation may change.","Licensing text could not be independently retrieved; no upload rights asserted."]
+
+[[source]]
+id = "age-implementation-usage"
+canonical_url = "https://github.com/FiloSottile/age"
+publisher = "Filippo Valsorda / age project"
+title = "age reference implementation README"
+edition_or_version = "Repository main README observed 2026-09-09; not a pinned release"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Repository displays BSD-3-Clause; no source-specific NotebookLM submission authorized."
+data_class = "PUBLIC"
+locators = ["README Usage; Multiple recipients; SSH keys; repository license indicator"]
+claims_supported = ["Each configured recipient can decrypt; the CLI overwrites an existing output path.","SSH recipient support embeds a public-key tag and raises long-term key-retention considerations."]
+applicability = "Advisory age CLI behavior; no tool installed or executed."
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation metadata only in this task; no NotebookLM upload decision or submission."
+contradictions = ["Encrypted output naming does not provide no-overwrite publication.","Multiple recipients provide alternative access, not threshold authorization."]
+gaps = ["Publication effective date unavailable; effective_date records observation date only, not publisher enactment.","No retained source bytes or source digest; live documentation may change.","README is mutable and no binary or release was admitted."]
+
+[[source]]
+id = "apple-fsync"
+canonical_url = "https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/fsync.2.html"
+publisher = "Apple"
+title = "Mac OS X Manual Page For fsync(2)"
+edition_or_version = "Archived manual observed 2026-09-09; historic manual footer is not a current OS guarantee"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Apple documentation archive; upload rights not established."
+data_class = "PUBLIC"
+locators = ["DESCRIPTION, paragraphs beginning Note that while fsync and For applications; ERRORS"]
+claims_supported = ["fsync can leave data in a drive cache; F_FULLFSYNC asks the drive to flush buffered data.","Errors include unsupported file types and I/O failures."]
+applicability = "Historical Apple platform guidance; current OS/filesystem behavior needs confirmation."
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "No source-specific upload authorization established; excluded from NotebookLM upload."
+contradictions = ["The opening permanent-storage description is qualified by the drive-cache warning.","An fsync return alone does not prove current-device power-loss persistence."]
+gaps = ["Publication effective date unavailable; effective_date records observation date only, not publisher enactment.","No retained source bytes or source digest; live documentation may change.","Archived guidance is not native APFS/SSD acceptance."]
+
+[[source]]
+id = "apple-rename"
+canonical_url = "https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/rename.2.html"
+publisher = "Apple"
+title = "Mac OS X Manual Page For rename(2)"
+edition_or_version = "Archived manual observed 2026-09-09"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Apple documentation archive; upload rights not established."
+data_class = "PUBLIC"
+locators = ["DESCRIPTION, same-filesystem and crash paragraphs; ERRORS"]
+claims_supported = ["The manual requires the same filesystem and states destination-name presence through a crash."]
+applicability = "Historical Apple name-replacement semantics; no inference of durable file content."
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "No source-specific upload authorization established; excluded from NotebookLM upload."
+contradictions = ["The crash-language claim is broader than POSIX Issue 8 cache guarantees; neither proves the entire new payload persisted."]
+gaps = ["Publication effective date unavailable; effective_date records observation date only, not publisher enactment.","No retained source bytes or source digest; live documentation may change.","Current Apple filesystem crash behavior remains untested."]
+
+[[source]]
+id = "apple-filesystem-acls"
+canonical_url = "https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemDetails/FileSystemDetails.html"
+publisher = "Apple"
+title = "File System Programming Guide: File System Details"
+edition_or_version = "Archived guide observed 2026-09-09"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Apple documentation archive; upload rights not established."
+data_class = "PUBLIC"
+locators = ["macOS File System Security / Security Schemes; POSIX ACLs / Evaluating Access Control Lists"]
+claims_supported = ["Apple describes interacting sandbox, ownership, ACL, BSD flag and mode controls.","Ordered ACL entries encode allow/deny decisions and permissions beyond mode bits."]
+applicability = "Advisory macOS access-control model for vault directories and files."
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "No source-specific upload authorization established; excluded from NotebookLM upload."
+contradictions = ["Mode bits alone do not represent the guide's complete authorization model."]
+gaps = ["Publication effective date unavailable; effective_date records observation date only, not publisher enactment.","No retained source bytes or source digest; live documentation may change.","Volume ownership configuration, ACL inheritance and effective access need native verification."]
+
+[[source]]
+id = "windows-flush-file-buffers"
+canonical_url = "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-flushfilebuffers"
+publisher = "Microsoft"
+title = "FlushFileBuffers function (fileapi.h)"
+edition_or_version = "Microsoft Learn page updated 2021-10-13"
+effective_date = "2021-10-13"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Microsoft documentation; source-specific upload rights not established."
+data_class = "PUBLIC"
+locators = ["Parameters / hFile; Return value; Remarks"]
+claims_supported = ["FlushFileBuffers transfers buffered file information to the device and requires GENERIC_WRITE.","Its return value must be checked; the page describes separate unbuffered/write-through options."]
+applicability = "Advisory Windows file flushing; ordinary file flush is not a whole-directory publication protocol."
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "No source-specific upload authorization established; excluded from NotebookLM upload."
+contradictions = ["This API contract does not prove that every device or filesystem honors durable ordering."]
+gaps = ["No retained source bytes or source digest; live documentation may change.","No native Windows/NTFS persistence evidence or directory-flush recipe established."]
+
+[[source]]
+id = "windows-move-file-ex"
+canonical_url = "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexw"
+publisher = "Microsoft"
+title = "MoveFileExW function (winbase.h)"
+edition_or_version = "Microsoft Learn page updated 2023-06-01"
+effective_date = "2023-06-01"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Microsoft documentation; source-specific upload rights not established."
+data_class = "PUBLIC"
+locators = ["dwFlags / MOVEFILE_COPY_ALLOWED and MOVEFILE_WRITE_THROUGH; Remarks"]
+claims_supported = ["Cross-volume moves can become copy/delete operations and can succeed with the source still present.","Cross-volume moves receive destination-default security; WRITE_THROUGH specifies flushing for copy/delete."]
+applicability = "Advisory Windows publication boundary and ACL treatment."
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "No source-specific upload authorization established; excluded from NotebookLM upload."
+contradictions = ["A successful move is not universally an atomic same-volume rename or proof that source ACLs survived."]
+gaps = ["No retained source bytes or source digest; live documentation may change.","Same-volume crash atomicity and hardware persistence require further evidence."]
+
+[[source]]
+id = "windows-replace-file"
+canonical_url = "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-replacefilew"
+publisher = "Microsoft"
+title = "ReplaceFileW function (winbase.h)"
+edition_or_version = "Microsoft Learn page updated 2023-06-01"
+effective_date = "2023-06-01"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Microsoft documentation; source-specific upload rights not established."
+data_class = "PUBLIC"
+locators = ["dwReplaceFlags; Return value / ERROR_UNABLE_TO_MOVE_REPLACEMENT; Remarks"]
+claims_supported = ["REPLACEFILE_WRITE_THROUGH is unsupported; ignore-ACL flags can permit success without preserving ACLs.","Certain failures change the surviving filenames; all files must reside on the same volume."]
+applicability = "Advisory Windows replacement and failure recovery; preserve exact error disposition."
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "No source-specific upload authorization established; excluded from NotebookLM upload."
+contradictions = ["One API call does not imply all-or-nothing rollback on every error.","Success with ignored ACL errors cannot establish a restricted replacement file."]
+gaps = ["No retained source bytes or source digest; live documentation may change.","No native failure-state or crash test performed."]
+
+[[source]]
+id = "windows-dacl-aces"
+canonical_url = "https://learn.microsoft.com/en-us/windows/win32/secauthz/dacls-and-aces"
+publisher = "Microsoft"
+title = "DACLs and ACEs"
+edition_or_version = "Microsoft Learn page updated 2025-07-08"
+effective_date = "2025-07-08"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Microsoft documentation; source-specific upload rights not established."
+data_class = "PUBLIC"
+locators = ["Opening DACL/null-versus-empty discussion; ACE-order discussion"]
+claims_supported = ["A missing DACL grants full access; an empty DACL grants none under the described discretionary checks.","ACE order affects access decisions."]
+applicability = "Advisory DACL construction and effective-access review."
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "No source-specific upload authorization established; excluded from NotebookLM upload."
+contradictions = ["Null and empty ACL representations are not interchangeable.","A serialized ACE inventory alone is not a native effective-access test."]
+gaps = ["No retained source bytes or source digest; live documentation may change.","Privilege, token, inheritance and object-type effects need separate verification."]
+
+[[source]]
+id = "windows-acl-inheritance"
+canonical_url = "https://learn.microsoft.com/en-us/windows/win32/secauthz/automatic-propagation-of-inheritable-aces"
+publisher = "Microsoft"
+title = "Automatic Propagation of Inheritable ACEs"
+edition_or_version = "Microsoft Learn page updated 2021-01-07"
+effective_date = "2021-01-07"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Microsoft documentation; source-specific upload rights not established."
+data_class = "PUBLIC"
+locators = ["Opening API discussion; inheritance propagation rules; SE_DACL_PROTECTED paragraph"]
+claims_supported = ["Security-setting APIs can propagate inheritable ACEs to existing NTFS descendants.","Explicit ACEs precede inherited entries; protection changes inheritance behavior."]
+applicability = "Advisory ACL lifecycle for vault roots and descendants."
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "No source-specific upload authorization established; excluded from NotebookLM upload."
+contradictions = ["Changing a parent ACL can affect existing children; a prior child ACL observation may become stale."]
+gaps = ["No retained source bytes or source digest; live documentation may change.","Actual handles, protected DACLs and effective child permissions remain untested."]
+
+[[source]]
+id = "posix-2024-rename"
+canonical_url = "https://pubs.opengroup.org/onlinepubs/9799919799/functions/rename.html"
+publisher = "IEEE / The Open Group"
+title = "POSIX.1-2024 rename, renameat"
+edition_or_version = "The Open Group Base Specifications Issue 8, IEEE Std 1003.1-2024; observed 2026-09-09"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Copyright IEEE and The Open Group, all rights reserved; upload rights not established."
+data_class = "PUBLIC"
+locators = ["DESCRIPTION (#tag_17_489_03), existing-new visibility paragraph; ERRORS / EXDEV; RATIONALE"]
+claims_supported = ["Replacing an existing destination preserves its visibility to other threads as either the old or new file.","The final symbolic-link component is operated on directly; cross-filesystem support is limited."]
+applicability = "Normative portable name-operation semantics subject to Issue 8 cache rules."
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "No source-specific upload authorization established; excluded from NotebookLM upload."
+contradictions = ["Atomic visibility is not a complete power-loss publication guarantee; see File System Cache section 4.11."]
+gaps = ["Publication effective date unavailable; effective_date records observation date only, not publisher enactment.","No retained source bytes or source digest; live documentation may change.","Retrieved directly from original site using curl after browser-fetch failures; no platform conformance claim."]
+
+[[source]]
+id = "posix-2024-fsync"
+canonical_url = "https://pubs.opengroup.org/onlinepubs/9799919799/functions/fsync.html"
+publisher = "IEEE / The Open Group"
+title = "POSIX.1-2024 fsync"
+edition_or_version = "The Open Group Base Specifications Issue 8, IEEE Std 1003.1-2024; observed 2026-09-09"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Copyright IEEE and The Open Group, all rights reserved; upload rights not established."
+data_class = "PUBLIC"
+locators = ["DESCRIPTION (#tag_17_192_03); APPLICATION USAGE; RATIONALE"]
+claims_supported = ["Transfer semantics are implementation-defined; synchronized-I/O support adds file-integrity completion requirements.","Informative application guidance describes syncing a modified directory's entries and attributes."]
+applicability = "Normative API with separately identified informative guidance; check implementation conformance."
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "No source-specific upload authorization established; excluded from NotebookLM upload."
+contradictions = ["Without synchronized-I/O support the rationale permits a null implementation; a portable name alone cannot prove power-loss safety."]
+gaps = ["Publication effective date unavailable; effective_date records observation date only, not publisher enactment.","No retained source bytes or source digest; live documentation may change.","Retrieved directly using curl; no host support or directory-sync error behavior tested."]
+
+[[source]]
+id = "posix-2024-filesystem-cache"
+canonical_url = "https://pubs.opengroup.org/onlinepubs/9799919799/basedefs/V1_chap04.html"
+publisher = "IEEE / The Open Group"
+title = "POSIX.1-2024 General Concepts: Directory Operations and File System Cache"
+edition_or_version = "The Open Group Base Specifications Issue 8, IEEE Std 1003.1-2024; observed 2026-09-09"
+effective_date = "2026-09-09"
+retrieved_at = "2026-09-09T14:51:31Z"
+cache_status = "not_cached"
+license_or_rights = "Copyright IEEE and The Open Group, all rights reserved; upload rights not established."
+data_class = "PUBLIC"
+locators = ["4.4 Directory Operations (#tag_04_04); 4.11 File System Cache (#tag_04_11), including explanatory notes"]
+claims_supported = ["Directory operations are atomic and serializable, but file requirements normally apply to the cache.","Section 4.11 notes that a crash can expose partial, reordered persistence of multi-entry operations, including rename."]
+applicability = "Normative cache boundary with informative crash examples; advisory publication ordering research."
+supersession_state = "unknown"
+notebooklm_permission = "denied"
+notebooklm_rights_basis = "No source-specific upload authorization established; excluded from NotebookLM upload."
+contradictions = ["Directory atomicity does not imply atomic persistence of every name and data block across power loss."]
+gaps = ["Publication effective date unavailable; effective_date records observation date only, not publisher enactment.","No retained source bytes or source digest; live documentation may change.","Retrieved directly using curl; no concrete filesystem implementation certified."]

@@ -1,0 +1,129 @@
+{
+  "task_id": "CHECKPOINT-EVIDENCE-1",
+  "reviewer": "Codex independent agent /root/evidence_guard_review",
+  "base_commit": "f9d7ceda027875b0dbef24710bfca96c6c95a104",
+  "reviewed_at": "2026-09-23T01:55:30.095953+00:00",
+  "outcome": "accepted",
+  "scope": "Bounded checkpoint evidence enforcement and stale publication-status correction; no mechanical section or whole product acceptance.",
+  "candidate_files": [
+    {
+      "path": "scripts/verify-build-checkpoint.py",
+      "sha256": "a53f8c31c322843a1f29053ad66496086e9aa4a38acd18f79b50faf9ad89dab1"
+    },
+    {
+      "path": "tests/test_checkpoint_evidence.py",
+      "sha256": "0f9ecfe5942d0378da9c082df58ecd70b469c30908b1f66bbb36ca25628cf8f0"
+    },
+    {
+      "path": "tests/test_checkpoint_evidence_integration.py",
+      "sha256": "eebfddf0bbd1bd40f2da30db205f08c57655216b8624a059c5d22daca983c889"
+    },
+    {
+      "path": "docs/operations/checkpoint-evidence-policy.json",
+      "sha256": "d20237cae3f8f4a53c560a381e2302470dc70a576b1f08a2e098d180d11eb35a"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "cd83b6970933d5a16275ffd07ac1a2585ff01fbaa30f099155cda3f408deca24"
+    },
+    {
+      "path": "CURRENT_STATUS.md",
+      "sha256": "536938096a095073004492db99719c256112478aca0b0a89db64f7413c82116e"
+    },
+    {
+      "path": "docs/operations/build-checkpoints.md",
+      "sha256": "101c93307cb050731dbf374cb3ccfc8c41e33d63be5758e709436c784647dec5"
+    },
+    {
+      "path": "docs/operations/notebooklm-research.md",
+      "sha256": "d630f29cd5309b834633c3a9a72ca678a7321d0cd30a6c0784151a6cdc9221cd"
+    },
+    {
+      "path": "docs/operations/evidence-enforcement-2026-09-22/contract.md",
+      "sha256": "4756d285ffe2d8c251e46471280688cb552517f7388eb73abeeb13a492c2e97b"
+    },
+    {
+      "path": "docs/operations/evidence-enforcement-2026-09-22/research.json",
+      "sha256": "a1c2acbf6e8194723f25d9185ae2891a7acda738f2b057368e67645f5ff8dd03"
+    },
+    {
+      "path": "docs/operations/evidence-enforcement-2026-09-22/notebooklm-source-1.json",
+      "sha256": "65ab56d7cc48f8519f650934325e5421d3558e68356b5472f346a6d3a54bd30d"
+    },
+    {
+      "path": "docs/operations/evidence-enforcement-2026-09-22/notebooklm-source-2.json",
+      "sha256": "66404e43485b4eda560dc73db7f863532e88a0252e21ad81d1f28731cb7dfd8e"
+    },
+    {
+      "path": "docs/operations/evidence-enforcement-2026-09-22/worker-submissions.json",
+      "sha256": "acefd6e8855cde623f617675c102d89ff1213270de9723984a10e7898b27d2ed"
+    },
+    {
+      "path": "docs/operations/evidence-enforcement-2026-09-22/checks.json",
+      "sha256": "e0a3b13cbe01ce20c5d9328c68aba612ba2d72089c58a7c4864dccf4e6b80995"
+    }
+  ],
+  "independent_execution": [
+    {
+      "command": "python3 -m unittest discover -s tests -p test_checkpoint_evidence.py -q",
+      "exit_code": 0,
+      "result": "56 tests passed against initial integrated partial candidate; subsequent changed surfaces checked separately."
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p test_checkpoint_evidence_integration.py -q",
+      "exit_code": 0,
+      "result": "8 final integration tests passed, including actual hook/CI and committed/staged merge policy/history cases."
+    },
+    {
+      "command": "Python unittest import of tests/test_checkpoint_evidence.py; ResearchEvidenceTests.test_administrative_disposition_rejects_executable_document",
+      "exit_code": 0,
+      "result": "1 final focused regression passed."
+    },
+    {
+      "command": "Python comparison of normalized source JSON objects against original notebooklm-verification.json findings; SHA and exact passage checks",
+      "exit_code": 0,
+      "result": "Both entire original finding objects preserved; both source hashes and packet passage presence matched."
+    }
+  ],
+  "coordinator_results_inspected": "checks.json records 65 evidence/integration, 39 existing checkpoint/hook and 22 CI tests passing; repository checks 1054 tracked files with zero failures; published history five checkpoint commits valid and 174 historical commits excluded. These are coordinator runs, not represented as reviewer execution.",
+  "resolved_findings": [
+    {
+      "id": "EG01",
+      "issue": "Administrative exemption admitted executable .md files.",
+      "resolution": "Now requires non-executable regular files; independent focused regression passed."
+    },
+    {
+      "id": "EG02",
+      "issue": "First-parent-only history omitted second-parent completed tasks and policy inheritance.",
+      "resolution": "Union of committed and pending merge parents inspected; integration tests pass."
+    },
+    {
+      "id": "EG03",
+      "issue": "Early no-protected-delta return allowed a merge to discard adopted second-parent policy.",
+      "resolution": "Policy checked before early return; no-delta merge resume checked separately; committed and staged regression cases pass."
+    },
+    {
+      "id": "EG04",
+      "issue": "Initial normalized subprocess excerpt did not include all passages supporting binary handling.",
+      "resolution": "Normalized source JSON now preserves complete original verification finding and every exact_text passage; independently compared."
+    }
+  ],
+  "notebooklm_research_review": {
+    "disposition": "reused_verified",
+    "result": "accepted_for_bounded_guard",
+    "findings": [
+      "CHECKPOINT-SOURCE-1",
+      "CHECKPOINT-SOURCE-2"
+    ],
+    "verification": "Read retained NotebookLM query and independent source verification, compared notebook/source identities and supporting passages; source findings support argv subprocess handling and byte hashing. Owner contract, not NotebookLM inference, defines receipt and resumption policy. No fresh query claimed."
+  },
+  "open_findings": [],
+  "limitations": [
+    "Query and verification records are opaque byte-pinned proofs; their authenticity, identity cross-links, claim relevance and truthful independent review are not mechanically established. This is explicitly documented.",
+    "Ordinary clean automatic merges continue to reuse validated parents in existing CI adapter. Direct committed/staged validation checks all parents; no concrete bypass found with independently valid policy-era parents.",
+    "Guard cannot prevent explicit Git hook bypass or prove remote protection configuration, and never queries NotebookLM or schedules work.",
+    "Receipt, completion report and final staged manifest are intentionally outside these candidate hashes to avoid review self-reference; controller must verify staged exact bytes and matching hashes before completion.",
+    "Unrelated .cursor/ and .jolli/ preserved; no commits, pushes, settings changes or external queries performed by reviewer."
+  ],
+  "next_action": "Controller binds this review to the receipt, checks reviewed hashes against staged bytes, runs staged checkpoint validation, then resumes CSI-23-21-23-DEFINE."
+}

@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "task_id": "DUCT-CORRECTION-1",
+  "recorded_at": "2026-09-14T05:49:04.160552+00:00",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "base_commit": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "research_snapshot": {
+    "path": "docs/research/notebooklm/duct-correction-findings-2026-09-14.json",
+    "sha256": "b1b8520ae1a2b0a561b91f6547ea397debb9f1796fe5f7541a53883ddeafd28c"
+  },
+  "chronology": "Research and supporting source text were verified before dependent implementation. This separate adoption record preserves the original pre-implementation findings snapshot and its hashes.",
+  "notebook_sources": [
+    {
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "6a218a8d-a97f-41b4-9415-eb30f52adb24",
+      "content_sha256": "4afe5ed0bf40b5b7c25c8119b1a1c9a929b0a1d4a94b401a4007fca9b7359f97",
+      "support_locations_in": "docs/research/notebooklm/duct-correction-findings-2026-09-14.json"
+    },
+    {
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "4a7e4472-4c73-49fa-9e01-e33e1b9e20f5",
+      "content_sha256": "939ce39f0fba5ad26e084303b4d9918236ed516a080b77ee8f5eb917633db26e",
+      "support_locations_in": "docs/research/notebooklm/duct-correction-findings-2026-09-14.json"
+    },
+    {
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "8bc4bd22-4519-4724-b727-861b4e84467e",
+      "content_sha256": "8131cecb3842c99558dc828bc60c447ad073b3e8c9cb215e4f5f8420c13c7861",
+      "support_locations_in": "docs/research/notebooklm/duct-correction-findings-2026-09-14.json"
+    }
+  ],
+  "approved_rule_authority": {
+    "path": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+    "sha256": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6"
+  },
+  "findings": [
+    {
+      "finding_id": "DUCT-CORR-RESEARCH-01",
+      "decision": "adopted_interaction_example",
+      "behavior": "Explicit open-path point entry, retained intermediate vertices, undo and finish/cancel. Approved D03 supplies mechanical measurement authority.",
+      "code": [
+        "apps/drawing-workspace/path_editor.js",
+        "apps/drawing-workspace/app.js",
+        "apps/drawing-workspace/ducts.js"
+      ],
+      "verification": [
+        {
+          "path": "tests/drawing-workspace/path-editor.test.cjs",
+          "test": "polyline append, insert, deletion and undo retain intermediate bends without mutating the saved path"
+        },
+        {
+          "path": "tests/drawing-workspace/path-editor.test.cjs",
+          "test": "actual app edits vertices with pinned replies, rejects stale commands, and finishes through keyboard"
+        },
+        {
+          "path": "tests/drawing-workspace/duct-ui.test.cjs",
+          "test": "polyline correction accepts only a finished matching source/request and preserves all intermediate vertices"
+        }
+      ]
+    },
+    {
+      "finding_id": "DUCT-CORR-RESEARCH-02",
+      "decision": "contextual_feedback_example_only",
+      "behavior": "Supported edits produce replacement calculations while original records remain. A curved-area UI example does not authorize duct curves/flex; unsupported geometry remains unresolved.",
+      "code": [
+        "scripts/project_duct_takeoff.py",
+        "apps/drawing-workspace/ducts.js"
+      ],
+      "verification": [
+        {
+          "path": "tests/drawing-workspace/test_duct_corrections.py",
+          "test": "test_corrections_use_all_geometry_kinds_and_preserve_datum_conflict"
+        },
+        {
+          "path": "tests/drawing-workspace/duct-ui.test.cjs",
+          "test": "supported slope repair creates explicit projection and same-datum elevations from an unsupported observation"
+        }
+      ]
+    },
+    {
+      "finding_id": "DUCT-CORR-RESEARCH-03",
+      "decision": "adopted_coverage_and_review_guidance",
+      "behavior": "Missed portions may be added after automatic observations with immutable original-page evidence. An unresolved observation has no length; additions and corrections do not establish complete coverage.",
+      "code": [
+        "scripts/project_duct_takeoff.py",
+        "scripts/takeoff_workflow.py",
+        "apps/drawing-workspace/ducts.js"
+      ],
+      "verification": [
+        {
+          "path": "tests/drawing-workspace/test_duct_corrections.py",
+          "test": "test_missed_portion_on_unproduced_page_is_unresolved_then_uses_printed_rise"
+        },
+        {
+          "path": "tests/drawing-workspace/test_duct_corrections.py",
+          "test": "test_capture_retains_original_png_and_does_not_touch_quantities"
+        },
+        {
+          "path": "tests/drawing-workspace/duct-ui.test.cjs",
+          "test": "source capture preserves typed correction fields and attaches only its acknowledged immutable evidence"
+        }
+      ],
+      "native_checks": [
+        "unused_capture_preserves_quantities_and_source_boundary_split_keeps_parent_history",
+        "missed_unknown_rise_stays_unresolved_until_supported_five_foot_correction"
+      ]
+    },
+    {
+      "finding_id": "DUCT-CORR-RESEARCH-04",
+      "decision": "unsupported_topics_not_adopted_as_rules",
+      "behavior": "Approved D03-D06 govern exact partitioning, preserved whole-run dimensions, supported vertical readings and same-datum slope inputs. No rule/tolerance inferred from the selected public software documentation.",
+      "code": [
+        "scripts/duct_calculation.py",
+        "scripts/project_duct_takeoff.py"
+      ],
+      "verification": [
+        {
+          "path": "tests/drawing-workspace/test_duct_corrections.py",
+          "test": "test_whole_dimension_survives_nested_split_and_route_correction"
+        },
+        {
+          "path": "tests/drawing-workspace/test_duct_corrections.py",
+          "test": "test_foreign_dimension_cannot_gain_applicability_from_same_page_graphic"
+        }
+      ],
+      "native_checks": [
+        "previously_unproduced_NTS_page_capture_and_same_datum_three_four_five_slope_repair"
+      ]
+    },
+    {
+      "finding_id": "DUCT-CORR-RESEARCH-05",
+      "decision": "electrical_tag_rule_not_transferred",
+      "behavior": "Split lineage is distinct from physical correspondence. Matching tags do not admit a duct duplicate or remove conflicting depictions; approved D08 remains authoritative.",
+      "code": [
+        "scripts/duct_calculation.py",
+        "scripts/project_duct_takeoff.py"
+      ],
+      "verification": [
+        {
+          "path": "tests/drawing-workspace/test_duct_calculation.py",
+          "test": "test_uncertain_duplicate_never_silently_selects_or_double_counts"
+        },
+        {
+          "path": "tests/drawing-workspace/test_duct_calculation.py",
+          "test": "test_correspondence_does_not_erase_secondary_dimension_conflict"
+        }
+      ],
+      "independent_review": ".heleos/duct-correction-build-2026-09-14/correction-review-final.json"
+    },
+    {
+      "finding_id": "DUCT-CORR-RESEARCH-06",
+      "decision": "generated_overstatements_rejected",
+      "behavior": "Retain the documented scope/coverage limits only; no assertion about absence of implementation in other products is used. No product change or mirrored test is warranted for the rejected claim.",
+      "verification": [
+        {
+          "path": ".heleos/duct-correction-build-2026-09-14/notebook-independent-review.json",
+          "scope": "Independent source text, identity and generated-claim review"
+        }
+      ]
+    }
+  ],
+  "code": [
+    {
+      "path": "scripts/duct_calculation.py",
+      "sha256": "af5f59c49b7bffd104cd41ddcd72465ebaf2b8d7c985cf73e21d991b0a2d1c72"
+    },
+    {
+      "path": "scripts/project_duct_takeoff.py",
+      "sha256": "fa7d456f03ac5f7239a608195850e84f0989d7ce8a391e3643b6e75ad837b1fd"
+    },
+    {
+      "path": "scripts/takeoff_workflow.py",
+      "sha256": "71d7c3f24c43cf80c37fc99c9134b4e3c9cd0c006cbd8f1a598f66278aeadff0"
+    },
+    {
+      "path": "apps/drawing-workspace/path_editor.js",
+      "sha256": "71846200247429934305046a9500a0a08218ba5d06365b05f171e39efb126957"
+    },
+    {
+      "path": "apps/drawing-workspace/app.js",
+      "sha256": "7a2a8527315bd8f189fdec63d001fe8fc6bff88830a45e317757d8649b077442"
+    },
+    {
+      "path": "apps/drawing-workspace/ducts.js",
+      "sha256": "7e50c77a2eacf4920f9014ea1ffa3dcdff56b5102b22b627c5df8b7726ed1dfd"
+    },
+    {
+      "path": "apps/drawing-workspace/workflow.js",
+      "sha256": "2320d842fce9f7834d217fa4202282171bef5fa59e8b43357abb39bfe93870ad"
+    }
+  ],
+  "checks": [
+    {
+      "path": ".heleos/duct-correction-build-2026-09-14/root-combined-python314.json",
+      "sha256": "6eb7fe300d773b979dff32d7862509e9c3494aac58fe0187e60d5e3ea399da93"
+    },
+    {
+      "path": ".heleos/duct-correction-build-2026-09-14/root-combined-python39.json",
+      "sha256": "1221a1de2d506460e1677abeece865826ed080b32dd0c881bc02fad0c0ac42a7"
+    },
+    {
+      "path": ".heleos/duct-correction-build-2026-09-14/root-ui-final-tests.json",
+      "sha256": "237c992411367a2b558bfe92f51e974f7923dcb928d91fb15f30fdd4299d07c5"
+    },
+    {
+      "path": ".heleos/duct-correction-build-2026-09-14/root-native-attempt-1.json",
+      "sha256": "a0f73dfee253f511121bbab8fcaec3739eae7ac29c1e1d6931b784abdc5a3bba"
+    },
+    {
+      "path": ".heleos/duct-correction-build-2026-09-14/root-native-ui-check.json",
+      "sha256": "496af69d44feb9a69183e999af3317cd0063305fbf8ebeb2a8d291223804fbaf"
+    }
+  ],
+  "native_receipt": {
+    "path": ".heleos/duct-correction-verification-2026-09-14-attempt-1/duct-correction-verification.json",
+    "sha256": "03b85640304325cda506e1203ed1c262d786deb7d214d0cd70ef49a6fb87dbbc"
+  },
+  "local_check_counts": {
+    "python314": 159,
+    "python39": 159,
+    "node": 35
+  },
+  "limits": [
+    "Source research does not establish current publisher freshness or licenses.",
+    "Fake initial detector demonstrates correction behavior, not model accuracy.",
+    "Native Mac synthetic-source integration passed; live browser and native Windows acceptance remain unverified.",
+    "Cross-page supplemental reading applicability, curves/flex, representative-project truth/thresholds and full Division23 acceptance remain outstanding."
+  ],
+  "no_new_mechanical_rules": true,
+  "private_uploads": [],
+  "new_external_calls_for_adoption_record": 0
+}

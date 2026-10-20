@@ -1,0 +1,23 @@
+{
+  "section_id": "CSI-23-31-13",
+  "approved_packet": {
+    "path": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+    "sha256": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6",
+    "decision_path": "tests/fixtures/duct-takeoff/2026-09-14-owner-decision.json",
+    "decision_sha256": "097ab2c8920143644d5353f9164f7a76befb0c2ba1a530b2660f2d563b3c74b2"
+  },
+  "admitted_rules": [
+    {"rule_id": "D01", "behavior": "continuous drawn centerline, fittings counted separately", "scope": "TAX-CENTERLINE-LENGTH"},
+    {"rule_id": "D02", "behavior": "separate new, existing, and demolition groups", "scope": "TAX-CENTERLINE-LENGTH"},
+    {"rule_id": "D03", "behavior": "supported straight, vertical, and sloped segments; unresolved curves stay unresolved", "scope": "TAX-CENTERLINE-LENGTH"},
+    {"rule_id": "D04", "behavior": "hypotenuse for one straight sloped portion", "scope": "TAX-CENTERLINE-LENGTH"},
+    {"rule_id": "D05", "behavior": "flag material conflicts between dimensions and scaled geometry", "scope": "TAX-CENTERLINE-LENGTH"},
+    {"rule_id": "D06", "behavior": "split length at supported size changes; retain shape and dimensions", "scope": "TAX-CENTERLINE-LENGTH"},
+    {"rule_id": "D07", "behavior": "sum stored measurements before half-even display", "scope": "TAX-CENTERLINE-LENGTH"},
+    {"rule_id": "D08", "behavior": "count each physical segment once", "scope": "TAX-CENTERLINE-LENGTH"},
+    {"rule_id": "D09", "behavior": "exclude confirmed non-duct lines", "scope": "TAX-CENTERLINE-LENGTH"},
+    {"rule_id": "D10", "behavior": "keep measured, derived, allowance, and estimate totals separate", "scope": "TAX-CENTERLINE-LENGTH"}
+  ],
+  "conflicts": [],
+  "missing_decisions": ["CSI-23-31-13-INPUT-CHILD-BODIES"]
+}

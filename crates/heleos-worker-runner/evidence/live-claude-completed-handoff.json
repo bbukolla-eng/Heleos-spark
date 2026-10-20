@@ -1,0 +1,18 @@
+{
+  "schema": "heleos.worker-handoff/v1",
+  "task_digest": "7e8d98e428ea1ddf4d0152a142ebb3651d805092f9227b50c1492138ffd21e5d",
+  "provider": "claude_code",
+  "terminal_state": "completed",
+  "changed_paths": [
+    "tests/fixtures/runner/live/claude-headless.txt"
+  ],
+  "checks": [
+    {
+      "command": "test \"$(shasum -a 256 tests/fixtures/runner/live/claude-headless.txt)\" = \"d88b56eb7d68ea2ebc4b2b191c965470a5272268caa10ce471b5893692fbaf35  tests/fixtures/runner/live/claude-headless.txt\"",
+      "exit_code": 0,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "candidate_commit": null,
+  "unresolved_items": []
+}

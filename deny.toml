@@ -1,0 +1,110 @@
+# cargo-deny 0.20.2. No target, package, development, or private-crate pruning.
+[graph]
+all-features = true
+exclude = []
+exclude-dev = false
+exclude-unpublished = false
+
+[advisories]
+db-urls = ["https://github.com/RustSec/advisory-db"]
+yanked = "deny"
+unmaintained = "all"
+unsound = "all"
+disable-yank-checking = false
+maximum-db-staleness = "P7D"
+ignore = []
+
+[licenses]
+confidence-threshold = 0.95
+include-dev = true
+include-build = true
+allow = [
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "BSD-3-Clause",
+    "MIT",
+    "Unicode-3.0",
+    "Zlib",
+]
+exceptions = []
+
+[licenses.private]
+# cargo-deny 0.20.2 scopes this by publishability, not workspace membership.
+# The Task 10 audit workspace's only publish=false packages are the seven local
+# Heleos members. Four are already private in source; the audit-copy controller
+# inserts the same metadata for the three byte-frozen PDF source manifests only
+# after verifying every source and lock byte. No registry/Git package is changed
+# or exempted, and the disposable adaptation has no product-source authority.
+ignore = true
+registries = []
+ignore-sources = []
+
+[bans]
+multiple-versions = "deny"
+multiple-versions-include-dev = true
+wildcards = "deny"
+# Local path edges are pinned by the scripts' raw source/manifest/lock freeze.
+# This does not allow wildcard registry or Git dependencies.
+allow-wildcard-paths = true
+highlight = "all"
+# Frozen pre-existing Foundation 0.1 graph debt, owned by Heleos engineering.
+# Expiry: converge these upstream dependency families before Foundation 0.2.
+# Keep one version per group unskipped, so another unlisted version fails.
+# Exact skips plus Task 10's source/manifest/lock freeze prohibit new versions
+# or groups without a policy amendment. No subtree or crate-name wildcard skips.
+# The older versions below are retained by the named pinned upstream edges;
+# they remain subject to license, source, and advisory checks.
+skip = [
+    { name = "aes", version = "=0.8.4", reason = "aes-gcm 0.10.3 / hpke 0.12.0 / age 0.12.1 versus lopdf 0.44.0" },
+    { name = "bitflags", version = "=1.3.2", reason = "windows-permissions 0.2.4 versus the bitflags 2 platform/runtime graph" },
+    { name = "block-buffer", version = "=0.10.4", reason = "digest 0.10.7 versus digest 0.11.3" },
+    { name = "chacha20", version = "=0.9.1", reason = "chacha20poly1305 0.10.1 versus rand 0.10.1" },
+    { name = "cipher", version = "=0.4.4", reason = "age 0.12.1 encryption family versus lopdf 0.44.0 cipher 0.5 family" },
+    { name = "const-oid", version = "=0.9.6", reason = "der 0.7.10 versus digest 0.11.3" },
+    { name = "cpufeatures", version = "=0.2.17", reason = "age 0.12.1 / hpke 0.12.0 crypto family versus current dalek/sha2/aes family" },
+    { name = "crypto-common", version = "=0.1.7", reason = "aead 0.5.2 / cipher 0.4.4 / digest 0.10.7 versus current cipher/digest family" },
+    { name = "curve25519-dalek", version = "=4.1.3", reason = "x25519-dalek 2.0.1 versus ed25519-dalek 3.0.0" },
+    { name = "digest", version = "=0.10.7", reason = "age 0.12.1 / hpke 0.12.0 hashing family versus sha2 0.11.0" },
+    { name = "fiat-crypto", version = "=0.2.9", reason = "curve25519-dalek 4.1.3 versus curve25519-dalek 5.0.0" },
+    { name = "getrandom", version = "=0.2.17", reason = "rand_core 0.6.4 versus the getrandom 0.4 runtime graph" },
+    { name = "getrandom", version = "=0.3.4", reason = "proptest 1.11.0 / rand_core 0.9.5 versus the getrandom 0.4 runtime graph" },
+    { name = "hashbrown", version = "=0.16.1", reason = "gimli 0.33.0 / rsqlite-vfs 0.1.1 versus current Cranelift/indexmap graph" },
+    { name = "hybrid-array", version = "=0.2.3", reason = "ml-kem 0.2.3 versus current block-buffer/crypto-common/inout family" },
+    { name = "inout", version = "=0.1.4", reason = "cipher 0.4.4 versus cipher 0.5.2" },
+    { name = "io-lifetimes", version = "=2.0.4", reason = "fs-set-times 0.20.3 versus cap-primitives/cap-std/cap-fs-ext 4.0.3" },
+    { name = "r-efi", version = "=5.3.0", reason = "proptest 1.11.0 / getrandom 0.3.4 versus getrandom 0.4.3" },
+    { name = "rand", version = "=0.8.8", reason = "age 0.12.1 / age-core 0.12.0 versus lopdf 0.44.0 / wasmtime-wasi 48.0.1" },
+    { name = "rand", version = "=0.9.5", reason = "proptest 1.11.0 versus the rand 0.10 runtime graph" },
+    { name = "rand_chacha", version = "=0.3.1", reason = "age 0.12.1 / rand 0.8.8 versus proptest 1.11.0 / rand 0.9.5" },
+    { name = "rand_core", version = "=0.6.4", reason = "age 0.12.1 / hpke 0.12.0 crypto family versus rand 0.10.1" },
+    { name = "rand_core", version = "=0.9.5", reason = "proptest 1.11.0 / rand 0.9.5 versus rand 0.10.1" },
+    { name = "sha2", version = "=0.10.9", reason = "age 0.12.1 / hpke 0.12.0 / Wasmtime 48.0.1 versus direct sha2 0.11.0" },
+    { name = "syn", version = "=2.0.119", reason = "Wasmtime/age/tracing procedural macros versus current serde/clap macros" },
+    { name = "thiserror", version = "=1.0.69", reason = "i18n-config 0.4.8 / i18n-embed 0.16.0 / witx 0.9.1 versus thiserror 2" },
+    { name = "thiserror-impl", version = "=1.0.69", reason = "thiserror 1.0.69 requires its matching macro versus thiserror 2.0.20" },
+    { name = "toml", version = "=0.5.11", reason = "find-crate 0.6.3 versus direct toml 1.1.4" },
+    { name = "wast", version = "=35.0.2", reason = "witx 0.9.1 versus wat 1.254.0 in the verification graph" },
+    { name = "windows-sys", version = "=0.59.0", reason = "fs-set-times 0.20.3 / winx 0.36.4 versus current windows-sys 0.61 graph" },
+    { name = "windows-sys", version = "=0.60.2", reason = "io-extras 0.19.0 versus current windows-sys 0.61 graph" },
+    { name = "windows-targets", version = "=0.52.6", reason = "windows-sys 0.59.0 versus windows-sys 0.60.2" },
+    { name = "windows_aarch64_gnullvm", version = "=0.52.6", reason = "windows-targets 0.52.6 versus windows-targets 0.53.5" },
+    { name = "windows_aarch64_msvc", version = "=0.52.6", reason = "windows-targets 0.52.6 versus windows-targets 0.53.5" },
+    { name = "windows_i686_gnu", version = "=0.52.6", reason = "windows-targets 0.52.6 versus windows-targets 0.53.5" },
+    { name = "windows_i686_gnullvm", version = "=0.52.6", reason = "windows-targets 0.52.6 versus windows-targets 0.53.5" },
+    { name = "windows_i686_msvc", version = "=0.52.6", reason = "windows-targets 0.52.6 versus windows-targets 0.53.5" },
+    { name = "windows_x86_64_gnu", version = "=0.52.6", reason = "windows-targets 0.52.6 versus windows-targets 0.53.5" },
+    { name = "windows_x86_64_gnullvm", version = "=0.52.6", reason = "windows-targets 0.52.6 versus windows-targets 0.53.5" },
+    { name = "windows_x86_64_msvc", version = "=0.52.6", reason = "windows-targets 0.52.6 versus windows-targets 0.53.5" },
+]
+skip-tree = []
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []
+
+[sources.allow-org]
+github = []
+gitlab = []
+bitbucket = []

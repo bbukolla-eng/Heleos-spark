@@ -1,0 +1,132 @@
+{
+  "schema": 1,
+  "task_id": "EQUIPMENT-COUNT-1",
+  "base_commit": "05c55645fdf01a3238c13097c2f100dfa653799a",
+  "research_mode": "Reuse verified findings as requested; no new external submission or NotebookLM query for unchanged inputs.",
+  "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+  "findings_file": "docs/research/notebooklm/equipment-counting-findings-2026-09-16.json",
+  "findings_sha256": "f554572764c942c9dfd8d24b948d3700f928b734c5aa194f39ccf6308bba6226",
+  "approval_file": "tests/fixtures/equipment-takeoff/2026-09-16-owner-decision.json",
+  "approval_sha256": "8bd1bf975100bbff4ff232ac3d6c48fd3aa14c82603c673326e7f99b386b4251",
+  "historical_proposed_status": "Earlier research predates owner approval; preserve original record and join its evidence to the later approval here.",
+  "verified_findings": [
+    {
+      "finding_id": "EQ-S1",
+      "source_id": "e80b3502-dbf7-4227-a223-90fe6b01d731",
+      "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2021%2023.pdf",
+      "edition": "03-01-23",
+      "section": "2.1.A.2",
+      "retained_text": ".heleos/equipment-rules-2026-09-16/source-1.txt",
+      "sha256": "6af66205ee4ce027f3f0d54245ddc171e9874991b4d1ff17d02e96cf56051c07",
+      "passage_rechecked": true,
+      "approved_rule_case_bindings": "E04,E05; EC07",
+      "implementation": "scripts/equipment_calculation.py",
+      "tests": "tests/drawing-workspace/test_equipment_calculation.py"
+    },
+    {
+      "finding_id": "EQ-S2",
+      "source_id": "e80b3502-dbf7-4227-a223-90fe6b01d731",
+      "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2021%2023.pdf",
+      "edition": "03-01-23",
+      "section": "1.7.A",
+      "retained_text": ".heleos/equipment-rules-2026-09-16/source-1.txt",
+      "sha256": "6af66205ee4ce027f3f0d54245ddc171e9874991b4d1ff17d02e96cf56051c07",
+      "passage_rechecked": true,
+      "approved_rule_case_bindings": "E07; EC12",
+      "implementation": "scripts/equipment_calculation.py",
+      "tests": "tests/drawing-workspace/test_equipment_calculation.py"
+    },
+    {
+      "finding_id": "EQ-S3",
+      "source_id": "6df01e85-0806-4a32-a910-0b89bf85fdc7",
+      "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2073%2000.pdf",
+      "edition": "03-01-23",
+      "section": "1.1.C",
+      "retained_text": ".heleos/equipment-rules-2026-09-16/source-2.txt",
+      "sha256": "2798a2daf1695fd574ecef4ccb95563fdbad0550965cbfd24170a2b70cb466af",
+      "passage_rechecked": true,
+      "approved_rule_case_bindings": "E04; EC05",
+      "implementation": "scripts/equipment_calculation.py",
+      "tests": "tests/drawing-workspace/test_equipment_calculation.py"
+    },
+    {
+      "finding_id": "EQ-S4",
+      "source_id": "6df01e85-0806-4a32-a910-0b89bf85fdc7",
+      "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2073%2000.pdf",
+      "edition": "03-01-23",
+      "section": "1.4.E.2-3",
+      "retained_text": ".heleos/equipment-rules-2026-09-16/source-2.txt",
+      "sha256": "2798a2daf1695fd574ecef4ccb95563fdbad0550965cbfd24170a2b70cb466af",
+      "passage_rechecked": true,
+      "approved_rule_case_bindings": "E04; EC05",
+      "implementation": "scripts/equipment_calculation.py",
+      "tests": "tests/drawing-workspace/test_equipment_calculation.py"
+    },
+    {
+      "finding_id": "EQ-S5",
+      "source_id": "6df01e85-0806-4a32-a910-0b89bf85fdc7",
+      "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2073%2000.pdf",
+      "edition": "03-01-23",
+      "section": "2.1.N.1",
+      "retained_text": ".heleos/equipment-rules-2026-09-16/source-2.txt",
+      "sha256": "2798a2daf1695fd574ecef4ccb95563fdbad0550965cbfd24170a2b70cb466af",
+      "passage_rechecked": true,
+      "approved_rule_case_bindings": "E05; EC14",
+      "implementation": "scripts/equipment_calculation.py",
+      "tests": "tests/drawing-workspace/test_equipment_calculation.py"
+    },
+    {
+      "finding_id": "EQ-S6",
+      "source_id": "fa1b5f84-4128-4ba8-b196-75feb0bd4975",
+      "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2064%2000.pdf",
+      "edition": "03-01-24",
+      "section": "2.1.A",
+      "retained_text": ".heleos/equipment-rules-2026-09-16/source-3.txt",
+      "sha256": "eefdc0b7dc88c8bebd32994a627a240cebc73ecf39219b3a18ebc4c2fbf57bfd",
+      "passage_rechecked": true,
+      "approved_rule_case_bindings": "E04,E05; EC06",
+      "implementation": "scripts/equipment_calculation.py",
+      "tests": "tests/drawing-workspace/test_equipment_calculation.py"
+    },
+    {
+      "finding_id": "EQ-S7",
+      "source_id": "fa1b5f84-4128-4ba8-b196-75feb0bd4975",
+      "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2064%2000.pdf",
+      "edition": "03-01-24",
+      "section": "3.2.A.5",
+      "retained_text": ".heleos/equipment-rules-2026-09-16/source-3.txt",
+      "sha256": "eefdc0b7dc88c8bebd32994a627a240cebc73ecf39219b3a18ebc4c2fbf57bfd",
+      "passage_rechecked": true,
+      "approved_rule_case_bindings": "E05; EC08",
+      "implementation": "scripts/equipment_calculation.py",
+      "tests": "tests/drawing-workspace/test_equipment_calculation.py"
+    }
+  ],
+  "csi_support_addresses": [
+    {
+      "id": "CSI-23-21-23",
+      "number": "23 21 23",
+      "title": "Hydronic Pumps",
+      "edition": "MasterFormat 2016 Numbers & Titles, April 2016",
+      "source_page": 87,
+      "contribution": "Candidate shared assembly/package rule support only; no section taxonomy, mechanical scope equivalence or section acceptance asserted. Per-project/source applicability remains required."
+    },
+    {
+      "id": "CSI-23-64-00",
+      "number": "23 64 00",
+      "title": "Packaged Water Chillers",
+      "edition": "MasterFormat 2016 Numbers & Titles, April 2016",
+      "source_page": 91,
+      "contribution": "Candidate shared assembly/package rule support only; no section taxonomy, mechanical scope equivalence or section acceptance asserted. Per-project/source applicability remains required."
+    },
+    {
+      "id": "CSI-23-73-00",
+      "number": "23 73 00",
+      "title": "Indoor Central-Station Air-Handling Units",
+      "edition": "MasterFormat 2016 Numbers & Titles, April 2016",
+      "source_page": 92,
+      "contribution": "Candidate shared assembly/package rule support only; no section taxonomy, mechanical scope equivalence or section acceptance asserted. Per-project/source applicability remains required."
+    }
+  ],
+  "mechanical_authority": "Approved E01-E12 and exact EC01-EC20 examples remain authoritative. No new mechanical requirement inferred from a guide or catalogue title."
+}

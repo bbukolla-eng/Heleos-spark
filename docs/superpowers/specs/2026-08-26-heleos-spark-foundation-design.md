@@ -1,6 +1,6 @@
 # Heleos-spark Foundation Design
 
-**Status:** Proposed for owner review
+**Status:** Approved by owner on 2026-08-28
 
 **Date:** 2026-08-26
 
