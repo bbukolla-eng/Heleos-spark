@@ -249,6 +249,54 @@ class WorkerConfigurationTests(unittest.TestCase):
         time.sleep(1.0)
         self.assertFalse(marker.exists())
 
+    def test_descendant_holding_pipes_after_parent_exit_is_a_capture_timeout(self) -> None:
+        from helios_takeoff_core.agentic.processes import run_bounded_process
+
+        pidfile = self.root / "descendant.pid"
+        descendant_code = (
+            "import os,pathlib,time;"
+            f"pathlib.Path({str(pidfile)!r}).write_text(str(os.getpid()));"
+            "time.sleep(30)"
+        )
+        parent_code = (
+            "import subprocess,sys;"
+            f"subprocess.Popen([sys.executable,'-c',{descendant_code!r}])"
+        )
+
+        def _stop_descendant() -> None:
+            if not pidfile.exists():
+                return
+            text = pidfile.read_text()
+            if not text:
+                return
+            try:
+                os.kill(int(text), 9)
+            except ProcessLookupError:
+                pass
+
+        self.addCleanup(_stop_descendant)
+        started = time.monotonic()
+        result = run_bounded_process(
+            [sys.executable, "-c", parent_code],
+            input_bytes=b"",
+            cwd=self.root,
+            env={"PATH": os.defpath},
+            timeout_seconds=2,
+        )
+        self.assertLess(time.monotonic() - started, 20)
+        self.assertTrue(result.timed_out)
+        self.assertTrue(pidfile.exists())
+        pid = int(pidfile.read_text())
+        deadline = time.monotonic() + 2
+        while time.monotonic() < deadline:
+            try:
+                os.kill(pid, 0)
+            except ProcessLookupError:
+                break
+            time.sleep(0.05)
+        else:
+            self.fail(f"descendant {pid} was still running")
+
     def test_valid_result_prefix_with_truncated_stdout_cannot_succeed(self) -> None:
         command = (
             "import sys;from helios_takeoff_core.agentic.manifest_worker import main;"

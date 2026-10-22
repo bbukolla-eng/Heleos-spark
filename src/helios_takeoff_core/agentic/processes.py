@@ -66,6 +66,12 @@ def run_bounded_process(
             _terminate_session(process)
         stdout_thread.join(timeout=5)
         stderr_thread.join(timeout=5)
+        if stdout_thread.is_alive() or stderr_thread.is_alive():
+            # The parent can exit while a descendant still holds the pipes.
+            timed_out = True
+            _terminate_session(process)
+            stdout_thread.join(timeout=5)
+            stderr_thread.join(timeout=5)
         return ProcessResult(
             returncode=process.returncode,
             stdout=bytes(stdout_buffer.content),
