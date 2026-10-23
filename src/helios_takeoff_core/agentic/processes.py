@@ -66,8 +66,12 @@ def run_bounded_process(
             _terminate_session(process)
         stdout_thread.join(timeout=5)
         stderr_thread.join(timeout=5)
-        if stdout_thread.is_alive() or stderr_thread.is_alive():
-            # The parent can exit while a descendant still holds the pipes.
+        if (
+            stdout_thread.is_alive()
+            or stderr_thread.is_alive()
+            or _process_group_has_members(process.pid)
+        ):
+            # The parent can exit while a descendant holds the pipes or keeps running.
             timed_out = True
             _terminate_session(process)
             stdout_thread.join(timeout=5)
@@ -104,6 +108,15 @@ def _drain(stream: BinaryIO | None, buffer: _CappedBuffer) -> None:
         return
     while chunk := stream.read(64 * 1024):
         buffer.add(chunk)
+
+
+def _process_group_has_members(pid: int) -> bool:
+    """Return whether the worker process group still contains a process."""
+    try:
+        os.killpg(pid, 0)
+    except ProcessLookupError:
+        return False
+    return True
 
 
 def _terminate_session(process: subprocess.Popen[bytes]) -> None:
