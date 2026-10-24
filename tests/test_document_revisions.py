@@ -61,6 +61,23 @@ class DocumentRevisionTests(unittest.TestCase):
                 issue_date="2026-08-27",
             )
 
+    def test_document_revision_rejects_a_non_calendar_issue_date(self) -> None:
+        for index, issue_date in enumerate(("not-a-date", "2026-02-31", "20260827")):
+            with self.subTest(issue_date=issue_date):
+                with self.assertRaises(ValidationError) as caught:
+                    self.repository.register_document_revision(
+                        project_id=self.project_id,
+                        document_type="DRAWING",
+                        document_number="M-101",
+                        title="Mechanical Plan",
+                        sha256=f"{index}" * 64,
+                        issue_date=issue_date,
+                    )
+                self.assertEqual(str(caught.exception), "issue_date must be an ISO calendar date")
+        with self.database.connection() as connection:
+            count = connection.execute("SELECT COUNT(*) FROM document_revisions").fetchone()[0]
+        self.assertEqual(count, 0)
+
     def test_sql_update_cannot_mutate_an_issued_document_revision(self) -> None:
         drawing_id = self.repository.register_document_revision(
             project_id=self.project_id,

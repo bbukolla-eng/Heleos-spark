@@ -6,7 +6,7 @@ import json
 import math
 import re
 import uuid
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from typing import Any
 
 from .contracts import require_decimal_string, require_text
@@ -15,6 +15,7 @@ from .errors import ConflictError, ImmutableStateError, NotFoundError, Precondit
 
 
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
+ISO_CALENDAR_DATE_PATTERN = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
 DOCUMENT_TYPES = frozenset({"DRAWING", "SPECIFICATION", "SCHEDULE", "ADDENDUM", "RFI_RESPONSE", "OTHER"})
 
 
@@ -28,6 +29,17 @@ def _now() -> str:
 
 def _non_empty(value: str, field_name: str) -> str:
     return require_text(value, field_name)
+
+
+def _require_iso_calendar_date(value: str, field_name: str) -> str:
+    text = require_text(value, field_name)
+    if ISO_CALENDAR_DATE_PATTERN.fullmatch(text) is None:
+        raise ValidationError(f"{field_name} must be an ISO calendar date")
+    try:
+        date.fromisoformat(text)
+    except ValueError as error:
+        raise ValidationError(f"{field_name} must be an ISO calendar date") from error
+    return text
 
 
 class TakeoffRepository:
@@ -148,7 +160,7 @@ class TakeoffRepository:
                     _non_empty(document_number, "document_number"),
                     _non_empty(title, "title"),
                     normalized_hash,
-                    _non_empty(issue_date, "issue_date"),
+                    _require_iso_calendar_date(issue_date, "issue_date"),
                     _now(),
                     supersedes_document_revision_id,
                     _now(),
