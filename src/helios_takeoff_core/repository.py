@@ -42,6 +42,17 @@ def _require_iso_calendar_date(value: str, field_name: str) -> str:
     return text
 
 
+def _require_utc_timestamp(value: str, field_name: str) -> str:
+    text = require_text(value, field_name)
+    try:
+        parsed = datetime.fromisoformat(text)
+    except ValueError as error:
+        raise ValidationError(f"{field_name} must be a timezone-aware timestamp") from error
+    if parsed.tzinfo is None or parsed.tzinfo.utcoffset(parsed) is None:
+        raise ValidationError(f"{field_name} must be a timezone-aware timestamp")
+    return parsed.astimezone(UTC).isoformat()
+
+
 class TakeoffRepository:
     """The only P0 component allowed to write canonical document-baseline records."""
 
@@ -81,6 +92,8 @@ class TakeoffRepository:
         role = _non_empty(role, "role").upper()
         if role not in {"ESTIMATOR_REVIEWER", "AUTHORIZED_BIDDER", "SUBMITTER"}:
             raise ValidationError("unsupported role")
+        normalized_from = _now() if valid_from is None else _require_utc_timestamp(valid_from, "valid_from")
+        normalized_until = None if valid_until is None else _require_utc_timestamp(valid_until, "valid_until")
         grant_id = _new_id()
         with self.database.transaction() as connection:
             self._require_actor(connection, actor_id)
@@ -92,7 +105,7 @@ class TakeoffRepository:
                     id, actor_id, project_id, role, valid_from, valid_until, created_at
                 ) VALUES (?, ?, ?, ?, ?, ?, ?)
                 """,
-                (grant_id, actor_id, project_id, role, valid_from or _now(), valid_until, _now()),
+                (grant_id, actor_id, project_id, role, normalized_from, normalized_until, _now()),
             )
         return grant_id
 
