@@ -12,7 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from helios_takeoff_core.db import Database
-from helios_takeoff_core.errors import PreconditionError
+from helios_takeoff_core.errors import PreconditionError, ValidationError
 from helios_takeoff_core.repository import TakeoffRepository
 from helios_takeoff_core.services import TakeoffService
 
@@ -84,7 +84,7 @@ class PricingAndReleaseTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.temporary_directory.cleanup()
 
-    def _approved_estimate(self, valid_through: str) -> str:
+    def _quote_line(self, valid_through: str) -> str:
         quote_document_id = self.repository.register_document_revision(
             project_id=self.project_id,
             document_type="OTHER",
@@ -104,13 +104,16 @@ class PricingAndReleaseTests(unittest.TestCase):
             currency="USD",
             terms="Delivered to jobsite; freight included.",
         )
-        quote_line_id = self.service.add_quote_line(
+        return self.service.add_quote_line(
             quote_revision_id=quote_id,
             supplier_part_number="EF-1",
             description="Exhaust fan",
             uom="EA",
             unit_price="1500.00",
         )
+
+    def _approved_estimate(self, valid_through: str) -> str:
+        quote_line_id = self._quote_line(valid_through)
         takeoff_line_id = self.repository.get_takeoff_version(self.takeoff_id)["lines"][0]["id"]
         estimate_id = self.service.create_estimate_version(
             takeoff_version_id=self.takeoff_id,
@@ -138,6 +141,27 @@ class PricingAndReleaseTests(unittest.TestCase):
         self.assertEqual(release["status"], "RELEASED")
         self.assertEqual(release["estimate_lines"][0]["extended_price"], "1500.00")
         self.assertEqual({event["role"] for event in release["approval_events"]}, {"AUTHORIZED_BIDDER", "SUBMITTER"})
+
+    def test_repeated_takeoff_line_selection_is_rejected_before_insert(self) -> None:
+        quote_line_id = self._quote_line("2099-01-01")
+        takeoff_line_id = self.repository.get_takeoff_version(self.takeoff_id)["lines"][0]["id"]
+        selection = {"takeoff_line_id": takeoff_line_id, "quote_line_id": quote_line_id}
+
+        with self.assertRaises(ValidationError) as caught:
+            self.service.create_estimate_version(
+                takeoff_version_id=self.takeoff_id,
+                line_inputs=[selection, dict(selection)],
+            )
+
+        self.assertEqual(
+            str(caught.exception),
+            "line_inputs must select exactly one quote line for every takeoff line",
+        )
+        with self.database.connection() as connection:
+            estimate_count = connection.execute("SELECT COUNT(*) FROM estimate_versions").fetchone()[0]
+            line_count = connection.execute("SELECT COUNT(*) FROM estimate_lines").fetchone()[0]
+        self.assertEqual(estimate_count, 0)
+        self.assertEqual(line_count, 0)
 
     def test_expired_quote_blocks_as_bid_release(self) -> None:
         estimate_id = self._approved_estimate(valid_through="2000-01-01")

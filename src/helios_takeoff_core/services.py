@@ -615,7 +615,14 @@ class TakeoffService:
                     (takeoff_version_id,),
                 ).fetchall()
             }
-            if set(item.get("takeoff_line_id") for item in line_inputs if isinstance(item, dict)) != set(takeoff_lines):
+            selected_takeoff_line_ids = [
+                item.get("takeoff_line_id") for item in line_inputs if isinstance(item, dict)
+            ]
+            selected_ids = set(selected_takeoff_line_ids)
+            selection_count_matches = len(selected_takeoff_line_ids) == len(takeoff_lines)
+            selection_is_unique = len(selected_ids) == len(selected_takeoff_line_ids)
+            selection_covers_takeoff = selected_ids == set(takeoff_lines)
+            if not (selection_count_matches and selection_is_unique and selection_covers_takeoff):
                 raise ValidationError("line_inputs must select exactly one quote line for every takeoff line")
             connection.execute(
                 "INSERT INTO estimate_versions(id, project_id, takeoff_version_id, created_at) VALUES (?, ?, ?, ?)",
