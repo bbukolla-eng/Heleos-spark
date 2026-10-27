@@ -397,21 +397,24 @@ def completed_task_ids(repo, roots, errors):
     return completed
 
 
-def check_reopen(snapshot, reopen, next_task, errors, type_changes):
-    """A deliberate reopen names the same task, an explicit reason and pinned evidence."""
+def check_reopen(snapshot, reopen, allowed_ids, errors, type_changes):
+    """A deliberate reopen names the repeated task, an explicit reason and pinned evidence."""
     if not isinstance(reopen, dict):
         errors.append("next_task_reopen must be a task_id/reason/evidence object")
-        return False
-    accepted = True
-    if not next_task or normalized(reopen.get("task_id")) != next_task:
+        return None
+    named = normalized(reopen.get("task_id"))
+    valid = True
+    if named not in allowed_ids:
         errors.append("next_task_reopen task_id must match next_task_id")
-        accepted = False
+        valid = False
     if not text(reopen.get("reason")):
         errors.append("next_task_reopen reason must be a nonempty string")
-        accepted = False
+        valid = False
     before = len(errors)
     check_proof(snapshot, reopen.get("evidence"), "next_task_reopen", errors, type_changes)
-    return accepted and len(errors) == before
+    if not (valid and len(errors) == before):
+        return None
+    return named
 
 
 def check_resume(repo, roots, snapshot, receipt, errors, type_changes):
@@ -420,13 +423,21 @@ def check_resume(repo, roots, snapshot, receipt, errors, type_changes):
     next_task = normalized(receipt.get("next_task_id"))
     if receipt.get("outcome") == "blocked" and next_task and next_task == task:
         errors.append("blocked checkpoint must name an independent next_task_id, not the blocked task")
-    reopen = receipt.get("next_task_reopen")
-    accepted = False
-    if reopen is not None:
-        accepted = check_reopen(snapshot, reopen, next_task, errors, type_changes)
     completed = completed_task_ids(repo, roots, errors)
-    if next_task and next_task in completed and not accepted:
+    allowed_ids = set()
+    if next_task:
+        allowed_ids.add(next_task)
+    if task and task in completed:
+        allowed_ids.add(task)
+    reopen = receipt.get("next_task_reopen")
+    covered = None
+    if reopen is not None:
+        covered = check_reopen(snapshot, reopen, allowed_ids, errors, type_changes)
+    if next_task and next_task in completed and covered != next_task:
         errors.append(f"next_task_id {next_task} repeats a completed task; record next_task_reopen "
+                      "with a matching task_id, an explicit reason and pinned evidence")
+    if task and task in completed and task != next_task and covered != task:
+        errors.append(f"task_id {task} repeats a completed task; record next_task_reopen "
                       "with a matching task_id, an explicit reason and pinned evidence")
 
 

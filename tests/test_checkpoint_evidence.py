@@ -491,6 +491,24 @@ class ResumeGuardTests(Fixture, unittest.TestCase):
                         extra={"next_task_reopen": self.reopen()})
         self.check()
 
+    def test_completed_task_id_cannot_be_selected_directly(self):
+        self.close_task("TASK-A", "TASK-B")
+        self.checkpoint(task="TASK-A", next_task="TASK-C")
+        self.check(False, "task_id TASK-A repeats a completed task")
+
+    def test_reopen_record_can_name_the_resumed_task_id(self):
+        self.close_task("TASK-A", "TASK-B")
+        self.checkpoint(task="TASK-A", next_task="TASK-C",
+                        extra={"next_task_reopen": self.reopen(task_id="TASK-A")})
+        self.check()
+
+    def test_task_reopen_does_not_cover_a_different_completed_next_task(self):
+        self.close_task("TASK-A", "TASK-B")
+        self.close_task("TASK-B", "TASK-C")
+        self.checkpoint(task="TASK-A", next_task="TASK-B",
+                        extra={"next_task_reopen": self.reopen(task_id="TASK-A")})
+        self.check(False, "next_task_id TASK-B repeats a completed task")
+
     def test_malformed_reopen_records_are_rejected(self):
         self.close_task("TASK-A", "TASK-B")
         cases = [(self.reopen(task_id="TASK-C"), "next_task_reopen task_id must match"),
