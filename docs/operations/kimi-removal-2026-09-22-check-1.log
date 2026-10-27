@@ -1,0 +1,98 @@
+   Compiling heleos-worker-runner v0.1.0 (/Users/bekim/Heleos-spark/crates/heleos-worker-runner)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.74s
+     Running unittests src/lib.rs (target/debug/deps/heleos_worker_runner-504342d3ece67ec8)
+
+running 4 tests
+test evidence_tests::windows_forbidden_path_aliases_cannot_bypass_task_scope ... ok
+test containment::windows_environment_tests::windows_fixed_path_includes_git_and_provider_directories ... ok
+test containment::windows_environment_tests::windows_inherited_fixed_environment_aliases_are_explicitly_rejected ... ok
+test evidence_tests::containment_evidence_reports_exact_platform_claims ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/heleos_worker_runner-bd65f7fca4410ac4)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests tests/support/windows_provider.rs (target/debug/deps/heleos_worker_runner_test_provider-ffaee9683f2a9bec)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cli.rs (target/debug/deps/cli-9017fc01e57e6c1e)
+
+running 9 tests
+test prevalidated_internal_task_cannot_transfer_approval_to_another_runner_context ... ok
+test cli_rejects_invalid_packet_without_echoing_untrusted_content ... ok
+test cli_research_providers_fail_closed_before_command_runs ... ok
+test cli_reads_packet_and_retains_checkout_with_protocol_handoff ... ok
+test cli_grok_maps_to_implementation_provider_and_retains_handoff ... ok
+test macos_containment_allows_roots_denies_host_and_descendant_writes_with_literal_paths ... ok
+test cli_codex_adapter_transports_prompt_and_retains_codex_handoff ... ok
+test cli_cursor_adapter_transports_prompt_and_retains_cursor_handoff ... ok
+test internal_claude_cli_requires_exact_controller_grant_and_containment ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.81s
+
+     Running tests/platform.rs (target/debug/deps/platform-ea23866dfb3d6033)
+
+running 2 tests
+test windows_mode_round_trips_without_becoming_an_uncontained_mode ... ok
+test platform_mismatch_never_launches_the_provider ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/runner.rs (target/debug/deps/runner-97b62c7e6c1c09fe)
+
+running 32 tests
+test cli_rejects_retired_kimi_before_opening_task ... FAILED
+test containment_default_is_none_and_mode_round_trips ... ok
+test overlapping_workspace_roots_are_rejected_before_creation ... ok
+test codex_provider_mismatch_fails_before_launch_in_both_directions ... ok
+test instruction_digest_mismatch_is_rejected ... ok
+test cursor_provider_mismatch_fails_before_launch_in_both_directions ... ok
+test provider_and_mode_must_match_the_implementation_assignment ... ok
+test cursor_is_admitted_for_implementation_with_validated_handoff ... ok
+test oversized_prompt_stops_before_provider_launch ... ok
+test allowed_untracked_write_yields_usable_validated_pending_handoff ... ok
+test containment_keeps_inventory_and_typed_failure_evidence ... ok
+test retired_kimi_rejected_before_workspace_or_provider_launch ... ok
+test assume_unchanged_index_flag_cannot_hide_a_forbidden_write ... ok
+test grok_is_admitted_for_implementation_with_validated_handoff ... ok
+test explicit_argv_is_literal_and_prompt_goes_to_stdin ... ok
+test unavailable_exact_base_fails_without_falling_back_to_head ... ok
+test nonzero_exit_has_typed_failure_and_bounded_diagnostics ... ok
+test forbidden_write_is_rejected_and_cleaned ... ok
+test codex_is_admitted_for_implementation_with_validated_handoff ... ok
+test timeout_terminates_provider_and_descendants_without_pipe_deadlock ... ok
+test default_failure_retention_keeps_the_failed_checkout ... ok
+test provider_cannot_redirect_evidence_writes_through_a_symlink ... ok
+test exact_base_and_dirty_source_are_preserved ... ok
+test provider_cannot_rewrite_preserved_assignment_evidence ... ok
+test replaced_workspace_identity_is_retained_without_cleaning_the_replacement ... ok
+test retained_workspace_records_its_actual_directory_identity ... ok
+test stdout_and_stderr_are_drained_but_bounded ... ok
+test git_metadata_tampering_and_symlink_writes_fail_closed ... ok
+test staged_and_committed_changes_and_renames_are_compared_to_original_base ... ok
+test out_of_allowlist_and_ignored_writes_are_rejected ... ok
+test tracked_deletion_and_executable_mode_changes_are_inventoried ... ok
+test same_group_background_child_is_stopped_before_success_handoff ... ok
+
+failures:
+
+---- cli_rejects_retired_kimi_before_opening_task stdout ----
+
+thread 'cli_rejects_retired_kimi_before_opening_task' (9685886) panicked at crates/heleos-worker-runner/tests/runner.rs:416:5:
+assertion failed: error.contains("invalid value 'kimi'")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    cli_rejects_retired_kimi_before_opening_task
+
+test result: FAILED. 31 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.10s
+
+error: test failed, to rerun pass `-p heleos-worker-runner --test runner`

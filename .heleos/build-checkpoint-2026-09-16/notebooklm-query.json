@@ -1,0 +1,236 @@
+{
+  "status": "success",
+  "answer": "Engineering a local verification script requires strict adherence to operating system process semantics and exact byte-level file I/O. Based strictly on the selected Python standard library documentation for **`subprocess`** and **`hashlib`**, the technical requirements, design constraints, potential failure modes, and relevant exceptions for executing Git commands and computing cryptographic SHA-256 digests are detailed below.\n\n---\n\n### 1. Subprocess Execution & Process Exit Control (`subprocess`)\n\n#### Requirements\n* **Passing Argument Sequences (`args`)**: Commands should be passed as a sequence of program arguments (e.g., `[\"git\", \"rev-parse\", \"HEAD\"]`) rather than a single concatenated string [1, 2]. Providing an explicit sequence allows the module to handle platform-specific argument escaping and quoting automatically (such as spaces in file paths or arguments) [1]. For maximum reliability, invoke executables using a fully qualified path or resolve them using `shutil.which()` [2].\n* **Disabling Shell Execution (`shell=False`)**: Leave `shell=False` (the default) [3]. Invoking processes directly avoids spawning an intermediate system shell (`/bin/sh` on POSIX or `%COMSPEC%` on Windows), preventing shell injection vulnerabilities and avoiding unpredictable shell parsing or wildcard expansion [3-5].\n* **Checking Process Exit Codes (`check=True` / `returncode`)**: Process success must be validated via the process exit status [6, 7]. When using `subprocess.run(args, check=True)`, Python automatically evaluates the return code and raises a `subprocess.CalledProcessError` if the child process returns a non-zero exit code [6, 8]. Alternatively, inspect `CompletedProcess.returncode` directly, where an exit status of `0` indicates successful execution, positive integers represent command-specific error codes, and negative values (`-N`) on POSIX indicate termination by signal `N` [7].\n* **Binary Stream Handling**: By default, `subprocess` handles standard input, standard output, and standard error streams as binary byte streams (`bytes`) [4, 6, 9]. Do not pass `text=True` or `encoding` parameters if raw byte integrity across process stdout/stderr streams is required [4, 6].\n\n#### Pitfalls & Security Considerations\n* **Shell Injection Risks (`shell=True`)**: Setting `shell=True` passes the command string to the system shell [3, 5]. If arguments contain unescaped user input or untrusted strings, metacharacters can cause arbitrary command execution [5]. Additionally, on Windows, batch files (`.bat` or `.cmd`) may be launched in a system shell by the OS regardless of settings, parsing arguments under shell rules without Python's escaping [10].\n* **Pipe Buffer Deadlocks (`stdout=PIPE`, `stderr=PIPE`)**: Direct lower-level reads or using `wait()` with `stdout=PIPE` or `stderr=PIPE` can cause the child process to block indefinitely if it generates enough output to fill the operating system pipe buffer [11-14]. High-level functions such as `subprocess.run()` with `capture_output=True` manage stream reading internally via `Popen.communicate()` to prevent deadlocks [11, 15].\n* **Timeout & Process Lifecycle Pitfalls**:\n  * **Process Creation Delays**: Initial process creation cannot be interrupted by timeouts on many OS APIs; a `subprocess.TimeoutExpired` exception will not be raised until process creation completes [16, 17]. Extremely small timeout values may trigger immediate `TimeoutExpired` exceptions due to scheduling overhead [17].\n  * **Unterminated Child Processes**: In lower-level `Popen` usage, if `communicate()` or `wait()` times out and raises `TimeoutExpired`, the child process is **not automatically killed** [11, 18]. The calling script must explicitly terminate or kill the process (e.g., `proc.kill()`) and finish handling pipes to ensure proper resource cleanup [18].\n* **Environment Variable Dependencies (`env`)**: If overriding environment variables via the `env` argument, all mandatory runtime variables must be supplied [9, 19]. On Windows, omitting `%SystemRoot%` breaks side-by-side assembly resolution [9].\n\n---\n\n### 2. Computing SHA-256 Over Exact File Bytes (`hashlib`)\n\n#### Requirements\n* **Exact Binary File Reading**: To compute a SHA-256 digest over exact file bytes, file streams **must be opened in binary mode** (e.g., `open(path, \"rb\")`) [20, 21]. Opening files in text mode causes platform-dependent newline transformations (`\\r\\n` to `\\n`) and character encoding conversions, corrupting the underlying byte sequence and invalidating the checksum [4, 20, 22].\n* **Guaranteed SHA-256 Availability**: `sha256` is included in `hashlib.algorithms_guaranteed` and is guaranteed to be supported across all Python platforms [23, 24].\n* **High-Performance Stream Hashing (`hashlib.file_digest`)**:\n  * The `hashlib.file_digest(fileobj, \"sha256\")` helper streams binary contents directly from a file or file-like object [20, 21].\n  * `fileobj` must be a file-like object opened for reading in **binary mode** and in **blocking mode** [20].\n  * `file_digest()` may bypass Python's I/O layer and read directly from the underlying file descriptor (`fileno()`) [21].\n* **Iterative Hashing via `update()`**: Alternatively, instantiate `m = hashlib.sha256()` and feed binary chunks sequentially using `m.update(chunk)` [25-28]. Calling `m.hexdigest()` returns the hex-encoded digest string [25-27].\n\n#### Pitfalls\n* **Non-Blocking I/O Failure (`BlockingIOError`)**: Opening a file in non-blocking mode when calling `file_digest()` raises a `BlockingIOError` [20, 29].\n* **Unknown File Object Position**: After `file_digest()` returns or raises an exception, `fileobj` must be assumed to be in an **unknown position/state** [21]. It is strictly the caller's responsibility to close `fileobj` [21].\n\n---\n\n### 3. Relevant Exceptions Taxonomy\n\n| Exception Class | Trigger Condition & Description | Key Attributes / Notes |\n| :--- | :--- | :--- |\n| **`subprocess.CalledProcessError`** | Raised by `subprocess.run(..., check=True)`, `check_call()`, or `check_output()` when a child process exits with a non-zero exit code [6, 8, 30, 31]. | Attributes: `returncode`, `cmd`, `output`, `stdout`, `stderr` [6, 8, 32]. |\n| **`subprocess.TimeoutExpired`** | Raised when a process execution exceeds the configured `timeout` parameter during `run()`, `wait()`, or `communicate()` [5, 11, 16, 33]. | Attributes: `cmd`, `timeout`, `output`, `stdout`, `stderr` [8, 33]. |\n| **`subprocess.SubprocessError`** | Base exception class for all exceptions raised by the `subprocess` module [5, 34]. | Inherited by `CalledProcessError` and `TimeoutExpired` [8, 33, 34]. |\n| **`OSError` / `FileNotFoundError`** | Raised in the parent process if the specified binary executable (e.g., `git`) cannot be located or spawned [35-37]. | Must be handled to catch missing binary dependencies [35, 37]. |\n| **`ValueError`** | Raised if `subprocess.Popen` or `subprocess.run()` is passed invalid or incompatible arguments [5]. | E.g., combining incompatible stream arguments [5, 15]. |\n| **`BlockingIOError`** | Raised by `hashlib.file_digest()` if `fileobj` was opened in non-blocking I/O mode [20, 29]. | Requires ensuring blocking mode on input file objects [20]. |\n\n---\n\n### 4. Implementation Examples\n\n#### Example 1: Safe Git Invocation with Exit Code Validation\n\n```python\nimport subprocess\nimport sys\n\ndef verify_git_commit(repo_path: str) -> str:\n    # Explicit argument sequence without shell invocation\n    cmd = [\"git\", \"rev-parse\", \"HEAD\"]\n    \n    try:\n        # Execute command, capture output in binary mode, enforce non-zero exit check\n        result = subprocess.run(\n            cmd,\n            cwd=repo_path,\n            capture_output=True,\n            check=True,\n            timeout=10.0  # Enforce execution timeout\n        )\n        # Process output bytes explicitly\n        commit_hash = result.stdout.decode(\"utf-8\").strip()\n        return commit_hash\n\n    except subprocess.CalledProcessError as err:\n        print(f\"Git command failed with exit status {err.returncode}: {err.stderr}\", file=sys.stderr)\n        raise\n    except subprocess.TimeoutExpired as err:\n        print(f\"Git command timed out after {err.timeout} seconds.\", file=sys.stderr)\n        raise\n    except OSError as err:\n        print(f\"Failed to invoke Git executable: {err}\", file=sys.stderr)\n        raise\n```\n\n#### Example 2: Exact File Byte SHA-256 Computation\n\n```python\nimport hashlib\nimport sys\n\ndef compute_file_sha256(file_path: str) -> str:\n    try:\n        # Open file in binary mode (\"rb\") to prevent text encoding / newline conversions\n        with open(file_path, \"rb\") as f:\n            # High-performance stream hashing via file_digest\n            digest_obj = hashlib.file_digest(f, \"sha256\")\n            return digest_obj.hexdigest()\n\n    except BlockingIOError as err:\n        print(f\"File object is opened in non-blocking mode: {err}\", file=sys.stderr)\n        raise\n    except OSError as err:\n        print(f\"File I/O error reading {file_path}: {err}\", file=sys.stderr)\n        raise\n\ndef compute_file_sha256_iterative(file_path: str, chunk_size: int = 65536) -> str:\n    \"\"\"Alternative iterative chunk updating via hash.update().\"\"\"\n    hasher = hashlib.sha256()\n    with open(file_path, \"rb\") as f:\n        while chunk := f.read(chunk_size):\n            hasher.update(chunk)\n    return hasher.hexdigest()\n```\n\n---\n\nWould you like to explore adding a test fixture using `unittest` to verify handling of non-zero exit codes and corrupted binary files under different operating systems?",
+  "question": "Using only the selected Python standard-library sources, explain the requirements and pitfalls for a local verification script that invokes Git with an argument list and checks process exit codes, then computes SHA-256 over exact file bytes. Identify relevant exceptions and small examples. Cite source passages. Do not infer Git hook or GitHub Actions semantics from Python documentation.",
+  "conversation_id": "9625e7cc-d5fd-4e14-bf38-946f9514042f",
+  "sources_used": [
+    "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "4ed811a9-c317-4126-8255-2cba4425c440"
+  ],
+  "citations": {
+    "1": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "2": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "3": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "4": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "5": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "6": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "7": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "8": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "9": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "10": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "11": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "12": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "13": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "14": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "15": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "16": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "17": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "18": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "19": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "20": "4ed811a9-c317-4126-8255-2cba4425c440",
+    "21": "4ed811a9-c317-4126-8255-2cba4425c440",
+    "22": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "23": "4ed811a9-c317-4126-8255-2cba4425c440",
+    "24": "4ed811a9-c317-4126-8255-2cba4425c440",
+    "25": "4ed811a9-c317-4126-8255-2cba4425c440",
+    "26": "4ed811a9-c317-4126-8255-2cba4425c440",
+    "27": "4ed811a9-c317-4126-8255-2cba4425c440",
+    "28": "4ed811a9-c317-4126-8255-2cba4425c440",
+    "29": "4ed811a9-c317-4126-8255-2cba4425c440",
+    "30": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "31": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "32": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "33": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "34": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "35": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "36": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+    "37": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73"
+  },
+  "references": [
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 1,
+      "cited_text": "args is required for all calls and should be a string, or a sequence of program arguments. Providing a sequence of arguments is generally preferred, as it allows the module to take care of any required escaping and quoting of arguments (e.g. to permit spaces in file names). If passing a single string, either shell must be True (see below) or else the string must simply name the program to be executed without specifying any arguments. stdin , stdout and stderr specify the executed program's standard input, standard output and standard error file handles, respectively. Valid values are None , PIPE , DEVNULL , an existing file descriptor (a positive integer), and an existing file object with a valid file descriptor. With the default settings of None , no redirection will occur. PIPE indicates that a new pipe to the child should be created. DEVNULL indicates that the special file os.devnull will be used. Additionally, stderr can be STDOUT , which indicates that the stderr data from the child process should be captured into the same file handle as for stdout ."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 2,
+      "cited_text": "args should be a sequence of program arguments or else a single string or path-like object . By default, the program to execute is the first item in args if args is a sequence. If args is a string, the interpretation is platform-dependent and described below. See the shell and executable arguments for additional differences from the default behavior. Unless otherwise stated, it is recommended to pass args as a sequence. Warning For maximum reliability, use a fully qualified path for the executable. To search for an unqualified name on PATH , use shutil.which() . On all platforms, passing sys.executable is the recommended way to launch the current Python interpreter again, and use the -m command-line format to launch an installed module."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 3,
+      "cited_text": "The shell argument (which defaults to False ) specifies whether to use the shell as the program to execute. If shell is True , it is recommended to pass args as a string rather than as a sequence. On POSIX with shell=True , the shell defaults to /bin/sh . If args is a string, the string specifies the command to execute through the shell. This means that the string must be formatted exactly as it would be when typed at the shell prompt. This includes, for example, quoting or backslash escaping filenames with spaces in them. If args is a sequence, the first item specifies the command string, and any additional items will be treated as additional arguments to the shell itself. That is to say, Popen does the equivalent of:"
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 4,
+      "cited_text": "If text mode is not used, stdin , stdout and stderr will be opened as binary streams. No encoding or line ending conversion is performed. Changed in version 3.6: Added the encoding and errors parameters. Changed in version 3.7: Added the text parameter as an alias for universal_newlines . Note The newlines attribute of the file objects Popen.stdin , Popen.stdout and Popen.stderr are not updated by the Popen.communicate() method. If shell is True , the specified command will be executed through the shell. This can be useful if you are using Python primarily for the enhanced control flow it offers over most system shells and still want convenient access to other shell features such as shell pipes, filename wildcards, environment variable expansion, and expansion of ~ to a user's home directory. However, note that Python itself offers implementations of many shell-like features (in particular, glob , fnmatch , os.walk() , os.path.expandvars() , os.path.expanduser() , and shutil )."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 5,
+      "cited_text": "A ValueError will be raised if Popen is called with invalid arguments. check_call() and check_output() will raise CalledProcessError if the called process returns a non-zero return code. All of the functions and methods that accept a timeout parameter, such as run() and Popen.communicate() will raise TimeoutExpired if the timeout expires before the process exits. Exceptions defined in this module all inherit from SubprocessError . Added in version 3.3: The SubprocessError base class was added. Security Considerations ¶ Unlike some other popen functions, this library will not implicitly choose to call a system shell. This means that all characters, including shell metacharacters, can safely be passed to child processes. If the shell is invoked explicitly, via shell=True , it is the application's responsibility to ensure that all whitespace and metacharacters are quoted appropriately to avoid shell injection vulnerabilities. On some platforms , it is possible to use shlex.quote() for this escaping."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 6,
+      "cited_text": "If check is true, and the process exits with a non-zero exit code, a CalledProcessError exception will be raised. Attributes of that exception hold the arguments, the exit code, and stdout and stderr if they were captured. If encoding or errors are specified, or text is true, file objects for stdin, stdout and stderr are opened in text mode using the specified encoding and errors or the io.TextIOWrapper default. The universal_newlines argument is equivalent to text and is provided for backwards compatibility. By default, file objects are opened in binary mode."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 7,
+      "cited_text": "The return value from run() , representing a process that has finished. args ¶ The arguments used to launch the process. This may be a list or a string. returncode ¶ Exit status of the child process. Typically, an exit status of 0 indicates that it ran successfully. A negative value -N indicates that the child was terminated by signal N (POSIX only). stdout ¶ Captured stdout from the child process. A bytes sequence, or a string if run() was called with an encoding, errors, or text=True. None if stdout was not captured."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 8,
+      "cited_text": "stderr ¶ Stderr output of the child process if it was captured by run() . Otherwise, None . This is always bytes when stderr output was captured regardless of the text=True setting. It may remain None instead of b'' when no stderr output was observed. Added in version 3.3. Changed in version 3.5: stdout and stderr attributes added exception subprocess. CalledProcessError ¶ Subclass of SubprocessError , raised when a process run by check_call() , check_output() , or run() (with check=True ) returns a non-zero exit status."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 9,
+      "cited_text": "Note If specified, env must provide any variables required for the program to execute. On Windows, in order to run a side-by-side assembly the specified env must include a valid %SystemRoot% . If encoding or errors are specified, or text is true, the file objects stdin , stdout and stderr are opened in text mode with the specified encoding and errors , as described above in Frequently Used Arguments . The universal_newlines argument is equivalent to text and is provided for backwards compatibility. By default, file objects are opened in binary mode."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 10,
+      "cited_text": "On Windows, batch files ( *.bat or *.cmd ) may be launched by the operating system in a system shell regardless of the arguments passed to this library. This could result in arguments being parsed according to shell rules, but without any escaping added by Python. If you are intentionally launching a batch file with arguments from untrusted sources, consider passing shell=True to allow Python to escape special characters. See gh-114539 for additional discussion. Popen Objects ¶ Instances of the Popen class have the following methods:"
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 11,
+      "cited_text": "Popen. poll() ¶ Check if child process has terminated. Set and return returncode attribute. Otherwise, returns None . Popen. wait( timeout= None ) ¶ Wait for child process to terminate. Set and return returncode attribute. If the process does not terminate after timeout seconds, raise a TimeoutExpired exception. It is safe to catch this exception and retry the wait. Note This will deadlock when using stdout=PIPE or stderr=PIPE and the child process generates enough output to a pipe such that it blocks waiting for the OS pipe buffer to accept more data. Use Popen.communicate() when using pipes to avoid that."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 12,
+      "cited_text": "Warning Use communicate() rather than .stdin.write , .stdout.read or .stderr.read to avoid deadlocks due to any of the other OS pipe buffers filling up and blocking the child process. Popen. pid ¶ The process ID of the child process. Note that if you set the shell argument to True , this is the process ID of the spawned shell. Popen. returncode ¶ The child return code. Initially None , returncode is set by a call to the poll() , wait() , or communicate() methods if they detect that the process has terminated."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 13,
+      "cited_text": "Run the command described by args . Wait for command to complete, then return the returncode attribute. Code needing to capture stdout or stderr should use run() instead: Copy To suppress stdout or stderr, supply a value of DEVNULL . The arguments shown above are merely some common ones. The full function signature is the same as that of the Popen constructor - this function passes all supplied arguments other than timeout directly through to that interface. Note Do not use stdout=PIPE or stderr=PIPE with this function. The child process will block if it generates enough output to a pipe to fill up the OS pipe buffer as the pipes are not being read from."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 14,
+      "cited_text": "Code needing to capture stdout or stderr should use run() instead: Copy To suppress stdout or stderr, supply a value of DEVNULL . The arguments shown above are merely some common ones. The full function signature is the same as that of the Popen constructor - this function passes all supplied arguments other than timeout directly through to that interface. Note Do not use stdout=PIPE or stderr=PIPE with this function. The child process will block if it generates enough output to a pipe to fill up the OS pipe buffer as the pipes are not being read from."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 15,
+      "cited_text": "Run the command described by args . Wait for command to complete, then return a CompletedProcess instance. The arguments shown above are merely the most common ones, described below in Frequently Used Arguments (hence the use of keyword-only notation in the abbreviated signature). The full function signature is largely the same as that of the Popen constructor - most of the arguments to this function are passed through to that interface. ( timeout , input , check , and capture_output are not.) If capture_output is true, stdout and stderr will be captured. When used, the internal Popen object is automatically created with stdout and stderr both set to PIPE . The stdout and stderr arguments may not be supplied at the same time as capture_output . If you wish to capture and combine both streams into one, set stdout to PIPE and stderr to STDOUT , instead of using capture_output ."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 16,
+      "cited_text": "A timeout may be specified in seconds, it is internally passed on to Popen.communicate() . If the timeout expires, the child process will be killed and waited for. The TimeoutExpired exception will be re-raised after the child process has terminated. The initial process creation itself cannot be interrupted on many platform APIs so you are not guaranteed to see a timeout exception until at least after however long process creation takes. The input argument is passed to Popen.communicate() and thus to the subprocess's stdin. If used it must be a byte sequence, or a string if encoding or errors is specified or text is true. When used, the internal Popen object is automatically created with stdin set to PIPE , and the stdin argument may not be used as well."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 17,
+      "cited_text": "Availability : Unix, Windows. Changed in version 3.3.4: Windows support added Changed in version 3.11: Added the encoding and errors parameters. Notes ¶ Timeout Behavior ¶ When using the timeout parameter in functions like run() , Popen.wait() , or Popen.communicate() , users should be aware of the following behaviors: Process Creation Delay : The initial process creation itself cannot be interrupted on many platform APIs. This means that even when specifying a timeout, you are not guaranteed to see a timeout exception until at least after however long process creation takes. Extremely Small Timeout Values : Setting very small timeout values (such as a few milliseconds) may result in almost immediate TimeoutExpired exceptions because process creation and system scheduling inherently require time."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 18,
+      "cited_text": "The child process is not killed if the timeout expires, so in order to cleanup properly a well-behaved application should kill the child process and finish communication: Copy After a call to communicate() raises TimeoutExpired , do not call wait() . Use an additional communicate() call to finish handling pipes and populate the returncode attribute."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 19,
+      "cited_text": "Note Specifying user will not drop existing supplementary group memberships! The caller must also pass extra_groups=() to reduce the group membership of the child process for security purposes. Availability : POSIX Added in version 3.9. If umask is not negative, the umask() system call will be made in the child process prior to the execution of the subprocess. Availability : POSIX Added in version 3.9. If env is not None , it must be a mapping that defines the environment variables for the new process; these are used instead of the default behavior of inheriting the current process' environment. This mapping can be str to str on any platform or bytes to bytes on POSIX platforms much like os.environ or os.environb ."
+    },
+    {
+      "source_id": "4ed811a9-c317-4126-8255-2cba4425c440",
+      "citation_number": 20,
+      "cited_text": "File hashing ¶ The hashlib module provides a helper function for efficient hashing of a file or file-like object. hashlib. file_digest( fileobj , digest , / ) ¶ Return a digest object that has been updated with contents of file object. fileobj must be a file-like object opened for reading in binary mode. It accepts file objects from builtin open() , BytesIO instances, SocketIO objects from socket.socket.makefile() , and similar. fileobj must be opened in blocking mode, otherwise a BlockingIOError may be raised."
+    },
+    {
+      "source_id": "4ed811a9-c317-4126-8255-2cba4425c440",
+      "citation_number": 21,
+      "cited_text": "The function may bypass Python's I/O and use the file descriptor from fileno() directly. fileobj must be assumed to be in an unknown state after this function returns or raises. It is up to the caller to close fileobj . digest must either be a hash algorithm name as a str , a hash constructor, or a callable that returns a hash object. Example: Copy"
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 22,
+      "cited_text": "If encoding or errors are specified, or text (also known as universal_newlines ) is true, the file objects stdin , stdout and stderr will be opened in text mode using the encoding and errors specified in the call or the defaults for io.TextIOWrapper . For stdin , line ending characters '\\n' in the input will be converted to the default line separator os.linesep . For stdout and stderr , all line endings in the output will be converted to '\\n' . For more information see the documentation of the io.TextIOWrapper class when the newline argument to its constructor is None ."
+    },
+    {
+      "source_id": "4ed811a9-c317-4126-8255-2cba4425c440",
+      "citation_number": 23,
+      "cited_text": "Constructors for hash algorithms that are always present in this module are sha1() , sha224() , sha256() , sha384() , sha512() , sha3_224() , sha3_256() , sha3_384() , sha3_512() , shake_128() , shake_256() , blake2b() , and blake2s() . md5() is normally available as well, though it may be missing or blocked if you are using a rare “FIPS compliant” build of Python. These correspond to algorithms_guaranteed . Additional algorithms may also be available if your Python distribution's hashlib was linked against a build of OpenSSL that provides others. Others are not guaranteed available on all installations and will only be accessible by name via new() . See algorithms_available ."
+    },
+    {
+      "source_id": "4ed811a9-c317-4126-8255-2cba4425c440",
+      "citation_number": 24,
+      "cited_text": "Named constructors such as these are faster than passing an algorithm name to new() . Attributes ¶ Hashlib provides the following constant module attributes: hashlib. algorithms_guaranteed ¶ A set containing the names of the hash algorithms guaranteed to be supported by this module on all platforms. Note that 'md5' is in this list despite some upstream vendors offering an odd “FIPS compliant” Python build that excludes it. Added in version 3.2. hashlib. algorithms_available ¶ A set containing the names of the hash algorithms that are available in the running Python interpreter. These names will be recognized when passed to new() . algorithms_guaranteed will always be a subset. The same algorithm may appear multiple times in this set under different names (thanks to OpenSSL)."
+    },
+    {
+      "source_id": "4ed811a9-c317-4126-8255-2cba4425c440",
+      "citation_number": 25,
+      "cited_text": "Hash algorithms ¶ There is one constructor method named for each type of hash . All return a hash object with the same simple interface. For example: use sha256() to create a SHA-256 hash object. You can now feed this object with bytes-like objects (normally bytes ) using the update method. At any point you can ask it for the digest of the concatenation of the data fed to it so far using the digest() or hexdigest() methods. To allow multithreading, the Python GIL is released while computing a hash supplied more than 2047 bytes of data at once in its constructor or .update method."
+    },
+    {
+      "source_id": "4ed811a9-c317-4126-8255-2cba4425c440",
+      "citation_number": 26,
+      "cited_text": "Changed in version 3.9: Hashlib now uses SHA3 and SHAKE from OpenSSL if it provides it. Changed in version 3.12: For any of the MD5, SHA1, SHA2, or SHA3 algorithms that the linked OpenSSL does not provide we fall back to a verified implementation from the HACL* project . Usage ¶ To obtain the digest of the byte string b\"Nobody inspects the spammish repetition\" : Copy"
+    },
+    {
+      "source_id": "4ed811a9-c317-4126-8255-2cba4425c440",
+      "citation_number": 27,
+      "cited_text": "A hash object has the following methods: hash. update( data ) ¶ Update the hash object with the bytes-like object . Repeated calls are equivalent to a single call with the concatenation of all the arguments: m.update(a); m.update(b) is equivalent to m.update(a+b) . hash. digest() ¶ Return the digest of the data passed to the update() method so far. This is a bytes object of size digest_size which may contain bytes in the whole range from 0 to 255. hash. hexdigest() ¶ Like digest() except the digest is returned as a string object of double length, containing only hexadecimal digits. This may be used to exchange the value safely in email or other non-binary environments."
+    },
+    {
+      "source_id": "4ed811a9-c317-4126-8255-2cba4425c440",
+      "citation_number": 28,
+      "cited_text": "You can call hash.update() as many times as you need to iteratively update the hash: Copy Using different digest sizes ¶ BLAKE2 has configurable size of digests up to 64 bytes for BLAKE2b and up to 32 bytes for BLAKE2s. For example, to replace SHA-1 with BLAKE2b without changing the size of output, we can tell BLAKE2b to produce 20-byte digests:"
+    },
+    {
+      "source_id": "4ed811a9-c317-4126-8255-2cba4425c440",
+      "citation_number": 29,
+      "cited_text": "Copy Copy Added in version 3.11. Changed in version 3.14: Now raises a BlockingIOError if the file is opened in non-blocking mode. Previously, spurious null bytes were added to the digest. Key derivation ¶ Key derivation and key stretching algorithms are designed for secure password hashing. Naive algorithms such as sha1(password) are not resistant against brute-force attacks. A good password hashing function must be tunable, slow, and include a salt ."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 30,
+      "cited_text": "Changed in version 3.3: timeout was added. Changed in version 3.12: Changed Windows shell search order for shell=True . The current directory and %PATH% are replaced with %COMSPEC% and %SystemRoot%\\System32\\cmd.exe . As a result, dropping a malicious program named cmd.exe into a current directory no longer works. subprocess. check_call( args , * , stdin= None , stdout= None , stderr= None , shell= False , cwd= None , timeout= None , ** other_popen_kwargs) ¶ Run command with arguments. Wait for command to complete. If the return code was zero then return, otherwise raise CalledProcessError . The CalledProcessError object will have the return code in the returncode attribute. If check_call() was unable to start the process it will propagate the exception that was raised."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 31,
+      "cited_text": "Run command with arguments and return its output. If the return code was non-zero it raises a CalledProcessError . The CalledProcessError object will have the return code in the returncode attribute and any output in the output attribute. This is equivalent to: Copy The arguments shown above are merely some common ones. The full function signature is largely the same as that of run() - most arguments are passed directly through to that interface. One API deviation from run() behavior exists: passing input=None will behave the same as input=b'' (or input='' , depending on other arguments) rather than using the parent's standard input file handle."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 32,
+      "cited_text": "returncode ¶ Exit status of the child process, an integer. If the process exited due to a signal, this will be the negative signal number. cmd ¶ Command that was used to spawn the child process. output ¶ Output of the child process if it was captured by run() or check_output() . Otherwise, None . stdout ¶ Alias for output, for symmetry with stderr . stderr ¶ Stderr output of the child process if it was captured by run() . Otherwise, None . Changed in version 3.5: stdout and stderr attributes added Frequently Used Arguments ¶ To support a wide variety of use cases, the Popen constructor (and the convenience functions) accept a large number of optional arguments. For most typical use cases, many of these arguments can be safely left at their default values. The arguments that are most commonly needed are:"
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 33,
+      "cited_text": "exception subprocess. TimeoutExpired ¶ Subclass of SubprocessError , raised when a timeout expires while waiting for a child process. cmd ¶ Command that was used to spawn the child process. timeout ¶ Timeout in seconds. output ¶ Output of the child process if it was captured by run() or check_output() . Otherwise, None . This is always bytes when any output was captured regardless of the text=True setting. It may remain None instead of b'' when no output was observed. stdout ¶ Alias for output, for symmetry with stderr ."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 34,
+      "cited_text": "Added in version 3.3. subprocess. PIPE ¶ Special value that can be used as the stdin , stdout or stderr argument to Popen and indicates that a pipe to the standard stream should be opened. Most useful with Popen.communicate() . subprocess. STDOUT ¶ Special value that can be used as the stderr argument to Popen and indicates that standard error should go into the same handle as standard output. exception subprocess. SubprocessError ¶ Base class for all other exceptions from this module. Added in version 3.3."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 35,
+      "cited_text": "Exceptions ¶ Exceptions raised in the child process, before the new program has started to execute, will be re-raised in the parent. The most common exception raised is OSError . This occurs, for example, when trying to execute a non-existent file. Applications should prepare for OSError exceptions. Note that, when shell=True , OSError will be raised by the child only if the selected shell itself was not found. To determine if the shell failed to find the requested application, it is necessary to check the return code or output from the subprocess."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 36,
+      "cited_text": "Replacing Older Functions with the subprocess Module ¶ In this section, “a becomes b” means that b can be used as a replacement for a. Note All “a” functions in this section fail (more or less) silently if the executed program cannot be found; the “b” replacements raise OSError instead. In addition, the replacements using check_output() will fail with a CalledProcessError if the requested operation produces a non-zero return code. The output is still available as the output attribute of the raised exception."
+    },
+    {
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "citation_number": 37,
+      "cited_text": "A more realistic example would look like this: Copy Replacing the os.spawn family ¶ P_NOWAIT example: Copy"
+    }
+  ]
+}

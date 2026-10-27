@@ -1,0 +1,6 @@
+Controller independent verification after fixture diff review, 2026-09-16
+python3 -m unittest discover -s tests/drawing-workspace -p test_document_layout_geometry.py
+Ran 11 tests in 0.043s; OK; exit 0
+python3 -m unittest discover -s tests/drawing-workspace -p test_drawing_workspace.py
+Ran 15 tests in 4.669s; OK; exit 0
+No production byte changes were needed for these fixture repairs.

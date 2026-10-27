@@ -1,0 +1,30 @@
+{
+  "schema": "heleos.worker-task/v1",
+  "task_id": "claude-live-guarded-write-002",
+  "provider": "claude_code",
+  "mode": "implementation",
+  "base_commit": "cad8e4cec76e4fe2afbf30275ba31bddd0541fa3",
+  "objective": "Create exactly one UTF-8 text file at tests/fixtures/runner/live/claude-headless.txt containing exactly these two lines and one final newline: PUBLIC synthetic Claude Code guarded write. Then: No repository source was read or modified. Do not change any other path. Do not use shell commands, Git, network tools, browser tools, subagents, or external tools. Use only the Write tool and then stop.",
+  "allowed_paths": [
+    "tests/fixtures/runner/live/claude-headless.txt"
+  ],
+  "forbidden_paths": [
+    ".github",
+    "Cargo.lock",
+    "Cargo.toml",
+    "governance",
+    "scripts"
+  ],
+  "input_data_class": "PUBLIC",
+  "egress_policy": "approved_external",
+  "instruction_sha256": {
+    "tests/fixtures/runner/README.md": "4041ce5fc07a19b172852c9c9f637eab9c61d8d3e3456260375c625ced66e832"
+  },
+  "acceptance_commands": [
+    "test \"$(shasum -a 256 tests/fixtures/runner/live/claude-headless.txt)\" = \"d88b56eb7d68ea2ebc4b2b191c965470a5272268caa10ce471b5893692fbaf35  tests/fixtures/runner/live/claude-headless.txt\""
+  ],
+  "limits": {
+    "max_actions": 1,
+    "max_duration_seconds": 300
+  }
+}

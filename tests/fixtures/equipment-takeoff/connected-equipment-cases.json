@@ -1,0 +1,5159 @@
+{
+  "schema_version": 1,
+  "authority": "Approved EC01-EC20 synthetic semantic examples; not recognition qualification",
+  "cases": [
+    {
+      "id": "EC01",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "p1",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P1",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "p2",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P2",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [],
+        "schedules": [
+          {
+            "id": "schedule1",
+            "family": "pump",
+            "work_status": "new",
+            "member_ids": [
+              "p1",
+              "p2"
+            ],
+            "declared_each": 2,
+            "evidence_ids": [
+              "schedule"
+            ]
+          }
+        ],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "total_each": 2,
+        "declarations/id=schedule1/declared_each": 2,
+        "known_subtotal_each": 2,
+        "rows/length": 2
+      },
+      "variants": []
+    },
+    {
+      "id": "EC02",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 1,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "detail",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 2,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 2,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage-detail",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 1,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "detail-graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 1,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage-schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 2,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "a1",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "ahu",
+            "tag": "AHU-1",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "a2",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 1,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "ahu",
+            "tag": "AHU-1",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "detail-graphic"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [
+          {
+            "id": "same",
+            "kind": "same",
+            "member_ids": [
+              "a1",
+              "a2"
+            ],
+            "each": null,
+            "evidence_ids": [
+              "relation"
+            ],
+            "scope_text": "Explicit current scoped statement"
+          }
+        ],
+        "schedules": [
+          {
+            "id": "schedule1",
+            "family": "ahu",
+            "work_status": "new",
+            "member_ids": [
+              "a1",
+              "a2"
+            ],
+            "declared_each": 1,
+            "evidence_ids": [
+              "schedule"
+            ]
+          }
+        ],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30",
+            "544a3edcc2e71cc61c717f2bb8696d9dfd9c2e20a3c49eca41230b45a844363f",
+            "1a7f1c723ba8f93e95945f73db82e3db3515851430492de97f835eafd9b98d39"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage",
+            "coverage-detail",
+            "coverage-schedule"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "total_each": 1,
+        "rows/row_id=a1/member_ids": [
+          "a1",
+          "a2"
+        ],
+        "rows/length": 1,
+        "declarations/id=schedule1/declared_each": 1,
+        "declarations/id=schedule1/evidence_ids": [
+          "schedule"
+        ],
+        "declarations/id=schedule1/observed_each": 1
+      },
+      "variants": []
+    },
+    {
+      "id": "EC03",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "p1",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P-1",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "unresolved",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "p2",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P-1",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "unresolved",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [],
+        "schedules": [],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "total_each": null,
+        "rows/row_id=p1/physical_each": null,
+        "rows/row_id=p2/physical_each": null
+      },
+      "variants": []
+    },
+    {
+      "id": "EC04",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "p1",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P-1",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "p2",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P-1",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [
+          {
+            "id": "different",
+            "kind": "distinct",
+            "member_ids": [
+              "p1",
+              "p2"
+            ],
+            "each": null,
+            "evidence_ids": [
+              "relation"
+            ],
+            "scope_text": "Explicit current scoped statement"
+          }
+        ],
+        "schedules": [],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "known_subtotal_each": 2,
+        "total_each": null,
+        "rows/row_id=p1/issues": [
+          "tag_conflict"
+        ],
+        "rows/row_id=p2/issues": [
+          "tag_conflict"
+        ]
+      },
+      "variants": []
+    },
+    {
+      "id": "EC05",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "a1",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "ahu",
+            "tag": "A1",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "shipping",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "shipping",
+            "family": "shipping_section",
+            "tag": "SHIPPING",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "included",
+            "installation": "field",
+            "parent_id": "a1",
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic",
+              "relation"
+            ],
+            "issues": []
+          },
+          {
+            "id": "fan",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "component",
+            "family": "fan_module",
+            "tag": "FAN",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "included",
+            "installation": "field",
+            "parent_id": "a1",
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic",
+              "relation"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [
+          {
+            "id": "sections",
+            "kind": "multiplicity",
+            "member_ids": [
+              "shipping"
+            ],
+            "each": 3,
+            "evidence_ids": [
+              "relation"
+            ],
+            "scope_text": "Explicit current scoped statement"
+          },
+          {
+            "id": "fans",
+            "kind": "multiplicity",
+            "member_ids": [
+              "fan"
+            ],
+            "each": 4,
+            "evidence_ids": [
+              "relation"
+            ],
+            "scope_text": "Explicit current scoped statement"
+          }
+        ],
+        "schedules": [],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "total_each": 1,
+        "rows/row_id=shipping/component_each": 3,
+        "rows/row_id=fan/component_each": 4
+      },
+      "variants": []
+    },
+    {
+      "id": "EC06",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "c",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "chiller",
+            "tag": "C",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "compressor",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "component",
+            "family": "compressor",
+            "tag": "COMPRESSOR",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "included",
+            "installation": "field",
+            "parent_id": "c",
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic",
+              "relation"
+            ],
+            "issues": []
+          },
+          {
+            "id": "controller",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "component",
+            "family": "controller",
+            "tag": "CONTROLLER",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "included",
+            "installation": "field",
+            "parent_id": "c",
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic",
+              "relation"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [
+          {
+            "id": "compressors",
+            "kind": "multiplicity",
+            "member_ids": [
+              "compressor"
+            ],
+            "each": 2,
+            "evidence_ids": [
+              "relation"
+            ],
+            "scope_text": "Explicit current scoped statement"
+          }
+        ],
+        "schedules": [],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "total_each": 1,
+        "rows/row_id=compressor/component_each": 2,
+        "rows/row_id=controller/component_each": 1,
+        "rows/row_id=compressor/procurement_each": 0,
+        "rows/row_id=controller/procurement_each": 0
+      },
+      "variants": []
+    },
+    {
+      "id": "EC07",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "p1",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P1",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "p2",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P2",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "m1",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "component",
+            "family": "motor",
+            "tag": "M1",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "included",
+            "installation": "field",
+            "parent_id": "p1",
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic",
+              "relation"
+            ],
+            "issues": []
+          },
+          {
+            "id": "m2",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "component",
+            "family": "motor",
+            "tag": "M2",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "included",
+            "installation": "field",
+            "parent_id": "p2",
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic",
+              "relation"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [],
+        "schedules": [],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "total_each": 2,
+        "rows/row_id=m1/component_each": 1,
+        "rows/row_id=m2/component_each": 1,
+        "rows/row_id=m1/procurement_each": 0,
+        "rows/row_id=m2/procurement_each": 0
+      },
+      "variants": []
+    },
+    {
+      "id": "EC08",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "c",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "chiller",
+            "tag": "C",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "s",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "accessory",
+            "family": "starter",
+            "tag": "S",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "included",
+            "installation": "field",
+            "parent_id": "c",
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic",
+              "relation"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [],
+        "schedules": [],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "total_each": 1,
+        "rows/row_id=s/component_each": 1,
+        "rows/row_id=s/procurement_each": 0,
+        "rows/row_id=s/installation_each": 1
+      },
+      "variants": []
+    },
+    {
+      "id": "EC09",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "p1",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P1",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "p2",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P2",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "p3",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P3",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [],
+        "schedules": [
+          {
+            "id": "schedule1",
+            "family": "pump",
+            "work_status": "new",
+            "member_ids": [
+              "p1",
+              "p2",
+              "p3"
+            ],
+            "declared_each": 4,
+            "evidence_ids": [
+              "schedule"
+            ]
+          }
+        ],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "known_subtotal_each": 3,
+        "total_each": null,
+        "declarations/id=schedule1/declared_each": 4,
+        "declarations/id=schedule1/observed_each": 3,
+        "declarations/id=schedule1/state": "unresolved"
+      },
+      "variants": []
+    },
+    {
+      "id": "EC10",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [],
+        "relations": [],
+        "schedules": [
+          {
+            "id": "schedule1",
+            "family": "boiler",
+            "work_status": "new",
+            "member_ids": [],
+            "declared_each": 1,
+            "evidence_ids": [
+              "schedule"
+            ]
+          }
+        ],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "known_subtotal_each": 0,
+        "total_each": null,
+        "declarations/id=schedule1/outstanding_each": 1,
+        "declarations/id=schedule1/observed_each": 0,
+        "declarations/id=schedule1/declared_each": 1
+      },
+      "variants": []
+    },
+    {
+      "id": "EC11",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "duty",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "DUTY",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {
+              "operating_role": "duty"
+            },
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "standby",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "STANDBY",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {
+              "operating_role": "standby"
+            },
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [],
+        "schedules": [],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "total_each": 2,
+        "rows/row_id=duty/physical_each": 1,
+        "rows/row_id=standby/physical_each": 1,
+        "rows/row_id=duty/attributes/operating_role": "duty",
+        "rows/row_id=standby/attributes/operating_role": "standby"
+      },
+      "variants": []
+    },
+    {
+      "id": "EC12",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "p1",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P1",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "p2",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P2",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "seal",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "spare",
+            "family": "seal",
+            "tag": "SEAL",
+            "work_status": "spare",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "requirement"
+            ],
+            "issues": []
+          },
+          {
+            "id": "gasket",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "spare",
+            "family": "gasket",
+            "tag": "GASKET",
+            "work_status": "spare",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "requirement"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [
+          {
+            "id": "seals",
+            "kind": "multiplicity",
+            "member_ids": [
+              "seal"
+            ],
+            "each": 2,
+            "evidence_ids": [
+              "relation"
+            ],
+            "scope_text": "Explicit current scoped statement"
+          },
+          {
+            "id": "gaskets",
+            "kind": "multiplicity",
+            "member_ids": [
+              "gasket"
+            ],
+            "each": 2,
+            "evidence_ids": [
+              "relation"
+            ],
+            "scope_text": "Explicit current scoped statement"
+          }
+        ],
+        "schedules": [],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "total_each": 2,
+        "rows/row_id=seal/component_each": 2,
+        "rows/row_id=gasket/component_each": 2,
+        "rows/row_id=seal/physical_each": 0,
+        "rows/row_id=gasket/physical_each": 0
+      },
+      "variants": []
+    },
+    {
+      "id": "EC13",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "p1",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P1",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "p2",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P2",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "spare",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "spare",
+            "family": "pump",
+            "tag": "SPARE",
+            "work_status": "spare",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "requirement"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [],
+        "schedules": [],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "total_each": 2,
+        "rows/row_id=spare/component_each": 1,
+        "rows/row_id=p1/procurement_each": 1,
+        "rows/row_id=p2/procurement_each": 1,
+        "rows/row_id=spare/procurement_each": 1,
+        "rows/row_id=spare/physical_each": 0
+      },
+      "variants": []
+    },
+    {
+      "id": "EC14",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "a",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "ahu",
+            "tag": "A",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "rack",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "component",
+            "family": "rack",
+            "tag": "RACK",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "included",
+            "installation": "field",
+            "parent_id": "a",
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic",
+              "relation"
+            ],
+            "issues": []
+          },
+          {
+            "id": "filter",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "accessory",
+            "family": "filter",
+            "tag": "FILTER",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": "a",
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "requirement"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [
+          {
+            "id": "filters",
+            "kind": "multiplicity",
+            "member_ids": [
+              "filter"
+            ],
+            "each": 6,
+            "evidence_ids": [
+              "relation"
+            ],
+            "scope_text": "Explicit current scoped statement"
+          }
+        ],
+        "schedules": [],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "total_each": 1,
+        "rows/row_id=filter/component_each": 6,
+        "rows/row_id=rack/procurement_each": 0,
+        "rows/length": 3,
+        "rows/row_id=filter/procurement_each": 6
+      },
+      "variants": []
+    },
+    {
+      "id": "EC15",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "tu",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "terminal_unit",
+            "tag": "TU",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [
+          {
+            "id": "total3",
+            "kind": "multiplicity",
+            "member_ids": [
+              "tu"
+            ],
+            "each": 3,
+            "evidence_ids": [
+              "relation"
+            ],
+            "scope_text": "Explicit current scoped statement"
+          }
+        ],
+        "schedules": [],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "total_each": 3
+      },
+      "variants": [
+        {
+          "request": {
+            "schema": "equipment-calculation-request-1",
+            "binding": {},
+            "sources": [
+              {
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "role": "plan",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              }
+            ],
+            "evidence": [
+              {
+                "id": "graphic",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "graphic",
+                "text": "Original synthetic source evidence graphic",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "id": "relation",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "relationship",
+                "text": "Original synthetic source evidence relation",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "id": "schedule",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "schedule",
+                "text": "Original synthetic source evidence schedule",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "id": "coverage",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "coverage",
+                "text": "Original synthetic source evidence coverage",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "id": "requirement",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "requirement",
+                "text": "Original synthetic source evidence requirement",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              }
+            ],
+            "observations": [
+              {
+                "id": "tu",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "assembly",
+                "family": "terminal_unit",
+                "tag": "TU",
+                "work_status": "new",
+                "disposition": "include",
+                "identity": "established",
+                "procurement": "separate",
+                "installation": "field",
+                "parent_id": null,
+                "system_id": null,
+                "attributes": {},
+                "evidence_ids": [
+                  "graphic"
+                ],
+                "issues": []
+              }
+            ],
+            "relations": [
+              {
+                "id": "total3",
+                "kind": "multiplicity",
+                "member_ids": [
+                  "tu"
+                ],
+                "each": null,
+                "evidence_ids": [
+                  "relation"
+                ],
+                "scope_text": "Explicit current scoped statement"
+              }
+            ],
+            "schedules": [],
+            "scope": {
+              "source_keys": [
+                "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+              ],
+              "work_statuses": [
+                "new",
+                "existing",
+                "demolition",
+                "relocation",
+                "spare",
+                "unknown"
+              ],
+              "required_attributes": []
+            },
+            "coverage": {
+              "state": "complete",
+              "evidence_ids": [
+                "coverage"
+              ],
+              "unresolved_requirements": []
+            }
+          },
+          "expected": {
+            "total_each": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "EC16",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "old",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "fan",
+            "tag": "OLD",
+            "work_status": "relocation",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "none",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "new",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.5,
+              0.5,
+              0.7,
+              0.7
+            ],
+            "kind": "assembly",
+            "family": "fan",
+            "tag": "NEW",
+            "work_status": "relocation",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "none",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [
+          {
+            "id": "move",
+            "kind": "relocation",
+            "member_ids": [
+              "old",
+              "new"
+            ],
+            "each": null,
+            "evidence_ids": [
+              "relation"
+            ],
+            "scope_text": "Explicit current scoped statement"
+          }
+        ],
+        "schedules": [],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "total_each": 1,
+        "rows/row_id=new/remove_each": 1,
+        "rows/row_id=new/reinstall_each": 1,
+        "rows/row_id=new/procurement_each": 0,
+        "rows/length": 1,
+        "rows/row_id=new/physical_each": 1
+      },
+      "variants": []
+    },
+    {
+      "id": "EC17",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "old",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "boiler",
+            "tag": "OLD",
+            "work_status": "demolition",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "none",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "new",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "boiler",
+            "tag": "NEW",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [],
+        "schedules": [],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "rows/row_id=old/physical_each": 1,
+        "rows/row_id=new/physical_each": 1,
+        "rows/row_id=old/remove_each": 1,
+        "rows/row_id=new/procurement_each": 1,
+        "rows/row_id=old/procurement_each": 0
+      },
+      "variants": []
+    },
+    {
+      "id": "EC18",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "out",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "outdoor_unit",
+            "tag": "OUT",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "unknown",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": "sys1",
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "in1",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "indoor_unit",
+            "tag": "IN1",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "unknown",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": "sys1",
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "in2",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "indoor_unit",
+            "tag": "IN2",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "unknown",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": "sys1",
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [
+          {
+            "id": "sys1",
+            "kind": "system",
+            "member_ids": [
+              "out",
+              "in1",
+              "in2"
+            ],
+            "each": null,
+            "evidence_ids": [
+              "relation"
+            ],
+            "scope_text": "Explicit current scoped statement"
+          }
+        ],
+        "schedules": [],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "total_each": 3,
+        "systems/id=sys1/physical_each": 3,
+        "procurement_packages": null,
+        "systems/length": 1,
+        "rows/row_id=out/physical_each": 1,
+        "rows/row_id=in1/physical_each": 1,
+        "rows/row_id=in2/physical_each": 1
+      },
+      "variants": []
+    },
+    {
+      "id": "EC19",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [],
+        "relations": [],
+        "schedules": [],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "unknown",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "total_each": null
+      },
+      "variants": [
+        {
+          "request": {
+            "schema": "equipment-calculation-request-1",
+            "binding": {},
+            "sources": [
+              {
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "role": "plan",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              }
+            ],
+            "evidence": [
+              {
+                "id": "graphic",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "graphic",
+                "text": "Original synthetic source evidence graphic",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "id": "relation",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "relationship",
+                "text": "Original synthetic source evidence relation",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "id": "schedule",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "schedule",
+                "text": "Original synthetic source evidence schedule",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "id": "coverage",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "coverage",
+                "text": "Original synthetic source evidence coverage",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "id": "requirement",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "requirement",
+                "text": "Original synthetic source evidence requirement",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              }
+            ],
+            "observations": [],
+            "relations": [],
+            "schedules": [],
+            "scope": {
+              "source_keys": [
+                "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+              ],
+              "work_statuses": [
+                "new",
+                "existing",
+                "demolition",
+                "relocation",
+                "spare",
+                "unknown"
+              ],
+              "required_attributes": []
+            },
+            "coverage": {
+              "state": "complete",
+              "evidence_ids": [
+                "coverage"
+              ],
+              "unresolved_requirements": []
+            }
+          },
+          "expected": {
+            "total_each": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "EC20",
+      "request": {
+        "schema": "equipment-calculation-request-1",
+        "binding": {},
+        "sources": [
+          {
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "role": "plan",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "graphic",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "graphic",
+            "text": "Original synthetic source evidence graphic",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "relation",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "relationship",
+            "text": "Original synthetic source evidence relation",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "schedule",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "schedule",
+            "text": "Original synthetic source evidence schedule",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "coverage",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "coverage",
+            "text": "Original synthetic source evidence coverage",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          {
+            "id": "requirement",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "requirement",
+            "text": "Original synthetic source evidence requirement",
+            "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "observations": [
+          {
+            "id": "p1",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P1",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "p2",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P2",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "p3",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "pump",
+            "tag": "P3",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          },
+          {
+            "id": "ahu",
+            "source": {
+              "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "index": 0,
+              "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "bbox": [
+              0.1,
+              0.1,
+              0.3,
+              0.3
+            ],
+            "kind": "assembly",
+            "family": "ahu",
+            "tag": "AHU",
+            "work_status": "new",
+            "disposition": "include",
+            "identity": "established",
+            "procurement": "separate",
+            "installation": "field",
+            "parent_id": null,
+            "system_id": null,
+            "attributes": {},
+            "evidence_ids": [
+              "graphic"
+            ],
+            "issues": []
+          }
+        ],
+        "relations": [],
+        "schedules": [],
+        "scope": {
+          "source_keys": [
+            "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+          ],
+          "work_statuses": [
+            "new",
+            "existing",
+            "demolition",
+            "relocation",
+            "spare",
+            "unknown"
+          ],
+          "required_attributes": []
+        },
+        "coverage": {
+          "state": "complete",
+          "evidence_ids": [
+            "coverage"
+          ],
+          "unresolved_requirements": []
+        }
+      },
+      "expected": {
+        "known_subtotal_each": 4
+      },
+      "variants": [
+        {
+          "request": {
+            "schema": "equipment-calculation-request-1",
+            "binding": {},
+            "sources": [
+              {
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "role": "plan",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              }
+            ],
+            "evidence": [
+              {
+                "id": "graphic",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "graphic",
+                "text": "Original synthetic source evidence graphic",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "id": "relation",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "relationship",
+                "text": "Original synthetic source evidence relation",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "id": "schedule",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "schedule",
+                "text": "Original synthetic source evidence schedule",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "id": "coverage",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "coverage",
+                "text": "Original synthetic source evidence coverage",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              {
+                "id": "requirement",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "requirement",
+                "text": "Original synthetic source evidence requirement",
+                "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              }
+            ],
+            "observations": [
+              {
+                "id": "p1",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "assembly",
+                "family": "pump",
+                "tag": "P1",
+                "work_status": "new",
+                "disposition": "include",
+                "identity": "established",
+                "procurement": "separate",
+                "installation": "field",
+                "parent_id": null,
+                "system_id": null,
+                "attributes": {},
+                "evidence_ids": [
+                  "graphic"
+                ],
+                "issues": []
+              },
+              {
+                "id": "p2",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "assembly",
+                "family": "pump",
+                "tag": "P2",
+                "work_status": "new",
+                "disposition": "include",
+                "identity": "established",
+                "procurement": "separate",
+                "installation": "field",
+                "parent_id": null,
+                "system_id": null,
+                "attributes": {},
+                "evidence_ids": [
+                  "graphic"
+                ],
+                "issues": []
+              },
+              {
+                "id": "p3",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "assembly",
+                "family": "pump",
+                "tag": "P3",
+                "work_status": "new",
+                "disposition": "exclude",
+                "identity": "established",
+                "procurement": "separate",
+                "installation": "field",
+                "parent_id": null,
+                "system_id": null,
+                "attributes": {},
+                "evidence_ids": [
+                  "graphic"
+                ],
+                "issues": []
+              },
+              {
+                "id": "ahu",
+                "source": {
+                  "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "index": 0,
+                  "sheet_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                  "geometry_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+                },
+                "bbox": [
+                  0.1,
+                  0.1,
+                  0.3,
+                  0.3
+                ],
+                "kind": "assembly",
+                "family": "ahu",
+                "tag": "AHU",
+                "work_status": "new",
+                "disposition": "include",
+                "identity": "established",
+                "procurement": "separate",
+                "installation": "field",
+                "parent_id": null,
+                "system_id": null,
+                "attributes": {},
+                "evidence_ids": [
+                  "graphic"
+                ],
+                "issues": []
+              }
+            ],
+            "relations": [],
+            "schedules": [],
+            "scope": {
+              "source_keys": [
+                "08511dc3244a01028d17b1fa73a8d1e85e6dd7f31658aa7b9fd57effb306bf30"
+              ],
+              "work_statuses": [
+                "new",
+                "existing",
+                "demolition",
+                "relocation",
+                "spare",
+                "unknown"
+              ],
+              "required_attributes": []
+            },
+            "coverage": {
+              "state": "complete",
+              "evidence_ids": [
+                "coverage"
+              ],
+              "unresolved_requirements": []
+            }
+          },
+          "expected": {
+            "known_subtotal_each": 3,
+            "rows/row_id=ahu/physical_each": 1
+          }
+        }
+      ]
+    }
+  ]
+}

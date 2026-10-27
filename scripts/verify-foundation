@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
+task_root="$(pwd -P)"
+
+if [[ -n "${CARGO_BUILD_TARGET:-}" ]]; then
+  printf '%s\n' 'Foundation verification requires a native host build; unset CARGO_BUILD_TARGET.' >&2
+  exit 1
+fi
+if [[ -n "${CARGO_TARGET_DIR:-}" ]]; then
+  printf '%s\n' 'Foundation verification requires the repository target directory; unset CARGO_TARGET_DIR.' >&2
+  exit 1
+fi
+
+# These settings affect this process and its children only. Missing tools and
+# cached dependencies fail; this entry point does not install or fetch them.
+export CARGO_NET_OFFLINE=true
+export RUSTUP_AUTO_INSTALL=0
+export HELEOS_BIN="$task_root/target/debug/heleos"
+export HELEOS_PDF_GUEST="$task_root/target/wasm32-wasip1/release/heleos_pdf_guest.wasm"
+
+cargo +1.96.1 fmt --all --check
+cargo +1.96.1 build --frozen -p heleos-verification --bin verify-provenance
+"$task_root/target/debug/verify-provenance" build-pdf-guest
+cargo +1.96.1 clippy --frozen --workspace --all-targets --all-features -- -D warnings
+cargo +1.96.1 build --frozen -p heleos-cli --bin heleos
+cargo +1.96.1 test --frozen --workspace --all-targets
+cargo +1.96.1 run --frozen -p heleos-verification --bin verify-provenance
+
+if [[ "$(uname -s)" == Darwin ]]; then
+  # Rerun the runtime and acceptance processes with an inherited OS network deny.
+  # Failure to enter the sandbox is a failed gate, never an unsandboxed fallback.
+  task_sandbox_profile='(version 1) (allow default) (deny network*)'
+  /usr/bin/sandbox-exec -p "$task_sandbox_profile" \
+    cargo +1.96.1 test --frozen -p heleos-cli --all-targets
+  /usr/bin/sandbox-exec -p "$task_sandbox_profile" \
+    cargo +1.96.1 test --frozen -p heleos-core --test pdf_probe \
+    tracked_guest_executes_public_two_page_ten_thousand_page_and_rejection_paths -- --exact
+  /usr/bin/sandbox-exec -p "$task_sandbox_profile" \
+    cargo +1.96.1 test --frozen -p heleos-verification --all-targets
+fi

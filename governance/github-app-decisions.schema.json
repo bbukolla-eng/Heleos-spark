@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:heleos:github-app-decisions:v1",
+  "title": "Heleos GitHub App owner decision packet",
+  "description": "Local registry decisions only. Schema validation neither configures GitHub Apps nor establishes installation evidence. The operator command enforces semantic and repository-state checks.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "repository",
+    "expected_head",
+    "expected_registry_sha256",
+    "decision_owner",
+    "decision_date",
+    "apps"
+  ],
+  "properties": {
+    "schema": {"const": "heleos.github-app-decisions/v1"},
+    "repository": {"const": "bbukolla-eng/Heleos-spark"},
+    "expected_head": {
+      "type": "string",
+      "minLength": 40,
+      "maxLength": 40,
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "expected_registry_sha256": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "decision_owner": {"const": "Bekim Bukolla"},
+    "decision_date": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 10,
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "description": "The operator command also requires a real Gregorian calendar date, including leap-year validation."
+    },
+    "apps": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "description": "The command requires each of the four allowed names exactly once, independently of array order.",
+      "items": {"$ref": "#/$defs/app"}
+    }
+  },
+  "$defs": {
+    "printable_trimmed": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[!-~](?:[ -~]*[!-~])?$",
+      "not": {"pattern": "[^ -~]"},
+      "description": "Printable ASCII only, nonblank, without leading or trailing whitespace. The separate exclusion also rejects a terminal newline."
+    },
+    "app": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "disposition",
+        "version_or_digest",
+        "permissions",
+        "egress",
+        "evaluation",
+        "decision_evidence",
+        "installation_evidence"
+      ],
+      "properties": {
+        "name": {
+          "enum": ["Azure Pipelines", "AWS Connector for GitHub", "Amazon Q Developer", "ECC Tools"]
+        },
+        "disposition": {"enum": ["retain", "restrict", "suspend", "remove"]},
+        "version_or_digest": {
+          "$ref": "#/$defs/printable_trimmed",
+          "maxLength": 4096
+        },
+        "permissions": {
+          "$ref": "#/$defs/printable_trimmed",
+          "maxLength": 8192
+        },
+        "egress": {
+          "$ref": "#/$defs/printable_trimmed",
+          "maxLength": 4096
+        },
+        "evaluation": {
+          "$ref": "#/$defs/printable_trimmed",
+          "maxLength": 8192
+        },
+        "decision_evidence": {
+          "$ref": "#/$defs/printable_trimmed",
+          "maxLength": 2048
+        },
+        "installation_evidence": {
+          "$ref": "#/$defs/printable_trimmed",
+          "maxLength": 2048
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"disposition": {"enum": ["suspend", "remove"]}}},
+          "then": {"properties": {"egress": {"pattern": "^prohibited"}}},
+          "else": {"properties": {"egress": {"pattern": "^(?:prohibited|approved:)"}}}
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,313 @@
+{
+  "schema_version": 1,
+  "task_id": "DUCT-REFRESH-1-RESEARCH",
+  "recorded_at": "2026-09-14T06:57:59.274910+00:00",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_commit": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "assignment": {
+    "path": ".heleos/duct-refresh-2026-09-14/research-brief.json",
+    "sha256": "acbad03b3d959c16cdfbe373d388683ba28c904adbbebb674f02d06a072be0fd"
+  },
+  "scope": "Reuse source-backed context for rerunning drawing proposals while retaining corrections; no production edits or new mechanical rules",
+  "instruction_identity_checks": [
+    {
+      "path": "AGENTS.md",
+      "expected_sha256": "f1e8ca69afc99a02647b9509acf73fbf3bfb7c7c73029f7a20852a1cf33bb8a6",
+      "actual_sha256": "f1e8ca69afc99a02647b9509acf73fbf3bfb7c7c73029f7a20852a1cf33bb8a6",
+      "state": "unchanged"
+    },
+    {
+      "path": "SKILLS.md",
+      "expected_sha256": "939b8aac16ee926c9775efb2465ae3178d9f5365dc5cd2fe4df3aa46a52d017f",
+      "actual_sha256": "939b8aac16ee926c9775efb2465ae3178d9f5365dc5cd2fe4df3aa46a52d017f",
+      "state": "unchanged"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-13-calculation-sequence-design.md",
+      "expected_sha256": "6ae8b6a5a8a43b638b7cfae8f67c676de59a495e8aae8ca00eeb8870fd85d7b8",
+      "actual_sha256": "6ae8b6a5a8a43b638b7cfae8f67c676de59a495e8aae8ca00eeb8870fd85d7b8",
+      "state": "unchanged"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-14-duct-observation-contract.md",
+      "expected_sha256": "ba13bd258c58c5bc8a8d2a4b0a6c564c8d28050e811b7030c8d322992ae60f35",
+      "actual_sha256": "ba13bd258c58c5bc8a8d2a4b0a6c564c8d28050e811b7030c8d322992ae60f35",
+      "state": "unchanged"
+    }
+  ],
+  "notebook_inventory_reused": {
+    "path": "docs/research/notebooklm/notebook-inventory.json",
+    "sha256": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a"
+  },
+  "inventory_snapshot": {
+    "retrieved_at": "2026-09-14T05:01:59.112065+00:00",
+    "notebook_count": 59,
+    "selected_source_records": 200,
+    "live_refresh_performed": false
+  },
+  "prior_findings_reused": {
+    "path": "docs/research/notebooklm/duct-correction-findings-2026-09-14.json",
+    "sha256": "b1b8520ae1a2b0a561b91f6547ea397debb9f1796fe5f7541a53883ddeafd28c"
+  },
+  "prior_adoption_record": {
+    "path": "docs/research/notebooklm/duct-correction-implementation-2026-09-14.json",
+    "sha256": "adf04240bd5c47ae9c8093286e7c4a27fa517c49c42fddf0ae1a5a15e85527ad"
+  },
+  "query_decision": {
+    "state": "reused_existing_verified_findings",
+    "new_queries": 0,
+    "reason": "The existing correction query and complete indexed N05 bodies establish the relevant limitations. The new work enforces project-defined correction/history semantics; no new public-source knowledge dependency warrants repeating a question against unchanged text.",
+    "prior_N10_unanswered_query_retried": false
+  },
+  "sources": [
+    {
+      "key": "mepdetect",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "4a7e4472-4c73-49fa-9e01-e33e1b9e20f5",
+      "title": "GitHub - DynMEP/MEPdetect: Symbol detection and circuit tracing for MEP construction drawings. Detects electrical symbols with YOLO11, traces how they are wired, and exports netlists and per-circuit counts to CSV, Excel, DXF or PDF. Hosted at mepdetect.com. \u00b7 GitHub",
+      "original_url": "https://github.com/DynMEP/MEPdetect",
+      "retrieved_at": "2026-09-14T05:18:04.078655+00:00",
+      "content_sha256": "939ce39f0fba5ad26e084303b4d9918236ed516a080b77ee8f5eb917633db26e",
+      "text_location": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-indexed-text.txt",
+      "result_evidence": {
+        "path": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-source-result.json",
+        "sha256": "b6e0065d7a3f0760b436a08e29295f3898a8c8f036f0808b642497d74f7ce832"
+      }
+    },
+    {
+      "key": "yoloplan",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "8bc4bd22-4519-4724-b727-861b4e84467e",
+      "title": "GitHub - DynMEP/YOLOplan: YOLOplan automates symbol detection and counting in technical drawings (PDF, images, CAD) using YOLO11 object detection. Built for MEP professionals, it streamlines takeoff for electrical, HVAC and more - fast, accurate and production-ready. \u00b7 GitHub",
+      "original_url": "https://github.com/DynMEP/YOLOplan",
+      "retrieved_at": "2026-09-14T05:18:04.080153+00:00",
+      "content_sha256": "8131cecb3842c99558dc828bc60c447ad073b3e8c9cb215e4f5f8420c13c7861",
+      "text_location": ".heleos/duct-correction-build-2026-09-14/research-yoloplan-indexed-text.txt",
+      "result_evidence": {
+        "path": ".heleos/duct-correction-build-2026-09-14/research-yoloplan-source-result.json",
+        "sha256": "26d87f7a66546b5c5c01375820150ba31959e26582e774cc4d535db4301858ff"
+      }
+    },
+    {
+      "key": "bluebeam-measurements",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "6a218a8d-a97f-41b4-9415-eb30f52adb24",
+      "title": "Takeoffs and measurements | Bluebeam Technical Support",
+      "original_url": "https://support.bluebeam.com/user-manual/menus/tools/takeoffs-measurements.html",
+      "retrieved_at": "2026-09-14T05:04:42.911115+00:00",
+      "content_sha256": "4afe5ed0bf40b5b7c25c8119b1a1c9a929b0a1d4a94b401a4007fca9b7359f97",
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/bluebeam-measurements-indexed-text.txt",
+      "result_evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/bluebeam-measurements-source-result.json",
+        "sha256": "4913118e715b675b991dcd62d09e8a740cd463893e2b51b12cef77e22178912b"
+      }
+    }
+  ],
+  "source_verification": "Exact retained text hashes, retained response hashes and text/response equality checked locally. Notebook/source identities match the reused inventory. Passage locations are indexed text lines, not PDF pages. No new source freshness, publisher, license, current repository or hosted-product audit.",
+  "findings": [
+    {
+      "id": "DUCT-REFRESH-RESEARCH-01",
+      "state": "verified_applicable",
+      "reuses": [
+        "DUCT-CORR-RESEARCH-03"
+      ],
+      "claim": "MEPdetect describes missed symbols, untraced runs and calibration errors as limitations and expects outputs to be checked against the drawing. MEPdetect and YOLOplan describe visual/tabular exports.",
+      "support": [
+        {
+          "source_key": "mepdetect",
+          "indexed_text_lines": [
+            1310,
+            1316
+          ],
+          "section": "Scope and verification",
+          "passage_sha256": "c34fcc4033e6be50e0daf246d3fb137787addc6c49080f9f8761d200ab13ca1c"
+        },
+        {
+          "source_key": "mepdetect",
+          "indexed_text_lines": [
+            951,
+            951
+          ],
+          "section": "Project introduction",
+          "passage_sha256": "3b6315e3aa73e5ea9bb9cddd87f295e3fb047462ff45d1d476e7d9d50969f745"
+        },
+        {
+          "source_key": "yoloplan",
+          "indexed_text_lines": [
+            966,
+            970
+          ],
+          "section": "Project Structure: results",
+          "passage_sha256": "c46f41875e6fffeb3ad666c8bc8046aa536a9ba3359cc559a08825cc5f5c5180"
+        }
+      ],
+      "applicability": "Retain old and new proposal/source artifacts for comparison and keep coverage partial or unknown unless independently established. Successful regeneration does not mean all previous observations or corrections are now unnecessary. Artifact retention is governed by the local contract; the public examples corroborate the value of source review.",
+      "production_rule_admission": false,
+      "adopted_implementation_or_tests": null
+    },
+    {
+      "id": "DUCT-REFRESH-RESEARCH-02",
+      "state": "verified_contextual_example",
+      "reuses": [
+        "DUCT-CORR-RESEARCH-01",
+        "DUCT-CORR-RESEARCH-02"
+      ],
+      "claim": "Bluebeam describes deliberate point-entry edits, separate descriptive labels and recalculation of a measurement when control points change.",
+      "support": [
+        {
+          "source_key": "bluebeam-measurements",
+          "indexed_text_lines": [
+            1175,
+            1207
+          ],
+          "section": "Description, Label and point-entry instructions",
+          "passage_sha256": "d16b7b9e05781e2b915f30baaa88d5778b74c00a02c90be36e26354175d03bc7"
+        },
+        {
+          "source_key": "bluebeam-measurements",
+          "indexed_text_lines": [
+            1093,
+            1099
+          ],
+          "section": "Adjust arc control points",
+          "passage_sha256": "e3d779bf6d9a0cd172464668a09a4d3d3605d8230d1cf609faadf1c1330ac0f7"
+        }
+      ],
+      "applicability": "Contextual edit-and-update feedback only; it does not define regenerated detector proposals, preservation of manual corrections, replay/idempotency or historical append-only storage.",
+      "production_rule_admission": false,
+      "adopted_implementation_or_tests": null
+    },
+    {
+      "id": "DUCT-REFRESH-RESEARCH-03",
+      "state": "unsupported",
+      "reuses": [
+        "DUCT-CORR-RESEARCH-04",
+        "DUCT-CORR-RESEARCH-06"
+      ],
+      "claim": "The selected N05 indexed README bodies do not document retaining edited observations across a detector rerun, exact matching of regenerated proposals, edit-versus-proposal conflict resolution, or transactional replay.",
+      "support": [
+        {
+          "source_key": "mepdetect",
+          "scope": "Full retained indexed README/page; correction query and direct text review already completed; refresh keyword occurrences are GitHub session banners, not detector semantics."
+        },
+        {
+          "source_key": "yoloplan",
+          "scope": "Full retained indexed README/page; correction query and direct text review already completed; refresh keyword occurrences are GitHub session banners, not detector semantics."
+        }
+      ],
+      "applicability": "This is an absence in the selected documentation snapshot, not a statement about every implementation or hosted product. No new question is needed to reinterpret already verified absent content. Implementation details remain governed by the local authority and acceptance checks.",
+      "production_rule_admission": false,
+      "adopted_implementation_or_tests": null
+    },
+    {
+      "id": "DUCT-REFRESH-RESEARCH-04",
+      "state": "conflict_not_adopted",
+      "reuses": [
+        "DUCT-CORR-RESEARCH-05"
+      ],
+      "claim": "MEPdetect describes following matching electrical circuit tags across matchlines.",
+      "support": [
+        {
+          "source_key": "mepdetect",
+          "indexed_text_lines": [
+            973,
+            973
+          ],
+          "section": "Electrical drawing conventions",
+          "passage_sha256": "e7056d1f11361531b0591b9ebe0c40f1ad7a02bced219d8e7bc382574ee3d097"
+        }
+      ],
+      "applicability": "Do not transfer electrical same-tag logic to regenerated duct identity. Matching type text, quantity or visual similarity does not establish that a new proposal replaces a corrected physical portion. Existing D08 and exact project source/provenance authority remain unchanged.",
+      "production_rule_admission": false,
+      "adopted_implementation_or_tests": null
+    }
+  ],
+  "implementation_authority": [
+    {
+      "document": {
+        "path": "docs/superpowers/specs/2026-09-14-duct-observation-contract.md",
+        "sha256": "ba13bd258c58c5bc8a8d2a4b0a6c564c8d28050e811b7030c8d322992ae60f35"
+      },
+      "lines": [
+        16,
+        29
+      ],
+      "requirement": "Retain saved results, suppress changed dependencies, explicitly append replacements, preserve unselected row bytes/fingerprints and replace the complete affected correspondence closure."
+    },
+    {
+      "document": {
+        "path": "docs/superpowers/specs/2026-09-14-duct-observation-contract.md",
+        "sha256": "ba13bd258c58c5bc8a8d2a4b0a6c564c8d28050e811b7030c8d322992ae60f35"
+      },
+      "lines": [
+        50,
+        53
+      ],
+      "requirement": "Corrections preserve source references and do not silently drop unresolved issues."
+    },
+    {
+      "document": {
+        "path": "docs/superpowers/specs/2026-09-13-calculation-sequence-design.md",
+        "sha256": "6ae8b6a5a8a43b638b7cfae8f67c676de59a495e8aae8ca00eeb8870fd85d7b8"
+      },
+      "lines": [
+        49,
+        59
+      ],
+      "requirement": "Freeze source scope; preserve reader/source evidence; append correction/history and recalculate affected groups under local rules."
+    }
+  ],
+  "adoption_guidance": [
+    {
+      "behavior": "Keep regenerated proposals and saved user corrections as separately traceable records; do not silently overwrite a correction when a new proposal set arrives.",
+      "basis": "Existing local correction/history contract, with DUCT-REFRESH-RESEARCH-01 as contextual support",
+      "verification_to_add": "Reread a corrected drawing and confirm original responses, correction evidence, active corrections and prior calculation bytes remain accessible."
+    },
+    {
+      "behavior": "Apply only deliberately reconciled affected changes; keep unrelated rows unchanged and expose unresolved replacement/correspondence conflicts.",
+      "basis": "Existing replace_rows and exact source/physical correspondence contract; public sources do not define the matching algorithm",
+      "verification_to_add": "Changed, omitted, split, added and ambiguous regenerated proposals cannot duplicate or discard corrected portions; unrelated current and stale rows retain their correct status."
+    },
+    {
+      "behavior": "Make repeated command application idempotent and preserve source/dependency checks across save/export/reopen.",
+      "basis": "Existing local replay and history contract, not a newly inferred public rule",
+      "verification_to_add": "Replay a refresh/reconciliation command and reopen/export the project without duplicating events, rerunning inference, or losing original source artifacts."
+    }
+  ],
+  "unsupported_details": [
+    "Exact matching/retargeting policy between old and regenerated proposal identifiers",
+    "Conflict UI and decision semantics for a saved correction versus a changed/removed new proposal",
+    "Transaction boundaries, concurrency/idempotency and persisted event schema",
+    "Automatic carry-forward across changed source revisions or source geometry",
+    "Physical equivalence inferred from model confidence, tags, nearest boxes or equal quantities"
+  ],
+  "external_activity": {
+    "new_queries": 0,
+    "source_reads": 0,
+    "source_or_note_additions": 0,
+    "private_uploads": 0,
+    "new_external_submissions": 0,
+    "egress_receipts_required": false,
+    "reason": "No external call was made; all verification used retained local indexed snapshots."
+  },
+  "checks": {
+    "source_text_hashes": 3,
+    "source_response_hashes": 3,
+    "source_content_matches_response": true,
+    "source_ids_in_inventory": true,
+    "instruction_hashes": 4,
+    "support_passages": 6,
+    "result": "PASS"
+  },
+  "production_rule_admission": false,
+  "code_or_tests_changed": false,
+  "implementation_finished": false,
+  "independent_acceptance": "pending coordinator review",
+  "process": {
+    "state": "terminal",
+    "live_handles": [],
+    "external_jobs_started": []
+  },
+  "next_action": "Coordinator defines and implements the bounded refresh reconciliation behavior under the existing source/correction/history contract, then records actual code/test adoption separately."
+}

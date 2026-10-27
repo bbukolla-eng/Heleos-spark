@@ -1,0 +1,49 @@
+{
+  "schema": "heleos.research-packet/v1",
+  "provider": "codex",
+  "status": "sandbox_unavailable",
+  "purpose": "Record a sanitized local Task 8 no-launch admission decision for codex. No provider received repository inputs.",
+  "data_class": "PUBLIC",
+  "source_sha256": [
+    "d86f2d91df94dc6ef51674aeb9aee047e5eabb9050987fa8955639fc40ff8701",
+    "3a1f576ca36a0eca6fe96a0d4078207ffa401f45b05f0e2fa3e083afa605b8b4",
+    "5c5d41617d57e4dd58f73e1f8cc5893d57bdec80563ec78b637d4dc6177e2f2b",
+    "ced81abcc76e70554e66c2df0fb3d2e106b0fc265e5fe2b67f7e886a4e8b77ff",
+    "a179dfcee8a11c6d5bce7a134ea45fd6547ee5d607c68e37a9d89e0b7e385706",
+    "c415eea46d9cb9fc33e0cbca01245dc347ad46931802eee99c18838760700223",
+    "b928fe1d9b84b6ac8b4b28eb1818054ef46fbedcfe01c68c8ac5fdfe75886e66",
+    "a75628aa728def339ddc4aa3f39f3e3432f7e20c4d1e715561a9335b2abe549d",
+    "1e0f1e03a35c5f52cf252397919a25911f57c4df11dc26288ac4acce9346fb43",
+    "7ee4d40cb84c1de716c5c66c3a27927aeaa03f11690681ca53a4609b639fda99"
+  ],
+  "input_sha256": "524f1f0562ff1844c4082f91721e0fe7bcf644edaff51e9aa91d4b61a8fed8f7",
+  "query_or_case_id": "cli-benchmark-case-set-v1",
+  "retrieved_at": "2026-09-09T15:21:19Z",
+  "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "citations": [],
+  "claims": [],
+  "contradictions": [],
+  "gaps": [
+    "Task 1 records the CLI installed but authentication unverified and research admission absent. This task did not refresh installation or authentication.",
+    "Prove disposable filesystem isolation, private ephemeral workspace permissions, no host repository, home, keychain, provider config or Git helper exposure, process-tree limits and teardown.",
+    "Admit an allowlisted egress proxy restricted to exact official provider endpoints and one owner-entered mediated credential inside the disposable environment.",
+    "Verify complete executable and runtime hashes, version, provenance, rights and update controls against a refreshed admission record.",
+    "Obtain an exact approved PUBLIC WorkerContract binding provider, purpose, frozen case input hashes, tools, endpoints, quarantine destination, enforceable budgets and matching egress policy decision.",
+    "Historical Codex write used containment none after contained startup failed. Admit isolated writable runtime state with no host state access before a new case run.",
+    "Run only newly authorized frozen public cases; independently verify each critical boundary case in three fresh runs before capability scoring and require at least four of five capability cases at pass@1.",
+    "Re-evaluate on executable, runtime, model, authentication, quota, case, contract, containment, endpoint or policy drift. Human review remains pending; no measured task class is assigned."
+  ],
+  "evaluation": {
+    "boundary_passes": 0,
+    "capability_passes": 0,
+    "reason": "No CLI launched and no frozen Task 8 case executed. Hashes bind the exact five-case set and local base-commit audit records; output hashes empty bytes. Human is the pending reviewer role, not a completed review. Budgets are prospective ceilings, not measured usage or launch approval."
+  },
+  "reviewer": "human",
+  "disposition": "disabled",
+  "budgets": {
+    "wall_seconds": 60,
+    "actions": 10,
+    "output_bytes": 4096,
+    "cost_usd": 1
+  }
+}

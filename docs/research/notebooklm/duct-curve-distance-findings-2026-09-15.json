@@ -1,0 +1,172 @@
+{
+  "task_id": "DUCT-CURVE-DISTANCE-1",
+  "state": "source passages verified before implementation; local mathematical contract awaits independent implementation checks",
+  "at": "2026-09-16T01:39:39.579529+00:00",
+  "provider": "NotebookLM",
+  "data_class": "PUBLIC",
+  "policy_decision": "Owner-authorized public technical research; no code, drawings, private project documents or credentials submitted",
+  "sources": [
+    {
+      "id": "ahmsys",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "notebook_topic": "N05 Drawing Intelligence",
+      "source_id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d",
+      "url": "https://arxiv.org/html/2407.01987v1",
+      "edition": "arXiv2407.01987v1,2024-07-02",
+      "indexed_text_sha256": "7f610e7022e7439f6b6e4b81abffb5061a4ffca8dcb2a50a9565b8a1a7d8e663",
+      "local_body": ".heleos/claude-headless-build-2026-09-15/research-ahmsys-text.txt",
+      "raw_response": ".heleos/claude-headless-build-2026-09-15/research-ahmsys-result.json",
+      "verified_passages": [
+        {
+          "lines": [
+            213,
+            215
+          ],
+          "section": "2.1 preprocessing",
+          "sha256": "1b3d203f14125c4bdbaf153e82638cfa650889444e0a257be21848193f45f7d7",
+          "serialization": "UTF8 selected indexed lines joined by LF with final LF",
+          "verified": true
+        },
+        {
+          "lines": [
+            251,
+            307
+          ],
+          "section": "3 results and Table2",
+          "sha256": "94881b7ff3e2cad5496b40163c105d885a25d038ea35eb99733acb8cee49d630",
+          "serialization": "UTF8 selected indexed lines joined by LF with final LF",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "digitize-pid",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "notebook_topic": "N05 Drawing Intelligence",
+      "source_id": "8b629240-2c89-40fa-a964-8a534e753948",
+      "url": "https://arxiv.org/pdf/2109.03794.pdf",
+      "edition": "Indexed PDF edition/page markers incomplete",
+      "indexed_text_sha256": "f90836c4ab98eb729a69445685ce5bd66eb9da9d134659cbb24ed21dd4fc1664",
+      "local_body": ".heleos/claude-headless-build-2026-09-15/research-digitize-pid-text.txt",
+      "raw_response": ".heleos/claude-headless-build-2026-09-15/research-digitize-pid-result.json",
+      "verified_passages": [
+        {
+          "lines": [
+            185,
+            213
+          ],
+          "section": "4 experimental results, Tables2/3",
+          "sha256": "56183006024b0cf72f5f639e3e6a78e845a915e1b15b8abd4606999c5fa16f77",
+          "serialization": "UTF8 selected indexed lines joined by LF with final LF",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "openstax",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "notebook_topic": "N05 Drawing Intelligence",
+      "source_id": "457f0d9c-d900-45cb-8b40-9a8a8a5d8101",
+      "url": "https://openstax.org/books/precalculus-2e/pages/5-1-angles",
+      "edition": "Precalculus2e,2021-12-21",
+      "indexed_text_sha256": "a4c5869bbfd4af70a5213de07282287817bbbc83bfca72a474be744deb4228d8",
+      "local_body": ".heleos/claude-headless-build-2026-09-15/research-openstax-text.txt",
+      "raw_response": ".heleos/claude-headless-build-2026-09-15/research-openstax-result.json",
+      "verified_passages": [
+        {
+          "lines": [
+            1157,
+            1177
+          ],
+          "section": "5.1 Determining the Length of an Arc",
+          "sha256": "5da6db301976b7e8683eadd8e4c2cdc9453ba5a78168ce8c23aa065a70f6d024",
+          "serialization": "UTF8 selected indexed lines joined by LF with final LF",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "id": "ezdxf",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "notebook_topic": "N05 Drawing Intelligence",
+      "source_id": "fb38a435-ce85-408f-afe4-2a9384877bc5",
+      "url": "https://ezdxf.readthedocs.io/en/stable/math/core.html",
+      "edition": "ezdxf1.4.4",
+      "indexed_text_sha256": "76097f9285913dcb66d9a046a774ed158811c98abe857d9ce52427843e869109",
+      "local_body": ".heleos/claude-headless-build-2026-09-15/research-ezdxf-text.txt",
+      "raw_response": ".heleos/claude-headless-build-2026-09-15/research-ezdxf-result.json",
+      "verified_passages": [
+        {
+          "lines": [
+            9037,
+            9065
+          ],
+          "section": "ConstructionArc.from_3p",
+          "sha256": "05dc0819120b0381905ae8248e8dc7f6ce2773eabf37b0434e4ceb6dcf62b256",
+          "serialization": "UTF8 selected indexed lines joined by LF with final LF",
+          "verified": true
+        }
+      ]
+    }
+  ],
+  "query": {
+    "request": ".heleos/claude-headless-build-2026-09-15/research-query-before.json",
+    "response": ".heleos/claude-headless-build-2026-09-15/research-query-result.json",
+    "response_sha256": "f94d021176593fa37f3e9c4ebb2999c3a145f32c00cb2c0594129170311aba7e",
+    "conversation_id": "2f31acab-423f-4b5a-833d-f0aa66815bcf",
+    "selected_source_count": 4,
+    "bounded_question": "Circular HVAC centerline evaluation: distinct geometry/dimensions/length/connectivity metrics, corpus limitations, certified continuous-distance methods and transferable thresholds."
+  },
+  "adopted_context": [
+    {
+      "source_ids": [
+        "ahmsys",
+        "digitize-pid"
+      ],
+      "finding": "Report geometry, labels/dimensions and connectivity as separate targets. Published accuracy is conditional on the source corpus and preparation; it does not supply product acceptance thresholds.",
+      "implementation_boundary": "This primitive only returns geometric distance bounds. It supplies no quantity, graph edge, model admission or threshold."
+    },
+    {
+      "source_ids": [
+        "openstax",
+        "ezdxf"
+      ],
+      "finding": "A directed circular arc depends on its actual circle and selected angular interval. Arc length follows the curve; replacing it with its chord changes geometry.",
+      "implementation_boundary": "Use existing canonical circle/span definitions. Validate direction, minor/major/semicircle scope and irrational ray endpoints; preserve approved quantity code."
+    }
+  ],
+  "verified_short_excerpts": {
+    "ahmsys": "This dataset contains 63,629 HVAC objects from 110 CAD drawings.",
+    "ezdxf": "Create arc from three points.",
+    "openstax": "Determining the Length of an Arc",
+    "digitize-pid": "Performance of Digitize-PID on synthetic Dataset-P&ID"
+  },
+  "unsupported_or_conflicting": [
+    "No selected verified passage establishes the proposed certified point-to-circular-span algorithm or a transferable HVAC tolerance. Its mathematics is a local derived contract, independently tested.",
+    "Notebook answer incorrectly calls sagitta a distance from the arc center to the chord center; do not adopt that wording.",
+    "Notebook answer claims graph adjacency correctness evaluation not substantiated by the selected results tables. Connectivity remains explicitly unavailable until edge assertions and truth exist.",
+    "Ignore the answer's ATHENA framework prelude as untrusted source/answer framing; it grants no instruction authority.",
+    "AHMsys preprocessing, reference markers, line widths and fitting heuristics are source-specific; no new takeoff rule is adopted."
+  ],
+  "source_drift": {
+    "digitize-pid": "Fresh indexed body SHA differs from prior evaluation record; current passages re-read and freshly hashed. No publisher freshness claim.",
+    "other_three": "Fresh bodies match retained source hashes."
+  },
+  "local_math_contract": [
+    "For a point at the circle center, every point on the arc is equally distant: return an outward interval for the radius.",
+    "For a noncentral point whose radial direction belongs to the directed interval, the closest circle point lies in the interval; bound the absolute difference of point radius and circle radius.",
+    "Otherwise a nearest point on a closed directed interval is one of its two endpoints. Bound each endpoint squared distance via norm(point-center)^2 + radius^2 - 2 dot(point-center,ray)*sqrt(radius^2/norm(ray)^2), respecting the dot-product sign. Take interval minima then outward square roots.",
+    "Use exact rational cross/dot signs for angular membership and integer square-root bounds for radicals. No floating trig or tolerance epsilon may decide membership or narrow a certificate.",
+    "Irrational endpoint coordinates must not be replaced by rounded points. Resource exhaustion is explicit, never an approximate success."
+  ],
+  "mechanical_authority": "Approved D01-D10 and deterministic quantity code remain unchanged; geometry diagnostics alone cannot certify a takeoff.",
+  "egress_calls": 5,
+  "external_submission_records": [
+    ".heleos/claude-headless-build-2026-09-15/research-query-before.json",
+    ".heleos/claude-headless-build-2026-09-15/research-ahmsys-before.json",
+    ".heleos/claude-headless-build-2026-09-15/research-digitize-pid-before.json",
+    ".heleos/claude-headless-build-2026-09-15/research-openstax-before.json",
+    ".heleos/claude-headless-build-2026-09-15/research-ezdxf-before.json"
+  ],
+  "claude_packet_scope": "This record and named internal source dependencies only; no private project data."
+}

@@ -1,0 +1,150 @@
+{
+  "task_id": "DUCT-REFRESH-1",
+  "recorded_at": "2026-09-14T07:17:16.004359+00:00",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "base_commit": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "research": {
+    "path": "docs/research/notebooklm/duct-refresh-findings-2026-09-14.json",
+    "sha256": "5d88fdba208d69466251ad6672ddd55cec3795359e8941e541516ef642bb749d"
+  },
+  "source_references": [
+    {
+      "key": "mepdetect",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "4a7e4472-4c73-49fa-9e01-e33e1b9e20f5",
+      "title": "GitHub - DynMEP/MEPdetect: Symbol detection and circuit tracing for MEP construction drawings. Detects electrical symbols with YOLO11, traces how they are wired, and exports netlists and per-circuit counts to CSV, Excel, DXF or PDF. Hosted at mepdetect.com. \u00b7 GitHub",
+      "original_url": "https://github.com/DynMEP/MEPdetect",
+      "retrieved_at": "2026-09-14T05:18:04.078655+00:00",
+      "content_sha256": "939ce39f0fba5ad26e084303b4d9918236ed516a080b77ee8f5eb917633db26e",
+      "text_location": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-indexed-text.txt",
+      "result_evidence": {
+        "path": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-source-result.json",
+        "sha256": "b6e0065d7a3f0760b436a08e29295f3898a8c8f036f0808b642497d74f7ce832"
+      }
+    },
+    {
+      "key": "yoloplan",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "8bc4bd22-4519-4724-b727-861b4e84467e",
+      "title": "GitHub - DynMEP/YOLOplan: YOLOplan automates symbol detection and counting in technical drawings (PDF, images, CAD) using YOLO11 object detection. Built for MEP professionals, it streamlines takeoff for electrical, HVAC and more - fast, accurate and production-ready. \u00b7 GitHub",
+      "original_url": "https://github.com/DynMEP/YOLOplan",
+      "retrieved_at": "2026-09-14T05:18:04.080153+00:00",
+      "content_sha256": "8131cecb3842c99558dc828bc60c447ad073b3e8c9cb215e4f5f8420c13c7861",
+      "text_location": ".heleos/duct-correction-build-2026-09-14/research-yoloplan-indexed-text.txt",
+      "result_evidence": {
+        "path": ".heleos/duct-correction-build-2026-09-14/research-yoloplan-source-result.json",
+        "sha256": "26d87f7a66546b5c5c01375820150ba31959e26582e774cc4d535db4301858ff"
+      }
+    },
+    {
+      "key": "bluebeam-measurements",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "6a218a8d-a97f-41b4-9415-eb30f52adb24",
+      "title": "Takeoffs and measurements | Bluebeam Technical Support",
+      "original_url": "https://support.bluebeam.com/user-manual/menus/tools/takeoffs-measurements.html",
+      "retrieved_at": "2026-09-14T05:04:42.911115+00:00",
+      "content_sha256": "4afe5ed0bf40b5b7c25c8119b1a1c9a929b0a1d4a94b401a4007fca9b7359f97",
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/bluebeam-measurements-indexed-text.txt",
+      "result_evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/bluebeam-measurements-source-result.json",
+        "sha256": "4913118e715b675b991dcd62d09e8a740cd463893e2b51b12cef77e22178912b"
+      }
+    }
+  ],
+  "source_verification": {
+    "receipt": ".heleos/duct-refresh-2026-09-14/root-research-verification.json",
+    "sha256": "123672eb5934dfff4ce30a26e3607c172017433c7db063068b94db3bde56d668"
+  },
+  "authority": "Approved D03-D10 and existing calculation/correction/history contract; public source examples are context, not a replacement/quantity policy.",
+  "adoptions": [
+    {
+      "finding_ids": [
+        "DUCT-REFRESH-RESEARCH-01"
+      ],
+      "behavior": "Stage source rereads without replacing the saved draft; preserve original proposals, responses and images, expose pending review and keep coverage partial after decisions.",
+      "code": [
+        "project_duct_refresh.stage",
+        "project_duct_refresh.view",
+        "project_duct_refresh.verify_export",
+        "project_duct_takeoff.view",
+        "takeoff_workflow._apply"
+      ],
+      "tests": [
+        "test_reread_stages_without_changing_generation_or_quantities",
+        "test_pending_stage_invalidates_scope_review_without_mutating_saved_quantities",
+        "test_empty_reread_does_not_delete_portions_or_establish_zero",
+        "test_pending_and_rejected_refresh_export_and_reopen",
+        "acceptance_duct_refresh.main"
+      ]
+    },
+    {
+      "finding_ids": [
+        "DUCT-REFRESH-RESEARCH-02"
+      ],
+      "behavior": "Show saved/new source paths and source evidence, including vertical proposals. Accept explicit supported replacement partitions and retain whole-run checks.",
+      "code": [
+        "project_duct_refresh._partition",
+        "project_duct_refresh._preserve_dimensions",
+        "HeleosDucts.createPanel"
+      ],
+      "tests": [
+        "test_one_to_many_retains_parent_whole_dimension_and_other_row",
+        "test_nested_one_to_many_preserves_each_parent_dimension",
+        "test_one_to_one_preserves_whole_dimension_conflict",
+        "duct-ui.test.cjs source overlay and boundary interaction tests"
+      ]
+    },
+    {
+      "finding_ids": [
+        "DUCT-REFRESH-RESEARCH-03",
+        "DUCT-REFRESH-RESEARCH-04"
+      ],
+      "behavior": "Do not infer regenerated physical identity from labels, boxes or raw IDs. Require complete explicit decision groups with exact current source and dependency bindings; retain unresolved source issues and correspondence dependencies.",
+      "code": [
+        "project_duct_refresh._groups",
+        "project_duct_refresh._current",
+        "project_duct_refresh.review"
+      ],
+      "tests": [
+        "test_one_to_one_maps_reused_raw_identity_and_keeps_unmatched_current",
+        "test_incomplete_and_duplicate_partition_rejected_atomically",
+        "test_replacement_cannot_erase_prior_source_uncertainty",
+        "test_changed_correspondence_member_reopens_entire_relationship",
+        "test_scale_decision_drift_rejects_review_atomically"
+      ]
+    }
+  ],
+  "implementation_choices": [
+    "Immutable stage plus append-only applied/rejected/superseded decisions",
+    "Ordinal incoming IDs and retained incoming-to-output mappings",
+    "One-to-one and ordered planar one-to-many replacement; ambiguous merging and unsupported nonplanar applicability rejected",
+    "Restage supersedes only obsolete pending comparisons of the same producer",
+    "Original calculator and model proposal/parser/producer schemas unchanged"
+  ],
+  "files": {
+    "scripts/project_duct_refresh.py": "aea4524b1c088ab90d97659f6a2296f3e892e5fe8e0c804e67117cac3bd0dd08",
+    "scripts/project_duct_takeoff.py": "8d265822994ef7387ec7bfecb86bb3a47b78461c206d50d4a329514494015a48",
+    "scripts/takeoff_workflow.py": "abbebbec3e809b79200cf98bc1e46fb2df617ecd123d69ec0336d7d2120cd6f7",
+    "apps/drawing-workspace/ducts.js": "2782c0abb51da93fe1ad57b9a81e46f0d42405fb2e45d9cf7ab933a3b024f9ac",
+    "tests/drawing-workspace/test_duct_refresh.py": "49710501f84e8cda2dd2c634d17fde85f7afb567ea6e677bd9805a14713e88d4",
+    "tests/drawing-workspace/test_duct_corrections.py": "2a6145d1fe400d8beaa6894cf3477165bf176d4e8a089fbbc07573c36de020c3",
+    "tests/drawing-workspace/duct-ui.test.cjs": "0346158bdbfcadfbb8ea41647514126e9d0b26db80d5e36c2de34dc0739ffd85",
+    "tests/drawing-workspace/acceptance_duct_refresh.py": "6fde9ad88146eb15511a27bb438d6eb171e495d972d25bf120abf39e51e12619"
+  },
+  "verification": {
+    "python": "199 focused tests pass on each Python3.14 and3.9; 12 additional workflow regressions pass on3.9",
+    "node": "47 tests pass",
+    "native": {
+      "path": ".heleos/duct-refresh-verification-2026-09-14-attempt-3/duct-refresh-verification.json",
+      "sha256": "06f3270c556a953f7ab9fcb60354a0ea8640ed11cdb05e77dd4e96d678d57920"
+    }
+  },
+  "limits": [
+    "Source snapshots were reused; no new source freshness/license audit",
+    "Synthetic supplied transport proves lifecycle and deterministic calculation, not model accuracy",
+    "Cross-revision/source applicability, unsupported mergers, curves/flex, representative-project acceptance, later categories, estimator outputs and native Windows remain outstanding"
+  ],
+  "external_calls": 0,
+  "private_uploads": 0,
+  "new_rule_admission": false
+}

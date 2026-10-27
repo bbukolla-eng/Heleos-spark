@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "notebooklm_verified_findings",
+  "query": {
+    "path": ".heleos/build-checkpoint-2026-09-16/notebooklm-query.json",
+    "sha256": "c522073674fc131e6d5b9faea3473ecb7d2723a64e79b3deba2b0961fac75fde"
+  },
+  "verification": {
+    "path": ".heleos/build-checkpoint-2026-09-16/notebooklm-verification.json",
+    "sha256": "7bee89593afc47e2d66a7e8936e4be60d8d03ba0a49a602166226bebbf1e4892"
+  },
+  "findings": [
+    {
+      "id": "CHECKPOINT-SOURCE-1",
+      "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+      "source_id": "e2168e59-fbd4-42d1-bc6c-31bd5be7db73",
+      "source": {
+        "path": "docs/operations/evidence-enforcement-2026-09-22/notebooklm-source-1.json",
+        "sha256": "65ab56d7cc48f8519f650934325e5421d3558e68356b5472f346a6d3a54bd30d"
+      },
+      "locator": "Indexed source character 18888; Indexed source character 8778; Indexed source character 9475",
+      "finding": "Use argv sequences, explicitly inspect returncode, and preserve binary stdout for Git object hashing.",
+      "passage": "Providing a sequence of arguments is generally preferred, as it allows the module to take care of any required escaping and quoting of arguments (e.g. to permit spaces in file names).",
+      "verification_status": "verified_applicable",
+      "behaviors": [
+        "Read exact Git index/tree evidence bytes; preserve binary hash identity; use argument-array subprocesses and check exits."
+      ],
+      "checks": [
+        "tests/test_checkpoint_evidence.py: staged/tree evidence integrity and stale continuation cases",
+        "tests/test_build_checkpoint.py: existing exact-byte boundaries"
+      ],
+      "source_url": "https://docs.python.org/3/library/subprocess.html",
+      "limits": "Retained verified passage from 2026-09-16 source read, not a new live query. Does not establish policy semantics, acceptance, or source truth from hashes. Source proof is the complete retained source-verification record with exact_text passages encoded as JSON; passage anchors one exact fragment, and independent review checks the full supporting text."
+    },
+    {
+      "id": "CHECKPOINT-SOURCE-2",
+      "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+      "source_id": "4ed811a9-c317-4126-8255-2cba4425c440",
+      "source": {
+        "path": "docs/operations/evidence-enforcement-2026-09-22/notebooklm-source-2.json",
+        "sha256": "66404e43485b4eda560dc73db7f863532e88a0252e21ad81d1f28731cb7dfd8e"
+      },
+      "locator": "Indexed source character 5042; Indexed source character 5876",
+      "finding": "SHA-256 accepts bytes; digest or hexdigest identifies the exact supplied byte sequence.",
+      "passage": "of the concatenation of the data fed to it so far using the",
+      "verification_status": "verified_applicable",
+      "behaviors": [
+        "Read exact Git index/tree evidence bytes; preserve binary hash identity; use argument-array subprocesses and check exits."
+      ],
+      "checks": [
+        "tests/test_checkpoint_evidence.py: staged/tree evidence integrity and stale continuation cases",
+        "tests/test_build_checkpoint.py: existing exact-byte boundaries"
+      ],
+      "source_url": "https://docs.python.org/3/library/hashlib.html",
+      "limits": "Retained verified passage from 2026-09-16 source read, not a new live query. Does not establish policy semantics, acceptance, or source truth from hashes. Source proof is the complete retained source-verification record with exact_text passages encoded as JSON; passage anchors one exact fragment, and independent review checks the full supporting text."
+    }
+  ],
+  "disposition": "reused_verified",
+  "applicability": "Existing verified NotebookLM Python source findings cover exact bytes and safe subprocess handling. Required receipt fields, administrative restrictions and completion/reopening logic are owner-requested engineering contracts with independent tests, not assertions inferred from NotebookLM."
+}

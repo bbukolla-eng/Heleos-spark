@@ -1,0 +1,19 @@
+{
+  "checkout_path": "/Users/bekim/Heleos-worker-runs/heleos-worker-hA9PxF/checkout",
+  "cleanup_failed": false,
+  "code": "timeout",
+  "evidence_write_failed": false,
+  "exit_code": null,
+  "message": "task duration limit exceeded",
+  "next_action": "Controller inspects retained evidence before assigning any further work.",
+  "run_directory": "/Users/bekim/Heleos-worker-runs/heleos-worker-hA9PxF",
+  "schema": "heleos.worker-run-failure/v1",
+  "stderr": {
+    "retained_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "retained_bytes": 0,
+    "truncated": false
+  }
+}

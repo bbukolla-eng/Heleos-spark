@@ -1,0 +1,2028 @@
+{
+  "schema_version": 1,
+  "inventory_state": "available",
+  "retrieved_at": "2026-09-14T05:01:59.112065+00:00",
+  "provider": "Connected NotebookLM via gemini-notebook-mcp",
+  "access_method": "Registered notebooklm-mcp command via installed stdio MCP Python SDK",
+  "installed_package": "notebooklm-mcp-cli 0.11.4",
+  "notebook_count": 59,
+  "requested_max_results": 100,
+  "count_matches_returned": true,
+  "notebooks": [
+    {
+      "id": "273dd1c5-e63d-46f6-823c-8688f66efaaf",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/273dd1c5-e63d-46f6-823c-8688f66efaaf",
+      "source_count_observed": 0,
+      "modified_at_observed": "2026-09-14T04:46:23Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "c065f36c-c830-4651-a60e-76dc3649606a",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/c065f36c-c830-4651-a60e-76dc3649606a",
+      "source_count_observed": 163,
+      "modified_at_observed": "2026-09-14T04:42:30Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "bd21f798-565d-47f0-8acb-6b03cff03d63",
+      "title": "N02 — Database & Knowledge Graph",
+      "topic": "Database & Knowledge Graph",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/bd21f798-565d-47f0-8acb-6b03cff03d63",
+      "source_count_observed": 37,
+      "modified_at_observed": "2026-09-13T03:43:25Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "73089c91-12d6-4c0e-9e71-7f17ce6e949b",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/73089c91-12d6-4c0e-9e71-7f17ce6e949b",
+      "source_count_observed": 1,
+      "modified_at_observed": "2026-09-12T22:36:34Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "c4b8492b-0e5a-4f2f-98a2-d67ecf4d5cdd",
+      "title": "N06 — Models, Datasets & Evaluation",
+      "topic": "Models, Datasets & Evaluation",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/c4b8492b-0e5a-4f2f-98a2-d67ecf4d5cdd",
+      "source_count_observed": 105,
+      "modified_at_observed": "2026-09-09T16:47:56Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "ad79e3b5-abbb-47c8-ac32-6e7c57d2f4c2",
+      "title": "N04 — Document Intelligence",
+      "topic": "Document Intelligence",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/ad79e3b5-abbb-47c8-ac32-6e7c57d2f4c2",
+      "source_count_observed": 44,
+      "modified_at_observed": "2026-09-09T16:47:55Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "6949cd33-78d9-4b2c-b6cf-b3ef8105f070",
+      "title": "N03 — AI Agents & Automation",
+      "topic": "AI Agents & Automation",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/6949cd33-78d9-4b2c-b6cf-b3ef8105f070",
+      "source_count_observed": 62,
+      "modified_at_observed": "2026-09-09T16:47:54Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "title": "N05 — Drawing Intelligence",
+      "topic": "Drawing Intelligence",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_count_observed": 68,
+      "modified_at_observed": "2026-09-09T14:49:58Z",
+      "source_inventory_state": "retrieved"
+    },
+    {
+      "id": "82f23fe8-429d-421d-8fe6-40c5b608c75d",
+      "title": "Atlas — Div 23 takeoff",
+      "topic": "Atlas — Div 23 takeoff",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/82f23fe8-429d-421d-8fe6-40c5b608c75d",
+      "source_count_observed": 59,
+      "modified_at_observed": "2026-09-09T14:36:10Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "b3904ede-b9cd-4c7b-a0a1-f70f8f0b7948",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/b3904ede-b9cd-4c7b-a0a1-f70f8f0b7948",
+      "source_count_observed": 40,
+      "modified_at_observed": "2026-09-09T14:36:10Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "4fcd7f29-21e3-4fac-bc37-079647503ac2",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/4fcd7f29-21e3-4fac-bc37-079647503ac2",
+      "source_count_observed": 39,
+      "modified_at_observed": "2026-09-09T14:36:09Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "7087c4f5-1959-4bb7-85ea-c47c0ca76f09",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/7087c4f5-1959-4bb7-85ea-c47c0ca76f09",
+      "source_count_observed": 32,
+      "modified_at_observed": "2026-09-09T14:05:29Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "d70190ac-d75f-4547-a228-6701aae288f1",
+      "title": "N01 — System Architecture",
+      "topic": "System Architecture",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/d70190ac-d75f-4547-a228-6701aae288f1",
+      "source_count_observed": 51,
+      "modified_at_observed": "2026-09-09T00:45:52Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+      "title": "N07 — Software Engineering",
+      "topic": "Software Engineering",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+      "source_count_observed": 32,
+      "modified_at_observed": "2026-09-09T00:00:50Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "51a2a365-b9db-433e-98c1-484e864ebbde",
+      "title": "N15 — NYS/NYC Codes & Public Work",
+      "topic": "NYS/NYC Codes & Public Work",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/51a2a365-b9db-433e-98c1-484e864ebbde",
+      "source_count_observed": 38,
+      "modified_at_observed": "2026-09-08T02:27:36Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "de27662e-a94d-4d30-bbd7-0e084fb02798",
+      "title": "N13 — Equipment & Controls",
+      "topic": "Equipment & Controls",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/de27662e-a94d-4d30-bbd7-0e084fb02798",
+      "source_count_observed": 37,
+      "modified_at_observed": "2026-09-08T01:37:09Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "95e2d393-9c12-46d1-97c2-ab8dc4efef39",
+      "title": "N14 — Insulation, Supports & Seismic",
+      "topic": "Insulation, Supports & Seismic",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/95e2d393-9c12-46d1-97c2-ab8dc4efef39",
+      "source_count_observed": 65,
+      "modified_at_observed": "2026-09-08T01:36:32Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "e482e359-51f1-44de-8e87-f9b71e947183",
+      "title": "N16 — Specifications, Contracts & Scope",
+      "topic": "Specifications, Contracts & Scope",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/e482e359-51f1-44de-8e87-f9b71e947183",
+      "source_count_observed": 38,
+      "modified_at_observed": "2026-09-08T01:35:52Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "932527dc-c37a-40ed-89de-4240e8197609",
+      "title": "N11 — Ductwork & Air Distribution",
+      "topic": "Ductwork & Air Distribution",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/932527dc-c37a-40ed-89de-4240e8197609",
+      "source_count_observed": 61,
+      "modified_at_observed": "2026-09-08T01:34:59Z",
+      "source_inventory_state": "retrieved"
+    },
+    {
+      "id": "ac41b44b-897e-4e5c-a47c-f606657d7782",
+      "title": "N20 — Project Management & Actuals",
+      "topic": "Project Management & Actuals",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/ac41b44b-897e-4e5c-a47c-f606657d7782",
+      "source_count_observed": 79,
+      "modified_at_observed": "2026-09-08T01:31:39Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "title": "N10 — HVAC Takeoff Methods",
+      "topic": "HVAC Takeoff Methods",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_count_observed": 71,
+      "modified_at_observed": "2026-09-08T01:30:18Z",
+      "source_inventory_state": "retrieved"
+    },
+    {
+      "id": "89de926b-c692-40db-a75d-ba1ede223751",
+      "title": "N18 — Bidding & Procurement",
+      "topic": "Bidding & Procurement",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/89de926b-c692-40db-a75d-ba1ede223751",
+      "source_count_observed": 69,
+      "modified_at_observed": "2026-09-08T01:28:30Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "05b53457-0dd7-44a7-aea1-8ea1446a02ca",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/05b53457-0dd7-44a7-aea1-8ea1446a02ca",
+      "source_count_observed": 184,
+      "modified_at_observed": "2026-09-08T01:07:32Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "0e60e46c-c60b-493f-9146-5db527ebe5bb",
+      "title": "N19 — Manufacturers & Product Data",
+      "topic": "Manufacturers & Product Data",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/0e60e46c-c60b-493f-9146-5db527ebe5bb",
+      "source_count_observed": 77,
+      "modified_at_observed": "2026-09-08T01:04:09Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "ffb91228-0b82-4907-bebb-cae78bb13fee",
+      "title": "N17 — Estimating, Labor & Pricing",
+      "topic": "Estimating, Labor & Pricing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/ffb91228-0b82-4907-bebb-cae78bb13fee",
+      "source_count_observed": 39,
+      "modified_at_observed": "2026-09-08T01:04:07Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "f7ec321c-1beb-492f-a23f-7e9f5042967a",
+      "title": "N12 — Hydronic & Mechanical Piping",
+      "topic": "Hydronic & Mechanical Piping",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/f7ec321c-1beb-492f-a23f-7e9f5042967a",
+      "source_count_observed": 61,
+      "modified_at_observed": "2026-09-08T01:04:03Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "6d00e29b-2977-4360-b8b3-7a4e703cdbfb",
+      "title": "N00 — Intake & Source Staging",
+      "topic": "Intake & Source Staging",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/6d00e29b-2977-4360-b8b3-7a4e703cdbfb",
+      "source_count_observed": 91,
+      "modified_at_observed": "2026-09-08T01:03:54Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "37a5e6b2-24f2-4977-8e46-5e94e96992e8",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/37a5e6b2-24f2-4977-8e46-5e94e96992e8",
+      "source_count_observed": 39,
+      "modified_at_observed": "2026-09-03T17:52:12Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "05063256-881a-4c0b-83d2-8b89e6e316a9",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/05063256-881a-4c0b-83d2-8b89e6e316a9",
+      "source_count_observed": 38,
+      "modified_at_observed": "2026-09-03T17:52:12Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "9c4cc138-7a76-444b-b90a-ca42c25172a9",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/9c4cc138-7a76-444b-b90a-ca42c25172a9",
+      "source_count_observed": 36,
+      "modified_at_observed": "2026-09-03T17:52:12Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "555f1ce2-373d-4b62-a288-ea5f276f0ec1",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/555f1ce2-373d-4b62-a288-ea5f276f0ec1",
+      "source_count_observed": 42,
+      "modified_at_observed": "2026-09-03T17:52:10Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "59593fa3-9a8f-48a6-b4bf-e62a9cdd4e07",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/59593fa3-9a8f-48a6-b4bf-e62a9cdd4e07",
+      "source_count_observed": 33,
+      "modified_at_observed": "2026-09-03T17:33:37Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "179e9ed4-d0fa-4d77-907c-d6f485926003",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/179e9ed4-d0fa-4d77-907c-d6f485926003",
+      "source_count_observed": 46,
+      "modified_at_observed": "2026-09-03T15:25:15Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "2062ede9-9d75-4d6b-90ea-1c43741ac6cb",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/2062ede9-9d75-4d6b-90ea-1c43741ac6cb",
+      "source_count_observed": 37,
+      "modified_at_observed": "2026-09-03T06:06:04Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "2553f49e-9b12-410e-9bab-112a16cf8d48",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/2553f49e-9b12-410e-9bab-112a16cf8d48",
+      "source_count_observed": 36,
+      "modified_at_observed": "2026-09-03T05:55:17Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "5176904c-96d5-4bd1-891d-fa890a12ed10",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/5176904c-96d5-4bd1-891d-fa890a12ed10",
+      "source_count_observed": 39,
+      "modified_at_observed": "2026-09-03T05:45:12Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "9a61af29-5726-4bf0-aecd-6590879c1167",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/9a61af29-5726-4bf0-aecd-6590879c1167",
+      "source_count_observed": 0,
+      "modified_at_observed": "2026-09-02T21:53:40Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "dae535ab-89f5-4826-a8e2-8a86d5799352",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/dae535ab-89f5-4826-a8e2-8a86d5799352",
+      "source_count_observed": 292,
+      "modified_at_observed": "2026-09-02T21:49:39Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "6f516550-7c15-4ea6-8664-ff718d381ac3",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/6f516550-7c15-4ea6-8664-ff718d381ac3",
+      "source_count_observed": 0,
+      "modified_at_observed": "2026-09-02T19:44:05Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "e768fd37-e8a2-4a57-b2ed-2e0e0907a61e",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/e768fd37-e8a2-4a57-b2ed-2e0e0907a61e",
+      "source_count_observed": 21,
+      "modified_at_observed": "2026-09-01T10:50:56Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "0dfe1cfc-f31e-4476-a224-5125aa6f5be8",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/0dfe1cfc-f31e-4476-a224-5125aa6f5be8",
+      "source_count_observed": 2,
+      "modified_at_observed": "2026-08-26T10:42:26Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "3ed1596e-64d7-4c4c-9659-70a519eb8e00",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/3ed1596e-64d7-4c4c-9659-70a519eb8e00",
+      "source_count_observed": 4,
+      "modified_at_observed": "2026-07-31T20:43:39Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "d149e353-68dc-4f21-8489-5359698cd88f",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/d149e353-68dc-4f21-8489-5359698cd88f",
+      "source_count_observed": 1,
+      "modified_at_observed": "2026-07-18T16:49:46Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "040b2184-4870-4f63-a30e-bcd7849f0a9d",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/040b2184-4870-4f63-a30e-bcd7849f0a9d",
+      "source_count_observed": 1,
+      "modified_at_observed": "2026-06-29T19:52:44Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "1d295b35-c527-4788-b36f-972679087b4f",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/1d295b35-c527-4788-b36f-972679087b4f",
+      "source_count_observed": 8,
+      "modified_at_observed": "2026-06-28T18:49:18Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "39cf531a-d82a-4eb1-8135-9f3248375a0f",
+      "title": "Manual of Architectural Sheet Metal and HVAC Standards",
+      "topic": "Manual of Architectural Sheet Metal and HVAC Standards",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/39cf531a-d82a-4eb1-8135-9f3248375a0f",
+      "source_count_observed": 300,
+      "modified_at_observed": "2026-06-27T06:01:03Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "e419b603-ef80-4aaf-a0f3-a6ad12ae9c5a",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/e419b603-ef80-4aaf-a0f3-a6ad12ae9c5a",
+      "source_count_observed": 20,
+      "modified_at_observed": "2026-06-26T06:02:37Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "c8c2c3c7-875d-47b8-953f-dff4de693fa6",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/c8c2c3c7-875d-47b8-953f-dff4de693fa6",
+      "source_count_observed": 55,
+      "modified_at_observed": "2026-06-26T06:01:29Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "ddc36780-f3ee-4018-b451-7a7bbef07f6c",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/ddc36780-f3ee-4018-b451-7a7bbef07f6c",
+      "source_count_observed": 1,
+      "modified_at_observed": "2026-06-26T06:00:14Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "266825ae-4b0d-41c2-be2f-db8d06c5fc7d",
+      "title": "Principles of Construction Material and Quantity Takeoff",
+      "topic": "Principles of Construction Material and Quantity Takeoff",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/266825ae-4b0d-41c2-be2f-db8d06c5fc7d",
+      "source_count_observed": 3,
+      "modified_at_observed": "2026-06-26T05:59:37Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "7d5ddbe4-4cfb-42e2-ae1d-66272f503cc8",
+      "title": "Innovations in Mechanical Software and Automated BIM Integration",
+      "topic": "Innovations in Mechanical Software and Automated BIM Integration",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/7d5ddbe4-4cfb-42e2-ae1d-66272f503cc8",
+      "source_count_observed": 43,
+      "modified_at_observed": "2026-06-26T05:58:29Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "24093177-6c27-4ae0-8724-9781849aa12c",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/24093177-6c27-4ae0-8724-9781849aa12c",
+      "source_count_observed": 250,
+      "modified_at_observed": "2026-06-26T05:56:53Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "36f4fa02-3a60-4a1f-9f39-375a03cc4139",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/36f4fa02-3a60-4a1f-9f39-375a03cc4139",
+      "source_count_observed": 26,
+      "modified_at_observed": "2026-06-26T05:55:51Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "dd556e97-8c65-40c1-9e44-ea72f723cc15",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/dd556e97-8c65-40c1-9e44-ea72f723cc15",
+      "source_count_observed": 191,
+      "modified_at_observed": "2026-06-26T05:55:01Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "380f53f5-375d-4daa-a42c-ce3c1982c170",
+      "title": "ASHRAE Standards for Thermal Comfort and Energy Efficiency",
+      "topic": "ASHRAE Standards for Thermal Comfort and Energy Efficiency",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/380f53f5-375d-4daa-a42c-ce3c1982c170",
+      "source_count_observed": 28,
+      "modified_at_observed": "2026-06-26T05:53:42Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "f560d3a1-df9f-4cfc-a8bc-9b51e6f3e850",
+      "title": "ASHRAE: Professional Standards, Certifications, and Global HVAC&R Governance",
+      "topic": "ASHRAE: Professional Standards, Certifications, and Global HVAC&R Governance",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/f560d3a1-df9f-4cfc-a8bc-9b51e6f3e850",
+      "source_count_observed": 60,
+      "modified_at_observed": "2026-06-26T05:52:32Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "1b80a8f9-7086-479d-b286-1e1e83b2c216",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/1b80a8f9-7086-479d-b286-1e1e83b2c216",
+      "source_count_observed": 1,
+      "modified_at_observed": "2026-06-26T05:52:00Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "d4f89b89-e670-4b58-9a3c-6809728083a6",
+      "title": "2017 National Plumbing & HVAC Estimator Guide",
+      "topic": "2017 National Plumbing & HVAC Estimator Guide",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": false,
+      "url": "https://notebooklm.google.com/notebook/d4f89b89-e670-4b58-9a3c-6809728083a6",
+      "source_count_observed": 16,
+      "modified_at_observed": "2026-06-26T05:50:48Z",
+      "source_inventory_state": "not_requested"
+    },
+    {
+      "id": "fd9cbcf9-87b8-484c-a923-e8a2587374d1",
+      "title": null,
+      "topic": "Outside selected technical and mechanical reference routing",
+      "topic_basis": "notebook title; source coverage not inferred",
+      "title_omitted": true,
+      "url": "https://notebooklm.google.com/notebook/fd9cbcf9-87b8-484c-a923-e8a2587374d1",
+      "source_count_observed": 241,
+      "modified_at_observed": "2026-06-26T05:48:25Z",
+      "source_inventory_state": "not_requested"
+    }
+  ],
+  "source_inventories": [
+    {
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "title": "N10 — HVAC Takeoff Methods",
+      "source_count": 71,
+      "sources": [
+        {
+          "id": "9e8e62b8-8d26-4446-a8e2-a19ccc3b0fb5",
+          "title": "Add 3D Model Takeoffs"
+        },
+        {
+          "id": "f8cbd988-ce02-4716-b04f-a87e5cf65a28",
+          "title": "Add 3D Model Takeoffs"
+        },
+        {
+          "id": "4bd6d458-14dc-4122-b482-bd38671465e5",
+          "title": "BuildingConnected | Autodesk Forma"
+        },
+        {
+          "id": "61115852-5488-43ab-a722-05c2d6ba62b5",
+          "title": "BuildingConnected | Autodesk Forma"
+        },
+        {
+          "id": "17d03f87-ef06-4748-8a72-7610c2b71eeb",
+          "title": "Construction Takeoff Software for Estimators - Togal"
+        },
+        {
+          "id": "5c97df51-25eb-482b-9299-550c61522920",
+          "title": "Construction Takeoff Software for Estimators - Togal"
+        },
+        {
+          "id": "420e4e0d-55ed-45ab-a3dd-604ac3705627",
+          "title": "Construction Takeoff Software | Procore"
+        },
+        {
+          "id": "6d290ff9-1da3-4da6-96f8-ea8430837e72",
+          "title": "Construction Takeoff Software | Procore"
+        },
+        {
+          "id": "014eadf4-624b-4b2f-a306-68dbd05e67c2",
+          "title": "Construction Takeoff Software: Digital Solutions for Accurate Estimation – Bluebeam"
+        },
+        {
+          "id": "33bb1996-978d-4ba3-b286-d6a28d2f82f8",
+          "title": "Construction Takeoff Software: Digital Solutions for Accurate Estimation – Bluebeam"
+        },
+        {
+          "id": "369b7707-0d16-4632-b58d-bf8513592cb7",
+          "title": "Construction Takeoffs: A Complete How-To Guide"
+        },
+        {
+          "id": "fe18b77e-c68d-4b9f-9b63-b32dae3990e4",
+          "title": "Construction Takeoffs: A Complete How-To Guide"
+        },
+        {
+          "id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+          "title": "Construction Takeoffs: Complete Guide to Quantity & Material Takeoffs in 2026 | Bluebeam"
+        },
+        {
+          "id": "9519e27d-011d-4d5b-b316-b509b200faf7",
+          "title": "Construction Takeoffs: Complete Guide to Quantity & Material Takeoffs in 2026 | Bluebeam"
+        },
+        {
+          "id": "17b155b6-b68e-480b-886d-554c098f2d88",
+          "title": "FastDUCT - HVAC Estimating Software"
+        },
+        {
+          "id": "cbfd79ba-1254-41c8-b0d6-0aaa170e15c2",
+          "title": "FastDUCT - HVAC Estimating Software"
+        },
+        {
+          "id": "34d81fa3-ca27-4f27-82bd-329286b9eb9c",
+          "title": "FastPIPE - Plumbing & Mechanical Estimating Software"
+        },
+        {
+          "id": "8c98bca5-e632-4d09-8d60-ff7bcec81636",
+          "title": "FastPIPE - Plumbing & Mechanical Estimating Software"
+        },
+        {
+          "id": "7b45fce6-abb2-416f-81a5-d9766d18f025",
+          "title": "Forma Takeoff | Buy Official Forma Takeoff"
+        },
+        {
+          "id": "f5d6c031-1889-4fbb-9e28-8cf1c2e29e30",
+          "title": "Forma Takeoff | Buy Official Forma Takeoff"
+        },
+        {
+          "id": "0aa3d73e-c6f9-4241-9229-dee033be945e",
+          "title": "HVAC & Mechanical Estimating & Bidding Software | STACK"
+        },
+        {
+          "id": "526a7b2f-cc37-416d-b010-a47d63707a91",
+          "title": "HVAC & Mechanical Estimating & Bidding Software | STACK"
+        },
+        {
+          "id": "539eda08-9d5e-4d41-b16b-81823c0a4a5e",
+          "title": "HVAC Estimating Software | Ductwork Estimating Software | QuoteSoft"
+        },
+        {
+          "id": "7af1e444-77f5-4369-b749-6cdcc4074279",
+          "title": "HVAC Estimating Software | Ductwork Estimating Software | QuoteSoft"
+        },
+        {
+          "id": "58606664-29fb-4fcf-93a9-258908436fb7",
+          "title": "HVAC Estimating Software | HVAC Takeoff Software | PlanSwift"
+        },
+        {
+          "id": "718d516d-364f-4f1b-a063-d1a80f35dd88",
+          "title": "HVAC Estimating Software | HVAC Takeoff Software | PlanSwift"
+        },
+        {
+          "id": "752c75ef-2836-4211-a780-a058d4b3a77e",
+          "title": "Help | Page Not Found | Autodesk"
+        },
+        {
+          "id": "75853c18-d159-4036-9fbb-febe4864c11f",
+          "title": "Help | Page Not Found | Autodesk"
+        },
+        {
+          "id": "a6ebcc10-b3fc-4fc8-b006-75302b492d75",
+          "title": "Help | Page Not Found | Autodesk"
+        },
+        {
+          "id": "b2bec55f-993a-4afa-9871-b99c04e471cc",
+          "title": "Help | Page Not Found | Autodesk"
+        },
+        {
+          "id": "5a655887-f8be-45b9-aefd-9abf613cb477",
+          "title": "Home - Construction Specifications Institute"
+        },
+        {
+          "id": "7bb325d0-7136-4b73-b5e2-d7157276090d",
+          "title": "Home - Construction Specifications Institute"
+        },
+        {
+          "id": "0292009f-9823-471c-b3e2-7a7d3d505ef9",
+          "title": "How AI and Automation Are Supercharging Construction Estimating"
+        },
+        {
+          "id": "721b91dd-0e4e-4706-a326-4b34a5bc1dca",
+          "title": "How AI and Automation Are Supercharging Construction Estimating"
+        },
+        {
+          "id": "86be6f8b-ebfc-4fdf-a10b-bbc78b43794e",
+          "title": "How AI automation can fit into construction workflows: McKinsey | Construction Dive"
+        },
+        {
+          "id": "c78d4777-8df7-4b4f-94e7-f95813d696dd",
+          "title": "How AI automation can fit into construction workflows: McKinsey | Construction Dive"
+        },
+        {
+          "id": "6bca9972-2389-4935-9c47-31261542ee70",
+          "title": "How to Use Revu for Estimation to Make Quantity Takeoffs Easier"
+        },
+        {
+          "id": "9136421c-f5c3-4b88-ad1d-01ca49bed1e7",
+          "title": "How to Use Revu for Estimation to Make Quantity Takeoffs Easier"
+        },
+        {
+          "id": "6d900d17-26e8-40b1-bb8d-8914fc1bf76b",
+          "title": "MasterFormat® 2026 - Construction Specifications Institute"
+        },
+        {
+          "id": "803f0513-242f-44db-a094-77d1d5c447a1",
+          "title": "MasterFormat® 2026 - Construction Specifications Institute"
+        },
+        {
+          "id": "b5c5a26e-ff2d-4275-be5f-2afdedfaedb9",
+          "title": "Mastering Mechanical Blueprint Reading with Floor Plans, Sections, Isometrics, and Schedules - Free Video Tutorial"
+        },
+        {
+          "id": "e1256066-08cc-49b1-8f3c-5b25e170cd26",
+          "title": "Mastering Mechanical Blueprint Reading with Floor Plans, Sections, Isometrics, and Schedules - Free Video Tutorial"
+        },
+        {
+          "id": "65083ce3-8eb0-49d1-9eb7-1eed1ac8b03b",
+          "title": "On-Screen Takeoff | On Center Software"
+        },
+        {
+          "id": "9b9cd5e1-2304-47c6-9268-eec1f9d4e1e5",
+          "title": "On-Screen Takeoff | On Center Software"
+        },
+        {
+          "id": "42a0e178-6f46-463b-bb4c-bef859889bdc",
+          "title": "One Variety of Preconstruction Tech Is Seeing More Widespread Usage Than Any Other - BuiltWorlds"
+        },
+        {
+          "id": "52c8708b-4739-458e-8d3f-b6a843e2789a",
+          "title": "One Variety of Preconstruction Tech Is Seeing More Widespread Usage Than Any Other - BuiltWorlds"
+        },
+        {
+          "id": "105442d8-6c08-4e02-9856-3717db059d73",
+          "title": "Professional Guidance Document No. 01 - Guide to Cost Estimate Classification Systems"
+        },
+        {
+          "id": "b434d615-b46d-4f4c-a9cc-292013acd9cb",
+          "title": "Professional Guidance Document No. 01 - Guide to Cost Estimate Classification Systems"
+        },
+        {
+          "id": "9f4e6b8d-9c23-4689-8aa1-1d8088cfb83b",
+          "title": "README — N10 HVAC Takeoff Methods"
+        },
+        {
+          "id": "33a451e3-091b-46ff-abdc-784a59c5fcfe",
+          "title": "Revolutionize Construction Estimations: A Deep Dive into Bluebeam Quantity Link | Built"
+        },
+        {
+          "id": "f2488327-e71e-4c6e-9ef2-127f1008ffd9",
+          "title": "Revolutionize Construction Estimations: A Deep Dive into Bluebeam Quantity Link | Built"
+        },
+        {
+          "id": "3c27ba58-fb6e-4fb0-b049-84ef4acc71d8",
+          "title": "TAKEOFF Help | Autodesk"
+        },
+        {
+          "id": "9c4ebcc9-832e-4fcc-a7ca-0c73206b5124",
+          "title": "TAKEOFF Help | Autodesk"
+        },
+        {
+          "id": "775e54af-5944-473b-be5e-1b8ec3f879d6",
+          "title": "TP-AP-FT"
+        },
+        {
+          "id": "e851e6c1-f93c-43fb-8792-6abd1dac95fe",
+          "title": "TP-AP-FT"
+        },
+        {
+          "id": "6a218a8d-a97f-41b4-9415-eb30f52adb24",
+          "title": "Takeoffs and measurements | Bluebeam Technical Support"
+        },
+        {
+          "id": "897cbb38-6bc6-4bde-838e-0c47a577f2fb",
+          "title": "Takeoffs and measurements | Bluebeam Technical Support"
+        },
+        {
+          "id": "5b436f2e-b7a6-4f7d-a55b-a83fa53e0f50",
+          "title": "Trimble AutoBid Mechanical | Mechanical Estimating Software | Trimble"
+        },
+        {
+          "id": "a1782ffe-1c17-4b59-a941-cd20b0c36e70",
+          "title": "Trimble AutoBid Mechanical | Mechanical Estimating Software | Trimble"
+        },
+        {
+          "id": "00696d12-3a9c-44b3-aaab-96b2b85a3e82",
+          "title": "Trimble Estimation MEP | Estimating & Takeoff Software | Trimble"
+        },
+        {
+          "id": "d4a13c66-f866-422a-9f04-010e0abb716a",
+          "title": "Trimble Estimation MEP | Estimating & Takeoff Software | Trimble"
+        },
+        {
+          "id": "5f3ca29b-d1a5-44c0-885f-2066c666022f",
+          "title": "United States National CAD Standard - V7"
+        },
+        {
+          "id": "d8025c01-cbac-4d3a-88c6-52558b552639",
+          "title": "United States National CAD Standard - V7"
+        },
+        {
+          "id": "3c0ceb74-3967-4067-8e1c-306226bba756",
+          "title": "WinEst - Cost Estimation Software for Building Contractors | Trimble"
+        },
+        {
+          "id": "94aacec5-5a04-494d-805e-9b62bdd3e973",
+          "title": "WinEst - Cost Estimation Software for Building Contractors | Trimble"
+        },
+        {
+          "id": "091b47d0-c8f4-479f-ba7c-02a1c83cc3a7",
+          "title": "https://www.mcaa.org/resources/weblem/"
+        },
+        {
+          "id": "481a9e7a-085b-4d38-a29b-5975cad848ed",
+          "title": "https://www.mcaa.org/resources/weblem/"
+        },
+        {
+          "id": "b051e586-42db-4276-b438-de3a03000e2f",
+          "title": "https://www.procore.com/library/what-is-a-construction-takeoff"
+        },
+        {
+          "id": "f04f918f-fa79-4d28-a2fe-4410556e85da",
+          "title": "https://www.procore.com/library/what-is-a-construction-takeoff"
+        },
+        {
+          "id": "2bc99eed-82b9-444a-8bab-450f5be0aa32",
+          "title": "https://www.usfa.fema.gov/downloads/pdf/nfa/engineer-architect-scales.pdf"
+        },
+        {
+          "id": "d7fd99cc-247b-4912-9f72-a05b6a75196e",
+          "title": "https://www.usfa.fema.gov/downloads/pdf/nfa/engineer-architect-scales.pdf"
+        }
+      ],
+      "duplicate_title_candidates": [
+        {
+          "title": "Add 3D Model Takeoffs",
+          "source_ids": [
+            "9e8e62b8-8d26-4446-a8e2-a19ccc3b0fb5",
+            "f8cbd988-ce02-4716-b04f-a87e5cf65a28"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "BuildingConnected | Autodesk Forma",
+          "source_ids": [
+            "4bd6d458-14dc-4122-b482-bd38671465e5",
+            "61115852-5488-43ab-a722-05c2d6ba62b5"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Construction Takeoff Software for Estimators - Togal",
+          "source_ids": [
+            "17d03f87-ef06-4748-8a72-7610c2b71eeb",
+            "5c97df51-25eb-482b-9299-550c61522920"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Construction Takeoff Software | Procore",
+          "source_ids": [
+            "420e4e0d-55ed-45ab-a3dd-604ac3705627",
+            "6d290ff9-1da3-4da6-96f8-ea8430837e72"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Construction Takeoff Software: Digital Solutions for Accurate Estimation – Bluebeam",
+          "source_ids": [
+            "014eadf4-624b-4b2f-a306-68dbd05e67c2",
+            "33bb1996-978d-4ba3-b286-d6a28d2f82f8"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Construction Takeoffs: A Complete How-To Guide",
+          "source_ids": [
+            "369b7707-0d16-4632-b58d-bf8513592cb7",
+            "fe18b77e-c68d-4b9f-9b63-b32dae3990e4"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Construction Takeoffs: Complete Guide to Quantity & Material Takeoffs in 2026 | Bluebeam",
+          "source_ids": [
+            "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+            "9519e27d-011d-4d5b-b316-b509b200faf7"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "FastDUCT - HVAC Estimating Software",
+          "source_ids": [
+            "17b155b6-b68e-480b-886d-554c098f2d88",
+            "cbfd79ba-1254-41c8-b0d6-0aaa170e15c2"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "FastPIPE - Plumbing & Mechanical Estimating Software",
+          "source_ids": [
+            "34d81fa3-ca27-4f27-82bd-329286b9eb9c",
+            "8c98bca5-e632-4d09-8d60-ff7bcec81636"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Forma Takeoff | Buy Official Forma Takeoff",
+          "source_ids": [
+            "7b45fce6-abb2-416f-81a5-d9766d18f025",
+            "f5d6c031-1889-4fbb-9e28-8cf1c2e29e30"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "HVAC & Mechanical Estimating & Bidding Software | STACK",
+          "source_ids": [
+            "0aa3d73e-c6f9-4241-9229-dee033be945e",
+            "526a7b2f-cc37-416d-b010-a47d63707a91"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "HVAC Estimating Software | Ductwork Estimating Software | QuoteSoft",
+          "source_ids": [
+            "539eda08-9d5e-4d41-b16b-81823c0a4a5e",
+            "7af1e444-77f5-4369-b749-6cdcc4074279"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "HVAC Estimating Software | HVAC Takeoff Software | PlanSwift",
+          "source_ids": [
+            "58606664-29fb-4fcf-93a9-258908436fb7",
+            "718d516d-364f-4f1b-a063-d1a80f35dd88"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Help | Page Not Found | Autodesk",
+          "source_ids": [
+            "752c75ef-2836-4211-a780-a058d4b3a77e",
+            "75853c18-d159-4036-9fbb-febe4864c11f",
+            "a6ebcc10-b3fc-4fc8-b006-75302b492d75",
+            "b2bec55f-993a-4afa-9871-b99c04e471cc"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Home - Construction Specifications Institute",
+          "source_ids": [
+            "5a655887-f8be-45b9-aefd-9abf613cb477",
+            "7bb325d0-7136-4b73-b5e2-d7157276090d"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "How AI and Automation Are Supercharging Construction Estimating",
+          "source_ids": [
+            "0292009f-9823-471c-b3e2-7a7d3d505ef9",
+            "721b91dd-0e4e-4706-a326-4b34a5bc1dca"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "How AI automation can fit into construction workflows: McKinsey | Construction Dive",
+          "source_ids": [
+            "86be6f8b-ebfc-4fdf-a10b-bbc78b43794e",
+            "c78d4777-8df7-4b4f-94e7-f95813d696dd"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "How to Use Revu for Estimation to Make Quantity Takeoffs Easier",
+          "source_ids": [
+            "6bca9972-2389-4935-9c47-31261542ee70",
+            "9136421c-f5c3-4b88-ad1d-01ca49bed1e7"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "MasterFormat® 2026 - Construction Specifications Institute",
+          "source_ids": [
+            "6d900d17-26e8-40b1-bb8d-8914fc1bf76b",
+            "803f0513-242f-44db-a094-77d1d5c447a1"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Mastering Mechanical Blueprint Reading with Floor Plans, Sections, Isometrics, and Schedules - Free Video Tutorial",
+          "source_ids": [
+            "b5c5a26e-ff2d-4275-be5f-2afdedfaedb9",
+            "e1256066-08cc-49b1-8f3c-5b25e170cd26"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "On-Screen Takeoff | On Center Software",
+          "source_ids": [
+            "65083ce3-8eb0-49d1-9eb7-1eed1ac8b03b",
+            "9b9cd5e1-2304-47c6-9268-eec1f9d4e1e5"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "One Variety of Preconstruction Tech Is Seeing More Widespread Usage Than Any Other - BuiltWorlds",
+          "source_ids": [
+            "42a0e178-6f46-463b-bb4c-bef859889bdc",
+            "52c8708b-4739-458e-8d3f-b6a843e2789a"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Professional Guidance Document No. 01 - Guide to Cost Estimate Classification Systems",
+          "source_ids": [
+            "105442d8-6c08-4e02-9856-3717db059d73",
+            "b434d615-b46d-4f4c-a9cc-292013acd9cb"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Revolutionize Construction Estimations: A Deep Dive into Bluebeam Quantity Link | Built",
+          "source_ids": [
+            "33a451e3-091b-46ff-abdc-784a59c5fcfe",
+            "f2488327-e71e-4c6e-9ef2-127f1008ffd9"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "TAKEOFF Help | Autodesk",
+          "source_ids": [
+            "3c27ba58-fb6e-4fb0-b049-84ef4acc71d8",
+            "9c4ebcc9-832e-4fcc-a7ca-0c73206b5124"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "TP-AP-FT",
+          "source_ids": [
+            "775e54af-5944-473b-be5e-1b8ec3f879d6",
+            "e851e6c1-f93c-43fb-8792-6abd1dac95fe"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Takeoffs and measurements | Bluebeam Technical Support",
+          "source_ids": [
+            "6a218a8d-a97f-41b4-9415-eb30f52adb24",
+            "897cbb38-6bc6-4bde-838e-0c47a577f2fb"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Trimble AutoBid Mechanical | Mechanical Estimating Software | Trimble",
+          "source_ids": [
+            "5b436f2e-b7a6-4f7d-a55b-a83fa53e0f50",
+            "a1782ffe-1c17-4b59-a941-cd20b0c36e70"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Trimble Estimation MEP | Estimating & Takeoff Software | Trimble",
+          "source_ids": [
+            "00696d12-3a9c-44b3-aaab-96b2b85a3e82",
+            "d4a13c66-f866-422a-9f04-010e0abb716a"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "United States National CAD Standard - V7",
+          "source_ids": [
+            "5f3ca29b-d1a5-44c0-885f-2066c666022f",
+            "d8025c01-cbac-4d3a-88c6-52558b552639"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "WinEst - Cost Estimation Software for Building Contractors | Trimble",
+          "source_ids": [
+            "3c0ceb74-3967-4067-8e1c-306226bba756",
+            "94aacec5-5a04-494d-805e-9b62bdd3e973"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "https://www.mcaa.org/resources/weblem/",
+          "source_ids": [
+            "091b47d0-c8f4-479f-ba7c-02a1c83cc3a7",
+            "481a9e7a-085b-4d38-a29b-5975cad848ed"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "https://www.procore.com/library/what-is-a-construction-takeoff",
+          "source_ids": [
+            "b051e586-42db-4276-b438-de3a03000e2f",
+            "f04f918f-fa79-4d28-a2fe-4410556e85da"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "https://www.usfa.fema.gov/downloads/pdf/nfa/engineer-architect-scales.pdf",
+          "source_ids": [
+            "2bc99eed-82b9-444a-8bab-450f5be0aa32",
+            "d7fd99cc-247b-4912-9f72-a05b6a75196e"
+          ],
+          "byte_equivalence_verified": false
+        }
+      ],
+      "source_urls_available_in_inventory": false,
+      "evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/N10-sources-result.json",
+        "sha256": "75addefb31de1d91b696fb961ac7445ac9edff2616dd56cb10b8033526ed5738"
+      }
+    },
+    {
+      "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+      "title": "N11 — Ductwork & Air Distribution",
+      "source_count": 61,
+      "sources": [
+        {
+          "id": "373b8e7d-0863-4d5c-8fab-89ea9451b379",
+          "title": "2023 ASHRAE Handbook—HVAC Applications | ashrae.org"
+        },
+        {
+          "id": "3bf2486c-8e1c-47e6-b5ec-84ab16e2d013",
+          "title": "2023 ASHRAE Handbook—HVAC Applications | ashrae.org"
+        },
+        {
+          "id": "2c18fe3b-d715-498c-a134-73277d59ca0b",
+          "title": "Airside Systems: Air Handlers, Fan Coils | Carrier Commercial"
+        },
+        {
+          "id": "a7b580a5-5a81-40ba-9a39-d217c5fafa7b",
+          "title": "Airside Systems: Air Handlers, Fan Coils | Carrier Commercial"
+        },
+        {
+          "id": "b99119a4-da8e-41f6-a768-1cce39cb1f91",
+          "title": "Commercial Rooftop HVAC Systems | Rooftop HVAC Units"
+        },
+        {
+          "id": "f1aa2a5d-7c02-4ea3-b25b-76cd4d927dbe",
+          "title": "Commercial Rooftop HVAC Systems | Rooftop HVAC Units"
+        },
+        {
+          "id": "45c36c86-d214-4c0b-8d22-45e1d597bc3c",
+          "title": "Duct Fitting Database"
+        },
+        {
+          "id": "9db5b4f0-bf70-4906-bbc5-d488855b4080",
+          "title": "Duct Fitting Database"
+        },
+        {
+          "id": "5d4da822-598d-4c4c-a26e-402c9bb7ad7f",
+          "title": "FastDUCT - HVAC Estimating Software"
+        },
+        {
+          "id": "80e31e16-5ee3-408c-86ca-2fd98282251c",
+          "title": "FastDUCT - HVAC Estimating Software"
+        },
+        {
+          "id": "ecad4339-9ad4-46d6-84df-4111a681d3d3",
+          "title": "HVAC Duct Construction Standards - Metal and Flexible, 4th Edition"
+        },
+        {
+          "id": "ef416158-5961-4130-b3b0-44670c974215",
+          "title": "HVAC Duct Construction Standards - Metal and Flexible, 4th Edition"
+        },
+        {
+          "id": "0d8aa770-06d5-42fd-a610-1ea01809e555",
+          "title": "HVAC Estimating Software | Ductwork Estimating Software | QuoteSoft"
+        },
+        {
+          "id": "a887df72-4541-41cf-a76c-0f0b9909e49c",
+          "title": "HVAC Estimating Software | Ductwork Estimating Software | QuoteSoft"
+        },
+        {
+          "id": "7b9ed28b-11a2-47fb-88be-1ae936d0959c",
+          "title": "Insulation Institute: Fiberglass & Mineral Wool Insulation"
+        },
+        {
+          "id": "8d0ad2e1-4bd3-4b33-b987-b6e9687f4dac",
+          "title": "Insulation Institute: Fiberglass & Mineral Wool Insulation"
+        },
+        {
+          "id": "0a8c9761-625a-40a0-8072-7388af2eb4ff",
+          "title": "Johnson Controls | Johnson Controls"
+        },
+        {
+          "id": "0fb87da2-ac2e-4eb0-b45e-70d3dd7e8dff",
+          "title": "Johnson Controls | Johnson Controls"
+        },
+        {
+          "id": "246639d2-702c-462d-859d-66fd7a195ce0",
+          "title": "Manual Q - Low Pressure, Low Velocity Duct System Design - ACCA"
+        },
+        {
+          "id": "c768ab1a-1bf2-46f3-9d14-5b05a8f3359f",
+          "title": "Manual Q - Low Pressure, Low Velocity Duct System Design - ACCA"
+        },
+        {
+          "id": "6e8c87b2-685a-4b33-ba79-b643692192fd",
+          "title": "Mastering Mechanical Blueprint Reading with Floor Plans, Sections, Isometrics, and Schedules - Free Video Tutorial"
+        },
+        {
+          "id": "972f507c-343f-4937-a393-1f7e6ee25b81",
+          "title": "Mastering Mechanical Blueprint Reading with Floor Plans, Sections, Isometrics, and Schedules - Free Video Tutorial"
+        },
+        {
+          "id": "57bb738a-8426-4cd4-b9f7-59cf8e6399cc",
+          "title": "Not Found | Greenheck"
+        },
+        {
+          "id": "a02bf3a1-926e-4f4a-9c24-d65cec8e189c",
+          "title": "Not Found | Greenheck"
+        },
+        {
+          "id": "86b7ed99-e9ca-4d75-bc23-0728d772ce4e",
+          "title": "Page not found | nailor.com"
+        },
+        {
+          "id": "99fadd2d-6258-423f-a0d0-ab7882d29615",
+          "title": "Page not found | nailor.com"
+        },
+        {
+          "id": "1814c3fb-3c61-402c-be7d-f43df5d67ef3",
+          "title": "Products and Solutions| YORK® | YORK®"
+        },
+        {
+          "id": "c9eb3d07-95b8-4675-a82a-51767487a518",
+          "title": "Products and Solutions| YORK® | YORK®"
+        },
+        {
+          "id": "00f3f67b-2121-40df-a260-5f5862302b63",
+          "title": "README — N11 Ductwork & Air Distribution"
+        },
+        {
+          "id": "92cd3d43-304b-4a71-a17f-eb51ab68fef1",
+          "title": "Standards & Codes - ACCA"
+        },
+        {
+          "id": "ba1c58d6-05f9-435c-a43f-d323e66009cf",
+          "title": "Standards & Codes - ACCA"
+        },
+        {
+          "id": "655cba7e-df50-43de-b795-46a9853d4608",
+          "title": "Technical Standards"
+        },
+        {
+          "id": "7485bd90-95f3-4164-8d23-97bdc2fe0b4e",
+          "title": "Technical Standards"
+        },
+        {
+          "id": "86b5cb81-2a3e-443e-8e65-18072da1ebf3",
+          "title": "Technical Standards"
+        },
+        {
+          "id": "d27955b9-4894-4d9d-8af1-6f95e23d848d",
+          "title": "Technical Standards"
+        },
+        {
+          "id": "75279362-0121-43a0-a688-b8aadc74c21c",
+          "title": "Testing, Adjusting and Balancing Certification - NEBB"
+        },
+        {
+          "id": "ceb3dc2a-72a3-4957-8aeb-d315bc7149be",
+          "title": "Testing, Adjusting and Balancing Certification - NEBB"
+        },
+        {
+          "id": "599d107d-8d0a-4072-8931-b196f3469613",
+          "title": "United States National CAD Standard - V7"
+        },
+        {
+          "id": "a84a9319-7b22-44b7-8274-80503c447af4",
+          "title": "United States National CAD Standard - V7"
+        },
+        {
+          "id": "83340a26-b530-4269-afd2-d3fe55943477",
+          "title": "WBDG - Document"
+        },
+        {
+          "id": "ea89bd94-dc7c-4c87-acde-5346500f4f92",
+          "title": "WBDG - Document"
+        },
+        {
+          "id": "35db56eb-5e7b-40d2-b394-2676063e6ecc",
+          "title": "WBDG - UFGS 23 00 00 Air Supply, Distribution, Ventilation, and Exhaust Systems"
+        },
+        {
+          "id": "dfbaa0d1-052d-48b5-9556-f9ce7faef1bd",
+          "title": "WBDG - UFGS 23 00 00 Air Supply, Distribution, Ventilation, and Exhaust Systems"
+        },
+        {
+          "id": "1759bad1-5386-4c5f-996e-4b51ebcea200",
+          "title": "WBDG - UFGS 23 31 13 Metal Ducts"
+        },
+        {
+          "id": "20f1b10f-b6b6-408c-92bf-cea8097e55c0",
+          "title": "WBDG - UFGS 23 31 13 Metal Ducts"
+        },
+        {
+          "id": "4ecdd23d-6824-4103-9050-469ca3f56b45",
+          "title": "https://www.ashrae.org/technical-resources/free-resources/free-resources-list"
+        },
+        {
+          "id": "f86b5443-fff9-4ea0-ab5b-db48bef3218b",
+          "title": "https://www.ashrae.org/technical-resources/free-resources/free-resources-list"
+        },
+        {
+          "id": "4de6500a-89fa-4b62-a706-89f7fbac7b1e",
+          "title": "https://www.mcaa.org/resources/"
+        },
+        {
+          "id": "873f71df-a070-4306-8abe-567d0174a3d9",
+          "title": "https://www.mcaa.org/resources/"
+        },
+        {
+          "id": "0465d96c-2e3c-4f0d-bfcc-bf41ba5ba89c",
+          "title": "https://www.priceindustries.com/engineers"
+        },
+        {
+          "id": "87918ede-cc58-430e-8423-8f88b187a993",
+          "title": "https://www.priceindustries.com/engineers"
+        },
+        {
+          "id": "5fb82741-3af6-415c-b2d0-08dfdf96525a",
+          "title": "https://www.ruskin.com/resources"
+        },
+        {
+          "id": "ffbb1d15-a998-41cc-ad05-fb002e53b5bc",
+          "title": "https://www.ruskin.com/resources"
+        },
+        {
+          "id": "1b28310c-4caf-4402-879c-f44f091b6e87",
+          "title": "https://www.sheetmetalworkers.org/"
+        },
+        {
+          "id": "9c240cc2-512a-4a90-92e5-23073c9a10c4",
+          "title": "https://www.sheetmetalworkers.org/"
+        },
+        {
+          "id": "45d9d0cb-5459-4642-aa21-494bce9f9c4a",
+          "title": "https://www.smacna.org/technical-resources"
+        },
+        {
+          "id": "c986180d-8582-4b60-a8fa-235dab34a25f",
+          "title": "https://www.smacna.org/technical-resources"
+        },
+        {
+          "id": "6e189a88-0fd7-4a4d-9ed7-59a6038d5af1",
+          "title": "https://www.titus-hvac.com/en-us/resources"
+        },
+        {
+          "id": "8cc27638-00cd-4536-be12-8cd871fb2dfc",
+          "title": "https://www.titus-hvac.com/en-us/resources"
+        },
+        {
+          "id": "7a338aea-ec3e-4323-bbe6-1999bec49391",
+          "title": "https://www.trane.com/commercial/north-america/us/en/products-systems/airside.html"
+        },
+        {
+          "id": "99289c36-11d5-4fd1-8267-5f9231a31388",
+          "title": "https://www.trane.com/commercial/north-america/us/en/products-systems/airside.html"
+        }
+      ],
+      "duplicate_title_candidates": [
+        {
+          "title": "2023 ASHRAE Handbook—HVAC Applications | ashrae.org",
+          "source_ids": [
+            "373b8e7d-0863-4d5c-8fab-89ea9451b379",
+            "3bf2486c-8e1c-47e6-b5ec-84ab16e2d013"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Airside Systems: Air Handlers, Fan Coils | Carrier Commercial",
+          "source_ids": [
+            "2c18fe3b-d715-498c-a134-73277d59ca0b",
+            "a7b580a5-5a81-40ba-9a39-d217c5fafa7b"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Commercial Rooftop HVAC Systems | Rooftop HVAC Units",
+          "source_ids": [
+            "b99119a4-da8e-41f6-a768-1cce39cb1f91",
+            "f1aa2a5d-7c02-4ea3-b25b-76cd4d927dbe"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Duct Fitting Database",
+          "source_ids": [
+            "45c36c86-d214-4c0b-8d22-45e1d597bc3c",
+            "9db5b4f0-bf70-4906-bbc5-d488855b4080"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "FastDUCT - HVAC Estimating Software",
+          "source_ids": [
+            "5d4da822-598d-4c4c-a26e-402c9bb7ad7f",
+            "80e31e16-5ee3-408c-86ca-2fd98282251c"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "HVAC Duct Construction Standards - Metal and Flexible, 4th Edition",
+          "source_ids": [
+            "ecad4339-9ad4-46d6-84df-4111a681d3d3",
+            "ef416158-5961-4130-b3b0-44670c974215"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "HVAC Estimating Software | Ductwork Estimating Software | QuoteSoft",
+          "source_ids": [
+            "0d8aa770-06d5-42fd-a610-1ea01809e555",
+            "a887df72-4541-41cf-a76c-0f0b9909e49c"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Insulation Institute: Fiberglass & Mineral Wool Insulation",
+          "source_ids": [
+            "7b9ed28b-11a2-47fb-88be-1ae936d0959c",
+            "8d0ad2e1-4bd3-4b33-b987-b6e9687f4dac"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Johnson Controls | Johnson Controls",
+          "source_ids": [
+            "0a8c9761-625a-40a0-8072-7388af2eb4ff",
+            "0fb87da2-ac2e-4eb0-b45e-70d3dd7e8dff"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Manual Q - Low Pressure, Low Velocity Duct System Design - ACCA",
+          "source_ids": [
+            "246639d2-702c-462d-859d-66fd7a195ce0",
+            "c768ab1a-1bf2-46f3-9d14-5b05a8f3359f"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Mastering Mechanical Blueprint Reading with Floor Plans, Sections, Isometrics, and Schedules - Free Video Tutorial",
+          "source_ids": [
+            "6e8c87b2-685a-4b33-ba79-b643692192fd",
+            "972f507c-343f-4937-a393-1f7e6ee25b81"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Not Found | Greenheck",
+          "source_ids": [
+            "57bb738a-8426-4cd4-b9f7-59cf8e6399cc",
+            "a02bf3a1-926e-4f4a-9c24-d65cec8e189c"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Page not found | nailor.com",
+          "source_ids": [
+            "86b7ed99-e9ca-4d75-bc23-0728d772ce4e",
+            "99fadd2d-6258-423f-a0d0-ab7882d29615"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Products and Solutions| YORK® | YORK®",
+          "source_ids": [
+            "1814c3fb-3c61-402c-be7d-f43df5d67ef3",
+            "c9eb3d07-95b8-4675-a82a-51767487a518"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Standards & Codes - ACCA",
+          "source_ids": [
+            "92cd3d43-304b-4a71-a17f-eb51ab68fef1",
+            "ba1c58d6-05f9-435c-a43f-d323e66009cf"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Technical Standards",
+          "source_ids": [
+            "655cba7e-df50-43de-b795-46a9853d4608",
+            "7485bd90-95f3-4164-8d23-97bdc2fe0b4e",
+            "86b5cb81-2a3e-443e-8e65-18072da1ebf3",
+            "d27955b9-4894-4d9d-8af1-6f95e23d848d"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "Testing, Adjusting and Balancing Certification - NEBB",
+          "source_ids": [
+            "75279362-0121-43a0-a688-b8aadc74c21c",
+            "ceb3dc2a-72a3-4957-8aeb-d315bc7149be"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "United States National CAD Standard - V7",
+          "source_ids": [
+            "599d107d-8d0a-4072-8931-b196f3469613",
+            "a84a9319-7b22-44b7-8274-80503c447af4"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "WBDG - Document",
+          "source_ids": [
+            "83340a26-b530-4269-afd2-d3fe55943477",
+            "ea89bd94-dc7c-4c87-acde-5346500f4f92"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "WBDG - UFGS 23 00 00 Air Supply, Distribution, Ventilation, and Exhaust Systems",
+          "source_ids": [
+            "35db56eb-5e7b-40d2-b394-2676063e6ecc",
+            "dfbaa0d1-052d-48b5-9556-f9ce7faef1bd"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "WBDG - UFGS 23 31 13 Metal Ducts",
+          "source_ids": [
+            "1759bad1-5386-4c5f-996e-4b51ebcea200",
+            "20f1b10f-b6b6-408c-92bf-cea8097e55c0"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "https://www.ashrae.org/technical-resources/free-resources/free-resources-list",
+          "source_ids": [
+            "4ecdd23d-6824-4103-9050-469ca3f56b45",
+            "f86b5443-fff9-4ea0-ab5b-db48bef3218b"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "https://www.mcaa.org/resources/",
+          "source_ids": [
+            "4de6500a-89fa-4b62-a706-89f7fbac7b1e",
+            "873f71df-a070-4306-8abe-567d0174a3d9"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "https://www.priceindustries.com/engineers",
+          "source_ids": [
+            "0465d96c-2e3c-4f0d-bfcc-bf41ba5ba89c",
+            "87918ede-cc58-430e-8423-8f88b187a993"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "https://www.ruskin.com/resources",
+          "source_ids": [
+            "5fb82741-3af6-415c-b2d0-08dfdf96525a",
+            "ffbb1d15-a998-41cc-ad05-fb002e53b5bc"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "https://www.sheetmetalworkers.org/",
+          "source_ids": [
+            "1b28310c-4caf-4402-879c-f44f091b6e87",
+            "9c240cc2-512a-4a90-92e5-23073c9a10c4"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "https://www.smacna.org/technical-resources",
+          "source_ids": [
+            "45d9d0cb-5459-4642-aa21-494bce9f9c4a",
+            "c986180d-8582-4b60-a8fa-235dab34a25f"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "https://www.titus-hvac.com/en-us/resources",
+          "source_ids": [
+            "6e189a88-0fd7-4a4d-9ed7-59a6038d5af1",
+            "8cc27638-00cd-4536-be12-8cd871fb2dfc"
+          ],
+          "byte_equivalence_verified": false
+        },
+        {
+          "title": "https://www.trane.com/commercial/north-america/us/en/products-systems/airside.html",
+          "source_ids": [
+            "7a338aea-ec3e-4323-bbe6-1999bec49391",
+            "99289c36-11d5-4fd1-8267-5f9231a31388"
+          ],
+          "byte_equivalence_verified": false
+        }
+      ],
+      "source_urls_available_in_inventory": false,
+      "evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/N11-sources-result.json",
+        "sha256": "bf9d3aa5d05974ef2e3d6b66a395c77092b5580e2f842f8812cb59a248105551"
+      }
+    },
+    {
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "title": "N05 — Drawing Intelligence",
+      "source_count": 68,
+      "sources": [
+        {
+          "id": "9f6f06e6-2449-42ff-84ea-f81b15b5e76d",
+          "title": "AHMsys: An Automated HVAC Modeling System for BIM Project"
+        },
+        {
+          "id": "71681333-ab60-4102-9d9d-76bf52407876",
+          "title": "Apache PDFBox | A Java PDF Library"
+        },
+        {
+          "id": "6ed8f9f1-59aa-491e-a937-1b066fc8302c",
+          "title": "Claudio9701/cubicasa5k · Datasets at Hugging Face"
+        },
+        {
+          "id": "1ce75f1e-b64f-45e5-9d12-3e53ee335eea",
+          "title": "DanielCerda/pid_yolov8 · Hugging Face"
+        },
+        {
+          "id": "83e8260a-e5a3-4dec-ae44-36218e6c3345",
+          "title": "Floorplans"
+        },
+        {
+          "id": "dec7a5b4-e2f1-48e8-8b47-77eabe6c95a3",
+          "title": "GitHub - Azure-Samples/digitization-of-piping-and-instrument-diagrams: An end-to-end solution to digitize piping and instrument diagrams using Azure Services including Azure Machine Learning and AKS. · GitHub"
+        },
+        {
+          "id": "c6d2e444-4a81-4376-abe6-9be712e6fe68",
+          "title": "GitHub - CubiCasa/CubiCasa5k: CubiCasa5k floor plan dataset · GitHub"
+        },
+        {
+          "id": "4a7e4472-4c73-49fa-9e01-e33e1b9e20f5",
+          "title": "GitHub - DynMEP/MEPdetect: Symbol detection and circuit tracing for MEP construction drawings. Detects electrical symbols with YOLO11, traces how they are wired, and exports netlists and per-circuit counts to CSV, Excel, DXF or PDF. Hosted at mepdetect.com. · GitHub"
+        },
+        {
+          "id": "8bc4bd22-4519-4724-b727-861b4e84467e",
+          "title": "GitHub - DynMEP/YOLOplan: YOLOplan automates symbol detection and counting in technical drawings (PDF, images, CAD) using YOLO11 object detection. Built for MEP professionals, it streamlines takeoff for electrical, HVAC and more - fast, accurate and production-ready. · GitHub"
+        },
+        {
+          "id": "a60ebf67-f03a-41a4-ba37-ebb1155837d7",
+          "title": "GitHub - gudo7208/awesome-ai4cad: Survey & curated paper list: AI meets CAD — 700+ papers across generation, understanding, optimization, and manufacturing (2018–2026). · GitHub"
+        },
+        {
+          "id": "9f9ae537-34bc-487e-babf-1b9c47e12c68",
+          "title": "GitHub - mgupta70/PID_Symbol_Detection: Detect symbols in Piping & Instrumentation Drawings · GitHub"
+        },
+        {
+          "id": "2909e390-dc23-47dc-aaf5-2e146fd46e49",
+          "title": "GitHub - mozilla/pdf.js: PDF Reader in JavaScript · GitHub"
+        },
+        {
+          "id": "9dc08faa-f6c0-4506-a4e5-662165899dae",
+          "title": "GitHub - mozman/ezdxf: Python interface to DXF · GitHub"
+        },
+        {
+          "id": "fa3329d3-0902-491f-8952-3b1ec4f6e812",
+          "title": "GitHub - nicehuster/SymPoint: Symbol as Points: Panoptic Symbol Spotting via Point-based Representation. ICLR 2024 · GitHub"
+        },
+        {
+          "id": "48d6df40-ae48-4a3b-8609-90e9af05054a",
+          "title": "GitHub - obss/sahi: Framework agnostic sliced/tiled inference + interactive ui + error analysis plots · GitHub"
+        },
+        {
+          "id": "063fa9f9-cad2-4082-85ef-e07907cdb089",
+          "title": "GitHub - opencv/opencv-python: Automated CI toolchain to produce precompiled opencv-python, opencv-python-headless, opencv-contrib-python and opencv-contrib-python-headless packages. · GitHub"
+        },
+        {
+          "id": "a47bbcfd-5184-474a-8dfc-0a379f57b9cb",
+          "title": "GitHub - ultralytics/ultralytics: Ultralytics YOLO26, YOLO11, YOLOv8 — object detection, instance segmentation, semantic segmentation, image classification, pose estimation, object tracking · GitHub"
+        },
+        {
+          "id": "819d9c9a-6411-4183-8b22-1aca092cd203",
+          "title": "LOCK ENR-17 A+C RF-DETR RT-DETR (2026-09-09)"
+        },
+        {
+          "id": "129c7c20-8677-49ab-9448-0955fe932724",
+          "title": "MLOpsManufacturing/samples/amlv2_pid_symbol_detection_train at main · Azure-Samples/MLOpsManufacturing · GitHub"
+        },
+        {
+          "id": "f5f5074a-0ea7-47ad-858a-0f1ee561b373",
+          "title": "Model Export with Ultralytics YOLO | Ultralytics"
+        },
+        {
+          "id": "59798016-7295-43b8-9143-2f3b7c06f75c",
+          "title": "Multidimensional image processing (scipy.ndimage) — SciPy v1.18.0 Manual"
+        },
+        {
+          "id": "867c19d6-74d6-4cf1-b492-8c0aebec2195",
+          "title": "News | FloorPlanCAD Dataset"
+        },
+        {
+          "id": "a2a25e75-c9b9-4da6-ad1e-eb14ce92fbe7",
+          "title": "ONNX Export for YOLO26 Models | Ultralytics"
+        },
+        {
+          "id": "3a5be3ee-f250-423c-bbbb-73cf44a36553",
+          "title": "Object Detection with Ultralytics YOLO | Ultralytics"
+        },
+        {
+          "id": "e8edb2a3-3711-4bc7-ae4e-c5161acc512d",
+          "title": "OldDelorean/FloorplanQA-Layouts · Datasets at Hugging Face"
+        },
+        {
+          "id": "2759f201-8915-44e9-8023-6ac8dd9dbe2c",
+          "title": "PDF.js - Home"
+        },
+        {
+          "id": "bba0d886-b49a-4ffb-8ea1-82d87e8b0448",
+          "title": "Pillow (PIL Fork) 12.3.0 documentation"
+        },
+        {
+          "id": "382d0e28-69e3-4145-9725-ff7d9c0f0d48",
+          "title": "Poppler"
+        },
+        {
+          "id": "f115ce53-ae5a-4c16-9d48-147ec7ecdb27",
+          "title": "PyMuPDF documentation"
+        },
+        {
+          "id": "4c7ec1a4-d08f-4187-8100-ea30b9355e96",
+          "title": "Quick-Info — ezdxf 1.4.4 documentation"
+        },
+        {
+          "id": "b24c2a62-bb4c-4539-9684-6d8c75e0b34d",
+          "title": "README — N05 Drawing Intelligence"
+        },
+        {
+          "id": "b6a6d5d0-75d0-4829-af57-e116d04a04ae",
+          "title": "SVG: Scalable Vector Graphics | MDN"
+        },
+        {
+          "id": "ae43e5f2-92eb-4690-9a41-c737476560d2",
+          "title": "Scalable Vector Graphics (SVG) 2"
+        },
+        {
+          "id": "6fde95ce-647d-459e-ad24-35727ce13599",
+          "title": "Shapely — Shapely 2.1.2 documentation"
+        },
+        {
+          "id": "9bb1df23-2abe-46bc-9e9f-755fde3a1b6a",
+          "title": "Systems Evaluation SYnthetic Documents"
+        },
+        {
+          "id": "c5114c63-32af-45ea-904f-c841177152d6",
+          "title": "Tesseract documentation | Tesseract OCR"
+        },
+        {
+          "id": "f3f4146f-06e2-4ecf-b697-bef2f898a04c",
+          "title": "Ultralytics/YOLOv8 · Hugging Face"
+        },
+        {
+          "id": "37178823-d6fe-4ce2-b89b-5082cca9d44e",
+          "title": "Voxel51/FloorPlanCAD · Datasets at Hugging Face"
+        },
+        {
+          "id": "301124bd-421b-418c-ba36-8947c5d68b9b",
+          "title": "Welcome to detectron2's documentation! — detectron2 0.6 documentation"
+        },
+        {
+          "id": "077a7ab2-6477-4930-a23b-f43e65536343",
+          "title": "[2105.07147] FloorPlanCAD: A Large-Scale CAD Drawing Dataset for Panoptic Symbol Spotting"
+        },
+        {
+          "id": "8225ead4-43fe-4dde-ac0f-37b61888c87a",
+          "title": "[2109.03794] Digitize-PID: Automatic Digitization of Piping and Instrumentation Diagrams"
+        },
+        {
+          "id": "09b88112-6f25-439d-9a8c-6eda60a7cfd6",
+          "title": "[2201.00625] GAT-CADNet: Graph Attention Network for Panoptic Symbol Spotting in CAD Drawings"
+        },
+        {
+          "id": "6e0c0da3-b53f-4750-9853-55c57b2fdab3",
+          "title": "[2401.10556] Symbol as Points: Panoptic Symbol Spotting via Point-based Representation"
+        },
+        {
+          "id": "a061b662-6250-4d47-927d-298027f6fb85",
+          "title": "[2412.07377] CADSpotting: Robust Panoptic Symbol Spotting on Large-Scale CAD Drawings"
+        },
+        {
+          "id": "8131ef64-3723-4fd4-8c75-89fbf4eb51b1",
+          "title": "[2503.22346] ArchCAD-400K: A Large-Scale CAD drawings Dataset and New Baseline for Panoptic Symbol Spotting"
+        },
+        {
+          "id": "eef1bf11-eda3-42ec-82ea-c41afef35c2c",
+          "title": "[2504.08645] Title block detection and information extraction for enhanced building drawings search"
+        },
+        {
+          "id": "87b1f645-dbca-4984-ab9f-c03128834622",
+          "title": "[2603.29199] AEC-Bench: A Multimodal Benchmark for Agentic Systems in Architecture, Engineering, and Construction"
+        },
+        {
+          "id": "bb3abdb2-70ff-44cd-90b7-e36d80e7e83e",
+          "title": "enginuity2025/enginuity-bench · Datasets at Hugging Face"
+        },
+        {
+          "id": "72872df7-8527-4a10-9eb0-248195d705c1",
+          "title": "gregoryS/mechanical-drawing-bom-synthetic · Datasets at Hugging Face"
+        },
+        {
+          "id": "6bcaaa03-d4e0-4f9b-ae45-8e10a0a8d12c",
+          "title": "hamzas/digitize-pid-symbols · Datasets at Hugging Face"
+        },
+        {
+          "id": "14113e28-f28f-4538-812c-416eac9028c0",
+          "title": "https://arxiv.org/html/2504.08645"
+        },
+        {
+          "id": "8b629240-2c89-40fa-a964-8a534e753948",
+          "title": "https://arxiv.org/pdf/2109.03794.pdf"
+        },
+        {
+          "id": "fa5ab22a-bcbc-4171-a213-4c7b10b164ec",
+          "title": "https://arxiv.org/pdf/2411.03707"
+        },
+        {
+          "id": "86b4f0e7-a84b-40e7-a60b-01cfde18d281",
+          "title": "https://arxiv.org/pdf/2601.04819"
+        },
+        {
+          "id": "69acea51-859a-4d71-9ab6-421cf208b015",
+          "title": "https://arxiv.org/pdf/2606.03410"
+        },
+        {
+          "id": "97d516dc-0c96-4d28-ac93-a0be212831a0",
+          "title": "https://docs.opencv.org/4.x/"
+        },
+        {
+          "id": "def2faca-7fb3-470c-8d7f-6d1f42e8d7a1",
+          "title": "https://ec-3.org/wp-content/uploads/2025/10/EC32025_346.pdf"
+        },
+        {
+          "id": "f8bf27ba-d239-4a8e-b154-b3f95f913821",
+          "title": "https://learnopencv.com/geometry-of-image-formation/"
+        },
+        {
+          "id": "0d4843b8-a67c-4fa9-bf08-a8ac0fbfc59e",
+          "title": "https://publica.fraunhofer.de/bitstreams/4f6629a9-3d59-4d9e-ae2d-425ef0b71ebe/download"
+        },
+        {
+          "id": "0fb2fe2b-0f12-43a4-b198-b3a5b5fb4c0c",
+          "title": "https://www.arxiv.org/pdf/2510.21862v2"
+        },
+        {
+          "id": "bfac3ac3-d2d7-488f-8d92-24af3f4bdefc",
+          "title": "https://zenodo.org/record/2613548"
+        },
+        {
+          "id": "2cd36515-88d3-4013-afc4-97503f19cd2a",
+          "title": "https://zenodo.org/records/2613548"
+        },
+        {
+          "id": "210d43bc-ef79-4c41-8343-517c33996e3b",
+          "title": "pdfium - Git at Google"
+        },
+        {
+          "id": "f705f0aa-da91-4f39-b42c-5705ce357857",
+          "title": "pierreguillou/DocLayNet-base · Datasets at Hugging Face"
+        },
+        {
+          "id": "bb78f188-a164-4b83-9958-55b12ffc2668",
+          "title": "qpdf version 12.4.1 — qpdf 12.4.1 documentation"
+        },
+        {
+          "id": "40dd199f-5393-4de0-8dfd-1f2533fe0583",
+          "title": "scikit-image's documentation — skimage 0.26.0 documentation"
+        },
+        {
+          "id": "8d78b1f9-0f67-4603-98c1-730ffb15164d",
+          "title": "torchvision — Torchvision 0.29 documentation"
+        },
+        {
+          "id": "7724667f-2b69-4a15-bd11-e1e6d8e4d70a",
+          "title": "umesh16071973/New_Floorplan_demo_dataset · Datasets at Hugging Face"
+        }
+      ],
+      "duplicate_title_candidates": [],
+      "source_urls_available_in_inventory": false,
+      "evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/N05-sources-result.json",
+        "sha256": "edc268000e9eeb94aff0b546208c948e5ce6a47c12d83ccaf6530763b21b1523"
+      }
+    }
+  ],
+  "notebook_evidence": {
+    "path": ".heleos/notebooklm-workflow-2026-09-14/notebook-list-result.json",
+    "sha256": "3332664b7d9a8b52c5f2a8cc4735198c785f667b78b2beb6bb2a05e42ecf57c9"
+  },
+  "tools_evidence": {
+    "path": ".heleos/notebooklm-workflow-2026-09-14/available-read-tools.json",
+    "sha256": "06b05f9175a73571ae45d8eea9e220b4763d1676bf8f63091b84204967fb17e3"
+  },
+  "source_content_coverage": "Only selected public references were read; no all-notebook source-content audit",
+  "refresh_when": [
+    "selected notebook or source identities change",
+    "feature needs sources not yet inventoried",
+    "required source text or applicability is unresolved"
+  ],
+  "production_rule_admission": false
+}

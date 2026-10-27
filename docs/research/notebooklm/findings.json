@@ -1,0 +1,338 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-09-14T05:09:30.877456+00:00",
+  "task": "NotebookLM standing workflow and first mechanical source check",
+  "inventory": "docs/research/notebooklm/notebook-inventory.json",
+  "queries": [
+    {
+      "name": "duct-basis",
+      "state": "completed",
+      "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+      "evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/duct-basis-query-result.json",
+        "sha256": "4717a0b10172e41fb7d525102cb664d9216264f55227a4adf83b64a330118c32"
+      },
+      "answer_verified_against": "All four selected source indexed texts"
+    },
+    {
+      "name": "takeoff-evidence",
+      "state": "client_timeout_no_answer",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "timeout_seconds": 55,
+      "remote_completion": "unknown",
+      "answer_evidence": null,
+      "retried": false,
+      "independent_progress": "Selected FEMA and Bluebeam indexed texts retrieved directly and verified",
+      "egress_evidence": ".heleos/notebooklm-workflow-2026-09-14/egress.jsonl"
+    }
+  ],
+  "sources": [
+    {
+      "key": "drawing-scales",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "2bc99eed-82b9-444a-8bab-450f5be0aa32",
+      "title": "https://www.usfa.fema.gov/downloads/pdf/nfa/engineer-architect-scales.pdf",
+      "notebook_url": "https://notebooklm.google.com/notebook/d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "original_url": "https://www.usfa.fema.gov/downloads/pdf/nfa/engineer-architect-scales.pdf",
+      "url_basis": "Selected source title",
+      "edition_or_document_status": null,
+      "original_pdf_page_numbers": null,
+      "indexed_source_type_reported": "unknown",
+      "classification": "existing public reference text",
+      "retrieved_at": "2026-09-14T05:04:42.747743+00:00",
+      "content_sha256": "f10a1b00608efaec7e2144a84f03f514a0d1eb5bb0520c16935acf602b8085b4",
+      "character_count": 11247,
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-indexed-text.txt",
+      "result_evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-source-result.json",
+        "sha256": "0c58a27e4176d58b83df0e4e983c34519cd57e49f8bddc9090e0c0f5fc347ecf"
+      },
+      "verification_scope": "Read indexed supporting source text; publisher website and publication license not revalidated"
+    },
+    {
+      "key": "bluebeam-measurements",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "6a218a8d-a97f-41b4-9415-eb30f52adb24",
+      "title": "Takeoffs and measurements | Bluebeam Technical Support",
+      "notebook_url": "https://notebooklm.google.com/notebook/d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "original_url": "https://support.bluebeam.com/user-manual/menus/tools/takeoffs-measurements.html",
+      "url_basis": "Explicit article URL in indexed content",
+      "edition_or_document_status": null,
+      "original_pdf_page_numbers": null,
+      "indexed_source_type_reported": "unknown",
+      "classification": "existing public reference text",
+      "retrieved_at": "2026-09-14T05:04:42.911115+00:00",
+      "content_sha256": "4afe5ed0bf40b5b7c25c8119b1a1c9a929b0a1d4a94b401a4007fca9b7359f97",
+      "character_count": 35117,
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/bluebeam-measurements-indexed-text.txt",
+      "result_evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/bluebeam-measurements-source-result.json",
+        "sha256": "4913118e715b675b991dcd62d09e8a740cd463893e2b51b12cef77e22178912b"
+      },
+      "verification_scope": "Read indexed supporting source text; publisher website and publication license not revalidated"
+    },
+    {
+      "key": "ufgs-metal-ducts",
+      "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+      "source_id": "1759bad1-5386-4c5f-996e-4b51ebcea200",
+      "title": "WBDG - UFGS 23 31 13 Metal Ducts",
+      "notebook_url": "https://notebooklm.google.com/notebook/932527dc-c37a-40ed-89de-4240e8197609",
+      "original_url": null,
+      "url_basis": "Original URL not returned; use notebook/source ID locator",
+      "edition_or_document_status": "Metadata page: publication date February 1, 2009; Retired/Superseded",
+      "original_pdf_page_numbers": null,
+      "indexed_source_type_reported": "unknown",
+      "classification": "existing public reference text",
+      "retrieved_at": "2026-09-14T05:04:42.745835+00:00",
+      "content_sha256": "3c5fd09a4aceefad3ce8863c2f9190d1846d27b14fb9d360e3be96c844991bea",
+      "character_count": 6531,
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/ufgs-metal-ducts-indexed-text.txt",
+      "result_evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/ufgs-metal-ducts-source-result.json",
+        "sha256": "8e159bdb2455e76fe9cdbe2dcf8d15026378d12f38e73e170a430b17a277b77c"
+      },
+      "verification_scope": "Read indexed supporting source text; publisher website and publication license not revalidated"
+    },
+    {
+      "key": "ufgs-air-distribution",
+      "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+      "source_id": "35db56eb-5e7b-40d2-b394-2676063e6ecc",
+      "title": "WBDG - UFGS 23 00 00 Air Supply, Distribution, Ventilation, and Exhaust Systems",
+      "notebook_url": "https://notebooklm.google.com/notebook/932527dc-c37a-40ed-89de-4240e8197609",
+      "original_url": null,
+      "url_basis": "Original URL not returned; use notebook/source ID locator",
+      "edition_or_document_status": "Metadata page: publication date August 1, 2018; Retired/Superseded",
+      "original_pdf_page_numbers": null,
+      "indexed_source_type_reported": "unknown",
+      "classification": "existing public reference text",
+      "retrieved_at": "2026-09-14T05:06:04.767798+00:00",
+      "content_sha256": "6f3121e4d632455cd54408cc09ad7aaa68f15a58a29390cb37dfd8df1a3f2171",
+      "character_count": 13268,
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/ufgs-air-distribution-indexed-text.txt",
+      "result_evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/ufgs-air-distribution-source-result.json",
+        "sha256": "a74a13029d8d9d6fd44bba80bed3817dc8a1a98b1f21fe3e527fb06c84bfdd26"
+      },
+      "verification_scope": "Read indexed supporting source text; publisher website and publication license not revalidated"
+    },
+    {
+      "key": "fitting-database",
+      "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+      "source_id": "45c36c86-d214-4c0b-8d22-45e1d597bc3c",
+      "title": "Duct Fitting Database",
+      "notebook_url": "https://notebooklm.google.com/notebook/932527dc-c37a-40ed-89de-4240e8197609",
+      "original_url": null,
+      "url_basis": "Original URL not returned; use notebook/source ID locator",
+      "edition_or_document_status": "Product description references database version 6.00.05",
+      "original_pdf_page_numbers": null,
+      "indexed_source_type_reported": "unknown",
+      "classification": "existing public reference text",
+      "retrieved_at": "2026-09-14T05:04:42.748198+00:00",
+      "content_sha256": "e5118c84ca4021ef7bf08a279883bdc29c7c1724fef97d11cfec7216097fed01",
+      "character_count": 20207,
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/fitting-database-indexed-text.txt",
+      "result_evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/fitting-database-source-result.json",
+        "sha256": "98f6bc311f403c1e78a0e4dae58e0f540d5b8d01580fb13d454783194a737b5e"
+      },
+      "verification_scope": "Read indexed supporting source text; publisher website and publication license not revalidated"
+    },
+    {
+      "key": "smacna-catalog",
+      "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+      "source_id": "ecad4339-9ad4-46d6-84df-4111a681d3d3",
+      "title": "HVAC Duct Construction Standards - Metal and Flexible, 4th Edition",
+      "notebook_url": "https://notebooklm.google.com/notebook/932527dc-c37a-40ed-89de-4240e8197609",
+      "original_url": null,
+      "url_basis": "Original URL not returned; use notebook/source ID locator",
+      "edition_or_document_status": "Catalog lists 2020 fourth edition; full publication not present",
+      "original_pdf_page_numbers": null,
+      "indexed_source_type_reported": "unknown",
+      "classification": "existing public reference text",
+      "retrieved_at": "2026-09-14T05:06:04.768438+00:00",
+      "content_sha256": "a8b9bd456834fe0a1bbfd5b3b366d983344731ab05b70771500c47e6026278f7",
+      "character_count": 11453,
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/smacna-catalog-indexed-text.txt",
+      "result_evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/smacna-catalog-source-result.json",
+        "sha256": "e86270a4f930887acf919ed5b38433738dd0aa5851db212d26ebd660285fdf37"
+      },
+      "verification_scope": "Read indexed supporting source text; publisher website and publication license not revalidated"
+    }
+  ],
+  "findings": [
+    {
+      "id": "NLM-20260914-001",
+      "state": "verified_applicable",
+      "claim": "A sheet can contain more than one drawing scale, and reproduction can alter the printed scale; verify against a known value before measurement.",
+      "support": [
+        {
+          "source_key": "drawing-scales",
+          "indexed_text_lines": [
+            31,
+            31
+          ],
+          "section": "Scales"
+        },
+        {
+          "source_key": "drawing-scales",
+          "indexed_text_lines": [
+            93,
+            99
+          ],
+          "section": "Using the tool and interpreting the results"
+        },
+        {
+          "source_key": "bluebeam-measurements",
+          "indexed_text_lines": [
+            893,
+            903
+          ],
+          "section": "Calibrate the scale"
+        }
+      ],
+      "applicability": "Corroborates the existing source-bound verified-scale requirement; not a new duct measurement convention.",
+      "chronology": "Source verification occurred after implementation began; this research did not originate those tests.",
+      "implementation_mapping": {
+        "relationship": "corroborates_existing_behavior",
+        "files": [
+          "scripts/sheet_scale.py",
+          "scripts/duct_calculation.py"
+        ],
+        "existing_tests": [
+          "tests/drawing-workspace/test_duct_calculation.py::test_unverified_or_competing_scale_never_measures",
+          "tests/drawing-workspace/test_duct_calculation.py::test_e07_scale_replacement_blocks_old_result_then_yields_sixteen"
+        ]
+      },
+      "adopted_code_change": null
+    },
+    {
+      "id": "NLM-20260914-002",
+      "state": "conflict_not_adopted",
+      "claim": "The FEMA fire-inspection scale-training example gives written dimensions precedence over scaled measurements.",
+      "support": [
+        {
+          "source_key": "drawing-scales",
+          "indexed_text_lines": [
+            183,
+            199
+          ],
+          "section": "Scale versus dimensions"
+        }
+      ],
+      "conflict": "Approved D05 keeps dimension-versus-scale conflicts unresolved instead of silently selecting one basis. This source teaches a fire-inspection context and does not replace the approved product rule.",
+      "resolution": "Preserve D05 and flag the difference. No automatic precedence or tolerance introduced.",
+      "implementation_mapping": {
+        "relationship": "existing_approved_rule_retained",
+        "rule_file": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+        "rule": "D05",
+        "existing_tests": [
+          "tests/drawing-workspace/test_duct_calculation.py::test_explicit_dimension_conflict_is_not_silently_overridden"
+        ]
+      },
+      "adopted_code_change": null
+    },
+    {
+      "id": "NLM-20260914-003",
+      "state": "verified_source_limitation",
+      "claim": "The four selected N11 references are catalog/product descriptions or UFGS metadata/revision-history pages, not the full mechanical measurement texts named by their titles. They do not substantiate centerline takeoff, separate fitting-count, vertical/sloped measurement or duplicate-depiction rules.",
+      "query_reference": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/duct-basis-query-result.json",
+        "sha256": "4717a0b10172e41fb7d525102cb664d9216264f55227a4adf83b64a330118c32"
+      },
+      "support": [
+        {
+          "source_key": "smacna-catalog",
+          "indexed_text_lines": [
+            75,
+            97
+          ],
+          "section": "Description, Details, Table of Contents; full indexed text reviewed as catalog outline"
+        },
+        {
+          "source_key": "fitting-database",
+          "indexed_text_lines": [
+            45,
+            87
+          ],
+          "section": "Product description and related resources"
+        },
+        {
+          "source_key": "ufgs-metal-ducts",
+          "indexed_text_lines": [
+            131,
+            171
+          ],
+          "section": "Summary, General information, Revision/Change History"
+        },
+        {
+          "source_key": "ufgs-air-distribution",
+          "indexed_text_lines": [
+            131,
+            171
+          ],
+          "section": "Summary, General information, Revision/Change History"
+        }
+      ],
+      "resolution": "Keep the approved owner packet as current rule authority. Obtain and verify applicable full text before admitting public references as mechanical rule support.",
+      "not_generalized_to": "Other source content in these notebooks was not exhausted; no claim that the notebooks contain no usable rule sources.",
+      "adopted_code_change": null
+    },
+    {
+      "id": "NLM-20260914-004",
+      "state": "verified_applicable",
+      "claim": "The indexed ASHRAE Duct Fitting Database description concerns fitting loss coefficients and pressure-loss calculations. It does not supply a duct takeoff centerline-length rule.",
+      "support": [
+        {
+          "source_key": "fitting-database",
+          "indexed_text_lines": [
+            61,
+            83
+          ],
+          "section": "Duct Fitting Database and associated Standard 120 resources"
+        }
+      ],
+      "applicability": "Supports keeping pressure-loss engineering data distinct from physical measured quantities and separate fitting counts; no calculation coefficients imported.",
+      "implementation_mapping": {
+        "relationship": "corroborates_existing_authority_boundary",
+        "rule_file": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+        "rule": "D01",
+        "adopted_code_change": null
+      }
+    },
+    {
+      "id": "NLM-20260914-005",
+      "state": "verified_inventory_limitation",
+      "claim": "N10 and N11 contain repeated source titles; there are 34 duplicate-title groups in N10 and 29 in N11. Title equality does not prove equal source bytes or independent evidence.",
+      "support": [
+        {
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "evidence": {
+            "path": ".heleos/notebooklm-workflow-2026-09-14/N10-sources-result.json",
+            "sha256": "75addefb31de1d91b696fb961ac7445ac9edff2616dd56cb10b8033526ed5738"
+          }
+        },
+        {
+          "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+          "evidence": {
+            "path": ".heleos/notebooklm-workflow-2026-09-14/N11-sources-result.json",
+            "sha256": "bf9d3aa5d05974ef2e3d6b66a395c77092b5580e2f842f8812cb59a248105551"
+          }
+        }
+      ],
+      "resolution": "Query one explicit source ID per selected title, retain all IDs in the index, and compare text/source bytes before deduplication.",
+      "adopted_code_change": null
+    }
+  ],
+  "rule_authority": "Approved owner D01-D10 packet and decision remain authoritative; NotebookLM answers are proposals",
+  "production_rule_admission": false,
+  "external_additions": [],
+  "private_uploads": [],
+  "outstanding": [
+    "N10 generated answer unavailable after observed client timeout",
+    "Applicable full mechanical rule source text not established by the four selected N11 catalog/metadata sources",
+    "Original URLs/pages/edition missing where explicitly null; do not invent them",
+    "Live publisher website freshness and licenses not checked"
+  ],
+  "process_state": "All executed stdio client processes and their SDK contexts terminal; no live query handle retained"
+}

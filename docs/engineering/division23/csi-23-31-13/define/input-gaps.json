@@ -1,0 +1,23 @@
+{
+  "section_id": "CSI-23-31-13",
+  "gaps": [
+    {
+      "gap_id": "CSI-23-31-13-INPUT-CHILD-BODIES",
+      "affected_scope": "23 31 13.13 Rectangular Metal Ducts; 23 31 13.16 Round and Flat-Oval Spiral Ducts; 23 31 13.19 Metal Duct Fittings",
+      "missing_input": "Retained mechanical source bodies and passages for each child type, variant, attribute, relationship, exclusion, and service.",
+      "next_action": "Retain those source bodies and compare each adopted claim with its passage before any child taxonomy is admitted.",
+      "resolution_criterion": "Each child has a source identity, passage, and disposition of adopted or excluded, checked against that passage.",
+      "expected_evidence": "A source record under docs/research/notebooklm/ or another retained body, cited from the child taxonomy.",
+      "closes_behavior": false
+    },
+    {
+      "gap_id": "CSI-23-31-13-INPUT-NOTEBOOKLM",
+      "affected_scope": "23 31 13 and its three children",
+      "missing_input": "A NotebookLM query from this Cursor session. The connection remains on Codex.",
+      "next_action": "Query the CSI Division 23 notebook for these section bodies, or reuse a saved record that already quotes them.",
+      "resolution_criterion": "The query or reused record cites notebook, source, and passage identities for the admitted claims.",
+      "expected_evidence": "A findings file that names the notebook and source ids.",
+      "closes_behavior": false
+    }
+  ]
+}

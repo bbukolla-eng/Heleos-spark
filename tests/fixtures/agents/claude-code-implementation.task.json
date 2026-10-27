@@ -1,0 +1,30 @@
+{
+  "schema": "heleos.worker-task/v1",
+  "task_id": "synthetic-claude-001",
+  "provider": "claude_code",
+  "mode": "implementation",
+  "base_commit": "af526a3c9c7ad93f360b6629e9b592a81787b341",
+  "objective": "Synthetic exercise: implement checked addition and its overflow test in the assigned example files.",
+  "allowed_paths": [
+    "examples/agent-protocol/claude-code/add.rs",
+    "examples/agent-protocol/claude-code/add_test.rs"
+  ],
+  "forbidden_paths": [
+    "Cargo.lock",
+    "Cargo.toml",
+    "governance"
+  ],
+  "input_data_class": "PUBLIC",
+  "egress_policy": "approved_external",
+  "instruction_sha256": {
+    "AGENTS.md": "0000000000000000000000000000000000000000000000000000000000000000",
+    "CLAUDE.md": "1111111111111111111111111111111111111111111111111111111111111111"
+  },
+  "acceptance_commands": [
+    "git diff --check -- examples/agent-protocol/claude-code"
+  ],
+  "limits": {
+    "max_actions": 20,
+    "max_duration_seconds": 600
+  }
+}

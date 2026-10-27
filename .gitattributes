@@ -1,0 +1,6 @@
+/crates/heleos-pdf-protocol/Cargo.toml text eol=lf
+/crates/heleos-pdf-protocol/src/lib.rs text eol=lf
+/crates/heleos-pdf-guest/Cargo.toml text eol=lf
+/crates/heleos-pdf-guest/src/lib.rs text eol=lf
+/crates/heleos-pdf-guest/src/main.rs text eol=lf
+/crates/heleos-test-fixtures/Cargo.toml text eol=lf

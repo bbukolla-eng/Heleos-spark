@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "record_kind": "research_candidate_metadata",
+  "candidate_id": "roboflow:reviuer/floor-plans-zeb7z",
+  "status": "research_only_not_admitted",
+  "observed_at_utc": "2026-09-14 02:18:26 UTC",
+  "data_class": "PUBLIC",
+  "identity": {
+    "project_url": "https://universe.roboflow.com/reviuer/floor-plans-zeb7z",
+    "workspace_slug": "reviuer",
+    "project_slug": "floor-plans-zeb7z",
+    "display_name": "Floor Plans",
+    "publisher_display_name": "Reviuer"
+  },
+  "project_metadata": {
+    "source_url": "https://universe.roboflow.com/reviuer/floor-plans-zeb7z",
+    "live_gallery_url": "https://universe.roboflow.com/reviuer/floor-plans-zeb7z/browse?queryText=&pageSize=50&startingIndex=0&browseQuery=true",
+    "reported_images": 3716,
+    "independent_original_drawing_count": null,
+    "task": "instance_segmentation",
+    "classes": [
+      "wall",
+      "room"
+    ],
+    "reported_public_versions": 2,
+    "project_description_available": false,
+    "door_pipe_and_duct_classes_present": false
+  },
+  "version_metadata": {
+    "source_url": "https://universe.roboflow.com/reviuer/floor-plans-zeb7z/dataset/8",
+    "version": 8,
+    "inspection_reason": "Version linked by the overview's displayed model; metadata checked on the live public version page.",
+    "generated_date": "2024-07-14",
+    "reported_images": 6318,
+    "split_counts": {
+      "train": 5204,
+      "validation": 744,
+      "test": 370
+    },
+    "preprocessing": [
+      "auto-orient",
+      "fit with white padding to 1024x1024",
+      "contrast stretching",
+      "grayscale"
+    ],
+    "reported_class_modifications": {
+      "remapped": 0,
+      "dropped": 0
+    },
+    "augmentation": {
+      "outputs_per_training_example": 2,
+      "flips": [
+        "horizontal",
+        "vertical"
+      ],
+      "rotation_degrees": {
+        "minimum": -15,
+        "maximum": 15
+      }
+    },
+    "archive_retrieved": false,
+    "archive_sha256": null,
+    "original_document_groups_and_split_independence_verified": false
+  },
+  "sample_observation": {
+    "source_url": "https://universe.roboflow.com/reviuer/floor-plans-zeb7z/images/6T75E5YjQ7u99SyAj7Gn?queryText=&pageSize=50&startingIndex=0&browseQuery=true",
+    "source_surface": "Public current-gallery image, Labels and Raw Data panels.",
+    "displayed_image_name": "174.png",
+    "annotation_data_key": "174.jpg",
+    "image_id": "6T75E5YjQ7u99SyAj7Gn",
+    "width_px": 1922,
+    "height_px": 1070,
+    "displayed_split": "train",
+    "displayed_group": "floorplan",
+    "annotation_type": "polygon",
+    "annotation_count": 61,
+    "class_counts": {
+      "room": 20,
+      "wall": 41
+    },
+    "observation": "Architectural floor-plan image with room-area and wall-segment polygons; no mechanical-system annotation classes.",
+    "coverage_caveat": "Single-sample inspection does not establish dataset-wide annotation completeness, independent source count, or absence of unannotated mechanical features.",
+    "observation_bound_to_frozen_version_archive": false,
+    "evidence_form": "Investigator-derived metadata from rendered public UI; raw archive bytes not preserved."
+  },
+  "rights": {
+    "declared_license": null,
+    "license_declaration_observed": false,
+    "checked_surfaces": [
+      "public project overview",
+      "live gallery header",
+      "live version 8 page"
+    ],
+    "underlying_drawing_origin_verified": false,
+    "licensor_authority_verified": false,
+    "training_use_approved": false
+  },
+  "assessment": {
+    "proposed_role": "Architectural context recognition for later pipe and duct tracing research.",
+    "expected_benefit_hypothesis": "Wall and room predictions may reduce mechanical trace proposals that follow architectural linework.",
+    "benefit_measured": false,
+    "proposed_experiment": [
+      "After rights and annotation review, train wall/room recognition as an auxiliary task or pretraining stage.",
+      "Use task-specific labels for mechanical training; treat missing pipe/duct annotations as unknown unless their absence is independently verified.",
+      "Supply architectural predictions as uncertain context while preserving original pixels and overlapping pipe/duct trace proposals.",
+      "Compare mechanical tracing with and without this context on the same held-out projects, keeping related sheets, crops and revisions in one split."
+    ],
+    "evaluation_focus": [
+      "False pipe/duct traces following walls or other architectural features",
+      "Missed pipe/duct segments and broken connectivity at wall crossings",
+      "Trace localization and centerline accuracy against adjudicated mechanical annotations"
+    ],
+    "hard_wall_or_room_exclusion_authorized": false,
+    "mechanical_taxonomy_mapping": null,
+    "model_accuracy_measured": false,
+    "physical_quantity_authority_established": false,
+    "next_action": "Confirm dataset license and original source; audit source grouping and annotation coverage before selecting an exact version for an auxiliary-context experiment."
+  },
+  "report": "docs/research/engineering/roboflow-floor-plan-context-2026-09-13.md"
+}

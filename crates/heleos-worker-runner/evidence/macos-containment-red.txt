@@ -1,0 +1,18 @@
+Base: 94cf73dd3ee347f93b5e2d5b8aa9a59580a36155
+Command: cargo +1.96.1 test --locked --offline -p heleos-worker-runner --test cli
+Host: native macOS
+Exit: 101
+Tests: 1 passed; 2 failed; 0 ignored
+
+macos_containment_allows_roots_denies_host_and_descendant_writes_with_literal_paths:
+CLI returned exit 2 with code invalid_configuration because --containment does not exist.
+cli_reads_packet_and_retains_checkout_with_protocol_handoff:
+assertion left Null, right "none": successful evidence lacks the containment mode.
+cli_rejects_invalid_packet_without_echoing_untrusted_content: passed.
+
+These failures occurred before production containment code was added.
+
+API RED command: cargo +1.96.1 test --locked --offline -p heleos-worker-runner --test runner containment
+Exit: 101; compilation stopped before tests.
+E0432/E0433: ContainmentMode missing in heleos_worker_runner.
+E0609: RunnerConfig.containment missing (two sites).

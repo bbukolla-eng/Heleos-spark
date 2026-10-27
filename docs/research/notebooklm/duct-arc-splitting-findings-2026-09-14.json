@@ -1,0 +1,233 @@
+{
+  "task_id": "DUCT-ARC-SPLITTING-1-RESEARCH",
+  "worker": "airdevice_research",
+  "recorded_at": "2026-09-14T15:00:13.289204+00:00",
+  "state": "bounded_source_verification_complete_candidate",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_head": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "brief_sha256": "d00a6b5fc41ef017fd4ffd19160b1b867c13e3b565a36d4ee6411f7b870a117e",
+  "instruction_hashes": {
+    "AGENTS.md": "f1e8ca69afc99a02647b9509acf73fbf3bfb7c7c73029f7a20852a1cf33bb8a6",
+    "SKILLS.md": "939b8aac16ee926c9775efb2465ae3178d9f5365dc5cd2fe4df3aa46a52d017f",
+    "docs/operations/notebooklm-research.md": "00eb47e10e1f5aeb67f207918359e41778844a6d35a91e2cf1e3c923e19a1c66",
+    "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6",
+    "docs/superpowers/specs/2026-09-14-duct-observation-contract.md": "8145ec08ef070344d4e9b94f0a295e489273f30b8fbbf05576e2389fa14cd0c9",
+    "docs/superpowers/plans/2026-09-14-duct-circular-arc.md": "0cc0a0ac0bb166bf6ecb535ee4b768c87656fad09bbd8582fd3c06a156e4b563",
+    "docs/superpowers/specs/2026-09-13-calculation-sequence-design.md": "6ae8b6a5a8a43b638b7cfae8f67c676de59a495e8aae8ca00eeb8870fd85d7b8"
+  },
+  "inventory_reuse": {
+    "path": "docs/research/notebooklm/expansion-n05-2026-09-14.json",
+    "sha256": "0cc9680fb4cc6168a05d2913f2cd77f42592eab0fb7554013adff26a280146ac",
+    "selected_ids_verified_present": [
+      "457f0d9c-d900-45cb-8b40-9a8a8a5d8101",
+      "fb38a435-ce85-408f-afe4-2a9384877bc5"
+    ],
+    "full_inventory_repeated": false
+  },
+  "sources": {
+    "openstax": {
+      "source_id": "457f0d9c-d900-45cb-8b40-9a8a8a5d8101",
+      "url": "https://openstax.org/books/precalculus-2e/pages/5-1-angles",
+      "title": "5.1 Angles - Precalculus 2e | OpenStax",
+      "edition": "Precalculus 2e",
+      "publication_date": "2021-12-21",
+      "response": "research-call-03-response.json",
+      "indexed_text_path": ".heleos/duct-circular-arc-2026-09-14/research-openstax-indexed-text.txt",
+      "indexed_text_sha256": "a4c5869bbfd4af70a5213de07282287817bbbc83bfca72a474be744deb4228d8",
+      "response_sha256": "ec1fbb7bf005e8c390fa7158d969d29852d5cdd66a641aa5004d00d57127e4a6",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "pagination": null
+    },
+    "ezdxf": {
+      "source_id": "fb38a435-ce85-408f-afe4-2a9384877bc5",
+      "url": "https://ezdxf.readthedocs.io/en/stable/math/core.html",
+      "title": "Core \u2014 ezdxf 1.4.4 documentation",
+      "edition": "1.4.4",
+      "publication_date": null,
+      "response": "research-call-04-response.json",
+      "indexed_text_path": ".heleos/duct-circular-arc-2026-09-14/research-ezdxf-indexed-text.txt",
+      "indexed_text_sha256": "76097f9285913dcb66d9a046a774ed158811c98abe857d9ce52427843e869109",
+      "response_sha256": "f3e1cee2fd57751f614825280219e45f98aad47e0882800c327828892182fc7b",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "pagination": null
+    }
+  },
+  "source_freshness": "Two unchanged retained indexed bodies and original response hashes verified locally; no fresh full-body retrieval or publisher freshness claim.",
+  "prior_passage_hashes_rechecked": 11,
+  "new_selected_passages": {
+    "path": ".heleos/duct-arc-splitting-2026-09-14/research-verified-passages.json",
+    "sha256": "fc5acf183d963032a919afc9e9d872f0382dc2e31058059e2dc9cc02bc33348f",
+    "count": 11
+  },
+  "prior_passage_locator": ".heleos/duct-circular-arc-2026-09-14/research-verified-passages.json",
+  "query": {
+    "status": "terminal_success",
+    "conversation_id": "d2778d33-20a5-41bc-9cf4-0ed3240e0f63",
+    "selected_source_ids": [
+      "457f0d9c-d900-45cb-8b40-9a8a8a5d8101",
+      "fb38a435-ce85-408f-afe4-2a9384877bc5"
+    ],
+    "request": ".heleos/duct-arc-splitting-2026-09-14/research-call-01-before.json",
+    "request_sha256": "e3b1267ecfad2dc84a91148fc10e371a121f7ac47842dee9738bb87722bf1cf4",
+    "response": ".heleos/duct-arc-splitting-2026-09-14/research-call-01-after.json",
+    "response_sha256": "0eee948f60810d94445765212ef1324ea3ede2f992e6470e68b7f639d113efb0",
+    "answer_sha256": "64e17b0608fdcf2338476b186d3d60026000ccb2475f3e805e900d8653f759e0",
+    "authority": "Untrusted generated synthesis; independently checked claims and rejected overclaims below."
+  },
+  "verified_findings": [
+    {
+      "id": "ARC-SPLIT-S01",
+      "state": "verified_applicable",
+      "support": [
+        "AS03",
+        "AS06"
+      ],
+      "claim": "Circular arc length is measured along the curve; s=r\u03b8 uses central angle in radians. Convert degrees before multiplying.",
+      "limit": "Mathematical basis only; it does not specify a subdivision data model or numerical certificate."
+    },
+    {
+      "id": "ARC-SPLIT-S02",
+      "state": "verified_applicable",
+      "support": [
+        "AS01",
+        "AS02",
+        "AS05",
+        "AS07"
+      ],
+      "claim": "Direction and full-turn information cannot be recovered merely by normalizing endpoint angles. OpenStax distinguishes positive CCW, negative CW and coterminal angles; ezdxf documents a particular numeric-parameter convention distinguishing equal parameters from explicit full-turn pairs.",
+      "limit": "The ezdxf convention is not a project rule and does not admit full circles or multiple turns into the existing supported domain."
+    },
+    {
+      "id": "ARC-SPLIT-S03",
+      "state": "verified_applicable",
+      "support": [
+        "AS08",
+        "CA05"
+      ],
+      "claim": "The documented ConstructionArc uses center/radius and degree start/end angles. angles(num) returns degree angles in CCW order normalized to [0,360).",
+      "limit": "The selected text does not explicitly promise evenly spaced values or exact endpoints; no algorithm or library dependency is adopted."
+    },
+    {
+      "id": "ARC-SPLIT-S04",
+      "state": "verified_applicable",
+      "support": [
+        "AS09",
+        "AS10"
+      ],
+      "claim": "Two-point/radius construction exposes a direction and center-side choice; the three-point constructor documents start, end and an additional definition point plus a CCW precondition.",
+      "limit": "The cited text does not guarantee that the third point belongs to the directed returned traversal or specify invalid/antipodal input handling."
+    },
+    {
+      "id": "ARC-SPLIT-S05",
+      "state": "verified_applicable",
+      "support": [
+        "AS11",
+        "CA08",
+        "CA09"
+      ],
+      "claim": "The documented flattening operation approximates circular geometry with polygon vertices and describes sagitta control. Chords and the original curve are distinct representations.",
+      "limit": "No exact arc-length or source-graphic coverage certificate follows from that approximation interface."
+    }
+  ],
+  "explicit_mathematical_deductions": [
+    {
+      "id": "ARC-SPLIT-D01",
+      "state": "mathematical_deduction_from_verified_basis",
+      "support": [
+        "AS03",
+        "AS06"
+      ],
+      "claim": "For one fixed circle of radius r>0 and monotonically ordered unwrapped angles \u03b80\u2026\u03b8n, consecutive same-direction sub-arcs have nonnegative lengths si=r|\u03b8i\u2212\u03b8i\u22121| and sum to r|\u03b8n\u2212\u03b80|.",
+      "conditions": [
+        "Same center and radius for every portion",
+        "Same direction with no reversal or overlapping extra traversal",
+        "Consecutive intervals cover the declared parent sweep without a gap"
+      ],
+      "limit": "This is algebra from s=r\u03b8 and monotone angle addition, not a quoted theorem or a validated floating-point subdivision algorithm. Quantized child/parent boundary behavior remains governed by D07 and independent engineering checks."
+    },
+    {
+      "id": "ARC-SPLIT-D02",
+      "state": "mathematical_deduction_from_verified_basis",
+      "support": [
+        "AS01",
+        "AS02",
+        "AS05",
+        "AS07"
+      ],
+      "claim": "Wrapped/normalized endpoint subtraction may lose the intended traversal. A 350\u00b0\u219210\u00b0 CCW traversal is 20\u00b0 when declared across zero; subdivision at0\u00b0 gives10\u00b0+10\u00b0. Clockwise signed sweeps require magnitude for nonnegative physical length.",
+      "limit": "Illustrative deduction, not an original drawing fixture or automatic sweep-selection prescription."
+    },
+    {
+      "id": "ARC-SPLIT-D03",
+      "state": "mathematical_deduction_from_verified_basis",
+      "support": [
+        "AS04",
+        "AS06"
+      ],
+      "claim": "On a known circle with a single traversal below one complete turn, antipodal endpoints can bound either of two directed semicircles. Each has length\u03c0r; direction still selects a different locus. A3\u03c0/2 parent may be partitioned into\u03c0 and\u03c0/2 portions with lengths\u03c0r and\u03c0r/2.",
+      "limit": "No selected source specifies a production antipodal constructor, unique three-point solve, tolerance or support policy. The example does not expand the approved supported domain."
+    }
+  ],
+  "unsupported_or_conflicting": [
+    {
+      "state": "unsupported",
+      "claim": "angles(num) explicitly returns evenly distributed samples.",
+      "reason": "AS08 documents count, direction and normalized degree range; equal spacing is absent from the retained text despite the query assertion."
+    },
+    {
+      "state": "unsupported",
+      "claim": "from_3p guarantees the selected start\u2192end traversal passes through def_point.",
+      "reason": "AS10 calls it an additional definition point and separately gives a direction precondition; the stronger through-sweep guarantee is not stated."
+    },
+    {
+      "state": "unsupported",
+      "claim": "from_2p_radius has a particular failure or fallback behavior when chord>2r.",
+      "reason": "The cited method description AS09 does not specify that behavior. A separate bulge helper return-zero convention cannot be transferred to this constructor or the application."
+    },
+    {
+      "state": "unsupported",
+      "claim": "Signed angle conservation always equals physical length conservation.",
+      "reason": "The query sum r\u0394\u03b8 must be qualified by consistent direction and physical magnitudes; reversals can cancel signed sweeps while adding traveled length."
+    },
+    {
+      "state": "unsupported",
+      "claim": "The selected texts specify exact subarc generation, fractions/cut encoding, rational endpoints, numeric error enclosures, source-region coverage or tolerance thresholds.",
+      "reason": "These remain explicit independent engineering obligations. Library defaults for unrelated intersection functions are not arc-splitting accuracy authority."
+    },
+    {
+      "state": "unsupported",
+      "claim": "Polyline division or sagitta-controlled flattening is an exact true-circular-arc subdivision method.",
+      "reason": "An approximation or separate polyline API does not certify the unchanged parent circle, exact sweep or exact curved length."
+    },
+    {
+      "state": "conflict_not_adopted",
+      "claim": "Straight/chord fallback, written-dimension precedence, rounding or dropping retained whole-run conflicts can be inferred from the public references.",
+      "reason": "Approved D03/D05/D07/D08 and original evidence/history remain authoritative. Prior FEMA precedence conflict remains unadopted; these two sources add no mechanical policy."
+    }
+  ],
+  "implementation_authority": "Existing D03 supports validated true circular geometry; D06 supplies splitting at supported size/group changes. Sources do not override approved D05/D07/D08, invent new quantity rules or authorize evidence/history loss.",
+  "engineering_validation_remaining": [
+    "Preserve one parent circle and declared direction/coverage through nested/consecutive partitions; independently prove numerical endpoint/cut construction.",
+    "Validate degeneracy, near-endpoint and antipodal behavior within the supported domain without chord fallback.",
+    "Validate exact source/scale context and immutable correction/history relationships for every portion.",
+    "Retain existing six-decimal-meter and sum-before-display D07 semantics; prove exact/quantized partition behavior independently."
+  ],
+  "counts": {
+    "queries": 1,
+    "external_pairs": 1,
+    "new_body_reads": 0,
+    "reused_bodies": 2,
+    "source_additions": 0,
+    "source_deletions": 0,
+    "private_uploads": 0
+  },
+  "egress": {
+    "path": ".heleos/duct-arc-splitting-2026-09-14/research-egress.jsonl",
+    "sha256": "7949f77f1b28a337294152c6949f29958d46a9ed1f61ef7b02f0b1dbd4d38177"
+  },
+  "production_rule_admission": false,
+  "code_or_test_changes": [],
+  "process_state": "query and local verification terminal; no external work or product process running",
+  "next_action": "Root independently checks applicable findings and sets/proves the bounded subdivision implementation contract."
+}

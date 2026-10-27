@@ -1,0 +1,22 @@
+{
+  "task_id": "CSI-23-31-13-DEFINE",
+  "contract_version": "2026-09-16-division23-section-task-contracts",
+  "section_id": "CSI-23-31-13",
+  "readiness": "not_ready",
+  "scope": "Bind approved D01-D10 centerline measurement to CSI 23 31 13. Do not implement child product types.",
+  "exclusions": ["23 31 13.13", "23 31 13.16", "23 31 13.19", "recognition", "representative project", "Windows"],
+  "source_ids": ["DUCT-RULES-2026-09-13", "DUCT-OWNER-DECISION-2026-09-14"],
+  "rule_ids": ["D01", "D02", "D03", "D04", "D05", "D06", "D07", "D08", "D09", "D10"],
+  "fixture_hashes": {
+    "tests/fixtures/duct-takeoff/2026-09-13-rule-examples.json": "08ce9d1b0348b96de0b00dbc71a55a94e962c58f4b17239a61f3cf64e846e6ad"
+  },
+  "base_commit": "fa45862dbd65d634b45f772a7c874fe1ee1b6e43",
+  "write_paths": ["docs/engineering/division23/csi-23-31-13/define/"],
+  "writer": "Cursor checkout controller",
+  "interfaces": [],
+  "dependencies": [],
+  "criteria_ids": ["CSI-23-31-13-D01", "CSI-23-31-13-D02", "CSI-23-31-13-D03", "CSI-23-31-13-D04", "CSI-23-31-13-D05", "CSI-23-31-13-D06"],
+  "check_commands": ["python3 -m unittest discover -s tests/drawing-workspace -p 'test_csi_23_31_13_define.py' -v"],
+  "reviewer": null,
+  "receipt_path": "docs/engineering/division23/csi-23-31-13/define/acceptance.json"
+}

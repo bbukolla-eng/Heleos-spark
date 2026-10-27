@@ -1,0 +1,204 @@
+# Public-source metadata candidates only; no source admission or production authority.
+# effective_date is a release date where available; rolling-page observation fallbacks are explicit in gaps.
+schema_version = 1
+status = "research_only"
+
+[[source]]
+retrieved_at = "2026-09-09T14:51:00Z"
+cache_status = "not_cached"
+license_or_rights = "Publicly readable original documentation; redistribution and third-party upload rights were not established for this source."
+data_class = "PUBLIC"
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation-only research reference; no NotebookLM upload authorization established and no source bytes submitted."
+contradictions = []
+id = "architecture-rust-1.96.1-undefined-behavior"
+canonical_url = "https://doc.rust-lang.org/1.96.1/reference/behavior-considered-undefined.html"
+publisher = "The Rust Project"
+title = "The Rust Reference: Behavior considered undefined"
+edition_or_version = "Rust 1.96.1"
+effective_date = "2026-06-30"
+locators = ["Behavior considered undefined: [undefined.intro]","[undefined.soundness] and its following Warning"]
+claims_supported = ["Unsafe blocks and functions remain subject to Rust's undefined-behavior rules.","Sound unsafe code must prevent safe clients from triggering undefined behavior; the documented list is explicitly non-exhaustive."]
+applicability = "Matches Foundation Rust 1.96.1 and informs review of unsafe and FFI boundaries; documentation alone does not establish application soundness."
+gaps = ["No complete formal unsafe-semantics model is promised by this source.","effective_date is the Rust 1.96.1 release date from the official versioned release notes; source-byte identity is not cached or hashed."]
+
+[[source]]
+retrieved_at = "2026-09-09T14:51:00Z"
+cache_status = "not_cached"
+license_or_rights = "Publicly readable original documentation; redistribution and third-party upload rights were not established for this source."
+data_class = "PUBLIC"
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation-only research reference; no NotebookLM upload authorization established and no source bytes submitted."
+contradictions = []
+id = "architecture-cargo-1.96.1-locked-offline"
+canonical_url = "https://doc.rust-lang.org/1.96.1/cargo/commands/cargo-build.html"
+publisher = "The Rust Project"
+title = "The Cargo Book: cargo build"
+edition_or_version = "Documentation distributed with Rust 1.96.1"
+effective_date = "2026-06-30"
+locators = ["OPTIONS > Manifest Options > --locked","OPTIONS > Manifest Options > --offline","OPTIONS > Manifest Options > --frozen"]
+claims_supported = ["--locked rejects a missing lockfile or dependency resolution that would change it.","--offline prevents Cargo network access but can change resolution relative to online mode; --frozen combines --locked and --offline."]
+applicability = "Matches the Foundation Rust 1.96.1 documentation and locked/offline build convention; not evidence that build-script subprocesses are contained or outputs reproducible."
+gaps = ["The flags do not themselves prove source admission, exact toolchain selection, or complete build reproducibility.","effective_date is the Rust 1.96.1 release date, not a separate Cargo documentation publication date."]
+
+[[source]]
+retrieved_at = "2026-09-09T14:51:00Z"
+cache_status = "not_cached"
+license_or_rights = "Publicly readable original documentation; redistribution and third-party upload rights were not established for this source."
+data_class = "PUBLIC"
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation-only research reference; no NotebookLM upload authorization established and no source bytes submitted."
+contradictions = []
+id = "architecture-rustup-toolchain-overrides"
+canonical_url = "https://rust-lang.github.io/rustup/overrides.html"
+publisher = "The Rust Project"
+title = "The rustup book: Overrides"
+edition_or_version = "Unversioned rolling rustup book observed 2026-09-09"
+effective_date = "2026-09-09"
+locators = ["Overrides: precedence list and directory-proximity exception","#the-toolchain-file","#toolchain-file-settings"]
+claims_supported = ["Toolchain selection considers command-line shorthand, RUSTUP_TOOLCHAIN, directory overrides, toolchain files, and the default, with a proximity exception.","rust-toolchain.toml can specify channel, components, and targets; a checked-in pin is not proof of the effective runtime selection."]
+applicability = "Research context for Foundation's 1.96.1 toolchain file; installed rustup version and effective runtime selection were not tested."
+gaps = ["Publisher effective date is not stated; effective_date records the 2026-09-09 observation date only, not a publication or normative effective date.","This rolling page is not pinned to an installed rustup release."]
+
+[[source]]
+retrieved_at = "2026-09-09T14:51:00Z"
+cache_status = "not_cached"
+license_or_rights = "Publicly readable original documentation; redistribution and third-party upload rights were not established for this source."
+data_class = "PUBLIC"
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation-only research reference; no NotebookLM upload authorization established and no source bytes submitted."
+contradictions = []
+id = "architecture-rust-1.96.1-wasm32-wasip1"
+canonical_url = "https://doc.rust-lang.org/1.96.1/rustc/platform-support/wasm32-wasip1.html"
+publisher = "The Rust Project"
+title = "The rustc book: wasm32-wasip1"
+edition_or_version = "Rust 1.96.1"
+effective_date = "2026-06-30"
+locators = ["wasm32-wasip1: opening target description","#requirements"]
+claims_supported = ["wasm32-wasip1 emits core WebAssembly modules importing wasi_snapshot_preview1 and exists for historical WASIp1 compatibility.","The target supports a partial standard library; spawning threads and processes returns an error."]
+applicability = "Directly matches the Foundation guest target wasm32-wasip1 and Rust 1.96.1; component-model documentation is not an interchangeable guest ABI."
+gaps = ["WASIp1 has no formal semantics for each syscall in this source and is no longer the focus of WASI standardization.","effective_date is the Rust 1.96.1 release date; target behavior has not been independently executed here."]
+
+[[source]]
+retrieved_at = "2026-09-09T14:51:00Z"
+cache_status = "not_cached"
+license_or_rights = "Publicly readable original documentation; redistribution and third-party upload rights were not established for this source."
+data_class = "PUBLIC"
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation-only research reference; no NotebookLM upload authorization established and no source bytes submitted."
+contradictions = []
+id = "architecture-wasmtime-48.0.1-security"
+canonical_url = "https://raw.githubusercontent.com/bytecodealliance/wasmtime/v48.0.1/docs/security.md"
+publisher = "Bytecode Alliance / Wasmtime contributors"
+title = "Wasmtime security documentation"
+edition_or_version = "Wasmtime v48.0.1"
+effective_date = "2026-08-24"
+locators = ["Heading: WebAssembly Core","Heading: Defense-in-depth","Heading: Filesystem Access"]
+claims_supported = ["Core WebAssembly exposes external functionality through explicitly linked imports and checks linear-memory accesses.","WASI filesystem access follows a capability model; Wasmtime also documents implementation bugs and defense-in-depth mitigations."]
+applicability = "Matches Foundation Wasmtime 48.0.1; architectural context for untrusted guest execution and deliberately supplied host capabilities."
+gaps = ["Sandbox design is not proof of absence of runtime vulnerabilities, safe host implementations, or operating-system process containment.","effective_date is the v48.0.1 release date; platform-specific mitigations require separate verification."]
+
+[[source]]
+retrieved_at = "2026-09-09T14:51:00Z"
+cache_status = "not_cached"
+license_or_rights = "Publicly readable original documentation; redistribution and third-party upload rights were not established for this source."
+data_class = "PUBLIC"
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation-only research reference; no NotebookLM upload authorization established and no source bytes submitted."
+contradictions = []
+id = "architecture-wasmtime-48.0.1-fuel-epochs"
+canonical_url = "https://raw.githubusercontent.com/bytecodealliance/wasmtime/v48.0.1/crates/wasmtime/src/config.rs"
+publisher = "Bytecode Alliance / Wasmtime contributors"
+title = "Wasmtime Config: fuel and epoch interruption documentation"
+edition_or_version = "Wasmtime v48.0.1"
+effective_date = "2026-08-24"
+locators = ["Config::consume_fuel documentation and implementation","Config::epoch_interruption > Interaction with blocking host calls","Config::epoch_interruption > Limitations with malicious guests","Config::epoch_interruption > When to use fuel vs. epochs"]
+claims_supported = ["Fuel supports deterministic guest interruption and is disabled by default; enabled stores start with no fuel.","Epoch interruption requires an advancing engine epoch and a store deadline; it is nondeterministic and does not cancel blocking host calls.","Bulk memory operations can outlast an epoch interval, so strict latency assumptions also need bounded memory."]
+applicability = "Exact Foundation Wasmtime 48.0.1 with async and Cranelift enabled; supports separate guest CPU and host-call cancellation research."
+gaps = ["Neither mechanism alone is an end-to-end wall-clock deadline or host-call cancellation guarantee.","effective_date is the v48.0.1 release date; actual engine/store configuration and cancellation behavior were not tested."]
+
+[[source]]
+retrieved_at = "2026-09-09T14:51:00Z"
+cache_status = "not_cached"
+license_or_rights = "Publicly readable original documentation; redistribution and third-party upload rights were not established for this source."
+data_class = "PUBLIC"
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation-only research reference; no NotebookLM upload authorization established and no source bytes submitted."
+contradictions = []
+id = "architecture-wasmtime-48.0.1-resource-limits"
+canonical_url = "https://raw.githubusercontent.com/bytecodealliance/wasmtime/v48.0.1/crates/wasmtime/src/runtime/limits.rs"
+publisher = "Bytecode Alliance / Wasmtime contributors"
+title = "Wasmtime ResourceLimiter and StoreLimitsBuilder documentation"
+edition_or_version = "Wasmtime v48.0.1"
+effective_date = "2026-08-24"
+locators = ["ResourceLimiter trait documentation","ResourceLimiter::memory_growing documentation","StoreLimitsBuilder::memory_size documentation"]
+claims_supported = ["ResourceLimiter limits resources allocated by WebAssembly instances, not every store or embedder allocation; CPU limiting uses other mechanisms.","StoreLimitsBuilder::memory_size limits each linear memory separately and has no limit by default.","memory_growing is not invoked for shared memories in this version."]
+applicability = "Matches Foundation Wasmtime 48.0.1; useful for distinguishing guest linear-memory limits from aggregate host memory budgets."
+gaps = ["Per-memory limits are not aggregate process-memory limits; shared-memory and host allocations require separate policy.","effective_date is the v48.0.1 release date; configured limits and failure behavior were not tested."]
+
+[[source]]
+retrieved_at = "2026-09-09T14:51:00Z"
+cache_status = "not_cached"
+license_or_rights = "Publicly readable original documentation; redistribution and third-party upload rights were not established for this source."
+data_class = "PUBLIC"
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation-only research reference; no NotebookLM upload authorization established and no source bytes submitted."
+contradictions = ["WasiCtxBuilder::new says TCP/UDP are allowed with all addresses denied by default; allow_udp and allow_tcp each say usage is disabled by default. The source's default descriptions conflict."]
+id = "architecture-wasmtime-wasi-48.0.1-capabilities"
+canonical_url = "https://raw.githubusercontent.com/bytecodealliance/wasmtime/v48.0.1/crates/wasi/src/ctx.rs"
+publisher = "Bytecode Alliance / Wasmtime contributors"
+title = "WasiCtxBuilder defaults and filesystem capabilities"
+edition_or_version = "wasmtime-wasi v48.0.1"
+effective_date = "2026-08-24"
+locators = ["WasiCtxBuilder::new defaults documentation","WasiCtxBuilder::preopened_dir documentation","WasiCtxBuilder::allow_udp documentation","WasiCtxBuilder::allow_tcp documentation"]
+claims_supported = ["The builder defaults include no preopened directories and no inherited environment variables.","preopened_dir grants access through preexisting handles with filesystem permissions and documents prevention of traversal beyond the supplied directory."]
+applicability = "Exact Foundation wasmtime-wasi 48.0.1 builder used for WASIp1 context setup; grants must be checked against the actual linker and host implementation."
+gaps = ["Network defaults need implementation-level adjudication; this manifest does not select one conflicting description.","effective_date is the v48.0.1 release date; no filesystem or native-platform containment test was performed."]
+
+[[source]]
+retrieved_at = "2026-09-09T14:51:00Z"
+cache_status = "not_cached"
+license_or_rights = "Publicly readable original documentation; redistribution and third-party upload rights were not established for this source."
+data_class = "PUBLIC"
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation-only research reference; no NotebookLM upload authorization established and no source bytes submitted."
+contradictions = []
+id = "architecture-wasmtime-wasi-48.0.1-preview1"
+canonical_url = "https://raw.githubusercontent.com/bytecodealliance/wasmtime/v48.0.1/crates/wasi/src/p1.rs"
+publisher = "Bytecode Alliance / Wasmtime contributors"
+title = "wasmtime-wasi WASIp1 module documentation"
+edition_or_version = "wasmtime-wasi v48.0.1"
+effective_date = "2026-08-24"
+locators = ["Module-level WASIp1 documentation before Examples","Module heading: Components vs Modules"]
+claims_supported = ["WASIp1 runtime support uses WasiP1Ctx built through build_p1 and sync or async linker registration.","This module supports core WebAssembly modules, not components; component execution uses the separate WASIp2 support."]
+applicability = "Direct match for Foundation wasmtime-wasi 48.0.1 with p1 enabled and the wasm32-wasip1 guest target."
+gaps = ["Examples are illustrative and do not prescribe approved environment or standard-I/O inheritance.","effective_date is the v48.0.1 release date; no component migration is authorized by this research."]
+
+[[source]]
+retrieved_at = "2026-09-09T14:51:00Z"
+cache_status = "not_cached"
+license_or_rights = "Publicly readable original documentation; redistribution and third-party upload rights were not established for this source."
+data_class = "PUBLIC"
+supersession_state = "unknown"
+notebooklm_permission = "reference_only"
+notebooklm_rights_basis = "Citation-only research reference; no NotebookLM upload authorization established and no source bytes submitted."
+contradictions = []
+id = "architecture-bytecodealliance-component-concepts"
+canonical_url = "https://component-model.bytecodealliance.org/design/component-model-concepts.html"
+publisher = "Bytecode Alliance"
+title = "The WebAssembly Component Model: Component Model Concepts"
+edition_or_version = "Unversioned rolling guide observed 2026-09-09"
+effective_date = "2026-09-09"
+locators = ["#components","#webassembly-interface-types-wit","#worlds"]
+claims_supported = ["Components can contain core modules and other components; WIT describes their typed interfaces.","Worlds describe interfaces and types offered by a component and those it depends on."]
+applicability = "Future architecture comparison only; Foundation's current WASIp1 core-module guest is not automatically a component."
+gaps = ["Publisher effective date is not stated; effective_date records the 2026-09-09 observation date only, not a publication or normative effective date.","This rolling conceptual guide is not a frozen specification or a Wasmtime 48.0.1 feature-compatibility statement."]

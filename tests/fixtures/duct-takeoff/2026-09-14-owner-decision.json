@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "record_kind": "owner_calculation_basis_decision",
+  "task_id": "DUCT-CALCULATION-1",
+  "owner_reply": "Duct rules approved.",
+  "recorded_date": "2026-09-14",
+  "decision": "approved_for_implementation",
+  "rule_ids": [
+    "D01",
+    "D02",
+    "D03",
+    "D04",
+    "D05",
+    "D06",
+    "D07",
+    "D08",
+    "D09",
+    "D10"
+  ],
+  "submitted_packet_path": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+  "submitted_packet_sha256": "ed9c2255d518199632caf943869f2a610304e2459402305254648a32acd9ba80",
+  "checked_examples_path": "tests/fixtures/duct-takeoff/2026-09-13-rule-examples.json",
+  "checked_examples_sha256": "08ce9d1b0348b96de0b00dbc71a55a94e962c58f4b17239a61f3cf64e846e6ad",
+  "example_use": "Use the submitted checked examples as expected results under the approved rules; original preparation records remain unchanged.",
+  "source_pdf_sha256": "712e2beddb49906964f3d4f5f1c76293dc971ec054f09194ea35e01c709799e6",
+  "source_coverage_limits": "E01 source is a straight variant. Source PDF covers E01-E05; E06-E09 are literal examples. Additional calculation/source cases are still required.",
+  "unit_system": "imperial",
+  "calculation_order": [
+    "duct_lengths_by_size",
+    "air_device_counts",
+    "equipment_counts"
+  ],
+  "representative_project_adjudication": false,
+  "production_release_acceptance": false,
+  "native_windows_acceptance": false,
+  "live_model_accuracy_acceptance": false,
+  "approved_packet_path": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+  "approved_packet_sha256": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6",
+  "packet_annotation": "The approved packet changes the submission status and section headings to record the owner reply. D01-D10 and E01-E09 rule/example bodies are unchanged. The submitted packet hash above preserves the original decision context."
+}

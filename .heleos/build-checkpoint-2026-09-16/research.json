@@ -1,0 +1,61 @@
+{
+  "task_id": "BUILD-CHECKPOINT-GUARD-1",
+  "notebooklm": {
+    "state": "available; delayed cross-check verified",
+    "tool_inventory_matches": "gemini_notebook_mcp discovered",
+    "inventory": "docs/research/notebooklm/notebook-inventory.json",
+    "relevant_notebook": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+    "query_performed": true,
+    "initial_discovery_record": {
+      "state": "unavailable",
+      "tool_inventory_matches": 0,
+      "inventory": "docs/research/notebooklm/notebook-inventory.json",
+      "relevant_notebook": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+      "query_performed": false
+    },
+    "correction_record": ".heleos/build-checkpoint-2026-09-16/notebooklm-correction.json",
+    "verification_record": ".heleos/build-checkpoint-2026-09-16/notebooklm-verification.json"
+  },
+  "verified_primary_sources": [
+    {
+      "url": "https://git-scm.com/docs/githooks",
+      "locator": "DESCRIPTION and pre-commit",
+      "finding": "Executable hook at configured hook path runs before commit; nonzero aborts commit. Local hook is bypassable and not server enforcement.",
+      "behavior": "Install executable local hook; return validator status; do not claim tamper-proof enforcement."
+    },
+    {
+      "url": "https://git-scm.com/docs/gitrevisions",
+      "locator": ":[<n>:]<path>",
+      "finding": "Colon-prefixed paths name stage-zero index blobs when stage omitted.",
+      "behavior": "Read staged bytes rather than working-tree files."
+    },
+    {
+      "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows",
+      "locator": "pull_request and pull_request_target",
+      "finding": "pull_request uses merge context; pull_request_target uses default-branch context and should not build PR code.",
+      "behavior": "Retain pull_request with read-only permissions and validate event head/base revisions explicitly."
+    }
+  ],
+  "external_submissions": [
+    {
+      "provider": "web",
+      "purpose": "Verify public Git/Actions semantics",
+      "data_class": "PUBLIC",
+      "source_identities": [
+        "https://git-scm.com/docs/githooks",
+        "https://git-scm.com/docs/git-show",
+        "https://git-scm.com/docs/gitrevisions",
+        "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows"
+      ],
+      "policy_decision": "Standing authorization for public reference research; no private code or documents submitted",
+      "time": "2026-09-16",
+      "result_ref": ".heleos/build-checkpoint-2026-09-16/research.json"
+    },
+    {
+      "provider": "NotebookLM via Gemini Notebook MCP",
+      "record": ".heleos/build-checkpoint-2026-09-16/notebooklm-submission.json",
+      "result_ref": ".heleos/build-checkpoint-2026-09-16/notebooklm-query.json",
+      "outcome": "success; consequential limited Python claims checked against raw source text"
+    }
+  ]
+}
