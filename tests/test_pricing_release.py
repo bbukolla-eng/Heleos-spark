@@ -163,6 +163,26 @@ class PricingAndReleaseTests(unittest.TestCase):
         self.assertEqual(estimate_count, 0)
         self.assertEqual(line_count, 0)
 
+    def test_non_ascii_currency_is_rejected_before_insert(self) -> None:
+        supplier_id = self.service.create_supplier(project_id=self.project_id, name="Verified Supply")
+
+        with self.assertRaises(ValidationError) as caught:
+            self.service.create_quote_revision(
+                project_id=self.project_id,
+                supplier_id=supplier_id,
+                source_document_revision_id=self.drawing_id,
+                quote_number="QS-100",
+                issued_at="2026-08-27",
+                valid_through="2099-01-01",
+                currency="åbc",
+                terms="Delivered to jobsite; freight included.",
+            )
+
+        self.assertEqual(str(caught.exception), "currency must be a three-letter ISO code")
+        with self.database.connection() as connection:
+            quote_count = connection.execute("SELECT COUNT(*) FROM quote_revisions").fetchone()[0]
+        self.assertEqual(quote_count, 0)
+
     def test_expired_quote_blocks_as_bid_release(self) -> None:
         estimate_id = self._approved_estimate(valid_through="2000-01-01")
 

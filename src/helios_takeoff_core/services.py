@@ -518,7 +518,7 @@ class TakeoffService:
         if expiry_date < issued_date:
             raise ValidationError("valid_through cannot precede issued_at")
         currency = require_text(currency, "currency").upper()
-        if len(currency) != 3 or not currency.isalpha():
+        if len(currency) != 3 or any(not ("A" <= character <= "Z") for character in currency):
             raise ValidationError("currency must be a three-letter ISO code")
         with self.database.transaction() as connection:
             supplier = connection.execute(
