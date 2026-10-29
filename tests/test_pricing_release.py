@@ -84,16 +84,20 @@ class PricingAndReleaseTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.temporary_directory.cleanup()
 
-    def _quote_line(self, valid_through: str) -> str:
+    def _quote_line(self, valid_through: str, *, currency: str = "USD") -> str:
+        self._quote_serial = getattr(self, "_quote_serial", 0) + 1
+        serial = self._quote_serial
         quote_document_id = self.repository.register_document_revision(
             project_id=self.project_id,
             document_type="OTHER",
-            document_number=f"QUOTE-{valid_through}",
+            document_number=f"QUOTE-{valid_through}-{serial}",
             title="Supplier Quote",
-            sha256=("b" if valid_through > "2026-08-27" else "c") * 64,
+            sha256=f"{serial:064x}",
             issue_date="2026-08-27",
         )
-        supplier_id = self.service.create_supplier(project_id=self.project_id, name="Verified Supply")
+        supplier_id = self.service.create_supplier(
+            project_id=self.project_id, name=f"Verified Supply {serial}"
+        )
         quote_id = self.service.create_quote_revision(
             project_id=self.project_id,
             supplier_id=supplier_id,
@@ -101,7 +105,7 @@ class PricingAndReleaseTests(unittest.TestCase):
             quote_number="QS-100",
             issued_at="2026-08-27" if valid_through > "2026-08-27" else "1999-12-01",
             valid_through=valid_through,
-            currency="USD",
+            currency=currency,
             terms="Delivered to jobsite; freight included.",
         )
         return self.service.add_quote_line(
@@ -125,6 +129,42 @@ class PricingAndReleaseTests(unittest.TestCase):
             rationale="Quote and quantity reconciliation complete.",
         )
         return estimate_id
+
+    def _approved_two_line_takeoff(self) -> tuple[str, list[dict]]:
+        evidence_id = self.repository.record_evidence_item(
+            document_revision_id=self.drawing_id,
+            sheet_id="M-601",
+            page_number=1,
+            geometry={"bbox": [21.0, 22.0, 23.0, 24.0]},
+        )
+        assertion_id = self.service.create_quantity_assertion(
+            revision_set_id=self.revision_set_id,
+            subject_kind="EQUIPMENT",
+            subject_key="M-601:EF-2",
+            uom="EA",
+            quantity="1",
+            scope_state="NEW",
+            evidence_allocations=[{"evidence_item_id": evidence_id, "allocation_quantity": "1"}],
+        )
+        for outcome, rationale in (
+            ("VERIFIED", "Second fan tag visible."),
+            ("APPROVED", "Second quantity approved."),
+        ):
+            self.service.record_quantity_review(
+                assertion_id=assertion_id,
+                actor_id=self.estimator_id,
+                outcome=outcome,
+                rationale=rationale,
+            )
+        takeoff_id = self.service.create_takeoff_version(revision_set_id=self.revision_set_id)
+        self.service.approve_takeoff_version(
+            takeoff_version_id=takeoff_id,
+            actor_id=self.estimator_id,
+            rationale="Two-line takeoff approved.",
+        )
+        lines = self.repository.get_takeoff_version(takeoff_id)["lines"]
+        self.assertEqual(len(lines), 2)
+        return takeoff_id, lines
 
     def test_released_bid_has_approved_takeoff_estimate_and_dual_role_decisions(self) -> None:
         estimate_id = self._approved_estimate(valid_through="2099-01-01")
@@ -162,6 +202,47 @@ class PricingAndReleaseTests(unittest.TestCase):
             line_count = connection.execute("SELECT COUNT(*) FROM estimate_lines").fetchone()[0]
         self.assertEqual(estimate_count, 0)
         self.assertEqual(line_count, 0)
+
+    def test_mixed_currency_estimate_is_rejected_before_insert(self) -> None:
+        takeoff_id, lines = self._approved_two_line_takeoff()
+        usd_quote = self._quote_line("2099-01-01", currency="USD")
+        eur_quote = self._quote_line("2099-01-01", currency="EUR")
+
+        with self.assertRaises(ValidationError) as caught:
+            self.service.create_estimate_version(
+                takeoff_version_id=takeoff_id,
+                line_inputs=[
+                    {"takeoff_line_id": lines[0]["id"], "quote_line_id": usd_quote},
+                    {"takeoff_line_id": lines[1]["id"], "quote_line_id": eur_quote},
+                ],
+            )
+
+        self.assertEqual(str(caught.exception), "estimate lines must use one currency")
+        with self.database.connection() as connection:
+            estimate_count = connection.execute("SELECT COUNT(*) FROM estimate_versions").fetchone()[0]
+            line_count = connection.execute("SELECT COUNT(*) FROM estimate_lines").fetchone()[0]
+        self.assertEqual(estimate_count, 0)
+        self.assertEqual(line_count, 0)
+
+    def test_one_currency_across_estimate_lines_is_accepted(self) -> None:
+        takeoff_id, lines = self._approved_two_line_takeoff()
+        first_quote = self._quote_line("2099-01-01", currency="USD")
+        second_quote = self._quote_line("2099-01-01", currency="USD")
+
+        estimate_id = self.service.create_estimate_version(
+            takeoff_version_id=takeoff_id,
+            line_inputs=[
+                {"takeoff_line_id": lines[0]["id"], "quote_line_id": first_quote},
+                {"takeoff_line_id": lines[1]["id"], "quote_line_id": second_quote},
+            ],
+        )
+
+        with self.database.connection() as connection:
+            stored = connection.execute(
+                "SELECT COUNT(*) FROM estimate_lines WHERE estimate_version_id = ?",
+                (estimate_id,),
+            ).fetchone()[0]
+        self.assertEqual(stored, 2)
 
     def test_non_ascii_currency_is_rejected_before_insert(self) -> None:
         supplier_id = self.service.create_supplier(project_id=self.project_id, name="Verified Supply")

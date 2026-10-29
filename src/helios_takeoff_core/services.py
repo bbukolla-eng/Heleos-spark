@@ -624,10 +624,8 @@ class TakeoffService:
             selection_covers_takeoff = selected_ids == set(takeoff_lines)
             if not (selection_count_matches and selection_is_unique and selection_covers_takeoff):
                 raise ValidationError("line_inputs must select exactly one quote line for every takeoff line")
-            connection.execute(
-                "INSERT INTO estimate_versions(id, project_id, takeoff_version_id, created_at) VALUES (?, ?, ?, ?)",
-                (estimate_version_id, takeoff["project_id"], takeoff_version_id, _now()),
-            )
+            resolved_lines: list[tuple[Any, ...]] = []
+            estimate_currency: str | None = None
             for line_input in line_inputs:
                 if not isinstance(line_input, dict):
                     raise ValidationError("each estimate line input must be an object")
@@ -637,7 +635,7 @@ class TakeoffService:
                     raise ValidationError("takeoff_line_id and quote_line_id are required")
                 quote_line = connection.execute(
                     """
-                    SELECT line.id, line.uom, line.unit_price, quote.project_id
+                    SELECT line.id, line.uom, line.unit_price, quote.project_id, quote.currency
                     FROM quote_lines AS line
                     JOIN quote_revisions AS quote ON quote.id = line.quote_revision_id
                     WHERE line.id = ?
@@ -651,7 +649,35 @@ class TakeoffService:
                     raise ValidationError("quote line must belong to the takeoff project")
                 if quote_line["uom"] != takeoff_line["uom"]:
                     raise ValidationError("quote line UOM must match takeoff line UOM")
+                if estimate_currency is None:
+                    estimate_currency = quote_line["currency"]
+                elif quote_line["currency"] != estimate_currency:
+                    raise ValidationError("estimate lines must use one currency")
                 extended_price = format(Decimal(takeoff_line["quantity"]) * Decimal(quote_line["unit_price"]), "f")
+                resolved_lines.append(
+                    (
+                        _new_id(),
+                        takeoff_line_id,
+                        quote_line_id,
+                        takeoff_line["uom"],
+                        takeoff_line["quantity"],
+                        quote_line["unit_price"],
+                        extended_price,
+                    )
+                )
+            connection.execute(
+                "INSERT INTO estimate_versions(id, project_id, takeoff_version_id, created_at) VALUES (?, ?, ?, ?)",
+                (estimate_version_id, takeoff["project_id"], takeoff_version_id, _now()),
+            )
+            for (
+                estimate_line_id,
+                takeoff_line_id,
+                quote_line_id,
+                uom,
+                quantity,
+                unit_price,
+                extended_price,
+            ) in resolved_lines:
                 connection.execute(
                     """
                     INSERT INTO estimate_lines(
@@ -660,13 +686,13 @@ class TakeoffService:
                     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """,
                     (
-                        _new_id(),
+                        estimate_line_id,
                         estimate_version_id,
                         takeoff_line_id,
                         quote_line_id,
-                        takeoff_line["uom"],
-                        takeoff_line["quantity"],
-                        quote_line["unit_price"],
+                        uom,
+                        quantity,
+                        unit_price,
                         extended_price,
                         _now(),
                     ),
