@@ -466,7 +466,11 @@ class HeliosApi:
         if length < 0 or length > 1_000_000:
             raise ValidationError("request body size is invalid")
         raw = environ["wsgi.input"].read(length)
-        payload = json.loads(raw.decode("utf-8")) if raw else {}
+
+        def reject_constant(_constant: str) -> None:
+            raise ValidationError("JSON request body must not contain NaN or Infinity")
+
+        payload = json.loads(raw.decode("utf-8"), parse_constant=reject_constant) if raw else {}
         if not isinstance(payload, dict):
             raise ValidationError("JSON request body must be an object")
         return payload

@@ -14,6 +14,7 @@ from wsgiref.util import setup_testing_defaults
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from helios_takeoff_core.api import create_wsgi_app
+from helios_takeoff_core.errors import ValidationError
 
 
 def invoke(app, method: str, path: str, body: dict | None = None, headers: dict[str, str] | None = None):
@@ -192,6 +193,60 @@ class ApiTests(unittest.TestCase):
 
         self.assertEqual(grant_status, "404 Not Found")
         self.assertEqual(grant_error["error"]["code"], "NOT_FOUND")
+
+    def test_claim_request_rejects_nonstandard_json_before_insert(self) -> None:
+        repository = self.app.repository
+        project_id = repository.create_project(code="P-200", name="School Addition")
+        document_id = repository.register_document_revision(
+            project_id=project_id,
+            document_type="DRAWING",
+            document_number="M-201",
+            title="Ductwork Plan",
+            sha256="a" * 64,
+            issue_date="2026-08-27",
+        )
+        evidence_id = repository.record_evidence_item(
+            document_revision_id=document_id,
+            sheet_id="M-201",
+            page_number=2,
+            geometry={"bbox": [100.0, 200.0, 320.0, 240.0]},
+        )
+        run_id = repository.start_extraction_run(
+            project_id=project_id,
+            plugin_id="duct.extractor",
+            plugin_version="1.0.0",
+            configuration_sha256="b" * 64,
+            input_manifest_sha256="c" * 64,
+        )
+        for index, literal in enumerate(("NaN", "Infinity", "-Infinity")):
+            raw = f'{{"payload": {{"length": {literal}}}}}'.encode()
+            environ = {
+                "CONTENT_TYPE": "application/json",
+                "CONTENT_LENGTH": str(len(raw)),
+                "wsgi.input": io.BytesIO(raw),
+            }
+            with self.assertRaises(ValidationError):
+                self.app._read_json(environ)
+            status, body = invoke(
+                self.app,
+                "POST",
+                f"/v1/evidence-items/{evidence_id}/claims",
+                {
+                    "extraction_run_id": run_id,
+                    "evidence_item_ids": [evidence_id],
+                    "subject_kind": "DUCT_SEGMENT",
+                    "subject_key": "M-201:duct:001",
+                    "claim_type": "DETECTED",
+                    "payload": {"length": float(literal)},
+                    "confidence": "0.94",
+                },
+                {"Idempotency-Key": f"claim-nonstandard-{index}"},
+            )
+            self.assertEqual(status, "400 Bad Request")
+            self.assertEqual(body["error"]["code"], "VALIDATION_ERROR")
+        with repository.database.connection() as connection:
+            count = connection.execute("SELECT COUNT(*) FROM extraction_claims").fetchone()[0]
+        self.assertEqual(count, 0)
 
 
 if __name__ == "__main__":

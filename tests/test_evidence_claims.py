@@ -79,6 +79,46 @@ class EvidenceAndClaimTests(unittest.TestCase):
                 page_number=2,
             )
 
+    def test_claim_payload_rejects_nonstandard_json_numbers(self) -> None:
+        evidence_id = self.repository.record_evidence_item(
+            document_revision_id=self.document_id,
+            sheet_id="M-201",
+            page_number=2,
+            geometry={"bbox": [100.0, 200.0, 320.0, 240.0]},
+        )
+        run_id = self.repository.start_extraction_run(
+            project_id=self.project_id,
+            plugin_id="duct.extractor",
+            plugin_version="1.0.0",
+            configuration_sha256=HASH_B,
+            input_manifest_sha256=HASH_C,
+        )
+        claim_id = self.repository.record_extraction_claim(
+            extraction_run_id=run_id,
+            evidence_item_ids=[evidence_id],
+            subject_kind="DUCT_SEGMENT",
+            subject_key="M-201:duct:001",
+            claim_type="DETECTED",
+            payload={"length": 12.5},
+            confidence="0.94",
+        )
+        self.assertEqual(self.repository.get_extraction_claim(claim_id)["payload"]["length"], 12.5)
+
+        for value in (float("nan"), float("inf"), float("-inf")):
+            with self.assertRaises(ValidationError):
+                self.repository.record_extraction_claim(
+                    extraction_run_id=run_id,
+                    evidence_item_ids=[evidence_id],
+                    subject_kind="DUCT_SEGMENT",
+                    subject_key="M-201:duct:001",
+                    claim_type="DETECTED",
+                    payload={"length": value},
+                    confidence="0.94",
+                )
+        with self.database.connection() as connection:
+            count = connection.execute("SELECT COUNT(*) FROM extraction_claims").fetchone()[0]
+        self.assertEqual(count, 1)
+
 
 if __name__ == "__main__":
     unittest.main()

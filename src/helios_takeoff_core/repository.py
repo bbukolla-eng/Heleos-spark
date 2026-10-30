@@ -367,6 +367,10 @@ class TakeoffRepository:
             raise ValidationError("evidence_item_ids must contain at least one evidence item")
         if not isinstance(payload, dict):
             raise ValidationError("payload must be an object")
+        try:
+            payload_json = json.dumps(payload, sort_keys=True, separators=(",", ":"), allow_nan=False)
+        except ValueError as error:
+            raise ValidationError("payload must not contain NaN or Infinity") from error
         confidence = require_decimal_string(confidence, "confidence", minimum=__import__("decimal").Decimal("0"), maximum=__import__("decimal").Decimal("1"))
         claim_id = _new_id()
         unique_evidence_ids = list(dict.fromkeys(evidence_item_ids))
@@ -402,7 +406,7 @@ class TakeoffRepository:
                     _non_empty(subject_kind, "subject_kind"),
                     _non_empty(subject_key, "subject_key"),
                     _non_empty(claim_type, "claim_type"),
-                    json.dumps(payload, sort_keys=True, separators=(",", ":")),
+                    payload_json,
                     confidence,
                     _now(),
                 ),
