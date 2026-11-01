@@ -6,8 +6,15 @@ import argparse
 from pathlib import Path
 from wsgiref.simple_server import make_server
 
-from .api import create_wsgi_app
+from .api import HeliosApi, create_wsgi_app
 from .db import Database
+
+
+def _loopback_host(value: str) -> str:
+    """Accept only the loopback addresses the API already treats as local."""
+    if not HeliosApi._is_loopback(value):
+        raise argparse.ArgumentTypeError("serve host must be a loopback address")
+    return value
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -17,7 +24,7 @@ def main(argv: list[str] | None = None) -> int:
     initialize.add_argument("--database", required=True, type=Path)
     serve = subcommands.add_parser("serve", help="serve the local JSON API on loopback by default")
     serve.add_argument("--database", required=True, type=Path)
-    serve.add_argument("--host", default="127.0.0.1")
+    serve.add_argument("--host", default="127.0.0.1", type=_loopback_host)
     serve.add_argument("--port", default=8787, type=int)
     arguments = parser.parse_args(argv)
     if arguments.command == "init":
