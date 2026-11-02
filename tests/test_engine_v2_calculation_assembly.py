@@ -242,6 +242,15 @@ class Division23CalculationAssemblyTests(unittest.TestCase):
         with self.assertRaisesRegex(ValidationError, "cycle"):
             compile_domain_pack(cycle)
 
+    def test_source_ref_jurisdiction_must_match_its_source(self) -> None:
+        """A source ref may not claim a jurisdiction the cited source does not carry."""
+        from helios_takeoff_core.engine.v2 import compile_domain_pack
+
+        mismatched = load_json(PACK_PATH.name)
+        mismatched["rules"][0]["source_refs"][0]["jurisdiction"] = "OTHER"  # type: ignore[index]
+        with self.assertRaisesRegex(ValidationError, "jurisdiction does not match"):
+            compile_domain_pack(mismatched)
+
     def test_executable_pack_reopens_with_all_indexes_and_results_are_immutable(self) -> None:
         """Ignoring executable indexes on reopen or exposing mutable results breaks replay."""
         from helios_takeoff_core.engine.v2 import EngineStore, evaluate_bundle

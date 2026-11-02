@@ -779,6 +779,8 @@ def _parse_source_refs(
         )
         if identity[1] != expected_identity:
             raise ValidationError("source ref identity does not match source")
+        if identity[3] != source["jurisdiction"]:
+            raise ValidationError("source ref jurisdiction does not match source")
         if identity in seen:
             raise ValidationError("executable assertion contains duplicate source ref")
         seen.add(identity)
