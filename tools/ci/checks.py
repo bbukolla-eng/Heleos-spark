@@ -135,25 +135,59 @@ def retained_document_origins(root=ROOT):
     return origins, failures
 
 
+def _in_place_notice(rel, missing):
+    """One non-fatal notice for a registered copy whose rendered links do not resolve."""
+    count = len(missing)
+    targets = ", ".join(missing)
+    if count == 1:
+        return f"retained render: {rel}: 1 in-place link does not resolve: {targets}"
+    return f"retained render: {rel}: {count} in-place links do not resolve: {targets}"
+
+
 def check_links(files, root=ROOT):
-    """Relative markdown link and image destinations must resolve to an existing file or directory."""
+    """Relative markdown link and image destinations must resolve to an existing file or directory.
+
+    A document registered in retained-document-origins.json is checked from its recorded
+    original location. That result does not mean the links resolve from the copy's rendered
+    path. Each registered copy with an in-place miss adds a non-fatal "retained render:"
+    notice, including when that copy was not in the selected file list. Notices are not
+    failures.
+    """
     origins, failures = retained_document_origins(root)
-    for rel in files:
-        if not rel.endswith(".md"):
+    notices = []
+    selected = []
+    seen = set()
+    for rel in list(origins) + list(files):
+        if rel in seen or not isinstance(rel, str) or not rel.endswith(".md"):
             continue
+        seen.add(rel)
+        selected.append(rel)
+    for rel in selected:
         try:
             with open(os.path.join(root, rel), encoding="utf-8") as handle:
                 text = handle.read()
         except (ValueError, OSError) as error:
             failures.append(f"link: {rel}: cannot read: {error}")
             continue
-        base = os.path.dirname(os.path.join(root, origins.get(rel, rel)))
+        original = origins.get(rel)
+        base = os.path.dirname(os.path.join(root, original if original else rel))
+        rendered = os.path.dirname(os.path.join(root, rel))
+        missing_in_place = []
         for target in LINK_RE.findall(text):
             if re.match(r"^[a-z]+:", target) or target.startswith("/"):
                 continue
             if not os.path.exists(os.path.normpath(os.path.join(base, target))):
-                failures.append(f"link: {rel}: {target}")
-    return failures
+                if original:
+                    failures.append(
+                        f"link: {rel}: {target} (checked from recorded original {original})"
+                    )
+                else:
+                    failures.append(f"link: {rel}: {target}")
+            if original and not os.path.exists(os.path.normpath(os.path.join(rendered, target))):
+                missing_in_place.append(target)
+        if missing_in_place:
+            notices.append(_in_place_notice(rel, missing_in_place))
+    return notices + failures
 
 
 def check_prose(files, root=ROOT):
@@ -216,10 +250,11 @@ def check_egress_ledger(root=ROOT):
 
 def main(root=ROOT):
     files = tracked_files(root)
-    failures = (check_registry(root) + check_json(files, root) + check_links(files, root)
-                + check_prose(files, root) + check_egress_ledger(root))
-    for failure in failures:
-        print(failure)
+    reports = (check_registry(root) + check_json(files, root) + check_links(files, root)
+               + check_prose(files, root) + check_egress_ledger(root))
+    for report in reports:
+        print(report)
+    failures = [report for report in reports if not report.startswith("retained render:")]
     print(f"{len(files)} tracked files checked, {len(failures)} failures")
     return 1 if failures else 0
 

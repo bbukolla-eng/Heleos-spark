@@ -5,6 +5,8 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stdout
+from io import StringIO
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools.ci import checks  # noqa: E402
@@ -79,19 +81,42 @@ class RetainedDocumentLinks(unittest.TestCase):
 
     def test_only_exact_retained_bytes_use_original_link_location(self):
         self.registry()
-        self.assertEqual(self.check(), [])
+        self.assertEqual(self.check(), [
+            "retained render: archives/retained.md: 1 in-place link does not resolve: target.md",
+        ])
         self.write("archives/retained.md", "[modified](target.md)\n")
         self.assertTrue(any("sha256" in failure for failure in self.check()))
 
-    def test_missing_target_still_fails_in_a_mapped_document(self):
+    def test_missing_target_names_the_recorded_original(self):
         self.registry()
         os.unlink(os.path.join(self.root, "docs/target.md"))
-        self.assertIn("link: archives/retained.md: target.md", self.check())
+        self.assertIn(
+            "link: archives/retained.md: target.md (checked from recorded original docs/source.md)",
+            self.check(),
+        )
+
+    def test_in_place_misses_stay_visible_and_are_not_failures(self):
+        body = "[a](target.md) [b](other.md)\n"
+        self.write("archives/retained.md", body)
+        self.write("docs/other.md", "other\n")
+        self.entry["sha256"] = hashlib.sha256(body.encode()).hexdigest()
+        self.registry()
+        self.assertEqual(self.check(), [
+            "retained render: archives/retained.md: 2 in-place links do not resolve: target.md, other.md",
+        ])
 
     def test_unmapped_live_document_keeps_normal_relative_resolution(self):
         self.registry()
         self.write("live.md", "[bad](target.md) [good](docs/target.md)\n")
-        self.assertEqual(self.check(["live.md"]), ["link: live.md: target.md"])
+        reports = self.check(["live.md"])
+        self.assertEqual(
+            [item for item in reports if item.startswith("link:")],
+            ["link: live.md: target.md"],
+        )
+        self.assertIn(
+            "retained render: archives/retained.md: 1 in-place link does not resolve: target.md",
+            reports,
+        )
 
     def test_registry_entries_are_validated_even_when_copy_is_not_selected(self):
         self.entry["sha256"] = "0" * 64
@@ -146,7 +171,15 @@ class RetainedDocumentLinks(unittest.TestCase):
         self.registry()
         subprocess.run(["git", "init", "-q", self.root], check=True)
         subprocess.run(["git", "add", "."], cwd=self.root, check=True)
-        self.assertEqual(checks.main(root=self.root), 0)
+        stdout = StringIO()
+        with redirect_stdout(stdout):
+            code = checks.main(root=self.root)
+        self.assertEqual(code, 0)
+        self.assertIn(
+            "retained render: archives/retained.md: 1 in-place link does not resolve: target.md",
+            stdout.getvalue(),
+        )
+        self.assertIn("0 failures", stdout.getvalue())
         self.write("archives/retained.md", "Changed retained content\n")
         self.assertEqual(checks.main(root=self.root), 1)
 
