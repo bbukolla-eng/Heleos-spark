@@ -1,0 +1,14 @@
+{
+  "task_id": "BUILD-CHECKPOINT-GUARD-1",
+  "correction": "Initial lookup matched notebooklm but omitted the installed gemini_notebook_mcp name. Availability claim was incorrect; implementation used independently verified primary docs before this delayed notebook cross-check. Do not describe this as pre-implementation NotebookLM research.",
+  "provider": "NotebookLM via Gemini Notebook MCP",
+  "purpose": "Refresh recorded N07 source IDs for bounded Git hook/CI semantic cross-check",
+  "data_class": "PUBLIC query; existing authorized notebook identifier only",
+  "approved_source_identities": [
+    "notebook:f0404db5-8c1e-4591-9c9d-2727bd668cbe"
+  ],
+  "policy_decision": "Standing owner authorization for relevant public source research; no code, private drawings or project documents submitted",
+  "time": "2026-09-16T20:44:43.070507+00:00",
+  "result_ref": ".heleos/build-checkpoint-2026-09-16/notebooklm-readback.json",
+  "state": "request_recorded"
+}

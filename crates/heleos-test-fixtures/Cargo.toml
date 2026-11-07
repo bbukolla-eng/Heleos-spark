@@ -1,0 +1,19 @@
+[package]
+name = "heleos-test-fixtures"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+heleos-pdf-protocol = { path = "../heleos-pdf-protocol" }
+lopdf.workspace = true

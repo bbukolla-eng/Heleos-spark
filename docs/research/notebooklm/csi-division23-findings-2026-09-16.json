@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "task_id": "CSI23-HIERARCHY-MIGRATION-1",
+  "date": "2026-09-16",
+  "purpose": "Replace agency-guide inventory with the complete verified CSI Division 23 catalogue for a pinned edition; organize NotebookLM identically.",
+  "source": {
+    "publisher": "CSI/CSC",
+    "edition": "MasterFormat Numbers & Titles, April 2016",
+    "url": "https://higherlogicdownload.s3.amazonaws.com/CSIRESOURCES/143a718d-6df6-484a-8a79-76d79635b741/UploadedImages/PDFs/MasterFormat_2016_Numbers%26Titles.pdf",
+    "sha256": "a8431feef5ef80eed4d6e52e2125797d8be61d99e42017fef8ff607fe68f0bc3",
+    "page_count": 186,
+    "division23_pages": [
+      85,
+      94
+    ],
+    "licensing": "Publisher-hosted public reference for this internal planning/research. Copyright notice retained. No open license or commercial product redistribution permission established."
+  },
+  "notebook_research": {
+    "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+    "source_id": "0228e801-a45e-41ab-95cd-3a572b100ca5",
+    "request": ".heleos/csi-hierarchy-migration-2026-09-16/csi02-before.json",
+    "answer": ".heleos/csi-hierarchy-migration-2026-09-16/csi02-0-after.json",
+    "supporting_indexed_text": ".heleos/csi-hierarchy-migration-2026-09-16/csi02-1-after.json"
+  },
+  "findings": [
+    {
+      "id": "CSI23-F01",
+      "status": "verified_applicable",
+      "claim": "Catalogue is April2016, not2026.",
+      "support": "PDF frontmatter page1 and indexed source opening text.",
+      "application": "Edition-pinned register and all NotebookLM branch indexes; newer-edition reconciliation remains open."
+    },
+    {
+      "id": "CSI23-F02",
+      "status": "verified_applicable",
+      "claim": "Division23 has432 published nodes includingroot,431 belowroot,14 top navigationbranches, source pages85–94.",
+      "support": "Independent ordered-code/title/page extraction from primaryPDF; pypdf/PDFium comparison; actualPDFvisualchecks.",
+      "application": "All active register identities and section/task bindings; full source-exact set comparison in acceptance."
+    },
+    {
+      "id": "CSI23-F03",
+      "status": "verified_applicable",
+      "claim": "Published codes/titles plus typography support hierarchical navigation. No invented gap entries.",
+      "support": "PrimaryPDF code relations and larger parent-code typography; representative pages85,86,87,92 visually reviewed; every candidate parent exists and precedes child.",
+      "application": "parent_id/children links and source_level kept distinct from navigation depth."
+    },
+    {
+      "id": "CSI23-F04",
+      "status": "verified_applicable",
+      "claim": "Numbers/titles classification does not establish physical measurement or counting rules.",
+      "support": "PDF page1 explains classification purpose; Division23 span supplies numbers and titles.",
+      "application": "Keep approved D01–D10,A01–A12,E01–E12 and deterministic quantities authoritative; body taxonomy and expected results remain section DEFINE work."
+    },
+    {
+      "id": "CSI23-F05",
+      "status": "conflict_not_adopted",
+      "claim": "Notebook answer mislabeled Metal Ducts asLevel4 and its decimal children asLevel5, and described all broadgroups alike.",
+      "support": "Source typography/candidate source_level places Metal Ducts atLevel3 and decimal child atLevel4; specialgroup navigation depth is not formallevel.",
+      "application": "Use source-derived levels, no model hierarchy labels."
+    },
+    {
+      "id": "CSI23-F06",
+      "status": "unsupported",
+      "claim": "The2016 list is complete for2026.",
+      "support": "No2026fullcatalogue present; explicit2016frontmatter.",
+      "application": "Never advertise latest-edition completeness. CSI-CATALOGUE-2026-RECONCILE remains open."
+    }
+  ],
+  "adopted_checks": [
+    "432 exact ordered catalogue entries; no duplicatecodes",
+    "All parent links resolved; titles/edition/source pages exact",
+    "1728 bound planning task frames,25 shared criterion definitions withCSIqualifiedbindings",
+    "No agency task identities in live register/cards",
+    "NotebookLM14branch source rows match all431nonroot catalogueentries; labels mapexactsourceids",
+    "Reference-librarybaseline source identitiespreserved"
+  ],
+  "external_submission_records": ".heleos/csi-hierarchy-migration-2026-09-16/*-before.json and paired *-after.json; exact requests logged before execution",
+  "limits": [
+    "Full mechanical taxonomy is not completed by catalogue import",
+    "All mechanical section acceptances remain open",
+    "Commercial catalogue redistribution and newer-edition comparison unresolved",
+    "No4specs re-adoption",
+    "No private code or project drawing uploaded to NotebookLM"
+  ]
+}

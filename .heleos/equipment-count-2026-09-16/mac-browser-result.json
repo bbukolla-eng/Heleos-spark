@@ -1,0 +1,2255 @@
+{
+  "verification": "Actual Codex in-app browser on macOS; original synthetic sources; no recognition or representative-project claim",
+  "actions": [
+    "Opened real workspace UI at equipment stage",
+    "Entered reviewer",
+    "Excluded false-positive pump3",
+    "Re-reviewed complete selected coverage",
+    "Saved via application HTTP API",
+    "Reloaded browser: two pumps and one AHU, prior history retained"
+  ],
+  "equipment_count_takeoff": {
+    "available": true,
+    "generation": "bb8ee812054a4f6398826f783343f783",
+    "fingerprint": "a977c8012f1fa6992d65bd8d4b6c82209da0ce61b697df24486f1e251b875da1",
+    "stale": false,
+    "request": {
+      "schema": "equipment-calculation-request-1",
+      "binding": {
+        "version": "equipment-count-rules-1",
+        "rules": [
+          "E01",
+          "E02",
+          "E03",
+          "E04",
+          "E05",
+          "E06",
+          "E07",
+          "E08",
+          "E09",
+          "E10",
+          "E11",
+          "E12"
+        ],
+        "owner_decision_sha256": "8bd1bf975100bbff4ff232ac3d6c48fd3aa14c82603c673326e7f99b386b4251",
+        "rules_sha256": "dfeea1adabd2478dca7622e96051d6ae3a2ea8eeac42179542b32c4ba03ae134",
+        "examples_sha256": "0c233e93253b0c545c4a59ed2b4c6205e021f20c1300dfb63dbff5cf2e1ec150"
+      },
+      "sources": [
+        {
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 0,
+            "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+            "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+          },
+          "role": "plan",
+          "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 2,
+            "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+            "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+          },
+          "role": "plan",
+          "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "coverage-0",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 0,
+            "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+            "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+          },
+          "bbox": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "kind": "coverage",
+          "text": "Reviewed complete selected equipment scope",
+          "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "id": "coverage-2",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 2,
+            "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+            "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+          },
+          "bbox": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "kind": "coverage",
+          "text": "Reviewed complete selected equipment scope",
+          "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "id": "graphic-pump-1",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 0,
+            "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+            "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+          },
+          "bbox": [
+            0.05,
+            0.2,
+            0.18,
+            0.4
+          ],
+          "kind": "graphic",
+          "text": "Physical assembly pump-1",
+          "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "id": "graphic-pump-2",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 0,
+            "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+            "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+          },
+          "bbox": [
+            0.25,
+            0.2,
+            0.38,
+            0.4
+          ],
+          "kind": "graphic",
+          "text": "Physical assembly pump-2",
+          "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "id": "graphic-pump-3",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 0,
+            "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+            "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+          },
+          "bbox": [
+            0.45,
+            0.2,
+            0.5800000000000001,
+            0.4
+          ],
+          "kind": "graphic",
+          "text": "Physical assembly pump-3",
+          "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "id": "graphic-ahu-1",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 2,
+            "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+            "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+          },
+          "bbox": [
+            0.6500000000000001,
+            0.2,
+            0.78,
+            0.4
+          ],
+          "kind": "graphic",
+          "text": "Physical assembly ahu-1",
+          "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "observations": [
+        {
+          "id": "pump-1",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 0,
+            "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+            "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+          },
+          "bbox": [
+            0.05,
+            0.2,
+            0.18,
+            0.4
+          ],
+          "kind": "assembly",
+          "family": "pump",
+          "tag": "PUMP-1",
+          "work_status": "new",
+          "disposition": "include",
+          "identity": "established",
+          "procurement": "separate",
+          "installation": "field",
+          "parent_id": null,
+          "system_id": null,
+          "attributes": {},
+          "evidence_ids": [
+            "graphic-pump-1"
+          ],
+          "issues": []
+        },
+        {
+          "id": "pump-2",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 0,
+            "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+            "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+          },
+          "bbox": [
+            0.25,
+            0.2,
+            0.38,
+            0.4
+          ],
+          "kind": "assembly",
+          "family": "pump",
+          "tag": "PUMP-2",
+          "work_status": "new",
+          "disposition": "include",
+          "identity": "established",
+          "procurement": "separate",
+          "installation": "field",
+          "parent_id": null,
+          "system_id": null,
+          "attributes": {},
+          "evidence_ids": [
+            "graphic-pump-2"
+          ],
+          "issues": []
+        },
+        {
+          "id": "pump-3",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 0,
+            "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+            "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+          },
+          "bbox": [
+            0.45,
+            0.2,
+            0.5800000000000001,
+            0.4
+          ],
+          "kind": "assembly",
+          "family": "pump",
+          "tag": "PUMP-3",
+          "work_status": "new",
+          "disposition": "exclude",
+          "identity": "established",
+          "procurement": "separate",
+          "installation": "field",
+          "parent_id": null,
+          "system_id": null,
+          "attributes": {},
+          "evidence_ids": [
+            "graphic-pump-3"
+          ],
+          "issues": []
+        },
+        {
+          "id": "ahu-1",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 2,
+            "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+            "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+          },
+          "bbox": [
+            0.6500000000000001,
+            0.2,
+            0.78,
+            0.4
+          ],
+          "kind": "assembly",
+          "family": "ahu",
+          "tag": "AHU-1",
+          "work_status": "new",
+          "disposition": "include",
+          "identity": "established",
+          "procurement": "separate",
+          "installation": "field",
+          "parent_id": null,
+          "system_id": null,
+          "attributes": {},
+          "evidence_ids": [
+            "graphic-ahu-1"
+          ],
+          "issues": []
+        }
+      ],
+      "relations": [],
+      "schedules": [],
+      "scope": {
+        "source_keys": [
+          "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac",
+          "870e3630f0be71b9e2eaf90996c754a16f149edd6ededb8928251417aa958e39"
+        ],
+        "work_statuses": [
+          "new"
+        ],
+        "required_attributes": []
+      },
+      "coverage": {
+        "state": "complete",
+        "evidence_ids": [
+          "coverage-0",
+          "coverage-2"
+        ],
+        "unresolved_requirements": []
+      }
+    },
+    "result": {
+      "schema": "equipment-calculation-result-1",
+      "version": "equipment-calculation-1",
+      "binding": {
+        "version": "equipment-count-rules-1",
+        "rules": [
+          "E01",
+          "E02",
+          "E03",
+          "E04",
+          "E05",
+          "E06",
+          "E07",
+          "E08",
+          "E09",
+          "E10",
+          "E11",
+          "E12"
+        ],
+        "owner_decision_sha256": "8bd1bf975100bbff4ff232ac3d6c48fd3aa14c82603c673326e7f99b386b4251",
+        "rules_sha256": "dfeea1adabd2478dca7622e96051d6ae3a2ea8eeac42179542b32c4ba03ae134",
+        "examples_sha256": "0c233e93253b0c545c4a59ed2b4c6205e021f20c1300dfb63dbff5cf2e1ec150"
+      },
+      "request_sha256": "75aabc83ea6ac66a908e7f226ba0c6943cbc8f657d113169339ff127417e0bcb",
+      "rows": [
+        {
+          "row_id": "ahu-1",
+          "member_ids": [
+            "ahu-1"
+          ],
+          "family": "ahu",
+          "tag": "AHU-1",
+          "kind": "assembly",
+          "work_status": "new",
+          "system_id": null,
+          "attributes": {},
+          "physical_each": 1,
+          "requested": true,
+          "procurement_each": 1,
+          "installation_each": 1,
+          "remove_each": 0,
+          "reinstall_each": 0,
+          "component_each": 0,
+          "issues": [],
+          "source_keys": [
+            "870e3630f0be71b9e2eaf90996c754a16f149edd6ededb8928251417aa958e39"
+          ],
+          "dependency_sha256": "cdf03cc9e78c6480e4dc78a77052ce80d106c78d17be3f6c29ee952d853d26e3"
+        },
+        {
+          "row_id": "pump-1",
+          "member_ids": [
+            "pump-1"
+          ],
+          "family": "pump",
+          "tag": "PUMP-1",
+          "kind": "assembly",
+          "work_status": "new",
+          "system_id": null,
+          "attributes": {},
+          "physical_each": 1,
+          "requested": true,
+          "procurement_each": 1,
+          "installation_each": 1,
+          "remove_each": 0,
+          "reinstall_each": 0,
+          "component_each": 0,
+          "issues": [],
+          "source_keys": [
+            "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac"
+          ],
+          "dependency_sha256": "31cdabfa3a15104d3a303c7660e7dd172fd5c0dd3db69ef90b8bdb27c3e940d7"
+        },
+        {
+          "row_id": "pump-2",
+          "member_ids": [
+            "pump-2"
+          ],
+          "family": "pump",
+          "tag": "PUMP-2",
+          "kind": "assembly",
+          "work_status": "new",
+          "system_id": null,
+          "attributes": {},
+          "physical_each": 1,
+          "requested": true,
+          "procurement_each": 1,
+          "installation_each": 1,
+          "remove_each": 0,
+          "reinstall_each": 0,
+          "component_each": 0,
+          "issues": [],
+          "source_keys": [
+            "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac"
+          ],
+          "dependency_sha256": "d4137cbd69aca4656058f23974aec7e3c8dcb8c752c07428ec76da1208bdaf05"
+        },
+        {
+          "row_id": "pump-3",
+          "member_ids": [
+            "pump-3"
+          ],
+          "family": "pump",
+          "tag": "PUMP-3",
+          "kind": "assembly",
+          "work_status": "new",
+          "system_id": null,
+          "attributes": {},
+          "physical_each": 0,
+          "requested": true,
+          "procurement_each": 0,
+          "installation_each": 0,
+          "remove_each": 0,
+          "reinstall_each": 0,
+          "component_each": 0,
+          "issues": [],
+          "source_keys": [
+            "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac"
+          ],
+          "dependency_sha256": "0837f08cb54c723a9825c48dce698663fdacebc8950e03c323aa03656e5d034d"
+        }
+      ],
+      "groups": [
+        {
+          "group_id": "8b474dc5c6d26d27a0e50496f9416f909a14e08a4b1c0fef64fb1d47db07a922",
+          "key": {
+            "family": "ahu",
+            "work_status": "new",
+            "system_id": null,
+            "attributes": {}
+          },
+          "row_ids": [
+            "ahu-1"
+          ],
+          "known_subtotal_each": 1,
+          "total_each": 1,
+          "complete": true,
+          "issues": []
+        },
+        {
+          "group_id": "cd4753f914c4c7600b34cf9e9fb102d1d1b300fde22f4994c6b93caa3f634158",
+          "key": {
+            "family": "pump",
+            "work_status": "new",
+            "system_id": null,
+            "attributes": {}
+          },
+          "row_ids": [
+            "pump-1",
+            "pump-2",
+            "pump-3"
+          ],
+          "known_subtotal_each": 2,
+          "total_each": 2,
+          "complete": true,
+          "issues": []
+        }
+      ],
+      "declarations": [],
+      "issues": [],
+      "known_subtotal_each": 3,
+      "total_each": 3,
+      "complete": true,
+      "systems": [],
+      "procurement_packages": null
+    },
+    "observations": [
+      {
+        "observation": {
+          "id": "pump-1",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 0,
+            "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+            "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+          },
+          "bbox": [
+            0.05,
+            0.2,
+            0.18,
+            0.4
+          ],
+          "kind": "assembly",
+          "family": "pump",
+          "tag": "PUMP-1",
+          "work_status": "new",
+          "disposition": "include",
+          "identity": "established",
+          "procurement": "separate",
+          "installation": "field",
+          "parent_id": null,
+          "system_id": null,
+          "attributes": {},
+          "evidence_ids": [
+            "graphic-pump-1"
+          ],
+          "issues": []
+        },
+        "observation_sha256": "cd37c218dad045f47e025059cbfe122c425ee2f7d2b66b28fc2842fd51b1fc65"
+      },
+      {
+        "observation": {
+          "id": "pump-2",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 0,
+            "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+            "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+          },
+          "bbox": [
+            0.25,
+            0.2,
+            0.38,
+            0.4
+          ],
+          "kind": "assembly",
+          "family": "pump",
+          "tag": "PUMP-2",
+          "work_status": "new",
+          "disposition": "include",
+          "identity": "established",
+          "procurement": "separate",
+          "installation": "field",
+          "parent_id": null,
+          "system_id": null,
+          "attributes": {},
+          "evidence_ids": [
+            "graphic-pump-2"
+          ],
+          "issues": []
+        },
+        "observation_sha256": "1917a9c2c73c38da4fdb6a1186cbaa1696c93fa46b5ee203ecb656b5a05dba93"
+      },
+      {
+        "observation": {
+          "id": "pump-3",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 0,
+            "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+            "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+          },
+          "bbox": [
+            0.45,
+            0.2,
+            0.5800000000000001,
+            0.4
+          ],
+          "kind": "assembly",
+          "family": "pump",
+          "tag": "PUMP-3",
+          "work_status": "new",
+          "disposition": "exclude",
+          "identity": "established",
+          "procurement": "separate",
+          "installation": "field",
+          "parent_id": null,
+          "system_id": null,
+          "attributes": {},
+          "evidence_ids": [
+            "graphic-pump-3"
+          ],
+          "issues": []
+        },
+        "observation_sha256": "7641d6dc1ed47624022c08d89e466646a80aa70724df13ae5ec93a0390a191ca"
+      },
+      {
+        "observation": {
+          "id": "ahu-1",
+          "source": {
+            "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "index": 2,
+            "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+            "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+          },
+          "bbox": [
+            0.6500000000000001,
+            0.2,
+            0.78,
+            0.4
+          ],
+          "kind": "assembly",
+          "family": "ahu",
+          "tag": "AHU-1",
+          "work_status": "new",
+          "disposition": "include",
+          "identity": "established",
+          "procurement": "separate",
+          "installation": "field",
+          "parent_id": null,
+          "system_id": null,
+          "attributes": {},
+          "evidence_ids": [
+            "graphic-ahu-1"
+          ],
+          "issues": []
+        },
+        "observation_sha256": "c6b77440fa192910114db80cd2b013131528ee0885b0973771576d80bef93fa9"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "coverage-0",
+        "source": {
+          "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "index": 0,
+          "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+          "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+        },
+        "bbox": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "kind": "coverage",
+        "text": "Reviewed complete selected equipment scope",
+        "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "id": "coverage-2",
+        "source": {
+          "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "index": 2,
+          "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+          "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+        },
+        "bbox": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "kind": "coverage",
+        "text": "Reviewed complete selected equipment scope",
+        "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "id": "graphic-pump-1",
+        "source": {
+          "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "index": 0,
+          "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+          "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+        },
+        "bbox": [
+          0.05,
+          0.2,
+          0.18,
+          0.4
+        ],
+        "kind": "graphic",
+        "text": "Physical assembly pump-1",
+        "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "id": "graphic-pump-2",
+        "source": {
+          "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "index": 0,
+          "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+          "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+        },
+        "bbox": [
+          0.25,
+          0.2,
+          0.38,
+          0.4
+        ],
+        "kind": "graphic",
+        "text": "Physical assembly pump-2",
+        "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "id": "graphic-pump-3",
+        "source": {
+          "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "index": 0,
+          "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+          "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+        },
+        "bbox": [
+          0.45,
+          0.2,
+          0.5800000000000001,
+          0.4
+        ],
+        "kind": "graphic",
+        "text": "Physical assembly pump-3",
+        "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "id": "graphic-ahu-1",
+        "source": {
+          "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "index": 2,
+          "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+          "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+        },
+        "bbox": [
+          0.6500000000000001,
+          0.2,
+          0.78,
+          0.4
+        ],
+        "kind": "graphic",
+        "text": "Physical assembly ahu-1",
+        "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    ],
+    "sources": [
+      {
+        "source": {
+          "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "index": 0,
+          "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+          "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+        },
+        "role": "plan",
+        "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "source": {
+          "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "index": 2,
+          "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+          "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+        },
+        "role": "plan",
+        "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    ],
+    "current_source_contexts": [
+      {
+        "source": {
+          "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "index": 0,
+          "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+          "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+        },
+        "role": "plan",
+        "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source_key": "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac"
+      },
+      {
+        "source": {
+          "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "index": 1,
+          "sheet_id": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+          "geometry_fingerprint": "dc68e6025c42710a32c79aa7262d26bcc21771855875da8700687018edabc82f"
+        },
+        "role": "schedule",
+        "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source_key": "62e588a62a58c66ad0d280d048151d2df7cb8b8e857087b638ba51fc8c8099ca"
+      },
+      {
+        "source": {
+          "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "index": 2,
+          "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+          "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+        },
+        "role": "plan",
+        "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source_key": "870e3630f0be71b9e2eaf90996c754a16f149edd6ededb8928251417aa958e39"
+      }
+    ],
+    "history": [
+      {
+        "id": "5cf897797d7a4cd49edf372198988c43",
+        "at": "2026-09-16T20:04:54.214208+00:00",
+        "action": "equipment_count_save",
+        "actor": "Fixture estimator",
+        "reason": "Checked original fixture region",
+        "request": {
+          "schema": "equipment-calculation-request-1",
+          "binding": {
+            "version": "equipment-count-rules-1",
+            "rules": [
+              "E01",
+              "E02",
+              "E03",
+              "E04",
+              "E05",
+              "E06",
+              "E07",
+              "E08",
+              "E09",
+              "E10",
+              "E11",
+              "E12"
+            ],
+            "owner_decision_sha256": "8bd1bf975100bbff4ff232ac3d6c48fd3aa14c82603c673326e7f99b386b4251",
+            "rules_sha256": "dfeea1adabd2478dca7622e96051d6ae3a2ea8eeac42179542b32c4ba03ae134",
+            "examples_sha256": "0c233e93253b0c545c4a59ed2b4c6205e021f20c1300dfb63dbff5cf2e1ec150"
+          },
+          "sources": [
+            {
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "role": "plan",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 2,
+                "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+              },
+              "role": "plan",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          ],
+          "evidence": [
+            {
+              "id": "coverage-0",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0,
+                0,
+                1,
+                1
+              ],
+              "kind": "coverage",
+              "text": "Reviewed complete selected equipment scope",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "id": "coverage-2",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 2,
+                "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+              },
+              "bbox": [
+                0,
+                0,
+                1,
+                1
+              ],
+              "kind": "coverage",
+              "text": "Reviewed complete selected equipment scope",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "id": "graphic-pump-1",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.05,
+                0.2,
+                0.18,
+                0.4
+              ],
+              "kind": "graphic",
+              "text": "Physical assembly pump-1",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "id": "graphic-pump-2",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.25,
+                0.2,
+                0.38,
+                0.4
+              ],
+              "kind": "graphic",
+              "text": "Physical assembly pump-2",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "id": "graphic-pump-3",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.45,
+                0.2,
+                0.5800000000000001,
+                0.4
+              ],
+              "kind": "graphic",
+              "text": "Physical assembly pump-3",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "id": "graphic-ahu-1",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 2,
+                "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+              },
+              "bbox": [
+                0.6500000000000001,
+                0.2,
+                0.78,
+                0.4
+              ],
+              "kind": "graphic",
+              "text": "Physical assembly ahu-1",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          ],
+          "observations": [
+            {
+              "id": "pump-1",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.05,
+                0.2,
+                0.18,
+                0.4
+              ],
+              "kind": "assembly",
+              "family": "pump",
+              "tag": "PUMP-1",
+              "work_status": "new",
+              "disposition": "include",
+              "identity": "established",
+              "procurement": "separate",
+              "installation": "field",
+              "parent_id": null,
+              "system_id": null,
+              "attributes": {},
+              "evidence_ids": [
+                "graphic-pump-1"
+              ],
+              "issues": []
+            },
+            {
+              "id": "pump-2",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.25,
+                0.2,
+                0.38,
+                0.4
+              ],
+              "kind": "assembly",
+              "family": "pump",
+              "tag": "PUMP-2",
+              "work_status": "new",
+              "disposition": "include",
+              "identity": "established",
+              "procurement": "separate",
+              "installation": "field",
+              "parent_id": null,
+              "system_id": null,
+              "attributes": {},
+              "evidence_ids": [
+                "graphic-pump-2"
+              ],
+              "issues": []
+            },
+            {
+              "id": "pump-3",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.45,
+                0.2,
+                0.5800000000000001,
+                0.4
+              ],
+              "kind": "assembly",
+              "family": "pump",
+              "tag": "PUMP-3",
+              "work_status": "new",
+              "disposition": "include",
+              "identity": "established",
+              "procurement": "separate",
+              "installation": "field",
+              "parent_id": null,
+              "system_id": null,
+              "attributes": {},
+              "evidence_ids": [
+                "graphic-pump-3"
+              ],
+              "issues": []
+            },
+            {
+              "id": "ahu-1",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 2,
+                "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+              },
+              "bbox": [
+                0.6500000000000001,
+                0.2,
+                0.78,
+                0.4
+              ],
+              "kind": "assembly",
+              "family": "ahu",
+              "tag": "AHU-1",
+              "work_status": "new",
+              "disposition": "include",
+              "identity": "established",
+              "procurement": "separate",
+              "installation": "field",
+              "parent_id": null,
+              "system_id": null,
+              "attributes": {},
+              "evidence_ids": [
+                "graphic-ahu-1"
+              ],
+              "issues": []
+            }
+          ],
+          "relations": [],
+          "schedules": [],
+          "scope": {
+            "source_keys": [
+              "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac",
+              "870e3630f0be71b9e2eaf90996c754a16f149edd6ededb8928251417aa958e39"
+            ],
+            "work_statuses": [
+              "new"
+            ],
+            "required_attributes": []
+          },
+          "coverage": {
+            "state": "complete",
+            "evidence_ids": [
+              "coverage-0",
+              "coverage-2"
+            ],
+            "unresolved_requirements": []
+          }
+        },
+        "result": {
+          "schema": "equipment-calculation-result-1",
+          "version": "equipment-calculation-1",
+          "binding": {
+            "version": "equipment-count-rules-1",
+            "rules": [
+              "E01",
+              "E02",
+              "E03",
+              "E04",
+              "E05",
+              "E06",
+              "E07",
+              "E08",
+              "E09",
+              "E10",
+              "E11",
+              "E12"
+            ],
+            "owner_decision_sha256": "8bd1bf975100bbff4ff232ac3d6c48fd3aa14c82603c673326e7f99b386b4251",
+            "rules_sha256": "dfeea1adabd2478dca7622e96051d6ae3a2ea8eeac42179542b32c4ba03ae134",
+            "examples_sha256": "0c233e93253b0c545c4a59ed2b4c6205e021f20c1300dfb63dbff5cf2e1ec150"
+          },
+          "request_sha256": "6ea00b2d91bde4c3764f89218a18fc35f5c35dbab7c9cc83be3a552a67a42eb8",
+          "rows": [
+            {
+              "row_id": "ahu-1",
+              "member_ids": [
+                "ahu-1"
+              ],
+              "family": "ahu",
+              "tag": "AHU-1",
+              "kind": "assembly",
+              "work_status": "new",
+              "system_id": null,
+              "attributes": {},
+              "physical_each": 1,
+              "requested": true,
+              "procurement_each": 1,
+              "installation_each": 1,
+              "remove_each": 0,
+              "reinstall_each": 0,
+              "component_each": 0,
+              "issues": [],
+              "source_keys": [
+                "870e3630f0be71b9e2eaf90996c754a16f149edd6ededb8928251417aa958e39"
+              ],
+              "dependency_sha256": "cdf03cc9e78c6480e4dc78a77052ce80d106c78d17be3f6c29ee952d853d26e3"
+            },
+            {
+              "row_id": "pump-1",
+              "member_ids": [
+                "pump-1"
+              ],
+              "family": "pump",
+              "tag": "PUMP-1",
+              "kind": "assembly",
+              "work_status": "new",
+              "system_id": null,
+              "attributes": {},
+              "physical_each": 1,
+              "requested": true,
+              "procurement_each": 1,
+              "installation_each": 1,
+              "remove_each": 0,
+              "reinstall_each": 0,
+              "component_each": 0,
+              "issues": [],
+              "source_keys": [
+                "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac"
+              ],
+              "dependency_sha256": "31cdabfa3a15104d3a303c7660e7dd172fd5c0dd3db69ef90b8bdb27c3e940d7"
+            },
+            {
+              "row_id": "pump-2",
+              "member_ids": [
+                "pump-2"
+              ],
+              "family": "pump",
+              "tag": "PUMP-2",
+              "kind": "assembly",
+              "work_status": "new",
+              "system_id": null,
+              "attributes": {},
+              "physical_each": 1,
+              "requested": true,
+              "procurement_each": 1,
+              "installation_each": 1,
+              "remove_each": 0,
+              "reinstall_each": 0,
+              "component_each": 0,
+              "issues": [],
+              "source_keys": [
+                "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac"
+              ],
+              "dependency_sha256": "d4137cbd69aca4656058f23974aec7e3c8dcb8c752c07428ec76da1208bdaf05"
+            },
+            {
+              "row_id": "pump-3",
+              "member_ids": [
+                "pump-3"
+              ],
+              "family": "pump",
+              "tag": "PUMP-3",
+              "kind": "assembly",
+              "work_status": "new",
+              "system_id": null,
+              "attributes": {},
+              "physical_each": 1,
+              "requested": true,
+              "procurement_each": 1,
+              "installation_each": 1,
+              "remove_each": 0,
+              "reinstall_each": 0,
+              "component_each": 0,
+              "issues": [],
+              "source_keys": [
+                "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac"
+              ],
+              "dependency_sha256": "6f13b724d9c52f42b380dae609552384176b343fa5b06adbe28a0e272eef32f6"
+            }
+          ],
+          "groups": [
+            {
+              "group_id": "8b474dc5c6d26d27a0e50496f9416f909a14e08a4b1c0fef64fb1d47db07a922",
+              "key": {
+                "family": "ahu",
+                "work_status": "new",
+                "system_id": null,
+                "attributes": {}
+              },
+              "row_ids": [
+                "ahu-1"
+              ],
+              "known_subtotal_each": 1,
+              "total_each": 1,
+              "complete": true,
+              "issues": []
+            },
+            {
+              "group_id": "cd4753f914c4c7600b34cf9e9fb102d1d1b300fde22f4994c6b93caa3f634158",
+              "key": {
+                "family": "pump",
+                "work_status": "new",
+                "system_id": null,
+                "attributes": {}
+              },
+              "row_ids": [
+                "pump-1",
+                "pump-2",
+                "pump-3"
+              ],
+              "known_subtotal_each": 3,
+              "total_each": 3,
+              "complete": true,
+              "issues": []
+            }
+          ],
+          "declarations": [],
+          "issues": [],
+          "known_subtotal_each": 4,
+          "total_each": 4,
+          "complete": true,
+          "systems": [],
+          "procurement_packages": null
+        },
+        "implementation": {
+          "project_equipment_takeoff": "531bb8006d5a0ebb3096173b3da95904cba5545592ab217e17254f0934a4569f",
+          "equipment_calculation": "d9d237eeb8155b3af607e31b0040a23150db1f85d70dd2bcb77258063a89e551",
+          "equipment_count_rules": "c7640e217dcbfdfceff048f7bcfb7bab5e097970055cf12f81b41139405abb48"
+        },
+        "previous_sha256": null,
+        "sha256": "d02b1fef9bc3f6a3141ccb4d853acf87d61c5af9e979b31fcbc210198bf27ebc"
+      },
+      {
+        "id": "cd5ab4fd6cd04349a3f5ad62fa0a78f5",
+        "at": "2026-09-16T20:05:18.407800+00:00",
+        "action": "equipment_count_save",
+        "actor": "Mac browser fixture reviewer",
+        "reason": "Removed false-positive pump; reviewed source coverage",
+        "request": {
+          "schema": "equipment-calculation-request-1",
+          "binding": {
+            "version": "equipment-count-rules-1",
+            "rules": [
+              "E01",
+              "E02",
+              "E03",
+              "E04",
+              "E05",
+              "E06",
+              "E07",
+              "E08",
+              "E09",
+              "E10",
+              "E11",
+              "E12"
+            ],
+            "owner_decision_sha256": "8bd1bf975100bbff4ff232ac3d6c48fd3aa14c82603c673326e7f99b386b4251",
+            "rules_sha256": "dfeea1adabd2478dca7622e96051d6ae3a2ea8eeac42179542b32c4ba03ae134",
+            "examples_sha256": "0c233e93253b0c545c4a59ed2b4c6205e021f20c1300dfb63dbff5cf2e1ec150"
+          },
+          "sources": [
+            {
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "role": "plan",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 2,
+                "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+              },
+              "role": "plan",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          ],
+          "evidence": [
+            {
+              "id": "coverage-0",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0,
+                0,
+                1,
+                1
+              ],
+              "kind": "coverage",
+              "text": "Reviewed complete selected equipment scope",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "id": "coverage-2",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 2,
+                "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+              },
+              "bbox": [
+                0,
+                0,
+                1,
+                1
+              ],
+              "kind": "coverage",
+              "text": "Reviewed complete selected equipment scope",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "id": "graphic-pump-1",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.05,
+                0.2,
+                0.18,
+                0.4
+              ],
+              "kind": "graphic",
+              "text": "Physical assembly pump-1",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "id": "graphic-pump-2",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.25,
+                0.2,
+                0.38,
+                0.4
+              ],
+              "kind": "graphic",
+              "text": "Physical assembly pump-2",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "id": "graphic-pump-3",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.45,
+                0.2,
+                0.5800000000000001,
+                0.4
+              ],
+              "kind": "graphic",
+              "text": "Physical assembly pump-3",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "id": "graphic-ahu-1",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 2,
+                "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+              },
+              "bbox": [
+                0.6500000000000001,
+                0.2,
+                0.78,
+                0.4
+              ],
+              "kind": "graphic",
+              "text": "Physical assembly ahu-1",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          ],
+          "observations": [
+            {
+              "id": "pump-1",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.05,
+                0.2,
+                0.18,
+                0.4
+              ],
+              "kind": "assembly",
+              "family": "pump",
+              "tag": "PUMP-1",
+              "work_status": "new",
+              "disposition": "include",
+              "identity": "established",
+              "procurement": "separate",
+              "installation": "field",
+              "parent_id": null,
+              "system_id": null,
+              "attributes": {},
+              "evidence_ids": [
+                "graphic-pump-1"
+              ],
+              "issues": []
+            },
+            {
+              "id": "pump-2",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.25,
+                0.2,
+                0.38,
+                0.4
+              ],
+              "kind": "assembly",
+              "family": "pump",
+              "tag": "PUMP-2",
+              "work_status": "new",
+              "disposition": "include",
+              "identity": "established",
+              "procurement": "separate",
+              "installation": "field",
+              "parent_id": null,
+              "system_id": null,
+              "attributes": {},
+              "evidence_ids": [
+                "graphic-pump-2"
+              ],
+              "issues": []
+            },
+            {
+              "id": "pump-3",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.45,
+                0.2,
+                0.5800000000000001,
+                0.4
+              ],
+              "kind": "assembly",
+              "family": "pump",
+              "tag": "PUMP-3",
+              "work_status": "new",
+              "disposition": "exclude",
+              "identity": "established",
+              "procurement": "separate",
+              "installation": "field",
+              "parent_id": null,
+              "system_id": null,
+              "attributes": {},
+              "evidence_ids": [
+                "graphic-pump-3"
+              ],
+              "issues": []
+            },
+            {
+              "id": "ahu-1",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 2,
+                "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+              },
+              "bbox": [
+                0.6500000000000001,
+                0.2,
+                0.78,
+                0.4
+              ],
+              "kind": "assembly",
+              "family": "ahu",
+              "tag": "AHU-1",
+              "work_status": "new",
+              "disposition": "include",
+              "identity": "established",
+              "procurement": "separate",
+              "installation": "field",
+              "parent_id": null,
+              "system_id": null,
+              "attributes": {},
+              "evidence_ids": [
+                "graphic-ahu-1"
+              ],
+              "issues": []
+            }
+          ],
+          "relations": [],
+          "schedules": [],
+          "scope": {
+            "source_keys": [
+              "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac",
+              "870e3630f0be71b9e2eaf90996c754a16f149edd6ededb8928251417aa958e39"
+            ],
+            "work_statuses": [
+              "new"
+            ],
+            "required_attributes": []
+          },
+          "coverage": {
+            "state": "unknown",
+            "evidence_ids": [
+              "coverage-0",
+              "coverage-2"
+            ],
+            "unresolved_requirements": []
+          }
+        },
+        "result": {
+          "schema": "equipment-calculation-result-1",
+          "version": "equipment-calculation-1",
+          "binding": {
+            "version": "equipment-count-rules-1",
+            "rules": [
+              "E01",
+              "E02",
+              "E03",
+              "E04",
+              "E05",
+              "E06",
+              "E07",
+              "E08",
+              "E09",
+              "E10",
+              "E11",
+              "E12"
+            ],
+            "owner_decision_sha256": "8bd1bf975100bbff4ff232ac3d6c48fd3aa14c82603c673326e7f99b386b4251",
+            "rules_sha256": "dfeea1adabd2478dca7622e96051d6ae3a2ea8eeac42179542b32c4ba03ae134",
+            "examples_sha256": "0c233e93253b0c545c4a59ed2b4c6205e021f20c1300dfb63dbff5cf2e1ec150"
+          },
+          "request_sha256": "00d158291d3ec5990f1167ea1b87104056d691fb3d1bd426def517f2b1ebb823",
+          "rows": [
+            {
+              "row_id": "ahu-1",
+              "member_ids": [
+                "ahu-1"
+              ],
+              "family": "ahu",
+              "tag": "AHU-1",
+              "kind": "assembly",
+              "work_status": "new",
+              "system_id": null,
+              "attributes": {},
+              "physical_each": 1,
+              "requested": true,
+              "procurement_each": 1,
+              "installation_each": 1,
+              "remove_each": 0,
+              "reinstall_each": 0,
+              "component_each": 0,
+              "issues": [],
+              "source_keys": [
+                "870e3630f0be71b9e2eaf90996c754a16f149edd6ededb8928251417aa958e39"
+              ],
+              "dependency_sha256": "cdf03cc9e78c6480e4dc78a77052ce80d106c78d17be3f6c29ee952d853d26e3"
+            },
+            {
+              "row_id": "pump-1",
+              "member_ids": [
+                "pump-1"
+              ],
+              "family": "pump",
+              "tag": "PUMP-1",
+              "kind": "assembly",
+              "work_status": "new",
+              "system_id": null,
+              "attributes": {},
+              "physical_each": 1,
+              "requested": true,
+              "procurement_each": 1,
+              "installation_each": 1,
+              "remove_each": 0,
+              "reinstall_each": 0,
+              "component_each": 0,
+              "issues": [],
+              "source_keys": [
+                "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac"
+              ],
+              "dependency_sha256": "31cdabfa3a15104d3a303c7660e7dd172fd5c0dd3db69ef90b8bdb27c3e940d7"
+            },
+            {
+              "row_id": "pump-2",
+              "member_ids": [
+                "pump-2"
+              ],
+              "family": "pump",
+              "tag": "PUMP-2",
+              "kind": "assembly",
+              "work_status": "new",
+              "system_id": null,
+              "attributes": {},
+              "physical_each": 1,
+              "requested": true,
+              "procurement_each": 1,
+              "installation_each": 1,
+              "remove_each": 0,
+              "reinstall_each": 0,
+              "component_each": 0,
+              "issues": [],
+              "source_keys": [
+                "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac"
+              ],
+              "dependency_sha256": "d4137cbd69aca4656058f23974aec7e3c8dcb8c752c07428ec76da1208bdaf05"
+            },
+            {
+              "row_id": "pump-3",
+              "member_ids": [
+                "pump-3"
+              ],
+              "family": "pump",
+              "tag": "PUMP-3",
+              "kind": "assembly",
+              "work_status": "new",
+              "system_id": null,
+              "attributes": {},
+              "physical_each": 0,
+              "requested": true,
+              "procurement_each": 0,
+              "installation_each": 0,
+              "remove_each": 0,
+              "reinstall_each": 0,
+              "component_each": 0,
+              "issues": [],
+              "source_keys": [
+                "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac"
+              ],
+              "dependency_sha256": "0837f08cb54c723a9825c48dce698663fdacebc8950e03c323aa03656e5d034d"
+            }
+          ],
+          "groups": [
+            {
+              "group_id": "8b474dc5c6d26d27a0e50496f9416f909a14e08a4b1c0fef64fb1d47db07a922",
+              "key": {
+                "family": "ahu",
+                "work_status": "new",
+                "system_id": null,
+                "attributes": {}
+              },
+              "row_ids": [
+                "ahu-1"
+              ],
+              "known_subtotal_each": 1,
+              "total_each": null,
+              "complete": false,
+              "issues": []
+            },
+            {
+              "group_id": "cd4753f914c4c7600b34cf9e9fb102d1d1b300fde22f4994c6b93caa3f634158",
+              "key": {
+                "family": "pump",
+                "work_status": "new",
+                "system_id": null,
+                "attributes": {}
+              },
+              "row_ids": [
+                "pump-1",
+                "pump-2",
+                "pump-3"
+              ],
+              "known_subtotal_each": 2,
+              "total_each": null,
+              "complete": false,
+              "issues": []
+            }
+          ],
+          "declarations": [],
+          "issues": [
+            "coverage_incomplete"
+          ],
+          "known_subtotal_each": 3,
+          "total_each": null,
+          "complete": false,
+          "systems": [],
+          "procurement_packages": null
+        },
+        "implementation": {
+          "project_equipment_takeoff": "531bb8006d5a0ebb3096173b3da95904cba5545592ab217e17254f0934a4569f",
+          "equipment_calculation": "d9d237eeb8155b3af607e31b0040a23150db1f85d70dd2bcb77258063a89e551",
+          "equipment_count_rules": "c7640e217dcbfdfceff048f7bcfb7bab5e097970055cf12f81b41139405abb48"
+        },
+        "previous_sha256": "d02b1fef9bc3f6a3141ccb4d853acf87d61c5af9e979b31fcbc210198bf27ebc",
+        "sha256": "e90764b756d47431b180c35c10400771d810980cef6340adf814df1c42cf8bbf"
+      },
+      {
+        "id": "bb8ee812054a4f6398826f783343f783",
+        "at": "2026-09-16T20:07:24.281056+00:00",
+        "action": "equipment_count_save",
+        "actor": "Mac browser fixture reviewer",
+        "reason": "Reviewed full selected coverage after correcting pump false positive",
+        "request": {
+          "schema": "equipment-calculation-request-1",
+          "binding": {
+            "version": "equipment-count-rules-1",
+            "rules": [
+              "E01",
+              "E02",
+              "E03",
+              "E04",
+              "E05",
+              "E06",
+              "E07",
+              "E08",
+              "E09",
+              "E10",
+              "E11",
+              "E12"
+            ],
+            "owner_decision_sha256": "8bd1bf975100bbff4ff232ac3d6c48fd3aa14c82603c673326e7f99b386b4251",
+            "rules_sha256": "dfeea1adabd2478dca7622e96051d6ae3a2ea8eeac42179542b32c4ba03ae134",
+            "examples_sha256": "0c233e93253b0c545c4a59ed2b4c6205e021f20c1300dfb63dbff5cf2e1ec150"
+          },
+          "sources": [
+            {
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "role": "plan",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 2,
+                "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+              },
+              "role": "plan",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          ],
+          "evidence": [
+            {
+              "id": "coverage-0",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0,
+                0,
+                1,
+                1
+              ],
+              "kind": "coverage",
+              "text": "Reviewed complete selected equipment scope",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "id": "coverage-2",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 2,
+                "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+              },
+              "bbox": [
+                0,
+                0,
+                1,
+                1
+              ],
+              "kind": "coverage",
+              "text": "Reviewed complete selected equipment scope",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "id": "graphic-pump-1",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.05,
+                0.2,
+                0.18,
+                0.4
+              ],
+              "kind": "graphic",
+              "text": "Physical assembly pump-1",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "id": "graphic-pump-2",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.25,
+                0.2,
+                0.38,
+                0.4
+              ],
+              "kind": "graphic",
+              "text": "Physical assembly pump-2",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "id": "graphic-pump-3",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.45,
+                0.2,
+                0.5800000000000001,
+                0.4
+              ],
+              "kind": "graphic",
+              "text": "Physical assembly pump-3",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            {
+              "id": "graphic-ahu-1",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 2,
+                "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+              },
+              "bbox": [
+                0.6500000000000001,
+                0.2,
+                0.78,
+                0.4
+              ],
+              "kind": "graphic",
+              "text": "Physical assembly ahu-1",
+              "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          ],
+          "observations": [
+            {
+              "id": "pump-1",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.05,
+                0.2,
+                0.18,
+                0.4
+              ],
+              "kind": "assembly",
+              "family": "pump",
+              "tag": "PUMP-1",
+              "work_status": "new",
+              "disposition": "include",
+              "identity": "established",
+              "procurement": "separate",
+              "installation": "field",
+              "parent_id": null,
+              "system_id": null,
+              "attributes": {},
+              "evidence_ids": [
+                "graphic-pump-1"
+              ],
+              "issues": []
+            },
+            {
+              "id": "pump-2",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.25,
+                0.2,
+                0.38,
+                0.4
+              ],
+              "kind": "assembly",
+              "family": "pump",
+              "tag": "PUMP-2",
+              "work_status": "new",
+              "disposition": "include",
+              "identity": "established",
+              "procurement": "separate",
+              "installation": "field",
+              "parent_id": null,
+              "system_id": null,
+              "attributes": {},
+              "evidence_ids": [
+                "graphic-pump-2"
+              ],
+              "issues": []
+            },
+            {
+              "id": "pump-3",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 0,
+                "sheet_id": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+                "geometry_fingerprint": "f852629a5001e5e8d46b281ad73c5653330b695fc0f9d5a37efcf1e9c1a3b5aa"
+              },
+              "bbox": [
+                0.45,
+                0.2,
+                0.5800000000000001,
+                0.4
+              ],
+              "kind": "assembly",
+              "family": "pump",
+              "tag": "PUMP-3",
+              "work_status": "new",
+              "disposition": "exclude",
+              "identity": "established",
+              "procurement": "separate",
+              "installation": "field",
+              "parent_id": null,
+              "system_id": null,
+              "attributes": {},
+              "evidence_ids": [
+                "graphic-pump-3"
+              ],
+              "issues": []
+            },
+            {
+              "id": "ahu-1",
+              "source": {
+                "revision_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "index": 2,
+                "sheet_id": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                "geometry_fingerprint": "e6f1a57965dea4cfe717e580f1e3dcf2ce8f97dd2acb103edc8ebca678a84619"
+              },
+              "bbox": [
+                0.6500000000000001,
+                0.2,
+                0.78,
+                0.4
+              ],
+              "kind": "assembly",
+              "family": "ahu",
+              "tag": "AHU-1",
+              "work_status": "new",
+              "disposition": "include",
+              "identity": "established",
+              "procurement": "separate",
+              "installation": "field",
+              "parent_id": null,
+              "system_id": null,
+              "attributes": {},
+              "evidence_ids": [
+                "graphic-ahu-1"
+              ],
+              "issues": []
+            }
+          ],
+          "relations": [],
+          "schedules": [],
+          "scope": {
+            "source_keys": [
+              "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac",
+              "870e3630f0be71b9e2eaf90996c754a16f149edd6ededb8928251417aa958e39"
+            ],
+            "work_statuses": [
+              "new"
+            ],
+            "required_attributes": []
+          },
+          "coverage": {
+            "state": "complete",
+            "evidence_ids": [
+              "coverage-0",
+              "coverage-2"
+            ],
+            "unresolved_requirements": []
+          }
+        },
+        "result": {
+          "schema": "equipment-calculation-result-1",
+          "version": "equipment-calculation-1",
+          "binding": {
+            "version": "equipment-count-rules-1",
+            "rules": [
+              "E01",
+              "E02",
+              "E03",
+              "E04",
+              "E05",
+              "E06",
+              "E07",
+              "E08",
+              "E09",
+              "E10",
+              "E11",
+              "E12"
+            ],
+            "owner_decision_sha256": "8bd1bf975100bbff4ff232ac3d6c48fd3aa14c82603c673326e7f99b386b4251",
+            "rules_sha256": "dfeea1adabd2478dca7622e96051d6ae3a2ea8eeac42179542b32c4ba03ae134",
+            "examples_sha256": "0c233e93253b0c545c4a59ed2b4c6205e021f20c1300dfb63dbff5cf2e1ec150"
+          },
+          "request_sha256": "75aabc83ea6ac66a908e7f226ba0c6943cbc8f657d113169339ff127417e0bcb",
+          "rows": [
+            {
+              "row_id": "ahu-1",
+              "member_ids": [
+                "ahu-1"
+              ],
+              "family": "ahu",
+              "tag": "AHU-1",
+              "kind": "assembly",
+              "work_status": "new",
+              "system_id": null,
+              "attributes": {},
+              "physical_each": 1,
+              "requested": true,
+              "procurement_each": 1,
+              "installation_each": 1,
+              "remove_each": 0,
+              "reinstall_each": 0,
+              "component_each": 0,
+              "issues": [],
+              "source_keys": [
+                "870e3630f0be71b9e2eaf90996c754a16f149edd6ededb8928251417aa958e39"
+              ],
+              "dependency_sha256": "cdf03cc9e78c6480e4dc78a77052ce80d106c78d17be3f6c29ee952d853d26e3"
+            },
+            {
+              "row_id": "pump-1",
+              "member_ids": [
+                "pump-1"
+              ],
+              "family": "pump",
+              "tag": "PUMP-1",
+              "kind": "assembly",
+              "work_status": "new",
+              "system_id": null,
+              "attributes": {},
+              "physical_each": 1,
+              "requested": true,
+              "procurement_each": 1,
+              "installation_each": 1,
+              "remove_each": 0,
+              "reinstall_each": 0,
+              "component_each": 0,
+              "issues": [],
+              "source_keys": [
+                "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac"
+              ],
+              "dependency_sha256": "31cdabfa3a15104d3a303c7660e7dd172fd5c0dd3db69ef90b8bdb27c3e940d7"
+            },
+            {
+              "row_id": "pump-2",
+              "member_ids": [
+                "pump-2"
+              ],
+              "family": "pump",
+              "tag": "PUMP-2",
+              "kind": "assembly",
+              "work_status": "new",
+              "system_id": null,
+              "attributes": {},
+              "physical_each": 1,
+              "requested": true,
+              "procurement_each": 1,
+              "installation_each": 1,
+              "remove_each": 0,
+              "reinstall_each": 0,
+              "component_each": 0,
+              "issues": [],
+              "source_keys": [
+                "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac"
+              ],
+              "dependency_sha256": "d4137cbd69aca4656058f23974aec7e3c8dcb8c752c07428ec76da1208bdaf05"
+            },
+            {
+              "row_id": "pump-3",
+              "member_ids": [
+                "pump-3"
+              ],
+              "family": "pump",
+              "tag": "PUMP-3",
+              "kind": "assembly",
+              "work_status": "new",
+              "system_id": null,
+              "attributes": {},
+              "physical_each": 0,
+              "requested": true,
+              "procurement_each": 0,
+              "installation_each": 0,
+              "remove_each": 0,
+              "reinstall_each": 0,
+              "component_each": 0,
+              "issues": [],
+              "source_keys": [
+                "06bb193c31f052c9ad73fa2b23ae1994d4e36d48c6c32c66aeda08e8abf0d0ac"
+              ],
+              "dependency_sha256": "0837f08cb54c723a9825c48dce698663fdacebc8950e03c323aa03656e5d034d"
+            }
+          ],
+          "groups": [
+            {
+              "group_id": "8b474dc5c6d26d27a0e50496f9416f909a14e08a4b1c0fef64fb1d47db07a922",
+              "key": {
+                "family": "ahu",
+                "work_status": "new",
+                "system_id": null,
+                "attributes": {}
+              },
+              "row_ids": [
+                "ahu-1"
+              ],
+              "known_subtotal_each": 1,
+              "total_each": 1,
+              "complete": true,
+              "issues": []
+            },
+            {
+              "group_id": "cd4753f914c4c7600b34cf9e9fb102d1d1b300fde22f4994c6b93caa3f634158",
+              "key": {
+                "family": "pump",
+                "work_status": "new",
+                "system_id": null,
+                "attributes": {}
+              },
+              "row_ids": [
+                "pump-1",
+                "pump-2",
+                "pump-3"
+              ],
+              "known_subtotal_each": 2,
+              "total_each": 2,
+              "complete": true,
+              "issues": []
+            }
+          ],
+          "declarations": [],
+          "issues": [],
+          "known_subtotal_each": 3,
+          "total_each": 3,
+          "complete": true,
+          "systems": [],
+          "procurement_packages": null
+        },
+        "implementation": {
+          "project_equipment_takeoff": "531bb8006d5a0ebb3096173b3da95904cba5545592ab217e17254f0934a4569f",
+          "equipment_calculation": "d9d237eeb8155b3af607e31b0040a23150db1f85d70dd2bcb77258063a89e551",
+          "equipment_count_rules": "c7640e217dcbfdfceff048f7bcfb7bab5e097970055cf12f81b41139405abb48"
+        },
+        "previous_sha256": "e90764b756d47431b180c35c10400771d810980cef6340adf814df1c42cf8bbf",
+        "sha256": "fa17c36de6afc8f74e9de66a58526e91fd60bcca85b9bfdd5226cdcd1dafdc8e"
+      }
+    ],
+    "decisions": [
+      {
+        "id": "a638af1283e342c5933aff7467a5bdcc",
+        "at": "2026-09-16T20:04:54.214208+00:00",
+        "action": "equipment_count_save",
+        "actor": "Fixture estimator",
+        "reason": "Checked original fixture region",
+        "intent_sha256": "30b9f5e9e51ab1e51da24f31a41bbb01f2debe023669e65b24dd34729f6a9cc6",
+        "generation": "5cf897797d7a4cd49edf372198988c43",
+        "request_sha256": "6ea00b2d91bde4c3764f89218a18fc35f5c35dbab7c9cc83be3a552a67a42eb8",
+        "previous_sha256": null,
+        "sha256": "fd33c7fd09204b8749d1785294d27c418aed77ea9a1fd56dbc99c484c5a5bf55"
+      },
+      {
+        "id": "42f2a9615ba142388acb501066f72676",
+        "at": "2026-09-16T20:05:18.407800+00:00",
+        "action": "equipment_count_save",
+        "actor": "Mac browser fixture reviewer",
+        "reason": "Removed false-positive pump; reviewed source coverage",
+        "intent_sha256": "64f3d5969517ea89558d087e09c3da1d3308899d084a57f9d6742cb18a204d64",
+        "generation": "cd5ab4fd6cd04349a3f5ad62fa0a78f5",
+        "request_sha256": "00d158291d3ec5990f1167ea1b87104056d691fb3d1bd426def517f2b1ebb823",
+        "previous_sha256": "fd33c7fd09204b8749d1785294d27c418aed77ea9a1fd56dbc99c484c5a5bf55",
+        "sha256": "92eb46a0b3e8a1b3cdda90eecd43f7d3a2e452cce48252ccc96ff9184e436775"
+      },
+      {
+        "id": "269c7fe14dbe44a081512e0a1074da87",
+        "at": "2026-09-16T20:07:24.281056+00:00",
+        "action": "equipment_count_save",
+        "actor": "Mac browser fixture reviewer",
+        "reason": "Reviewed full selected coverage after correcting pump false positive",
+        "intent_sha256": "b50e632003f5354440ed0169f83f7922bfb63b876a6561b29f371503d105a611",
+        "generation": "bb8ee812054a4f6398826f783343f783",
+        "request_sha256": "75aabc83ea6ac66a908e7f226ba0c6943cbc8f657d113169339ff127417e0bcb",
+        "previous_sha256": "92eb46a0b3e8a1b3cdda90eecd43f7d3a2e452cce48252ccc96ff9184e436775",
+        "sha256": "918718ed18ed11cce9ed0c39649aaa0cb438fb573f13c01a8f24e53dde247ab1"
+      }
+    ],
+    "issues": []
+  }
+}

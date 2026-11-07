@@ -1,0 +1,50 @@
+{
+  "task_id": "EVIDENCE-PDF-1",
+  "outcome": "complete",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "2026-09-21-t5b5",
+  "base_commit": "49b7f57a208e162054b0d856dd299852a1bfce50",
+  "committed": true,
+  "contract": "docs/operations/evidence-pdf-2026-09-21-contract.md",
+  "specimen": "tests/fixtures/evidence-pdf/specimen-rows.json",
+  "implementation": "scripts/evidence_pdf.py",
+  "notebooklm": {
+    "queried": false,
+    "reason": "Required export passages are already in the retained duct export findings. No new external submission.",
+    "reused": [
+      "docs/research/notebooklm/duct-export-findings-2026-09-14.json",
+      "docs/research/notebooklm/duct-export-implementation-2026-09-14.json",
+      "docs/research/notebooklm/workbook-export-implementation-2026-09-16.json",
+      "docs/research/notebooklm/csi-division23-routing.json",
+      "docs/research/notebooklm/csi-division23-findings-2026-09-16.json"
+    ]
+  },
+  "checks": {
+    "log": "docs/operations/evidence-pdf-2026-09-21-checks.log",
+    "evidence_pdf_tests_exit": 0,
+    "workbook_tests_exit": 0,
+    "workflow_tests_exit": 0,
+    "package_tests_exit": 0,
+    "equipment_workflow_tests_exit": 0,
+    "air_device_workflow_tests_exit": 0,
+    "qlmanage_exit": 0,
+    "pdfkit_render_exit": 0,
+    "pdftotext": "not installed; command not run",
+    "pdfinfo": "not installed; command not run",
+    "initial_missing_module_exit": 1
+  },
+  "inspection": {
+    "pages": 8,
+    "duct_current_links": "PDFKit reports two Link annotations on the duct page with destPage 5, the sources page",
+    "rendered": "PDFKit wrote eight PNGs. Page 1 summary, page 2 duct rows, page 6 source revision/page/region text, and page 7 history were visually readable black text on white. qlmanage wrote a page-1 thumbnail.",
+    "pixel_counter": "The Swift nonWhite sample equalled every sample and was not used. Bitmap channel order made that counter invalid. Visual render is the page check."
+  },
+  "limits": [
+    "The independent review accepted the export candidate. It does not close a CSI section.",
+    "The PDF does not embed original drawing crops.",
+    "No CSI section is complete.",
+    "Recognition, representative-project, Windows, and release acceptance remain open.",
+    "pdftotext and pdfinfo were not available."
+  ],
+  "next_action": "Select one CSI section and DEFINE its verified full mechanical taxonomy and independent expected cases from its linked card and applicable source bodies."
+}

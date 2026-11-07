@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "task_id": "CSI23-HIERARCHY-MIGRATION-1",
+  "status": "independently_accepted",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_commit": "1adf57af329c3d228db83703b75638fcba39ef18",
+  "scope": "Replace active agency format with CSI edition-pinned hierarchy and corresponding NotebookLM organization",
+  "results": {
+    "csi_nodes_including_root": 432,
+    "nonroot_nodes": 431,
+    "direct_branches": 14,
+    "planned_delivery_frames": 1728,
+    "criterion_bindings": 10800,
+    "removed_agency_cards": 56,
+    "mechanical_sections_accepted": 0,
+    "catalogue_edition": "April2016",
+    "current2026_verified": false
+  },
+  "checks": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p test_csi_delivery_structure.py -v",
+      "exit_code": 0,
+      "result": "28 tests pass independently"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 scripts/verify-csi-division23.py",
+      "exit_code": 0,
+      "result": "Live schema2 CSI graph and task binding validation pass"
+    },
+    {
+      "command": "PrimaryPDF independent catalogue extraction",
+      "exit_code": 0,
+      "result": "432 ordered numbers/pages, 431 unwrapped titles and root wrap match; typography supports hierarchy"
+    },
+    {
+      "command": "NotebookLM source_get_content and label/notebook readback",
+      "result": "14 branch sources match431 complete rows; labels exact; all five reference-library baseline source IDs preserved"
+    },
+    {
+      "command": "Source/card/task/link and NotebookLM mutation/readback audit",
+      "exit_code": 0,
+      "result": "Independent reviewer accepted M01-M07; 443 active Markdown files and all432cards checked"
+    }
+  ],
+  "independent_review": {
+    "reviewer": "/root/csi_migration_audit",
+    "verdict": "accepted_for_integration",
+    "blocking_findings": [],
+    "criteria": {
+      "M01-M03": "432 exact catalogue identities and parent bindings;432cards;10800criterionbindings",
+      "M04": "443activeMarkdownfiles local links resolve; no activeagencytaskIDs/cards",
+      "M05": "Notebook16sources,14branches,5libraries exactsourcepreservationverified",
+      "M06": "Approved work and unrelated filehashespreserved",
+      "M07": "Status/goal/instructions/routing coherent;2016/newer-editionlimits explicit",
+      "M08": "Postcommit active-build-status check required"
+    },
+    "closed_findings": [
+      "Stored already-observed five post-rename sourceinventories in durabletaskreceiptpaths",
+      "Corrected stalegoalcheckerdescription"
+    ]
+  },
+  "integration": "Accepted local integration is the Git commit containing this record; resolve exact commit with git log -1 --format=%H -- docs/operations/csi-hierarchy-migration-2026-09-16.json. No remote push authorized or performed.",
+  "claude": {
+    "task_id": "CSI23-STRUCTURE-CHECK-1",
+    "result": "terminal401expiredOAuth",
+    "preflight": "CLI2.1.261 reported loggedIn:true; actual request failed",
+    "containment": "macos_seatbelt",
+    "fallback": "Codex candidate, independently tested"
+  },
+  "evidence_directory": ".heleos/csi-hierarchy-migration-2026-09-16",
+  "research": "docs/research/notebooklm/csi-division23-findings-2026-09-16.json",
+  "routing": "docs/research/notebooklm/csi-division23-routing.json",
+  "preserved_unrelated": {
+    "SKILLS.md": "939b8aac16ee926c9775efb2465ae3178d9f5365dc5cd2fe4df3aa46a52d017f",
+    "docs/operations/drawing-workspace.md": "53ab3b9a296cafd001b8f07e91311ae4b4af05a913fa34111de2109fe28b38cd"
+  },
+  "limits": [
+    "Catalogue fully verified for2016 only; newer-edition reconciliation remains open",
+    "No mechanical section/application capability accepted by this migration",
+    "Public reference is not open commercial redistribution grant",
+    "NotebookLM observed an unrequested NYS agency index; preserved under unmapped references, not scope authority"
+  ],
+  "next_action": "EQUIPMENT-COUNT-1: bind approved cases and verified source findings to exact current interfaces/writepaths/connected checks, then implement; ready CSI section definitions and evidencePDF can proceed independently."
+}

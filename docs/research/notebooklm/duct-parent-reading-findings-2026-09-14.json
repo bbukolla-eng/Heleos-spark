@@ -1,0 +1,424 @@
+{
+  "schema_version": 1,
+  "task_id": "DUCT-PARENT-READING-1-RESEARCH",
+  "recorded_at": "2026-09-14T08:07:30.242415+00:00",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_commit": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "task_brief": {
+    "path": ".heleos/duct-parent-reading-2026-09-14/research-brief.json",
+    "sha256": "ccf4614da54a761e24bd5deb4c108673136670ecaa230a9b843f049ddde6b61f"
+  },
+  "instruction_identities": {
+    "AGENTS.md": "f1e8ca69afc99a02647b9509acf73fbf3bfb7c7c73029f7a20852a1cf33bb8a6",
+    "SKILLS.md": "939b8aac16ee926c9775efb2465ae3178d9f5365dc5cd2fe4df3aa46a52d017f",
+    "docs/superpowers/specs/2026-09-13-calculation-sequence-design.md": "6ae8b6a5a8a43b638b7cfae8f67c676de59a495e8aae8ca00eeb8870fd85d7b8",
+    "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6"
+  },
+  "scope": "Bounded local reuse before explicit immutable-parent source/value correction. Source context only; proposed implementation remains under existing approved rules and provenance authority.",
+  "notebook_inventory_reused": {
+    "path": "docs/research/notebooklm/notebook-inventory.json",
+    "sha256": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a",
+    "retrieved_at": "2026-09-14T05:01:59.112065+00:00",
+    "notebook_count": 59
+  },
+  "prior_findings_reused": [
+    {
+      "path": "docs/research/notebooklm/duct-correction-findings-2026-09-14.json",
+      "sha256": "b1b8520ae1a2b0a561b91f6547ea397debb9f1796fe5f7541a53883ddeafd28c"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-cross-page-findings-2026-09-14.json",
+      "sha256": "b175abbb3d6e72292ed582bc2f3dcafee8824c414763f2001cdb18e3e02428a5"
+    },
+    {
+      "path": "docs/research/notebooklm/duct-refresh-findings-2026-09-14.json",
+      "sha256": "5d88fdba208d69466251ad6672ddd55cec3795359e8941e541516ef642bb749d"
+    }
+  ],
+  "sources": [
+    {
+      "key": "bluebeam-measurements",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "6a218a8d-a97f-41b4-9415-eb30f52adb24",
+      "title": "Takeoffs and measurements | Bluebeam Technical Support",
+      "original_url": "https://support.bluebeam.com/user-manual/menus/tools/takeoffs-measurements.html",
+      "retrieved_at": "2026-09-14T05:04:42.911115+00:00",
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/bluebeam-measurements-indexed-text.txt",
+      "content_sha256": "4afe5ed0bf40b5b7c25c8119b1a1c9a929b0a1d4a94b401a4007fca9b7359f97",
+      "result_evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/bluebeam-measurements-source-result.json",
+        "sha256": "4913118e715b675b991dcd62d09e8a740cd463893e2b51b12cef77e22178912b"
+      },
+      "edition_or_date": null,
+      "original_page_numbers": null,
+      "verification": "Retained indexed body and original successful response hashes match; response content equals body; source ID exists in retained inventory. No publisher refresh or new retrieval."
+    },
+    {
+      "key": "mepdetect",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "4a7e4472-4c73-49fa-9e01-e33e1b9e20f5",
+      "title": "GitHub - DynMEP/MEPdetect: Symbol detection and circuit tracing for MEP construction drawings. Detects electrical symbols with YOLO11, traces how they are wired, and exports netlists and per-circuit counts to CSV, Excel, DXF or PDF. Hosted at mepdetect.com. \u00b7 GitHub",
+      "original_url": "https://github.com/DynMEP/MEPdetect",
+      "retrieved_at": "2026-09-14T05:18:04.078655+00:00",
+      "text_location": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-indexed-text.txt",
+      "content_sha256": "939ce39f0fba5ad26e084303b4d9918236ed516a080b77ee8f5eb917633db26e",
+      "result_evidence": {
+        "path": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-source-result.json",
+        "sha256": "b6e0065d7a3f0760b436a08e29295f3898a8c8f036f0808b642497d74f7ce832"
+      },
+      "edition_or_date": null,
+      "original_page_numbers": null,
+      "verification": "Retained indexed body and original successful response hashes match; response content equals body; source ID exists in retained inventory. No publisher refresh or new retrieval."
+    },
+    {
+      "key": "blueprint-tutorial-N10",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "b5c5a26e-ff2d-4275-be5f-2afdedfaedb9",
+      "title": "Mastering Mechanical Blueprint Reading with Floor Plans, Sections, Isometrics, and Schedules - Free Video Tutorial",
+      "original_url": "https://vdci.edu/learn/blueprint-reading/mastering-mechanical-blueprint-reading",
+      "retrieved_at": "2026-09-14T07:27:05.596Z",
+      "text_location": ".heleos/duct-cross-page-2026-09-14/research-tutorial-N10-indexed-text.txt",
+      "content_sha256": "f014c7fb961c7a8e86c318c605115a14b99724fea320c7dba37fc791b4b00b44",
+      "result_evidence": {
+        "path": ".heleos/duct-cross-page-2026-09-14/research-tutorial-N10-source-result.json",
+        "sha256": "e66e562b64c0d40d26efc5774d2c4e1a5b85439b0cbf0b0ee19982cdb32dbe1d"
+      },
+      "edition_or_date": "Page shows December 29, 2025 and author Matt F.; indexed lines 963-969",
+      "original_page_numbers": null,
+      "verification": "Retained indexed body and original successful response hashes match; response content equals body; source ID exists in retained inventory. No publisher refresh or new retrieval."
+    },
+    {
+      "key": "drawing-scales",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "2bc99eed-82b9-444a-8bab-450f5be0aa32",
+      "title": "https://www.usfa.fema.gov/downloads/pdf/nfa/engineer-architect-scales.pdf",
+      "original_url": "https://www.usfa.fema.gov/downloads/pdf/nfa/engineer-architect-scales.pdf",
+      "retrieved_at": "2026-09-14T05:04:42.747743+00:00",
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-indexed-text.txt",
+      "content_sha256": "f10a1b00608efaec7e2144a84f03f514a0d1eb5bb0520c16935acf602b8085b4",
+      "result_evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-source-result.json",
+        "sha256": "0c58a27e4176d58b83df0e4e983c34519cd57e49f8bddc9090e0c0f5fc347ecf"
+      },
+      "edition_or_date": null,
+      "original_page_numbers": null,
+      "verification": "Retained indexed body and original successful response hashes match; response content equals body; source ID exists in retained inventory. No publisher refresh or new retrieval."
+    }
+  ],
+  "verified_passages": [
+    {
+      "source_key": "bluebeam-measurements",
+      "indexed_text_lines": [
+        1175,
+        1207
+      ],
+      "section": "Description, Label and point-entry instructions",
+      "passage_sha256": "d16b7b9e05781e2b915f30baaa88d5778b74c00a02c90be36e26354175d03bc7",
+      "reuses": "DUCT-REFRESH-RESEARCH-02",
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/bluebeam-measurements-indexed-text.txt",
+      "hash_serialization": "UTF-8 selected indexed lines joined with LF and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "bluebeam-measurements",
+      "indexed_text_lines": [
+        1093,
+        1099
+      ],
+      "section": "Adjust arc control points",
+      "passage_sha256": "e3d779bf6d9a0cd172464668a09a4d3d3605d8230d1cf609faadf1c1330ac0f7",
+      "reuses": "DUCT-REFRESH-RESEARCH-02",
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/bluebeam-measurements-indexed-text.txt",
+      "hash_serialization": "UTF-8 selected indexed lines joined with LF and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "mepdetect",
+      "indexed_text_lines": [
+        1310,
+        1316
+      ],
+      "section": "Scope and verification",
+      "passage_sha256": "c34fcc4033e6be50e0daf246d3fb137787addc6c49080f9f8761d200ab13ca1c",
+      "reuses": "DUCT-REFRESH-RESEARCH-01",
+      "text_location": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-indexed-text.txt",
+      "hash_serialization": "UTF-8 selected indexed lines joined with LF and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "blueprint-tutorial-N10",
+      "indexed_text_lines": [
+        1053,
+        1085
+      ],
+      "section": "Enlarged Plans; Sections and Isometrics; Schematics; Details",
+      "passage_sha256": "67304bd959b0208b60eeab6fd2977aea7d7f3cacb7558ad90359201d2bbef9d1",
+      "reuses": "DUCT-CROSS-PAGE-RESEARCH-01",
+      "text_location": ".heleos/duct-cross-page-2026-09-14/research-tutorial-N10-indexed-text.txt",
+      "hash_serialization": "UTF-8 selected indexed lines joined with LF and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "drawing-scales",
+      "indexed_text_lines": [
+        27,
+        31
+      ],
+      "section": "Scales",
+      "passage_sha256": "7167841402080013b1bb24f63edb0061a8cf1c72af6ef4c686e363cae7025bc4",
+      "reuses": "DUCT-CROSS-PAGE-RESEARCH-02",
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-indexed-text.txt",
+      "hash_serialization": "UTF-8 selected indexed lines joined with LF and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "drawing-scales",
+      "indexed_text_lines": [
+        89,
+        99
+      ],
+      "section": "Using the tool and interpreting the results",
+      "passage_sha256": "2c76d5443d51393e047188a19ad258285ede2aedceab38b7d514a61632c2545b",
+      "reuses": "DUCT-CROSS-PAGE-RESEARCH-02",
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-indexed-text.txt",
+      "hash_serialization": "UTF-8 selected indexed lines joined with LF and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "drawing-scales",
+      "indexed_text_lines": [
+        183,
+        199
+      ],
+      "section": "Scale versus dimensions; fire-sprinkler teaching example",
+      "passage_sha256": "7b6623ec43596d23d3ec8e89b0d2d327b892e29111e1eb1e85d8f315be2ca012",
+      "reuses": "DUCT-CROSS-PAGE-RESEARCH-03",
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-indexed-text.txt",
+      "hash_serialization": "UTF-8 selected indexed lines joined with LF and one final LF",
+      "verified": true
+    },
+    {
+      "source_key": "mepdetect",
+      "indexed_text_lines": [
+        973,
+        973
+      ],
+      "section": "Electrical drawing conventions",
+      "passage_sha256": "e7056d1f11361531b0591b9ebe0c40f1ad7a02bced219d8e7bc382574ee3d097",
+      "reuses": "DUCT-CROSS-PAGE-RESEARCH-05",
+      "text_location": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-indexed-text.txt",
+      "hash_serialization": "UTF-8 selected indexed lines joined with LF and one final LF",
+      "verified": true
+    }
+  ],
+  "query_decision": {
+    "new_query_needed": false,
+    "external_calls": 0,
+    "reason": "No changed mechanical requirement or missing pertinent source bytes. Prior correction and cross-page queries already cover correction context, view/scale distinctions and their explicit gaps. Replacing retained parent source/value evidence is a UI/provenance extension of the approved rules; repeating queries would not authorize new precedence, conflict removal or datum/portion matching."
+  },
+  "findings": [
+    {
+      "id": "DUCT-PARENT-READING-RESEARCH-01",
+      "state": "verified_contextual_example",
+      "reuses": [
+        "DUCT-CORR-RESEARCH-01",
+        "DUCT-CORR-RESEARCH-02",
+        "DUCT-REFRESH-RESEARCH-02"
+      ],
+      "claim": "Bluebeam documents deliberate measurement editing with descriptive labels and updated measurements after control-point changes.",
+      "support_keys": [
+        "bluebeam-measurements:1093-1099",
+        "bluebeam-measurements:1175-1207"
+      ],
+      "applicability": "Supports clear edit/review feedback only. It does not define immutable-parent replacement, child lineage, capture supersession or a permission to delete an old whole-run constraint."
+    },
+    {
+      "id": "DUCT-PARENT-READING-RESEARCH-02",
+      "state": "verified_applicable",
+      "reuses": [
+        "DUCT-CORR-RESEARCH-03",
+        "DUCT-CROSS-PAGE-RESEARCH-01",
+        "DUCT-CROSS-PAGE-RESEARCH-02"
+      ],
+      "claim": "MEPdetect describes imperfect detected/traced/calibrated outputs requiring drawing review; VDCI describes distinct view purposes; FEMA documents view-specific scales and reproduction changes.",
+      "support_keys": [
+        "mepdetect:1310-1316",
+        "blueprint-tutorial-N10:1053-1085",
+        "drawing-scales:27-31",
+        "drawing-scales:89-99"
+      ],
+      "applicability": "Keep original and replacement reading source/evidence reviewable, retain correct view/scale identity, and preserve unresolved coverage. These contexts do not prove parent/child correspondence or reading applicability."
+    },
+    {
+      "id": "DUCT-PARENT-READING-RESEARCH-03",
+      "state": "conflict_not_adopted",
+      "reuses": [
+        "DUCT-CROSS-PAGE-RESEARCH-03"
+      ],
+      "claim": "FEMA educational text selects written dimensions over a conflicting scaled sprinkler measurement.",
+      "support_keys": [
+        "drawing-scales:183-199"
+      ],
+      "resolution": "D05 remains authoritative. An explicit replacement may correct a wrongly read or stale reading only with supported evidence and retained history; replacing source/value/capture does not itself resolve a material whole-run conflict, remove the check, force child quantities to agree, or establish contractual precedence."
+    },
+    {
+      "id": "DUCT-PARENT-READING-RESEARCH-04",
+      "state": "unsupported",
+      "reuses": [
+        "DUCT-CORR-RESEARCH-04",
+        "DUCT-CORR-RESEARCH-06",
+        "DUCT-CROSS-PAGE-RESEARCH-04",
+        "DUCT-REFRESH-RESEARCH-03"
+      ],
+      "claim": "The retained selected documents do not establish an immutable-parent correction event/schema, exact replacement mapping, cross-page physical portion/reference-marker syntax, elevation datum equivalence or endpoint correspondence.",
+      "applicability": "These are preserved documentation gaps from prior bounded review, not claims of universal product absence. Explicit local source/provenance checks remain necessary; unsupported marker/datum/endpoint applicability remains unresolved."
+    },
+    {
+      "id": "DUCT-PARENT-READING-RESEARCH-05",
+      "state": "conflict_not_adopted",
+      "reuses": [
+        "DUCT-CORR-RESEARCH-05",
+        "DUCT-CROSS-PAGE-RESEARCH-05"
+      ],
+      "claim": "MEPdetect describes matching electrical circuit tags across matchlines.",
+      "support_keys": [
+        "mepdetect:973-973"
+      ],
+      "resolution": "Do not transfer electrical tag rules to duct parent or reading identity. Matching text, quantity, source labels or visual similarity cannot authorize parent replacement or cross-page applicability under D08."
+    }
+  ],
+  "implementation_authority": [
+    {
+      "document": {
+        "path": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+        "sha256": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6"
+      },
+      "requirement": "D04-D10 and dependency/history requirements preserve same-datum evidence, conflicts, supported splits, single physical quantity and unknowns.",
+      "support": [
+        {
+          "lines": [
+            23,
+            29
+          ],
+          "passage_sha256": "d5cb05d3c66f43553677fcdb16e526ce9f4d13b5f83e8688a5952aa11defa306"
+        },
+        {
+          "lines": [
+            31,
+            35
+          ],
+          "passage_sha256": "3baf4543e1794c7e396dd488e8e5ee7715120d95fc32576e73239ac4379f5e61"
+        }
+      ]
+    },
+    {
+      "document": {
+        "path": "docs/superpowers/specs/2026-09-14-duct-observation-contract.md",
+        "sha256": "ba13bd258c58c5bc8a8d2a4b0a6c564c8d28050e811b7030c8d322992ae60f35"
+      },
+      "requirement": "Retained whole-run checks apply once to the complete parent partition, survive route corrections and preserve issues until explicit source-supported correction. The historical same-page wording at lines 210-212 is not used to override the later explicit cross-page contract.",
+      "support": [
+        {
+          "lines": [
+            50,
+            60
+          ],
+          "passage_sha256": "ae951326d9b610dbd60b7d2c279622a31075097d7a8d77f857dd08b7a4dc896a"
+        },
+        {
+          "lines": [
+            203,
+            209
+          ],
+          "passage_sha256": "12dfd7de8509b0dbc506be7907252f100666a9123972a4d2792e67289c4693e8"
+        },
+        {
+          "lines": [
+            223,
+            254
+          ],
+          "passage_sha256": "38b9c82b52fcfd7e5d3e4cce23da752afd377382476507efecb3bc649b17df7a"
+        }
+      ]
+    },
+    {
+      "document": {
+        "path": "docs/superpowers/specs/2026-09-13-calculation-sequence-design.md",
+        "sha256": "6ae8b6a5a8a43b638b7cfae8f67c676de59a495e8aae8ca00eeb8870fd85d7b8"
+      },
+      "requirement": "Source-bound reading, explicit review/correction and affected-only append-only replacement retain source evidence and unresolved scope.",
+      "support": [
+        {
+          "lines": [
+            49,
+            56
+          ],
+          "passage_sha256": "b0561926edab255592106c37bb37cbed75651a58905a0448e0e610bbabb7db35"
+        }
+      ]
+    }
+  ],
+  "later_cross_page_contract": {
+    "path": ".heleos/duct-cross-page-2026-09-14/backend-contract.json",
+    "sha256": "d9904df95694aae0318cc0744211c1bcad571ad858606f9cbacf71e989b7e618",
+    "applicability": "Current cross-page implementation contract permits consumed foreign reading evidence with exact explicit reviewed relationships, including retained parents. This later extension qualifies older same-page observation-contract wording; it does not permit borrowing foreign graphics, group, admission or split boundary authority."
+  },
+  "adoption_guidance": [
+    {
+      "behavior": "Explicitly replace source/value references in a new parent correction record with original parent, source evidence, reading values and prior calculations preserved.",
+      "basis": "Approved local correction/provenance contract; public sources are contextual only.",
+      "verification_to_add": "Repair a stale retained parent reading/capture and export/reopen without losing original evidence or automatically renewing changed cross-page applicability."
+    },
+    {
+      "behavior": "Keep the parent whole-run constraint across the full split-descendant closure and preserve unrelated rows.",
+      "basis": "Existing retained-parent partition and D05 conflict rules.",
+      "verification_to_add": "A changed dimension that still disagrees with reconstructed route keeps all affected descendants unresolved; correction cannot clear the conflict by omission, split or same-value/tag matching."
+    },
+    {
+      "behavior": "Require exact current source/evidence and explicit applicability review for new consumed supplemental reading identities; retain marker/datum gaps and source issues.",
+      "basis": "Approved source-bound rules and explicit research limitations.",
+      "verification_to_add": "Reject stale sources, unsupported markers/datums, changed parent fingerprints and partial closure atomically; old history remains reviewable."
+    }
+  ],
+  "new_consequential_mechanical_gap": false,
+  "preserved_unsupported_topics": [
+    "Whole-run conflict suppression or precedence",
+    "Automatic parent/child physical identity from equal values or tags",
+    "Cross-page marker/endpoint/datum equivalence",
+    "Immutable-parent event schema and atomic replacement mapping defined by public sources"
+  ],
+  "external_activity": {
+    "new_queries": 0,
+    "source_reads": 0,
+    "source_or_note_additions": 0,
+    "private_uploads": 0,
+    "new_external_submissions": 0,
+    "egress_receipts_required": false,
+    "reason": "No external call made; retained local snapshots only."
+  },
+  "checks": {
+    "source_text_hashes": 4,
+    "source_response_hashes": 4,
+    "response_content_matches_text": true,
+    "source_ids_in_inventory": true,
+    "support_passages": 8,
+    "instruction_hashes": 4,
+    "branch_head_match": true,
+    "result": "PASS"
+  },
+  "verification_limits": [
+    "Indexed text lines are text locations, not original PDF pagination. Unknown editions/pages remain unknown.",
+    "Snapshots retained from prior 2026-09-14 retrievals; no live publisher freshness, software implementation audit, license grant or independent corroboration claim.",
+    "VDCI N10 body duplicates prior N11 bytes and is one source.",
+    "No product changes, rule admission, independent implementation acceptance or native/platform verification."
+  ],
+  "production_rule_admission": false,
+  "adopted_code_or_tests": null,
+  "process": {
+    "state": "terminal",
+    "live_handles": [],
+    "external_jobs_started": []
+  },
+  "next_action": "Coordinator maps the bounded parent-reading correction into the existing provenance contract and meaningful lifecycle checks, then records actual implementation adoption separately."
+}

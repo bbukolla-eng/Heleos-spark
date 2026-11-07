@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
+task_root="$(pwd -P)"
+task_verifier="$task_root/target/debug/verify-provenance"
+
+if [[ ! -f "$task_verifier" || ! -x "$task_verifier" ]]; then
+  printf '%s\n' 'Build the pinned verify-provenance binary with scripts/verify-foundation first.' >&2
+  exit 1
+fi
+
+export CARGO_NET_OFFLINE=true
+# Acceptance calls this while Cargo owns its test lock. Never invoke Cargo here.
+exec "$task_verifier" "$@"

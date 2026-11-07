@@ -1,0 +1,315 @@
+{
+  "schema_version": 1,
+  "task": "DUCT-CORRECTION-1/source-research",
+  "recorded_at": "2026-09-14T05:21:07.266937+00:00",
+  "notebook_inventory_reused": {
+    "path": "docs/research/notebooklm/notebook-inventory.json",
+    "sha256": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a"
+  },
+  "earlier_findings_reused": {
+    "path": "docs/research/notebooklm/findings.json",
+    "sha256": "4a924acd2d2cfb4f55c34f057100195ebc3bc16a50bc00c0ec3cf32cad00a7ed"
+  },
+  "query": {
+    "state": "completed",
+    "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+    "source_ids": [
+      "4a7e4472-4c73-49fa-9e01-e33e1b9e20f5",
+      "8bc4bd22-4519-4724-b727-861b4e84467e"
+    ],
+    "conversation_id": "d0981662-e020-4d3c-9ed4-5967ad014bb2",
+    "evidence": {
+      "path": ".heleos/duct-correction-build-2026-09-14/research-correction-query-result.json",
+      "sha256": "bf70ac134d84c74bc88c34bae596599009b65c25161028e34905fc498a05aa9c"
+    },
+    "purpose": "New correction-specific need; not a replay of the earlier N11 duct-basis or timed-out N10 query",
+    "verified_against": [
+      "mepdetect",
+      "yoloplan"
+    ]
+  },
+  "sources": [
+    {
+      "key": "bluebeam-measurements",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "6a218a8d-a97f-41b4-9415-eb30f52adb24",
+      "title": "Takeoffs and measurements | Bluebeam Technical Support",
+      "notebook_url": "https://notebooklm.google.com/notebook/d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "original_url": "https://support.bluebeam.com/user-manual/menus/tools/takeoffs-measurements.html",
+      "url_basis": "Explicit article URL in indexed content",
+      "edition_or_document_status": null,
+      "original_pdf_page_numbers": null,
+      "indexed_source_type_reported": "unknown",
+      "classification": "existing public reference text",
+      "retrieved_at": "2026-09-14T05:04:42.911115+00:00",
+      "content_sha256": "4afe5ed0bf40b5b7c25c8119b1a1c9a929b0a1d4a94b401a4007fca9b7359f97",
+      "character_count": 35117,
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/bluebeam-measurements-indexed-text.txt",
+      "result_evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/bluebeam-measurements-source-result.json",
+        "sha256": "4913118e715b675b991dcd62d09e8a740cd463893e2b51b12cef77e22178912b"
+      },
+      "verification_scope": "Read indexed supporting source text; publisher website and publication license not revalidated",
+      "verification_in_this_task": "Existing indexed text and result hash revalidated; correction-specific passages read; no repeated retrieval"
+    },
+    {
+      "key": "mepdetect",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "4a7e4472-4c73-49fa-9e01-e33e1b9e20f5",
+      "title": "GitHub - DynMEP/MEPdetect: Symbol detection and circuit tracing for MEP construction drawings. Detects electrical symbols with YOLO11, traces how they are wired, and exports netlists and per-circuit counts to CSV, Excel, DXF or PDF. Hosted at mepdetect.com. · GitHub",
+      "notebook_url": "https://notebooklm.google.com/notebook/0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "original_url": "https://github.com/DynMEP/MEPdetect",
+      "url_basis": "Repository path explicitly present in indexed source links and title",
+      "retrieved_at": "2026-09-14T05:18:04.078655+00:00",
+      "source_type_reported": "unknown",
+      "edition_or_commit": null,
+      "original_page_numbers": null,
+      "character_count": 24031,
+      "content_sha256": "939ce39f0fba5ad26e084303b4d9918236ed516a080b77ee8f5eb917633db26e",
+      "text_location": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-indexed-text.txt",
+      "result_evidence": {
+        "path": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-source-result.json",
+        "sha256": "b6e0065d7a3f0760b436a08e29295f3898a8c8f036f0808b642497d74f7ce832"
+      },
+      "verification_scope": "Indexed GitHub page/README only; repository implementation, current hosted service and live publisher freshness not inspected"
+    },
+    {
+      "key": "yoloplan",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "8bc4bd22-4519-4724-b727-861b4e84467e",
+      "title": "GitHub - DynMEP/YOLOplan: YOLOplan automates symbol detection and counting in technical drawings (PDF, images, CAD) using YOLO11 object detection. Built for MEP professionals, it streamlines takeoff for electrical, HVAC and more - fast, accurate and production-ready. · GitHub",
+      "notebook_url": "https://notebooklm.google.com/notebook/0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "original_url": "https://github.com/DynMEP/YOLOplan",
+      "url_basis": "Repository path explicitly present in indexed source links and title",
+      "retrieved_at": "2026-09-14T05:18:04.080153+00:00",
+      "source_type_reported": "unknown",
+      "edition_or_commit": null,
+      "original_page_numbers": null,
+      "character_count": 23488,
+      "content_sha256": "8131cecb3842c99558dc828bc60c447ad073b3e8c9cb215e4f5f8420c13c7861",
+      "text_location": ".heleos/duct-correction-build-2026-09-14/research-yoloplan-indexed-text.txt",
+      "result_evidence": {
+        "path": ".heleos/duct-correction-build-2026-09-14/research-yoloplan-source-result.json",
+        "sha256": "26d87f7a66546b5c5c01375820150ba31959e26582e774cc4d535db4301858ff"
+      },
+      "verification_scope": "Indexed GitHub page/README only; repository implementation, current hosted service and live publisher freshness not inspected"
+    }
+  ],
+  "findings": [
+    {
+      "id": "DUCT-CORR-RESEARCH-01",
+      "state": "verified_applicable",
+      "claim": "Bluebeam documents an open multi-segment measurement made by selecting each point, removing the last control point with Backspace, and finishing with Enter. Subject and Label retain descriptive text on measurement records/markups.",
+      "support": [
+        {
+          "source_key": "bluebeam-measurements",
+          "indexed_text_lines": [
+            1115,
+            1129
+          ],
+          "section": "Measure an open perimeter"
+        },
+        {
+          "source_key": "bluebeam-measurements",
+          "indexed_text_lines": [
+            1175,
+            1207
+          ],
+          "section": "Open-perimeter description, label and point-entry instructions"
+        }
+      ],
+      "applicability": "A documented interaction example for point-by-point polyline correction and deliberate completion. Keyboard/UI design remains a Heleos implementation choice.",
+      "implementation_guidance": [
+        "Show each retained path vertex so a correction can preserve intermediate bends.",
+        "Support explicit finish and last-point removal during path entry.",
+        "Associate correction descriptions with their source-linked result."
+      ],
+      "verification_to_add": [
+        "Edit an intermediate polyline vertex and recalculate the affected portion.",
+        "Cancel an incomplete edit without changing saved evidence or quantities."
+      ],
+      "adopted_code_or_tests": null
+    },
+    {
+      "id": "DUCT-CORR-RESEARCH-02",
+      "state": "verified_contextual_example",
+      "claim": "Bluebeam says control-point changes update a measurement, in an example specifically about curved area markups.",
+      "support": [
+        {
+          "source_key": "bluebeam-measurements",
+          "indexed_text_lines": [
+            1001,
+            1017
+          ],
+          "section": "Take a curved measurement: area example"
+        },
+        {
+          "source_key": "bluebeam-measurements",
+          "indexed_text_lines": [
+            1093,
+            1099
+          ],
+          "section": "Adjust arc control points"
+        }
+      ],
+      "applicability": "Supports edit-and-update feedback as a software interaction example only. It does not establish validated duct curve measurement or permit straight substitutes for curves.",
+      "approved_rule_retained": "D03",
+      "implementation_guidance": [
+        "Recalculate supported changed geometry while retaining prior result evidence.",
+        "Keep unsupported curve/flex geometry unresolved under D03."
+      ],
+      "adopted_code_or_tests": null
+    },
+    {
+      "id": "DUCT-CORR-RESEARCH-03",
+      "state": "verified_applicable",
+      "claim": "MEPdetect explicitly states that missed symbols are absent from counts, untraceable runs are absent from netlists, and measured lengths depend on calibration. Its exports include drawing overlays/reports; YOLOplan describes annotated-image and tabular outputs.",
+      "support": [
+        {
+          "source_key": "mepdetect",
+          "indexed_text_lines": [
+            1310,
+            1316
+          ],
+          "section": "Scope and verification"
+        },
+        {
+          "source_key": "mepdetect",
+          "indexed_text_lines": [
+            951,
+            951
+          ],
+          "section": "Project introduction"
+        },
+        {
+          "source_key": "yoloplan",
+          "indexed_text_lines": [
+            966,
+            970
+          ],
+          "section": "Project Structure: results"
+        },
+        {
+          "source_key": "yoloplan",
+          "indexed_text_lines": [
+            1164,
+            1180
+          ],
+          "section": "Example 1: Electrical Takeoff"
+        }
+      ],
+      "applicability": "Documents detector/tracer limitations and static source visualization, not an auditable correction model. Supports explicit partial coverage and a way to capture missed observations against the drawing.",
+      "implementation_guidance": [
+        "Let a reviewer add a missed portion with retained page/region evidence.",
+        "Do not equate successful inference or corrected visible portions with complete coverage.",
+        "Keep the original source and previous quantities accessible after correction."
+      ],
+      "not_inferred": [
+        "Accuracy thresholds",
+        "Complete detection from successful execution",
+        "Requirement for the user to perform the whole takeoff first"
+      ],
+      "adopted_code_or_tests": null
+    },
+    {
+      "id": "DUCT-CORR-RESEARCH-04",
+      "state": "unsupported_by_selected_references",
+      "claim": "The selected indexed README pages do not document post-inference add/delete/vertex-edit/split/elevation-correction workflows. The retrieved Bluebeam page does not establish duct size-change splitting or same-datum elevation/projection rules.",
+      "support": [
+        {
+          "source_key": "mepdetect",
+          "scope": "Full indexed README/page reviewed; no implementation audit"
+        },
+        {
+          "source_key": "yoloplan",
+          "scope": "Full indexed README/page reviewed; no implementation audit"
+        },
+        {
+          "source_key": "bluebeam-measurements",
+          "indexed_text_lines": [
+            1163,
+            1173
+          ],
+          "section": "Depth is for additional calculations such as Wall Area"
+        }
+      ],
+      "applicability": "Source absence is a documentation gap, not evidence that another product has no such implementation. Bluebeam Depth is not supported vertical/datum evidence.",
+      "approved_authority": {
+        "path": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+        "rules": [
+          "D03",
+          "D04",
+          "D05",
+          "D06"
+        ],
+        "basis": "Owner-approved packet governs supported correction geometry, source readings and splits."
+      },
+      "implementation_guidance": [
+        "Split only at a supported size/group change and retain shared source lineage.",
+        "Require original dimension/elevation/datum support for derived lengths.",
+        "Do not introduce inferred tolerances or guessed rises."
+      ],
+      "adopted_code_or_tests": null
+    },
+    {
+      "id": "DUCT-CORR-RESEARCH-05",
+      "state": "not_transferred_to_mechanical_rules",
+      "claim": "MEPdetect describes following a same-tag electrical circuit across a matchline and counting it once.",
+      "support": [
+        {
+          "source_key": "mepdetect",
+          "indexed_text_lines": [
+            973,
+            973
+          ],
+          "section": "Electrical drawing conventions"
+        }
+      ],
+      "applicability": "A domain-specific electrical tracing description. Matching tags alone cannot establish physical duct correspondence under approved D08.",
+      "approved_rule_retained": "D08",
+      "implementation_guidance": [
+        "Keep split/replacement provenance separate from physical-duplicate correspondence.",
+        "Do not collapse distinct duct portions solely because labels match."
+      ],
+      "adopted_code_or_tests": null
+    },
+    {
+      "id": "DUCT-CORR-RESEARCH-06",
+      "state": "generated_claims_narrowed_after_verification",
+      "claim": "The query answer expands missing README documentation into assertions that no correction mechanism exists and that review happens outside the software. Supporting text establishes neither universal code absence nor the location of the review.",
+      "support": [
+        {
+          "source_key": "mepdetect",
+          "indexed_text_lines": [
+            1310,
+            1316
+          ],
+          "section": "Scope and verification"
+        },
+        {
+          "source_key": "yoloplan",
+          "scope": "Selected indexed README; repository code was not audited"
+        }
+      ],
+      "resolution": "Retain only the narrower documented limitation and unsupported-topic classifications. Do not adopt the generated overstatements as requirements."
+    }
+  ],
+  "chronology": "This is a new correction-specific source check before dependent correction implementation. Existing scale and takeoff checks remain prior work; proposed verification items above are not reported as executed tests.",
+  "rule_changes": [],
+  "production_rule_admission": false,
+  "private_uploads": [],
+  "external_source_or_note_additions": [],
+  "queries_this_task": 1,
+  "outstanding": [
+    "Current repository implementations and hosted products were not audited",
+    "Selected public software pages do not establish additional mechanical size-split/elevation rules",
+    "Original source dates/commits and page numbers remain unknown where null"
+  ],
+  "process": {
+    "exec_session_id": 77602,
+    "exit_code": 0,
+    "state": "terminal",
+    "live_handles": []
+  },
+  "next_action": "Apply applicable interaction examples to the owner-requested correction feature, use D03-D06/D08 for quantity semantics, and verify code behavior with source-bound synthetic correction cases."
+}

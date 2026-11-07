@@ -1,0 +1,18 @@
+{
+  "schema": "heleos.worker-handoff/v1",
+  "task_digest": "e9d03473e354fd0266fd9e4c644fd0124fdd62ff8389ebd2103c285ff6fbb6a9",
+  "provider": "kimi",
+  "terminal_state": "completed",
+  "changed_paths": [
+    "proof/kimi-headless.txt"
+  ],
+  "checks": [
+    {
+      "command": "test \"$(shasum -a 256 proof/kimi-headless.txt)\" = \"6109053c330d9df1cb2711a6d032f3b491273558035a4fb1fa385b596d9f8640  proof/kimi-headless.txt\"",
+      "exit_code": 0,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "candidate_commit": null,
+  "unresolved_items": []
+}

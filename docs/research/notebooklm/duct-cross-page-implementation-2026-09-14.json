@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "task_id": "DUCT-CROSS-PAGE-1",
+  "at": "2026-09-14T07:56:44.043379+00:00",
+  "research_record": {
+    "path": "docs/research/notebooklm/duct-cross-page-findings-2026-09-14.json",
+    "sha256": "b175abbb3d6e72292ed582bc2f3dcafee8824c414763f2001cdb18e3e02428a5"
+  },
+  "research_preceded_implementation": true,
+  "source_verification": {
+    "path": ".heleos/duct-cross-page-2026-09-14/root-research-verification.json",
+    "sha256": "a840a09eaf25d4fce05859a6684f393963aca89f77732a4de0b713e0b1b827c8"
+  },
+  "authority": {
+    "rules": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+    "sha256": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6",
+    "decision": "tests/fixtures/duct-takeoff/2026-09-14-owner-decision.json",
+    "new_rule_admission": false,
+    "deterministic_calculations": "Existing D01-D10/E01-E09 continue to control quantity; source applicability is explicit operator-reviewed provenance."
+  },
+  "adoption": [
+    {
+      "finding": "DUCT-CROSS-PAGE-RESEARCH-01",
+      "decision": "adopted_context",
+      "behavior": "Preserve the exact plan and supplemental view identities, reading regions and reference markers in review and export. Supplemental views do not add a second physical portion.",
+      "code": [
+        "scripts/project_duct_reading_links.py",
+        "apps/drawing-workspace/ducts.js"
+      ],
+      "checks": [
+        "test_atomic_foreign_reading_review_preserves_neighbor_and_exports_history",
+        "test_cp04_connected_two_elevation_links_are_current_and_one_withdrawal_blocks_slope",
+        "acceptance_duct_cross_page.py"
+      ]
+    },
+    {
+      "finding": "DUCT-CROSS-PAGE-RESEARCH-02",
+      "decision": "existing_scale_rules_preserved",
+      "behavior": "A foreign explicit dimension/elevation does not use its NTS detail scale. Scaled projection uses the target source verified scale.",
+      "code": [
+        "scripts/duct_calculation.py",
+        "scripts/project_duct_reading_links.py"
+      ],
+      "checks": [
+        "test_cp04_scaled_slope_uses_two_links_and_exact_shared_datum",
+        "acceptance_duct_cross_page.py: same_exact_datum_foreign_elevations_yield_three_four_five_slope_without_detail_scale"
+      ]
+    },
+    {
+      "finding": "DUCT-CROSS-PAGE-RESEARCH-03",
+      "decision": "conflict_not_adopted",
+      "behavior": "The educational written-dimension precedence remains unadmitted. A linked foreign whole-run dimension does not override a conflicting scaled length.",
+      "checks": [
+        "test_cp05_foreign_whole_run_dimension_cannot_override_scaled_length",
+        "test_cp08_reconstructed_parent_requires_review_then_reports_dimension_conflict"
+      ]
+    },
+    {
+      "finding": "DUCT-CROSS-PAGE-RESEARCH-04",
+      "decision": "unsupported_external_mechanics_kept_explicit",
+      "behavior": "Exact target/reading/source/marker bindings record an operator decision. Missing, stale, conflicting and withdrawn links remain unresolved; matching strings imply no applicability or datum equivalence.",
+      "code": [
+        "scripts/project_duct_reading_links.py",
+        "scripts/project_duct_takeoff.py",
+        "scripts/takeoff_workflow.py"
+      ],
+      "checks": [
+        "test_cp02_foreign_reading_without_link_has_no_quantity",
+        "test_cp06_wrong_reading_marker_withdrawal_and_conflict_are_unresolved",
+        "test_bad_marker_and_unlinked_correction_are_atomic",
+        "test_cp07_nested_split_keeps_link_on_parent_and_withdraws_all_descendants",
+        "test_cp09_reading_identity_collision_retains_foreign_check_until_explicit_review",
+        "test_cp10_assignment_stale_ignores_unused_capture_and_preserves_export"
+      ]
+    },
+    {
+      "finding": "DUCT-CROSS-PAGE-RESEARCH-05",
+      "decision": "conflict_not_adopted",
+      "behavior": "Electrical same-tag conventions remain outside duct applicability and physical-correspondence authority.",
+      "checks": [
+        "test_foreign_evidence_cannot_supply_group_support_admission_or_unused_reading",
+        "test_cp01_omitted_and_empty_relationships_have_identical_same_page_results"
+      ]
+    }
+  ],
+  "original_sources": {
+    "output/pdf/original-duct-cross-page-fixtures.pdf": "e509df92191b7a19e918a3a58872e044ab524b54130bc84353d3729286015d26",
+    "tests/fixtures/duct-takeoff/cross-page-source-geometry.json": "74664b284a67a0d755be1c84d20358a68e7facc6c742ba7dd62c9599b1d833d5",
+    "tests/fixtures/duct-takeoff/cross-page-expected.json": "395909007351d44951906eb7b65ed2bc8ff6a0a8d82fe039a4d2434d572b9b01"
+  },
+  "implementation_sha256": {
+    "scripts/duct_calculation.py": "5bf49578d8d3372ff7b0aeae922f920ead1a34c8851bf1133a72f774e959f63c",
+    "scripts/project_duct_takeoff.py": "42410df97a24cb838313173b61fb0b3691ec78785e249e262edf5554247fd6b6",
+    "scripts/project_duct_reading_links.py": "e929c9c6e28229aa40e77b2d1dc06ea812ed041d1522aa5e3946fb077f2e9e45",
+    "scripts/project_duct_refresh.py": "aea4524b1c088ab90d97659f6a2296f3e892e5fe8e0c804e67117cac3bd0dd08",
+    "scripts/takeoff_workflow.py": "6cd0acbc0449f59424e8d2b45237834778604e12f70693ad25fc0c248d071c08"
+  },
+  "ui_sha256": "626a7debce0c5f9dfaf305003c26abf7a9c95fe8f8d8d03b13f358887561e330",
+  "tests_sha256": {
+    "tests/drawing-workspace/test_duct_cross_page.py": "8146ef2e930b56419e73a7cd3bbe96aabe4835243e09c66e253609dd93e1fb85",
+    "tests/drawing-workspace/test_duct_calculation.py": "b93077a6d3bf1c06d1d5e29b3786987715b867d7274136d95424bde2caa34d94",
+    "tests/drawing-workspace/duct-ui.test.cjs": "20ff48c1ad2f927f28fc49ff0ff5dc9e79963dd016decafbd6fb9ee59635aa93",
+    "tests/drawing-workspace/acceptance_duct_cross_page.py": "599731a26cd8035ede30287518e59412c9e819c045a5263dbb407f5c6407f6d1",
+    "tests/drawing-workspace/duct_cross_page_native_fixture.py": "e561ca5199116d6131407a10e673a6b05ea694729b055b9470321717afd6a405"
+  },
+  "verification_state": "PASS; final frozen implementation locally verified; full goal remains incomplete",
+  "verification_ledger": ".heleos/duct-cross-page-2026-09-14",
+  "limits": [
+    "Indexed text is a source snapshot, not fresh publisher/standard admission.",
+    "Structural review links do not prove physical or model interpretation accuracy.",
+    "Retained parent reviews bind current immutable parent readings; replacing stale parent reading evidence remains a next correction capability.",
+    "No native Windows, representative-project truth/thresholds, trained dataset or actual local-model accuracy acceptance."
+  ],
+  "external_activity": {
+    "one_notebook_identity_refresh": 1,
+    "new_query": 1,
+    "new_source_body": 1,
+    "reused_source_bodies": 2,
+    "private_uploads": 0,
+    "source_or_note_additions": 0,
+    "record": ".heleos/duct-cross-page-2026-09-14/research-egress.jsonl"
+  },
+  "verification_receipts": {
+    ".heleos/duct-cross-page-verification-2026-09-14-attempt-5/duct-cross-page-verification.json": "c06c893530542648b9f2c58faf4e5388e57b7e37f13bc89abe15c2c5e5275cbf",
+    ".heleos/duct-cross-page-2026-09-14/root-final-verification.json": "1b2b7a2c704b3c90c6a07697c2357bb92cc17a71ac3378cb7de0a543470afac0"
+  }
+}

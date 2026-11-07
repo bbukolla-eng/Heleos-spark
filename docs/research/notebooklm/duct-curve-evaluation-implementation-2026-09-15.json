@@ -1,0 +1,127 @@
+{
+  "task_id": "DUCT-CURVE-EVALUATION-1",
+  "state": "independently accepted and locally integrated; helper checkpoint committed separately from preserved uncommitted product tree",
+  "at": "2026-09-16T03:29:30.439276+00:00",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_commit": "579b19aaaeb144be7452aa7e20ef2233382dd38c",
+  "research_packet": {
+    "path": "docs/research/notebooklm/duct-curve-evaluation-findings-2026-09-15.json",
+    "sha256": "f5ed5e760af8f828c23125ae9050a020550396292f25e05fef4a63738fa8a702",
+    "sources": 4,
+    "verified_passages": 5,
+    "fresh_queries": 1,
+    "verification": "Cached indexed bodies and selected passages reread/rehash; no general algorithm or tolerance attributed to sources"
+  },
+  "adopted_findings": [
+    {
+      "finding": "Actual circular interval differs from chord/samples",
+      "behavior": [
+        "scripts/duct_arc_cover.py",
+        "scripts/duct_path_scoring.py"
+      ],
+      "checks": [
+        "test_diameter_chord_cannot_match_a_semicircle_with_same_endpoints",
+        "test_selected_span_matches_only_its_quarter_of_the_root",
+        "verify_duct_arc_cover.py"
+      ]
+    },
+    {
+      "finding": "Separate geometry, dimensions, label and topology targets; corpus scores are not acceptance thresholds",
+      "behavior": "Declared criteria preserved; geometry and attribute/length metrics separate; topology unavailable",
+      "checks": [
+        "test_translation_bounds_straddle_tolerance_without_inventing_a_match",
+        "test_selected_span_truth_does_not_accept_full_root_or_fabricate_length"
+      ]
+    }
+  ],
+  "new_contract": {
+    "truth_schema": "duct-path-truth-2",
+    "legacy_truth": "unversioned planar objects retained unchanged",
+    "scorer": "duct-path-scoring-2",
+    "task": "duct-evaluation-1",
+    "geometry": [
+      "planar",
+      "circular_arc",
+      "circular_arc_span"
+    ],
+    "coordinate_basis": "source_pdf_micropoints_half_even",
+    "distance": "continuous symmetric Hausdorff lower/upper certificates; threshold-straddling pairs indeterminate",
+    "quantity_rules_changed": false
+  },
+  "accepted_source_sha256": {
+    "apps/drawing-workspace/workflow.js": "4e5c1f28a3d9a93bb5e4e91bda74211b18e81ad4329fa5547af6726b2cb3cd13",
+    "docs/operations/drawing-workspace.md": "84abb284cd9dbe8243551fccb08f25bc68f9930136772f8b3165adfc50fbd595",
+    "scripts/duct_arc_cover.py": "45387d82ebd6cbec6a5059950f93bf6226fd9153455e8c3c86d11998b17964d6",
+    "scripts/duct_path_scoring.py": "ecc73db6f24abbab172d74f7a350add77541538e378f173c1dfe9616cc80bf96",
+    "scripts/mechanical_model_baseline.py": "16382732d493456c45e8b6ba1ebc47d326535d002aa8e97a9bd33b756053f334",
+    "scripts/takeoff_workflow.py": "11ec9907d29a127bf133edc01d112e91ddd4c98baaab1c3c6b6983eb00bd249d",
+    "scripts/workspace_package.py": "65a82a81fe09fce48cbf9bd859f9b1143539a21488dccab502c3db7d313e4ca1",
+    "tests/drawing-workspace/duct-evaluation-ui.test.cjs": "41c15a947e05be09bfc99bbd37b40a70f0aa2ae85789c17404c264a06b16a00d",
+    "tests/drawing-workspace/test_duct_arc_cover.py": "8b0fe5c4dcb3c3bd7cd7c29fb3fde58b0b54173c990629480e9a9afc92a5380c",
+    "tests/drawing-workspace/test_duct_curve_scoring.py": "05549114175006ad3ee62c38e7c89aa4da17de88fb5989a0ff62f1f9d92e45c2",
+    "tests/drawing-workspace/test_duct_path_scoring.py": "fcfd2da0eeb5a42b14c07db2ce075777e6e1d453ec606535b6b5d0dbb73adca9",
+    "tests/drawing-workspace/test_project_duct_curve_evaluation.py": "309f3004e6eb437a30c2fb54742102a7cae86fa2e8b435cc582a38977f3e3df3",
+    "tests/drawing-workspace/test_workspace_package.py": "d80415faefa6130945b11be37fe163cf5b1c4e2440497ab747720627fce6647a",
+    "tests/drawing-workspace/verify_duct_arc_cover.py": "f73188bbcd5438f14dc375443e5fea5c5ad020445272c0f50996f7b57e1e9649"
+  },
+  "claude": {
+    "task": "duct-arc-cover-claude-001",
+    "base": "579b19aaaeb144be7452aa7e20ef2233382dd38c",
+    "runtime": "Claude Code2.1.261",
+    "selected_model": "configured default",
+    "reported_primary_model": "claude-opus-5[1m]",
+    "provider_exit": 0,
+    "duration_seconds": 1208,
+    "containment": "macos_seatbelt",
+    "complete_scope_check": "Only assigned helper and test changed; no ignored/untracked extras; original HEAD/instruction identities preserved",
+    "controller_adjustment": "Explicit bit guard before L1 norm sums; no mathematical change or demonstrated original public escape",
+    "advisory_limit": "30000-token advisory ceiling exceeded; provider usage preserved, not represented as billing or budget compliance",
+    "source_submission_log": ".heleos/duct-curve-evaluation-2026-09-15/claude-submission-before.json",
+    "original_run": ".worktrees/provider-runs/heleos-worker-yGuRuC"
+  },
+  "verification": {
+    "affected_python_tests": 85,
+    "runtimes": [
+      "3.9.6",
+      "3.12.14",
+      "3.14.6"
+    ],
+    "legacy_compatibility_tests": 46,
+    "ui_tests": 160,
+    "cover_tests_per_runtime": 11,
+    "oracle_cases_per_runtime": 32,
+    "exact_circle_probes_per_runtime": 3864,
+    "oracle_rejections_per_runtime": 12,
+    "existing_geometry_tests": 16,
+    "existing_distance_tests": 11,
+    "actual_v1_sealed_report": "Preserved byte-for-byte; scorer_changed, reopen equality, new run rejected",
+    "connected_atomicity": "Malformed truth and cover/distance exhaustion leave workflow/SQLite unchanged",
+    "relocated_package": "60 exact payloads,14 isolated imports on each of3 Python runtimes",
+    "ledger": ".heleos/duct-curve-evaluation-2026-09-15"
+  },
+  "reviews": [
+    {
+      "reviewer": "/root/curve_cover_math_review",
+      "scope": "derivation, complete helper, integration",
+      "state": "no remaining blocking finding",
+      "extra_checks": "10560 spans/19706 leaves for design;12 source transforms;262-bit internal ray and exact/one-less limits",
+      "helper_sha256": "45387d82ebd6cbec6a5059950f93bf6226fd9153455e8c3c86d11998b17964d6",
+      "scorer_sha256": "ecc73db6f24abbab172d74f7a350add77541538e378f173c1dfe9616cc80bf96"
+    }
+  ],
+  "retained_failures": [
+    "Legacy scorer rejects new circular truth (intentional red tests)",
+    "Nonobject truth TypeError identified and repaired before acceptance",
+    "Controller expected4*pi-ft fixture rounded incorrectly; independently corrected to3.830230m, production code unchanged",
+    "Package receipt referenced wrong manifest filename after successful imports; corrected receipt with identical package bytes"
+  ],
+  "limits": [
+    "No native Windows execution",
+    "No representative-project accuracy or complete takeoff acceptance",
+    "No topology inference",
+    "Remaining Division23 categories remain outstanding",
+    "Connected application integration remains uncommitted alongside preserved prior product code; hashes and relocated snapshot retained"
+  ],
+  "next_action": "Implement explicit source-linked topology assertions and independent truth without inferring physical connections from crossings; continue approved mechanical category order."
+}

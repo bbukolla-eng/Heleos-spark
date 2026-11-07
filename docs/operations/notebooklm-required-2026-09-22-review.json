@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "task_id": "NOTEBOOKLM-REQUIRED-RESEARCH-2026-09-22",
+  "base_commit": "5715a45dd4b26f8107271e5f0b2c04cd3901517d",
+  "reviewer": "Codex independent agent /root/lineup_review",
+  "reviewed_at": "2026-09-22T17:34:45.752110+00:00",
+  "reviewed_files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "fcedd9e61d3c672a94d98f4468734177b1f899354682a153ee359ff55067297d"
+    },
+    {
+      "path": "docs/operations/notebooklm-research.md",
+      "sha256": "db25f74784a2df0ff57349c9dbae11a975d608aff79c5dbb02b01eb6164baa9e"
+    },
+    {
+      "path": "CURRENT_STATUS.md",
+      "sha256": "170446aa7b5c2e86929b9c65bb10d9e5352b190cbc6015b90744d19043fb6210"
+    }
+  ],
+  "result": "accepted_for_owner_instruction_policy_scope",
+  "findings": [],
+  "resolved_findings": [
+    {
+      "id": "NLM-R01",
+      "issue": "Required evidence fields initially allowed only query/reuse records and a reuse-only no-submission explanation, conflicting with administrative or absent-tool dispositions.",
+      "resolution": "Explicitly permits empty records only for justified administration or unavailable absent-tool cases; actual calls retain failure receipts. No-submission reason now permits administration and absent tool as well as reuse."
+    }
+  ],
+  "checks": [
+    {
+      "command": "Independent read of three final changed documents and diff against base",
+      "exit_code": 0,
+      "result": "Knowledge-dependent work requires new verified findings or applicable retained verified findings; administrative exception cannot excuse features, calculations, recognition rules, dependency choice or technical fixes. Actual supporting passages, findings, applicability and behavior/check mappings are mandatory."
+    },
+    {
+      "command": "Independent status fenced-JSON consistency check",
+      "exit_code": 0,
+      "result": "Primary CSI-23-21-23-DEFINE and full pump next_action agree with checkpoint; all branch lineup work preserved."
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "No whitespace errors."
+    }
+  ],
+  "verification_notes": [
+    "The first ad hoc checkpoint parser expected an unversioned opening marker and raised ValueError; corrected parser uses actual fenced JSON. This was a reviewer command assumption, not a repository defect."
+  ],
+  "scope_conclusions": [
+    "Reuse is explicit and requires applicable verified NotebookLM findings; no fabricated fresh-query claim or redundant unchanged query is required.",
+    "Unavailable access is documented and cannot satisfy research-dependent acceptance; independent supported work may continue while missing research stays open.",
+    "Controller, provider assignment, private-data approval, secret exclusion and external-submission logging boundaries remain intact.",
+    "No automatic hook or enforcement capability is claimed. Existing tools are described as checkpoint/hash validation only.",
+    "Research scope is tied to actual task assignment and completion evidence rather than a second competing queue."
+  ],
+  "notebooklm_research": {
+    "disposition": "administrative_no_new_claims",
+    "records": [],
+    "applicability": "Independent review of owner-instruction transcription and procedural continuity only; no new technical or mechanical implementation claim.",
+    "behavior_and_checks": "No implementation; compared required policy statements, boundaries and current next-action consistency.",
+    "gaps_and_next_action": "No research gap for this administrative review. Mechanical pump research remains the next product task.",
+    "external_submissions": "No external submission; administrative review used local project documents only."
+  },
+  "limits": [
+    "No NotebookLM query or mechanical findings acceptance performed; none needed for this administrative policy review.",
+    "Final build-checkpoint receipt and staged manifest are coordinator-owned and outside this report.",
+    "Review applies only to listed final SHA-256 identities."
+  ],
+  "terminal_state": "review_complete",
+  "next_action": "Coordinator completes checkpoint validation and resumes CSI-23-21-23-DEFINE with the required research disposition."
+}

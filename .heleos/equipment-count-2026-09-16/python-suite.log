@@ -1,0 +1,109 @@
+..............................................................................................................................................................F................................................FFF.F.F.FF...FF..............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+======================================================================
+FAIL: test_pipeline_pins_geometry_and_keeps_exact_raw_artifacts (test_document_layout_geometry.DocumentPipelineGeometryTests.test_pipeline_pins_geometry_and_keeps_exact_raw_artifacts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/bekim/Heleos-spark/tests/drawing-workspace/test_document_layout_geometry.py", line 159, in test_pipeline_pins_geometry_and_keeps_exact_raw_artifacts
+    self.assertEqual(run["version"], "document-reading-3")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'document-reading-4' != 'document-reading-3'
+- document-reading-4
+?                  ^
++ document-reading-3
+?                  ^
+
+
+======================================================================
+FAIL: test_changed_original_is_never_served_even_if_cli_fixture_claims_verified (test_drawing_workspace.DrawingWorkspaceTests.test_changed_original_is_never_served_even_if_cli_fixture_claims_verified)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/bekim/Heleos-spark/tests/drawing-workspace/test_drawing_workspace.py", line 178, in test_changed_original_is_never_served_even_if_cli_fixture_claims_verified
+    self.assertEqual(status, 409)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 502 != 409
+
+======================================================================
+FAIL: test_corrupted_original_is_not_given_to_renderer (test_drawing_workspace.DrawingWorkspaceTests.test_corrupted_original_is_not_given_to_renderer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/bekim/Heleos-spark/tests/drawing-workspace/test_drawing_workspace.py", line 286, in test_corrupted_original_is_not_given_to_renderer
+    self.assertEqual(self.import_pdf()[0], 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 502 != 200
+
+======================================================================
+FAIL: test_empty_state_and_import_duplicate_labels_persist (test_drawing_workspace.DrawingWorkspaceTests.test_empty_state_and_import_duplicate_labels_persist)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/bekim/Heleos-spark/tests/drawing-workspace/test_drawing_workspace.py", line 152, in test_empty_state_and_import_duplicate_labels_persist
+    self.assertEqual(self.import_pdf()[0], 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 502 != 200
+
+======================================================================
+FAIL: test_invalid_or_oversized_renderer_output_is_never_served (test_drawing_workspace.DrawingWorkspaceTests.test_invalid_or_oversized_renderer_output_is_never_served)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/bekim/Heleos-spark/tests/drawing-workspace/test_drawing_workspace.py", line 273, in test_invalid_or_oversized_renderer_output_is_never_served
+    self.assertEqual(self.import_pdf()[0], 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 502 != 200
+
+======================================================================
+FAIL: test_pdf_requires_membership_and_verification_then_returns_exact_bytes (test_drawing_workspace.DrawingWorkspaceTests.test_pdf_requires_membership_and_verification_then_returns_exact_bytes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/bekim/Heleos-spark/tests/drawing-workspace/test_drawing_workspace.py", line 167, in test_pdf_requires_membership_and_verification_then_returns_exact_bytes
+    self.assertEqual((status, body), (200, PDF))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (502, b'{"error": {"code": "cli_response",[63 chars]"}}') != (200, b'%PDF-1.7\nfixture accepted bytes\n%%EOF\n')
+
+First differing element 0:
+502
+200
+
++ (200, b'%PDF-1.7\nfixture accepted bytes\n%%EOF\n')
+- (502,
+-  b'{"error": {"code": "cli_response", "message": "Foundation returned inconsist'
+-  b'ent drawing metadata."}}')
+
+======================================================================
+FAIL: test_renderer_failure_and_timeout_are_safe_errors (test_drawing_workspace.DrawingWorkspaceTests.test_renderer_failure_and_timeout_are_safe_errors)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/bekim/Heleos-spark/tests/drawing-workspace/test_drawing_workspace.py", line 255, in test_renderer_failure_and_timeout_are_safe_errors
+    self.assertEqual(self.import_pdf()[0], 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 502 != 200
+
+======================================================================
+FAIL: test_renderer_receives_verified_original_and_exact_selected_page (test_drawing_workspace.DrawingWorkspaceTests.test_renderer_receives_verified_original_and_exact_selected_page)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/bekim/Heleos-spark/tests/drawing-workspace/test_drawing_workspace.py", line 227, in test_renderer_receives_verified_original_and_exact_selected_page
+    self.assertEqual(self.import_pdf()[0], 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 502 != 200
+
+======================================================================
+FAIL: test_unknown_page_and_revision_never_launch_renderer (test_drawing_workspace.DrawingWorkspaceTests.test_unknown_page_and_revision_never_launch_renderer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/bekim/Heleos-spark/tests/drawing-workspace/test_drawing_workspace.py", line 246, in test_unknown_page_and_revision_never_launch_renderer
+    self.assertEqual(self.import_pdf()[0], 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 502 != 200
+
+======================================================================
+FAIL: test_without_renderer_original_pdf_remains_available (test_drawing_workspace.DrawingWorkspaceTests.test_without_renderer_original_pdf_remains_available)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/bekim/Heleos-spark/tests/drawing-workspace/test_drawing_workspace.py", line 296, in test_without_renderer_original_pdf_remains_available
+    self.assertEqual(self.import_pdf()[0], 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 502 != 200
+
+----------------------------------------------------------------------
+Ran 1260 tests in 187.389s
+
+FAILED (failures=10)

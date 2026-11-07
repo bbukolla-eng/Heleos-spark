@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "task_id": "AIR-DEVICE-PREPARATION-1",
+  "status": "verified_context_used_for_preparation_only",
+  "research_snapshot": {
+    "path": "docs/research/notebooklm/air-device-findings-2026-09-14.json",
+    "sha256": "4b8c43c7f60fc80e1513c003853aa1bbe4395a51b2105256512d0f9a24b44a0d"
+  },
+  "source_manifest": {
+    "path": "tests/fixtures/air-device-takeoff/source-manifest.json",
+    "sha256": "b9e195f7258f1f2f61e6002469a7a3761b0fd4427e487f0d03e9fb4a5cef3516"
+  },
+  "source_builder": {
+    "path": "tests/fixtures/air-device-takeoff/build_source_pdf.py",
+    "sha256": "6ffff06ec7ea9f93c62edc76e0bed43b95e9dfcfee9a2a0121cfdfcc6646f223"
+  },
+  "source_verifier": {
+    "path": "tests/drawing-workspace/verify_air_device_source_fixtures.py",
+    "sha256": "2f6e032d5b4a5da6c72a09bdf41a31f5549165c7d029f038fa622ddfa2e01cee"
+  },
+  "uses": [
+    {
+      "finding_id": "AIR-RESEARCH-01",
+      "research_state": "verified_applicable",
+      "source_support": [
+        {
+          "source_key": "blueprint-tutorial",
+          "indexed_text_lines": [
+            1031,
+            1041
+          ],
+          "section": "Legends Come First; M1 Series: Air Distribution Plans"
+        }
+      ],
+      "proposed_rule_ids": [
+        "A01",
+        "A04"
+      ],
+      "proposed_example_ids": [
+        "AC01"
+      ],
+      "preparation_effect": "Explicit source legend, plan role and separate legend illustration in A101; contextual source support does not approve class membership.",
+      "production_code_adopted": false,
+      "count_engine_tests": null
+    },
+    {
+      "finding_id": "AIR-RESEARCH-02",
+      "research_state": "verified_applicable",
+      "source_support": [
+        {
+          "source_key": "blueprint-tutorial",
+          "indexed_text_lines": [
+            1053,
+            1085
+          ],
+          "section": "Enlarged Plans; Sections and Isometrics; Schematics; Details"
+        }
+      ],
+      "proposed_rule_ids": [
+        "A04"
+      ],
+      "proposed_example_ids": [
+        "AC02",
+        "AC03"
+      ],
+      "preparation_effect": "A102 retains distinct views and a printed physical correspondence; the deliberately missing decision case stays unresolved.",
+      "production_code_adopted": false,
+      "count_engine_tests": null
+    },
+    {
+      "finding_id": "AIR-RESEARCH-03",
+      "research_state": "verified_applicable",
+      "source_support": [
+        {
+          "source_key": "blueprint-tutorial",
+          "indexed_text_lines": [
+            1109,
+            1123
+          ],
+          "section": "M10 Series: Mechanical Schedules"
+        }
+      ],
+      "proposed_rule_ids": [
+        "A03",
+        "A06"
+      ],
+      "proposed_example_ids": [
+        "AC06"
+      ],
+      "preparation_effect": "A104 retains the schedule row and plan separately; quantity-conflict treatment remains proposed owner policy.",
+      "production_code_adopted": false,
+      "count_engine_tests": null
+    },
+    {
+      "finding_id": "AIR-RESEARCH-04",
+      "research_state": "verified_applicable",
+      "source_support": [
+        {
+          "source_key": "fastduct",
+          "indexed_text_lines": [
+            151,
+            153
+          ],
+          "section": "Easy-to-Read Reports"
+        },
+        {
+          "source_key": "fastduct",
+          "indexed_text_lines": [
+            163,
+            175
+          ],
+          "section": "On-Screen Digitizer and Plan Overlay"
+        },
+        {
+          "source_key": "fastduct",
+          "indexed_text_lines": [
+            197,
+            203
+          ],
+          "section": "Scalable Assemblies; Cost Codes"
+        }
+      ],
+      "proposed_rule_ids": [
+        "A03",
+        "A07"
+      ],
+      "proposed_example_ids": [
+        "AC07"
+      ],
+      "preparation_effect": "A104 shows an explicit installed linear assembly, slots and length. Advertised software unit choices provide context only, not the each conversion rule.",
+      "production_code_adopted": false,
+      "count_engine_tests": null
+    },
+    {
+      "finding_id": "AIR-RESEARCH-05",
+      "research_state": "verification_incomplete",
+      "source_support": [
+        {
+          "source_key": "price-engineers",
+          "indexed_text_lines": null,
+          "section": null
+        },
+        {
+          "source_key": "titus-resources",
+          "indexed_text_lines": null,
+          "section": null
+        }
+      ],
+      "proposed_rule_ids": [],
+      "proposed_example_ids": [],
+      "preparation_effect": "Empty Price/Titus bodies remain unavailable evidence. No manufacturer-specific rule or test claim adopted.",
+      "production_code_adopted": false,
+      "count_engine_tests": null
+    }
+  ],
+  "verification_scope": "Original-source preparation and proposed answer semantics; no count-engine correctness claim.",
+  "authority": "Approved duct rules and deterministic quantity authority unchanged. A01-A12 and AC01-AC17 require their separate owner decision.",
+  "new_external_calls_for_adoption": false,
+  "private_uploads": false,
+  "production_rule_admission": false,
+  "remaining_work": "After owner adjudication, bind approved rules and literal answers to the connected air-device contract, calculation, correction and meaningful tests; append a new implementation record without rewriting this preparation snapshot."
+}

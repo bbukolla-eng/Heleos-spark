@@ -1,0 +1,5 @@
+Command: cargo test -p heleos-worker-runner --locked --offline --test runner retained_workspace_records_its_actual_directory_identity -- --exact
+Exit: 101
+Observed before fix: retained_workspace_records_its_actual_directory_identity FAILED.
+Failure: ownership.json did not exist (OS NotFound).
+Fix: persist the actual run directory path and device/inode identity before dispatch, and verify the record before handoff.

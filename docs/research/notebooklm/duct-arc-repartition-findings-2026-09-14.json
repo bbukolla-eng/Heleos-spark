@@ -1,0 +1,381 @@
+{
+  "schema_version": 1,
+  "task_id": "DUCT-ARC-REPARTITION-1",
+  "worker": "airdevice_research",
+  "recorded_at": "2026-09-14T16:17:27.751825+00:00",
+  "state": "verified_reuse_candidate_for_root_adoption",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_head": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "brief": {
+    "path": ".heleos/duct-arc-repartition-2026-09-14/research-brief.json",
+    "sha256": "067de6a89d9b7cb3c79e508f820d388de3ce257e37ead6c45528434fc9414a54"
+  },
+  "instruction_identities": {
+    "AGENTS.md": "f1e8ca69afc99a02647b9509acf73fbf3bfb7c7c73029f7a20852a1cf33bb8a6",
+    "SKILLS.md": "939b8aac16ee926c9775efb2465ae3178d9f5365dc5cd2fe4df3aa46a52d017f",
+    "docs/operations/notebooklm-research.md": "25cab65942aba727b12ca8cbc73afec8e64b5e16efdef1ee473d6f80dc4d0fe6",
+    "docs/superpowers/specs/2026-09-13-calculation-sequence-design.md": "6ae8b6a5a8a43b638b7cfae8f67c676de59a495e8aae8ca00eeb8870fd85d7b8",
+    "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6",
+    "docs/superpowers/specs/2026-09-14-duct-observation-contract.md": "48ec3638249b4e8c6b68d7b5d3ab2582bf96a10948466798ad727ed141c98d1c",
+    "docs/superpowers/plans/2026-09-14-duct-arc-splitting.md": "a6388304174a008a9a141a4c18af7f9df6e4247afa89a5685ed53fdcf44e0fbc"
+  },
+  "routing": {
+    "command": "python3 scripts/active-build-status.py --human",
+    "exit_code": 1,
+    "terminal_chunk": "cc2fa1",
+    "result": "uncommitted_authority",
+    "reconciliation": "CURRENT_STATUS lines1-54 explicitly report current main/base47d7 uncommitted integration and known helper result. Exact .git HEAD/ref verified directly; no reset or rerouting."
+  },
+  "scope": "Source knowledge reuse for atomic same-page saved-family geometry and size-boundary corrections. No new mechanical quantity rule, numeric method or transaction design is admitted by this record.",
+  "inventory_reuse": {
+    "initial_notebook_count": 59,
+    "files": {
+      "docs/research/notebooklm/notebook-inventory.json": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a",
+      "docs/research/notebooklm/expansion-n05-2026-09-14.json": "0cc9680fb4cc6168a05d2913f2cd77f42592eab0fb7554013adff26a280146ac",
+      "docs/research/notebooklm/expansion-n10-2026-09-14.json": "2df7e67d7fce0a4f458e74065912288541ac8d15df265e0b0dc3909266b99d22"
+    },
+    "selected_notebooks": [
+      {
+        "id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+        "title": "N05 — Drawing Intelligence"
+      },
+      {
+        "id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+        "title": "N10 — HVAC Takeoff Methods"
+      }
+    ],
+    "selected_source_ids_present_in_recorded_completed_expansion": true,
+    "fresh_inventory_performed": false
+  },
+  "prior_findings_reused": {
+    "docs/research/notebooklm/duct-circular-arc-findings-2026-09-14.json": "182dc170bd23247e3922e1f35c5b5b293689a6214f023f39618c35fffb58fbe2",
+    "docs/research/notebooklm/duct-arc-splitting-findings-2026-09-14.json": "c8275ad08c368df28ac7ceb74cd7c4fcb428819a823d9c5a1f7bb931b126ab0d",
+    "docs/research/notebooklm/duct-correction-findings-2026-09-14.json": "b1b8520ae1a2b0a561b91f6547ea397debb9f1796fe5f7541a53883ddeafd28c",
+    "docs/research/notebooklm/duct-parent-reading-findings-2026-09-14.json": "06be3bdaf2bc8a907015821ec90c427a1eec678e128b64de56b7e81d35c7f191",
+    "docs/research/notebooklm/duct-parent-graphic-findings-2026-09-14.json": "4a1471366dc5deaabffe61cdfb04e2f801d2e772ce7839e720dc31342064190b",
+    "docs/research/notebooklm/duct-refresh-findings-2026-09-14.json": "5d88fdba208d69466251ad6672ddd55cec3795359e8941e541516ef642bb749d",
+    "docs/research/notebooklm/duct-revision-findings-2026-09-14.json": "06f84062356f533273d6feb58e2a7fc129bafbd9acb726c26c1baa93bbee3521"
+  },
+  "prior_preservation": "All seven prior findings match both live bytes and root task-before file map; none changed.",
+  "sources": [
+    {
+      "key": "openstax",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "457f0d9c-d900-45cb-8b40-9a8a8a5d8101",
+      "title": "5.1 Angles - Precalculus 2e | OpenStax",
+      "original_url": "https://openstax.org/books/precalculus-2e/pages/5-1-angles",
+      "edition_or_date": "Precalculus 2e",
+      "publication_date": "2021-12-21",
+      "original_page_numbers": null,
+      "text_location": ".heleos/duct-circular-arc-2026-09-14/research-openstax-indexed-text.txt",
+      "content_sha256": "a4c5869bbfd4af70a5213de07282287817bbbc83bfca72a474be744deb4228d8",
+      "result_evidence": {
+        "path": ".heleos/duct-circular-arc-2026-09-14/research-call-03-response.json",
+        "sha256": "ec1fbb7bf005e8c390fa7158d969d29852d5cdd66a641aa5004d00d57127e4a6"
+      },
+      "verification": "Exact retained body and original successful response hashes match; response content equals body; source ID present in completed recorded expansion inventory. No live source freshness claim."
+    },
+    {
+      "key": "ezdxf",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "fb38a435-ce85-408f-afe4-2a9384877bc5",
+      "title": "Core — ezdxf 1.4.4 documentation",
+      "original_url": "https://ezdxf.readthedocs.io/en/stable/math/core.html",
+      "edition_or_date": "1.4.4",
+      "publication_date": null,
+      "original_page_numbers": null,
+      "text_location": ".heleos/duct-circular-arc-2026-09-14/research-ezdxf-indexed-text.txt",
+      "content_sha256": "76097f9285913dcb66d9a046a774ed158811c98abe857d9ce52427843e869109",
+      "result_evidence": {
+        "path": ".heleos/duct-circular-arc-2026-09-14/research-call-04-response.json",
+        "sha256": "f3e1cee2fd57751f614825280219e45f98aad47e0882800c327828892182fc7b"
+      },
+      "verification": "Exact retained body and original successful response hashes match; response content equals body; source ID present in completed recorded expansion inventory. No live source freshness claim."
+    },
+    {
+      "key": "bluebeam-measurements",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "6a218a8d-a97f-41b4-9415-eb30f52adb24",
+      "title": "Takeoffs and measurements | Bluebeam Technical Support",
+      "original_url": "https://support.bluebeam.com/user-manual/menus/tools/takeoffs-measurements.html",
+      "retrieved_at": "2026-09-14T05:04:42.911115+00:00",
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/bluebeam-measurements-indexed-text.txt",
+      "content_sha256": "4afe5ed0bf40b5b7c25c8119b1a1c9a929b0a1d4a94b401a4007fca9b7359f97",
+      "result_evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/bluebeam-measurements-source-result.json",
+        "sha256": "4913118e715b675b991dcd62d09e8a740cd463893e2b51b12cef77e22178912b"
+      },
+      "edition_or_date": null,
+      "original_page_numbers": null,
+      "verification": "Exact retained body and original successful response hashes match; response content equals body; source ID present in completed recorded expansion inventory. No live source freshness claim."
+    },
+    {
+      "key": "mepdetect",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "4a7e4472-4c73-49fa-9e01-e33e1b9e20f5",
+      "title": "GitHub - DynMEP/MEPdetect: Symbol detection and circuit tracing for MEP construction drawings. Detects electrical symbols with YOLO11, traces how they are wired, and exports netlists and per-circuit counts to CSV, Excel, DXF or PDF. Hosted at mepdetect.com. · GitHub",
+      "original_url": "https://github.com/DynMEP/MEPdetect",
+      "retrieved_at": "2026-09-14T05:18:04.078655+00:00",
+      "text_location": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-indexed-text.txt",
+      "content_sha256": "939ce39f0fba5ad26e084303b4d9918236ed516a080b77ee8f5eb917633db26e",
+      "result_evidence": {
+        "path": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-source-result.json",
+        "sha256": "b6e0065d7a3f0760b436a08e29295f3898a8c8f036f0808b642497d74f7ce832"
+      },
+      "edition_or_date": null,
+      "original_page_numbers": null,
+      "verification": "Exact retained body and original successful response hashes match; response content equals body; source ID present in completed recorded expansion inventory. No live source freshness claim."
+    },
+    {
+      "key": "blueprint-tutorial-N10",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "b5c5a26e-ff2d-4275-be5f-2afdedfaedb9",
+      "title": "Mastering Mechanical Blueprint Reading with Floor Plans, Sections, Isometrics, and Schedules - Free Video Tutorial",
+      "original_url": "https://vdci.edu/learn/blueprint-reading/mastering-mechanical-blueprint-reading",
+      "retrieved_at": "2026-09-14T07:27:05.596Z",
+      "text_location": ".heleos/duct-cross-page-2026-09-14/research-tutorial-N10-indexed-text.txt",
+      "content_sha256": "f014c7fb961c7a8e86c318c605115a14b99724fea320c7dba37fc791b4b00b44",
+      "result_evidence": {
+        "path": ".heleos/duct-cross-page-2026-09-14/research-tutorial-N10-source-result.json",
+        "sha256": "e66e562b64c0d40d26efc5774d2c4e1a5b85439b0cbf0b0ee19982cdb32dbe1d"
+      },
+      "edition_or_date": "Page shows December 29, 2025 and author Matt F.; indexed lines 963-969",
+      "original_page_numbers": null,
+      "verification": "Exact retained body and original successful response hashes match; response content equals body; source ID present in completed recorded expansion inventory. No live source freshness claim."
+    },
+    {
+      "key": "drawing-scales",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "2bc99eed-82b9-444a-8bab-450f5be0aa32",
+      "title": "https://www.usfa.fema.gov/downloads/pdf/nfa/engineer-architect-scales.pdf",
+      "original_url": "https://www.usfa.fema.gov/downloads/pdf/nfa/engineer-architect-scales.pdf",
+      "retrieved_at": "2026-09-14T05:04:42.747743+00:00",
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-indexed-text.txt",
+      "content_sha256": "f10a1b00608efaec7e2144a84f03f514a0d1eb5bb0520c16935acf602b8085b4",
+      "result_evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-source-result.json",
+        "sha256": "0c58a27e4176d58b83df0e4e983c34519cd57e49f8bddc9090e0c0f5fc347ecf"
+      },
+      "edition_or_date": null,
+      "original_page_numbers": null,
+      "verification": "Exact retained body and original successful response hashes match; response content equals body; source ID present in completed recorded expansion inventory. No live source freshness claim."
+    },
+    {
+      "key": "bluebeam-guide",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+      "title": "Construction Takeoffs: Complete Guide to Quantity & Material Takeoffs in 2026 | Bluebeam",
+      "original_url": "https://www.bluebeam.com/resources/construction-takeoffs-guide-2026/",
+      "url_basis": "Indexed source line [43, 43]",
+      "edition_or_date": "2026 guide named in title; exact publication date not provided",
+      "original_pdf_pages": null,
+      "classification": "substantive public vendor guide",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "content_sha256": "372ef5ad88ec0ae83af888943a72903076eff498bd01b4ab5baccd9f9e96cc9c",
+      "character_count": 67447,
+      "result_evidence": {
+        "path": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-source-result.json",
+        "sha256": "9aaad6d34d183d0f4a421fc0b55052dcc06159202d0b675124a681d655aa69ef"
+      },
+      "retrieved_at": "2026-09-14T09:08:04.041Z",
+      "verification": "Exact retained body and original successful response hashes match; response content equals body; source ID present in completed recorded expansion inventory. No live source freshness claim."
+    }
+  ],
+  "verified_passages": {
+    "path": ".heleos/duct-arc-repartition-2026-09-14/research-verified-passages.json",
+    "sha256": "b60234f3f8bf59f9ebfd9e79c90c12e311770cff67f62ca1dbf8f3667d777585"
+  },
+  "verification": {
+    "retained_bodies": 7,
+    "retained_response_hashes_and_body_equality": 7,
+    "exact_indexed_passages": 15,
+    "locations": "One-based indexed text line spans, not PDF pages. Original pagination absent unless explicitly recorded.",
+    "freshness": "All source text reused from retained indexed snapshots. Publisher pages and provider inventories were not freshly retrieved.",
+    "check_receipt": {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/research-reuse-checks.json",
+      "sha256": "2347d7802c3a93a00d31498a90e07c2b789b5d14334113015aea9cef14ecc624"
+    },
+    "terminal_command": {
+      "command": "python3 .heleos/duct-arc-repartition-2026-09-14/research-verify-reuse.py",
+      "exit_code": 0,
+      "terminal_chunk": "fcb7ce"
+    }
+  },
+  "query_decision": {
+    "new_query_required": false,
+    "queries_this_task": 0,
+    "reason": "The mathematical circular-arc domain and source-review requirements are unchanged. Previously verified passages already support the needed facts; absent transactional/reading-disposition semantics are local engineering requirements, not an unresolved public mechanical claim. Repeating earlier queries would not establish those application choices.",
+    "reopen_only_if": "A changed supported curve/physical measurement requirement or consequential new source-applicability claim exceeds this retained evidence. Use a separately logged bounded selected-source query then."
+  },
+  "findings": [
+    {
+      "id": "ARC-REPARTITION-S01",
+      "state": "verified_applicable",
+      "support": [
+        "ARP-AS03",
+        "ARP-AS06"
+      ],
+      "claim": "A circular arc length is measured along the curve and equals radius times central sweep in radians.",
+      "application": "The existing validated true-circular method remains the length basis after an explicit supported correction. No chord or polygon substitute becomes exact arc authority."
+    },
+    {
+      "id": "ARC-REPARTITION-S02",
+      "state": "verified_applicable",
+      "support": [
+        "ARP-AS01",
+        "ARP-AS05",
+        "ARP-AS10"
+      ],
+      "claim": "Clockwise/counterclockwise traversal matters, and coterminal normalized endpoints do not retain full traversal information. The library three-point example separately states a direction convention.",
+      "application": "Keep corrected circle and directed interval explicit. The library text does not guarantee the local through-point contract, invalid-input behavior or a unique physical path."
+    },
+    {
+      "id": "ARC-REPARTITION-S03",
+      "state": "verified_contextual_example",
+      "support": [
+        "ARP-AS11"
+      ],
+      "claim": "The documented flattening operation approximates a circle with polygon vertices and describes sagitta control.",
+      "application": "It does not certify exact arc length, numerical enclosure, source-region coverage or boundary membership. Reuse the already independently validated local circular method rather than inferring correctness from a library summary."
+    },
+    {
+      "id": "ARC-REPARTITION-S04",
+      "state": "verified_contextual_example",
+      "support": [
+        "ARP-bluebeam-measurements-1093",
+        "ARP-bluebeam-measurements-1175"
+      ],
+      "claim": "Bluebeam shows deliberate point editing, separate descriptive fields and updated measurements after control-point changes.",
+      "application": "Useful source interaction context for reviewing geometry/group corrections and their recalculated result. The curved edit example concerns a markup/area workflow; it is not a circular duct-family algorithm or authority to move saved boundaries."
+    },
+    {
+      "id": "ARC-REPARTITION-S05",
+      "state": "verified_applicable",
+      "support": [
+        "ARP-bluebeam-guide-1063",
+        "ARP-bluebeam-guide-1287"
+      ],
+      "claim": "The Bluebeam guide describes comparing changed drawing areas, selective remeasurement, preserving original quantities for comparison and linking quantities to visible markup on specific sheets.",
+      "application": "Corroborates original/new review and retained baseline context. Append-only source artifacts, complete-family replacement, stale-state guards and atomic writes remain local contracts."
+    },
+    {
+      "id": "ARC-REPARTITION-S06",
+      "state": "verified_contextual_example",
+      "support": [
+        "ARP-blueprint-tutorial-N10-1053",
+        "ARP-drawing-scales-89",
+        "ARP-mepdetect-1310"
+      ],
+      "claim": "The selected sources distinguish drawing view purposes, discuss drawing reproduction/scale limitations, and warn that detected/traced/calibrated output needs drawing review.",
+      "application": "Keep original page/view/scale and source-backed changes visible; preserve unknown coverage. Same-page geometry or a successful rerun does not establish physical correspondence, completeness or model accuracy."
+    },
+    {
+      "id": "ARC-REPARTITION-C01",
+      "state": "conflict_not_adopted",
+      "support": [
+        "ARP-drawing-scales-183"
+      ],
+      "claim": "FEMA instructional sprinkler text gives written dimensions precedence over a conflicting scaled value.",
+      "resolution": "Retain approved D05. Family correction or renewed graphic support does not itself resolve a material whole-length/radius conflict or permit silent precedence, conflict deletion or forced numeric agreement."
+    },
+    {
+      "id": "ARC-REPARTITION-C02",
+      "state": "conflict_not_adopted",
+      "support": [
+        "ARP-mepdetect-973"
+      ],
+      "claim": "MEPdetect describes following matching electrical circuit tags across matchlines.",
+      "resolution": "Do not transfer electrical matching-tag logic to duct family identity, reading reassignment or revision precedence. D08 and explicit source applicability remain authoritative."
+    }
+  ],
+  "explicit_mathematical_deductions": [
+    {
+      "id": "ARC-REPARTITION-D01",
+      "state": "deduction_not_quoted_source_rule",
+      "support": [
+        "ARP-AS03",
+        "ARP-AS06"
+      ],
+      "claim": "Moving internal cuts on one unchanged circle with the same outer directed interval preserves exact unrounded total length when ordered consecutive children cover the parent exactly once without gaps or overlaps.",
+      "conditions": [
+        "Same center and radius",
+        "Same directed outer interval",
+        "Consecutive non-overlapping complete coverage"
+      ],
+      "limit": "This conditional algebra does not apply automatically when the corrected root radius, outer sweep or circle changes. It is not a proof of a replacement algorithm or physical applicability."
+    },
+    {
+      "id": "ARC-REPARTITION-D02",
+      "state": "illustrative_deduction_not_fixture",
+      "support": [
+        "ARP-AS03",
+        "ARP-AS06"
+      ],
+      "claim": "For a fixed 90-degree parent, 45+45 and 30+60 degree partitions each have unrounded sum pi*r/2.",
+      "limit": "This illustration is not a new approved source fixture, operator boundary decision or rounded expected answer. D07 independently rounds stored measurements; no residual is redistributed to force rounded child/parent equality."
+    }
+  ],
+  "unsupported_prescriptions": [
+    {
+      "state": "unsupported",
+      "claim": "The selected sources define complete saved-family closure, family fingerprints, all-or-nothing replacement, append-only event schemas, rollback, idempotency or undo/replay."
+    },
+    {
+      "state": "unsupported",
+      "claim": "The selected sources define retain/reassign/replace/retire semantics for each whole-length, radius, label, graphic, foreign reading, reference marker or datum obligation."
+    },
+    {
+      "state": "unsupported",
+      "claim": "Geometry movement, same labels, equal totals, same-page coordinates or a source bbox prove that an old reading still applies to a new interval or identifies the same physical duct."
+    },
+    {
+      "state": "unsupported",
+      "claim": "Full source-region containment proves duct ink, physical continuity, complete detection or semantic correctness."
+    },
+    {
+      "state": "unsupported",
+      "claim": "The selected library text certifies exact cut-ray encoding, numeric tolerances, rational endpoints, traversal/coverage algorithms, degeneracy handling or admission thresholds."
+    },
+    {
+      "state": "unsupported",
+      "claim": "Family replacement permits dropping old dimension/radius conflicts, borrowing scale/source evidence, auto-selecting revision precedence or converting unknowns to zero."
+    }
+  ],
+  "implementation_authority": {
+    "source": "Approved D01-D10 packet and explicit local design/adjudicated fixtures; findings remain candidate context.",
+    "rules_path": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+    "relevant_rules": [
+      "D03 supported true curve with validated method",
+      "D05 retained independent dimension/unit/datum and unresolved material conflict",
+      "D06 supported size/group changes; unresolved values remain unknown",
+      "D07 stored-meter summation and display rounding",
+      "D08 physical-once correspondence",
+      "D09 preserve evidence/role decisions",
+      "D10 known/unknown and measured/allowance separation"
+    ],
+    "same_rule_packet_hash": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6"
+  },
+  "engineering_validation_obligations_for_root": [
+    "Define the selected old family closure and bind the complete proposed replacement to exact current generation/source/geometry/scale identities.",
+    "Explicitly account for every old consumed reading and source/graphic obligation; do not use family movement as an implicit omission or cross-interval transfer.",
+    "Validate supported corrected circle/direction/cuts and full source coverage; keep incomplete/unsupported or conflicting states visible.",
+    "Prove rejected/stale/invalid requests preserve saved bytes, generations, source records and events; successful replacement retains before/after lineage and recalculates affected scope.",
+    "Use independently frozen original-source examples and expected values for unchanged-circle movement, root geometry changes, conflict retention/repair, missing evidence, nested closure, history/export/reopen and unrelated-family preservation."
+  ],
+  "external_activity": {
+    "calls": 0,
+    "queries": 0,
+    "inventory_refreshes": 0,
+    "source_reads": 0,
+    "source_or_note_mutations": 0,
+    "private_uploads": 0,
+    "egress_record": ".heleos/duct-arc-repartition-2026-09-14/research-egress.json",
+    "decision": "No external submission was needed; do not invent before/after call pairs for local reuse."
+  },
+  "production_rule_admission": false,
+  "adopted_code_or_tests": null,
+  "production_or_test_edits": [],
+  "process_state": "All local verification commands and read-only helper are terminal. No live external query, model, native, listener or browser process.",
+  "next_action": "Root independently verifies these fifteen passages and adopts applicable context/limits into the same-page family-repartition contract before dependent implementation."
+}

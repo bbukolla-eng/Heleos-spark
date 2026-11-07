@@ -1,0 +1,204 @@
+{
+  "task_id": "KIMI-RETIRE-2026-09-22",
+  "state": "independently_accepted",
+  "owner_instruction": "we can eject kimi completely.",
+  "base_commit": "ce714a0907e89f72a871f7d2dcf9472368523ab2",
+  "branch": "2026-09-21-t5b5",
+  "finish_line": "Kimi plugin uninstalled, active provider instructions retired, runner library/CLI and legacy stdin entrypoint cannot launch Kimi; historical artifacts remain readable.",
+  "plugin_result": {
+    "id": "kimi@kimi-marketplace",
+    "status": "uninstalled"
+  },
+  "knowledge_research": "Not applicable: provider removal changes no mechanical or technical source-derived calculations.",
+  "checks": [
+    "python3 -B tests/provider-adapters/test_kimi_stdin.py -v",
+    "cargo +1.96.1 test --locked --offline -p heleos-worker-runner",
+    "cargo +1.96.1 test --locked --offline -p heleos-worker-protocol",
+    "git diff --check"
+  ],
+  "status_owner": "Cursor owns the ongoing build queue; direct owner commit/PR request authorizes Codex to record this publication checkpoint.",
+  "historical_boundary": "Preserve protocol decoding of old Kimi records and retained evidence; do not delete credentials, accounts or unrelated host applications.",
+  "red_checks": [
+    {
+      "command": "python3 -B tests/provider-adapters/test_kimi_stdin.py -v",
+      "exit": 1,
+      "observed": "4 failures and 1 timeout error; original adapter still read stdin or used old diagnostics."
+    },
+    {
+      "command": "cargo +1.96.1 test --locked --offline -p heleos-worker-runner retired_kimi -- --nocapture",
+      "exit": 101,
+      "observed": "Both new rejection cases failed before fix; original runner launched local executable fixture and CLI still admitted Kimi."
+    }
+  ],
+  "checks_completed": [
+    {
+      "command": [
+        "cargo",
+        "+1.96.1",
+        "test",
+        "--locked",
+        "--offline",
+        "-p",
+        "heleos-worker-runner"
+      ],
+      "exit": 101,
+      "elapsed_seconds": 7.77,
+      "log": "docs/operations/kimi-removal-2026-09-22-check-1.log",
+      "sha256": "9e5a0675413f18a3c355c7af27d324fe90111fe4364a84fef568bfe9595eac80",
+      "raw_sha256": "9e5a0675413f18a3c355c7af27d324fe90111fe4364a84fef568bfe9595eac80"
+    },
+    {
+      "command": [
+        "cargo",
+        "+1.96.1",
+        "test",
+        "--locked",
+        "--offline",
+        "-p",
+        "heleos-worker-runner"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 6.99,
+      "log": "docs/operations/kimi-removal-2026-09-22-check-2.log",
+      "sha256": "eefdef66b6a61d7fcf3defbb05969136d5a79b6765f99dbd750a5a611a9f5ae6",
+      "raw_sha256": "2c641de17795056cdf8e4419b94d4a77f443ccc2523521d70997b949f412974b"
+    },
+    {
+      "command": [
+        "cargo",
+        "+1.96.1",
+        "test",
+        "--locked",
+        "--offline",
+        "-p",
+        "heleos-worker-protocol"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 1.29,
+      "log": "docs/operations/kimi-removal-2026-09-22-check-3.log",
+      "sha256": "998492dc30c9f1f61995e64a8d04e9c53fab30c5208803a765357e371ccf3b19",
+      "raw_sha256": "ace730a075181197ae573a20ffb925be90f654ab4ea920e7f0ecc1b1031fbb18"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tests/provider-adapters/test_kimi_stdin.py",
+        "-v"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 0.15,
+      "log": "docs/operations/kimi-removal-2026-09-22-check-4.log",
+      "sha256": "969d357642407f34714a99d0168cfe4a75e803723867e96d0df67143073b5055",
+      "raw_sha256": "969d357642407f34714a99d0168cfe4a75e803723867e96d0df67143073b5055"
+    }
+  ],
+  "findings": [
+    {
+      "id": "KR01",
+      "issue": "CLI test expected raw Clap stderr, but existing application redacts parse errors as JSON.",
+      "resolution": "Supply all required arguments with missing task; assert InvalidConfiguration JSON before task open. Preserve redaction."
+    },
+    {
+      "id": "KR02",
+      "issue": "Guarded runner guide retained obsolete Kimi dispatch/probe commands.",
+      "resolution": "Remove active commands and replace with retirement boundary; historical evidence retained."
+    }
+  ],
+  "candidate_files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "50863befa4fa2eada6ce5e88b07cba67f3223f7da45e57466dc8ed6841d75a39"
+    },
+    {
+      "path": "KIMI.md",
+      "sha256": "16a30a85f1da7c670d9d71ed27603f3b934f3b039bbf002f0430b3c89c8ece9d"
+    },
+    {
+      "path": "crates/heleos-worker-runner/README.md",
+      "sha256": "6f52b94be9ebc9179ecb063c337c4b370b114896bf301f4c14b3b61391a96ca7"
+    },
+    {
+      "path": "crates/heleos-worker-runner/src/lib.rs",
+      "sha256": "0c13bd6f0768ac3e37a1ad9bda9464f15dcb274a27599df38d5f1361b80f88eb"
+    },
+    {
+      "path": "crates/heleos-worker-runner/src/main.rs",
+      "sha256": "981e2cf13c86ae6b97a63a8ea3ce49a93356720c5c2d1efa178e05dd4d58f399"
+    },
+    {
+      "path": "crates/heleos-worker-runner/tests/runner.rs",
+      "sha256": "98d116d778513d2fccc856eaf34db19fb3ed063a4aa769b32e10b41c11033aa2"
+    },
+    {
+      "path": "docs/operations/agent-coordination.md",
+      "sha256": "ded14b11c0e2ca9ff9bea01ea1c2580f8f1afbf5fbb2d166d58b35732bdc852d"
+    },
+    {
+      "path": "docs/operations/guarded-worker-runner.md",
+      "sha256": "54eedfa95c6dfa90a1e4f5d28dccbc6e577f2fcf23958bc7edeaed99433317d8"
+    },
+    {
+      "path": "scripts/provider-adapters/kimi-stdin.py",
+      "sha256": "24cd5cf9f744a5aec575f932de98690656171f3d45d97f35860a3cf07c345954"
+    },
+    {
+      "path": "tests/provider-adapters/test_kimi_stdin.py",
+      "sha256": "df7ed927b77acfba939aff396aa01709e03cb1ef55da6997fe4c5de75721165b"
+    }
+  ],
+  "additional_files": [
+    "docs/operations/codex-cursor-collaboration-2026-09-22.md"
+  ],
+  "verification_summary": {
+    "runner_tests": 47,
+    "protocol_tests": 17,
+    "adapter_tests": 2,
+    "total_passed": 66,
+    "rustfmt_exit": 0,
+    "diff_check_exit": 0
+  },
+  "remaining_strings": "Observation-only dated provider inventory, deny-by-default egress policy with no approved contracts, protocol/schema identity decoding and historical evidence retained. None permits new Kimi execution.",
+  "next_action": "Publish the owner-requested PR with the selected base, then continue the unchanged CSI-23-31-13-DEFINE product queue under Cursor.",
+  "process_state": "Controller and independent reviewer terminal; no live Kimi invocation",
+  "review": {
+    "path": "docs/operations/kimi-removal-2026-09-22-review.json",
+    "sha256": "0ec9197f839cbeb1cda300545a305f9b7155efa0d2c68d1ea436b269fbc44d74"
+  },
+  "status_handoff": "CURRENT_STATUS.md and the checkpoint receipt record this accepted removal and preserve the existing product task. No merge or repository-settings change authorized by this request.",
+  "publication_authorization": "Owner requested: Commit them and create pr. Codex performs this scoped publication and necessary checkpoint update; Cursor remains the build controller.",
+  "raw_check_archive": {
+    "path": "docs/operations/kimi-removal-2026-09-22-raw-checks.zip",
+    "sha256": "1fc99e91cecb1b643b23bc4b74c11babe3783032d2fe41211502dbd57c8855d3",
+    "members": [
+      {
+        "name": "kimi-removal-2026-09-22-check-1.log",
+        "sha256": "9e5a0675413f18a3c355c7af27d324fe90111fe4364a84fef568bfe9595eac80"
+      },
+      {
+        "name": "kimi-removal-2026-09-22-check-2.log",
+        "sha256": "2c641de17795056cdf8e4419b94d4a77f443ccc2523521d70997b949f412974b"
+      },
+      {
+        "name": "kimi-removal-2026-09-22-check-3.log",
+        "sha256": "ace730a075181197ae573a20ffb925be90f654ab4ea920e7f0ecc1b1031fbb18"
+      },
+      {
+        "name": "kimi-removal-2026-09-22-check-4.log",
+        "sha256": "969d357642407f34714a99d0168cfe4a75e803723867e96d0df67143073b5055"
+      }
+    ],
+    "readable_log_normalization": "Remove only surplus terminal newline bytes for Git whitespace checks; exact captured output remains in the archive."
+  },
+  "publication_checks": [
+    {
+      "command": "python3 tools/ci/checks.py in isolated staged Git tree",
+      "exit": 0,
+      "result": "1049 tracked files checked, 0 failures"
+    },
+    {
+      "command": "python3 scripts/verify-build-checkpoint.py --staged",
+      "exit": 0
+    }
+  ]
+}

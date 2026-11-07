@@ -1,0 +1,194 @@
+{
+  "task_id": "DUCT-ARC-REPARTITION-1",
+  "state": "implemented, independently reviewed, locally integrated uncommitted; scoped checks passed with recorded runtime/platform limits",
+  "recorded_at": "2026-09-16T00:31:32.923649+00:00",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "base_commit": "adcdd2934fa39bd0712c15a7bab74060838b2ae9",
+  "evidence": {
+    "findings": {
+      "path": "docs/research/notebooklm/duct-arc-repartition-findings-2026-09-14.json",
+      "sha256": "cab238ec0707abcc1cfa65e48ceff4aa1a586ff2ed8a4abbccf3fae731046f19"
+    },
+    "passages": {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/research-verified-passages.json",
+      "sha256": "b60234f3f8bf59f9ebfd9e79c90c12e311770cff67f62ca1dbf8f3667d777585"
+    },
+    "root_verification": ".heleos/duct-arc-repartition-2026-09-14/resume-2026-09-15.json",
+    "source_bodies": 7,
+    "passages_read_and_verified": 15
+  },
+  "research_policy": {
+    "new_external_submissions": 0,
+    "new_query": false,
+    "reason": "Unchanged mathematical and source-review requirements. Reuse verified N05/N10 source bodies, prior query findings and completed inventories; no new mechanical rule or math method introduced. New transaction/check-disposition semantics are local engineering decisions."
+  },
+  "adopted": [
+    {
+      "source_passages": [
+        "ARP-AS01",
+        "ARP-AS03",
+        "ARP-AS05",
+        "ARP-AS06",
+        "ARP-AS10",
+        "ARP-AS11"
+      ],
+      "status": "verified_applicable",
+      "behavior": "Reuse exact original circle/direction and true arc interval measurement; graphical approximation never supplies quantity. Check-only retained intervals preserve original radius and whole-length semantic roles and never count as extra portions.",
+      "implementation": [
+        "scripts/duct_arc_obligations.py",
+        "scripts/project_duct_arc_repartition.py"
+      ],
+      "tests": [
+        "test_nested_whole_check_survives_removed_boundary_as_nonquantity_interval",
+        "test_new_root_cannot_automatically_carry_old_check_but_explicit_scope_can",
+        "tests/drawing-workspace/verify_duct_arc_repartition_native.py"
+      ]
+    },
+    {
+      "source_passages": [
+        "ARP-bluebeam-measurements-1093",
+        "ARP-bluebeam-measurements-1175",
+        "ARP-bluebeam-guide-1063",
+        "ARP-bluebeam-guide-1287"
+      ],
+      "status": "verified_applicable_workflow_context",
+      "behavior": "Explicit source-bound correction, visible previous/corrected scopes, affected recalculation and original history. Sources corroborate workflow only; sealed events, exhaustive decisions and atomicity are project engineering requirements.",
+      "implementation": [
+        "apps/drawing-workspace/ducts.js",
+        "apps/drawing-workspace/arc_family_editor.js",
+        "scripts/project_duct_arc_repartition.py"
+      ],
+      "tests": [
+        "test_remove_all_cuts_retains_radius_history_reopen_and_export",
+        "test_every_check_pin_is_mandatory_and_save_fault_leaves_no_events",
+        "test_tampered_original_history_is_rejected_by_view_and_export",
+        "tests/drawing-workspace/duct-arc-family-ui.test.cjs"
+      ]
+    },
+    {
+      "source_passages": [
+        "ARP-drawing-scales-89",
+        "ARP-blueprint-tutorial-N10-1053",
+        "ARP-mepdetect-1310"
+      ],
+      "status": "verified_applicable_context_only",
+      "behavior": "Scale/source verification, separate original/supplemental pages and model proposal limits remain unchanged; no new quantities from labels/schematics.",
+      "implementation": [
+        "scripts/project_duct_reading_links.py",
+        "scripts/project_duct_takeoff.py"
+      ],
+      "tests": [
+        "test_foreign_check_requires_new_exact_target_link_and_withdrawal_blocks_family",
+        "test_source_scale_change_invalidates_open_family_and_d05_conflict_is_not_silently_ignored"
+      ]
+    }
+  ],
+  "not_adopted": [
+    {
+      "source_passages": [
+        "ARP-drawing-scales-183"
+      ],
+      "status": "conflict_not_adopted",
+      "reason": "Fire-sprinkler teaching example prefers dimensions. Approved D05 instead blocks conflicting duct dimensions/scaled geometry; no automatic precedence added."
+    },
+    {
+      "source_passages": [
+        "ARP-mepdetect-973"
+      ],
+      "status": "inapplicable",
+      "reason": "Electrical circuit tracing convention cannot establish mechanical physical identity or automatic duplicate matching."
+    },
+    {
+      "status": "unsupported_by_sources",
+      "claims": [
+        "atomic family closure",
+        "explicit reading reassignment or retraction",
+        "snapshot rollback and immutable transaction events",
+        "automatic size inference from removal of a boundary"
+      ],
+      "treatment": "No source authority claimed; explicit engineering behavior tested. No automatic physical/size inference permitted."
+    }
+  ],
+  "limits": [
+    "Native Mac original synthetic/inert proof only.",
+    "Cross-source revisions of newly corrected families with retained check-only obligations require a future explicit mapping; fail closed without dropping checks.",
+    "Python3.9 invocation currently blocked by Xcode license; full floor-runtime verification remains outstanding."
+  ],
+  "verification": [
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/root-python314-corrected.json",
+      "sha256": "76c2155ed791d14329e214f60889139cb7a8d13e707c73bb45a886a5359fae6c"
+    },
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/root-python312-final.json",
+      "sha256": "5d6c690246d74e3bd43208a65fa699f48dcd743fe5057ff1e567847001f4e805"
+    },
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/root-python312-scorer-corrected.json",
+      "sha256": "0aaa16f74ab8a0c287ebf6c9f5feb1200e8b169c72b578d57ba5621d86ee1407"
+    },
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/root-python312-combined-coverage.json",
+      "sha256": "1e97bd118c5c3acce352aaa942f65d164cfd14e70e90bc3a2594ecf2929466ac"
+    },
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/root-ui-result.json",
+      "sha256": "5e8920b5a974f8dfd2c63226afd3f0a663b48a29fb7ee6f506ca63ad3483156a"
+    },
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/review-handoff.json",
+      "sha256": "4f6e1b69ff325fe8073f51dc331f640f45d7d762dddd477060e012d5702ab7c8"
+    },
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/review-scorer-handoff.json",
+      "sha256": "3d4f2aec6a6e90c03b87f5519c934158d6c22faf4e7f3e89bc8cfebb18bcf7de"
+    },
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/native-final-report.json",
+      "sha256": "422d51694a873f62dfbd57119e703351cdbba43a04c41c1b1af1389d0956370c"
+    },
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/native-command-ledger-final.json",
+      "sha256": "9b4f394bcb068029a9a680097ce84abac041aa53ccede01056b4c5060c881b6a"
+    },
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/root-native-truth-verification.json",
+      "sha256": "bd860deaa95100979f5266bd0d1d8599eb524decbe8fbfe0ff1dc25c8522a7b9"
+    },
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/root-native-artifact-verification.json",
+      "sha256": "d3c403820082d21fe8648bea109c7a9095add78a5d847685a492be3f6626240f"
+    },
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/root-v2-package-result.json",
+      "sha256": "69164779cdf27d9c8a2473483ba0a9d4b9160159d9ea8ec31730c2eb199e7f14"
+    },
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/root-v2-readiness-result.json",
+      "sha256": "2bf27d85e33b57fc7b4061c726886036dabd586a3ad42964566d1faa139a06c9"
+    },
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/root-package-verification.json",
+      "sha256": "d671f56ae5820671baa711415401127a71dd83c662c735b9439677b74f2ffc55"
+    },
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/root-python39-unavailable.json",
+      "sha256": "91cb6102c1629549403b88bd2e24a1eb6e5bd2044365b8bff5b4e22dba0aab4e"
+    },
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/research-reuse-checks.json",
+      "sha256": "2347d7802c3a93a00d31498a90e07c2b789b5d14334113015aea9cef14ecc624"
+    },
+    {
+      "path": ".heleos/duct-arc-repartition-2026-09-14/research-egress.json",
+      "sha256": "388501b6a5a720268241a58fa566ef796a2ec1009be502ff475ae94566602a64"
+    }
+  ],
+  "test_summary": {
+    "python314": "456 passed in one final full run",
+    "python312": "413 unchanged cases plus 43 affected cases; combined 456 distinct passes",
+    "ui": "134 passed",
+    "native_mac": "four original synthetic lifecycle scenarios passed"
+  },
+  "current_next_action": "Explicit retained-check disposition and mapping across source revisions."
+}

@@ -1,0 +1,130 @@
+{
+  "task": "DIV23-SECTION-CONTRACTS-1",
+  "base": "5e6beb8add22ba161858bdd3a32b48444591c557",
+  "notebook_query_receipt": ".heleos/div23-section-planning-2026-09-16/notebook-query-response.json",
+  "conversation_id": "178d19a4-445f-46f4-af76-519a49ca724a",
+  "sources": "Existing inventory and retained verified bodies reused; no source mutation/private upload.",
+  "findings": [
+    {
+      "id": "PLAN-S01",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "321f5bbc-3f0c-4057-8036-47ffc7a7bea3",
+      "title": "VA 23 09 23",
+      "edition": "03-01-23",
+      "retained_body": ".heleos/div23-scope-review-2026-09-16/source-2.txt",
+      "sha256": "a8e5d22c9cfb3e33b37cb6bb32bf5e3a19bdf5f527abcca1258102958893dbf6",
+      "locator": {
+        "kind": "indexed_character_offset",
+        "start": 2746,
+        "end": 3131
+      },
+      "verified_passage": "d \n\nworking direct-digital control system. Include all engineering, programming, \n\nconfiguration/setup hardware and software, controls and installation \n\nmaterials, installation labor, commissioning and startup, training, final \n\nproject documentation and warranty. //A System Integrator and Direct Digital \n\nControls Contractor shall be two separate direct subcontractors of General \n",
+      "finding": "Controls scope includes engineering, setup, startup, training and documentation; represent required services separately from devices.",
+      "application": "section planning and case subjects only; no new mechanical rule adoption",
+      "profile": "control_system"
+    },
+    {
+      "id": "PLAN-S02",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "321f5bbc-3f0c-4057-8036-47ffc7a7bea3",
+      "title": "VA 23 09 23",
+      "edition": "03-01-23",
+      "retained_body": ".heleos/div23-scope-review-2026-09-16/source-2.txt",
+      "sha256": "a8e5d22c9cfb3e33b37cb6bb32bf5e3a19bdf5f527abcca1258102958893dbf6",
+      "locator": {
+        "kind": "indexed_character_offset",
+        "start": 7829,
+        "end": 8214
+      },
+      "verified_passage": "l unit controllers. \n\n Some products are installed but not furnished by the contractor \n\nadministered by this Section of the technical specifications. The contractor \n\nadministered by this Section of the technical specifications shall formally \n\ncoordinate in writing and receive from other contractors formal \n\nacknowledgements in writing prior to submission the procurement of the \n\n",
+      "finding": "Furnish and installation responsibility can differ; source-backed responsibility cases must preserve that distinction.",
+      "application": "section planning and case subjects only; no new mechanical rule adoption",
+      "profile": "control_system"
+    },
+    {
+      "id": "PLAN-S03",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "bf2f97c3-4c90-453c-81ac-c5b470085806",
+      "title": "UFGS 23 07 00",
+      "edition": "August 2024",
+      "retained_body": ".heleos/div23-scope-review-2026-09-16/source-3.txt",
+      "sha256": "d08bc1bcfa73ec499706576e66bfd6adcc1266224608715f2f02d78f01fad6df",
+      "locator": {
+        "kind": "indexed_character_offset",
+        "start": 19960,
+        "end": 20345
+      },
+      "verified_passage": "************************** \n\n1.2.1   General \n\nProvide field-applied insulation and accessories on mechanical systems as specified herein; factory-applied insulation is specified under the piping, duct or equipment to be insulated.  Provide insulation of heat \n\nSECTION 23 07 00  Page 10\n\ndistribution systems and chilled water systems outside of buildings as specified in Section 33 6",
+      "finding": "Field and factory insulation scope are distinguished; qualify host and procurement boundaries before quantity calculation.",
+      "application": "section planning and case subjects only; no new mechanical rule adoption",
+      "profile": "host_requirement"
+    },
+    {
+      "id": "PLAN-S04",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "bf2f97c3-4c90-453c-81ac-c5b470085806",
+      "title": "UFGS 23 07 00",
+      "edition": "August 2024",
+      "retained_body": ".heleos/div23-scope-review-2026-09-16/source-3.txt",
+      "sha256": "d08bc1bcfa73ec499706576e66bfd6adcc1266224608715f2f02d78f01fad6df",
+      "locator": {
+        "kind": "indexed_character_offset",
+        "start": 62369,
+        "end": 62754
+      },
+      "verified_passage": "ordance with the manufacturer's written instructions.  Do not apply insulation materials until [tests][tests and heat tracing] specified in other paragraphs of this specification are completed.  Remove material such as rust, scale, dirt and moisture from surfaces to receive insulation.  Keep insulaton clean and dry.  Do not remove insulation from its shipping containers until the da",
+      "finding": "Installation prerequisites and bracketed options need source-bound obligations and project adoption, not numeric allowances.",
+      "application": "section planning and case subjects only; no new mechanical rule adoption",
+      "profile": "host_requirement"
+    },
+    {
+      "id": "PLAN-S05",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "c07ab0a7-e1c5-4653-8ad4-2e3c1e2d2e64",
+      "title": "VA 23 05 93.01",
+      "edition": "11-01-21",
+      "retained_body": ".heleos/div23-scope-review-2026-09-16/source-4.txt",
+      "sha256": "1ac1acf3735df450e61f9f8e5c1c357537d2cd7dc758e38b73f84b2ea4d47d51",
+      "locator": {
+        "kind": "indexed_character_offset",
+        "start": 794,
+        "end": 1179
+      },
+      "verified_passage": "owing:  \n\n1. Planning systematic TAB procedures.  \n\n2. Design Review Report. \n\n3. Systems Inspection report. \n\n4. Duct Air Leakage test report. \n\n5. Systems Readiness Report. \n\n6. Balancing air and water distribution systems; adjustment of total \n\nsystem to provide design performance; and testing performance of \n\nequipment and automatic controls.  \n\n7. Vibration and sound measuremen",
+      "finding": "TAB includes multiple named reports, air/water balance, performance checks and reporting; do not reduce service sections to physical counts.",
+      "application": "section planning and case subjects only; no new mechanical rule adoption",
+      "profile": "service_scope"
+    },
+    {
+      "id": "PLAN-S06",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "e80b3502-dbf7-4227-a223-90fe6b01d731",
+      "title": "VA 23 21 23",
+      "edition": "03-01-23",
+      "retained_body": ".heleos/equipment-rules-2026-09-16/source-1.txt",
+      "sha256": "6af66205ee4ce027f3f0d54245ddc171e9874991b4d1ff17d02e96cf56051c07",
+      "locator": {
+        "kind": "indexed_character_offset",
+        "start": 8250,
+        "end": 8635
+      },
+      "verified_passage": "Provide pumps of size, type and capacity as indicated, complete with \n\nelectric motor and drive assembly, unless otherwise indicated. \n\nDesign pump casings for the indicated working pressure and factory \n\ntest at 1-1/2 times the designed pressure. \n\n3. Provide pumps of the same type, the product of a single \n\nmanufacturer, with pump parts of the same size and type \n\ninterchangeable.",
+      "finding": "A pump may include motor and drive with an explicit unless-otherwise-indicated boundary. This supports package-case planning, not equivalence with the UFGS pump guide.",
+      "application": "section planning and case subjects only; no new mechanical rule adoption",
+      "profile": "equipment"
+    }
+  ],
+  "rejected_claims": [
+    "Generated labor hours from service requirements: no productivity or labor basis was supplied.",
+    "Universal routing of valve bodies/actuators to trade budgets: guide-specific/project-adopted responsibility must be verified.",
+    "Automatic insulation material overrides from generic environment tags: selected passage context does not establish universal policy.",
+    "Blocking ERP export for protocol choice: generated behavior has no approved product or mechanical rule.",
+    "TAB physical scope limited to plugs/patching: unsupported exhaustive claim.",
+    "Using field TAB tolerances as software recognition/measurement acceptance thresholds: different objectives and no approved equivalence."
+  ],
+  "limits": [
+    "The query does not enumerate all56 guide taxonomies.",
+    "Source-specific clauses do not automatically apply to another agency, edition or project.",
+    "New measurement/count/allowance policies and original-source accuracy thresholds require separately frozen task inputs; no values invented in these plans."
+  ]
+}

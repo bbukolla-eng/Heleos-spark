@@ -1,0 +1,1613 @@
+{
+  "task": "DIV23-SECTION-PLANNING-SOURCE-REUSE-AUDIT",
+  "base_commit": "5e6beb8add22ba161858bdd3a32b48444591c557",
+  "recorded_at": "2026-09-16T18:39:14.388237+00:00",
+  "status": "coordinator_verified_inventory_mapping; body candidate qualification remains per section DEFINE",
+  "authority": "Root verifies this map before adopting new source-depth claims; no external calls or mechanical requirements adopted.",
+  "notebooks": {
+    "n10": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+    "n11": "932527dc-c37a-40ed-89de-4240e8197609"
+  },
+  "counts": {
+    "registered_guide_rows": 56,
+    "rows_with_recorded_source_matches": 35,
+    "rows_with_locally_retained_indexed_body": 11,
+    "registered_rows_with_declared_body_evidence": 5
+  },
+  "section_work_plan_directory_note": ".heleos/div23-section-work-plan-2026-09-16 contains query/source-read receipts and heading verification; full bodies are in earlier scope-review and expansion files.",
+  "retained_body_limit": "Indexed body retention does not certify PDF fidelity, exact current provider state, complete taxonomy, project adoption or quantity rules. N10/N11 snapshots for same URL sometimes differ; preserve distinct hashes.",
+  "cancelled_source": "4specs adoption remains cancelled; no 4specs source used.",
+  "sections": [
+    {
+      "section_id": "D23-UFGS-230130.41",
+      "number": "23 01 30.41",
+      "title": "HVAC SYSTEM CLEANING",
+      "edition": "05/22",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "37125343-3541-40e6-a27b-ea9e6fdf1e52",
+          "title": "UFGS 23 01 30.41 HVAC System Cleaning",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2001%2030.41.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 01 30.41",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        },
+        {
+          "notebook": "N11",
+          "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+          "source_id": "54d9ecae-cb15-4752-9f64-56d753bee713",
+          "title": "UFGS 23 01 30.41 HVAC System Cleaning",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2001%2030.41.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 01 30.41",
+          "retained_file": ".heleos/notebooklm-expansion-2026-09-14/n11/call-1789396274303-trvgh2md-response.json",
+          "retained_format": "JSON: result.content[0].text parsed as JSON, then content",
+          "retained_indexed_body_sha256": "1349fe6783c03741aabd752df72d61c13ca8df400a83cfe6fd1aba7b233f711e",
+          "retained_character_count": 32093,
+          "retained_header_excerpt": "************************************************************************** USACE / NAVFAC / AFCEC UFGS-23 01 30.41 (May 2022) \n\n------------------------------------Preparing Activity:  NAVFAC Superseding \n\nUFGS-23 01 30.41 (February 2015) \n\nUNIFIED FACILITIES GUIDE SPECIFICATIONS \n\nReferences are in",
+          "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n11-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-230300",
+      "number": "23 03 00",
+      "title": "BASIC MECHANICAL MATERIALS AND METHODS",
+      "edition": "11/25",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-230515",
+      "number": "23 05 15",
+      "title": "COMMON PIPING FOR HVAC",
+      "edition": "05/22, CHG 2: 08/24",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "190f51a5-f4e9-49e1-b8f3-4b9178b277d4",
+          "title": "UFGS 23 05 15 Common Piping for HVAC",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2005%2015.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 05 15",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-230548.19",
+      "number": "23 05 48.19",
+      "title": "SEISMIC BRACING FOR MECHANICAL SYSTEMS",
+      "edition": "02/25",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "2033afcf-4b0e-4668-b08b-8a1596118197",
+          "title": "UFGS 23 05 48.19 Seismic Bracing for Mechanical Systems",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2005%2048.19.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 05 48.19",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        },
+        {
+          "notebook": "N11",
+          "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+          "source_id": "2191bacd-609f-4346-b5ec-cf80e2ac0c2c",
+          "title": "UFGS 23 05 48.19 Seismic Bracing for Mechanical Systems",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2005%2048.19.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 05 48.19",
+          "retained_file": ".heleos/notebooklm-expansion-2026-09-14/n11/call-1789396274303-pevsthwi-response.json",
+          "retained_format": "JSON: result.content[0].text parsed as JSON, then content",
+          "retained_indexed_body_sha256": "a6b65391e9041c37ccf80323d7219780a3d4bae931c4256e325ada9903d22414",
+          "retained_character_count": 49227,
+          "retained_header_excerpt": "************************************************************************** USACE / NAVFAC / AFCEC UFGS-23 05 48.19 (February 2025) \n\n------------------------------------\n\nPreparing Activity:  USACE Superseding UFGS-23 05 48.19 (May 2018) \n\nUNIFIED FACILITIES GUIDE SPECIFICATIONS \n\nReferences are in ",
+          "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n11-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-230593",
+      "number": "23 05 93",
+      "title": "TESTING, ADJUSTING, AND BALANCING FOR HVAC",
+      "edition": "05/25",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "c5c4b98b-403e-41ee-84b4-5e4a6a6172da",
+          "title": "UFGS 23 05 93 Testing, Adjusting, and Balancing for HVAC",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2005%2093.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 05 93",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        },
+        {
+          "notebook": "N11",
+          "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+          "source_id": "ddc2fd9d-f560-4987-b61e-2e3675a90fa4",
+          "title": "UFGS 23 05 93 Testing, Adjusting, and Balancing for HVAC",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2005%2093.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 05 93",
+          "retained_file": ".heleos/notebooklm-expansion-2026-09-14/n11/call-1789396274303-izzxbkne-response.json",
+          "retained_format": "JSON: result.content[0].text parsed as JSON, then content",
+          "retained_indexed_body_sha256": "1c6c0ebbf2077f9edc7d81254c038067dc1ac22ee7d5cb4bdabe7b4bd6465cb6",
+          "retained_character_count": 145070,
+          "retained_header_excerpt": "************************************************************************** USACE / NAVFAC / AFCEC UFGS-23 05 93 (May 2025) \n\n------------------------------------Preparing Activity:  NAVFAC Superseding \n\nUFGS-23 05 93 (November 2015) \n\nUNIFIED FACILITIES GUIDE SPECIFICATIONS \n\nReferences are in agree",
+          "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+          "existing_verification_records": [
+            {
+              "path": "docs/research/notebooklm/div23-scope-findings-2026-09-16.json",
+              "finding_id": "D23-S3"
+            }
+          ],
+          "inventory_record": "docs/research/notebooklm/expansion-n11-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-230700",
+      "number": "23 07 00",
+      "title": "THERMAL INSULATION FOR MECHANICAL SYSTEMS",
+      "edition": "08/24",
+      "register_body_review_state": "selected_body_passages_verified; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "bf2f97c3-4c90-453c-81ac-c5b470085806",
+          "title": "UFGS 23 07 00 Thermal Insulation for Mechanical Systems",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2007%2000.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 07 00",
+          "retained_file": ".heleos/div23-scope-review-2026-09-16/source-3.txt",
+          "retained_format": "utf-8 indexed source text",
+          "retained_indexed_body_sha256": "d08bc1bcfa73ec499706576e66bfd6adcc1266224608715f2f02d78f01fad6df",
+          "retained_character_count": 283117,
+          "retained_header_excerpt": "************************************************************************** USACE / NAVFAC / AFCEC UFGS-23 07 00 (August 2024) \n\n------------------------------------\n\nPreparing Activity:  USACE Superseding UFGS-23 07 00 (February 2013) \n\nUNIFIED FACILITIES GUIDE SPECIFICATIONS \n\nReferences are in agr",
+          "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+          "existing_verification_records": [
+            {
+              "path": "docs/research/notebooklm/div23-scope-review-findings-2026-09-16.json",
+              "finding_id": "MS-S5"
+            },
+            {
+              "path": "docs/research/notebooklm/div23-scope-review-findings-2026-09-16.json",
+              "finding_id": "MS-S6"
+            },
+            {
+              "path": "docs/plans/division-23-section-register.json",
+              "source_record_id": "UFGS-230700-INDEXED-2026-09-16",
+              "verification": "Exact header read; source-backed field/factory insulation and optional timing findings MS-S5/MS-S6 reused. Earlier retrieved source hashes in scope findings are distinct snapshots; unchanged bytes not assumed."
+            }
+          ],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        },
+        {
+          "notebook": "N11",
+          "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+          "source_id": "86d55e24-93fa-4932-ad5a-0a1bf2ada6d9",
+          "title": "UFGS 23 07 00 Thermal Insulation for Mechanical Systems",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2007%2000.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 07 00",
+          "retained_file": ".heleos/notebooklm-expansion-2026-09-14/n11/call-1789396274303-cbpjddfs-response.json",
+          "retained_format": "JSON: result.content[0].text parsed as JSON, then content",
+          "retained_indexed_body_sha256": "644f78d7a837cdd5a50e1a1b8be42cb399d27db7759fe333695b39b02a4ca187",
+          "retained_character_count": 283089,
+          "retained_header_excerpt": "************************************************************************** USACE / NAVFAC / AFCEC UFGS-23 07 00 (August 2024) \n\n------------------------------------\n\nPreparing Activity:  USACE Superseding UFGS-23 07 00 (February 2013) \n\nUNIFIED FACILITIES GUIDE SPECIFICATIONS \n\nReferences are in agr",
+          "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+          "existing_verification_records": [
+            {
+              "path": "docs/research/notebooklm/div23-scope-findings-2026-09-16.json",
+              "finding_id": "D23-S2"
+            }
+          ],
+          "inventory_record": "docs/research/notebooklm/expansion-n11-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-230800",
+      "number": "23 08 00",
+      "title": "COMMISSIONING OF MECHANICAL[ AND PLUMBING] SYSTEMS",
+      "edition": "05/23, CHG 1: 08/24",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "842740ce-3ae6-419e-baa7-d3cf6585545e",
+          "title": "UFGS 23 08 00 Commissioning of Mechanical[ and Plumbing] Systems",
+          "url": "https://legacy.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2008%2000.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 08 00",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-230801.00-20",
+      "number": "23 08 01.00 20",
+      "title": "TESTING INDUSTRIAL VENTILATION SYSTEMS",
+      "edition": "04/06",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-230900",
+      "number": "23 09 00",
+      "title": "INSTRUMENTATION AND CONTROL FOR HVAC",
+      "edition": "08/24, CHG 1: 08/25",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-230913",
+      "number": "23 09 13",
+      "title": "INSTRUMENTATION AND CONTROL DEVICES FOR HVAC",
+      "edition": "11/15, CHG 2: 05/21",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-230923.01",
+      "number": "23 09 23.01",
+      "title": "LONWORKS DIRECT DIGITAL CONTROL FOR HVAC AND OTHER BUILDING CONTROL SYSTEMS",
+      "edition": "08/24",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-230923.02",
+      "number": "23 09 23.02",
+      "title": "BACNET DIRECT DIGITAL CONTROL FOR HVAC AND OTHER BUILDING CONTROL SYSTEMS",
+      "edition": "08/24",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-230953.00-20",
+      "number": "23 09 53.00 20",
+      "title": "SPACE TEMPERATURE CONTROL SYSTEMS",
+      "edition": "02/10, CHG 3: 08/24",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "f01e5d18-484f-4ea2-8e27-50850efe8bf0",
+          "title": "UFGS 23 09 53.00 20 Space Temperature Control Systems",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2009%2053.00%2020.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 09 53.00 20",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-230993",
+      "number": "23 09 93",
+      "title": "SEQUENCES OF OPERATION FOR HVAC CONTROL",
+      "edition": "11/15",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "cf5a1a2d-2734-46e2-8db9-70098c4bd7f4",
+          "title": "UFGS 23 09 93 Sequences of Operation for HVAC Control",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2009%2093.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 09 93",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-231120",
+      "number": "23 11 20",
+      "title": "FACILITY GAS PIPING",
+      "edition": "05/20",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-232113.00-20",
+      "number": "23 21 13.00 20",
+      "title": "LOW TEMPERATURE WATER (LTW) HEATING SYSTEM",
+      "edition": "04/06, CHG 2: 11/19",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "a82c9f95-a86d-44ba-a237-a04691c2b63e",
+          "title": "UFGS 23 21 13.00 20 Low Temperature Water (LTW) Heating System",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2021%2013.00%2020.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 21 13.00 20",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-232113.23-20",
+      "number": "23 21 13.23 20",
+      "title": "[HIGH][MEDIUM] TEMPERATURE WATER SYSTEM WITHIN BUILDINGS",
+      "edition": "07/07, CHG 1: 11/19",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "63da0772-6e23-410a-82af-6491561ff76d",
+          "title": "UFGS 23 21 13.23 20 High/Medium Temperature Water System Within Buildings",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2021%2013.23%2020.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 21 13.23 20",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-232123",
+      "number": "23 21 23",
+      "title": "HYDRONIC PUMPS",
+      "edition": "05/25",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-232226.00-20",
+      "number": "23 22 26.00 20",
+      "title": "STEAM SYSTEM AND TERMINAL UNITS",
+      "edition": "02/10, CHG 1: 05/15",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "e09804f0-e4e9-48c1-bac1-5ebced4faa6c",
+          "title": "UFGS 23 22 26.00 20 Steam System and Terminal Units",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2022%2026.00%2020.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 22 26.00 20",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-232300",
+      "number": "23 23 00",
+      "title": "REFRIGERANT PIPING",
+      "edition": "08/21",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "1b22fad3-3d72-4efc-8afb-d18ecd4d5ee5",
+          "title": "UFGS 23 23 00 Refrigerant Piping",
+          "url": "https://legacy.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2023%2000.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 23 00",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-232500",
+      "number": "23 25 00",
+      "title": "CHEMICAL TREATMENT OF WATER FOR MECHANICAL SYSTEMS",
+      "edition": "05/21",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-233000",
+      "number": "23 30 00",
+      "title": "HVAC AIR DISTRIBUTION",
+      "edition": "02/25",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "1ee447df-60bc-4ee1-989f-913f883f67b7",
+          "title": "UFGS 23 30 00 HVAC Air Distribution",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2030%2000.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 30 00",
+          "retained_file": ".heleos/notebooklm-expansion-2026-09-14/n10/sample-body-call012.txt",
+          "retained_format": "utf-8 indexed source text",
+          "retained_indexed_body_sha256": "77816b76733add74e66e2778bffaab4c37291e3808853ce3d17c0243f786fad5",
+          "retained_character_count": 254244,
+          "retained_header_excerpt": "************************************************************************** USACE / NAVFAC / AFCEC UFGS-23 30 00 (February 2025) \n\n------------------------------------Preparing Activity:  USACE Superseding \n\nUFGS-23 00 00 (May 2020) \n\nUNIFIED FACILITIES GUIDE SPECIFICATIONS \n\nReferences are in agreem",
+          "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        },
+        {
+          "notebook": "N11",
+          "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+          "source_id": "03025142-9998-4dce-a8b9-30bcedd045b2",
+          "title": "UFGS 23 30 00 HVAC Air Distribution",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2030%2000.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 30 00",
+          "retained_file": ".heleos/notebooklm-expansion-2026-09-14/n11/call-1789396279210-b3fxvs9z-response.json",
+          "retained_format": "JSON: result.content[0].text parsed as JSON, then content",
+          "retained_indexed_body_sha256": "133f9dd9c59b8b6c53a7f37878fccd0d243989de9a277f7c10876ee092cf88cc",
+          "retained_character_count": 254224,
+          "retained_header_excerpt": "************************************************************************** USACE / NAVFAC / AFCEC UFGS-23 30 00 (February 2025) \n\n------------------------------------Preparing Activity:  USACE Superseding \n\nUFGS-23 00 00 (May 2020) \n\nUNIFIED FACILITIES GUIDE SPECIFICATIONS \n\nReferences are in agreem",
+          "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n11-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-233516",
+      "number": "23 35 16",
+      "title": "MECHANICAL ENGINE[ AND WELDING FUME] EXHAUST SYSTEMS",
+      "edition": "02/25",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-233519.00-20",
+      "number": "23 35 19.00 20",
+      "title": "INDUSTRIAL VENTILATION AND EXHAUST",
+      "edition": "02/10, CHG 3: 11/24",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-234400.00-10",
+      "number": "23 44 00.00 10",
+      "title": "CHEMICAL, BIOLOGICAL, AND RADIOLOGICAL (CBR) AIR FILTRATION SYSTEM",
+      "edition": "02/16",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-235052",
+      "number": "23 50 52",
+      "title": "CENTRAL HIGH TEMPERATURE WATER (HTW) GENERATING PLANTS",
+      "edition": "08/26",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "6121384c-8ef4-43a7-b9c3-c081a8dff7bb",
+          "title": "UFGS 23 50 52 Central High Temperature Water (HTW) Generating Plants",
+          "url": "https://legacy.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2050%2052.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 50 52",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-235200.01",
+      "number": "23 52 00.01",
+      "title": "LOW PRESSURE (<260 PSIG) WATER HEATING BOILERS (UNDER 6,000,000 BTU/HR INPUT)",
+      "edition": "08/26",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "6f0fbeb9-d347-41fe-ba74-afd19088195a",
+          "title": "UFGS 23 52 00.01 Low Pressure (<260 PSIG) Water Heating Boilers (Under 6,000,000 BTU/HR Input)",
+          "url": "https://legacy.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2052%2000.01.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 52 00.01",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-235200.02",
+      "number": "23 52 00.02",
+      "title": "LOW PRESSURE (<260 PSIG) WATER HEATING BOILERS (OVER 6,000,000 BTU/HR INPUT)",
+      "edition": "08/26",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "a1cdb25e-d701-4a1b-a860-5c37f93dd67c",
+          "title": "UFGS 23 52 00.02 Low Pressure (<260 PSIG) Water Heating Boilers (Over 6,000,000 BTU/HR Input)",
+          "url": "https://legacy.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2052%2000.02.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 52 00.02",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-235200.03",
+      "number": "23 52 00.03",
+      "title": "STEAM BOILERS AND EQUIPMENT (400,000 - 6,000,000 BTU/HR INPUT)",
+      "edition": "08/26",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "6fdceeb1-9b0e-458a-81bb-ea01ba26ca2b",
+          "title": "UFGS 23 52 00.03 Steam Boilers and Equipment (400,000 - 6,000,000 BTU/HR Input)",
+          "url": "https://legacy.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2052%2000.03.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 52 00.03",
+          "retained_file": ".heleos/notebooklm-expansion-2026-09-14/n10/sample-body-call088.txt",
+          "retained_format": "utf-8 indexed source text",
+          "retained_indexed_body_sha256": "5565a115eb763348441e7f20574e81b16be7b791118fadf99f782ba98db810ab",
+          "retained_character_count": 185219,
+          "retained_header_excerpt": "************************************************************************** USACE / NAVFAC / AFCEC UFGS-23 52 00.03 (August 2026) \n\n------------------------------------Preparing Activity:  NAVFAC Superseding \n\nUFGS-23 52 00 (April 2008) UFGS-23 52 49.00 20 (November 2008) \n\nUNIFIED FACILITIES GUIDE S",
+          "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-235200.04",
+      "number": "23 52 00.04",
+      "title": "STEAM BOILERS AND EQUIPMENT (OVER 6,000,000 BTU/HR) INPUT",
+      "edition": "08/26",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "9cbd6ac4-5a05-4869-9af5-426ed218b025",
+          "title": "UFGS 23 52 00.04 Steam Boilers and Equipment (Over 6,000,000 BTU/HR Input)",
+          "url": "https://legacy.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2052%2000.04.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 52 00.04",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-235230",
+      "number": "23 52 30",
+      "title": "HEAT RECOVERY BOILERS",
+      "edition": "08/26",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "0a00512a-6cf8-40db-b0ae-e2a34ae70e93",
+          "title": "UFGS 23 52 30 Heat Recovery Boilers",
+          "url": "https://legacy.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2052%2030.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 52 30",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-235233.01",
+      "number": "23 52 33.01",
+      "title": "STEAM HEATING PLANT WATERTUBE COAL/OIL OR COAL",
+      "edition": "08/26",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-235233.02",
+      "number": "23 52 33.02",
+      "title": "CENTRAL STEAM GENERATING SYSTEM - COMBINATION GAS AND OIL-FIRED",
+      "edition": "08/26",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "c6e8ce72-761e-4981-bac9-50dd95ee27a6",
+          "title": "UFGS 23 52 33.02 Central Steam Generating System - Combination Gas and Oil-fired",
+          "url": "https://legacy.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2052%2033.02.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 52 33.02",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-235419",
+      "number": "23 54 19",
+      "title": "BUILDING HEATING SYSTEMS, WARM AIR",
+      "edition": "08/21",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "8c835d24-ffb8-45e9-ad05-989cb3338296",
+          "title": "UFGS 23 54 19 Building Heating Systems, Warm Air",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2054%2019.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 54 19",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-235710.00-10",
+      "number": "23 57 10.00 10",
+      "title": "FORCED HOT WATER HEATING SYSTEMS USING WATER AND STEAM HEAT EXCHANGERS",
+      "edition": "11/19",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "6d1fced6-da17-4828-94aa-3420564e5000",
+          "title": "UFGS 23 57 10.00 10 Forced Hot Water Heating Systems Using Water and Steam Heat Exchangers",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2057%2010.00%2010.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 57 10.00 10",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-236300.00",
+      "number": "23 63 00.00",
+      "title": "COLD STORAGE REFRIGERATION SYSTEMS",
+      "edition": "08/22",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "da5f55af-52ea-4ae7-8497-ee21c7e661aa",
+          "title": "UFGS 23 63 00.00 Cold Storage Refrigeration Systems",
+          "url": "https://legacy.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2063%2000.00.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 63 00.00",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-236410",
+      "number": "23 64 10",
+      "title": "WATER CHILLERS, VAPOR COMPRESSION TYPE",
+      "edition": "05/25",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "79a3b106-f7b3-4458-bd91-41ff2cf05914",
+          "title": "UFGS 23 64 10 Water Chillers, Vapor Compression Type",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2064%2010.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 64 10",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-236426",
+      "number": "23 64 26",
+      "title": "CHILLED, CHILLED-HOT, AND CONDENSER WATER PIPING SYSTEMS",
+      "edition": "11/25",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-236500",
+      "number": "23 65 00",
+      "title": "COOLING TOWERS AND REMOTE EVAPORATIVELY-COOLED CONDENSERS",
+      "edition": "05/25",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "aec8d127-1934-4f95-adf2-bf0e7abdd92f",
+          "title": "UFGS 23 65 00 Cooling Towers and Remote Evaporatively-Cooled Condensers",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2065%2000.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 65 00",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-237119",
+      "number": "23 71 19",
+      "title": "THERMAL ENERGY STORAGE SYSTEM: ICE-ON-COIL",
+      "edition": "05/18",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-237200",
+      "number": "23 72 00",
+      "title": "ENERGY RECOVERY SYSTEMS",
+      "edition": "05/24",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-237433",
+      "number": "23 74 33",
+      "title": "DEDICATED OUTDOOR AIR SYSTEMS (DOAS)",
+      "edition": "05/24",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "a149b930-771a-4ab3-97d5-49917de56638",
+          "title": "UFGS 23 74 33 Dedicated Outdoor Air Systems (DOAS)",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2074%2033.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 74 33",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        },
+        {
+          "notebook": "N11",
+          "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+          "source_id": "6bd91b96-ee66-47b8-b46b-a11de182afef",
+          "title": "UFGS 23 74 33 Dedicated Outdoor Air Systems (DOAS)",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2074%2033.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 74 33",
+          "retained_file": ".heleos/notebooklm-expansion-2026-09-14/n11/call-1789396279210-5midudfb-response.json",
+          "retained_format": "JSON: result.content[0].text parsed as JSON, then content",
+          "retained_indexed_body_sha256": "7533f321f90cf95008d4f39d1ab4172cd866f96843ad2d7ba5b3ae61743a2510",
+          "retained_character_count": 158379,
+          "retained_header_excerpt": "************************************************************************** USACE / NAVFAC / AFCEC UFGS-23 74 33 (May 2024) \n\n------------------------------------Preparing Activity:  NAVFAC NEW \n\nUNIFIED FACILITIES GUIDE SPECIFICATIONS \n\nReferences are in agreement with UMRL dated July 2026 *********",
+          "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n11-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-237515",
+      "number": "23 75 15",
+      "title": "CUSTOM-PACKAGED, AIRCRAFT PRE-CONDITIONED AIR UNITS",
+      "edition": "02/20, CHG 1: 05/24",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "b1944158-811c-4a2e-82a4-2cd529304b63",
+          "title": "UFGS 23 75 15 Custom-Packaged, Aircraft Pre-Conditioned Air Units",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2075%2015.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 75 15",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-237600",
+      "number": "23 76 00",
+      "title": "EVAPORATIVE COOLING SYSTEMS",
+      "edition": "08/21",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "762f9eb1-7d9d-40a8-a661-6c3180f1e4fe",
+          "title": "UFGS 23 76 00 Evaporative Cooling Systems",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2076%2000.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 76 00",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-238020.00-10",
+      "number": "23 80 20.00 10",
+      "title": "GAS-FIRED HEATING EQUIPMENT",
+      "edition": "05/20",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-238100",
+      "number": "23 81 00",
+      "title": "DECENTRALIZED UNITARY HVAC EQUIPMENT",
+      "edition": "05/24",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-238123",
+      "number": "23 81 23",
+      "title": "COMPUTER ROOM AIR CONDITIONING UNITS",
+      "edition": "11/20",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-238129",
+      "number": "23 81 29",
+      "title": "VARIABLE REFRIGERANT FLOW HVAC SYSTEMS",
+      "edition": "02/20",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "dfad294b-328d-48a3-8c0e-038f8c8fd546",
+          "title": "UFGS 23 81 29 Variable Refrigerant Flow HVAC Systems",
+          "url": "https://legacy.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2081%2029.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 81 29",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-238147",
+      "number": "23 81 47",
+      "title": "WATER-LOOP AND GROUND-LOOP HEAT PUMP SYSTEMS",
+      "edition": "02/25",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "831890f1-d9b9-43a6-989f-fc3246aaebdb",
+          "title": "UFGS 23 81 47 Water-Loop and Ground-Loop Heat Pump Systems",
+          "url": "https://legacy.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2081%2047.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 81 47",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-238200.00-20",
+      "number": "23 82 00.00 20",
+      "title": "TERMINAL HEATING UNITS",
+      "edition": "02/16, CHG 1: 08/18",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "79fba31d-72e3-4ac4-8cd9-9376a0de316d",
+          "title": "UFGS 23 82 00.00 20 Terminal Heating Units",
+          "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2082%2000.00%2020.pdf",
+          "agency": "UFGS",
+          "guide_number_from_url": "23 82 00.00 20",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-UFGS-238300.00-20",
+      "number": "23 83 00.00 20",
+      "title": "ELECTRIC SPACE HEATING EQUIPMENT",
+      "edition": "04/06",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-UFGS-238419.00",
+      "number": "23 84 19.00",
+      "title": "DESICCANT COOLING SYSTEMS",
+      "edition": "02/18",
+      "register_body_review_state": "title_and_inventory_only; full_section_taxonomy_open",
+      "register_source_id": "UFGS-TOC-2026-08",
+      "register_inventory_url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS_TOC.pdf",
+      "candidates": [],
+      "source_identity_gap": "No exact guide URL identity found among recorded N10/N11 additions; current register inventory identity remains title-only. Do not infer a body URL or CSI parentage."
+    },
+    {
+      "section_id": "D23-VA-230593.01",
+      "number": "23 05 93.01",
+      "title": "DVA/USACE PROJECTS TESTING, ADJUSTING, AND BALANCING FOR HVAC",
+      "edition": "11-01-21",
+      "register_body_review_state": "header_and_selected_source_passages_verified; full_section_taxonomy_open",
+      "register_source_id": "VA-23059301-INDEXED-2026-09-16",
+      "register_inventory_url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2005%2093.01.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "c07ab0a7-e1c5-4653-8ad4-2e3c1e2d2e64",
+          "title": "VA 23 05 93.01  DVA/USACE PROJECTS TESTING, ADJUSTING, AND BALANCING FOR HVAC",
+          "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2005%2093.01.pdf",
+          "agency": "VA",
+          "guide_number_from_url": "23 05 93.01",
+          "retained_file": ".heleos/div23-scope-review-2026-09-16/source-4.txt",
+          "retained_format": "utf-8 indexed source text",
+          "retained_indexed_body_sha256": "1ac1acf3735df450e61f9f8e5c1c357537d2cd7dc758e38b73f84b2ea4d47d51",
+          "retained_character_count": 25787,
+          "retained_header_excerpt": "11-01-21 \n\n \n\nSECTION 23 05 93.01 \n\nDVA/USACE PROJECTS TESTING, ADJUSTING, AND BALANCING FOR HVAC \n\nSPEC WRITER NOTES: \n\n   For Projects with USACE as the Design \n\nand/or Construction agent, use this \n\nspecification section 23 05 93.01 in \n\nlieu of specification section 23 05 \n\n93. Also, coordinate ",
+          "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+          "existing_verification_records": [
+            {
+              "path": "docs/research/notebooklm/div23-scope-review-findings-2026-09-16.json",
+              "finding_id": "MS-S7"
+            },
+            {
+              "path": "docs/research/notebooklm/div23-scope-review-findings-2026-09-16.json",
+              "finding_id": "MS-S8"
+            },
+            {
+              "path": "docs/plans/division-23-section-register.json",
+              "source_record_id": "VA-23059301-INDEXED-2026-09-16",
+              "verification": "Exact header read; source-backed substitution/service findings MS-S7/MS-S8 reused. Substitution is not CSI hierarchical parentage."
+            }
+          ],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-VA-230923",
+      "number": "23 09 23",
+      "title": "DIRECT-DIGITAL CONTROL SYSTEM FOR HVAC",
+      "edition": "03-01-23",
+      "register_body_review_state": "header_and_selected_source_passages_verified; full_section_taxonomy_open",
+      "register_source_id": "VA-230923-INDEXED-2026-09-16",
+      "register_inventory_url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2009%2023.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "321f5bbc-3f0c-4057-8036-47ffc7a7bea3",
+          "title": "VA 23 09 23 Direct-Digital Control System for HVAC",
+          "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2009%2023.pdf",
+          "agency": "VA",
+          "guide_number_from_url": "23 09 23",
+          "retained_file": ".heleos/div23-scope-review-2026-09-16/source-2.txt",
+          "retained_format": "utf-8 indexed source text",
+          "retained_indexed_body_sha256": "a8e5d22c9cfb3e33b37cb6bb32bf5e3a19bdf5f527abcca1258102958893dbf6",
+          "retained_character_count": 164775,
+          "retained_header_excerpt": "03-01-23 \n\n \n\nSECTION 23 09 23 \n\nDIRECT-DIGITAL CONTROL SYSTEM FOR HVAC \n\n \n\nGENERAL NOTES:  \n\n1. The AE shall research the local \n\npractices not only with respect to \n\ncommunication protocol and allowed \n\nvendors, and integrators, but also \n\nwith respect to local practices with \n\nregard to control ",
+          "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+          "existing_verification_records": [
+            {
+              "path": "docs/research/notebooklm/div23-scope-review-findings-2026-09-16.json",
+              "finding_id": "MS-S3"
+            },
+            {
+              "path": "docs/research/notebooklm/div23-scope-review-findings-2026-09-16.json",
+              "finding_id": "MS-S4"
+            },
+            {
+              "path": "docs/plans/division-23-section-register.json",
+              "source_record_id": "VA-230923-INDEXED-2026-09-16",
+              "verification": "Exact edition/number/title header read; selected responsibility and service passages reuse verified MS-S3/MS-S4, not a complete taxonomy."
+            }
+          ],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-VA-232113",
+      "number": "23 21 13",
+      "title": "HYDRONIC PIPING",
+      "edition": "03-01-23",
+      "register_body_review_state": "full_retained_body_read_and_37_headings_verified; normalized_taxonomy_and_product_acceptance_open",
+      "register_source_id": "VA-232113-INDEXED-2026-09-16",
+      "register_inventory_url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2021%2013.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "0c32c752-88ab-47b1-8d4b-204f7c814f53",
+          "title": "VA 23 21 13 HYDRONIC PIPING",
+          "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2021%2013.pdf",
+          "agency": "VA",
+          "guide_number_from_url": "23 21 13",
+          "retained_file": ".heleos/div23-scope-review-2026-09-16/source-1.txt",
+          "retained_format": "utf-8 indexed source text",
+          "retained_indexed_body_sha256": "acfe2927e09697d9c3d43f07725bccc8802e4787ad77f5ca17abb6cbab46d31f",
+          "retained_character_count": 52297,
+          "retained_header_excerpt": "03-01-23 \n\n \n\nSECTION 23 21 13 \n\nHYDRONIC PIPING \n\n \n\nSPEC WRITER NOTES: \n\n1. Delete between //-- --// if not \n\napplicable to project. Also delete any \n\nother item or paragraph not applicable \n\nin the Section and renumber the \n\nparagraphs. \n\n2. References to pressure in this section \n\nare gauge pres",
+          "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+          "existing_verification_records": [
+            {
+              "path": "docs/research/notebooklm/div23-scope-review-findings-2026-09-16.json",
+              "finding_id": "MS-S1"
+            },
+            {
+              "path": "docs/research/notebooklm/div23-scope-review-findings-2026-09-16.json",
+              "finding_id": "MS-S2"
+            },
+            {
+              "path": "docs/plans/division-23-section-register.json",
+              "source_record_id": "VA-232113-INDEXED-2026-09-16",
+              "verification": "Retained body read directly; all 37 numbered headings match exact raw source. Normalized taxon inventory, project adoption and numeric rule authority remain open."
+            }
+          ],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    },
+    {
+      "section_id": "D23-VA-233600",
+      "number": "23 36 00",
+      "title": "AIR TERMINAL UNITS",
+      "edition": "03-01-23",
+      "register_body_review_state": "header_and_selected_source_passages_verified; full_section_taxonomy_open",
+      "register_source_id": "VA-233600-PDF-2026-09-16",
+      "register_inventory_url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2036%2000.pdf",
+      "candidates": [
+        {
+          "notebook": "N10",
+          "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+          "source_id": "1da4d3ea-7fa9-484a-bcdc-15b4e50b90dd",
+          "title": "VA 23 36 00 AIR TERMINAL UNITS",
+          "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2036%2000.pdf",
+          "agency": "VA",
+          "guide_number_from_url": "23 36 00",
+          "retained_file": null,
+          "retained_format": null,
+          "retained_indexed_body_sha256": null,
+          "retained_character_count": null,
+          "retained_header_excerpt": null,
+          "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+          "existing_verification_records": [],
+          "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+        },
+        {
+          "notebook": "N11",
+          "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+          "source_id": "39f7afb0-4319-45a3-a467-82629aa67a0c",
+          "title": "VA 23 36 00 Air Terminal Units",
+          "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2036%2000.pdf",
+          "agency": "VA",
+          "guide_number_from_url": "23 36 00",
+          "retained_file": ".heleos/notebooklm-expansion-2026-09-14/n11/call-1789395972903-3kbchhu5-response.json",
+          "retained_format": "JSON: result.content[0].text parsed as JSON, then content",
+          "retained_indexed_body_sha256": "a83abc586fd7900cb5a75fcfc70fb08df650361863a99616428ca5fab7d8ba8b",
+          "retained_character_count": 20673,
+          "retained_header_excerpt": "03-01-23 \n\n \n\nSECTION 23 36 00 \n\nAIR TERMINAL UNITS \n\n \n\nSPEC WRITER NOTES: \n\n1. Delete between // --- // if not \n\napplicable to project. Also delete any \n\nother item or paragraph not applicable \n\nin the Section and renumber the \n\nparagraph. \n\n2. References to pressure in this section \n\nare gauge pr",
+          "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+          "existing_verification_records": [
+            {
+              "path": "docs/research/notebooklm/div23-scope-findings-2026-09-16.json",
+              "finding_id": "D23-S1"
+            }
+          ],
+          "inventory_record": "docs/research/notebooklm/expansion-n11-2026-09-14.json"
+        }
+      ],
+      "source_identity_gap": null
+    }
+  ],
+  "recommended_single_notebook_query": {
+    "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+    "sources": [
+      {
+        "notebook": "N10",
+        "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+        "source_id": "c07ab0a7-e1c5-4653-8ad4-2e3c1e2d2e64",
+        "title": "VA 23 05 93.01  DVA/USACE PROJECTS TESTING, ADJUSTING, AND BALANCING FOR HVAC",
+        "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2005%2093.01.pdf",
+        "agency": "VA",
+        "guide_number_from_url": "23 05 93.01",
+        "retained_file": ".heleos/div23-scope-review-2026-09-16/source-4.txt",
+        "retained_format": "utf-8 indexed source text",
+        "retained_indexed_body_sha256": "1ac1acf3735df450e61f9f8e5c1c357537d2cd7dc758e38b73f84b2ea4d47d51",
+        "retained_character_count": 25787,
+        "retained_header_excerpt": "11-01-21 \n\n \n\nSECTION 23 05 93.01 \n\nDVA/USACE PROJECTS TESTING, ADJUSTING, AND BALANCING FOR HVAC \n\nSPEC WRITER NOTES: \n\n   For Projects with USACE as the Design \n\nand/or Construction agent, use this \n\nspecification section 23 05 93.01 in \n\nlieu of specification section 23 05 \n\n93. Also, coordinate ",
+        "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+        "existing_verification_records": [
+          {
+            "path": "docs/research/notebooklm/div23-scope-review-findings-2026-09-16.json",
+            "finding_id": "MS-S7"
+          },
+          {
+            "path": "docs/research/notebooklm/div23-scope-review-findings-2026-09-16.json",
+            "finding_id": "MS-S8"
+          },
+          {
+            "path": "docs/plans/division-23-section-register.json",
+            "source_record_id": "VA-23059301-INDEXED-2026-09-16",
+            "verification": "Exact header read; source-backed substitution/service findings MS-S7/MS-S8 reused. Substitution is not CSI hierarchical parentage."
+          }
+        ],
+        "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+      },
+      {
+        "notebook": "N10",
+        "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+        "source_id": "321f5bbc-3f0c-4057-8036-47ffc7a7bea3",
+        "title": "VA 23 09 23 Direct-Digital Control System for HVAC",
+        "url": "https://www.wbdg.org/FFC/VA/VAASC/VA%2023%2009%2023.pdf",
+        "agency": "VA",
+        "guide_number_from_url": "23 09 23",
+        "retained_file": ".heleos/div23-scope-review-2026-09-16/source-2.txt",
+        "retained_format": "utf-8 indexed source text",
+        "retained_indexed_body_sha256": "a8e5d22c9cfb3e33b37cb6bb32bf5e3a19bdf5f527abcca1258102958893dbf6",
+        "retained_character_count": 164775,
+        "retained_header_excerpt": "03-01-23 \n\n \n\nSECTION 23 09 23 \n\nDIRECT-DIGITAL CONTROL SYSTEM FOR HVAC \n\n \n\nGENERAL NOTES:  \n\n1. The AE shall research the local \n\npractices not only with respect to \n\ncommunication protocol and allowed \n\nvendors, and integrators, but also \n\nwith respect to local practices with \n\nregard to control ",
+        "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+        "existing_verification_records": [
+          {
+            "path": "docs/research/notebooklm/div23-scope-review-findings-2026-09-16.json",
+            "finding_id": "MS-S3"
+          },
+          {
+            "path": "docs/research/notebooklm/div23-scope-review-findings-2026-09-16.json",
+            "finding_id": "MS-S4"
+          },
+          {
+            "path": "docs/plans/division-23-section-register.json",
+            "source_record_id": "VA-230923-INDEXED-2026-09-16",
+            "verification": "Exact edition/number/title header read; selected responsibility and service passages reuse verified MS-S3/MS-S4, not a complete taxonomy."
+          }
+        ],
+        "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+      },
+      {
+        "notebook": "N10",
+        "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+        "source_id": "190f51a5-f4e9-49e1-b8f3-4b9178b277d4",
+        "title": "UFGS 23 05 15 Common Piping for HVAC",
+        "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2005%2015.pdf",
+        "agency": "UFGS",
+        "guide_number_from_url": "23 05 15",
+        "retained_file": null,
+        "retained_format": null,
+        "retained_indexed_body_sha256": null,
+        "retained_character_count": null,
+        "retained_header_excerpt": null,
+        "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+        "existing_verification_records": [],
+        "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+      },
+      {
+        "notebook": "N10",
+        "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+        "source_id": "bf2f97c3-4c90-453c-81ac-c5b470085806",
+        "title": "UFGS 23 07 00 Thermal Insulation for Mechanical Systems",
+        "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2007%2000.pdf",
+        "agency": "UFGS",
+        "guide_number_from_url": "23 07 00",
+        "retained_file": ".heleos/div23-scope-review-2026-09-16/source-3.txt",
+        "retained_format": "utf-8 indexed source text",
+        "retained_indexed_body_sha256": "d08bc1bcfa73ec499706576e66bfd6adcc1266224608715f2f02d78f01fad6df",
+        "retained_character_count": 283117,
+        "retained_header_excerpt": "************************************************************************** USACE / NAVFAC / AFCEC UFGS-23 07 00 (August 2024) \n\n------------------------------------\n\nPreparing Activity:  USACE Superseding UFGS-23 07 00 (February 2013) \n\nUNIFIED FACILITIES GUIDE SPECIFICATIONS \n\nReferences are in agr",
+        "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+        "existing_verification_records": [
+          {
+            "path": "docs/research/notebooklm/div23-scope-review-findings-2026-09-16.json",
+            "finding_id": "MS-S5"
+          },
+          {
+            "path": "docs/research/notebooklm/div23-scope-review-findings-2026-09-16.json",
+            "finding_id": "MS-S6"
+          },
+          {
+            "path": "docs/plans/division-23-section-register.json",
+            "source_record_id": "UFGS-230700-INDEXED-2026-09-16",
+            "verification": "Exact header read; source-backed field/factory insulation and optional timing findings MS-S5/MS-S6 reused. Earlier retrieved source hashes in scope findings are distinct snapshots; unchanged bytes not assumed."
+          }
+        ],
+        "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+      },
+      {
+        "notebook": "N10",
+        "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+        "source_id": "6fdceeb1-9b0e-458a-81bb-ea01ba26ca2b",
+        "title": "UFGS 23 52 00.03 Steam Boilers and Equipment (400,000 - 6,000,000 BTU/HR Input)",
+        "url": "https://legacy.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2052%2000.03.pdf",
+        "agency": "UFGS",
+        "guide_number_from_url": "23 52 00.03",
+        "retained_file": ".heleos/notebooklm-expansion-2026-09-14/n10/sample-body-call088.txt",
+        "retained_format": "utf-8 indexed source text",
+        "retained_indexed_body_sha256": "5565a115eb763348441e7f20574e81b16be7b791118fadf99f782ba98db810ab",
+        "retained_character_count": 185219,
+        "retained_header_excerpt": "************************************************************************** USACE / NAVFAC / AFCEC UFGS-23 52 00.03 (August 2026) \n\n------------------------------------Preparing Activity:  NAVFAC Superseding \n\nUFGS-23 52 00 (April 2008) UFGS-23 52 49.00 20 (November 2008) \n\nUNIFIED FACILITIES GUIDE S",
+        "body_header_edition_caveat": "Retained indexed body exists; reconcile displayed header/edition and scoped passages before adoption. This is not a complete taxonomy verification.",
+        "existing_verification_records": [],
+        "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+      },
+      {
+        "notebook": "N10",
+        "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+        "source_id": "79a3b106-f7b3-4458-bd91-41ff2cf05914",
+        "title": "UFGS 23 64 10 Water Chillers, Vapor Compression Type",
+        "url": "https://www.wbdg.org/FFC/DOD/UFGS/UFGS%2023%2064%2010.pdf",
+        "agency": "UFGS",
+        "guide_number_from_url": "23 64 10",
+        "retained_file": null,
+        "retained_format": null,
+        "retained_indexed_body_sha256": null,
+        "retained_character_count": null,
+        "retained_header_excerpt": null,
+        "body_header_edition_caveat": "Expansion inventory records a ready source, not body/edition verification. Retrieve supporting text before new mechanical claims.",
+        "existing_verification_records": [],
+        "inventory_record": "docs/research/notebooklm/expansion-n10-2026-09-14.json"
+      }
+    ],
+    "purpose": "One bounded cross-family planning query covering TAB services, controls, common piping, insulation, steam plant equipment and chillers; no scheduling or priority implication.",
+    "question": "Across these six public guides, identify the explicit source-scope families, variants/attributes, assembly and cross-section responsibility boundaries, optional/excluded work, and non-material service/report obligations that a section completion contract must cover. Give paragraph locators and brief supporting passages for each. Distinguish source requirements from estimator choices; do not infer quantities, default allowances, software accuracy thresholds, or CSI parentage. Identify unanswered source-scope questions.",
+    "verification_action": "Read the cited supporting indexed source text; reuse retained matching bodies above. Common Piping and Water Chillers lack a retained body in this map, so retrieve their source text before relying on claims."
+  },
+  "unregistered_va23_candidate_count": 44,
+  "followup_inventory_note": "Additional VA Division23 guide candidates exist in expansion records and belong to VA inventory completion, not silently substituted into the current56-row scope. One metadata title calls source b32117da-9ff3-4bad-bdde-8d7b31cd43db VA23 05 11 although URL is VA23 05 10; verify header before admission.",
+  "verification": "All56 IDs align with register; each candidate source ID/URL occurs in its recorded inventory; each URL number matches the exact guide identity; 13 retained body instances across11 rows match their recorded indexed-text SHA256. Header/body completeness and project adoption remain per-section DEFINE work."
+}

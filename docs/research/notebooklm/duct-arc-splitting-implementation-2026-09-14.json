@@ -1,0 +1,401 @@
+{
+  "schema_version": 1,
+  "task_id": "DUCT-ARC-SPLITTING-1",
+  "recorded_at": "2026-09-14T16:07:40.408538+00:00",
+  "status": "Implementation finished, independently reviewed and locally integrated uncommitted; native Mac original-source and separate package verified",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_head": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "authority": "Approved D03/D06; original rules, examples, D05 conflicts and D07 stored-meter aggregation preserved. Full Division23 Mac/Windows goal remains active.",
+  "research": {
+    "findings": {
+      "path": "docs/research/notebooklm/duct-arc-splitting-findings-2026-09-14.json",
+      "sha256": "c8275ad08c368df28ac7ceb74cd7c4fcb428819a823d9c5a1f7bb931b126ab0d"
+    },
+    "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+    "inventory": {
+      "path": "docs/research/notebooklm/expansion-n05-2026-09-14.json",
+      "sha256": "0cc9680fb4cc6168a05d2913f2cd77f42592eab0fb7554013adff26a280146ac",
+      "selected_ids_verified_present": [
+        "457f0d9c-d900-45cb-8b40-9a8a8a5d8101",
+        "fb38a435-ce85-408f-afe4-2a9384877bc5"
+      ],
+      "full_inventory_repeated": false
+    },
+    "sources": {
+      "openstax": {
+        "source_id": "457f0d9c-d900-45cb-8b40-9a8a8a5d8101",
+        "url": "https://openstax.org/books/precalculus-2e/pages/5-1-angles",
+        "title": "5.1 Angles - Precalculus 2e | OpenStax",
+        "edition": "Precalculus 2e",
+        "publication_date": "2021-12-21",
+        "response": "research-call-03-response.json",
+        "indexed_text_path": ".heleos/duct-circular-arc-2026-09-14/research-openstax-indexed-text.txt",
+        "indexed_text_sha256": "a4c5869bbfd4af70a5213de07282287817bbbc83bfca72a474be744deb4228d8",
+        "response_sha256": "ec1fbb7bf005e8c390fa7158d969d29852d5cdd66a641aa5004d00d57127e4a6",
+        "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+        "pagination": null
+      },
+      "ezdxf": {
+        "source_id": "fb38a435-ce85-408f-afe4-2a9384877bc5",
+        "url": "https://ezdxf.readthedocs.io/en/stable/math/core.html",
+        "title": "Core \u2014 ezdxf 1.4.4 documentation",
+        "edition": "1.4.4",
+        "publication_date": null,
+        "response": "research-call-04-response.json",
+        "indexed_text_path": ".heleos/duct-circular-arc-2026-09-14/research-ezdxf-indexed-text.txt",
+        "indexed_text_sha256": "76097f9285913dcb66d9a046a774ed158811c98abe857d9ce52427843e869109",
+        "response_sha256": "f3e1cee2fd57751f614825280219e45f98aad47e0882800c327828892182fc7b",
+        "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+        "pagination": null
+      }
+    },
+    "query": {
+      "status": "terminal_success",
+      "conversation_id": "d2778d33-20a5-41bc-9cf4-0ed3240e0f63",
+      "selected_source_ids": [
+        "457f0d9c-d900-45cb-8b40-9a8a8a5d8101",
+        "fb38a435-ce85-408f-afe4-2a9384877bc5"
+      ],
+      "request": ".heleos/duct-arc-splitting-2026-09-14/research-call-01-before.json",
+      "request_sha256": "e3b1267ecfad2dc84a91148fc10e371a121f7ac47842dee9738bb87722bf1cf4",
+      "response": ".heleos/duct-arc-splitting-2026-09-14/research-call-01-after.json",
+      "response_sha256": "0eee948f60810d94445765212ef1324ea3ede2f992e6470e68b7f639d113efb0",
+      "answer_sha256": "64e17b0608fdcf2338476b186d3d60026000ccb2475f3e805e900d8653f759e0",
+      "authority": "Untrusted generated synthesis; independently checked claims and rejected overclaims below."
+    },
+    "verified_passages": {
+      "path": ".heleos/duct-arc-splitting-2026-09-14/research-verified-passages.json",
+      "sha256": "fc5acf183d963032a919afc9e9d872f0382dc2e31058059e2dc9cc02bc33348f"
+    },
+    "adoption_before_implementation": {
+      "path": ".heleos/duct-arc-splitting-2026-09-14/root-source-adoption-before-implementation.json",
+      "sha256": "518b40cb793c5a16300f239ad44b760196afc10ea9d57e3ab2e571ba9cc7c40e"
+    },
+    "egress": {
+      "path": ".heleos/duct-arc-splitting-2026-09-14/research-egress.jsonl",
+      "sha256": "7949f77f1b28a337294152c6949f29958d46a9ed1f61ef7b02f0b1dbd4d38177"
+    },
+    "queries": 1,
+    "before_after_pairs": 1,
+    "reused_bodies": 2,
+    "new_bodies": 0,
+    "new_sources": 0,
+    "private_uploads": 0,
+    "reuse_limit": "Two retained indexed bodies, no new publisher-freshness claim. Eleven exact selected body/span hashes rechecked. Generated equal-spacing/through-point/failure/tolerance claims remain rejected."
+  },
+  "frozen_plan": {
+    "path": "docs/superpowers/plans/2026-09-14-duct-arc-splitting.md",
+    "sha256": "a6388304174a008a9a141a4c18af7f9df6e4247afa89a5685ed53fdcf44e0fbc"
+  },
+  "observation_contract": {
+    "path": "docs/superpowers/specs/2026-09-14-duct-observation-contract.md",
+    "sha256": "48ec3638249b4e8c6b68d7b5d3ab2582bf96a10948466798ad727ed141c98d1c"
+  },
+  "source_to_behavior_and_tests": [
+    {
+      "passages": [
+        "AS01",
+        "AS02",
+        "AS03",
+        "AS04",
+        "AS05",
+        "AS06"
+      ],
+      "behavior": "Retain original circle/direction; exact ordered radial partitions and outward interval length certificates; sum independently stored meters without residual allocation. Additivity is a deduction with fixed radius and consecutive monotone intervals.",
+      "code": [
+        {
+          "path": "scripts/duct_arc_geometry.py",
+          "sha256": "0ba0575615f891487570d15ed1f72b906ae17fa1a8f9f03885737d1ba01aa869"
+        },
+        {
+          "path": "scripts/sheet_scale.py",
+          "sha256": "8ea9efffa570d162e8335507b843cf40814eb00f33984710b2c4bcf2bca57c74"
+        },
+        {
+          "path": "scripts/duct_calculation.py",
+          "sha256": "05586f0700453393711039f962f779c1c0d3d18db76d29a8eaf7169921ccdcdf"
+        }
+      ],
+      "tests": [
+        {
+          "path": "tests/drawing-workspace/test_duct_arc_spans.py",
+          "sha256": "8ae44ba374f12be39c112e2b87056f10a7cee7656e53e2a33767ed1d61719d5b"
+        },
+        {
+          "path": "tests/drawing-workspace/test_duct_arc_split.py",
+          "sha256": "67e8c12366bf6cc7a968509ce9f64d591d38bd18f9cc4baf1e9cf0e250a7598c"
+        },
+        {
+          "path": "tests/drawing-workspace/test_duct_arc_split_source_contract.py",
+          "sha256": "64bd8e9386746dab777d4e9765f09309966e47c45a06e4df2d460bf3c89dabc0"
+        }
+      ]
+    },
+    {
+      "passages": [
+        "AS07",
+        "AS08",
+        "AS09",
+        "AS10",
+        "AS11"
+      ],
+      "behavior": "Keep orientation/extent explicit; actual ray/circle boundary evidence; no chord flattening, endpoint refitting or generated library guarantees. UI approximate drawing and source picking never become stored quantity authority.",
+      "code": [
+        {
+          "path": "scripts/project_duct_takeoff.py",
+          "sha256": "4f4903afa6a255732e68fc4eaef277b26de3fc205b63a4e8253f3f0e455861cb"
+        },
+        {
+          "path": "apps/drawing-workspace/path_editor.js",
+          "sha256": "91ad29b7330c62db94f2aaa71850131991412ca984752b9a7b403869dbfdd97b"
+        },
+        {
+          "path": "apps/drawing-workspace/app.js",
+          "sha256": "3124ab50ecd6cdd4c45d4d165a382b30ec394830cb3ecfe3f11d57beab3a2245"
+        },
+        {
+          "path": "apps/drawing-workspace/ducts.js",
+          "sha256": "1f075544051fb12d8c3d143acc6873d856598a3d7f1828120ba3df7492df16d6"
+        }
+      ],
+      "tests": [
+        {
+          "path": "tests/drawing-workspace/path-editor.test.cjs",
+          "sha256": "13c634f9b7fc31c8d17cfbfa6ebfa002aba3a62ff2ca3db1c80e3b39d1e2833a"
+        },
+        {
+          "path": "tests/drawing-workspace/duct-ui.test.cjs",
+          "sha256": "ff7f88b663c8eaa67dcfd11a9fa260c1540d9a7be35b9a8e350cd8e5ea263090"
+        },
+        {
+          "path": "tests/drawing-workspace/verify_duct_arc_split_native.py",
+          "sha256": "f875303fadf5ff9d8305d52086f62e20e0afdf7b9685e84427267a639314520f"
+        }
+      ]
+    },
+    {
+      "passages": [
+        "Existing owner D03,D05,D06,D07,D08 and retained source-context findings; no new mechanical rule"
+      ],
+      "behavior": "Root/nested lineage, retained separate parent whole-length/radius checks, source graphic repair, exact interval rereads, affected recalculation, source/raw-response history and draft ZIP/reopen.",
+      "code": [
+        {
+          "path": "scripts/project_duct_refresh.py",
+          "sha256": "b97d58c570e570f4db4610a0daef23e54c41fc42e3c2c0ce5cf486a4f3fa36bb"
+        },
+        {
+          "path": "scripts/project_duct_reading_links.py",
+          "sha256": "44f06592228ca3f821024463490c7e6137caf2d38b59dab4dd42db25949b79a9"
+        },
+        {
+          "path": "scripts/project_duct_revision.py",
+          "sha256": "f4c53c51cb4ca0cc505a871f2402c63bad65b9d7ccdc179d3713e12c43c152e1"
+        }
+      ],
+      "tests": [
+        {
+          "path": "tests/drawing-workspace/test_duct_arc_split.py",
+          "sha256": "67e8c12366bf6cc7a968509ce9f64d591d38bd18f9cc4baf1e9cf0e250a7598c"
+        },
+        {
+          "path": "tests/drawing-workspace/test_duct_circular_arc.py",
+          "sha256": "75b308fbe93921ec9764c0db443722f66e2073993635aafe4311b0c5590101b9"
+        },
+        {
+          "path": "tests/drawing-workspace/verify_duct_arc_split_native.py",
+          "sha256": "f875303fadf5ff9d8305d52086f62e20e0afdf7b9685e84427267a639314520f"
+        }
+      ]
+    }
+  ],
+  "source_adoption_limits": [
+    "The sources do not certify the numerical, rectangle coverage, lineage or transaction algorithms; independent implementation probes are required.",
+    "D05 source conflicts and unsupported constructor/equal-spacing/tolerance claims remain rejected.",
+    "Actual source parsers inform UI coordinate compatibility; no mechanical requirements are inferred from parsing behavior."
+  ],
+  "integrated_inputs": {
+    "path": ".heleos/duct-arc-splitting-2026-09-14/root-integrated-freeze.json",
+    "sha256": "0742a754d7fd26164278d5faead8584106a5ba36de6fe8e5758822bc2cfc1b06"
+  },
+  "verification": {
+    "python": [
+      {
+        "receipt": {
+          "path": ".heleos/duct-arc-splitting-2026-09-14/root-python314-final.json",
+          "sha256": "08444fb09a405899722965c210049bcd76c802ef2a305bf2112c72ac9fdafe98"
+        },
+        "runtime": "3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 21.0.0 (clang-2100.0.123.102)]",
+        "command": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          ".heleos/duct-arc-splitting-2026-09-14/root-final-checks.py",
+          "--output",
+          "root-python314-final.json"
+        ],
+        "tests": 442,
+        "elapsed_seconds": 599.1063632499427,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "exit_code": 0,
+        "stable_bytes": true
+      },
+      {
+        "receipt": {
+          "path": ".heleos/duct-arc-splitting-2026-09-14/root-python39-final.json",
+          "sha256": "4619e8caa05a8521c60740ade2504c1574b96eae7673af311d53f3d64e35430a"
+        },
+        "runtime": "3.9.6 (default, May 22 2026, 11:13:45) \n[Clang 21.0.0 (clang-2100.1.1.101)]",
+        "command": [
+          "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+          "-B",
+          ".heleos/duct-arc-splitting-2026-09-14/root-final-checks.py",
+          "--output",
+          "root-python39-final.json"
+        ],
+        "tests": 442,
+        "elapsed_seconds": 472.437465958,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "exit_code": 0,
+        "stable_bytes": true
+      }
+    ],
+    "ui": {
+      "receipt": {
+        "path": ".heleos/duct-arc-splitting-2026-09-14/root-ui-result.json",
+        "sha256": "d4efc71b68efacc77eb86ba9c699605f054563d567d3a06380a250640ea13c71"
+      },
+      "tests": 118,
+      "pass": 118,
+      "exit_code": 0
+    },
+    "geometry_review": {
+      "path": ".heleos/duct-arc-splitting-2026-09-14/root-geometry-review-verification.json",
+      "sha256": "7b6f3c6242464dce96c80936921a07374155140ac24f001362c1e2659ba86dd0"
+    },
+    "engine_review": {
+      "path": ".heleos/duct-arc-splitting-2026-09-14/root-engine-review-verification.json",
+      "sha256": "2d46580ca65b963b65f8e831f4a26fd9bdc10b744e26a2ab192eee1b405d4131"
+    },
+    "ui_review": {
+      "path": ".heleos/duct-arc-splitting-2026-09-14/root-ui-review-verification.json",
+      "sha256": "f7b5d2dfa1a38362f9e81472d1100839dc509390ea9871a06e76ba1da7284dbc"
+    },
+    "native_mac": {
+      "receipt": {
+        "path": ".heleos/duct-arc-splitting-native-2026-09-14-attempt-1/duct-arc-split-verification.json",
+        "sha256": "9f3efe5e1379710e12314110712e8852001fe2cf01923df761e6883d26741963"
+      },
+      "root_artifact_verification": {
+        "path": ".heleos/duct-arc-splitting-2026-09-14/root-native-artifact-verification.json",
+        "sha256": "f0f41c8839491020f7aa6560875a3e49855b1a612730fc324889c76c871ecf0f"
+      },
+      "execution": {
+        "path": ".heleos/duct-arc-splitting-2026-09-14/root-native-result.json",
+        "sha256": "50f8c313c5435e251bcfa1da9e5fa080c47c63434780996f1219e7ef0136fc12"
+      },
+      "checks": [
+        "unknown_parent_sizes_known_physical_lengths_and_idempotent_prepare",
+        "ordinary_quarter_and_major_boundary_splits_preserve_unsplit_mixed_size_unknown",
+        "tagged_nested_refresh_rejects_wider_whole_and_preserves_original_outer_obligations",
+        "retained_parent_radius_and_whole_conflict_recovery_propagates_only_to_its_leaves",
+        "generic_group_and_source_evidence_edits_preserve_locked_arc_span_rays",
+        "parent_graphic_withdrawal_and_captured_source_repair_preserve_child_and_historical_evidence",
+        "tagged_one_to_one_preserves_exact_interval_parent_checks_and_constraint_membership",
+        "affected_recalculation_draft_zip_and_reopen_preserve_all_generations_producers_and_events",
+        "separate_nonsquare_rotate90_page_preserves_boundary_and_literal_quarter_children"
+      ],
+      "source": {
+        "path": "output/pdf/original-duct-arc-size-changes.pdf",
+        "sha256": "d316d454d7b9f6bfd47cbaf3b7008a1dc0bbbbb90deee6bc6cda088209923550"
+      },
+      "truth": {
+        "path": "tests/fixtures/duct-takeoff/arc-split-expected.json",
+        "sha256": "28824145a715ff71cde31b9b627fdc110e2a6ca24566588ac96e0f3becd51018"
+      },
+      "source_visual_inspection": [
+        {
+          "path": ".heleos/duct-arc-splitting-2026-09-14/root-native-visual-page0.json",
+          "sha256": "4baede3454bcf9887f67695ea2b57cf804dcdcd5cd57e335769d932d131f7c1a"
+        },
+        {
+          "path": ".heleos/duct-arc-splitting-2026-09-14/root-native-visual-page1.json",
+          "sha256": "fd75258723ac5d107d29c060bd3a34eaa00ca8ca6bab469a1fc15b11575424a6"
+        }
+      ],
+      "known_stored_meters": "7.660458",
+      "known_subtotal_ft": "25.13",
+      "limits": "Original synthetic two-page source with inert v2 transport and actual Foundation/Poppler. No representative-project accuracy, live model or listener. Rotated repeated Q1 tested in a separate project."
+    },
+    "package": {
+      "receipt": {
+        "path": ".heleos/duct-arc-splitting-2026-09-14/root-package-verification.json",
+        "sha256": "079e6cfbe4133198c60d6c6ed19e4c1d43f6f6726dac694c99847d9011328853"
+      },
+      "package_id": "workspace_1f6cfbce6623e907d6a06b4d5628b2ae8a862a19e024d1dc4ad910440e5ec9bf",
+      "payload_count": 53,
+      "archive": {
+        "path": "output/workspace-package/Heleos-preview-arc-splitting-candidate.zip",
+        "bytes": 1450834,
+        "sha256": "e3367774356461d2bca657b911a116f4abab1ca8f0ff96574fdc73a465b62845"
+      }
+    }
+  },
+  "review_corrections": [
+    {
+      "UI-R01": "Original decimal-string root controls are retained in immutable geometry; arc_split request.points=[] passes actual panel to real editor.",
+      "UI-R02": "Both root controls and source cut points now invert source transform, apply Context34 and signed PDF HALF_EVEN, then transform forward. Unchanged root/cut reproductions plus24 actual source-coordinate variants pass.",
+      "UI-R04": "Bounded Unicode decimal digit display normalization supports actual admitted Arabic/fullwidth/supplementary/Devanagari and exponent-digit controls, counts source codepoints, and preserves raw root/span controls."
+    },
+    {
+      "status": "original admitted-observation impact statement withdrawn; sheet-coordinate compatibility only",
+      "original_overstatement_preserved_in": "ui-review-findings.json and ui-review-handoff-1.json",
+      "verified_actual_boundaries": "duct_calculation._path->_number accepts80characters/exponent40;sheet_geometry accepts128characters/exponent1000. Actual core rejects1e-100; coordinate API accepts it.",
+      "result": "Broader preview compatibility cases pass, while source/Python admission is unchanged. No physical quantity or admitted-observation fix is claimed forR03."
+    }
+  ],
+  "preserved": [
+    {
+      "path": "output/workspace-package/Heleos-preview-circular-arc-candidate.zip",
+      "sha256": "075ea46a98c1436272dd579f218d9499f2afd0213813e6cb986f666ae52eb769",
+      "folder_matches_retained_archive": true
+    },
+    {
+      "path": "output/workspace-package/Heleos-preview.zip",
+      "sha256": "7c72ba4363d7adb534a0b2780225ca546a74b5ca45dbf9bb72e781c3d7b4203a",
+      "folder_matches_retained_archive": true
+    },
+    {
+      "path": "output/workspace-package/Heleos-preview-windows-cleanup-candidate.zip",
+      "sha256": "4ea32824f22b2a128d6bbff4941d0fe7484086a1b0d1fe7af12d7e1a27675b7c",
+      "folder_matches_retained_archive": true
+    },
+    {
+      "path": "scripts/local_duct_vision.py",
+      "sha256": "5b3d6e4f3a8fd3a8a8c4be0ed31e5fd3077ca6afecd2cf0c42dab658625a33a9"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+      "sha256": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6"
+    },
+    {
+      "path": "outputs/01a09d78-e467-7a61-99ba-be72b8f49910/duct-takeoff-review.xlsx",
+      "sha256": "0b2f113205013082f8dc81026d9fe889ceb05b2dce618055992a4d377032c544"
+    },
+    {
+      "path": "output/pdf/duct-takeoff-evidence-review.pdf",
+      "sha256": "156b9a24013b2540ef847f6feabdb218635c3c943724697102ea27457f9aacc1"
+    }
+  ],
+  "outstanding": [
+    "Atomic same-page whole-family correction of already-saved arc boundaries/root circle with explicit reading disposition",
+    "Arc/topology evaluation metrics, unsupported curve classes and representative live recognition accuracy",
+    "Air-device rule/example approval, equipment and all remaining Division23 categories",
+    "Final workbook/evidence-PDF schema approval and connected estimator-ready output",
+    "Native Windows/NTFS, representative projects on both platforms and remaining release gates"
+  ],
+  "next_action": "Continue supported duct correction with atomic same-page family repartition; reuse recorded source findings before knowledge-dependent implementation. Keep pending owner decisions and both-platform acceptance outstanding."
+}

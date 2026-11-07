@@ -1,0 +1,39 @@
+{
+  "task_id": "evidence-enforcement-claude-004",
+  "provider": "claude_code",
+  "mode": "implementation",
+  "base_commit": "f9d7ceda027875b0dbef24710bfca96c6c95a104",
+  "objective": "Implement evidence/resume guard ONLY in scripts/verify-build-checkpoint.py and new tests/test_checkpoint_evidence.py. You are not alone; Codex owns docs/status/policy/research. No other writes, commits, push, external tools or subagents. Standard library, existing validate API, single-file hook exec compatibility. Reuse provided committed NotebookLM packet: argv/exit codes and byte hashing. Schema below is an owner-directed engineering contract, not NotebookLM fact.\nActivation POLICY=docs/operations/checkpoint-evidence-policy.json (Codex creates). Exact object {schema_version:1,require_notebooklm_evidence:true,reject_completed_resume:true}. If present in base OR selected index/tree, validate regular JSON exact keys/types/values; require target present, no removal/downgrade. No policy in either: legacy behavior unchanged even with legacy research field. Receipt/status schema stay1. Empty staging unchanged. Use exact Git objects only.\nActive receipts require notebooklm_research object: disposition new_verified|reused_verified|unavailable|administrative_no_new_claims; nonempty strings applicability,behavior_and_checks,gaps_and_next_action,external_submissions; records array of path/sha256 proofs. Check ALL proofs using existing safe_path/regular/hash/no-status-or-receipt-self-proof rules.\nVerified dispositions require nonempty records. Each pinned record JSON: schema_version=1,kind=notebooklm_verified_findings, query:{path,sha256},verification:{path,sha256},findings:[...]. Validate query/verification proofs. Each finding: unique nonempty id,notebook_id,source_id,locator,finding,passage; verification_status=verified_applicable; nonempty arrays behaviors,checks of nonempty strings; source:{path,sha256}, validated. passage must occur verbatim in UTF8 source bytes. Query/source/verification proofs cannot reference the packet itself. Structural evidence is not source-truth certification; human review remains required. Malformed structures/UTF8/JSON fail cleanly.\nUnavailable requires receipt missing_prerequisite and independent_action nonempty, never outcome complete; empty records allowed with applicability reason. Administrative allows empty records but disallows changed code/config/tests/deletions. Allow ONLY root AGENTS/CLAUDE/CURSOR/GROK/GROKBOTS/SKILLS/CURRENT_STATUS/README/ROADMAP/SECURITY/GOAL.md; docs/**/*.md; docs/operations/**/*.{json,log,txt}, except POLICY. Nonallowlisted changes reject admin. Any supplied record proofs still validated.\nResume: scan reachable historical RECEIPT versions from base via git log --format=%H --full-history BASE -- RECEIPT and exact tree reads. Collect normalized IDs with outcome complete. Reject next_task_id among completed unless next_task_reopen={task_id:matching next,reason:nonempty,evidence:{path,sha256}} valid. Validate any supplied reopen even if unnecessary. Keep existing complete-self-next rejection. Active blocked receipt cannot next itself. Normalize whitespace IDs. Missing historical file is absence; malformed/unreadable present receipt fails cleanly. Empty-tree base has no commit history.\nTests use temporary REAL Git indexes/trees: valid new/reused; missing research/fields/query/verification; arbitrary log as packet; wrong hashes, unstaged/untracked/symlink/self evidence; absent passage/malformed findings; code and deletion admin reject/docs admin pass; unavailable complete fail/honest partial pass; inherited policy remove/downgrade fail; legacy compatibility; older completed next rejection, valid reopen pass, malformed reopen fail, new task pass; committed-tree and merge history paths. Keep legacy tests unchanged. Run acceptance_commands. No root receipt edits. Return complete candidate inventory/tests/limits; configured model default, max160 actions/900sec.",
+  "allowed_paths": [
+    "scripts/verify-build-checkpoint.py",
+    "tests/test_checkpoint_evidence.py"
+  ],
+  "forbidden_paths": [
+    ".git",
+    ".github",
+    "AGENTS.md",
+    "CURRENT_STATUS.md",
+    "docs/decisions"
+  ],
+  "input_data_class": "INTERNAL",
+  "egress_policy": "approved_external",
+  "instruction_sha256": {
+    "AGENTS.md": "fcedd9e61d3c672a94d98f4468734177b1f899354682a153ee359ff55067297d",
+    "CLAUDE.md": "5e67b76914e4116b97e26523e911be04d1362af10e0c3132fac03ef434abbcac",
+    ".agents/skills/claude-code-headless/SKILL.md": "fa0c8bdfa47ac11a0da1e623da69892ba15296a68b8085ead7bdf55611dcab47",
+    ".heleos/build-checkpoint-2026-09-16/research.json": "eb2889bffa9841647475141d86e7db96bdd48efa59bd49177d29b3905d0f02c6",
+    ".heleos/build-checkpoint-2026-09-16/notebooklm-verification.json": "7bee89593afc47e2d66a7e8936e4be60d8d03ba0a49a602166226bebbf1e4892",
+    "docs/operations/notebooklm-research.md": "db25f74784a2df0ff57349c9dbae11a975d608aff79c5dbb02b01eb6164baa9e"
+  },
+  "acceptance_commands": [
+    "python3 -m unittest discover -s tests -p 'test_checkpoint_evidence.py' -v",
+    "python3 -m unittest discover -s tests -p 'test_build_checkpoint*.py' -v",
+    "python3 -m unittest discover -s tests -p 'test_checkpoint_ci.py' -v",
+    "git diff --check"
+  ],
+  "limits": {
+    "max_actions": 160,
+    "max_duration_seconds": 900
+  },
+  "schema": "heleos.worker-task/v1"
+}

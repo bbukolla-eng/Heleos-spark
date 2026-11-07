@@ -1,0 +1,60 @@
+{
+  "backend": {
+    "state": "independently_accepted_local_software",
+    "active_process": false,
+    "checks": {
+      "calculation": 20,
+      "adapter": 8
+    },
+    "next_action": "No remaining assignment; unchanged accepted work stays closed"
+  },
+  "ui": {
+    "state": "independently_accepted_local_software",
+    "active_process": false,
+    "checks": {
+      "dom": 21,
+      "syntax_exit": 0
+    },
+    "next_action": "No remaining assignment; unchanged accepted work stays closed"
+  },
+  "reviewers": {
+    "core": "Accepted EQ01-EQ04; CR01-CR05 fixed and checked",
+    "integration": "Accepted EQ03-EQ06 and final coverage selector delta"
+  },
+  "browser_fixture": {
+    "state": "stopped",
+    "exit_code": 130,
+    "reason": "Intentional Ctrl-C after artifact retention and browser close",
+    "result": "Mac browser correction, complete counts and reload verified",
+    "active_process": false
+  },
+  "original_live_reload_guard": {
+    "state": "stopped",
+    "exit_code": 130,
+    "reason": "Worker changed implementation bytes; old loaded code correctly refused writes. Restarted after final backend hashes were frozen."
+  },
+  "regression_fixture_worker": {
+    "state": "finished",
+    "active_process": false,
+    "checks": {
+      "geometry": 11,
+      "workspace": 15
+    },
+    "controller_checks": "Both modules independently passed after diff review"
+  },
+  "root_verification": {
+    "state": "finished",
+    "active_process": false,
+    "next_action": "Record acceptance and integrate owned paths; EVIDENCE-PDF-1 is next product task"
+  },
+  "hook_audit_initial_worker": {
+    "state": "failed_before_execution",
+    "reason": "Explorer model unsupported by account runtime",
+    "next_action": "Read-only default-agent fallback dispatched; no file changes"
+  },
+  "hook_audit_fallback": {
+    "state": "finished_read_only",
+    "active_process": false,
+    "result": "No installed status enforcement; recommend staged checkpoint validation, not repeated status reads. No hook installed."
+  }
+}

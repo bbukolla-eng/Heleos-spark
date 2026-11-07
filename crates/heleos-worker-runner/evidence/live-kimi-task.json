@@ -1,0 +1,27 @@
+{
+  "schema": "heleos.worker-task/v1",
+  "task_id": "kimi-live-guarded-write-003",
+  "provider": "kimi",
+  "mode": "implementation",
+  "base_commit": "a862c761c89fe8719508b70b8eebbfc7bc003535",
+  "objective": "Create exactly one UTF-8 text file at proof/kimi-headless.txt containing exactly these two lines and one final newline: PUBLIC synthetic Kimi Code guarded write. Then: No repository source was read or modified. Do not change any other path. Do not inspect the host or parent directories. Do not use shell commands, Git, network tools, browser tools, package managers, subagents, or external tools. Use only a file-write tool and then stop.",
+  "allowed_paths": [
+    "proof/kimi-headless.txt"
+  ],
+  "forbidden_paths": [
+    ".git",
+    "PUBLIC_INSTRUCTIONS.md"
+  ],
+  "input_data_class": "PUBLIC",
+  "egress_policy": "approved_external",
+  "instruction_sha256": {
+    "PUBLIC_INSTRUCTIONS.md": "542835cff8ff010a61a9e4b3211d7d3350968e995970846e0b60052bb957161b"
+  },
+  "acceptance_commands": [
+    "test \"$(shasum -a 256 proof/kimi-headless.txt)\" = \"6109053c330d9df1cb2711a6d032f3b491273558035a4fb1fa385b596d9f8640  proof/kimi-headless.txt\""
+  ],
+  "limits": {
+    "max_actions": 1,
+    "max_duration_seconds": 300
+  }
+}

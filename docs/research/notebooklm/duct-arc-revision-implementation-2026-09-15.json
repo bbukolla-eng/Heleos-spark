@@ -1,0 +1,149 @@
+{
+  "task_id": "DUCT-ARC-REVISION-1",
+  "state": "implemented, independently reviewed and locally verified; uncommitted",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "base_commit": "adcdd2934fa39bd0712c15a7bab74060838b2ae9",
+  "findings": "docs/research/notebooklm/duct-arc-revision-findings-2026-09-15.json",
+  "verified_source_receipt": {
+    "path": ".heleos/duct-arc-revision-2026-09-15/research-verified.json",
+    "sha256": "5e8039a25a59e84ff1a98e7bfb97db4f3aa0ce81cdb701f66581fc66614e032f"
+  },
+  "new_external_submissions": 0,
+  "egress_record": ".heleos/duct-arc-revision-2026-09-15/research-egress.json",
+  "adoptions": [
+    {
+      "source_passages": [
+        "ARV-REV-2"
+      ],
+      "behavior": "Replacement geometry uses its own exact source calibration; old check values stay explicit and may conflict under D05.",
+      "code": [
+        "scripts/project_duct_revision.py",
+        "scripts/project_duct_revision_checks.py"
+      ],
+      "tests": [
+        "test_incoming_own_scale_conflict_then_explicit_reread_preserves_origin",
+        "test_interval_uses_incoming_geometry_and_rejects_unsupported_endpoints"
+      ]
+    },
+    {
+      "source_passages": [
+        "ARV-REV-3",
+        "ARV-REV-4",
+        "ARV-REV-6"
+      ],
+      "behavior": "Compare explicit old/new scope; preserve unrelated quantities and original source history; require every saved check disposition.",
+      "code": [
+        "scripts/project_duct_revision.py",
+        "scripts/project_duct_revision_checks.py",
+        "apps/drawing-workspace/revision_checks_editor.js",
+        "apps/drawing-workspace/ducts.js"
+      ],
+      "tests": [
+        "test_revision_index_and_mapping_preserve_origin_and_neighbor",
+        "test_revision_dispositions_exhaustive_atomic_and_replay",
+        "test_retirement_preserves_complete_check_and_decision_history",
+        "test_tampered_introduction_and_later_history_fail_view_and_export"
+      ]
+    },
+    {
+      "source_passages": [
+        "ARP-AS03",
+        "ARP-AS10"
+      ],
+      "behavior": "Reuse existing certified circular root and interval measurements; retained checks remain check-only, with no chord fallback or new quantity formula.",
+      "code": [
+        "scripts/duct_arc_obligations.py",
+        "scripts/project_duct_arc_repartition.py",
+        "scripts/project_duct_revision_checks.py"
+      ],
+      "tests": [
+        "test_interval_uses_incoming_geometry_and_rejects_unsupported_endpoints",
+        "tests/drawing-workspace/verify_duct_arc_revision_native.py"
+      ],
+      "inference_limit": "Sources explain circle geometry; they do not certify this numerical implementation or define revision transfer rules."
+    },
+    {
+      "source_passages": [],
+      "authority": "Local engineering validation of approved source-review and dependency boundaries",
+      "behavior": "Partial or wrong-family resolution cannot release unreviewed quantities; unresolved family changes preserve all blocked targets.",
+      "code": [
+        "scripts/project_duct_arc_repartition.py",
+        "scripts/project_duct_revision_checks.py"
+      ],
+      "tests": [
+        "test_family_editor_cannot_release_other_page_pending_scope_without_review",
+        "test_active_check_with_cross_page_correspondence_requires_all_current_pages",
+        "test_later_pending_and_retirement_require_explicit_complete_physical_targets"
+      ]
+    }
+  ],
+  "local_engineering_decisions": [
+    "Exhaustive exact check/target fingerprints and sealed before/after transitions",
+    "Immutable origin separate from current evidence and source dependencies",
+    "Unresolved explicit planar/multiple target closure and later repair",
+    "Whole-scope retirement; no approved composite active check across independent roots",
+    "Untyped producer evidence retained; UI must match actual source contract"
+  ],
+  "not_adopted": [
+    {
+      "passage": "ARP-drawing-scales-183",
+      "reason": "Dimension precedence conflicts with approved D05; conflicts remain visible."
+    },
+    {
+      "passage": "ARP-mepdetect-973",
+      "reason": "Electrical same-tag convention does not establish mechanical identity under D08."
+    }
+  ],
+  "verification": {
+    "python314": {
+      "tests": 475,
+      "exit_code": 0,
+      "stable_inputs": 182,
+      "receipt": ".heleos/duct-arc-revision-2026-09-15/root-python314-final.json"
+    },
+    "python312": {
+      "final_affected_tests": 7,
+      "exit_code": 0,
+      "earlier_pre_review_fix_tests": 69,
+      "limit": "Earlier69 preceded two scope guard fixes; final7 verify affected changes. No final full3.12 run claimed.",
+      "receipt": ".heleos/duct-arc-revision-2026-09-15/backend-handoff.json"
+    },
+    "ui": {
+      "tests": 159,
+      "exit_code": 0,
+      "receipt": ".heleos/duct-arc-revision-2026-09-15/ui-handoff.json"
+    },
+    "independent_review": {
+      "state": "PASS",
+      "open_findings": [],
+      "report": ".heleos/duct-arc-revision-2026-09-15/review-findings.md"
+    },
+    "native_mac": {
+      "state": "PASS",
+      "receipt": ".heleos/duct-arc-revision-native-2026-09-15-attempt-01/duct-arc-revision-verification.json",
+      "root_audit": ".heleos/duct-arc-revision-2026-09-15/root-native-audit.json",
+      "artifacts": 30,
+      "source_truth": ".heleos/duct-arc-revision-2026-09-15/source-truth-freeze.json",
+      "visual": ".heleos/duct-arc-revision-2026-09-15/root-native-visual.json"
+    },
+    "package": {
+      "state": "PASS",
+      "payload_files": 58,
+      "receipt": ".heleos/duct-arc-revision-2026-09-15/root-package-verification.json"
+    },
+    "native_windows": false,
+    "representative_accuracy": false,
+    "live_model": false,
+    "python39": "not run; installed Xcode license gate previously exit69; no retry or license change"
+  },
+  "limits": [
+    "Retained indexed snapshots, no publisher freshness claim.",
+    "No new mechanical rule or source precedence inferred.",
+    "Full Division 23 and both-platform acceptance remain outstanding."
+  ],
+  "review_corrections": [
+    "Match actual untyped producer evidence and preserve explicit capture roles in UI.",
+    "Family-local decisions cannot activate or retire a check with dependents outside that family.",
+    "Explicit nonactive resolution requires complete physical target closure without retained-check edges."
+  ]
+}

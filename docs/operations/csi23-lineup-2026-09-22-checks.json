@@ -1,0 +1,33 @@
+{
+  "task_id": "CSI23-EXECUTION-LINEUP-2026-09-22",
+  "base_commit": "5715a45dd4b26f8107271e5f0b2c04cd3901517d",
+  "scope": "Planning and live queue consistency only; not mechanical acceptance.",
+  "lineup_validation": {
+    "direct_branches": 14,
+    "unique_branches": 14,
+    "valid_descendant_seeds_and_cards": 14,
+    "valid_define_task_ids": 14,
+    "primary_and_checkpoint_agree": true
+  },
+  "checks": [
+    {
+      "command": "python3 scripts/verify-csi-division23.py",
+      "exit_code": 0,
+      "stdout": "CSI Division 23 delivery structure: valid\n",
+      "stderr": ""
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "python3 tools/ci/checks.py",
+      "exit_code": 0,
+      "stdout": "1050 tracked files checked, 0 failures\n",
+      "stderr": "",
+      "scope": "Tracked working-tree files; new review/check evidence files checked by staged checkpoint validation."
+    }
+  ]
+}

@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "task": "DUCT-CIRCULAR-ARC-1-SOURCE",
+  "worker": "airdevice_research",
+  "recorded_at": "2026-09-14T13:09:38.938226+00:00",
+  "state": "bounded_source_verification_complete",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_head": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "authority": {
+    "path": "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md",
+    "sha256": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6",
+    "rule": "D03 requires supported true-curve geometry and a validated method. D01/D05/D07/D08/D09 remain unchanged."
+  },
+  "instructions_and_reuse_hashes": {
+    "AGENTS.md": "f1e8ca69afc99a02647b9509acf73fbf3bfb7c7c73029f7a20852a1cf33bb8a6",
+    "SKILLS.md": "939b8aac16ee926c9775efb2465ae3178d9f5365dc5cd2fe4df3aa46a52d017f",
+    ".agents/skills/Heleos-spark/SKILL.md": "9ac8db95e4879fd2f58f31ee5dbe219cef993df9866a47330e157186d4036d52",
+    "CURRENT_STATUS.md": "81ba6449ad61ef5ebb2db3757cd6454f8dea78c88d7ae5c40d01f972817a03fe",
+    "docs/operations/notebooklm-research.md": "63cf8a9215c56c0a0dcc826c26194648279a6ef5922aabb3d08ffa439d6e0bed",
+    "docs/research/notebooklm/notebook-inventory.json": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a",
+    "docs/research/notebooklm/findings.json": "4a924acd2d2cfb4f55c34f057100195ebc3bc16a50bc00c0ec3cf32cad00a7ed",
+    "docs/research/notebooklm/duct-correction-findings-2026-09-14.json": "b1b8520ae1a2b0a561b91f6547ea397debb9f1796fe5f7541a53883ddeafd28c",
+    "docs/research/notebooklm/duct-evaluation-findings-2026-09-14.json": "074f28f2ede99b35c75bbf072a29aa58f2f8c541a8e90143c954bed8ed11ba6a",
+    "docs/superpowers/specs/2026-09-13-duct-measurement-rules.md": "6395b248f4ae06eaf9c59af1369bc96ca5a2f4d111560394c6a43bdae6d454d6",
+    ".heleos/duct-circular-arc-2026-09-14/research-brief.json": "9fa9b904df05b664d85c1f17dd5b9eab2b10dd1f5e4ce7d7aa71406483ac91e8"
+  },
+  "inventory": {
+    "path": "docs/research/notebooklm/notebook-inventory.json",
+    "notebooks": 59,
+    "reuse": "No full inventory refresh. Reused prior source selection/findings; current N05 notebook_get verifies 68 existing source IDs before two authorized public additions.",
+    "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+    "response": "research-call-01-response.json",
+    "response_sha256": "836677904c98aa289aba7977b846c1f4a126ff1d62e0a05f48eb26ae67d61c70"
+  },
+  "query": {
+    "query_id": "c5434c3c6b47",
+    "conversation_id": "12607a64-31af-40f7-9e7c-b1c2360aa6a6",
+    "status": "completed",
+    "request_path": ".heleos/duct-circular-arc-2026-09-14/research-call-05-request.json",
+    "request_sha256": "953caf7b1d1d88f52a57db2c3d33de8c91ac9e5fe18e8524de6bce3cd3dcb02b",
+    "response_path": ".heleos/duct-circular-arc-2026-09-14/research-call-07-response.json",
+    "response_sha256": "a4419126a16683775acfb905bb8cadfde78355f907d2e2a0d34c205ec7c2e2a9",
+    "selected_source_ids": [
+      "457f0d9c-d900-45cb-8b40-9a8a8a5d8101",
+      "fb38a435-ce85-408f-afe4-2a9384877bc5"
+    ],
+    "authority": "Untrusted generated synthesis; unsupported instructions/code/thresholds rejected."
+  },
+  "sources": {
+    "openstax": {
+      "source_id": "457f0d9c-d900-45cb-8b40-9a8a8a5d8101",
+      "url": "https://openstax.org/books/precalculus-2e/pages/5-1-angles",
+      "title": "5.1 Angles - Precalculus 2e | OpenStax",
+      "edition": "Precalculus 2e",
+      "publication_date": "2021-12-21",
+      "response": "research-call-03-response.json",
+      "indexed_text_path": ".heleos/duct-circular-arc-2026-09-14/research-openstax-indexed-text.txt",
+      "indexed_text_sha256": "a4c5869bbfd4af70a5213de07282287817bbbc83bfca72a474be744deb4228d8",
+      "response_sha256": "ec1fbb7bf005e8c390fa7158d969d29852d5cdd66a641aa5004d00d57127e4a6",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "pagination": null
+    },
+    "ezdxf": {
+      "source_id": "fb38a435-ce85-408f-afe4-2a9384877bc5",
+      "url": "https://ezdxf.readthedocs.io/en/stable/math/core.html",
+      "title": "Core \u2014 ezdxf 1.4.4 documentation",
+      "edition": "1.4.4",
+      "publication_date": null,
+      "response": "research-call-04-response.json",
+      "indexed_text_path": ".heleos/duct-circular-arc-2026-09-14/research-ezdxf-indexed-text.txt",
+      "indexed_text_sha256": "76097f9285913dcb66d9a046a774ed158811c98abe857d9ce52427843e869109",
+      "response_sha256": "f3e1cee2fd57751f614825280219e45f98aad47e0882800c327828892182fc7b",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "pagination": null
+    }
+  },
+  "verified_passages": {
+    "path": ".heleos/duct-circular-arc-2026-09-14/research-verified-passages.json",
+    "sha256": "28422bbe717e5eaa7b7672165c2e60ae3829f35a71f27accc63a4c330f79ce10",
+    "count": 11
+  },
+  "retained_passages": {
+    "path": ".heleos/duct-circular-arc-2026-09-14/research-reused-passages.json",
+    "sha256": "dc0b95c60fc4519df649000f34b670e11471bf0e29fdf56a9da3b59a4d2bef39",
+    "count": 3,
+    "freshness": "Unchanged earlier retrieval; not freshly fetched."
+  },
+  "findings": [
+    {
+      "id": "ARC-SOURCE-01",
+      "state": "verified_applicable",
+      "claim": "For a circle, distance along the arc is radius multiplied by central sweep in radians. Degree values must be converted before applying s=r\u03b8.",
+      "support": [
+        "CA01",
+        "CA02"
+      ],
+      "application": "Supports the mathematical length basis only; radius/sweep derivation, valid inputs and numerical enclosure remain independent engineering obligations."
+    },
+    {
+      "id": "ARC-SOURCE-02",
+      "state": "verified_applicable",
+      "claim": "An arc and a flattened chord chain are distinct representations. ezdxf describes chord length separately and polygon vertices as a sagitta-controlled approximation.",
+      "support": [
+        "CA08",
+        "CA09"
+      ],
+      "application": "Do not adopt a straight or flattened substitute as exact true-curve length. The source does not supply a validated total-length error bound."
+    },
+    {
+      "id": "ARC-SOURCE-03",
+      "state": "verified_applicable",
+      "claim": "ezdxf has a 2D circle-arc representation with center/radius and start/end angles, and a three-point constructor with start/end/additional definition point plus explicit CCW convention.",
+      "support": [
+        "CA05",
+        "CA06",
+        "CA07"
+      ],
+      "application": "Representation example, not adoption of ezdxf or proof of the local three-point through-sweep contract. Distinguish degrees and radians and resolve actual sweep explicitly."
+    },
+    {
+      "id": "ARC-SOURCE-04",
+      "state": "verified_applicable",
+      "claim": "The textbook gives exact radian relationships and a 45-degree example at radii 2 and 3. The respective arcs are \u03c0/2 and 3\u03c0/4 in matching radius units.",
+      "support": [
+        "CA03"
+      ],
+      "application": "Mathematical reference examples, not original drawing fixtures or an accuracy tolerance."
+    },
+    {
+      "id": "ARC-SOURCE-05",
+      "state": "verified_applicable",
+      "claim": "Textbook rotation can include full/multiple turns, while the library documents a particular full-turn versus equal-parameter convention; ellipses have separate parameters.",
+      "support": [
+        "CA04",
+        "CA10",
+        "CA11"
+      ],
+      "application": "Do not infer sweep from endpoints alone or extend the circular formula to arbitrary curves. Product-supported sweep domain and degeneracy rejection remain explicit engineering decisions."
+    },
+    {
+      "id": "ARC-SOURCE-06",
+      "state": "conflict_not_adopted",
+      "claim": "FEMA scale training gives written dimensions precedence; approved D05 keeps material dimension-versus-scale conflicts unresolved.",
+      "support": [
+        "research-reused-passages.json: drawing-scales 183\u2013199",
+        "NLM-20260914-002"
+      ],
+      "application": "Retain D05; no source precedence or tolerance change."
+    },
+    {
+      "id": "ARC-SOURCE-07",
+      "state": "verified_applicable",
+      "claim": "The earlier Bluebeam curved-markup example concerns area and edit feedback.",
+      "support": [
+        "research-reused-passages.json: bluebeam-measurements 1001\u20131017,1093\u20131099",
+        "DUCT-CORR-RESEARCH-02"
+      ],
+      "application": "Context only. It does not validate duct circular-arc measurement or physical geometry extraction."
+    }
+  ],
+  "unsupported_or_rejected": [
+    {
+      "state": "unsupported",
+      "claim": "Generated ATHENA/Heleos architecture, repo files, SQL schema, Python kernel, worker tasks and proposed integrations.",
+      "reason": "Unrequested material appears in the answer but not the submitted generic public query. Not present as authority in selected primary source passages; no generated code executed or adopted."
+    },
+    {
+      "state": "unsupported",
+      "claim": "Three distinct points always uniquely determine an arc; def_point necessarily selects an intermediate point of the returned sweep.",
+      "reason": "The selected from_3p section documents an additional definition point and CCW convention, not those stronger claims. Circle uniqueness, collinearity/coincidence guards and through-sweep correctness require independent mathematical validation."
+    },
+    {
+      "state": "unsupported",
+      "claim": "Generated circumcenter determinant threshold 1e-10, floating atan2 implementation, \u00b11e-7 ft acceptance fixture and chord/sagitta formulas attributed to parameter descriptions.",
+      "reason": "Selected documentation does not establish these as validated methods or product accuracy thresholds. Arbitrary constants, formulas and generated fixtures do not become source evidence."
+    },
+    {
+      "state": "conflict_not_adopted",
+      "claim": "Generated collinear/insufficient-radius handling may fall back to straight-line quantities.",
+      "reason": "D03 leaves unsupported true curves unresolved; a library bulge helper or unrelated polygon-offset behavior does not authorize a straight substitution."
+    },
+    {
+      "state": "unsupported",
+      "claim": "All cited angle-span helpers return [0,2\u03c0], including the degree-named helper.",
+      "reason": "This collapses incompatible units. Verified details distinguish degree inputs, radian properties and the explicit radian alias example."
+    },
+    {
+      "state": "unsupported",
+      "claim": "Sagitta controls a proven arc-length error or supplies complete graphical coverage.",
+      "reason": "The source describes approximation geometry; it provides no validated length-error enclosure or drawing evidence coverage algorithm."
+    },
+    {
+      "state": "unsupported",
+      "claim": "General 4x4 transforms or arbitrary scaling guarantee a usable ellipse; a rational B-spline is required for every exact circle representation.",
+      "reason": "The generated generalizations exceed verified passages; singular/perspective transforms and other exact representations are not resolved by the selected supporting sections."
+    }
+  ],
+  "engineering_validation_remaining": [
+    "Source-bound circularity and intended physical centerline must be supported; three coordinates or a bounding rectangle alone do not prove duct ink or physical completeness.",
+    "Independently validate circumcenter/radius derivation, distinct/noncollinear inputs, near-degenerate behavior, orientation/major-minor/through-point sweep and supported domain.",
+    "Independently validate exact page-space metric, scale/calibration and transforms; normalized coordinates and anisotropic axes cannot be treated as physical circle coordinates without a valid mapping.",
+    "Independently validate deterministic trigonometric evaluation/error bounds through the approved six-decimal-meter boundary and half-even display; source decimals are not tolerance authority.",
+    "Independently validate full arc evidence coverage, including extrema between input points, and retain source/geometry/scale histories and conflicts.",
+    "No flex routing, fitting allowances, hidden lengths, nonplanar projection recovery, spline/ellipse generalization or representative extraction accuracy established."
+  ],
+  "counts": {
+    "notebooks_inspected_live": 1,
+    "notebooks_represented_in_sources": 2,
+    "new_bodies": 2,
+    "reused_bodies": 2,
+    "total_supporting_bodies": 4,
+    "public_source_additions": 2,
+    "queries_started": 1,
+    "egress_pairs": 7,
+    "private_uploads": 0,
+    "notes_added": 0
+  },
+  "egress": {
+    "path": ".heleos/duct-circular-arc-2026-09-14/research-egress.jsonl",
+    "sha256": "6315a5948a1d7422873917b18f1559430bb60031bfdb68a2bef5afaf783edfda"
+  },
+  "production_rule_admission": false,
+  "adopted_code_or_tests": null,
+  "process": {
+    "query": "terminal_completed",
+    "external_pending": false,
+    "local_product_process_started": false
+  },
+  "next_action": "Root independently checks this source packet, sets the bounded arc engineering contract and validates the numerical/coverage method before production adoption."
+}

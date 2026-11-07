@@ -1,0 +1,78 @@
+{
+  "task_id": "CHECKPOINT-EVIDENCE-1",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "2026-09-21-t5b5",
+  "base_commit": "f9d7ceda027875b0dbef24710bfca96c6c95a104",
+  "state": "independently_accepted_locally_uncommitted",
+  "changes": [
+    "Correct stale published/uncommitted status; preserve next pump task",
+    "Require pinned NotebookLM disposition, findings structure and exact source passage on policy-era protected checkpoints",
+    "Reject administrative code/executable/deletion exemptions and unavailable completion",
+    "Prevent completed-task resume without pinned reason/evidence; inherit policy and history across merge parents"
+  ],
+  "notebooklm_research": {
+    "disposition": "reused_verified",
+    "records": [
+      {
+        "path": "docs/operations/evidence-enforcement-2026-09-22/research.json",
+        "sha256": "a1c2acbf6e8194723f25d9185ae2891a7acda738f2b057368e67645f5ff8dd03"
+      }
+    ],
+    "applicability": "Existing verified NotebookLM Python source findings cover exact bytes and safe subprocess handling. Required receipt fields, administrative restrictions and completion/reopening logic are owner-requested engineering contracts with independent tests, not assertions inferred from NotebookLM.",
+    "behavior_and_checks": "Git argument arrays and exact-byte evidence hash checks; tests/test_checkpoint_evidence.py and existing checkpoint/hook/CI tests. Receipt schema and resume behavior are explicit local engineering requirements.",
+    "gaps_and_next_action": "No new source claim required for this bounded guard; human review must still verify semantic relevance. Next product task is pump definition with separate section research.",
+    "external_submissions": "No new NotebookLM submission; verified retained findings reused. Contained Claude implementation task logged in docs/operations/evidence-enforcement-2026-09-22/worker-submissions.json."
+  },
+  "checks": "docs/operations/evidence-enforcement-2026-09-22/checks.json",
+  "review": {
+    "path": "docs/operations/evidence-enforcement-2026-09-22/review.json",
+    "sha256": "9e05e4beeaa2b5a540f3a6d7804c1587e11bbb1eadaa626fb5579596e4d00afa"
+  },
+  "process_state": "Claude task004 terminated by runner at 900-second timeout, exit2; partial allowed candidate completed by Codex; all local check processes terminal exit0. No process left running.",
+  "prior_failures": {
+    "path": "docs/operations/evidence-enforcement-2026-09-22/prior-check-results.zip",
+    "sha256": "64027a0f9e680ac9ab038edf6ece72f4a29af28831a2b49f82e8b99465e28c36"
+  },
+  "limits": [
+    "Enforces evidence structure/identity, not source truth or automatic task scheduling.",
+    "Current enforcement changes are local; existing published checkpoint history is preserved.",
+    "Next product task remains CSI-23-21-23-DEFINE; no section acceptance claimed.",
+    "Query/verification proof identity is checked; contents/origin and supporting-text applicability require independent review.",
+    "No remote enforcement or main-branch CI result is claimed for uncommitted work.",
+    "Unrelated .cursor/ and .jolli/ preserved; no routing-helper repair, hooks/workflow/settings changes or new mechanical acceptance."
+  ],
+  "next_task_id": "CSI-23-21-23-DEFINE",
+  "next_action": "Prepare CSI-23-21-23-DEFINE: reuse the recorded NotebookLM inventory and equipment findings, verify pump-family source passages, and record scope, input gaps and the first bounded implementation contract. If required sources are unavailable, record the affected gap and advance to CSI-23-07-19-DEFINE.",
+  "checkpoint_assembly_observations": [
+    {
+      "command": "python3 tools/ci/checks.py",
+      "exit_code": 1,
+      "output": "link: CURRENT_STATUS.md: docs/operations/evidence-enforcement-2026-09-22/review.json\n1068 tracked files checked, 1 failures",
+      "cause": "Status link prepared before pending reviewer report existed. Not a product regression.",
+      "next_action": "Receive independent report, stage it, then rerun link check for the expanded tracked inventory."
+    },
+    {
+      "command": "python3 tools/ci/checks.py",
+      "exit_code": 0,
+      "output": "1069 tracked files checked, 0 failures",
+      "resolution": "Independent review report received and included in tracked candidate."
+    }
+  ],
+  "final_local_validation": [
+    {
+      "command": "python3 scripts/verify-build-checkpoint.py --staged",
+      "exit_code": 0,
+      "output": "Build checkpoint: valid (or no protected changes)"
+    },
+    {
+      "command": "git diff --cached --check",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": "Compare review candidate hashes with staged Git blobs",
+      "exit_code": 0,
+      "output": "All 14 reviewed hashes match staged bytes"
+    }
+  ]
+}

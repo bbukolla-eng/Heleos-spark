@@ -1,0 +1,227 @@
+{
+  "state": "implemented_independently_reviewed_and_root_verified",
+  "task_id": "DUCT-EVALUATION-1",
+  "findings_path": "docs/research/notebooklm/duct-evaluation-findings-2026-09-14.json",
+  "research_verification": {
+    "path": ".heleos/duct-evaluation-2026-09-14/root-research-verification.json",
+    "sha256": "9287287c62cbca9e3a755cada30d25b5bcfbb51f81ccd62d6e8cfbcc9ce43fb2",
+    "indexed_source_bodies": 3,
+    "verified_passages": 13,
+    "egress_before_after_pairs": 6,
+    "private_upload": false,
+    "source_or_note_added": false
+  },
+  "adoptions": [
+    {
+      "finding_id": "DEVAL01",
+      "source_passages": [
+        "A03",
+        "A05",
+        "D01",
+        "D05"
+      ],
+      "source_boundary": "This evaluation separation is an inference from source-specific tasks, not a new mechanical quantity rule or source-defined composite score.",
+      "code": [
+        "scripts/duct_path_scoring.py:score",
+        "apps/drawing-workspace/workflow.js:appendDuctEvaluationReport"
+      ],
+      "tests": [
+        "test_two_independent_sizes_retain_literal_eight_and_four_foot_lengths",
+        "test_separated_and_crossing_paths_are_not_planar_matches_or_topology"
+      ],
+      "adoption": "Separate planar matching, grouping and supported length diagnostics; topology remains unavailable."
+    },
+    {
+      "finding_id": "DEVAL02",
+      "source_passages": [
+        "A01",
+        "A04",
+        "A05",
+        "D02",
+        "D06"
+      ],
+      "source_boundary": "Neither the AHMsys preprocessing prescription nor Digitize-PID pixel parameters are adopted as universal HVAC input requirements.",
+      "code": [
+        "scripts/project_duct_evaluation.py:_context",
+        "scripts/project_duct_evaluation.py:_prediction",
+        "scripts/duct_path_scoring.py:project_scale_context"
+      ],
+      "tests": [
+        "acceptance_duct_evaluation.py"
+      ],
+      "adoption": "Freeze original input, source, page geometry, model and relevant scale context; retain explicit synthetic-corpus scope."
+    },
+    {
+      "finding_id": "DEVAL03",
+      "source_passages": [
+        "D03",
+        "D05"
+      ],
+      "source_boundary": "P&ID is a process schematic domain. Endpoint clustering is that paper\u2019s construction method; it does not establish physical HVAC junctions or a crossing-versus-junction rule.",
+      "code": [
+        "scripts/duct_path_scoring.py:normalize_samples",
+        "scripts/duct_path_scoring.py:score"
+      ],
+      "tests": [
+        "test_separated_and_crossing_paths_are_not_planar_matches_or_topology",
+        "test_fragmented_predictions_do_not_merge_to_satisfy_one_truth_portion"
+      ],
+      "adoption": "Independent path annotation granularity; do not infer physical connectivity from crossings or paper endpoint clustering."
+    },
+    {
+      "finding_id": "DEVAL04",
+      "source_passages": [
+        "A03",
+        "D04",
+        "D05",
+        "D06"
+      ],
+      "source_boundary": "P&ID identifiers are not automatically HVAC size annotations. The papers do not provide an independent HVAC size-association scoring formula or spatial tolerance.",
+      "code": [
+        "scripts/duct_path_scoring.py:_attribute",
+        "scripts/duct_path_scoring.py:_normalized_group",
+        "scripts/duct_path_scoring.py:_matching"
+      ],
+      "tests": [
+        "test_maximum_cardinality_beats_greedy_and_tie_ids_are_stable_under_reordering",
+        "acceptance_duct_evaluation.py:wrong_size"
+      ],
+      "adoption": "Geometry-only assignment followed by separate size/status diagnostics; ambiguous alternate assignment cannot establish success."
+    },
+    {
+      "finding_id": "DEVAL05",
+      "source_passages": [
+        "A01",
+        "S01",
+        "S02"
+      ],
+      "source_boundary": "The landing page does not establish a Hausdorff, buffered-overlap, path-matching, or physical length-error algorithm. No new dependency or implementation is admitted.",
+      "code": [
+        "scripts/duct_path_scoring.py:_paper_points",
+        "scripts/duct_path_scoring.py:_length"
+      ],
+      "tests": [
+        "test_paper_aspect_uses_separate_width_and_height_for_pair_distance",
+        "test_unknown_expected_length_is_not_generated_from_truth_geometry",
+        "acceptance_duct_evaluation.py"
+      ],
+      "adoption": "Separate planar paper geometry from source-supported physical length; unchanged core calculates candidate lengths against literal independent expectations."
+    }
+  ],
+  "unadopted": [
+    {
+      "finding_id": "DG01",
+      "disposition": "unsupported"
+    },
+    {
+      "finding_id": "DG02",
+      "disposition": "unsupported"
+    },
+    {
+      "finding_id": "DG03",
+      "disposition": "unsupported"
+    },
+    {
+      "finding_id": "DG04",
+      "disposition": "unsupported"
+    },
+    {
+      "finding_id": "DG05",
+      "disposition": "unsupported"
+    },
+    {
+      "finding_id": "DG06",
+      "disposition": "conflict_not_adopted"
+    }
+  ],
+  "engineering_contract": "Bounded rational continuous-distance intervals, assignment and length thresholds are explicit local engineering definitions; selected sources do not define them or authorize HVAC thresholds.",
+  "limitations": [
+    "Planar only; nonplanar candidates unscored",
+    "No topology edges in retained producer; topology unavailable",
+    "No representative model or native Windows acceptance",
+    "All-negative selected split intentionally unsupported; mixed negatives permitted",
+    "No new mechanical rules; approved D01-D10 unchanged"
+  ],
+  "at": "2026-09-14T11:29:46.433253+00:00",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "head": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "findings_sha256": "074f28f2ede99b35c75bbf072a29aa58f2f8c541a8e90143c954bed8ed11ba6a",
+  "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+  "inventory_path": "docs/research/notebooklm/notebook-inventory.json",
+  "inventory_sha256": "57fb4937f18c6407aac8dba57c5863456b6702def9b19d77bb034b61c3e5bb8a",
+  "notebook_count": 59,
+  "implementation_sha256": {
+    "scripts/duct_path_scoring.py": "9de8ca08cdd28a48016c18f96ac4b07f5dc831a7ab6c5154a61492ee4414c323",
+    "scripts/project_duct_evaluation.py": "7016c5ab7fe3f5a7718249b918aa4f69bcdff3453fba0185ce841b440965a985",
+    "scripts/mechanical_model_baseline.py": "6483ae7268d16eb463586666d669706a146ead3abd488b12fc75952646786cc7",
+    "scripts/takeoff_workflow.py": "79fa17f1fe3c25e58904bdeccc40549407ed51eb01769eab009c0a557726ccae",
+    "scripts/mechanical_model_inference.py": "212f1355287800cea61d742374d22bf4bb4b655651fed14479cc47c6074f2646",
+    "apps/drawing-workspace/workflow.js": "afdac5ba4e4b803f4b4c837065c5f890eadc5be145bfbde81243d13e0db56623",
+    "tests/drawing-workspace/acceptance_duct_evaluation.py": "150dac2dbb9f6ab9813cb723add1751f209c6ead1fb565b65240b854644c49e7",
+    "tests/drawing-workspace/test_duct_path_scoring.py": "05b618fbb72179c0fd28cac7c56cb9583833fb604b952ca62748f902fcb7fff6",
+    "tests/drawing-workspace/test_duct_evaluation_baseline.py": "896a56b217eedd9e84916e2244422eb58a1425d4fa705f571b7f2960d7806509",
+    "tests/drawing-workspace/test_project_duct_evaluation.py": "10e94ffda4a6b4e5c9d83c18446ccc86bcbcd3b920b4a6d794c4cfa141a49c12",
+    "tests/drawing-workspace/duct-evaluation-ui.test.cjs": "2d4c74daf291a45aefc56dcf577e54880a86bad1005d1e892dbd8171ceb1d0b0"
+  },
+  "verification": {
+    "python314_tests": 175,
+    "python39_tests": 175,
+    "node_tests": 82,
+    "native_cases": [
+      "perfect four-foot route",
+      "wrong size",
+      "duplicate path",
+      "truncated path"
+    ],
+    "native_lifecycle_checks": 6,
+    "native_report_source_opens": 4,
+    "native_mac": true,
+    "native_windows": false,
+    "live_model": false,
+    "representative_project_accuracy": false,
+    "full_takeoff_accepted": false
+  },
+  "verification_receipts": [
+    {
+      "path": ".heleos/duct-evaluation-2026-09-14/root-python314-final.json",
+      "sha256": "55c0583e7290f4c744a3acd7830362b1a0e80dde0a4b73042625305bb15252c4"
+    },
+    {
+      "path": ".heleos/duct-evaluation-2026-09-14/root-python39-final.json",
+      "sha256": "9f36e2e550042cfb75011f029d6c2b12aa085ce28e4599a963e72603ab14a75d"
+    },
+    {
+      "path": ".heleos/duct-evaluation-2026-09-14/root-node-final.json",
+      "sha256": "e3780746c70dc432bb2fc1d68cbe9c99d0e5629b0a8cc66efba2a16763f936d7"
+    },
+    {
+      "path": ".heleos/duct-evaluation-2026-09-14/root-native-1.json",
+      "sha256": "e642bf64d730c30895801b5018e69c401f924ed35758b29177f41aaaa8405d89"
+    },
+    {
+      "path": ".heleos/duct-evaluation-2026-09-14/root-native-ui-final.json",
+      "sha256": "1928a7c3d676f4b529e235ed1578562555b8de55d75035dc44645cd052025a63"
+    },
+    {
+      "path": ".heleos/duct-evaluation-2026-09-14/reviewer-final-review.json",
+      "sha256": "686204bff48241cc48670264904e6147f3a16ebff202fde87c0fd64f2f96d18b"
+    },
+    {
+      "path": ".heleos/duct-evaluation-2026-09-14/source-review-final-freeze2.json",
+      "sha256": "3be759b425a05bb2e6e63adb31643040298a416f58da73d680c078959b59e110"
+    }
+  ],
+  "native_receipt": {
+    "path": ".heleos/duct-evaluation-native-2026-09-14-attempt-1/duct-evaluation-verification.json",
+    "sha256": "579dc3752fcadff262f776e588ca57465c69be8a2422213f3b6f370c99b7308c"
+  },
+  "review_findings_closed": [
+    "Alternate maximum assignments explicitly qualify class and length diagnostics.",
+    "Planar precision and all-known-truth length denominators are explicit.",
+    "Relevant-page scale projection preserves unrelated sheet independence.",
+    "Missing or broken duct scorer preserves legacy and sealed duct history without enabling new runs.",
+    "Existing prepared detail/riser roles permit annotated planar evaluation with exact role binding."
+  ],
+  "next_action": "Use this saved planar evaluator with independently adjudicated representative truth and approved thresholds when available; topology, local model accuracy, remaining mechanical categories, connected estimator exports and native Windows acceptance remain outstanding."
+}

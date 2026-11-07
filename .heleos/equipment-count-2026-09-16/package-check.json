@@ -1,0 +1,8 @@
+{
+  "task_id": "EQUIPMENT-COUNT-1",
+  "package_id": "workspace_2259177146455515221f861cd3055862fa70eb9723ea6d49211ef265e9835720",
+  "payload_files": 83,
+  "relocatable_rule_binding": "verified with packaged kernel and all12 ruleIDs",
+  "platform_tested": "macOS local Python/application browser; no nativeWindows qualification",
+  "manifest": ".heleos/equipment-count-2026-09-16/package/package.json"
+}

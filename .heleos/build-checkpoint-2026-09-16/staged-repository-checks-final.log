@@ -1,0 +1,6 @@
+Clean selected-tree validation after exact-path documentation retention
+Staged tree: 8ff23e25e8f8b7ed4008034efcc8c9d4b2bb06ca
+Command: python3 tools/ci/checks.py
+1025 tracked files checked, 0 failures
+
+Exit: 0

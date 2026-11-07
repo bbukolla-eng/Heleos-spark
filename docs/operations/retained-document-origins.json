@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "documents": [
+    {
+      "retained_path": "docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-7397696.md",
+      "source_path": "CURRENT_STATUS.md",
+      "sha256": "50fa5a099369e85cc4035b9e199d6e01df0115f97531d2c5396eef0fb13d771d",
+      "basis": "Archive manifest docs/operations/status-archive/2026-09-16-archive-manifest.json; exact original 73976966d94b6036eb833bf39b9711f777f11075:CURRENT_STATUS.md bytes also verified."
+    },
+    {
+      "retained_path": "docs/operations/status-archive/roadmap-through-2026-09-16-7397696.md",
+      "source_path": "docs/roadmap.md",
+      "sha256": "4e1e215e6177129af97d6e7f72e4946c3f79c371499db3e66efb562893e08b2a",
+      "basis": "Archive manifest docs/operations/status-archive/2026-09-16-archive-manifest.json declares original location and hash. Retained working-tree snapshot differs from original HEAD; no source-commit equality claimed."
+    },
+    {
+      "retained_path": "docs/operations/status-archive/CURRENT_STATUS-through-2026-09-16-c1143a7.md",
+      "source_path": "CURRENT_STATUS.md",
+      "sha256": "07fa6fec5cbf022a792c426702afcddd77394d3f2abebe028717349535891838",
+      "basis": "Exact original c1143a7c1bc75339cdd8dd71cfe0580dd0d611ca:CURRENT_STATUS.md bytes verified."
+    },
+    {
+      "retained_path": "tests/fixtures/air-device-takeoff/approved-rule-packet.md",
+      "source_path": "docs/superpowers/specs/2026-09-14-air-device-counting-rules.md",
+      "sha256": "f89b35366e34ff064700dcac8f3c07cee252df569c0ffda7f9b69abf09735b0f",
+      "basis": "Approved retained packet hash bound by tests/fixtures/air-device-takeoff/2026-09-16-rule-binding.json. Relative references name original spec location; current spec later records approval and differs. No current source-body equality claimed."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "task_id": "CSI-23-31-13-DEFINE",
+  "section_id": "CSI-23-31-13",
+  "outcome": "in_progress",
+  "review": null,
+  "criteria": [
+    {"criterion_id": "CSI-23-31-13-D01", "status": "blocked", "gap_id": "CSI-23-31-13-INPUT-CHILD-BODIES"},
+    {"criterion_id": "CSI-23-31-13-D02", "status": "blocked", "gap_id": "CSI-23-31-13-INPUT-CHILD-BODIES"},
+    {"criterion_id": "CSI-23-31-13-D03", "status": "blocked", "gap_id": "CSI-23-31-13-INPUT-CHILD-BODIES"},
+    {"criterion_id": "CSI-23-31-13-D04", "status": "blocked", "gap_id": "CSI-23-31-13-INPUT-CHILD-BODIES"},
+    {"criterion_id": "CSI-23-31-13-D05", "status": "blocked", "gap_id": "CSI-23-31-13-INPUT-CHILD-BODIES"},
+    {"criterion_id": "CSI-23-31-13-D06", "status": "blocked", "gap_id": "CSI-23-31-13-INPUT-CHILD-BODIES"}
+  ]
+}

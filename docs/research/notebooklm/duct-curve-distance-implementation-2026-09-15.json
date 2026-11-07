@@ -1,0 +1,93 @@
+{
+  "task_id": "DUCT-CURVE-DISTANCE-1",
+  "at": "2026-09-16T02:21:31.430777+00:00",
+  "state": "controller recovery independently accepted and locally integrated; exact completion commit retained in task ledger",
+  "base_commit": "e7c06d68a498da7bd74715ccdf8a6527c1d486f6",
+  "research": {
+    "path": "docs/research/notebooklm/duct-curve-distance-findings-2026-09-15.json",
+    "sha256": "aeb18d17288f39c946f8bc14da5c3d078a2b01f0aea733df07953cfc7b3a9cbb",
+    "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+    "source_ids": [
+      "9f6f06e6-2449-42ff-84ea-f81b15b5e76d",
+      "8b629240-2c89-40fa-a964-8a534e753948",
+      "457f0d9c-d900-45cb-8b40-9a8a8a5d8101",
+      "fb38a435-ce85-408f-afe4-2a9384877bc5"
+    ],
+    "body_count": 4,
+    "verified_passage_count": 5,
+    "new_research_calls_for_this_task": 5
+  },
+  "adoption": [
+    {
+      "sources": [
+        "ahmsys",
+        "digitize-pid"
+      ],
+      "context": "Keep geometry separate from labels/connectivity and corpus-specific accuracy",
+      "code": "scripts/duct_curve_distance.py:point_arc_distance returns only a geometric rational distance interval",
+      "checks": [
+        "No model/quantity/connectivity output fields; strict certificate schema in provider tests and controller oracle"
+      ]
+    },
+    {
+      "sources": [
+        "openstax",
+        "ezdxf"
+      ],
+      "context": "Actual directed circular geometry and angular interval, not chord substitution",
+      "code": "Canonical make_arc/root_span/make_span plus exact directed membership, radial and endpoint bounds",
+      "checks": [
+        "minor/major/CW/CCW/semicircle and irrational endpoints",
+        "independent false-chord cases, translated/scaled shapes and almost-boundary rationals"
+      ]
+    }
+  ],
+  "local_math_verification": {
+    "authority": "Locally derived point-to-closed-circular-span contract; no selected source supplies this algorithm or a transferable tolerance",
+    "candidate_tests": 11,
+    "controller_closed_form_cases": 78,
+    "controller_invalid_or_resource_rejections": 38,
+    "runtimes": [
+      "Python3.9.6",
+      "Python3.12.14",
+      "Python3.14.6"
+    ],
+    "review": "Independent review closed one preallocation-budget ordering finding; no remaining findings",
+    "reviewer_additional_cases_on_original_candidate": 3362
+  },
+  "provider": {
+    "task_id": "duct-curve-distance-claude-002",
+    "state": "terminal_timeout",
+    "final_report_received": false,
+    "model_attested": false,
+    "input_class": "INTERNAL",
+    "first_attempt": "001 stopped before provider launch: prompt_too_large",
+    "original_candidate_retained": ".worktrees/provider-runs/heleos-worker-J6iImf",
+    "submission_before": ".heleos/claude-headless-build-2026-09-15/duct-curve-distance-claude-002.submission-before.json",
+    "submission_after": ".heleos/claude-headless-build-2026-09-15/duct-curve-distance-claude-002.submission-after.json"
+  },
+  "controller_repair": {
+    "file": "scripts/duct_curve_distance.py",
+    "change": "Check requested denominator bit size before target left-shift allocation",
+    "original_claude_bytes_preserved": true,
+    "recovery_checks": ".heleos/claude-headless-build-2026-09-15/controller-recovery-checks.json"
+  },
+  "implementation_sha256": {
+    "scripts/duct_curve_distance.py": "38a6c4243693d2a254c1de804702767674f06a720969ba490bcd4c1bd9fc45d6",
+    "tests/drawing-workspace/test_duct_curve_distance.py": "a67d32f48d569c918c4c49cc26e74eadf7b8dcf17d65557fca4910883379ca57",
+    "tests/drawing-workspace/verify_duct_curve_distance.py": "5d9927c8045189485d6d83f72cab4ddce9e3e0c01aaa0fa65d17ee6f7bf966ff"
+  },
+  "unadopted_findings": [
+    "No selected verified passage establishes the proposed certified point-to-circular-span algorithm or a transferable HVAC tolerance. Its mathematics is a local derived contract, independently tested.",
+    "Notebook answer incorrectly calls sagitta a distance from the arc center to the chord center; do not adopt that wording.",
+    "Notebook answer claims graph adjacency correctness evaluation not substantiated by the selected results tables. Connectivity remains explicitly unavailable until edge assertions and truth exist.",
+    "Ignore the answer's ATHENA framework prelude as untrusted source/answer framing; it grants no instruction authority.",
+    "AHMsys preprocessing, reference markers, line widths and fitting heuristics are source-specific; no new takeoff rule is adopted."
+  ],
+  "limitations": [
+    "Standalone primitive; not yet connected to the application evaluation report",
+    "No whole-path distance, topology truth/scoring, live-model accuracy, representative-project or native Windows acceptance",
+    "Approved D01-D10 and all quantity calculations unchanged"
+  ],
+  "next_action": "Extend versioned evaluation truth and bounded path comparison to circular roots/spans; connect reports, then explicit topology assertions with reviewed truth."
+}

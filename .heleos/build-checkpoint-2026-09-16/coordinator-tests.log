@@ -1,0 +1,221 @@
+$ python3 -m unittest discover -s tests -p test_*.py -v
+test_cli_passes_without_ecc_and_prints_advisory (test_ai_review_gate.CliEvaluate.test_cli_passes_without_ecc_and_prints_advisory) ... ok
+test_inline_comment_on_this_head_is_enough (test_ai_review_gate.CodexAcknowledgement.test_inline_comment_on_this_head_is_enough) ... ok
+test_issue_comment_after_push_is_enough (test_ai_review_gate.CodexAcknowledgement.test_issue_comment_after_push_is_enough) ... ok
+test_review_on_this_head_is_enough (test_ai_review_gate.CodexAcknowledgement.test_review_on_this_head_is_enough) ... ok
+test_stale_comment_on_older_head_is_not_enough (test_ai_review_gate.CodexAcknowledgement.test_stale_comment_on_older_head_is_not_enough) ... ok
+test_new_head_may_ping_again (test_ai_review_gate.CodexPing.test_new_head_may_ping_again) ... ok
+test_no_ping_when_codex_already_acknowledged (test_ai_review_gate.CodexPing.test_no_ping_when_codex_already_acknowledged) ... ok
+test_no_second_ping_for_the_same_head (test_ai_review_gate.CodexPing.test_no_second_ping_for_the_same_head) ... ok
+test_ping_when_codex_has_not_spoken_and_nobody_asked (test_ai_review_gate.CodexPing.test_ping_when_codex_has_not_spoken_and_nobody_asked) ... ok
+test_failed_or_other_check_is_not_enough (test_ai_review_gate.CopilotAcknowledgement.test_failed_or_other_check_is_not_enough) ... ok
+test_review_on_this_head_is_enough (test_ai_review_gate.CopilotAcknowledgement.test_review_on_this_head_is_enough) ... ok
+test_successful_check_run_on_this_head_is_enough (test_ai_review_gate.CopilotAcknowledgement.test_successful_check_run_on_this_head_is_enough) ... ok
+test_wrapped_check_runs_object_is_unwrapped (test_ai_review_gate.CopilotAcknowledgement.test_wrapped_check_runs_object_is_unwrapped) ... ok
+test_absent_ecc_is_advisory_not_missing (test_ai_review_gate.EccAcknowledgement.test_absent_ecc_is_advisory_not_missing) ... ok
+test_review_or_comment_on_this_head_is_detected (test_ai_review_gate.EccAcknowledgement.test_review_or_comment_on_this_head_is_detected) ... ok
+test_failure_lists_required_reviewers_only (test_ai_review_gate.GatePassFail.test_failure_lists_required_reviewers_only) ... ok
+test_pass_requires_codex_and_copilot_only (test_ai_review_gate.GatePassFail.test_pass_requires_codex_and_copilot_only) ... ok
+test_commit_id_on_this_head_counts (test_ai_review_gate.HeadBinding.test_commit_id_on_this_head_counts) ... ok
+test_created_at_on_or_after_head_push_counts (test_ai_review_gate.HeadBinding.test_created_at_on_or_after_head_push_counts) ... ok
+test_older_comment_without_this_head_does_not_count (test_ai_review_gate.HeadBinding.test_older_comment_without_this_head_does_not_count) ... ok
+test_pending_review_is_ignored (test_ai_review_gate.HeadBinding.test_pending_review_is_ignored) ... ok
+test_falls_back_to_committer_date (test_ai_review_gate.HeadSinceResolution.test_falls_back_to_committer_date) ... ok
+test_timeline_committed_event_for_this_sha_wins (test_ai_review_gate.HeadSinceResolution.test_timeline_committed_event_for_this_sha_wins) ... ok
+test_bot_suffix_is_optional (test_ai_review_gate.LoginMatching.test_bot_suffix_is_optional) ... ok
+test_unrelated_login_does_not_match (test_ai_review_gate.LoginMatching.test_unrelated_login_does_not_match) ... ok
+test_stable_job_id_and_permissions (test_ai_review_gate.WorkflowContract.test_stable_job_id_and_permissions) ... ok
+test_actual_csi_card_prefix_triggers_checker (test_build_checkpoint.CheckpointTests.test_actual_csi_card_prefix_triggers_checker) ... ok
+test_actual_csi_checker_rejects_invalid_selected_register (test_build_checkpoint.CheckpointTests.test_actual_csi_checker_rejects_invalid_selected_register) ... ok
+test_archival_exemption_does_not_hide_executable_code (test_build_checkpoint.CheckpointTests.test_archival_exemption_does_not_hide_executable_code) ... ok
+test_base_must_be_exact_parent (test_build_checkpoint.CheckpointTests.test_base_must_be_exact_parent) ... ok
+test_blocked_checkpoint_requires_prerequisite_and_independent_action (test_build_checkpoint.CheckpointTests.test_blocked_checkpoint_requires_prerequisite_and_independent_action) ... ok
+test_committed_mode_requires_full_commit_hash (test_build_checkpoint.CheckpointTests.test_committed_mode_requires_full_commit_hash) ... ok
+test_complete_cannot_disguise_same_task_with_whitespace (test_build_checkpoint.CheckpointTests.test_complete_cannot_disguise_same_task_with_whitespace) ... ok
+test_complete_cannot_resume_same_closed_task (test_build_checkpoint.CheckpointTests.test_complete_cannot_resume_same_closed_task) ... ok
+test_complete_requires_independent_review (test_build_checkpoint.CheckpointTests.test_complete_requires_independent_review) ... ok
+test_csi_validation_runs_only_for_selected_changed_scope (test_build_checkpoint.CheckpointTests.test_csi_validation_runs_only_for_selected_changed_scope) ... ok
+test_deletion_requires_null_manifest_hash (test_build_checkpoint.CheckpointTests.test_deletion_requires_null_manifest_hash) ... ok
+test_empty_index_and_archival_document_changes_skip (test_build_checkpoint.CheckpointTests.test_empty_index_and_archival_document_changes_skip) ... ok
+test_evidence_hash_drift_is_rejected_even_with_current_manifest (test_build_checkpoint.CheckpointTests.test_evidence_hash_drift_is_rejected_even_with_current_manifest) ... ok
+test_existing_configuration_and_instruction_surfaces_are_protected (test_build_checkpoint.CheckpointTests.test_existing_configuration_and_instruction_surfaces_are_protected) ... ok
+test_failed_checks_cannot_close_task (test_build_checkpoint.CheckpointTests.test_failed_checks_cannot_close_task) ... ok
+test_local_replace_objects_cannot_change_committed_evidence (test_build_checkpoint.CheckpointTests.test_local_replace_objects_cannot_change_committed_evidence) ... ok
+test_malformed_receipt_and_unknown_outcome_fail_clearly (test_build_checkpoint.CheckpointTests.test_malformed_receipt_and_unknown_outcome_fail_clearly) ... ok
+test_manifest_is_exact_and_rejects_duplicate_paths (test_build_checkpoint.CheckpointTests.test_manifest_is_exact_and_rejects_duplicate_paths) ... ok
+test_protected_change_requires_changed_status_and_receipt (test_build_checkpoint.CheckpointTests.test_protected_change_requires_changed_status_and_receipt) ... ok
+test_root_commit_uses_empty_tree_as_base (test_build_checkpoint.CheckpointTests.test_root_commit_uses_empty_tree_as_base) ... ok
+test_self_proof_and_unsafe_evidence_paths_rejected (test_build_checkpoint.CheckpointTests.test_self_proof_and_unsafe_evidence_paths_rejected) ... ok
+test_staged_checkpoint_ignores_dirty_evidence_and_status (test_build_checkpoint.CheckpointTests.test_staged_checkpoint_ignores_dirty_evidence_and_status) ... ok
+test_status_receipt_and_visible_next_action_must_agree (test_build_checkpoint.CheckpointTests.test_status_receipt_and_visible_next_action_must_agree) ... ok
+test_symlink_evidence_is_not_read (test_build_checkpoint.CheckpointTests.test_symlink_evidence_is_not_read) ... ok
+test_unmerged_index_rejected (test_build_checkpoint.CheckpointTests.test_unmerged_index_rejected) ... ok
+test_unstaged_receipt_repair_cannot_fix_index (test_build_checkpoint.CheckpointTests.test_unstaged_receipt_repair_cannot_fix_index) ... ok
+test_unstaged_status_cannot_fix_index (test_build_checkpoint.CheckpointTests.test_unstaged_status_cannot_fix_index) ... ok
+test_untracked_evidence_cannot_satisfy_complete (test_build_checkpoint.CheckpointTests.test_untracked_evidence_cannot_satisfy_complete) ... ok
+test_valid_complete_checkpoint_and_committed_tree_ignore_dirty_worktree (test_build_checkpoint.CheckpointTests.test_valid_complete_checkpoint_and_committed_tree_ignore_dirty_worktree) ... ok
+test_valid_progress_checkpoint (test_build_checkpoint.CheckpointTests.test_valid_progress_checkpoint) ... ok
+test_actual_hook_blocks_missing_checkpoint_then_commits_honest_progress (test_build_checkpoint_hooks.HookTests.test_actual_hook_blocks_missing_checkpoint_then_commits_honest_progress) ... ok
+test_commit_uses_staged_checker_and_propagates_failure (test_build_checkpoint_hooks.HookTests.test_commit_uses_staged_checker_and_propagates_failure) ... ok
+test_empty_index_allows_git_to_report_nothing_to_commit (test_build_checkpoint_hooks.HookTests.test_empty_index_allows_git_to_report_nothing_to_commit) ... ok
+test_installs_only_local_hook_path_and_is_idempotent (test_build_checkpoint_hooks.HookTests.test_installs_only_local_hook_path_and_is_idempotent) ... ok
+test_refuses_to_hide_active_default_hooks (test_build_checkpoint_hooks.HookTests.test_refuses_to_hide_active_default_hooks) ... ok
+test_refuses_to_replace_existing_custom_hook_configuration (test_build_checkpoint_hooks.HookTests.test_refuses_to_replace_existing_custom_hook_configuration) ... ok
+test_replacement_object_cannot_substitute_for_staged_checker (test_build_checkpoint_hooks.HookTests.test_replacement_object_cannot_substitute_for_staged_checker) ... ok
+test_requires_executable_hook_without_changing_it (test_build_checkpoint_hooks.HookTests.test_requires_executable_hook_without_changing_it) ... ok
+test_unstaged_broken_checker_cannot_break_valid_staged_checker (test_build_checkpoint_hooks.HookTests.test_unstaged_broken_checker_cannot_break_valid_staged_checker) ... ok
+test_all_new_commits_are_checked_in_parent_order (test_checkpoint_ci.CheckpointCITests.test_all_new_commits_are_checked_in_parent_order) ... ok
+test_bad_branch_commit_is_not_hidden_by_clean_merge (test_checkpoint_ci.CheckpointCITests.test_bad_branch_commit_is_not_hidden_by_clean_merge) ... ok
+test_dirty_worktree_cannot_repair_bad_committed_input (test_checkpoint_ci.CheckpointCITests.test_dirty_worktree_cannot_repair_bad_committed_input) ... ok
+test_guard_deletion_does_not_skip_commit (test_checkpoint_ci.CheckpointCITests.test_guard_deletion_does_not_skip_commit) ... ok
+test_later_good_checkpoint_cannot_hide_earlier_failure (test_checkpoint_ci.CheckpointCITests.test_later_good_checkpoint_cannot_hide_earlier_failure) ... ok
+test_manual_change_in_otherwise_clean_merge_is_validated (test_checkpoint_ci.CheckpointCITests.test_manual_change_in_otherwise_clean_merge_is_validated) ... ok
+test_merge_checks_branch_commits_and_reuses_clean_merge (test_checkpoint_ci.CheckpointCITests.test_merge_checks_branch_commits_and_reuses_clean_merge) ... ok
+test_missing_baseline_is_a_history_error (test_checkpoint_ci.CheckpointCITests.test_missing_baseline_is_a_history_error) ... ok
+test_new_branch_zero_before_uses_baseline (test_checkpoint_ci.CheckpointCITests.test_new_branch_zero_before_uses_baseline) ... ok
+test_novel_conflict_resolution_requires_its_own_checkpoint (test_checkpoint_ci.CheckpointCITests.test_novel_conflict_resolution_requires_its_own_checkpoint) ... ok
+test_octopus_merge_fails_instead_of_accepting_empty_remerge_output (test_checkpoint_ci.CheckpointCITests.test_octopus_merge_fails_instead_of_accepting_empty_remerge_output) ... ok
+test_only_ancestors_of_baseline_are_historical (test_checkpoint_ci.CheckpointCITests.test_only_ancestors_of_baseline_are_historical) ... ok
+test_pre_adoption_history_is_not_retroactively_rejected (test_checkpoint_ci.CheckpointCITests.test_pre_adoption_history_is_not_retroactively_rejected) ... ok
+test_real_validator_accepts_each_committed_receipt_despite_dirty_files (test_checkpoint_ci.CheckpointCITests.test_real_validator_accepts_each_committed_receipt_despite_dirty_files) ... ok
+test_real_validator_does_not_let_later_receipt_cover_earlier_missing_receipt (test_checkpoint_ci.CheckpointCITests.test_real_validator_does_not_let_later_receipt_cover_earlier_missing_receipt) ... ok
+test_remerge_diff_failure_is_not_treated_as_clean (test_checkpoint_ci.CheckpointCITests.test_remerge_diff_failure_is_not_treated_as_clean) ... ok
+test_zero_before_unrelated_root_fails_explicitly (test_checkpoint_ci.CheckpointCITests.test_zero_before_unrelated_root_fails_explicitly) ... ok
+test_zero_head_and_missing_or_invalid_objects_fail (test_checkpoint_ci.CheckpointCITests.test_zero_head_and_missing_or_invalid_objects_fail) ... ok
+test_cli_rejects_incomplete_range_without_falling_back_to_head (test_checkpoint_ci.EventSelectionTests.test_cli_rejects_incomplete_range_without_falling_back_to_head) ... ok
+test_missing_or_wrong_event_fields_do_not_succeed (test_checkpoint_ci.EventSelectionTests.test_missing_or_wrong_event_fields_do_not_succeed) ... ok
+test_pr_uses_payload_head_and_base_not_synthetic_merge (test_checkpoint_ci.EventSelectionTests.test_pr_uses_payload_head_and_base_not_synthetic_merge) ... ok
+test_push_uses_before_and_after (test_checkpoint_ci.EventSelectionTests.test_push_uses_before_and_after) ... ok
+test_a_null_policy_decision_is_reported_not_raised (test_ci_checks.EgressLedgerChecks.test_a_null_policy_decision_is_reported_not_raised) ... ok
+test_a_real_recorder_line_passes (test_ci_checks.EgressLedgerChecks.test_a_real_recorder_line_passes)
+The recorder serialises with sort_keys, so the validator must not compare key order. ... ok
+test_absent_ledger_is_not_a_failure (test_ci_checks.EgressLedgerChecks.test_absent_ledger_is_not_a_failure) ... ok
+test_an_unknown_data_class_fails (test_ci_checks.EgressLedgerChecks.test_an_unknown_data_class_fails) ... ok
+test_empty_source_hashes_fail (test_ci_checks.EgressLedgerChecks.test_empty_source_hashes_fail) ... ok
+test_record_missing_a_spec_field_fails (test_ci_checks.EgressLedgerChecks.test_record_missing_a_spec_field_fails) ... ok
+test_record_naming_a_missing_decision_fails (test_ci_checks.EgressLedgerChecks.test_record_naming_a_missing_decision_fails) ... ok
+test_refused_outcome_fails (test_ci_checks.EgressLedgerChecks.test_refused_outcome_fails) ... ok
+test_well_formed_record_passes (test_ci_checks.EgressLedgerChecks.test_well_formed_record_passes) ... ok
+test_broken_image_destination_is_reported (test_ci_checks.LinkAndProseChecks.test_broken_image_destination_is_reported) ... ok
+test_broken_relative_link_is_reported_and_good_link_is_not (test_ci_checks.LinkAndProseChecks.test_broken_relative_link_is_reported_and_good_link_is_not) ... ok
+test_dash_rule_applies_only_to_repository_documents (test_ci_checks.LinkAndProseChecks.test_dash_rule_applies_only_to_repository_documents) ... ok
+test_registry_hash_mismatch_is_reported (test_ci_checks.LinkAndProseChecks.test_registry_hash_mismatch_is_reported) ... ok
+test_absolute_card_path_is_rejected (test_csi_delivery_structure.DeliveryStructureTests.test_absolute_card_path_is_rejected) ... ok
+test_agency_identity_is_rejected (test_csi_delivery_structure.DeliveryStructureTests.test_agency_identity_is_rejected) ... ok
+test_blank_task_state_is_rejected (test_csi_delivery_structure.DeliveryStructureTests.test_blank_task_state_is_rejected) ... ok
+test_card_symlink_cannot_escape_root (test_csi_delivery_structure.DeliveryStructureTests.test_card_symlink_cannot_escape_root) ... ok
+test_children_must_be_inverse_of_parent (test_csi_delivery_structure.DeliveryStructureTests.test_children_must_be_inverse_of_parent) ... ok
+test_criteria_must_match_section_template (test_csi_delivery_structure.DeliveryStructureTests.test_criteria_must_match_section_template) ... ok
+test_criteria_order_is_preserved (test_csi_delivery_structure.DeliveryStructureTests.test_criteria_order_is_preserved) ... ok
+test_decimal_section_identity_is_supported (test_csi_delivery_structure.DeliveryStructureTests.test_decimal_section_identity_is_supported) ... ok
+test_duplicate_children_are_rejected (test_csi_delivery_structure.DeliveryStructureTests.test_duplicate_children_are_rejected) ... ok
+test_duplicate_section_is_rejected (test_csi_delivery_structure.DeliveryStructureTests.test_duplicate_section_is_rejected) ... ok
+test_duplicate_task_is_rejected (test_csi_delivery_structure.DeliveryStructureTests.test_duplicate_task_is_rejected) ... ok
+test_duplicate_template_criteria_are_rejected (test_csi_delivery_structure.DeliveryStructureTests.test_duplicate_template_criteria_are_rejected) ... ok
+test_exactly_one_designated_root_is_required (test_csi_delivery_structure.DeliveryStructureTests.test_exactly_one_designated_root_is_required) ... ok
+test_invalid_template_fields_are_rejected (test_csi_delivery_structure.DeliveryStructureTests.test_invalid_template_fields_are_rejected) ... ok
+test_malformed_shapes_return_errors_instead_of_raising (test_csi_delivery_structure.DeliveryStructureTests.test_malformed_shapes_return_errors_instead_of_raising) ... ok
+test_missing_and_unreadable_json_are_clean_cli_failures (test_csi_delivery_structure.DeliveryStructureTests.test_missing_and_unreadable_json_are_clean_cli_failures) ... ok
+test_missing_card_is_rejected (test_csi_delivery_structure.DeliveryStructureTests.test_missing_card_is_rejected) ... ok
+test_missing_task_is_rejected (test_csi_delivery_structure.DeliveryStructureTests.test_missing_task_is_rejected) ... ok
+test_non_markdown_card_is_rejected (test_csi_delivery_structure.DeliveryStructureTests.test_non_markdown_card_is_rejected) ... ok
+test_number_must_match_identity (test_csi_delivery_structure.DeliveryStructureTests.test_number_must_match_identity) ... ok
+test_parent_orphan_is_rejected (test_csi_delivery_structure.DeliveryStructureTests.test_parent_orphan_is_rejected) ... ok
+test_path_traversal_is_rejected_even_if_target_exists (test_csi_delivery_structure.DeliveryStructureTests.test_path_traversal_is_rejected_even_if_target_exists) ... ok
+test_register_task_list_cannot_omit_stage (test_csi_delivery_structure.DeliveryStructureTests.test_register_task_list_cannot_omit_stage) ... ok
+test_self_cycle_is_rejected_even_with_inverse_children (test_csi_delivery_structure.DeliveryStructureTests.test_self_cycle_is_rejected_even_with_inverse_children) ... ok
+test_source_page_must_be_positive_integer_not_boolean (test_csi_delivery_structure.DeliveryStructureTests.test_source_page_must_be_positive_integer_not_boolean) ... ok
+test_stage_must_match_task_identity (test_csi_delivery_structure.DeliveryStructureTests.test_stage_must_match_task_identity) ... ok
+test_task_orphan_is_rejected (test_csi_delivery_structure.DeliveryStructureTests.test_task_orphan_is_rejected) ... ok
+test_valid_tree_and_cli_leave_inputs_unchanged (test_csi_delivery_structure.DeliveryStructureTests.test_valid_tree_and_cli_leave_inputs_unchanged) ... ok
+test_a_commented_example_above_the_determinations_does_not_sign_the_record (test_egress_record.AnExampleSignatureIsNotASignature.test_a_commented_example_above_the_determinations_does_not_sign_the_record) ... ok
+test_a_fence_line_carrying_an_info_string_does_not_close_a_block (test_egress_record.AnExampleSignatureIsNotASignature.test_a_fence_line_carrying_an_info_string_does_not_close_a_block)
+A closing fence carries nothing after the markers, so this line is content. ... ok
+test_a_fenced_example_above_the_determinations_does_not_sign_the_record (test_egress_record.AnExampleSignatureIsNotASignature.test_a_fenced_example_above_the_determinations_does_not_sign_the_record)
+The shape the draft actually has: the how-to-sign section sits above section 6. ... ok
+test_a_longer_closing_fence_still_closes_the_block (test_egress_record.AnExampleSignatureIsNotASignature.test_a_longer_closing_fence_still_closes_the_block)
+Closing with more markers than the opener is legal, so prose after it is prose. ... ok
+test_a_real_signature_outside_any_fence_still_opens_the_gate (test_egress_record.AnExampleSignatureIsNotASignature.test_a_real_signature_outside_any_fence_still_opens_the_gate) ... ok
+test_a_shorter_nested_fence_does_not_end_the_block (test_egress_record.AnExampleSignatureIsNotASignature.test_a_shorter_nested_fence_does_not_end_the_block)
+CommonMark: a closing fence must be at least as long as the one that opened it. ... ok
+test_a_tilde_fence_is_not_closed_by_backticks (test_egress_record.AnExampleSignatureIsNotASignature.test_a_tilde_fence_is_not_closed_by_backticks) ... ok
+test_a_tilde_fenced_example_above_the_determinations_does_not_sign_the_record (test_egress_record.AnExampleSignatureIsNotASignature.test_a_tilde_fenced_example_above_the_determinations_does_not_sign_the_record) ... ok
+test_an_indented_code_block_example_does_not_sign_the_record (test_egress_record.AnExampleSignatureIsNotASignature.test_an_indented_code_block_example_does_not_sign_the_record) ... ok
+test_todays_real_draft_is_still_refused (test_egress_record.AnExampleSignatureIsNotASignature.test_todays_real_draft_is_still_refused)
+The file the owner is actually told to copy must not open the gate as it stands. ... ok
+test_a_secret_shaped_value_is_refused_and_nothing_is_written (test_egress_record.EgressRecord.test_a_secret_shaped_value_is_refused_and_nothing_is_written) ... ok
+test_check_fails_when_the_decision_record_is_not_in_the_checkout (test_egress_record.EgressRecord.test_check_fails_when_the_decision_record_is_not_in_the_checkout) ... ok
+test_check_refuses_a_class_this_caller_may_not_send (test_egress_record.EgressRecord.test_check_refuses_a_class_this_caller_may_not_send) ... ok
+test_no_secret_in_the_environment_can_reach_the_record (test_egress_record.EgressRecord.test_no_secret_in_the_environment_can_reach_the_record) ... ok
+test_record_carries_exactly_the_seven_spec_fields (test_egress_record.EgressRecord.test_record_carries_exactly_the_seven_spec_fields) ... ok
+test_secret_class_is_refused_even_when_the_caller_allows_it (test_egress_record.EgressRecord.test_secret_class_is_refused_even_when_the_caller_allows_it) ... ok
+test_source_hashes_name_the_tree_the_commit_and_the_event_payload (test_egress_record.EgressRecord.test_source_hashes_name_the_tree_the_commit_and_the_event_payload) ... ok
+test_write_appends_one_json_line_and_a_summary_table (test_egress_record.EgressRecord.test_write_appends_one_json_line_and_a_summary_table) ... ok
+test_write_records_a_refused_decision_rather_than_no_line_at_all (test_egress_record.EgressRecord.test_write_records_a_refused_decision_rather_than_no_line_at_all) ... ok
+test_a_signed_record_opens_the_gate (test_egress_record.ExistenceIsNotApproval.test_a_signed_record_opens_the_gate) ... ok
+test_approved_status_without_a_signer_does_not_open_the_gate (test_egress_record.ExistenceIsNotApproval.test_approved_status_without_a_signer_does_not_open_the_gate) ... ok
+test_prepared_record_with_blank_determinations_does_not_open_the_gate (test_egress_record.ExistenceIsNotApproval.test_prepared_record_with_blank_determinations_does_not_open_the_gate) ... ok
+test_signer_without_an_approved_status_does_not_open_the_gate (test_egress_record.ExistenceIsNotApproval.test_signer_without_an_approved_status_does_not_open_the_gate) ... ok
+test_git_tree_outside_a_repository_returns_unavailable (test_egress_record.GitFailureDegradesRatherThanCrashes.test_git_tree_outside_a_repository_returns_unavailable) ... ok
+test_write_still_emits_a_record_when_git_fails (test_egress_record.GitFailureDegradesRatherThanCrashes.test_write_still_emits_a_record_when_git_fails) ... ok
+test_a_missing_snapshot_is_marked_rather_than_silently_recomputed (test_egress_record.PreCallHashesSurviveACommitDuringTheRun.test_a_missing_snapshot_is_marked_rather_than_silently_recomputed) ... ok
+test_write_uses_the_hashes_captured_before_the_call (test_egress_record.PreCallHashesSurviveACommitDuringTheRun.test_write_uses_the_hashes_captured_before_the_call) ... ok
+test_with_root_the_copy_checks_the_real_checkout (test_egress_record.RunningFromOutsideTheTreeItChecks.test_with_root_the_copy_checks_the_real_checkout) ... ok
+test_without_root_the_copy_cannot_see_the_checkout (test_egress_record.RunningFromOutsideTheTreeItChecks.test_without_root_the_copy_cannot_see_the_checkout) ... ok
+test_a_bool_encodes_as_a_bool_not_as_an_integer (test_wf_canonical.TheAdmittedDomain.test_a_bool_encodes_as_a_bool_not_as_an_integer) ... ok
+test_a_float_is_refused_even_when_it_is_integral (test_wf_canonical.TheAdmittedDomain.test_a_float_is_refused_even_when_it_is_integral) ... ok
+test_a_non_string_key_is_refused_rather_than_dropped (test_wf_canonical.TheAdmittedDomain.test_a_non_string_key_is_refused_rather_than_dropped) ... ok
+test_a_tuple_is_refused_rather_than_silently_becoming_a_list (test_wf_canonical.TheAdmittedDomain.test_a_tuple_is_refused_rather_than_silently_becoming_a_list) ... ok
+test_an_integer_beyond_the_safe_range_is_refused (test_wf_canonical.TheAdmittedDomain.test_an_integer_beyond_the_safe_range_is_refused)
+A digest nobody else can reproduce is not evidence. ... ok
+test_an_unsupported_type_is_refused_by_type_name_not_by_value (test_wf_canonical.TheAdmittedDomain.test_an_unsupported_type_is_refused_by_type_name_not_by_value) ... ok
+test_nan_and_infinity_are_refused (test_wf_canonical.TheAdmittedDomain.test_nan_and_infinity_are_refused) ... ok
+test_nesting_beyond_the_depth_limit_is_refused_rather_than_recursing (test_wf_canonical.TheAdmittedDomain.test_nesting_beyond_the_depth_limit_is_refused_rather_than_recursing) ... ok
+test_the_six_admitted_kinds_encode (test_wf_canonical.TheAdmittedDomain.test_the_six_admitted_kinds_encode) ... ok
+test_a_lone_surrogate_is_refused_with_this_modules_error (test_wf_canonical.TheBytes.test_a_lone_surrogate_is_refused_with_this_modules_error) ... ok
+test_array_order_is_the_callers_order_and_is_never_sorted (test_wf_canonical.TheBytes.test_array_order_is_the_callers_order_and_is_never_sorted) ... ok
+test_composed_and_decomposed_text_are_different_documents (test_wf_canonical.TheBytes.test_composed_and_decomposed_text_are_different_documents)
+No normalisation is performed, and that is a choice rather than an oversight. ... ok
+test_control_characters_use_the_short_forms_and_lowercase_hex (test_wf_canonical.TheBytes.test_control_characters_use_the_short_forms_and_lowercase_hex) ... ok
+test_encoding_is_a_fixed_point (test_wf_canonical.TheBytes.test_encoding_is_a_fixed_point)
+Parse canonical bytes, re-encode, and the bytes must not move. ... ok
+test_equal_values_written_differently_produce_identical_bytes (test_wf_canonical.TheBytes.test_equal_values_written_differently_produce_identical_bytes) ... ok
+test_keys_sort_by_utf16_code_unit_not_by_code_point (test_wf_canonical.TheBytes.test_keys_sort_by_utf16_code_unit_not_by_code_point)
+The two orderings disagree above the basic plane, and RFC 8785 fixes UTF-16. ... ok
+test_no_byte_below_space_appears_in_the_output (test_wf_canonical.TheBytes.test_no_byte_below_space_appears_in_the_output) ... ok
+test_non_ascii_is_literal_utf8_not_escaped (test_wf_canonical.TheBytes.test_non_ascii_is_literal_utf8_not_escaped) ... ok
+test_separators_are_compact (test_wf_canonical.TheBytes.test_separators_are_compact) ... ok
+test_the_encoding_never_ends_with_a_newline (test_wf_canonical.TheBytes.test_the_encoding_never_ends_with_a_newline) ... ok
+test_the_forward_slash_is_not_escaped (test_wf_canonical.TheBytes.test_the_forward_slash_is_not_escaped) ... ok
+test_the_line_helper_appends_exactly_one_newline (test_wf_canonical.TheBytes.test_the_line_helper_appends_exactly_one_newline) ... ok
+test_equal_values_written_differently_have_the_same_digest (test_wf_canonical.TheDigest.test_equal_values_written_differently_have_the_same_digest) ... ok
+test_is_digest_accepts_only_lowercase_64_hex (test_wf_canonical.TheDigest.test_is_digest_accepts_only_lowercase_64_hex) ... ok
+test_the_digest_is_lowercase_hex_of_the_canonical_bytes (test_wf_canonical.TheDigest.test_the_digest_is_lowercase_hex_of_the_canonical_bytes) ... ok
+test_a_duplicate_key_in_a_ledger_line_is_caught_here_but_not_by_json_loads (test_wf_canonical.TheLedgerOnMainWouldNowBeCheckable.test_a_duplicate_key_in_a_ledger_line_is_caught_here_but_not_by_json_loads) ... ok
+test_a_byte_order_mark_is_a_failure_not_a_stripped_prefix (test_wf_canonical.TheStrictReader.test_a_byte_order_mark_is_a_failure_not_a_stripped_prefix) ... ok
+test_a_duplicate_key_is_refused_rather_than_keeping_the_last (test_wf_canonical.TheStrictReader.test_a_duplicate_key_is_refused_rather_than_keeping_the_last) ... ok
+test_a_float_literal_is_refused_on_read (test_wf_canonical.TheStrictReader.test_a_float_literal_is_refused_on_read) ... ok
+test_an_oversized_integer_literal_is_refused_on_read (test_wf_canonical.TheStrictReader.test_an_oversized_integer_literal_is_refused_on_read) ... ok
+test_invalid_utf8_is_refused (test_wf_canonical.TheStrictReader.test_invalid_utf8_is_refused) ... ok
+test_non_canonical_but_valid_json_still_parses (test_wf_canonical.TheStrictReader.test_non_canonical_but_valid_json_still_parses)
+The reader admits a value; it does not require the input to already be canonical. ... ok
+test_the_json_constants_are_refused_on_read (test_wf_canonical.TheStrictReader.test_the_json_constants_are_refused_on_read) ... ok
+
+----------------------------------------------------------------------
+Ran 190 tests in 13.013s
+
+OK
+write: record refused, it contains a value shaped like a github token
+{"data_class":"INTERNAL","policy_decision":{"decision":"docs/decisions/2026-09-03-egress-policy.md","decision_sha256":"b556160f77235d58b6fad1e1d47d27641cd20c22853b3d3a4ed8b9651d93d623","outcome":"allow","policy":"docs/policies/egress.md","policy_sha256":"c6c18b15814cdda4aa6627dfdd9d1dcb1dc53b78bd7e235b72a8e4cd625d7f2c","rule":"claude-review-anthropic"},"provider":"anthropic","purpose":"pull request review","result_ref":{"conclusion":"success","job":"review","provider_session_id":"s-1","run_url":"https://github.com/owner/repo/actions/runs/42/attempts/1","workflow_ref":""},"source_hashes":["checkout-tree:sha1:57aa1f6c586ff3322abefe66188e97e964d5ff88","checkout-commit:sha1:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","event-payload:sha256:8d705b91272a68f52aed25b846e6ad0eeb54b4f66cf32437c8501bd02d51236e"],"time":"2026-09-16T20:33:20Z"}
+{"data_class":"INTERNAL","policy_decision":{"decision":"docs/decisions/absent.md","decision_sha256":"absent","outcome":"refused","policy":"docs/policies/egress.md","policy_sha256":"c6c18b15814cdda4aa6627dfdd9d1dcb1dc53b78bd7e235b72a8e4cd625d7f2c","rule":"claude-review-anthropic"},"provider":"anthropic","purpose":"pull request review","result_ref":{"conclusion":"not reported","job":"review","provider_session_id":"not reported","run_url":"https://github.com/owner/repo/actions/runs/42/attempts/1","workflow_ref":""},"source_hashes":["checkout-tree:sha1:57aa1f6c586ff3322abefe66188e97e964d5ff88","checkout-commit:sha1:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","event-payload:sha256:8d705b91272a68f52aed25b846e6ad0eeb54b4f66cf32437c8501bd02d51236e"],"time":"2026-09-16T20:33:20Z"}
+check: decision file missing from the checkout: docs/decisions/absent.md
+check: anthropic may receive INTERNAL under docs/decisions/d.md
+check: docs/decisions/d.md has no signer on its '**Decided by:**' line
+check: docs/decisions/d.md carries no '**Status:** APPROVED' line, so it is not signed
+check: docs/decisions/d.md has no signer on its '**Decided by:**' line
+check: docs/decisions/d.md carries no '**Status:** APPROVED' line, so it is not signed
+{"data_class":"INTERNAL","policy_decision":{"decision":"docs/decisions/d.md","decision_sha256":"e984e758aa7cca2114a27c3c1e4c25cb7c87575d933e6417f154bce19c2e391c","outcome":"allow","policy":"docs/policies/egress.md","policy_sha256":"73cb3858a687a8494ca3323053016282f3dad39d42cf62ca4e79dda2aac7d9ac","rule":"r"},"provider":"anthropic","purpose":"p","result_ref":{"conclusion":"not reported","job":"","provider_session_id":"not reported","run_url":"//actions/runs//attempts/1","workflow_ref":""},"source_hashes":["checkout-tree:sha1:unavailable"],"time":"2026-09-16T20:33:20Z"}
+{"data_class":"INTERNAL","policy_decision":{"decision":"docs/decisions/d.md","decision_sha256":"e984e758aa7cca2114a27c3c1e4c25cb7c87575d933e6417f154bce19c2e391c","outcome":"allow","policy":"docs/policies/egress.md","policy_sha256":"c82fc52c78bf8154d4dd7d8766c422ab151052d72098d72ded237aafcd78e4e0","rule":"r"},"provider":"anthropic","purpose":"p","result_ref":{"conclusion":"not reported","job":"","provider_session_id":"not reported","run_url":"//actions/runs//attempts/1","workflow_ref":""},"source_hashes":["checkout-tree:sha1:unavailable","precall-snapshot:absent"],"time":"2026-09-16T20:33:20Z"}
+{"data_class":"INTERNAL","policy_decision":{"decision":"docs/decisions/d.md","decision_sha256":"e984e758aa7cca2114a27c3c1e4c25cb7c87575d933e6417f154bce19c2e391c","outcome":"allow","policy":"docs/policies/egress.md","policy_sha256":"c82fc52c78bf8154d4dd7d8766c422ab151052d72098d72ded237aafcd78e4e0","rule":"r"},"provider":"anthropic","purpose":"p","result_ref":{"conclusion":"not reported","job":"","provider_session_id":"not reported","run_url":"//actions/runs//attempts/1","workflow_ref":""},"source_hashes":["checkout-tree:sha1:beforethecall"],"time":"2026-09-16T20:33:20Z"}
+
+exit_code=0

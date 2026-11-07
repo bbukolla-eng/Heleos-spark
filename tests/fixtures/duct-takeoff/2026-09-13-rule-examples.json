@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "record_kind": "proposed_synthetic_rule_examples",
+  "task_id": "DUCT-CALCULATION-1",
+  "unit_system": "imperial",
+  "source_kind": "literal_mathematical_and_semantic_specification",
+  "source_pdf_fixture": false,
+  "owner_adjudication": "pending",
+  "production_rule_admission": false,
+  "representative_project_acceptance": false,
+  "examples": [
+    {
+      "id": "E01",
+      "name": "size_changing_centerline",
+      "inputs": {"paper_inches_per_foot": "0.25", "segments": [{"paper_inches": "2", "size_in": ["24", "12"]}, {"paper_inches": "1", "size_in": ["18", "12"]}]},
+      "expected": {"group_lengths_ft": ["8.00", "4.00"], "total_ft": "12.00", "automatic_fitting_length_ft": "0"}
+    },
+    {
+      "id": "E02",
+      "name": "supported_vertical_portion",
+      "inputs": {"planar_length_ft": "12", "separate_supported_rise_ft": "5"},
+      "expected": {"total_ft": "17.00", "complete": true}
+    },
+    {
+      "id": "E03",
+      "name": "unsupported_vertical_portion",
+      "inputs": {"planar_length_ft": "12", "separate_supported_rise_ft": null, "vertical_portion_indicated": true},
+      "expected": {"known_subtotal_ft": "12.00", "total_ft": null, "complete": false, "unresolved_vertical_portions": 1}
+    },
+    {
+      "id": "E04",
+      "name": "single_sloped_portion",
+      "inputs": {"projection_ft": "3", "rise_ft": "4", "same_datum": true, "straight_slope": true},
+      "expected": {"total_ft": "5.00", "physical_portions": 1}
+    },
+    {
+      "id": "E05",
+      "name": "unconnected_duct_crossing_and_wall",
+      "inputs": {"distinct_duct_lengths_ft": ["4", "6"], "confirmed_wall_length_ft": "20", "junction_supported": false},
+      "expected": {"duct_total_ft": "10.00", "invented_junctions": 0, "wall_length_in_duct_total_ft": "0"}
+    },
+    {
+      "id": "E06",
+      "name": "repeated_depiction_of_same_physical_run",
+      "inputs": {"physical_run_ft": "8", "depictions": 2, "same_instance_correspondence_verified": true},
+      "expected": {"total_ft": "8.00", "physical_runs": 1, "retained_references": 2}
+    },
+    {
+      "id": "E07",
+      "name": "scale_correction_and_recalculation",
+      "inputs": {"paper_inches": "2", "old_paper_inches_per_foot": "0.25", "new_paper_inches_per_foot": "0.125"},
+      "expected": {"retained_historical_ft": "8.00", "current_before_recalculation_ft": null, "replacement_ft": "16.00", "unrelated_results_changed": false}
+    },
+    {
+      "id": "E08",
+      "name": "separate_work_status_groups",
+      "inputs": {"new_install_ft": "8", "existing_to_remain_ft": "4", "demolition_ft": "3"},
+      "expected": {"new_install_ft": "8.00", "existing_to_remain_ft": "4.00", "demolition_ft": "3.00", "combined_install_quantity": false}
+    },
+    {
+      "id": "E09",
+      "name": "round_group_after_summing",
+      "inputs": {"stored_segment_meters": ["0.001524", "0.001524"], "meters_per_foot": "0.3048", "display_decimal_places": 2, "rounding": "ROUND_HALF_EVEN"},
+      "expected": {"display_group_ft": "0.01", "sum_displayed_segment_values_used": false}
+    }
+  ]
+}

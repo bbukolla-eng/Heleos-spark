@@ -1,0 +1,12 @@
+{
+  "schema": "heleos.air-device-rule-binding/v1",
+  "decision": "tests/fixtures/air-device-takeoff/2026-09-15-owner-decision.json",
+  "approved_packet": "tests/fixtures/air-device-takeoff/approved-rule-packet.md",
+  "examples": "tests/fixtures/air-device-takeoff/2026-09-14-rule-examples.json",
+  "files": {
+    "tests/fixtures/air-device-takeoff/2026-09-15-owner-decision.json": "92bef46866b28120c7346fe3745111f219aafc8be452c76b0a3c2ad554949c19",
+    "tests/fixtures/air-device-takeoff/approved-rule-packet.md": "f89b35366e34ff064700dcac8f3c07cee252df569c0ffda7f9b69abf09735b0f",
+    "tests/fixtures/air-device-takeoff/2026-09-14-rule-examples.json": "749eade9c9e9c8b0e7dfe62b05748072a7e7a64b7e587eb534c5cf04e2fb7897"
+  },
+  "reconciliation": "Immutable packet exactly matches approved_packet_sha256 in the owner receipt; receipt approval supersedes historical draft/pending labels. Current presentation changes only approval headings; all 29 rule/example table rows match. No rule or expected answer changed."
+}

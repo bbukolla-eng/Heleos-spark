@@ -1,0 +1,43 @@
+[package]
+publish = false
+name = "heleos-core"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+age.workspace = true
+bytes.workspace = true
+cap-fs-ext.workspace = true
+cap-std.workspace = true
+fs2.workspace = true
+ed25519-dalek.workspace = true
+heleos-platform-fs = { path = "../heleos-platform-fs" }
+heleos-pdf-protocol = { path = "../heleos-pdf-protocol", features = ["artifact-host"] }
+rusqlite.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+serde_jcs.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+tempfile.workspace = true
+tokio.workspace = true
+toml.workspace = true
+uuid.workspace = true
+wasmtime.workspace = true
+wasmtime-wasi.workspace = true
+
+[dev-dependencies]
+heleos-test-fixtures = { path = "../heleos-test-fixtures" }
+proptest.workspace = true
+wat.workspace = true
+
+[target.'cfg(unix)'.dependencies]
+libc.workspace = true
+rustix = { workspace = true, features = ["process"] }
+
+[target.'cfg(windows)'.dependencies]
+stellar-agent-windows-identity.workspace = true
+windows-acl.workspace = true
+windows-permissions.workspace = true

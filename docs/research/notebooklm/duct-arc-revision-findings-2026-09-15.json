@@ -1,0 +1,265 @@
+{
+  "task_id": "DUCT-ARC-REVISION-1",
+  "state": "pre-implementation findings verified; adoption awaits implementation and tests",
+  "sources": [
+    {
+      "key": "bluebeam-guide",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+      "title": "Construction Takeoffs: Complete Guide to Quantity & Material Takeoffs in 2026 | Bluebeam",
+      "original_url": "https://www.bluebeam.com/resources/construction-takeoffs-guide-2026/",
+      "url_basis": "Indexed source line [43, 43]",
+      "edition_or_date": "2026 guide named in title; exact publication date not provided",
+      "original_pdf_pages": null,
+      "classification": "substantive public vendor guide",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "content_sha256": "372ef5ad88ec0ae83af888943a72903076eff498bd01b4ab5baccd9f9e96cc9c",
+      "character_count": 67447,
+      "result_evidence": {
+        "path": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-source-result.json",
+        "sha256": "9aaad6d34d183d0f4a421fc0b55052dcc06159202d0b675124a681d655aa69ef"
+      },
+      "retrieved_at": "2026-09-14T09:08:04.041Z",
+      "verification": "Body matches original successful source response and current notebook source ID. Publication page not independently browsed; empty/navigation bodies supply no substantive authority."
+    },
+    {
+      "key": "bluebeam-estimation",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "6bca9972-2389-4935-9c47-31261542ee70",
+      "title": "How to Use Revu for Estimation to Make Quantity Takeoffs Easier",
+      "original_url": "https://blog.bluebeam.com/revu-estimation-quantity-takeoffs/",
+      "url_basis": "Indexed source line [11, 11]",
+      "edition_or_date": "By Frank Kalman, May 11 2026 (lines 14483-14487); originally March 2020, updated 2026 (line 14511)",
+      "original_pdf_pages": null,
+      "classification": "substantive vendor article, preceded by extensive cookie/navigation text",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-estimation-indexed-text.txt",
+      "content_sha256": "a0c343e6cdfd12cfe785d753cada193c3227f81245a078deb1aa77d04a4f390a",
+      "character_count": 181451,
+      "result_evidence": {
+        "path": ".heleos/duct-revision-2026-09-14/research-bluebeam-estimation-source-result.json",
+        "sha256": "cd6d7aea9e3a48abf4ff7af46f033b1f987a1ee5f3fad737adb9bcd7c793e0cd"
+      },
+      "retrieved_at": "2026-09-14T09:08:04.051Z",
+      "verification": "Body matches original successful source response and current notebook source ID. Publication page not independently browsed; empty/navigation bodies supply no substantive authority."
+    },
+    {
+      "key": "openstax",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "457f0d9c-d900-45cb-8b40-9a8a8a5d8101",
+      "title": "5.1 Angles - Precalculus 2e | OpenStax",
+      "original_url": "https://openstax.org/books/precalculus-2e/pages/5-1-angles",
+      "edition_or_date": "Precalculus 2e",
+      "publication_date": "2021-12-21",
+      "original_page_numbers": null,
+      "text_location": ".heleos/duct-circular-arc-2026-09-14/research-openstax-indexed-text.txt",
+      "content_sha256": "a4c5869bbfd4af70a5213de07282287817bbbc83bfca72a474be744deb4228d8",
+      "result_evidence": {
+        "path": ".heleos/duct-circular-arc-2026-09-14/research-call-03-response.json",
+        "sha256": "ec1fbb7bf005e8c390fa7158d969d29852d5cdd66a641aa5004d00d57127e4a6"
+      },
+      "verification": "Exact retained body and original successful response hashes match; response content equals body; source ID present in completed recorded expansion inventory. No live source freshness claim."
+    },
+    {
+      "key": "ezdxf",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "fb38a435-ce85-408f-afe4-2a9384877bc5",
+      "title": "Core \u2014 ezdxf 1.4.4 documentation",
+      "original_url": "https://ezdxf.readthedocs.io/en/stable/math/core.html",
+      "edition_or_date": "1.4.4",
+      "publication_date": null,
+      "original_page_numbers": null,
+      "text_location": ".heleos/duct-circular-arc-2026-09-14/research-ezdxf-indexed-text.txt",
+      "content_sha256": "76097f9285913dcb66d9a046a774ed158811c98abe857d9ce52427843e869109",
+      "result_evidence": {
+        "path": ".heleos/duct-circular-arc-2026-09-14/research-call-04-response.json",
+        "sha256": "f3e1cee2fd57751f614825280219e45f98aad47e0882800c327828892182fc7b"
+      },
+      "verification": "Exact retained body and original successful response hashes match; response content equals body; source ID present in completed recorded expansion inventory. No live source freshness claim."
+    },
+    {
+      "key": "drawing-scales",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "source_id": "2bc99eed-82b9-444a-8bab-450f5be0aa32",
+      "title": "https://www.usfa.fema.gov/downloads/pdf/nfa/engineer-architect-scales.pdf",
+      "original_url": "https://www.usfa.fema.gov/downloads/pdf/nfa/engineer-architect-scales.pdf",
+      "retrieved_at": "2026-09-14T05:04:42.747743+00:00",
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-indexed-text.txt",
+      "content_sha256": "f10a1b00608efaec7e2144a84f03f514a0d1eb5bb0520c16935acf602b8085b4",
+      "result_evidence": {
+        "path": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-source-result.json",
+        "sha256": "0c58a27e4176d58b83df0e4e983c34519cd57e49f8bddc9090e0c0f5fc347ecf"
+      },
+      "edition_or_date": null,
+      "original_page_numbers": null,
+      "verification": "Exact retained body and original successful response hashes match; response content equals body; source ID present in completed recorded expansion inventory. No live source freshness claim."
+    },
+    {
+      "key": "mepdetect",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "source_id": "4a7e4472-4c73-49fa-9e01-e33e1b9e20f5",
+      "title": "GitHub - DynMEP/MEPdetect: Symbol detection and circuit tracing for MEP construction drawings. Detects electrical symbols with YOLO11, traces how they are wired, and exports netlists and per-circuit counts to CSV, Excel, DXF or PDF. Hosted at mepdetect.com. \u00b7 GitHub",
+      "original_url": "https://github.com/DynMEP/MEPdetect",
+      "retrieved_at": "2026-09-14T05:18:04.078655+00:00",
+      "text_location": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-indexed-text.txt",
+      "content_sha256": "939ce39f0fba5ad26e084303b4d9918236ed516a080b77ee8f5eb917633db26e",
+      "result_evidence": {
+        "path": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-source-result.json",
+        "sha256": "b6e0065d7a3f0760b436a08e29295f3898a8c8f036f0808b642497d74f7ce832"
+      },
+      "edition_or_date": null,
+      "original_page_numbers": null,
+      "verification": "Exact retained body and original successful response hashes match; response content equals body; source ID present in completed recorded expansion inventory. No live source freshness claim."
+    }
+  ],
+  "passages": [
+    {
+      "source_key": "bluebeam-guide",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "indexed_text_lines": [
+        973,
+        985
+      ],
+      "section": "Calibration",
+      "query_citations": [
+        14
+      ],
+      "passage_sha256": "6851d951db992d3664cc3b6bf3cab6308ea370fb4d4c02fee641301c2b3f676e",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true,
+      "id": "ARV-REV-2",
+      "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329"
+    },
+    {
+      "source_key": "bluebeam-guide",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "indexed_text_lines": [
+        1063,
+        1069
+      ],
+      "section": "Revision management",
+      "query_citations": [
+        2
+      ],
+      "passage_sha256": "37b869f509b86aaed4565d370b143b2e44f0dde3ed4bdcc528041fef350bd181",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true,
+      "id": "ARV-REV-3",
+      "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329"
+    },
+    {
+      "source_key": "bluebeam-guide",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-guide-indexed-text.txt",
+      "indexed_text_lines": [
+        1287,
+        1315
+      ],
+      "section": "Auditability; revision and addenda handling",
+      "query_citations": [
+        4,
+        24
+      ],
+      "passage_sha256": "d9baab61731ace0ae65e58a9da0d0f762c818501c9a84769ccb2829bb356950f",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true,
+      "id": "ARV-REV-4",
+      "source_id": "3225b072-b0a8-4eba-9df9-4e8162d7a729",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329"
+    },
+    {
+      "source_key": "bluebeam-estimation",
+      "text_location": ".heleos/duct-revision-2026-09-14/research-bluebeam-estimation-indexed-text.txt",
+      "indexed_text_lines": [
+        14623,
+        14629
+      ],
+      "section": "Managing Drawing Revisions",
+      "query_citations": [
+        5,
+        6
+      ],
+      "passage_sha256": "dd6323989d4a5434b17453c25102b21f8e400b459fde9b46e5b5b01846f2fd02",
+      "hash_serialization": "UTF-8 selected indexed lines with LF separators and one final LF",
+      "verified": true,
+      "id": "ARV-REV-6",
+      "source_id": "6bca9972-2389-4935-9c47-31261542ee70",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329"
+    },
+    {
+      "id": "ARP-AS03",
+      "source_key": "openstax",
+      "source_id": "457f0d9c-d900-45cb-8b40-9a8a8a5d8101",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "text_location": ".heleos/duct-circular-arc-2026-09-14/research-openstax-indexed-text.txt",
+      "indexed_text_lines": [
+        811,
+        829
+      ],
+      "section": "Arc length is length along the curve; s=r\u03b8",
+      "passage_sha256": "9698d94f05fe458918bc0ab88b0fa4ed720174070adc8d66aa89076ab6f0c2d3",
+      "hash_serialization": "UTF-8 indexed lines joined by LF, no trailing LF",
+      "prior_passage": "AS03"
+    },
+    {
+      "id": "ARP-AS10",
+      "source_key": "ezdxf",
+      "source_id": "fb38a435-ce85-408f-afe4-2a9384877bc5",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "text_location": ".heleos/duct-circular-arc-2026-09-14/research-ezdxf-indexed-text.txt",
+      "indexed_text_lines": [
+        9037,
+        9103
+      ],
+      "section": "ConstructionArc.from_3p",
+      "passage_sha256": "778eb3a7e332da9400b035bc0709ca6751a105a2a7479e01e1d635b5c50ef7fe",
+      "hash_serialization": "UTF-8 indexed lines joined by LF, no trailing LF",
+      "prior_passage": "AS10"
+    },
+    {
+      "id": "ARP-drawing-scales-183",
+      "source_key": "drawing-scales",
+      "source_id": "2bc99eed-82b9-444a-8bab-450f5be0aa32",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "text_location": ".heleos/notebooklm-workflow-2026-09-14/drawing-scales-indexed-text.txt",
+      "indexed_text_lines": [
+        183,
+        199
+      ],
+      "section": "Scale versus dimensions; fire-sprinkler teaching example",
+      "passage_sha256": "7b6623ec43596d23d3ec8e89b0d2d327b892e29111e1eb1e85d8f315be2ca012",
+      "hash_serialization": "UTF-8 indexed lines joined by LF, one final LF",
+      "prior_passage": "drawing-scales:183-199"
+    },
+    {
+      "id": "ARP-mepdetect-973",
+      "source_key": "mepdetect",
+      "source_id": "4a7e4472-4c73-49fa-9e01-e33e1b9e20f5",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "text_location": ".heleos/duct-correction-build-2026-09-14/research-mepdetect-indexed-text.txt",
+      "indexed_text_lines": [
+        973,
+        973
+      ],
+      "section": "Electrical drawing conventions",
+      "passage_sha256": "e7056d1f11361531b0591b9ebe0c40f1ad7a02bced219d8e7bc382574ee3d097",
+      "hash_serialization": "UTF-8 indexed lines joined by LF, one final LF",
+      "prior_passage": "mepdetect:973-973"
+    }
+  ],
+  "new_external_calls": 0,
+  "reuse_basis": "Existing bounded revision query and verified circle geometry sources already cover unchanged mechanics. This adds explicit local revision check dispositions, not a new formula or mechanical rule.",
+  "adopt": "Explicit old/new comparison, own calibrated replacement source, preserved prior quantities/history. Exact arc interval interpretation reused.",
+  "not_adopted": "D05 precedence conflict and electrical same-tag identity remain rejected. Public sources do not define check transfer, revision precedence or transaction semantics.",
+  "limits": "Retained indexed source snapshots; no publisher freshness or automatic model accuracy claim.",
+  "source_snapshot_receipt": {
+    "path": ".heleos/duct-arc-revision-2026-09-15/research-verified.json",
+    "sha256": "5e8039a25a59e84ff1a98e7bfb97db4f3aa0ce81cdb701f66581fc66614e032f"
+  },
+  "proposed_behavior": [
+    "Explicitly compare old/new sources and remeasure the new source using its own verified scale.",
+    "Keep historical original readings distinct from current applicability.",
+    "Preserve unchanged quantities and every old decision; conflicting readings remain unresolved under D05.",
+    "Exhaustive source-bound transitions and current check resolution are engineering requirements; sources do not prescribe mapping schemas."
+  ]
+}

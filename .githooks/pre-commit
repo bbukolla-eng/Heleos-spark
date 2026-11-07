@@ -1,0 +1,16 @@
+#!/bin/sh
+# Validate the index, including the staged validator, without editing it.
+set -eu
+if git --no-replace-objects diff --cached --quiet --exit-code; then
+    exit 0
+fi
+exec python3 -c '
+import subprocess
+import sys
+path = "scripts/verify-build-checkpoint.py"
+result = subprocess.run(["git", "--no-replace-objects", "show", ":" + path], capture_output=True)
+if result.returncode:
+    sys.exit("Checkpoint guard: stage the repository validator before committing.")
+namespace = {"__name__": "__main__", "__file__": path}
+exec(compile(result.stdout, path, "exec"), namespace)
+' --staged

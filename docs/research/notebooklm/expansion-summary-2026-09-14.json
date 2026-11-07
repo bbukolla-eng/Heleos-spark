@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "task_id": "NOTEBOOKLM-EXPAND-250",
+  "state": "complete_with_explicit_quality_and_receipt_limits",
+  "recorded_at": "2026-09-14T14:39:46.388534+00:00",
+  "checkout": "/Users/bekim/Heleos-spark",
+  "branch": "main",
+  "base_head": "47d7c5b139b0ea22f661b5668021d53b3f3d51af",
+  "owner_scope": "Expand currently used build notebooks to250 total entries and check explicitly named secret-key notebook; public references only.",
+  "notebooks": [
+    {
+      "lane": "n05",
+      "title": "N05 \u2014 Drawing Intelligence",
+      "worker": "remaining_work_gate",
+      "notebook_id": "0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "url": "https://notebooklm.google.com/notebook/0c0f0f2b-c73d-4764-9c2f-21895648c5bd",
+      "baseline": 70,
+      "added": 180,
+      "final": 250,
+      "new_ready": 180,
+      "total_provider_ready": 245,
+      "legacy_failed": 5,
+      "use": "PDF/CAD coordinates, OCR, drawing interpretation, datasets and evaluation",
+      "inventory": {
+        "path": "docs/research/notebooklm/expansion-n05-2026-09-14.json",
+        "sha256": "0cc9680fb4cc6168a05d2913f2cd77f42592eab0fb7554013adff26a280146ac"
+      },
+      "root_verification": {
+        "path": ".heleos/notebooklm-expansion-2026-09-14/root-verified-n05.json",
+        "sha256": "ebfaed2900f26352ecefb18f7c428d9a5b0f7e99882776adf881fbb4a614ba9f"
+      },
+      "quality_limit": "Indexed bodies retained and66 substantive spot checks span all added topic families. Complete body retrieval does not verify every claim; eight baseline bodies compared, baseline not comprehensively audited. No mechanical rule adoption."
+    },
+    {
+      "lane": "n07",
+      "title": "N07 \u2014 Software Engineering",
+      "worker": "export_formula_review",
+      "notebook_id": "f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+      "url": "https://notebooklm.google.com/notebook/f0404db5-8c1e-4591-9c9d-2727bd668cbe",
+      "baseline": 37,
+      "added": 213,
+      "final": 250,
+      "new_ready": 213,
+      "total_provider_ready": 246,
+      "legacy_failed": 4,
+      "use": "Local desktop architecture, storage, integrity, platform APIs, accessibility and tests",
+      "inventory": {
+        "path": "docs/research/notebooklm/expansion-n07-2026-09-14.json",
+        "sha256": "18977f666139017b93c7f83b94480730d79bcc4132f9cc89e95b9fd4d9326d58"
+      },
+      "root_verification": {
+        "path": ".heleos/notebooklm-expansion-2026-09-14/root-verified-n07.json",
+        "sha256": "bda1bb3359d972b65395de351a1da72876f7809660b3bcbdeecbfa3fbacb992c"
+      },
+      "quality_limit": "12 indexed-body samples span nine publishers; all213 report ready but not all bodies pairwise hashed.15 archived Apple chapters need current API verification before use. No new mechanical rules or production behavior adopted."
+    },
+    {
+      "lane": "n10",
+      "title": "N10 \u2014 HVAC Takeoff Methods",
+      "worker": "airdevice_research",
+      "notebook_id": "d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "url": "https://notebooklm.google.com/notebook/d71c3a3a-4b2a-415e-ad5a-5026b407b329",
+      "baseline": 71,
+      "added": 179,
+      "final": 250,
+      "new_ready": 179,
+      "total_provider_ready": 246,
+      "legacy_failed": 4,
+      "use": "Takeoff workflows, government mechanical specifications, estimating and evidence exports",
+      "inventory": {
+        "path": "docs/research/notebooklm/expansion-n10-2026-09-14.json",
+        "sha256": "2df7e67d7fce0a4f458e74065912288541ac8d15df265e0b0dc3909266b99d22"
+      },
+      "root_verification": {
+        "path": ".heleos/notebooklm-expansion-2026-09-14/root-verified-n10.json",
+        "sha256": "36187e5f73e046cbe75760289b5a4da69e924ea2b18271d3f526d9b1c6632bb2"
+      },
+      "quality_limit": "Ten indexed body samples checked; all179 new entries ready, not every new body independently read. Four baseline failed entries, four baseline PageNotFound titles and repeated title groups preserved. Government specs have project-specific conditions, no production rule adoption."
+    },
+    {
+      "lane": "n11",
+      "title": "N11 \u2014 Ductwork & Air Distribution",
+      "worker": "airdevice_map",
+      "notebook_id": "932527dc-c37a-40ed-89de-4240e8197609",
+      "url": "https://notebooklm.google.com/notebook/932527dc-c37a-40ed-89de-4240e8197609",
+      "baseline": 61,
+      "added": 189,
+      "final": 250,
+      "new_ready": 189,
+      "total_provider_ready": 234,
+      "legacy_failed": 16,
+      "use": "Ducts, fittings, dampers, air devices, terminals, insulation, acoustics and installation",
+      "inventory": {
+        "path": "docs/research/notebooklm/expansion-n11-2026-09-14.json",
+        "sha256": "570f4da7724221fcef77a9e7b8d20184acfc89e915b7a3d19baf5c093b347947"
+      },
+      "root_verification": {
+        "path": ".heleos/notebooklm-expansion-2026-09-14/root-verified-n11.json",
+        "sha256": "c10485678217dfab14db678d2cc5f4d66b7cb8967cc5ea1c230bc6ce1625da06"
+      },
+      "quality_limit": "Two original web discovery response bodies lost in early receipt-ID collision; original hashes and recovered request bytes retained. All mutations, final source IDs and indexed bodies are independently verified. Three image-only historical PDFs have selected publisher pages visually checked. Baseline16failed entries and duplicate/unavailable landing pages preserved. No mechanical rule adoption."
+    },
+    {
+      "lane": "secret-key",
+      "title": "Secret Key Leakage in Hugging Face Spaces",
+      "worker": "airdevice_dataset_map",
+      "notebook_id": "c065f36c-c830-4651-a60e-76dc3649606a",
+      "url": "https://notebooklm.google.com/notebook/c065f36c-c830-4651-a60e-76dc3649606a",
+      "baseline": 163,
+      "added": 87,
+      "final": 250,
+      "new_ready": 87,
+      "total_provider_ready": 248,
+      "legacy_failed": 2,
+      "use": "Engineering drawing/CAD/BIM studies, model data preparation, training, evaluation and defensive references",
+      "inventory": {
+        "path": "docs/research/notebooklm/expansion-secret-key-2026-09-14.json",
+        "sha256": "44a7c07d54df1edb7759f70786279e478107edf3b141077a43f5cc6ae399610d"
+      },
+      "root_verification": {
+        "path": ".heleos/notebooklm-expansion-2026-09-14/root-verified-secret-key.json",
+        "sha256": "a4e3b356196868bef95614a1be5a81dba6ab9680b54e684c339b6f21f6b619b9"
+      },
+      "quality_limit": "Distinct documentation chapter bodies do not constitute independent corroboration. Baseline duplicate candidates and failed entries remain explicit. Source findings are research context, no new production rule."
+    }
+  ],
+  "totals": {
+    "baseline_entries": 402,
+    "gross_new_imports": 851,
+    "own_new_failed_imports_removed": 3,
+    "net_new_entries": 848,
+    "new_ready": 848,
+    "final_entries": 1250,
+    "provider_ready_entries": 1219,
+    "preexisting_failed_entries_preserved": 31
+  },
+  "quality": [
+    "Counts are NotebookLM entries, not independent verified source bodies. References intentionally overlap across relevant notebooks.",
+    "All original402 source IDs preserved, including failed entries, duplicate aliases, old editions and metadata-only pages.",
+    "All848 net additions provider-ready; N05/secret-key/N11 indexed bodies retained, while N07/N10 body content was sampled rather than exhaustively audited.",
+    "Three N11 image-reference-only PDFs have actual publisher pages visually inspected by worker and root; source date/current applicability remains separate.",
+    "Two original N11 web discovery response bodies were lost during an early request-ID collision. Original log hashes and recovered request bytes remain; all mutation request/result bytes, final IDs and indexed source bodies are retained and verified.",
+    "Newly imported sources are research context. No new mechanical rule, model, production quantity or platform acceptance is admitted by this expansion."
+  ],
+  "secret_key_check": {
+    "notebook_id": "c065f36c-c830-4651-a60e-76dc3649606a",
+    "finding": "Mixed engineering-drawing/CAD/BIM/takeoff and model/data/evaluation research. The title paper is a public historical empirical study of credential leakage; only source-backed aggregate and defensive context retained.",
+    "credential_investigation": false,
+    "private_uploads": false,
+    "report": {
+      "path": "docs/research/notebooklm/expansion-secret-key-2026-09-14.json",
+      "sha256": "44a7c07d54df1edb7759f70786279e478107edf3b141077a43f5cc6ae399610d"
+    }
+  },
+  "product_continuity": {
+    "path": ".heleos/notebooklm-expansion-2026-09-14/root-product-continuity.json",
+    "sha256": "5ab69f40274ab81d9d99f2a1c9ee9db72d6e119be420e29c5eabed5f127ff7fe"
+  },
+  "arc_handoff": {
+    "path": ".heleos/duct-circular-arc-2026-09-14/root-handoff.json",
+    "sha256": "ff9a7ba59733649b1af61b3b1cb19106179fbba97d74169af976eea433b91dc7"
+  },
+  "full_heleos_goal": "active; native Windows, representative projects, remaining categories, pending air-device/export decisions and full acceptance remain outstanding",
+  "processes": "All five notebook writers and discovery helpers terminal; no pending import/query or further notebook mutation.",
+  "next_action": "Resume the approved calculation sequence from docs/superpowers/specs/2026-09-13-calculation-sequence-design.md using these recorded sources before the next knowledge-dependent implementation; preserve outstanding owner/platform gates."
+}
