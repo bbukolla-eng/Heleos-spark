@@ -12,6 +12,7 @@ for ping and head-since must stay the contract the bash job depends on.
 """
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -325,7 +326,16 @@ class WorkflowLoopContract(unittest.TestCase):
         )
         with open(path, encoding="utf-8") as handle:
             text = handle.read()
-        self.assertIn("DEADLINE=$((SECONDS + 720))", text)
+        deadline = re.search(r"DEADLINE=\$\(\(SECONDS \+ (\d+)\)\)", text)
+        timeout = re.search(r"(?m)^[ \t]*timeout-minutes:[ \t]*(\d+)[ \t]*$", text)
+        pause = re.search(r"(?m)^[ \t]*sleep[ \t]+(\d+)[ \t]*$", text)
+        self.assertIsNotNone(deadline, "workflow deadline assignment missing")
+        self.assertIsNotNone(timeout, "workflow timeout-minutes missing")
+        self.assertIsNotNone(pause, "workflow sleep interval missing")
+        deadline_seconds = int(deadline.group(1))
+        sleep_seconds = int(pause.group(1))
+        timeout_seconds = int(timeout.group(1)) * 60
+        self.assertLess(deadline_seconds + sleep_seconds, timeout_seconds)
         self.assertIn('if [ "${status}" -ne 2 ]; then', text)
         self.assertIn("should-ping-codex", text)
         self.assertIn("head-since", text)
