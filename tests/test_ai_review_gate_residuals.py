@@ -21,23 +21,38 @@ from contextlib import redirect_stdout
 from io import StringIO
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from tests.test_ai_review_gate import (  # noqa: E402
+    HEAD,
+    NEWER,
+    OLDER,
+    SINCE,
+    comment as landing_comment,
+    evaluate,
+    user,
+)
 from tools.github import ai_review_gate as gate  # noqa: E402
 
-HEAD = "abc123def456"
-OLDER = "2026-09-06T10:00:00Z"
-SINCE = "2026-09-06T12:00:00Z"
-NEWER = "2026-09-06T12:05:00Z"
 LATER = "2026-09-06T12:10:00Z"
 
 
-def user(login):
-    return {"login": login}
-
-
-def comment(login, created_at=NEWER, body="looks fine", **extra):
-    item = {"user": user(login), "created_at": created_at, "body": body}
+def comment(login, created_at=NEWER, body="looks fine", commit_id=None, **extra):
+    item = landing_comment(login, created_at=created_at, body=body, commit_id=commit_id)
     item.update(extra)
     return item
+
+
+class SharedLandingFixtures(unittest.TestCase):
+    def test_timeline_constants_and_builders_come_from_the_landing_suite(self):
+        import tests.test_ai_review_gate as landing
+
+        self.assertIs(HEAD, landing.HEAD)
+        self.assertIs(OLDER, landing.OLDER)
+        self.assertIs(SINCE, landing.SINCE)
+        self.assertIs(NEWER, landing.NEWER)
+        self.assertIs(user, landing.user)
+        self.assertIs(evaluate, landing.evaluate)
+        self.assertIs(landing_comment, landing.comment)
+        self.assertEqual(comment("bot"), landing.comment("bot"))
 
 
 def force_push_event(created_at, commit_id=HEAD):
@@ -64,19 +79,6 @@ def force_push_event(created_at, commit_id=HEAD):
         "created_at": created_at,
         "performed_via_github_app": None,
     }
-
-
-def evaluate(**overrides):
-    payload = {
-        "reviews": [],
-        "issue_comments": [],
-        "review_comments": [],
-        "check_runs": [],
-        "head_sha": HEAD,
-        "head_since": SINCE,
-    }
-    payload.update(overrides)
-    return gate.evaluate(**payload)
 
 
 class CopilotHeadBinding(unittest.TestCase):
