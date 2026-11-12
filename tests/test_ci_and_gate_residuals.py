@@ -1,10 +1,17 @@
-"""Residual pins for #4/#9/#10 paths that #13 did not cover.
+"""Pins this file runs itself.
 
-#13 pinned registry list-shape, missing-script, matching-prefix, ledger empty-provider /
-uppercase-sha256 / invalid-JSON / SECRET / blank-line, snapshot write --root, check --precall,
-root-flag-wins, and unclosed-fence fail-closed. These cases are the remaining production
-branches with meaningful blast radius: JSON CI, the ledger authorization rule, the other
-two fail-closed blanking strategies, a corrupt precall snapshot, and prompt-source hashing.
+check_json reports invalid JSON and ignores non-JSON paths. A ledger rule must be a
+non-empty string, and source_hashes must be a list. An unclosed HTML comment and a
+tab-indented example stay out of the approval gate. A corrupt or empty precall snapshot
+is marked absent, and a prompt source is named by hash.
+
+These are not a remainder of pins already on merge base
+63ae39c3bc33dc8c8b4f05e5ff3dacbcb51d7184. That commit refuses SECRET in the recorder
+and covers check mode with --root. It does not pin registry list shape, a missing
+script, a matching hash prefix, an empty provider, an uppercase sha256, an invalid
+ledger JSON line, blank ledger lines, write mode under --root, check mode writing a
+precall snapshot, root-flag precedence, or an unclosed fence. check_json's OSError
+branch is not covered here.
 """
 import hashlib
 import json
@@ -127,7 +134,10 @@ class LedgerRuleAndHashTypes(unittest.TestCase):
 
 
 class TheOtherFailClosedBlankingStrategies(unittest.TestCase):
-    """#13 pinned an unclosed fence. Comments and tab-indented blocks are the other two."""
+    """An unclosed HTML comment and a tab-indented example are the cases this class pins.
+
+    An unclosed fence is not pinned on merge base 63ae39c3bc33dc8c8b4f05e5ff3dacbcb51d7184.
+    """
 
     def setUp(self):
         self.root = tempfile.mkdtemp()
