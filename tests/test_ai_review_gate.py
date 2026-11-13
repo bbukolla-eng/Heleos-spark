@@ -300,6 +300,28 @@ class WorkflowContract(unittest.TestCase):
             )
         )
 
+    def test_queued_amazon_q_check_suppresses_the_ping(self):
+        self.assertFalse(
+            gate.should_ping_amazon_q(
+                reviews=[],
+                issue_comments=[],
+                review_comments=[],
+                check_runs=[{"name": "Amazon Q Developer", "status": "queued", "conclusion": None}],
+                head_sha=HEAD,
+                head_since=SINCE,
+            )
+        )
+        self.assertTrue(
+            gate.should_ping_amazon_q(
+                reviews=[],
+                issue_comments=[],
+                review_comments=[],
+                check_runs=[{"name": "Amazon Q Developer", "status": "completed", "conclusion": "failure"}],
+                head_sha=HEAD,
+                head_since=SINCE,
+            )
+        )
+
 
 class CliEvaluate(unittest.TestCase):
     def test_cli_passes_without_ecc_and_prints_advisory(self):

@@ -158,7 +158,7 @@ def should_ping_amazon_q(
     head_sha,
     head_since,
 ):
-    """Ping once per head when Amazon Q has not acknowledged and its check is not success."""
+    """Ping once per head when Amazon Q has not acknowledged and no check is successful or still running."""
     spoken = list(_as_items(reviews)) + list(_as_items(issue_comments)) + list(
         _as_items(review_comments)
     )
@@ -172,7 +172,7 @@ def should_ping_amazon_q(
             continue
         if conclusion == "success":
             return False
-        if status == "in_progress":
+        if status and status != "completed":
             return False
     for item in _as_items(issue_comments):
         body = item.get("body") or ""
