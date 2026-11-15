@@ -1,9 +1,9 @@
 """Acknowledgement matching for the AI review gate.
 
-Codex and Copilot must acknowledge the current head. ECC Tools is detected and
-printed as advisory and never fails the job. A review, issue comment, or inline
-comment counts when it is bound to that SHA or created at or after the head
-push. Copilot may also pass via its check-run.
+Codex and Copilot must acknowledge the current head. ECC Tools and Amazon Q
+are detected and printed as advisory and never fail the job. A review, issue
+comment, or inline comment counts when it is bound to that SHA or created at
+or after the head push. Copilot may also pass via its check-run.
 """
 import json
 import os
@@ -209,42 +209,7 @@ class CodexPing(unittest.TestCase):
         )
 
 
-class HeadSinceResolution(unittest.TestCase):
-    def test_timeline_committed_event_for_this_sha_wins(self):
-        timeline = [
-            {"event": "committed", "sha": "other", "created_at": OLDER},
-            {"event": "committed", "sha": HEAD, "created_at": SINCE},
-        ]
-        commit = {"commit": {"committer": {"date": OLDER}}}
-        self.assertEqual(gate.resolve_head_since(timeline, commit, HEAD), SINCE)
-
-    def test_falls_back_to_committer_date(self):
-        commit = {"commit": {"committer": {"date": OLDER}}}
-        self.assertEqual(gate.resolve_head_since([], commit, HEAD), OLDER)
-
-
-class WorkflowContract(unittest.TestCase):
-    def test_stable_job_id_and_permissions(self):
-        path = os.path.join(
-            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-            ".github",
-            "workflows",
-            "ai-review-gate.yml",
-        )
-        with open(path, encoding="utf-8") as handle:
-            text = handle.read()
-        self.assertIn("\n  ai-reviewers:\n", text)
-        self.assertIn("contents: read", text)
-        self.assertIn("pull-requests: write", text)
-        self.assertIn("issues: write", text)
-        self.assertIn("checks: read", text)
-        self.assertIn("github.event.pull_request.draft == false", text)
-        self.assertIn("@codex review", text)
-        self.assertIn("pass: Codex OK, Copilot OK", text)
-        self.assertNotIn("secrets.", text.replace("secrets.GITHUB_TOKEN", ""))
-
-
-
+class AmazonQAdvisory(unittest.TestCase):
     def test_absent_amazon_q_is_advisory_not_missing(self):
         result = evaluate(
             reviews=[
@@ -322,6 +287,56 @@ class WorkflowContract(unittest.TestCase):
             )
         )
 
+    def test_an_older_ping_does_not_suppress_a_new_head(self):
+        prior = comment("github-actions[bot]", created_at=OLDER, body="@amazon-q review")
+        self.assertTrue(
+            gate.should_ping_amazon_q(
+                reviews=[],
+                issue_comments=[prior],
+                review_comments=[],
+                check_runs=[],
+                head_sha=HEAD,
+                head_since=SINCE,
+            )
+        )
+
+
+class HeadSinceResolution(unittest.TestCase):
+    def test_timeline_committed_event_for_this_sha_wins(self):
+        timeline = [
+            {"event": "committed", "sha": "other", "created_at": OLDER},
+            {"event": "committed", "sha": HEAD, "created_at": SINCE},
+        ]
+        commit = {"commit": {"committer": {"date": OLDER}}}
+        self.assertEqual(gate.resolve_head_since(timeline, commit, HEAD), SINCE)
+
+    def test_falls_back_to_committer_date(self):
+        commit = {"commit": {"committer": {"date": OLDER}}}
+        self.assertEqual(gate.resolve_head_since([], commit, HEAD), OLDER)
+
+
+class WorkflowContract(unittest.TestCase):
+    def test_stable_job_id_and_permissions(self):
+        path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            ".github",
+            "workflows",
+            "ai-review-gate.yml",
+        )
+        with open(path, encoding="utf-8") as handle:
+            text = handle.read()
+        self.assertIn("\n  ai-reviewers:\n", text)
+        self.assertIn("contents: read", text)
+        self.assertIn("pull-requests: write", text)
+        self.assertIn("issues: write", text)
+        self.assertIn("checks: read", text)
+        self.assertIn("github.event.pull_request.draft == false", text)
+        self.assertIn("@codex review", text)
+        self.assertIn("should-ping-amazon-q", text)
+        self.assertIn("@amazon-q review", text)
+        self.assertIn("pass: Codex OK, Copilot OK", text)
+        self.assertNotIn("secrets.", text.replace("secrets.GITHUB_TOKEN", ""))
+
 
 class CliEvaluate(unittest.TestCase):
     def test_cli_passes_without_ecc_and_prints_advisory(self):
@@ -363,6 +378,7 @@ class CliEvaluate(unittest.TestCase):
             out = captured.getvalue()
             self.assertEqual(code, 0)
             self.assertIn("ECC advisory: absent", out)
+            self.assertIn("Amazon Q advisory: absent", out)
             payload = json.loads(out.splitlines()[0])
             self.assertNotIn("ecc", payload["missing"])
             self.assertFalse(payload["ecc"])
@@ -391,7 +407,92 @@ class CliEvaluate(unittest.TestCase):
             self.assertEqual(code, 2)
             self.assertIn("missing: codex, copilot", out)
             self.assertIn("ECC advisory: present", out)
+            self.assertIn("Amazon Q advisory: absent", out)
             self.assertNotIn("ecc", json.loads(out.splitlines()[0])["missing"])
+
+
+class AmazonQPingCli(unittest.TestCase):
+    def _write(self, tmp, name, value):
+        path = os.path.join(tmp, name)
+        with open(path, "w", encoding="utf-8") as handle:
+            json.dump(value, handle)
+        return path
+
+    def _common(self, paths, check_runs=None):
+        argv = [
+            "--head-sha",
+            HEAD,
+            "--head-since",
+            SINCE,
+            "--reviews",
+            paths["reviews"],
+            "--issue-comments",
+            paths["issue-comments"],
+            "--review-comments",
+            paths["review-comments"],
+        ]
+        if check_runs is not None:
+            argv.extend(["--check-runs", check_runs])
+        return argv
+
+    def test_cli_pings_when_amazon_q_is_absent(self):
+        from io import StringIO
+        from contextlib import redirect_stdout
+
+        with tempfile.TemporaryDirectory() as tmp:
+            paths = {
+                "reviews": self._write(tmp, "reviews.json", []),
+                "issue-comments": self._write(tmp, "issues.json", []),
+                "review-comments": self._write(tmp, "review-comments.json", []),
+            }
+            checks = self._write(tmp, "checks.json", [])
+            captured = StringIO()
+            with redirect_stdout(captured):
+                code = gate.main(["should-ping-amazon-q", *self._common(paths, checks)])
+            self.assertEqual(code, 0)
+            self.assertEqual(captured.getvalue().strip(), "ping")
+
+    def test_cli_skips_when_this_head_was_already_pinged(self):
+        from io import StringIO
+        from contextlib import redirect_stdout
+
+        with tempfile.TemporaryDirectory() as tmp:
+            paths = {
+                "reviews": self._write(tmp, "reviews.json", []),
+                "issue-comments": self._write(
+                    tmp, "issues.json", [comment("bbukolla-eng", body="@amazon-q review")]
+                ),
+                "review-comments": self._write(tmp, "review-comments.json", []),
+            }
+            checks = self._write(tmp, "checks.json", [])
+            captured = StringIO()
+            with redirect_stdout(captured):
+                code = gate.main(["should-ping-amazon-q", *self._common(paths, checks)])
+            self.assertEqual(code, 2)
+            self.assertEqual(captured.getvalue().strip(), "skip")
+
+    def test_only_the_amazon_q_ping_command_requires_check_runs(self):
+        from io import StringIO
+        from contextlib import redirect_stderr, redirect_stdout
+
+        with tempfile.TemporaryDirectory() as tmp:
+            paths = {
+                "reviews": self._write(tmp, "reviews.json", []),
+                "issue-comments": self._write(tmp, "issues.json", []),
+                "review-comments": self._write(tmp, "review-comments.json", []),
+            }
+            errors = StringIO()
+            with redirect_stderr(errors):
+                with self.assertRaises(SystemExit) as raised:
+                    gate.main(["should-ping-amazon-q", *self._common(paths)])
+            self.assertEqual(raised.exception.code, 2)
+            self.assertIn("--check-runs", errors.getvalue())
+
+            captured = StringIO()
+            with redirect_stdout(captured):
+                code = gate.main(["should-ping-codex", *self._common(paths)])
+            self.assertEqual(code, 0)
+            self.assertEqual(captured.getvalue().strip(), "ping")
 
 
 if __name__ == "__main__":
