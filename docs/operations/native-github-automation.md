@@ -43,8 +43,14 @@ checks initially reproduced the existing docs/decisions/README.md:13 em dash fai
 Replacing it with a colon repairs the prose defect without weakening the check.
 A reviewed recovery PR whose current checks prove it repairs the exact main failure
 may proceed through native protections; unrelated merges wait for healthy main CI.
-After the punctuation repair: repository checks passed (64 tracked files, zero
-failures) and all 101 Python tests passed on 2026-09-23 UTC.
+After the punctuation repair, commit 495a42f reported repository checks passed
+(64 tracked files, zero failures) and all 101 Python tests passed on 2026-09-23
+UTC. That tree was base 63ae39c plus this document. It did not include
+docs/operations/pull-request-backlog.md or
+docs/operations/pull-request-backlog-snapshot.json. On 2026-11-18 UTC, at commit
+0058a2f785d23a87186960d0443e09b521944376 (66 tracked files), python3
+tools/ci/checks.py exited 0 (66 tracked files checked, 0 failures).
+python3 -m unittest discover -s tests -p 'test_*.py' exited 0 (101 tests).
 
 ## Authority and research
 
