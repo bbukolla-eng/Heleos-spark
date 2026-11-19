@@ -2,7 +2,10 @@
 
 Owner approved on 2026-09-23: automatic reviews, small fixes, and native guarded
 merge commits for new ready PRs only. Activation cutoff: 2026-09-23T01:55:48Z.
-This is the replacement for withdrawn PR26, not a continuation of its custom app.
+This is the replacement for withdrawn pull request #26
+(https://github.com/bbukolla-eng/Heleos-spark/pull/26, branch
+`codex/github-automation`, commit `292abc94c29d37e987280c002f0d140024b28d07`,
+closed without merge on 2026-09-23), not a continuation of its custom app.
 
 ## Existing integrations
 
@@ -31,9 +34,15 @@ workspace as Free; Autofix entitlement must be verified on an eligible PR. No
 subscription or trial was purchased. No custom app or Cursor fallback is authorized.
 The GitHub-only fix trigger and deterministic attempt cap remain unfinished.
 
-Current main 63ae39c has a pre-existing failing checks run 34061515864. This
-candidate includes the same punctuation-only repair independently proposed by PR25;
-it changes no decision and does not merge that old PR or waive approvals. The
+Current main 63ae39c has a pre-existing failing checks run
+https://github.com/bbukolla-eng/Heleos-spark/actions/runs/34061515864
+(the checks workflow on commit `63ae39c3bc33dc8c8b4f05e5ff3dacbcb51d7184`,
+conclusion failure, 2026-09-06). This candidate includes the same
+punctuation-only repair independently proposed by pull request #25
+(https://github.com/bbukolla-eng/Heleos-spark/pull/25, branch
+`cursor/ci-autofix-automation-1842`, commit
+`8028e0c9195de25dae487dda35e6e29d266d879b`); it changes no decision and does
+not merge that old PR or waive approvals. The
 new setup PR is sensitive workflow configuration and must receive independent review.
 The legacy workflow now requests merge commits and binds the expected PR head; its
 PR-number activation guard (numbers greater than 26) does not automatically enroll older PRs.
