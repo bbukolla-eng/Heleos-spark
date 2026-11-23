@@ -300,6 +300,28 @@ class AmazonQAdvisory(unittest.TestCase):
             )
         )
 
+    def test_review_or_inline_comment_suppresses_the_ping(self):
+        self.assertFalse(
+            gate.should_ping_amazon_q(
+                reviews=[review(gate.AMAZON_Q_BOT, commit_id=HEAD)],
+                issue_comments=[],
+                review_comments=[],
+                check_runs=[],
+                head_sha=HEAD,
+                head_since=SINCE,
+            )
+        )
+        self.assertFalse(
+            gate.should_ping_amazon_q(
+                reviews=[],
+                issue_comments=[],
+                review_comments=[comment(gate.AMAZON_Q_BOT, commit_id=HEAD)],
+                check_runs=[],
+                head_sha=HEAD,
+                head_since=SINCE,
+            )
+        )
+
 
 class HeadSinceResolution(unittest.TestCase):
     def test_timeline_committed_event_for_this_sha_wins(self):
