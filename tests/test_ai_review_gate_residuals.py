@@ -4,7 +4,8 @@
 acknowledgement, ECC-advisory-not-missing, ping-once-per-head, committed-event
 head-since, evaluate CLI, and the stable job-id/permissions contract.
 
-These cases are the remaining production branches with meaningful blast radius:
+These cases pin the branches named below. A missing head SHA, on the call
+or on the check run, is not one of them:
 a Copilot success on an older SHA must not open the new head; GitHub's other
 SHA fields (original_commit_id, timeline commit_id, nested commit.sha) must still bind;
 force-push timeline events must move head-since; the workflow's CLI exit codes
