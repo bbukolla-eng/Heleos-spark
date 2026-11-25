@@ -339,10 +339,26 @@ class WorkflowLoopContract(unittest.TestCase):
         sleep_seconds = int(pause.group(1))
         timeout_seconds = int(timeout.group(1)) * 60
         self.assertLess(deadline_seconds + sleep_seconds, timeout_seconds)
-        self.assertIn('if [ "${status}" -ne 2 ]; then', text)
+        # The three status branches stay in this order, each with its own exit.
+        # A loose substring pin still passes if the non-2 exit is deleted or
+        # the timeout exit is replaced with continue.
+        exits = (
+            '            if [ "${status}" -eq 0 ]; then\n'
+            '              echo "pass: Codex OK, Copilot OK"\n'
+            "              exit 0\n"
+            "            fi\n"
+            '            if [ "${status}" -ne 2 ]; then\n'
+            '              echo "evaluate failed with status ${status}"\n'
+            "              exit 1\n"
+            "            fi\n"
+            '            if [ "${SECONDS}" -ge "${DEADLINE}" ]; then\n'
+            '              echo "fail: timed out waiting for required reviewers (Codex, Copilot)"\n'
+            "              exit 1\n"
+            "            fi\n"
+        )
+        self.assertIn(exits, text)
         self.assertIn("should-ping-codex", text)
         self.assertIn("head-since", text)
-        self.assertIn("fail: timed out waiting for required reviewers (Codex, Copilot)", text)
 
 
 if __name__ == "__main__":
