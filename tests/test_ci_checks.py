@@ -87,6 +87,22 @@ class RegistryPins(unittest.TestCase):
         }))
         self.assertEqual(checks.check_registry(root=self.root), [])
 
+    def test_a_row_without_a_sha256_is_reported(self):
+        self.digest_for()
+        rows = (
+            {"name": "demo", "script": "demo.js"},
+            {"name": "demo", "script": "demo.js", "sha256": None},
+            {"name": "demo", "script": "demo.js", "sha256": ""},
+        )
+        for row in rows:
+            with self.subTest(row=row):
+                self.write(".claude/workflows/REGISTRY.json", json.dumps({
+                    "workflows": [row],
+                }))
+                failures = checks.check_registry(root=self.root)
+                self.assertEqual(len(failures), 1)
+                self.assertIn("sha256 is not recorded", failures[0])
+
     def test_a_missing_script_is_reported(self):
         self.write(".claude/workflows/REGISTRY.json", json.dumps({
             "workflows": [{"name": "demo", "script": "gone.js", "sha256": "0" * 64}],
